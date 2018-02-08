@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--配置实体类路径-->
+   <typeAliases>
+         <package name="com.elex.oa.entity"/>
+   </typeAliases>
+   <databaseIdProvider type="DB_VENDOR">
+<!--        <property name="Oracle" value="oracle" /> -->
+		<property name="MySQL" value="mysql"/>
+    </databaseIdProvider>
+</configuration>
