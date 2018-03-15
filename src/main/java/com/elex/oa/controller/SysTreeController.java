@@ -1,6 +1,8 @@
 package com.elex.oa.controller;
 
 import com.elex.oa.entity.SysTree;
+import com.elex.oa.service.ISysTreeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,15 +20,18 @@ import java.util.Map;
 @CrossOrigin
 @RequestMapping("/sysTree")
 public class SysTreeController {
-/*    @RequestMapping({"/listAllByCatKey"})
+
+    private ISysTreeService sysTreeService;
+    @Autowired
+    public SysTreeController(ISysTreeService sysTreeService) {
+        this.sysTreeService = sysTreeService;
+    }
+    @RequestMapping({"/listAllByCatKey"})
     public List<SysTree> listAllByCatKey(HttpServletRequest request){
         String catKey = request.getParameter("catKey");
         Map<String,String> map = new HashMap<>();
         map.put("catKey",catKey);
-        map.
-
-
-    }*/
-
-
+        map.put("tenantId","1");
+        return sysTreeService.selectByCatKey(map);
+    }
 }
