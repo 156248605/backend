@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
-/**
- * Created by lsc on 2017/4/25.
- */
 @Service
 public class ProjectServiceImpl extends BaseServiceImpl<Project> implements IProjectService {
     @Autowired

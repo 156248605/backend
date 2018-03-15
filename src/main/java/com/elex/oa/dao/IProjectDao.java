@@ -5,10 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Map;
-
-/**
- * Created by lsc on 2017/4/25.
- */
 @Mapper
 public interface IProjectDao extends BaseDao<Project> {
     /**

@@ -27,7 +27,7 @@ import java.util.Map;
  *@author lilulu
  *@since 2018/2/7
 */
-@Api(value = "Project", description = "the project API")
+@Api(value = "Project", description = "项目管理相关API")
 @RequestMapping("/project")
 @CrossOrigin
 @Controller
