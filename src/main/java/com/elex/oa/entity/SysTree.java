@@ -102,10 +102,23 @@ public class SysTree {
     )
     private Integer sn;
 
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     @Column(
             name = "DATA_SHOW_TYPE_"
     )
     private String dataShowType;
+    @Column(
+            name = "TENANT_ID_"
+    )
+    private String tenantId;
+
     @Transient
     private boolean used = true;
 

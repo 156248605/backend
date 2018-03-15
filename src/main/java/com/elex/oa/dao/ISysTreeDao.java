@@ -3,6 +3,9 @@ package com.elex.oa.dao;
 import com.elex.oa.entity.SysTree;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author hugo.zhao
  * @since 2017/11/10 10:53
@@ -15,4 +18,7 @@ public interface ISysTreeDao extends BaseDao<SysTree> {
      *
      */
       public SysTree getTreeById(String id);
+
+      public List<SysTree> selectByCatKey(Map<String,String> map);
+
 }

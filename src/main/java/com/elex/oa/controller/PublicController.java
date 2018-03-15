@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping("/pub/")
-public class publicController {
+public class PublicController {
     @RequestMapping({"getPinyin"})
     public Object getPinyin(HttpServletRequest request){
         String words = request.getParameter("words");
