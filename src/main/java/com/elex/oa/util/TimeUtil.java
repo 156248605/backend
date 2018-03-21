@@ -271,8 +271,8 @@ public class TimeUtil {
 	}
 
 	public static void main(String args[]){
-		String s = dateToStr(new Date(),"yyyy-MM-dd HH:mm:ss");
-		System.out.print(s);
+		int num = (int)(Math.random()*50);
+		System.out.print(num);
 	}
 
 }
