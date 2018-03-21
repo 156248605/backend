@@ -3,11 +3,13 @@ package com.elex.oa.service.impl;
 import com.elex.oa.dao.ISysTreeDao;
 import com.elex.oa.entity.SysTree;
 import com.elex.oa.service.ISysTreeService;
+import com.elex.oa.util.TimeUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *@author hugo.zhao
@@ -24,4 +26,45 @@ public class SysTreeServiceImpl extends BaseServiceImpl<SysTree> implements ISys
     public List<SysTree> selectByCatKey(Map<String,String> map){
       return   this.sysTreeDao.selectByCatKey(map);
     }
+    /**
+     * 保存表单分类
+     * @param formCategoryName  表单分类名称
+     * @param formCategoryLabelKey  表单分类标识键
+     * @param formCategoryCode  表单分类编码
+     * @param formCategoryNumber  表单分类序号
+     * @param formCategoryDesc  表单分类描述
+     * @param parentId  父节点ID
+     * @param parentDepth 父节点深度
+     * @return
+     */
+    public int addFormCategory(String formCategoryName,String formCategoryLabelKey,String formCategoryCode,String formCategoryNumber,String formCategoryDesc,String parentId,String parentDepth){
+        Map<String,Object> paramMap = new HashMap<String,Object>();
+        //获取表单分类树id
+        String treeId = UUID.randomUUID().toString();
+        paramMap.put("treeId",treeId);
+        paramMap.put("name",formCategoryName);
+        int nodeDepth = Integer.parseInt(parentDepth) + 1;
+        paramMap.put("depth",nodeDepth);
+        paramMap.put("parentId",parentId);
+        paramMap.put("key",formCategoryLabelKey);
+        paramMap.put("code",formCategoryCode);
+        paramMap.put("desc",formCategoryDesc);
+        paramMap.put("catKey","CAT_FORM_VIEW");
+        paramMap.put("sn",formCategoryNumber);
+        paramMap.put("dataShowType","FLAT");
+        paramMap.put("tenantId","1");
+        //获取当前时间
+        String currentTime = TimeUtil.dateToStr(new Date(),"yyyy-MM-dd HH:mm:ss");
+        paramMap.put("createTime",currentTime);
+        paramMap.put("updateTime",currentTime);
+
+        int num = sysTreeDao.addFormCategory(paramMap);
+        return num;
+    }
+
+    //删除表单分类
+    public int deleteFormCategory(String id){
+        return sysTreeDao.deleteFormCategory(id);
+    }
+
 }
