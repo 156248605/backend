@@ -5,6 +5,7 @@ import com.elex.oa.service.IBpmFormViewService;
 import com.elex.oa.util.IdUtil;
 import com.elex.oa.util.ResultUtil;
 import com.elex.oa.util.resp.RespUtil;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,10 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping("/bpmFormView")
-public class bpmFormViewController {
+public class BpmFormViewController {
     private IBpmFormViewService formViewService;
     @Autowired
-    public bpmFormViewController(IBpmFormViewService formViewService) {
+    public BpmFormViewController(IBpmFormViewService formViewService) {
         this.formViewService = formViewService;
     }
 
@@ -28,9 +29,33 @@ public class bpmFormViewController {
     @PostMapping("/listData")
     public Object bpmFormView(HttpServletRequest request){
         String treeId = request.getParameter("treeId");
+        String page = request.getParameter("page");
+        String rows = request.getParameter("rows");
+        String name = request.getParameter("name");
+        String key = request.getParameter("key");
+        String type = request.getParameter("type");
+        if("0".equals(type)){
+            type = "ONLINE-DESIGN";
+        }else if("1".equals(type)){
+            type = "URL";
+        }
+        String status = request.getParameter("status");
+        if("0".equals(status)){
+            status = "INIT";
+        }else if("1".equals(status)){
+            status = "DEPLOYED";
+        }
         Map<String,String> map = new HashMap<>();
+        map.put("tenantId","1");//租户ID
         map.put("treeId",treeId);
-        return RespUtil.successResp("200","success",this.formViewService.getByTreeFilterNew(map));
+        map.put("page",page);
+        map.put("rows",rows);
+        map.put("name",name);
+        map.put("key",key);
+        map.put("type",type);
+        map.put("status",status);
+        PageInfo<BpmFormView> pageInfo = this.formViewService.getByTreeFilterNew(map);
+        return RespUtil.successResp("200","success",pageInfo);
    }
 
    @GetMapping("/previewById/{viewId}")

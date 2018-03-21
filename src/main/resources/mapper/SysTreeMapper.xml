@@ -43,10 +43,27 @@
         ORDER BY SN_ asc
     </select>
 
+    <insert id="addFormCategory" parameterType="java.util.Map">
+        INSERT INTO sys_tree(
+        tree_id_,
+        name_,
+        depth_,
+        parent_id_,
+        key_,
+        code_,
+        descp_,
+        cat_key_,
+        sn_,
+        data_show_type_,
+        tenant_id_,
+        create_time_,
+        update_time_
+        )
+        VALUES (#{treeId}, #{name},#{depth}, #{parentId}, #{key}, #{code}, #{desc}, #{catKey}, #{sn}, #{dataShowType}, #{tenantId}, #{createTime}, #{updateTime})
+    </insert>
 
-
-
-
-
+    <delete id="deleteFormCategory">
+        DELETE FROM sys_tree WHERE FIND_IN_SET(TREE_ID_, getChildrenList(#{id}))
+    </delete>
 
 </mapper>

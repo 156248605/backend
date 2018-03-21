@@ -170,13 +170,48 @@
     </select>
 
     <select id="getByTreeFilterNew" resultMap="BaseResultMap" parameterType="java.util.Map">
-        SELECT VIEW_ID_,TREE_ID_,NAME_,KEY_,TYPE_,RENDER_URL_,VERSION_,IS_MAIN_,MAIN_VIEW_ID_,
-        DESCP_,STATUS_,IS_BIND_MD_,TEMPLATE_ID_,TENANT_ID_,CREATE_BY_,
-        CREATE_TIME_,UPDATE_BY_,UPDATE_TIME_,BO_DEFID_,BUTTON_DEF_,DISPLAY_TYPE_
+        SELECT
+            VIEW_ID_,
+            TREE_ID_,
+            NAME_,KEY_,
+            case when TYPE_ = 'ONLINE-DESIGN' then '在线表单'
+            when TYPE_ = 'URL' then '自定义表单'
+            else '其他' end as TYPE_,
+            RENDER_URL_,
+            VERSION_,
+            IS_MAIN_,
+            MAIN_VIEW_ID_,
+            DESCP_,
+            STATUS_,
+            IS_BIND_MD_,
+            TEMPLATE_ID_,
+            TENANT_ID_,
+            CREATE_BY_,
+            DATE_FORMAT(CREATE_TIME_, '%Y-%c-%d %h:%i:%s') as CREATE_TIME_,
+            UPDATE_BY_,
+            UPDATE_TIME_,
+            BO_DEFID_,
+            BUTTON_DEF_,
+            DISPLAY_TYPE_
         FROM BPM_FORM_VIEW
         <where>
             <if test="treeId != null and treeId != ''">
                 and  TREE_ID_ = #{treeId}
+            </if>
+            <if test="tenantId != null and tenantId != ''">
+                and  TENANT_ID_ = #{tenantId}
+            </if>
+            <if test="name != null and name != ''">
+                and  NAME_ like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="key != null and key != ''">
+                and  KEY_ like concat(concat('%',#{key}),'%')
+            </if>
+            <if test="type != null and type != ''">
+                and  TYPE_ = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and  STATUS_ = #{status}
             </if>
         </where>
 
