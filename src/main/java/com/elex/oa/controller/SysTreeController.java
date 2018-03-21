@@ -4,6 +4,7 @@ import com.elex.oa.entity.SysTree;
 import com.elex.oa.service.ISysTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,4 +35,17 @@ public class SysTreeController {
         map.put("tenantId","1");
         return sysTreeService.selectByCatKey(map);
     }
+    @RequestMapping("/listDicTree")
+    public List<SysTree> listDicTree(){
+        Map<String,String> map = new HashMap<>();
+        map.put("catKey","CAT_DIM");
+        map.put("tenantId","1");
+        return this.sysTreeService.selectByCatKey(map);
+
+
+
+    }
+
+
+
 }
