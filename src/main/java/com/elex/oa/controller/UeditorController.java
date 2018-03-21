@@ -1,10 +1,15 @@
 package com.elex.oa.controller;
-import com.elex.oa.common.ueditor.ActionEnter;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 /**
  * 用于处理关于ueditor插件相关的请求
  *@author hugo.zhao
@@ -14,12 +19,25 @@ import java.io.UnsupportedEncodingException;
 @CrossOrigin
 @RequestMapping("/ueditor")
 public class UeditorController {
-    @RequestMapping(value = "/exec")
-    public String exec(HttpServletRequest request) throws UnsupportedEncodingException{
-        request.setCharacterEncoding("utf-8");
-        String rootPath = request.getRealPath("/");
-        return new ActionEnter(request,rootPath).exec();
+//    @RequestMapping(value = "/exec")
+//    public String exec(HttpServletRequest request) throws UnsupportedEncodingException{
+//        request.setCharacterEncoding("utf-8");
+//        String rootPath = request.getRealPath("/");
+//        return new ActionEnter(request,rootPath).exec();
+//    }
+
+    @RequestMapping(
+            value = {"/exec"},
+            method = {RequestMethod.GET}
+    )
+    @ResponseBody
+    public void exec(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String action = request.getParameter("action");
+        if("config".equals(action)) {
+            ServletOutputStream os = response.getOutputStream();
+            FileInputStream is = new FileInputStream(ResourceUtils.getFile("classpath:ueditor-config.json"));
+            IOUtils.copy(is, os);
+        }
+
     }
-
-
 }

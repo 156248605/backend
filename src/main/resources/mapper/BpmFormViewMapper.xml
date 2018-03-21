@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.IBpmFormViewDao">
+
+    <resultMap id="BaseResultMap" type="BpmFormView">
+        <id column="VIEW_ID_" property="viewId" />
+        <result column="TREE_ID_" property="treeId" />
+        <result column="NAME_" property="name" />
+        <result column="KEY_" property="key" />
+        <result column="TYPE_" property="type" />
+        <result column="RENDER_URL_" property="renderUrl" />
+        <result column="VERSION_" property="version" />
+        <result column="IS_MAIN_" property="isMain" />
+        <result column="MAIN_VIEW_ID_" property="mainViewId" />
+        <result column="DESCP_" property="descp" />
+        <result column="STATUS_" property="status" />
+        <result column="IS_BIND_MD_" property="isBindMd" />
+        <result column="TEMPLATE_VIEW_" property="templateView"/>
+        <result column="TEMPLATE_ID_" property="templateId"/>
+        <result column="DISPLAY_TYPE_" property="displayType"/>
+        <result column="TEMPLATE_" property="template"/>
+        <result column="TENANT_ID_" property="tenantId"/>
+        <result column="CREATE_BY_" property="createBy"/>
+        <result column="CREATE_TIME_" property="createTime"/>
+        <result column="UPDATE_BY_" property="updateBy"/>
+        <result column="UPDATE_TIME_" property="updateTime"/>
+        <result column="BO_DEFID_" property="boDefid"/>
+        <result column="TITLE_" property="title"/>
+        <result column="BUTTON_DEF_" property="buttonDef"/>
+        <result column="PDF_TEMP_" property="pdfTemp"/>
+        <result column="createTimeStr" property="createTimeStr"/>
+    </resultMap>
+
+    <select id="getAllBpmFormView" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+          NAME_,
+          KEY_,
+          case when TYPE_ = 'ONLINE-DESIGN' then '在线表单'
+          when TYPE_ = 'URL' then '自定义表单'
+          else '其他' end as TYPE_,
+          VERSION_,
+          case when STATUS_ = 'DEPLOYED' then '发布'
+          when STATUS_ = 'INIT' then '草稿'
+          else '其他' end as STATUS_,
+          DATE_FORMAT(CREATE_TIME_, '%Y-%c-%d %h:%i:%s') as createTimeStr
+        FROM
+          bpm_form_view
+        <where>
+            <if test="treeId != null and treeId != ''">
+                and  TREE_ID_ = #{treeId}
+            </if>
+            <if test="tenantId != null and tenantId != ''">
+                and  TENANT_ID_ = #{tenantId}
+            </if>
+            <if test="name != null and name != ''">
+                and  NAME_ like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="key != null and key != ''">
+                and  KEY_ like concat(concat('%',#{key}),'%')
+            </if>
+            <if test="type != null and type != ''">
+                and  TYPE_ = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and  STATUS_ = #{status}
+            </if>
+        </where>
+    </select>
+
+</mapper>

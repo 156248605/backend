@@ -21,4 +21,10 @@ public interface ISysTreeDao extends BaseDao<SysTree> {
 
       public List<SysTree> selectByCatKey(Map<String,String> map);
 
+      //新增表单分类
+      public int addFormCategory(Map<String,Object> map);
+
+      //删除表单分类
+      public int deleteFormCategory(String id);
+
 }

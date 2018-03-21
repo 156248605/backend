@@ -121,6 +121,8 @@ public class SysTree {
 
     @Transient
     private boolean used = true;
+    @Transient
+    private String createTimeStr;
 
     public String getTreeId() {
         return treeId;
@@ -241,7 +243,11 @@ public class SysTree {
     public SysTree() {
     }
 
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
 
-
-
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
+    }
 }
