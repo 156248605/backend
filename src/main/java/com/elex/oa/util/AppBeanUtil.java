@@ -1,8 +1,9 @@
 package com.elex.oa.util;
 
 import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Map;
@@ -11,8 +12,9 @@ import java.util.Map;
  *@author hugo.zhao
  *@since 2018/3/19 15:47
 */
+@Component
 public class AppBeanUtil implements ApplicationContextAware {
-    private static ApplicationContext appContext = null;
+    private static ApplicationContext appContext;
 
     public AppBeanUtil() {
     }
@@ -34,6 +36,7 @@ public class AppBeanUtil implements ApplicationContextAware {
         return map.values();
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         appContext = context;
     }

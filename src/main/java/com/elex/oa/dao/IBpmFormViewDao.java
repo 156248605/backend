@@ -20,5 +20,6 @@ public interface IBpmFormViewDao extends BaseService<BpmFormView> {
     void  create(BpmFormView formView);
 
     int  update(BpmFormView formView);
-
+    //批量删除表单记录
+    public int deleteForm(List<String> list);
 }
