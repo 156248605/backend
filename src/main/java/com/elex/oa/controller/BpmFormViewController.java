@@ -60,7 +60,7 @@ public class BpmFormViewController {
         return RespUtil.successResp("200","success",pageInfo);
    }
 
-   @GetMapping("/previewById/{viewId}")
+   @RequestMapping("/previewById/{viewId}")
    public Object previewById(@PathVariable String viewId){
        return RespUtil.successResp("200","success",this.formViewService.getById(viewId));
    }
