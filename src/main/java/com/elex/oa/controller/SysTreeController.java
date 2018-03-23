@@ -75,4 +75,5 @@ public class SysTreeController {
         int deleteNum = sysTreeService.deleteFormCategory(id);
         return deleteNum;
     }
+
 }
