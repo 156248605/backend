@@ -53,4 +53,15 @@ public class BpmFormViewServiceImpl implements IBpmFormViewService {
        return   bpmFormViewDao.update(formView);
     }
 
+    //删除表单记录
+    public int deleteForm(String viewIds){
+        String a[]=viewIds.split(",");
+        List<String> list = new ArrayList<String >();
+        for(int i=0;i<a.length;i++){
+            list.add(a[i]);
+        }
+        int deleteNum = bpmFormViewDao.deleteForm(list);
+        return deleteNum;
+    }
+
 }

@@ -3,11 +3,15 @@ package com.elex.oa.service.impl;
 import com.elex.oa.dao.ISysTreeDao;
 import com.elex.oa.entity.SysTree;
 import com.elex.oa.service.ISysTreeService;
+import com.elex.oa.util.IdUtil;
 import com.elex.oa.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *@author hugo.zhao
@@ -39,10 +43,16 @@ public class SysTreeServiceImpl extends BaseServiceImpl<SysTree> implements ISys
     public int addFormCategory(String formCategoryName,String formCategoryLabelKey,String formCategoryCode,String formCategoryNumber,String formCategoryDesc,String parentId,String parentDepth){
         Map<String,Object> paramMap = new HashMap<String,Object>();
         //获取表单分类树id
-        String treeId = UUID.randomUUID().toString();
+//        String treeId = UUID.randomUUID().toString();
+        String treeId = IdUtil.getId();
         paramMap.put("treeId",treeId);
         paramMap.put("name",formCategoryName);
-        int nodeDepth = Integer.parseInt(parentDepth) + 1;
+        int nodeDepth = 0;
+        if("".equals(parentDepth) || parentDepth==null){
+            nodeDepth = 1;
+        }else{
+            nodeDepth = Integer.parseInt(parentDepth) + 1;
+        }
         paramMap.put("depth",nodeDepth);
         paramMap.put("parentId",parentId);
         paramMap.put("key",formCategoryLabelKey);

@@ -15,4 +15,6 @@ public interface IBpmFormViewService{
      boolean isKeyExist(String id);
      void create(BpmFormView formView);
      int update(BpmFormView formView);
+     //删除表单记录
+     public int deleteForm(String viewIds);
 }

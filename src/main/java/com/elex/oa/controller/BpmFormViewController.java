@@ -4,6 +4,7 @@ import com.elex.oa.entity.BpmFormView;
 import com.elex.oa.service.IBpmFormViewService;
 import com.elex.oa.util.IdUtil;
 import com.elex.oa.util.ResultUtil;
+import com.elex.oa.util.TimeUtil;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,8 +81,25 @@ public class BpmFormViewController {
        if(!StringUtils.isEmpty(treeId)){
            bpmFormView.setTreeId(treeId);
        }
+       //版本号
+       Integer version = 1;
+       //是否为主版本
+       String isMain = "YES";
+       //状态
+       String status = "INIT";
+       //创建时间
+       String creatTime = TimeUtil.dateToStr(new Date(),"yyyy-MM-dd HH:mm:ss");
+       String updateTime = creatTime;
+
+       bpmFormView.setVersion(version);
+       bpmFormView.setIsMain(isMain);
+       bpmFormView.setStatus(status);
+       bpmFormView.setCreateTime(creatTime);
+       bpmFormView.setUpdateTime(updateTime);
+
        if(StringUtils.isEmpty(bpmFormView.getViewId())){
            String id = IdUtil.getId();
+//           String id = UUID.randomUUID().toString();
            bpmFormView.setViewId(id);
            this.formViewService.create(bpmFormView);
            msg = "业务表单视图成功创建";
@@ -91,5 +110,14 @@ public class BpmFormViewController {
            msg = "业务表单视图成功更新!";
        }
         return  RespUtil.successResp(ResultUtil.SC_OK.getCode(),msg,null);
+    }
+
+    /**
+     * 删除表单
+     */
+    @PostMapping("/deleteForm")
+    public int deleteForm(@RequestParam("viewIds") String viewIds){
+        int deleteNum = this.formViewService.deleteForm(viewIds);
+        return deleteNum;
     }
 }

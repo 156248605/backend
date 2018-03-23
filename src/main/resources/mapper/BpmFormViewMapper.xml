@@ -224,9 +224,6 @@
         </if>
     </select>
 
-
-
-
     <select id="getByBoId" resultMap="BaseResultMap">
         SELECT VIEW_ID_,TREE_ID_,NAME_,KEY_,TYPE_,RENDER_URL_,VERSION_,IS_MAIN_,MAIN_VIEW_ID_,
         DESCP_,STATUS_,IS_BIND_MD_,TEMPLATE_ID_,TENANT_ID_,CREATE_BY_,
@@ -242,4 +239,11 @@
     <select id="getAll" resultMap="BaseResultMap">
         select * from bpm_form_view
     </select>
+
+    <delete id="deleteForm" parameterType="java.util.List">
+        delete from bpm_form_view where VIEW_ID_ in
+        <foreach collection="list" item = "model" open="(" separator="," close=")">#{model}
+
+        </foreach>
+    </delete>
 </mapper>
