@@ -6,7 +6,7 @@ package com.elex.oa.util;
 */
 public class IdUtil {
     public static String getId(){
-        IdGenerator idGenerator = (IdGenerator)AppBeanUtil.getBean(IdGenerator.class);
+        IdGenerator idGenerator = AppBeanUtil.getBean(IdGenerator.class);
         return idGenerator.getSID();
     }
 }

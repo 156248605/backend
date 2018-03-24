@@ -17,7 +17,7 @@ public enum ResultUtil {
 
    private String code;
 
-    ResultUtil(String msg, String code) {
+    ResultUtil(String code, String msg) {
         this.msg = msg;
         this.code = code;
     }
