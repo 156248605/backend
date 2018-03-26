@@ -120,4 +120,20 @@ public class BpmFormViewController {
         int deleteNum = this.formViewService.deleteForm(viewIds);
         return deleteNum;
     }
+
+    /**
+     * 编辑表单
+     */
+    @PostMapping("/edit")
+    public Object edit(BpmFormView bpmFormView,HttpServletRequest request){
+        String msg = null;
+        //更新时间
+        String updateTime = TimeUtil.dateToStr(new Date(),"yyyy-MM-dd HH:mm:ss");
+        bpmFormView.setUpdateTime(updateTime);
+        //更新表单
+        formViewService.update(bpmFormView);
+        msg = "业务表单视图成功更新!";
+
+        return  RespUtil.successResp(ResultUtil.SC_OK.getCode(),msg,null);
+    }
 }

@@ -112,25 +112,10 @@
         TITLE_=#{title,jdbcType=VARCHAR},
         KEY_=#{key,jdbcType=VARCHAR},
         TYPE_=#{type,jdbcType=VARCHAR},
-        RENDER_URL_=#{renderUrl,jdbcType=VARCHAR},
-        VERSION_=#{version,jdbcType=NUMERIC},
-        IS_MAIN_=#{isMain,jdbcType=VARCHAR},
-        MAIN_VIEW_ID_=#{mainViewId,jdbcType=VARCHAR},
-        DESCP_=#{descp,jdbcType=CLOB},
-        STATUS_=#{status,jdbcType=VARCHAR},
-        IS_BIND_MD_=#{isBindMd,jdbcType=VARCHAR},
         TEMPLATE_VIEW_=#{templateView,jdbcType=CLOB},
-        TEMPLATE_=#{template,jdbcType=CLOB},
-        TEMPLATE_ID_=#{templateId,jdbcType=VARCHAR},
         TENANT_ID_=#{tenantId,jdbcType=VARCHAR},
-        CREATE_BY_=#{createBy,jdbcType=VARCHAR},
-        CREATE_TIME_=#{createTime,jdbcType=TIMESTAMP},
-        UPDATE_BY_=#{updateBy,jdbcType=VARCHAR},
-        UPDATE_TIME_=#{updateTime,jdbcType=TIMESTAMP},
-        BO_DEFID_=#{boDefId,jdbcType=VARCHAR},
-        BUTTON_DEF_=#{buttonDef,jdbcType=VARCHAR},
         DISPLAY_TYPE_=#{displayType,jdbcType=VARCHAR},
-        PDF_TEMP_=#{pdfTemp,jdbcType=CLOB}
+        UPDATE_TIME_=#{updateTime,jdbcType=TIMESTAMP}
         WHERE
         VIEW_ID_=#{viewId}
     </update>
