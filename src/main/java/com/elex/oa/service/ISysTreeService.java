@@ -10,6 +10,8 @@ import java.util.Map;
  *@since 2018/3/14 9:33
 */
 public interface ISysTreeService extends BaseService<SysTree> {
+    //根据treeId查询表单分类
+    public SysTree getTreeById(String id);
 
     public List<SysTree> selectByCatKey(Map<String,String> map);
     //保存表单分类

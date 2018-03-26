@@ -75,4 +75,9 @@ public class SysTreeServiceImpl extends BaseServiceImpl<SysTree> implements ISys
     public int deleteFormCategory(String id){
         return sysTreeDao.deleteFormCategory(id);
     }
+
+    //根据treeId查询表单分类
+    public SysTree getTreeById(String id){
+        return sysTreeDao.getTreeById(id);
+    }
 }

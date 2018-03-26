@@ -241,7 +241,9 @@ public class SysTree {
     public SysTree() {
     }
 
-
+    public SysTree(String in_treeId) {
+        this.setTreeId(in_treeId);
+    }
 
 
 }

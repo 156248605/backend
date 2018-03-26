@@ -270,6 +270,15 @@ public class TimeUtil {
 
 	}
 
+	public static String formatDate(Date date, String format) {
+		if("".equals(format) || format==null) {
+			format = "yyyy-MM-dd HH:mm:ss";
+		}
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+		return dateFormat.format(date);
+	}
+
 	public static void main(String args[]){
 		int num = (int)(Math.random()*50);
 		System.out.print(num);
