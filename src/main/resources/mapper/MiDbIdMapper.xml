@@ -16,20 +16,20 @@
 			MAX_,
 			MAC_NAME_
 		FROM
-			MI_DB_ID
+			mi_db_id
 		WHERE MAC_NAME_=#{macName}
 	</select>
 
 	<update id="updateMiDbIdById" parameterType="java.util.Map">
-		UPDATE MI_DB_ID SET START_=#{start},MAX_=#{max} WHERE ID_=#{id}
+		UPDATE mi_db_id SET START_=#{start},MAX_=#{max} WHERE ID_=#{id}
 	</update>
 
 	<select id="getMaxId" resultType="java.util.Map">
-		select max(ID_) as maxId from MI_DB_ID
+		select max(ID_) as maxId from mi_db_id
 	</select>
 
 	<insert id="insertMiDbId" parameterType="java.util.Map">
-		INSERT INTO MI_DB_ID(ID_,START_,MAX_,MAC_NAME_)VALUES(#{id},#{start},#{max},#{macName})
+		INSERT INTO mi_db_id(ID_,START_,MAX_,MAC_NAME_)VALUES(#{id},#{start},#{max},#{macName})
 	</insert>
 	
 </mapper>

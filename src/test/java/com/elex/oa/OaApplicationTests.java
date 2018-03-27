@@ -1,4 +1,4 @@
-package com.elex;
+package com.elex.oa;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

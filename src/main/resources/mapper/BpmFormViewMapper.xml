@@ -137,7 +137,7 @@
         SELECT VIEW_ID_,TREE_ID_,NAME_,KEY_,TYPE_,RENDER_URL_,VERSION_,IS_MAIN_,MAIN_VIEW_ID_,
         DESCP_,STATUS_,IS_BIND_MD_,TEMPLATE_ID_,TENANT_ID_,CREATE_BY_,
         CREATE_TIME_,UPDATE_BY_,UPDATE_TIME_,BO_DEFID_,BUTTON_DEF_,DISPLAY_TYPE_
-        FROM BPM_FORM_VIEW
+        FROM bpm_form_view
         <where>
             <if test="whereSql!=null">
                 and ${whereSql}
@@ -178,7 +178,7 @@
             BO_DEFID_,
             BUTTON_DEF_,
             DISPLAY_TYPE_
-        FROM BPM_FORM_VIEW
+        FROM bpm_form_view
         <where>
             <if test="treeId != null and treeId != ''">
                 and  TREE_ID_ = #{treeId}
