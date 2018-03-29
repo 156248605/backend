@@ -329,11 +329,11 @@ public class BpmFormView {
 
     private String status;
     @Column(
-            name = "UPDATE_BY_"
+            name = "CREATE_BY_"
     )
     private String createBy;
     @Column(
-            name = "CREATE_BY_"
+            name = "UPDATE_BY_"
     )
     private String updateBy;
 

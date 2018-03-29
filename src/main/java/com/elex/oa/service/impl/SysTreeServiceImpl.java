@@ -40,7 +40,7 @@ public class SysTreeServiceImpl extends BaseServiceImpl<SysTree> implements ISys
      * @param parentDepth 父节点深度
      * @return
      */
-    public int addFormCategory(String formCategoryName,String formCategoryLabelKey,String formCategoryCode,String formCategoryNumber,String formCategoryDesc,String parentId,String parentDepth){
+    public int addFormCategory(String formCategoryName,String formCategoryLabelKey,String formCategoryCode,String formCategoryNumber,String formCategoryDesc,String parentId,String parentDepth,String type){
         Map<String,Object> paramMap = new HashMap<String,Object>();
         //获取表单分类树id
 //        String treeId = UUID.randomUUID().toString();
@@ -58,7 +58,11 @@ public class SysTreeServiceImpl extends BaseServiceImpl<SysTree> implements ISys
         paramMap.put("key",formCategoryLabelKey);
         paramMap.put("code",formCategoryCode);
         paramMap.put("desc",formCategoryDesc);
-        paramMap.put("catKey","CAT_FORM_VIEW");
+        if("CAT_BPM_DEF".equals(type)){
+            paramMap.put("catKey","CAT_BPM_DEF");
+        }else if("CAT_FORM_VIEW".equals(type)){
+            paramMap.put("catKey","CAT_FORM_VIEW");
+        }
         paramMap.put("sn",formCategoryNumber);
         paramMap.put("dataShowType","FLAT");
         paramMap.put("tenantId","1");

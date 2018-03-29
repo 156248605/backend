@@ -61,8 +61,9 @@ public class SysTreeController {
                                @RequestParam("formCategoryNumber") String formCategoryNumber,
                                @RequestParam("formCategoryDesc") String formCategoryDesc,
                                @RequestParam("parentId") String parentId,
-                               @RequestParam("parentDepth") String parentDepth){
-        int addNum = sysTreeService.addFormCategory(formCategoryName,formCategoryLabelKey,formCategoryCode,formCategoryNumber,formCategoryDesc,parentId,parentDepth);
+                               @RequestParam("parentDepth") String parentDepth,
+                               @RequestParam("type") String type){
+        int addNum = sysTreeService.addFormCategory(formCategoryName,formCategoryLabelKey,formCategoryCode,formCategoryNumber,formCategoryDesc,parentId,parentDepth,type);
         return addNum;
     }
 
