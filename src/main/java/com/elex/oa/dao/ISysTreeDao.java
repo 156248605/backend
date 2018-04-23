@@ -17,14 +17,17 @@ public interface ISysTreeDao extends BaseDao<SysTree> {
      * 根据TREE_ID查询
      *
      */
-      public SysTree getTreeById(String id);
+    SysTree getTreeById(String id);
 
-      public List<SysTree> selectByCatKey(Map<String,String> map);
+    List<SysTree> selectByCatKey(Map<String,String> map);
 
     //新增表单分类
-    public int addFormCategory(Map<String,Object> map);
+    int addFormCategory(Map<String,Object> map);
 
     //删除表单分类
-    public int deleteFormCategory(String id);
+    int deleteFormCategory(String id);
+
+    List<SysTree> getByCatKeyTenantId(Map<String,String> map);
+
 
 }

@@ -11,5 +11,14 @@ import java.util.Map;
 */
 public interface IBpmDefService {
      //查询流程定义数据
-     public PageInfo<BpmDef> query(Map<String,Object> paramMap);
+     PageInfo<BpmDef> query(Map<String,Object> paramMap);
+
+     BpmDef getByActDefId(String actDefId);
+
+     BpmDef getLatestBpmByKey(Map<String,String> map);
+
+     BpmDef getByDefId(String DefId);
+
+     BpmDef getValidBpmDef(String actDefId, String defKey);
+
 }

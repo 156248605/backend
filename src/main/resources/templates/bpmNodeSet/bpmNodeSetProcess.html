@@ -1,0 +1,447 @@
+<!DOCTYPE html >
+<html >
+<head>
+    <title>流程实例的配置页</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link href="/styles/commons.css" rel="stylesheet" type="text/css" />
+    <!--boot start-->
+   <!-- <script src="../config/Global.js"></script>-->
+    <script src="/layoutit/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/layoutit/js/miniui.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/layoutit/css/miniui.css" type="text/css">
+    <link rel="stylesheet" href="/styles/icons.css" type="text/css">
+    <link rel="stylesheet" href="/layoutit/css/font-awesome.min.css"  type="text/css">
+    <link rel="stylesheet" href="/mini/miniui/themes/learun/skin.css"  type="text/css">
+    <script src="/layoutit/js/share.js" type="text/javascript"></script>
+    <link href="/styles/form.css" rel="stylesheet" type="text/css" />
+    <link href="/styles/cover_list.css" rel="stylesheet" type="text/css" />
+    <script src="/common/form.js" type="text/javascript"></script>
+    <script src="/common/util.js" type="text/javascript"></script>
+    <script src="/common/jquery/plugins/jQuery.download.js" type="text/javascript"></script>
+    <script src="/common/jquery/plugins/jquery.getscripts.js" type="text/javascript"></script>
+    <script src="/common/jquery/plugins/jquery.form.js" type="text/javascript"></script>
+    <script src="/common/baiduTemplate.js" type="text/javascript"></script>
+    <script src="/customer/mini-custom.js" type="text/javascript"></script>
+    <!--boot end-->
+    <!-- code codemirror start -->
+    <link rel="stylesheet" href="/layoutit/ckeditor/samples/toolbarconfigurator/lib/codemirror/codemirror.css">
+    <script src="/layoutit/ckeditor/samples/toolbarconfigurator/lib/codemirror/codemirror.js" type="text/javascript"></script>
+    <script src="/layoutit/groovy/groovy.js" type="text/javascript"></script>
+    <script src="/layoutit/codemirror/addon/edit/matchbrackets.js" type="text/javascript"></script>
+    <!-- code minitor end -->
+    <script type="text/javascript" src="/common/jquery/plugins/powertips/jquery.powertip.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/common/jquery/plugins/powertips/jquery.powertip-blue.css" />
+</head>
+<body>
+<script id="rightTemplate"  type="text/html">
+</script>
+<div id="toolbar1" class="mini-toolbar topBtn" >
+    <a class="mini-button" plain="true" iconCls="icon-save" onclick="saveConfig">保存</a>
+    <!-- 		<a class="mini-button" plain="true" iconCls="icon-close" onclick="CloseWindow()">关闭</a> -->
+</div>
+<div class="shadowBox90 form-outer" style="padding-top: 8px;">
+    <form id="form1" >
+        <table class="table-detail column_2_m" cellspacing="1" cellpadding="0" style="width:100%">
+            <tr>
+                <th>事项标题规则</th>
+                <td colspan="3">
+                    <input id="subRuleEdit" name="subRule" class="mini-popupedit" style="width:60%;" textField="name" valueField="key" popupWidth="auto"
+                           showPopupOnClick="true" popup="#varPanel"  multiSelect="true" allowInput="true" value="${subRule!""}" text="${subRule!""}"/>
+                    <a class="mini-button" plain="true" onclick="clickVar('createUser')" iconCls="icon-property">发起人${startUser!""}</a>
+                    <a class="mini-button" plain="true" iconCls="icon-timeinput" onclick="clickVar('createTime')">发起时间${createTime!""}</a>
+                </td>
+            </tr>
+
+            <tr>
+                <th>可选人员的节点</th>
+                <td width="30%">
+                    <input id="couldSelectNode" name="couldSelectNode" value="${couldSelectNode!""}" text="${couldSelectNodeName!""}" class="mini-textboxlist" showClose="true" onvaluechanged="setThisName('couldSelectNode')"   allowInput="false"/>
+                    <input class="mini-hidden" name="couldSelectNodeName"  id="couldSelectNodeName" value="${couldSelectNodeName!""}"/>
+                    <a class="mini-button " plain="true" iconCls="icon-add" onclick="selectNode('couldSelectNode')">选择</a>
+                    <a class="mini-button " plain="true" iconCls="icon-remove" onclick="clearTheButton('couldSelectNode')">清空</a>
+                </td>
+                <th width="15%">必选人员的节点</th>
+                <td width="30%">
+                    <input id="mustSelectNode" name="mustSelectNode" value="${mustSelectNode!""}" text="${mustSelectNodeName!""}" class="mini-textboxlist" showClose="true" onvaluechanged="setThisName('mustSelectNode')"  allowInput="false"/>
+                    <input class="mini-hidden" name="mustSelectNodeName"  id="mustSelectNodeName" value="${mustSelectNodeName!""}"/>
+                    <a class="mini-button " plain="true" iconCls="icon-add" onclick="selectNode('mustSelectNode')">选择</a>
+                    <a class="mini-button " plain="true" iconCls="icon-remove" onclick="clearTheButton('mustSelectNode')">清空</a>
+                </td>
+            </tr>
+            <tr>
+                <th width="15%" >启动前置处理器</th>
+                <td width="30%">
+                    <input class="east textbox" title="实现ProcessStartPreHandler接口的Spring的BeanId" name="preHandle" value="${preHandle!""}" style="width:160px"/>
+                </td>
+
+                <th width="15%">启动后置处理器</th>
+                <td>
+                    <input class="south textbox"  title="实现ProcessStartAfterHandler接口的Spring的BeanId" name="afterHandle" value="${afterHandle!""}" style="width:160px"/>
+                </td>
+            </tr>
+            <tr>
+                <th width="100">结束处理器</th>
+                <td>
+                    <input class="east textbox" name="processEndHandle" value="${processEndHandle!""}"  title="实现ProcessEndHandler接口的Spring的BeanId" style="width:160px"/>
+                </td>
+                <th>跳过第一个节点</th>
+                <td>
+                    <div name="isSkipFirst" class="mini-checkbox" checked="${isSkipFirst!""}" readOnly="false" falseValue-"false" trueValue="true"></div>
+<input class="mini-hidden" name="boDefId"  id="boDefId" value="${boDefId!""}"/>
+<input class="mini-hidden" name="dataSaveMode"  id="dataSaveMode" value="${dataSaveMode!""}"/>
+</td>
+</tr>
+
+<tr>
+    <th>通知配置</th>
+    <td colspan="3">
+        <div name="notices" class="mini-checkboxlist"  value="${notices!""}" textField="text" valueField="name"  url="" >
+        </div>
+    </td>
+</tr>
+<tr>
+    <th>子表权限</th>
+    <td colspan="3">
+        <input id="tableRightJson" name="tableRightJson" class="mini-hidden"  />
+        <span id="spanTableRightJson"></span>
+    </td>
+</tr>
+</table>
+</form>
+</div>
+
+<div class="mini-panel" title="事件脚本配置" style="height:100%;width:100%;">
+    <div id="eventTabs" class="mini-tabs" style="width:100%;height:100%" onactivechanged="activeCodeMirror">
+        <#list configVars as configVar>
+                     <div name="${configVar.eventKey}" title="[${configVar.eventName}]-事件脚本" iconCls="icon-script">
+                          <div style="width:100%;border-bottom: solid 1px #ccc">在此编写Groovy脚本，<a href="#">帮助</a> &nbsp; <a href="javascript:showScriptLibary()">常用脚本</a> </div>
+                          <textarea id="${configVar.eventKey}" class="textarea" name="script" style="width:90%;height:100%">${configVar.script}</textarea>
+                     </div>
+        </#list>
+    </div>
+</div>
+
+<div id="varPanel" class="mini-panel" title="变量选择面板" iconCls="icon-add" style="width:600px;height:250px;"
+     showToolbar="true" showCloseButton="true" showHeader="false" bodyStyle="padding:0;border:0" showFooter="true">
+    <div id="vargrid" class="mini-datagrid" style="width:100%;height:100%;"
+         borderStyle="border:0" showPager="false" onrowdblclick="varGridDblClick"
+         url="${ctxPath}/bpm/core/bpmSolVar/getBySolIdActDefIdNodeId.do?solId=${param.solId}&actDefId=${param.actDefId}&nodeId=_PROCESS">
+        <div property="columns">
+            <div type="checkcolumn" ></div>
+            <div field="name" width="100" headerAlign="center">变量名称</div>
+            <div field="formField" width="100" headerAlign="center">表单字段</div>
+            <div field="key" width="100" headerAlign="center">变量Key</div>
+            <div field="type" width="100" headerAlign="center">类型</div>
+        </div>
+    </div>
+    <div property="footer">
+        选择变量选择请双击表格行。
+    </div>
+</div>
+<br/>
+
+<script type="text/javascript">
+    addBody();
+    var solId="${param['solId']}";
+    var actDefId="${param['actDefId']}";
+    var nodeType="${param['nodeType']}";
+    var nodeId="${param['nodeId']}";
+    console.log("123456");
+    var tableRightJson = ${tableRightJson};
+    console.log(tableRightJson);
+    var contextVars='${contextVars}';
+    var boDefId='${boDefId}';
+
+    //编辑器存储。
+    var editorJson={};
+
+    mini.parse();
+    var vargrid=mini.get('vargrid');
+    vargrid.load();
+
+    $(function(){
+        $('.east').powerTip({ placement: 'e' });
+        $('.south').powerTip({ placement: 's' });
+    });
+
+    var couldSelectNode=mini.get("couldSelectNode");
+    var mustSelectNode=mini.get("mustSelectNode");
+    function clickVar(pvar){
+        var subRuleEdit=mini.get('subRuleEdit');
+        var newRule=subRuleEdit.getText();
+        newRule=newRule + "\${"+pvar +"}";
+        subRuleEdit.setText(newRule);
+        subRuleEdit.setValue(newRule);
+    }
+
+    function varGridDblClick(e){
+        var grid=e.sender;
+        var record=e.record;
+
+        var subRuleEdit=mini.get('subRuleEdit');
+        var newRule=subRuleEdit.getText();
+        newRule=newRule + "\${"+record.formField +"}";
+        subRuleEdit.setText(newRule);
+        subRuleEdit.setValue(newRule);
+
+        subRuleEdit.hidePopup();
+    }
+    //在当前活动的tab下的加入脚本内容
+    function appendScript(scriptText){
+        var tab = mini.get('eventTabs').getActiveTab();
+        for(var i=0;i<eventEditors.length;i++){
+            if(eventEditors[i].key==tab.name){
+                var editor=eventEditors[i].editor;
+                var doc = editor.getDoc();
+                var cursor = doc.getCursor(); // gets the line number in the cursor position
+                doc.replaceRange(scriptText, cursor); // adds a new line
+                return;
+            }
+        }
+    }
+
+    //选择字段表单对话框
+    function showFormFieldDlg(){
+
+        _OpenWindow({
+            title:'选择表单字段',
+            height:450,
+            width:680,
+            url:__rootPath+'/bpm/core/bpmSolution/modelFieldsDlg.do?solId='+solId+'&nodeId=_PROCESS&actDefId='+actDefId,
+            ondestroy:function(action){
+                if(action!='ok') return;
+                var iframe=this.getIFrameEl();
+                var fields=iframe.contentWindow.getSelectedFields();
+                for(var i=0;i<fields.length;i++){
+                    mini.get('noRule').setValue(fields[i].formField);
+                }
+            }
+        });
+    }
+
+    //显示脚本库
+    function showScriptLibary(){
+        _OpenWindow({
+            title:'脚本库',
+            iconCls:'icon-script',
+            url:__rootPath+'/bpm/core/bpmScript/libary.do',
+            height:450,
+            width:800,
+            onload:function(){
+
+            },
+            ondestroy:function(action){
+                if(action!='ok'){
+                    return;
+                }
+                var win=this.getIFrameEl().contentWindow;
+                var row=win.getSelectedRow();
+
+                if(row){
+                    appendScript(row.example);
+                }
+            }
+        });
+    }
+
+    var eventEditors=[];
+    //事件编辑器
+    var eventKeys=mini.decode('${eventKeys}');
+    for(var i=0;i<eventKeys.length;i++){
+        var editor = CodeMirror.fromTextArea(document.getElementById(eventKeys[i]), {
+            //  lineNumbers: true,
+            matchBrackets: true,
+            mode: "text/x-groovy"
+        });
+
+        //设置自适应宽度及高度
+        //editor.setSize('auto', 'auto');
+        eventEditors.push({
+            key:eventKeys[i],
+            editor:editor
+        });
+    }
+
+    function activeCodeMirror(e){
+        var tabs = e.sender;
+        var tab = tabs.getActiveTab();
+        for(var i=0;i<eventEditors.length;i++){
+            if(eventEditors[i].key==tab.name){
+                var editor=eventEditors[i].editor;
+                var doc = editor.getDoc();
+                var script = editor.getValue();
+                if(!script){
+                    script=" ";
+                }
+                doc.setValue(script);
+                return;
+            }
+        }
+    }
+
+
+
+    function selectNode(buttonId){
+        var elButton=mini.get(buttonId);
+        var elButtonName=mini.get(buttonId+"Name")
+        _OpenWindow({
+            title:'选择节点',
+            width:650,
+            height:450,
+            url:__rootPath+'/bpm/core/bpmSolution/nodeMessageSelect.do?solId='+solId,
+            onload:function(){
+            },
+            ondestroy:function(action){
+                if(action!='ok'){return;}
+                var iframe = this.getIFrameEl().contentWindow;
+                var nodeName=iframe.getNodeName();
+                var nodeId=iframe.getNodeId();
+
+                elButton.setValue(nodeId);
+                elButton.setText(nodeName);
+                elButtonName.setValue(nodeName);
+            }
+        });
+
+    }
+
+    function clearTheButton(buttonId){
+        var elButton=mini.get(buttonId);
+        var elButtonName=mini.get(buttonId+"Name");
+        elButton.setValue("");
+        elButton.setText("");
+        elButtonName.setValue("");//清空相应的
+    }
+
+    function setThisName(EL){
+        var elButton=mini.get(EL+"Name");//获取影藏域里的name控件
+        var ancientButton=mini.get(EL)
+        var name=ancientButton.getText();
+        elButton.setValue(name);
+    }
+
+
+
+    function saveConfig(){
+        var form=new mini.Form('form1');
+        form.validate();
+        if(!form.isValid()){
+            return;
+        }
+
+        var couldValue=couldSelectNode.getValue();
+        var mustValue=mustSelectNode.getValue();
+        if(couldValue.length>1&&mustValue.length>1){
+            var mustArray=mustValue.split(",");
+            var couldArray=couldValue.split(",");
+            for(var a=0;a<mustArray.length; a++){
+                for(var b=0;b<couldArray.length;b++){
+                    if(mustArray[a]==couldArray[b]){
+                        alert("可选和必选请不要选重复节点");
+                        return;
+                    }
+                }
+            }
+        }
+
+        var configs=_GetFormJson("form1");
+
+        var events=[];
+        var eventTab=mini.get('eventTabs');
+        for(var i=0;i<eventEditors.length;i++){
+            var tab=eventTab.getTab(eventEditors[i].key);
+            var key=tab.name;
+            var eventName=tab.title;
+            events.push({
+                eventKey:key,
+                eventName:eventName,
+                script:eventEditors[i].editor.getValue()
+            });
+        }
+
+        var tabRightJson=getRightJson();
+
+        configs.tableRightJson=tabRightJson;
+
+        var configJson={
+            configs:configs,
+            events:events
+        };
+        _SubmitJson({
+            url:__rootPath+'/bpm/core/bpmNodeSet/saveNodeConfig.do',
+            method:'POST',
+            data:{
+                solId:solId,
+                nodeType:nodeType,
+                nodeId:nodeId,
+                actDefId:actDefId,
+                configJson:mini.encode(configJson)
+            },
+            success:function(text){
+                CloseWindow();
+            }
+        });
+    }
+
+    function getRightHtml(){
+        if(!tableRightJson) return "";
+        var bt=baidu.template;
+        var vars =mini.decode(contextVars);
+        var data={data:tableRightJson,vars:vars,boDefId:boDefId,ctx:__rootPath};
+
+        var html=bt("rightTemplate",data);
+        var parent=$("#spanTableRightJson");
+
+        parent.html(html);
+
+        $("textarea",parent).each(function(i){
+            var tabName=$(this).attr("tbName");
+            var editor= CodeMirror.fromTextArea(this, {
+                matchBrackets: true,
+                mode: "text/x-sql"
+            });
+            editorJson[tabName]=editor;
+        });
+        $(".CodeMirror",parent).each(function(i){
+            $(this).height(150);
+        })
+
+        mini.parse();
+    }
+    //加载权限HTML
+    getRightHtml();
+
+    function getRightJson(){
+        var spanObj=$("#spanTableRightJson");
+        var json={};
+        $(".trName",spanObj).each(function(i){
+            var tr=$(this);
+            var tableName=tr.attr("tbName");
+            var tbRight=$(".tbRight",tr);
+            var val = $('input:radio:checked',tbRight).val();
+            var obj={type:val};
+            if(val=="sql"){
+                var editor=editorJson[tableName];
+                obj.sql=editor.getValue();
+            }
+            json[tableName]=obj;
+        });
+        return mini.encode (json );
+    }
+
+    function handType(obj){
+        var jqObj=$(obj);
+        var parent=$(obj).closest("td");
+        var divSql=$(".sql",parent);
+        var type=jqObj.val();
+        if(type=="sql"){
+            divSql.show();
+        }
+        else{
+            divSql.hide();
+        }
+    }
+</script>
+</body>
+</html>

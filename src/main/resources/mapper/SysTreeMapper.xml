@@ -43,6 +43,19 @@
         ORDER BY SN_ asc
     </select>
 
+    <select id="getByCatKeyTenantId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        sys_tree
+        WHERE
+        CAT_KEY_ = #{catKey}
+        AND
+        TENANT_ID_ = #{tenantId}
+    </select>
+
+
+
     <insert id="addFormCategory" parameterType="java.util.Map">
         INSERT INTO sys_tree(
         tree_id_,

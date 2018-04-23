@@ -9,9 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-/**
- * Created by Administrator on 2018/3/29.
- */
+
 @Table(
         name = "BPM_DEF"
 )

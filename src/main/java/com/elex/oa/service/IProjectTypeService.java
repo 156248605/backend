@@ -11,5 +11,5 @@ public interface IProjectTypeService extends BaseService<ProjectType>{
 	/**
 	 * 查询全部的项目类型信息
 	 */
-	public List<ProjectType> queryAllProjectType();
+	List<ProjectType> queryAllProjectType();
 }

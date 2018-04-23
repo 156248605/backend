@@ -68,4 +68,46 @@
         </if>
     </select>
 
+    <select id="getByDefId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+          *
+        FROM  bpm_def
+
+        WHERE
+            DEF_ID_=#{defId}
+    </select>
+
+    <select id="getByActDefId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM  bpm_def
+
+        WHERE
+        ACT_DEF_ID_ = #{actDefId}
+    </select>
+
+
+    <select id="getLatestBpmByKey"  parameterType="java.util.Map" resultMap="BaseResultMap">
+       SELECT
+          *
+        FROM  bpm_def
+        <where>
+            <if test="tenantId != null and tenantId != ''">
+                and  TENANT_ID_ = #{tenantId}
+            </if>
+            <if test="key != null and key != ''">
+                and  KEY_ = #{key}
+            </if>
+            <if test="status != null and status != ''">
+                and  STATUS_ = #{status}
+            </if>
+            <if test="isMain != null and isMain != ''">
+                and  IS_MAIN_ = #{isMain}
+            </if>
+        </where>
+    </select>
+
+
+
+
 </mapper>

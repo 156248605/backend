@@ -42,7 +42,11 @@ public class SysTreeController {
         map.put("tenantId","1");
         return this.sysTreeService.selectByCatKey(map);
     }
-
+    @RequestMapping({"listByCatKey"})
+    public List<SysTree> listByCatKey(HttpServletRequest request) throws Exception {
+        String catKey = request.getParameter("catKey");
+        return this.sysTreeService.getByCatKeyTenantId(catKey, "1");
+    }
     /**
      * 保存表单分类
      * @param formCategoryName  表单分类名称

@@ -64,4 +64,12 @@ public class BpmFormViewServiceImpl implements IBpmFormViewService {
         return deleteNum;
     }
 
+    public BpmFormView getLatestByKey(String key, String tenantId){
+        BpmFormView formView = this.bpmFormViewDao.getMainByKey(key,tenantId);
+        if(formView == null){
+            formView = formView = this.bpmFormViewDao.getMainByKey(key, "1");
+        }
+        return  formView;
+    }
+
 }

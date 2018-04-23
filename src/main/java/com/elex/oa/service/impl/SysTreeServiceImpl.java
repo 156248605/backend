@@ -80,6 +80,14 @@ public class SysTreeServiceImpl extends BaseServiceImpl<SysTree> implements ISys
         return sysTreeDao.deleteFormCategory(id);
     }
 
+    @Override
+    public List<SysTree> getByCatKeyTenantId(String catKey,String tenantId) {
+        Map<String,String> map = new HashMap<>();
+        map.put("catKey",catKey);
+        map.put("tenantId",tenantId);
+        return this.sysTreeDao.getByCatKeyTenantId(map);
+    }
+
     //根据treeId查询表单分类
     public SysTree getTreeById(String id){
         return sysTreeDao.getTreeById(id);

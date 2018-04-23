@@ -1,0 +1,1 @@
+var ajaxUrl = "http://localhost:8081";

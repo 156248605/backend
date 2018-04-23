@@ -12,7 +12,7 @@ import java.util.Map;
  *@since 2018/3/17 13:18
 */
 @Mapper
-public interface IBpmFormViewDao extends BaseService<BpmFormView> {
+public interface IBpmFormViewDao extends BaseDao<BpmFormView> {
     List<BpmFormView> getByTreeFilterNew(Map<String, String> map);
 
     BpmFormView getById(String id);
@@ -21,5 +21,10 @@ public interface IBpmFormViewDao extends BaseService<BpmFormView> {
 
     int  update(BpmFormView formView);
     //批量删除表单记录
-    public int deleteForm(List<String> list);
+    int deleteForm(List<String> list);
+
+    BpmFormView getMainByKey(String key, String tenantId);
+
+
+
 }

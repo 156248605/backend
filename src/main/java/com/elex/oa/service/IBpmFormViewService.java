@@ -16,5 +16,7 @@ public interface IBpmFormViewService{
      void create(BpmFormView formView);
      int update(BpmFormView formView);
      //删除表单记录
-     public int deleteForm(String viewIds);
+     int deleteForm(String viewIds);
+
+     BpmFormView getLatestByKey(String key, String tenantId);
 }

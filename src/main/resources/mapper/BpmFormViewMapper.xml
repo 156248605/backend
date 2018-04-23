@@ -217,6 +217,12 @@
         WHERE BO_DEFID_=#{boDefId}
     </select>
 
+    <select id="getMainByKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM  bpm_form_view WHERE  TENANT_ID_ = #{tenantId} and  KEY_=#{key} and IS_MAIN_='YES'
+    </select>
+
+
+
     <update id="removeBoDef"  >
         UPDATE bpm_form_view SET BO_DEFID_=null WHERE  BO_DEFID_=#{boDefId}
     </update>
