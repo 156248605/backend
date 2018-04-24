@@ -1,0 +1,52 @@
+package com.elex.oa.service.service_shiyun.impl;
+
+import com.elex.oa.dao.dao_shiyun.ICostInformationDao;
+import com.elex.oa.entity.entity_shiyun.CostInformation;
+import com.elex.oa.service.service_shiyun.ICostInformationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * @Author:ShiYun;
+ * @Description:人事信息的成本信息
+ * @Date:Created in  11:59 2018\4\9 0009
+ * @Modify By:
+ */
+@Service
+public class CostInformationServiceImpl implements ICostInformationService {
+
+    @Autowired
+    ICostInformationDao iCostInformationDao;
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID查询人事信息的成本信息
+     *@Date: 13:09 2018\4\9 0009
+     */
+    @Override
+    public CostInformation queryOneById(Integer id) {
+        CostInformation costInformation = iCostInformationDao.selectById(id);
+        return costInformation;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:添加成本信息
+     *@Date: 18:18 2018\4\11 0011
+     */
+    @Override
+    public Integer saveOne(CostInformation costInformation) {
+        Integer costInformationId = iCostInformationDao.insertOne(costInformation);
+        return costInformationId;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:修改成本信息
+     *@Date: 16:42 2018\4\12 0012
+     */
+    @Override
+    public void modifyOne(CostInformation costInformation) {
+        iCostInformationDao.updateOne(costInformation);
+    }
+}

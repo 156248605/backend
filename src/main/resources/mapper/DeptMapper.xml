@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IDeptDao">
+
+	<resultMap id="deptMapper" type="Dept">
+		<id column="id" property="id" />
+		<result column="companyname" property="companyname" />
+		<result column="depname" property="depname" />
+		<result column="depcode" property="depcode" />
+		<result column="functionaltype" property="functionaltype" />
+		<result column="dutydescription" property="dutydescription" />
+		<result column="parentdepid" property="parentdepid" />
+		<result column="principaluserid" property="principaluserid" />
+		<result column="deputyuserid" property="deputyuserid" />
+		<result column="secretaryuserid" property="secretaryuserid" />
+	</resultMap>
+
+	<select id="selectDeptByDeptname" parameterType="java.lang.String" resultMap="deptMapper">
+		select * from tb_id_department
+		where depname = #{depname}
+	</select>
+	<select id="selectDeptByDepid" parameterType="java.lang.Integer" resultMap="deptMapper">
+		select * from tb_id_department
+		where id = #{id}
+	</select>
+	<select id="selectAllDept" resultMap="deptMapper">
+		select * from tb_id_department
+	</select>
+	<select id="selectByParentId" parameterType="java.lang.Integer" resultMap="deptMapper">
+		select * from tb_id_department
+		<where>
+			<if test="_parameter!=null and _parameter!=''">
+				parentdepid = #{_parameter,jdbcType=INTEGER}
+			</if>
+			<if test="_parameter==null or _parameter==''">
+				 parentdepid is NULL
+			</if>
+		</where>
+	</select>
+	<insert id="insertOne" parameterType="Dept" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_id_department
+		(id,
+		companyname,
+		depname,
+		depcode,
+		functionaltype,
+		dutydescription,
+		parentdepid,
+		principaluserid,
+		deputyuserid,
+		secretaryuserid
+		)
+		VALUES
+		(NULL ,
+		#{companyname},
+		#{depname},
+		#{depcode},
+		#{functionaltype},
+		#{dutydescription},
+		#{parentdepid},
+		#{principaluserid},
+		#{deputyuserid},
+		#{secretaryuserid})
+	</insert>
+
+</mapper>

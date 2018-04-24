@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IContractInformationDao">
+
+	<resultMap id="ContractInformationResultMap" type="ContractInformation">
+		<id column="id" property="id" />
+		<result column="contractcode" property="contractcode" />
+		<result column="userid" property="userid" />
+		<result column="startdate" property="startdate" />
+		<result column="enddate" property="enddate" />
+		<result column="contracttype" property="contracttype" />
+		<result column="istrainingagreement" property="istrainingagreement" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<select id="selectByConditions" parameterType="ContractInformation" resultMap="ContractInformationResultMap">
+		SELECT
+			id,
+			contractcode,
+			userid,
+			startdate,
+			enddate,
+			contracttype,
+			istrainingagreement,
+			remark
+		FROM
+			tb_hr_contractinformation
+		<where>
+			<if test="userid!=null and userid!=''">
+				and userid=#{userid}
+			</if>
+			<if test="contractcode!=null and contractcode!=''">
+				and contractcode=#{contractcode}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">
+		SELECT
+			id,
+			contractcode,
+			userid,
+			startdate,
+			enddate,
+			contracttype,
+			istrainingagreement,
+			remark
+		FROM
+			tb_hr_contractinformation
+		WHERE
+			id=#{id}
+	</select>
+
+	<insert id="insertOne" parameterType="ContractInformation" useGeneratedKeys="true" keyProperty="id">
+		  insert into tb_hr_contractinformation
+		  (id,
+			contractcode,
+			userid,
+			startdate,
+			enddate,
+			contracttype,
+			istrainingagreement,
+			remark)
+		  VALUES
+		  (NULL ,
+		  #{contractcode},
+		  #{userid},
+		  #{startdate},
+		  #{enddate},
+		  #{contracttype},
+		  #{istrainingagreement},
+		  #{remark})
+	</insert>
+
+</mapper>
