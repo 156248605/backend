@@ -2,7 +2,7 @@ package com.elex.oa.service.eqptImpl;
 
 
 import com.elex.oa.dao.eqptDao.PartnerMapper;
-import com.elex.oa.entity.eqpt.Page;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Partner;
 import com.elex.oa.service.eqptService.PartnerService;
 import com.github.pagehelper.PageHelper;

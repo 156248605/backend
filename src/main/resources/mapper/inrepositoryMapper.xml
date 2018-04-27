@@ -12,4 +12,20 @@
     <select id="searchId" resultType="string">
         SELECT id FROM eqpt_material WHERE sn = #{sn} AND bn = #{bn}
     </select>
+
+    <select id="ID" resultType="string">
+        SELECT id FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="INID" resultType="string">
+        SELECT inId FROM eqpt_inrepository WHERE inId = #{inId}
+    </select>
+
+    <select id="OUTID" resultType="string">
+        SELECT outId FROM eqpt_outrepository WHERE outId = #{outId}
+    </select>
+
+    <select id="searchSn" resultType="string">
+        SELECT sn FROM eqpt_material WHERE sn = #{sn}
+    </select>
 </mapper>

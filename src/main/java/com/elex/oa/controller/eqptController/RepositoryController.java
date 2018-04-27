@@ -1,7 +1,7 @@
 package com.elex.oa.controller.eqptController;
 
 
-import com.elex.oa.entity.eqpt.Page;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.RepositoryImpl;
 import com.github.pagehelper.PageInfo;
@@ -37,8 +37,8 @@ public class RepositoryController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void InsertRepository (Repository repository,HttpServletRequest request){
-        repositoryImpl.insertRepository(repository,request);
+    public String InsertRepository (Repository repository,HttpServletRequest request){
+        return repositoryImpl.insertRepository(repository,request);
     }
 
     @RequestMapping("/position")

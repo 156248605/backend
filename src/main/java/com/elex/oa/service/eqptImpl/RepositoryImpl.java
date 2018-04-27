@@ -2,7 +2,7 @@ package com.elex.oa.service.eqptImpl;
 
 
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
-import com.elex.oa.entity.eqpt.Page;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.RepositoryService;
 import com.github.pagehelper.PageHelper;
@@ -26,7 +26,7 @@ public class RepositoryImpl implements RepositoryService {
     }
 
     @Override
-    public PageInfo<Repository> searchRepository(Page page, HttpServletRequest request){
+    public PageInfo<Repository> searchRepository(Page page,HttpServletRequest request){
         String reptId = request.getParameter("reptId");
         String reptCategory = request.getParameter("reptCategory");
         String position = request.getParameter("position");
@@ -48,15 +48,30 @@ public class RepositoryImpl implements RepositoryService {
     }
 
     @Override
-    public void insertRepository(Repository repository, HttpServletRequest request) {
-            repository.setReptCategory(request.getParameter("reptCategory"));
-            repository.setReptId(request.getParameter("reptId"));
-            repository.setPosition(request.getParameter("position"));
-            repository.setNum(request.getParameter("num"));
-            repository.setMaterialId(request.getParameter("materialId"));
-            repository.setSn(request.getParameter("sn"));
-            repository.setBn(request.getParameter("bn"));
-            repositoryMapper.insertRepository(repository);
+    public String insertRepository(Repository repository, HttpServletRequest request) {
+        repository.setReptCategory(request.getParameter("reptCategory"));
+        repository.setReptId(request.getParameter("reptId"));
+        repository.setPosition(request.getParameter("position"));
+        repository.setNum(request.getParameter("num"));
+        repository.setMaterialId(request.getParameter("materialId"));
+        repository.setSn(request.getParameter("sn"));
+        repository.setBn(request.getParameter("bn"));
+        String A;
+        if (repositoryMapper.theCategory(repository).isEmpty()){
+            A = request.getParameter("reptCategory");
+        }else {
+            A = repositoryMapper.theCategory(repository).get(0).toString();
+        }
+        if (repositoryMapper.Position(repository) == null) {
+            if (request.getParameter("reptCategory").equals(A)) {
+                repositoryMapper.insertRepository(repository);
+                return "1";
+            }else{
+                return "2";
+            }
+        }else {
+            return "0";
+        }
     }
 
     @Override
@@ -69,21 +84,21 @@ public class RepositoryImpl implements RepositoryService {
 
     @Override
     public void changeRepository(Repository repository,HttpServletRequest request) {
-            repository.setReptCategory(request.getParameter("reptCategory"));
-            repository.setReptId(request.getParameter("reptId"));
-            repository.setPosition(request.getParameter("position"));
-            repository.setNum(request.getParameter("num"));
-            repository.setMaterialId(request.getParameter("materialId"));
-            repository.setSn(request.getParameter("sn"));
-            repository.setBn(request.getParameter("bn"));
-            repositoryMapper.changeRepository(repository);
+        repository.setReptCategory(request.getParameter("reptCategory"));
+        repository.setReptId(request.getParameter("reptId"));
+        repository.setPosition(request.getParameter("position"));
+        repository.setNum(request.getParameter("num"));
+        repository.setMaterialId(request.getParameter("materialId"));
+        repository.setSn(request.getParameter("sn"));
+        repository.setBn(request.getParameter("bn"));
+        repositoryMapper.changeRepository(repository);
     }
 
 
     @Override
     public void deleteRepository(Repository repository,HttpServletRequest request) {
-            repository.setPosition(request.getParameter("position"));
-            repositoryMapper.deleteRepository(repository);
+        repository.setPosition(request.getParameter("position"));
+        repositoryMapper.deleteRepository(repository);
     }
 }
 

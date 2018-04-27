@@ -1,7 +1,7 @@
 package com.elex.oa.controller.eqptController;
 
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
-import com.elex.oa.entity.eqpt.Page;
 import com.elex.oa.service.eqptImpl.MaterialImpl;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
@@ -37,8 +37,8 @@ public class MaterialController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void InsertMaterial (Material material,HttpServletRequest request) throws ParseException {
-        materialImpl.insertMaterial(material,request);
+    public String InsertMaterial (Material material,HttpServletRequest request) throws ParseException {
+        return materialImpl.insertMaterial(material,request);
     }
 
     @RequestMapping("/change")

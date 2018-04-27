@@ -31,5 +31,12 @@ public interface RepositoryMapper {
     void outRepository(Repository repository);
 
     List<Repository> searchIn(Repository repository);
+
     List<Repository> searchOut(Repository repository);
+
+    List<Repository> getNum(Repository repository);
+
+    String searchCategory(Repository repository);
+
+    List theCategory(Repository repository);
 }

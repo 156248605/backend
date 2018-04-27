@@ -1,6 +1,6 @@
 package com.elex.oa.service.eqptService;
 
-import com.elex.oa.entity.eqpt.Page;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 
@@ -14,7 +14,7 @@ public interface OutRepositoryService {
     PageInfo<Repository> searchRepository(Page page, HttpServletRequest request);
 
     /*新建出库单*/
-    void InsertRepository(HttpServletRequest request) throws ParseException;
+    String InsertRepository(HttpServletRequest request) throws ParseException;
 
-    void OutRepository(HttpServletRequest request);
+    String OutRepository(HttpServletRequest request);
 }

@@ -1,8 +1,8 @@
 package com.elex.oa.service.eqptImpl;
 
 import com.elex.oa.dao.eqptDao.MaterialMapper;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
-import com.elex.oa.entity.eqpt.Page;
 import com.elex.oa.service.eqptService.MaterialService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -85,7 +85,7 @@ public class MaterialImpl implements MaterialService {
     }
 
     @Override
-    public void insertMaterial(Material material, HttpServletRequest request)throws ParseException {
+    public String insertMaterial(Material material, HttpServletRequest request)throws ParseException {
         material.setId(request.getParameter("id"));
         material.setPartner(request.getParameter("partner"));
         material.setBn(request.getParameter("bn"));
@@ -105,6 +105,12 @@ public class MaterialImpl implements MaterialService {
         material.setDate(sDate);
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
-        materialMapper.newMaterial(material);
+        /*String MATERIALID = materialMapper.Id(material).getId();*/
+        if ( materialMapper.Id(material) == null ) {
+            materialMapper.newMaterial(material);
+            return "1";
+        }else {
+            return "0";
+        }
     }
 }

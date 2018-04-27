@@ -2,6 +2,7 @@ package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.DeptTree;
 import com.elex.oa.entity.entity_shiyun.Post;
+import com.elex.oa.service.permission.JobService;
 import com.elex.oa.service.service_shiyun.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -27,6 +26,9 @@ public class PostInformationController {
 
     @Autowired
     private IPostService iPostService;
+
+    @Autowired
+    private JobService jobService; //权限相关部分，岗位信息添加修改
 
     /**
      *@Author:ShiYun;
@@ -106,6 +108,7 @@ public class PostInformationController {
             * post.getPostname() 即为 name
             * post.getId() 即为 id
             * */
+            int judgment = jobService.addJob(post.getId(),post.getPostname()); //添加权限相关的岗位信息，返回值为1成功，返回值为0失败
         }
         /*Map<String,Object> result = new HashMap<>();
         if(postid == post.getId()){

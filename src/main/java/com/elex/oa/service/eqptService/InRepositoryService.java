@@ -1,6 +1,6 @@
 package com.elex.oa.service.eqptService;
 
-import com.elex.oa.entity.eqpt.Page;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 
@@ -14,11 +14,11 @@ public interface InRepositoryService {
     PageInfo<Repository> searchRepository(Page page, HttpServletRequest request);
 
     /*新建入库单*/
-    void NewRepository(HttpServletRequest request) throws ParseException;
+    String NewRepository(HttpServletRequest request) throws ParseException;
 
     /*同步物料*/
-    void InsertMaterial(HttpServletRequest request);
+    void InsertMaterial(HttpServletRequest request) throws ParseException;
 
     /*同步仓库*/
-    void InsertRepository(HttpServletRequest request);
+    String InsertRepository(HttpServletRequest request);
 }

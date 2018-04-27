@@ -1,6 +1,6 @@
 package com.elex.oa.controller.eqptController;
 
-import com.elex.oa.entity.eqpt.Page;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Partner;
 import com.elex.oa.service.eqptImpl.PartnerImpl;
 import com.github.pagehelper.PageInfo;

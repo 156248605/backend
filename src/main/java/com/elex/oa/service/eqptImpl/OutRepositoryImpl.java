@@ -1,11 +1,12 @@
 package com.elex.oa.service.eqptImpl;
 
 
+import com.elex.oa.dao.eqptDao.InRepositoryMapper;
 import com.elex.oa.dao.eqptDao.MaterialMapper;
 import com.elex.oa.dao.eqptDao.OutRepositoryMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
-import com.elex.oa.entity.eqpt.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.OutRepositoryService;
 import com.github.pagehelper.PageHelper;
@@ -21,6 +22,9 @@ import java.util.List;
 
 @Service
 public class OutRepositoryImpl implements OutRepositoryService {
+
+    @Resource
+    private InRepositoryMapper inRepositoryMapper;
 
     @Resource
     private OutRepositoryMapper outRepositoryMapper;
@@ -65,7 +69,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
     }
 
     @Override
-    public void InsertRepository (HttpServletRequest request)throws ParseException{
+    public String InsertRepository (HttpServletRequest request)throws ParseException{
         String OUTID = request.getParameter("outId");
         String OUTNUM = request.getParameter("outNum");
         String REPTCATEGORY = request.getParameter("reptCategory" );
@@ -84,33 +88,72 @@ public class OutRepositoryImpl implements OutRepositoryService {
         Material material = new Material();
         material.setSn(SN);
         material.setBn(BN);
-        String ID = outRepositoryMapper.searchId(material);
-        if (MATERIALID.equals(ID)){
+        material.setId(MATERIALID);
+        String ID;
+        if (inRepositoryMapper.searchId(material).contains(MATERIALID)){
+            ID = MATERIALID;
+        }else {
+            ID = MATERIALID+"...";
+        }
+        String MinLimit;
+        if (materialMapper.Id(material) != null) {
+            MinLimit = materialMapper.MinLimit(material).getMinlimit().toString();
+        } else {
+            MinLimit = request.getParameter("materialMax");
+        }
+        Repository repository = new Repository();
+        repository.setMaterialId(request.getParameter("materialId"));
+        repository.setPosition(request.getParameter("position"));
+        repository.setOutId(request.getParameter("outId"));
+        String outid = inRepositoryMapper.OUTID(repository);
+        String REPTcategory = repositoryMapper.searchCategory(repository);
+        List<Repository> list = repositoryMapper.getNum(repository);
+        int num = 0;
+        for (Repository r : list) {
+            num += Integer.parseInt(r.getNum());
+        }
+        if (MATERIALID.equals(ID) && num - Integer.parseInt(request.getParameter("outNum")) >= Integer.parseInt(MinLimit) && REPTCATEGORY.equals(REPTcategory) && outid == null ){
             outRepositoryMapper.insertNew(REPTCATEGORY,OUTID,OUTTIME,OUTNUM,REPTID,POSITION,SN,BN);
+            return "1";
+        }else if ( !MATERIALID.equals(ID) ){
+            return "2";
+        }else if ( num - Integer.parseInt(request.getParameter("outNum")) < Integer.parseInt(MinLimit)) {
+            return "3";
+        }else if (!REPTCATEGORY.equals(REPTcategory)){
+            return "4";
+        } else if (outid != null){
+            return "5";
+        }else {
+            return "6";
         }
     }
 
     @Override
-    public void OutRepository(HttpServletRequest request) {
+    public String OutRepository(HttpServletRequest request) {
         Material material = new Material();
         material.setId(request.getParameter("materialId"));
         String Id = materialMapper.Id(material).getId().toString();
-        String MinLimit = materialMapper.MinLimit(material).getMinlimit().toString();
-        if (request.getParameter("materialId").equals(Id)){
-            Repository repository = new Repository();
-            repository.setMaterialId(request.getParameter("materialId"));
-            repository.setReptId(request.getParameter("reptId"));
-            repository.setReptCategory(request.getParameter("reptCategory"));
-            repository.setPosition(request.getParameter("position"));
-            repository.setNum(request.getParameter("outNum"));
-            repository.setSn(request.getParameter("sn"));
-            repository.setBn(request.getParameter("bn"));
-            String Num = repositoryMapper.Num(repository).getNum().toString();
-            if ( Integer.parseInt(Num) - Integer.parseInt(request.getParameter("outNum")) >= Integer.parseInt(MinLimit)){
-                repositoryMapper.outRepository(repository);
-            }
+        String MinLimit;
+        if (materialMapper.Id(material) != null) {
+            MinLimit = materialMapper.MinLimit(material).getMinlimit().toString();
+        } else {
+            MinLimit = request.getParameter("materialMax");
         }
-
+        Repository repository = new Repository();
+        repository.setMaterialId(request.getParameter("materialId"));
+        repository.setReptId(request.getParameter("reptId"));
+        repository.setReptCategory(request.getParameter("reptCategory"));
+        repository.setPosition(request.getParameter("position"));
+        repository.setNum(request.getParameter("outNum"));
+        repository.setSn(request.getParameter("sn"));
+        repository.setBn(request.getParameter("bn"));
+        String Num = repositoryMapper.Num(repository).getNum().toString();
+        if ( request.getParameter("materialId").equals(Id) && Integer.parseInt(Num) - Integer.parseInt(request.getParameter("outNum")) >= Integer.parseInt(MinLimit)){
+            repositoryMapper.outRepository(repository);
+            return "1";
+        } else {
+            return "0";
+        }
     }
 }
 

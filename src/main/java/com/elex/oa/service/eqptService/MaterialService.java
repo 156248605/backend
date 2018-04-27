@@ -1,7 +1,7 @@
 package com.elex.oa.service.eqptService;
 
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
-import com.elex.oa.entity.eqpt.Page;
 import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,5 +18,5 @@ public interface MaterialService {
 
     void deleteMaterial (HttpServletRequest request);
 
-    void insertMaterial(Material material, HttpServletRequest request)throws ParseException;
+    String insertMaterial(Material material, HttpServletRequest request)throws ParseException;
 }

@@ -1,7 +1,7 @@
 package com.elex.oa.controller.eqptController;
 
 
-import com.elex.oa.entity.eqpt.Page;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.OutRepositoryImpl;
 import com.github.pagehelper.PageInfo;
@@ -31,8 +31,8 @@ public class OutRepositoryController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void InsertNew (HttpServletRequest request) throws ParseException {
-        outRepositoryImpl.InsertRepository(request);
+    public String InsertNew (HttpServletRequest request) throws ParseException {
+        return outRepositoryImpl.InsertRepository(request);
     }
 
     @RequestMapping("/search")

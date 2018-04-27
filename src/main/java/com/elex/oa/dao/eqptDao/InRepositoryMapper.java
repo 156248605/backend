@@ -14,6 +14,13 @@ public interface InRepositoryMapper {
 
     void insertNew(String reptCategory, String inId, String inTime, String inNum, String reptId, String position, String sn, String bn);
 
-    String searchId(Material material);
+    List searchId(Material material);
 
+    String ID (Material material);
+
+    String INID(Repository repository);
+
+    String OUTID(Repository repository);
+
+    String searchSn(Material material);
 }

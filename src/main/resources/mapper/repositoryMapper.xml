@@ -180,4 +180,12 @@
         </set>
         WHERE position = #{position}
     </update>
+
+    <select id="searchCategory" resultType="string">
+        SELECT reptCategory FROM eqpt_repository WHERE position = #{position}
+    </select>
+
+    <select id="theCategory" resultType="string">
+        SELECT reptCategory FROM eqpt_repository WHERE reptId = #{reptId}
+    </select>
 </mapper>

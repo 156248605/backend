@@ -1,6 +1,7 @@
 package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.*;
+import com.elex.oa.service.permission.EmployeeService;
 import com.elex.oa.service.service_shiyun.*;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class PersonalInformationController {
     IOtherInformationService iOtherInformationService;
     @Autowired
     IChangeInformationService iChangeInformationService;
+
+    @Autowired
+    private EmployeeService employeeService; //员工权限相关信息添加修改，高晓飞
 
     /**
      *@Author:ShiYun;
@@ -426,6 +430,14 @@ public class PersonalInformationController {
         personalInformation.setPostid(postid);
         personalInformation.setManageinformationid(manageInformationId);
         iPersonalInformationService.modifyOne(personalInformation);
+        //姓名、工号、部门、岗位
+        User user = iUserService.getById(userid);
+        /*String truename = user.getTruename();员工姓名*/
+        /*String employeenumber = baseInformation.getEmployeenumber();员工工号*/
+        /*depid部门ID
+        postid岗位ID*/
+        Integer isactive = user.getIsactive();
+        int judgment = employeeService.addEmployee(user.getTruename(),personalInformation.getEmployeenumber(),depid,postid,isactive); //权限相关部分，员工信息添加，高晓飞
 
         return "管理信息添加成功！";
     }
@@ -876,6 +888,10 @@ public class PersonalInformationController {
         * userid 即为id
         * depid 即为departmentid
         * */
+        BaseInformation baseInformation = iBaseInformationService.queryOneById(personalInformation.getBaseinformationid());
+        /*String employeenumber = baseInformation.getEmployeenumber();*/
+
+        int judgment = employeeService.departmentModify(baseInformation.getEmployeenumber(),depid); //修改权限部分员工的部门信息，返回值为1修改成功，返回0修改失败
 
 
         if (postid!=null) {

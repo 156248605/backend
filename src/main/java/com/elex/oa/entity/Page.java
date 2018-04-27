@@ -1,9 +1,8 @@
-package com.elex.oa.entity.eqpt;
+package com.elex.oa.entity;
 
 public class Page {
-    private int currentPage;
-    private int rows;
-
+    private int currentPage = 1;
+    private int rows = 10;
     public Page() {
     }
 

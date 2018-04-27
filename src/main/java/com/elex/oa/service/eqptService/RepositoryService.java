@@ -1,6 +1,6 @@
 package com.elex.oa.service.eqptService;
 
-import com.elex.oa.entity.eqpt.Page;
+import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 
@@ -12,7 +12,7 @@ public interface RepositoryService {
 
     PageInfo<Repository> searchRepository(Page page, HttpServletRequest request);
 
-    void insertRepository(Repository repository, HttpServletRequest request);
+    String insertRepository(Repository repository, HttpServletRequest request);
 
     Repository position(HttpServletRequest request);
 
