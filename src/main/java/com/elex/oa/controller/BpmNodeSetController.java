@@ -1,17 +1,14 @@
 package com.elex.oa.controller;
 import com.alibaba.fastjson.JSONArray;
+import com.elex.oa.activiti.service.ActRepService;
 import com.elex.oa.entity.ActNodeDef;
 import com.elex.oa.entity.ActProcessDef;
 import com.elex.oa.entity.BpmDef;
 import com.elex.oa.entity.BpmSolution;
-import com.elex.oa.entity.activiti.ActSequenceFlow;
-import com.elex.oa.entity.activiti.BpmEventConfig;
-import com.elex.oa.entity.activiti.BpmNodeSet;
-import com.elex.oa.entity.activiti.BpmSolVar;
+import com.elex.oa.entity.activiti.*;
 import com.elex.oa.json.JSONUtil;
 import com.elex.oa.service.IBpmDefService;
 import com.elex.oa.service.IBpmSolutionService;
-import com.elex.oa.service.activiti.ActRepService;
 import com.elex.oa.service.activiti.BpmNodeSetService;
 import com.elex.oa.service.activiti.BpmSolVarService;
 import com.elex.oa.util.*;
@@ -25,9 +22,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.elex.oa.api.ContextHandlerFactory;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *@author hugo.zhao
@@ -95,7 +95,36 @@ public class BpmNodeSetController {
             this.setSetting(model,bpmNodeSet,seqMap,configVars);
         return mv;
     }
+    @RequestMapping("/getTaskNodes")
+    @ResponseBody
+    public Collection<ActivityNode> getTaskNodes(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String actDefId = request.getParameter("actDefId");
+        String includeProcess = request.getParameter("includeProcess");
+        Collection actNodes = this.actRepService.getUserTasks(actDefId);
+        if(StringUtils.isNotEmpty(includeProcess)) {
+          //  BpmDef bpmDef = this.bpmDefManager.getByActDefId(actDefId);
+            BpmDef bpmDef = this.bpmDefService.getByActDefId(actDefId);
+            ActivityNode processNode = new ActivityNode("_PROCESS", bpmDef.getSubject(), "process", "");
+            actNodes.add(processNode);
+        }
+        return actNodes;
+    }
 
+    @RequestMapping("/getActivityNodes")
+    @ResponseBody
+    public Collection<ActivityNode> getActivityNodes(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String actDefId = request.getParameter("actDefId");
+        Collection actNodes = this.actRepService.getProcessNodes(actDefId);
+        ArrayList list = new ArrayList();
+        Iterator var6 = actNodes.iterator();
+        while(var6.hasNext()) {
+            ActivityNode node = (ActivityNode)var6.next();
+            if(!node.getType().equals("endEvent") && !node.getType().equals("startEvent")) {
+                list.add(node);
+            }
+        }
+         return list;
+    }
     private BpmNodeSet getBpmNodeSet(String solId, String actDefId, String nodeId, String nodeType){
         BpmNodeSet bpmNodeSet = bpmNodeSetService.getBySolIdActDefIdNodeId(solId,nodeId,nodeType);
         if(bpmNodeSet != null){

@@ -107,7 +107,38 @@
         </where>
     </select>
 
+    <update id="updateIsMainByMailDefId" parameterType="java.util.Map">
+        UPDATE bpm_def SET
+        IS_MAIN_ = #{isMain,jdbcType=VARCHAR},
+        WHERE
+        MAIN_DEF_ID_=#{mainDefId,jdbcType=VARCHAR}
+    </update>
 
+    <select id="getMaxVersions"  parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+        max(VERSION_)
+        FROM  bpm_def
+         WHERE
+          TENANT_ID_ = #{tenantId}
+          AND
+          KEY_ =#{key}
+    </select>
+
+    <select id="getCountByKey"  resultType="java.lang.Integer">
+        SELECT count(*) FROM bpm_def WHERE KEY_=#{key,jdbcType=VARCHAR}
+        and TENANT_ID_=#{tenantId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getCountByKeyAndId"  resultType="java.lang.Integer">
+        SELECT count(*) FROM bpm_def WHERE KEY_=#{key,jdbcType=VARCHAR}
+        and DEF_ID_=#{defId}
+    </select>
+
+
+    <select id="getByKey"  resultMap="BaseResultMap">
+        SELECT * FROM bpm_def WHERE KEY_=#{key,jdbcType=VARCHAR}
+        and TENANT_ID_=#{tenantId,jdbcType=VARCHAR} and STATUS_='DEPLOYED'
+    </select>
 
 
 </mapper>

@@ -1,9 +1,10 @@
 package com.elex.oa.service;
 
 import com.elex.oa.entity.BpmDef;
+import com.elex.oa.json.JsonResult;
 import com.github.pagehelper.PageInfo;
-
 import java.util.Map;
+import org.activiti.engine.repository.Model;
 
 /**
  *@author hugo.zhao
@@ -20,5 +21,17 @@ public interface IBpmDefService {
      BpmDef getByDefId(String DefId);
 
      BpmDef getValidBpmDef(String actDefId, String defKey);
+
+     BpmDef getByModelId(String modelId);
+
+     void  updateDefAndModifyActivitiDef (Model model, String name, String description, String designJson) throws Exception;
+
+     void doDeployModelAndUpdDef(Model model, String name, String description, String designJson) throws Exception;
+
+     void doDeployNewVersion(Model model, String name, String description, String designJson) throws Exception;
+
+     void updateDef(Model model, String name, String description, String designJson) throws Exception;
+
+     JsonResult getCanSave(BpmDef bpmDef);
 
 }

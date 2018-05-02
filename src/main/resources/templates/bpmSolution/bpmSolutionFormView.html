@@ -159,11 +159,10 @@
         formData.gridJson=mini.encode(formGrid.getData());
         var boDefId=mini.get("btnBoDefId").getValue();
         var dataSaveMode=mini.get("dataSaveMode").getValue();
-
         formData.boDefId=boDefId;
         formData.dataSaveMode=dataSaveMode;
-        _SubmitJson({
-            url:__rootPath+'/bpm/core/bpmSolution/saveFormView.do',
+        _SubmitJsonNew({
+            url:ajaxUrl+'/bpmSolution/saveFormView',
             data:formData,
             method:'POST',
             success:function(text){
@@ -232,7 +231,7 @@
             height:500,
             width:800,
             max:true,
-            url:ajaxUrl+'/bpm/form/bpmFormView/rightViews.do?boDefIds='+bodefId+'&solId='+solId+'&actDefId='+actDefId + '&nodeId='+nodeId,
+            url:ajaxUrl+'/bpmFormView/rightViews.do?boDefIds='+bodefId+'&solId='+solId+'&actDefId='+actDefId + '&nodeId='+nodeId,
             onload:function(){
                 this.getIFrameEl().contentWindow.setGridData(row[field]);
             },
@@ -275,11 +274,9 @@
             }
             btn.setValue(aryVal.join(","));
             btn.setText(aryName.join(","));
-
             if(ancientBtnValue!=btn.getValue()){//bo若不一样,则清空页面中的grid
                 formGrid.setUrl("http://localhost:8081/bpmSolution/getEmptyNodeFormView?solId=${solId}&actDefId=${actDefId}");
                 formGrid.load();
-
             }
         },true);
     }

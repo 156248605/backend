@@ -3,9 +3,9 @@ package com.elex.oa.util;
 import java.util.*;
 
 /**
- * @author hugo.zhao
- * @since 2017/11/10 10:53
- */
+ *@author hugo.zhao
+ *@since 2018/4/24 18:05
+*/
 public class ProfileUtil {
     public ProfileUtil(){
     }

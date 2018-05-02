@@ -3,7 +3,6 @@
  * @returns {unresolved}
  */
 function CloseWindow(action,preFun,afterFun) {
-	
 	if(preFun){
 		preFun.call(this);
 	}
@@ -294,7 +293,7 @@ function _SubmitJson(config){
 	if(!config.url) return;
 	if(!config.method)config.method='POST';
 	if(!config.data) config.data={};
-	
+
 	if(!config.submitTips){
 		config.submitTips='正在处理...';
 	}
@@ -304,13 +303,11 @@ function _SubmitJson(config){
 	if(typeof(config.showProcessTips)=='undefined'){
 		config.showProcessTips=true;
 	}
-	
 	if(config.showProcessTips){
 		msgId=mini.loading(config.submitTips, "操作信息");
 	}
 	var showMsg=(config.showMsg==false)?false:true;
-	
-	
+
 	var options={
 	        url: config.url,
 	        type: config.method,
@@ -380,6 +377,98 @@ function _SubmitJson(config){
 	$.ajax(options);
 }
 
+function _SubmitJsonNew(config){
+      if(!config) return;
+      if(!config.url) return;
+      if(!config.method)config.method='POST';
+      if(!config.data) config.data={};
+
+      if(!config.submitTips){
+          config.submitTips='正在处理...';
+      }
+
+      var msgId=null;
+      //显示提交数据的进度条
+      if(typeof(config.showProcessTips)=='undefined'){
+          config.showProcessTips=true;
+      }
+
+      if(config.showProcessTips){
+          msgId=mini.loading(config.submitTips, "操作信息");
+      }
+      var showMsg=(config.showMsg==false)?false:true;
+
+
+      var options={
+          url: config.url,
+          type: config.method,
+          data: config.data,
+          cache: false,
+          success: function(result,status, xhr) {
+              var valid=xhr.getResponseHeader("valid");
+              console.log(mini.get(msgId));
+              if(config.showProcessTips  && msgId!=null){
+                  mini.get(msgId).hide();
+              }
+            /*  if(valid!='true'){
+                  mini.Cookie.set('enabled',false);
+              }*/
+              if(typeof result=="string"){
+                  //简易判断是否为json。
+                  if(result.startWith("{") && result.endWith("}")){
+                      result=mini.decode(result);
+                  }
+              }
+              if(!result) return;
+
+              if(result.success){
+                  if(config.success){
+                      config.success.call(this,result);
+                  }
+                  if(showMsg){
+                      var msg=(result.message!=null)?result.message:'成功执行!';
+                      //显示操作信息
+                      top._ShowTips({
+                          msg:msg
+                      });
+                      //alert(msg);
+                  }
+              }else{
+                  if(config.fail){
+                      config.fail.call(this,result);
+                  }else if(showMsg){//
+                      try{
+                          top._ShowErr({
+                              content:result.message
+                          });
+                      }catch(e){
+                          alert(result.message);
+                      }
+                  }
+              }
+          },
+          error: function(jqXHR) {
+              console.log("error");
+              if(config.showProcessTips && msgId!=null){
+                  mini.get(msgId).hide();
+              }
+
+              if(jqXHR.responseText!='' && jqXHR.responseText!=null){
+                  top['index']._ShowErr({
+                      content:jqXHR.responseText
+                  });
+              }
+          }
+      };
+      //使用json的方式进行提交。
+      if(config["postJson"]){
+          options.contentType="application/json;charset=utf-8";
+          if(options.data){
+              options.data=JSON.stringify(options.data);
+          }
+      }
+      $.ajax(options);
+  }
 /**
  * 保存表单。
  * @param form
@@ -479,10 +568,10 @@ function _ShowTips(config){
 	width=config.width?config.width:450;
 	height=config.height?config.height:100;
 
-	var en=getCookie('enabled');
+	/*var en=getCookie('enabled');
     if(en=='false'){
 		config.msg=config.msg+'<br/>'+__status_tips;
-    }
+    }*/
 	mini.showTips({
 		width:width,
 		height:height,

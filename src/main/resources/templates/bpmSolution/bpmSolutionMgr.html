@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div><!-- end of 方案概述 -->
-                <div id="step1" title="流程定义" iconCls="icon-flow" url="${ctxPath}/bpm/core/bpmSolution/bpmDef.do?solId=${bpmSolution.solId}&actDefId=${bpmDef.actDefId}"></div>
+                <div id="step1" title="流程定义" iconCls="icon-flow" url="${ctxPath}/bpmSolution/bpmDef.do?solId=${bpmSolution.solId}&actDefId=${bpmDef.actDefId}"></div>
                 <div id="step2" title="审批表单" iconCls="icon-form"  <#if isBindFlow=="false">enabled="false"</#if> url="${ctxPath}/bpmSolution/formView.do?solId=${bpmSolution.solId}&actDefId=${bpmDef.actDefId}"></div>
             <div id="step3" title="变量配置" iconCls="icon-var" <#if isBindFlow=="false">enabled="false"</#if> url="${ctxPath}/bpmSolution/vars.do?solId=${bpmSolution.solId}&actDefId=${bpmDef.actDefId}"></div>
         <div id="step4" title="审批人员" iconCls="icon-user" <#if isBindFlow=="false">enabled="false"</#if> url="${ctxPath}/bpmSolution/user.do?solId=${bpmSolution.solId}&actDefId=${bpmDef.actDefId}"></div>

@@ -16,6 +16,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import com.elex.oa.entity.BpmDef;
+import com.elex.oa.service.IBpmDefService;
+import org.apache.commons.lang3.StringUtils;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RepositoryService;
@@ -33,6 +36,8 @@ import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Tijs Rademakers
  */
@@ -49,7 +54,10 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
   @Autowired
   private ObjectMapper objectMapper;
 
-  @RequestMapping(value="/model/{modelId}/save", method = RequestMethod.PUT)
+  @Autowired
+  private IBpmDefService bpmDefService;
+
+/*  @RequestMapping(value="/model/{modelId}/save", method = RequestMethod.PUT)
   @ResponseStatus(value = HttpStatus.OK)
   public void saveModel(@PathVariable String modelId, @RequestParam("name") String name,
                         @RequestParam("json_xml") String json_xml, @RequestParam("svg_xml") String svg_xml,
@@ -88,5 +96,34 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
       LOGGER.error("Error saving model", e);
       throw new ActivitiException("Error saving model", e);
     }
+  }*/
+  @RequestMapping(value="/model/{modelId}/save", method = RequestMethod.PUT)
+  @ResponseStatus(HttpStatus.OK)
+  public void saveModel(@PathVariable String modelId, HttpServletRequest request) {
+    try {
+      Model e = this.repositoryService.getModel(modelId);
+      String isDeploy = request.getParameter("action");
+      String name = request.getParameter("name");
+      String description = request.getParameter("description");
+      String designJson = request.getParameter("json_xml");
+      BpmDef bpmDef = this.bpmDefService.getByModelId(modelId);
+      LOGGER.debug("jsonXml:" + designJson);
+      if("modify".equals(isDeploy)) {
+        this.bpmDefService.updateDefAndModifyActivitiDef(e, name, description, designJson);
+      } else if("deployNew".equals(isDeploy)) {
+        if(StringUtils.isEmpty(bpmDef.getActDefId())) {
+          this.bpmDefService.doDeployModelAndUpdDef(e, name, description, designJson);
+        } else {
+          this.bpmDefService.doDeployNewVersion(e, name, description, designJson);
+        }
+      } else {
+        this.bpmDefService.updateDef(e, name, description, designJson);
+      }
+    } catch (Exception var9) {
+      LOGGER.error("Error saving model", var9);
+      throw new ActivitiException("Error saving model", var9);
+    }
   }
+
+
 }

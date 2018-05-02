@@ -337,7 +337,26 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
            // window.close();//add by cheshuyan at 2016.05.21
     	});
     };
-    $scope.save = function (successCallback) {
+        /**
+         * 增加我的保存
+         * isDeployNew为是否为发布新版本
+         */
+        $scope.saveAndDeploy=function(){
+            $scope.save(function() {
+                //CloseWindow('ok');
+                window.parent.postMessage('close','*');
+            },'deployNew');
+        };
+
+        /**
+         * 修改原发布定义并且关闭当前窗口
+         */
+        $scope.modifyAndClose=function(){
+            $scope.save(function(){window.parent.postMessage('close','*');;},'modify');
+        };
+
+
+    $scope.save = function (successCallback,action) {
 
         if (!$scope.saveDialog.name || $scope.saveDialog.name.length == 0) {
             return;
@@ -380,7 +399,8 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
             json_xml: json,
             svg_xml: svgDOM,
             name: $scope.saveDialog.name,
-            description: $scope.saveDialog.description
+            description: $scope.saveDialog.description,
+            action:action
         };
 
         // Update

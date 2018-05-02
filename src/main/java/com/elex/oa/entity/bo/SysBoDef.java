@@ -65,7 +65,7 @@ public class SysBoDef{
     @Column(
             name = "OPINION_DEF_"
     )
-    private String opinionDef = "";
+    private String opinionDef;
 
  /*   @OneToMany(
             cascade = {CascadeType.ALL},
@@ -75,6 +75,70 @@ public class SysBoDef{
     private Set<SysBoRelation> sysBoRelations = new HashSet();*/
     @Transient
     private SysBoEnt SysBoEnt;
+
+    @Column(
+            name = "TENANT_ID_"
+    )
+    private String tenantId;
+
+    @Column(
+            name = "CREATE_BY_"
+    )
+    private String createBy;
+    @Column(
+            name = "UPDATE_BY_"
+    )
+    private String updateBy;
+    @Column(
+            name = "CREATE_TIME_"
+
+    )
+    private  String createTime;
+
+    @Column(
+            name = "UPDATE_TIME_"
+    )
+    private  String updateTime;
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public SysBoDef() {
     }

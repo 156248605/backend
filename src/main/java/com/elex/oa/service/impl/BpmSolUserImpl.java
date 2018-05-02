@@ -6,6 +6,8 @@ import com.elex.oa.service.IBpmSolUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  *@author hugo.zhao
  *@since 2018/4/3 14:05
@@ -22,5 +24,15 @@ public class BpmSolUserImpl extends BaseServiceImpl<BpmSolUser> implements IBpmS
          bpmSolUser.setActDefId(actDefId);
          int i =  bpmSolUserDao.selectCount(bpmSolUser);
          return i>0;
+    }
+
+    @Override
+    public List<BpmSolUser> getBySolIdActDefIdNodeId(String solId, String actDefId, String nodeId, String groupType) {
+        BpmSolUser bpmSolUser = new BpmSolUser();
+        bpmSolUser.setSolId(solId);
+        bpmSolUser.setActDefId(actDefId);
+        bpmSolUser.setNodeId(nodeId);
+        bpmSolUser.setCategory(groupType);
+        return this.bpmSolUserDao.select(bpmSolUser);
     }
 }

@@ -5,6 +5,8 @@ import com.elex.oa.service.ISysBoDefService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  *@author hugo.zhao
  *@since 2018/4/18 14:20
@@ -16,5 +18,10 @@ public class SysBoDefServiceImpl extends BaseServiceImpl<SysBoDef> implements IS
     @Override
     public SysBoDef get(String SysBoDef) {
         return this.sysBoDefDao.selectByPrimaryKey(SysBoDef);
+    }
+
+    @Override
+    public List<SysBoDef> getPage(SysBoDef sysBoDef) {
+        return sysBoDefDao.select(sysBoDef);
     }
 }

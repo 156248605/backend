@@ -15,6 +15,7 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -22,6 +23,7 @@ import java.util.*;
  *@author hugo.zhao
  *@since 2018/4/18 20:15
 */
+@Service
 public class ActRepService {
     private static String ACT_PROCESS_DEF = "actProcessDef";
 
@@ -67,11 +69,11 @@ public class ActRepService {
     public void doWriteXml(String deployId, String defXml) {
         this.actGeBytearray.writeDefXml(deployId, defXml);
     }
-/*
+
     public void doModifyXmlAndClearCache(String actDefId, String deployId, String defXml) {
         this.doWriteXml(deployId, defXml);
-        this.clearProcessDefinitionCache(actDefId);
-    }*/
+       // this.clearProcessDefinitionCache(actDefId);
+    }
 
     public String getEditorJsonByModelId(String modelId) {
         try {

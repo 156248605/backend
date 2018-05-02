@@ -18,4 +18,16 @@ public interface IBpmDefDao extends BaseDao<BpmDef> {
 
     BpmDef getByDefId(String DefId);
 
+    void updateIsMainByMailDefId(Map<String,String> map);
+
+    Integer getMaxVersions(Map<String,String> map);
+
+    Integer getCountByKey(BpmDef bpmDef);
+
+    Integer getCountByKeyAndId(BpmDef bpmDef);
+    /**
+     * params String key, String tenantId
+     */
+    List<BpmDef> getByKey(Map<String,String> map);
+
 }

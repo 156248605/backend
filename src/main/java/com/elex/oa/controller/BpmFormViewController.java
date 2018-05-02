@@ -8,15 +8,15 @@ import com.elex.oa.util.TimeUtil;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@Controller
 @CrossOrigin
 @RequestMapping("/bpmFormView")
 public class BpmFormViewController {
@@ -29,6 +29,7 @@ public class BpmFormViewController {
 
 
     @PostMapping("/listData")
+    @ResponseBody
     public Object bpmFormView(HttpServletRequest request){
         String treeId = request.getParameter("treeId");
         String page = request.getParameter("page");
@@ -61,11 +62,13 @@ public class BpmFormViewController {
    }
 
    @RequestMapping("/previewById/{viewId}")
+   @ResponseBody
    public Object previewById(@PathVariable String viewId){
        return RespUtil.successResp("200","success",this.formViewService.getById(viewId));
    }
 
-   @PostMapping("/save")
+    @PostMapping("/save")
+    @ResponseBody
     public Object save(BpmFormView bpmFormView,HttpServletRequest request){
       boolean rtn = formViewService.isKeyExist(bpmFormView.getViewId());
       if (rtn){
@@ -116,6 +119,7 @@ public class BpmFormViewController {
      * 删除表单
      */
     @PostMapping("/deleteForm")
+    @ResponseBody
     public int deleteForm(@RequestParam("viewIds") String viewIds){
         int deleteNum = this.formViewService.deleteForm(viewIds);
         return deleteNum;
@@ -125,6 +129,7 @@ public class BpmFormViewController {
      * 编辑表单
      */
     @PostMapping("/edit")
+    @ResponseBody
     public Object edit(BpmFormView bpmFormView,HttpServletRequest request){
         String msg = null;
         //更新时间
@@ -135,5 +140,17 @@ public class BpmFormViewController {
         msg = "业务表单视图成功更新!";
 
         return  RespUtil.successResp(ResultUtil.SC_OK.getCode(),msg,null);
+    }
+    @RequestMapping("/rightViews")
+    public String rightViews(HttpServletRequest request,Map<String,String> map){
+        String boDefIds = request.getParameter("boDefIds");
+        String nodeId = request.getParameter("nodeId");
+        String solId = request.getParameter("solId");
+        String actDefId = request.getParameter("actDefId");
+        map.put("boDefIds",boDefIds);
+        map.put("nodeId",nodeId);
+        map.put("solId",solId);
+        map.put("actDefId",actDefId);
+        return "/bpmForm/bpmFormViewRightViews";
     }
 }

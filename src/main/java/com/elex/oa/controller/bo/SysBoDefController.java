@@ -1,10 +1,14 @@
 package com.elex.oa.controller.bo;
+import com.elex.oa.dao.ISysBoDefDao;
+import com.elex.oa.entity.bo.SysBoDef;
 import com.elex.oa.export.PoiTableBuilder;
 import com.elex.oa.json.IJson;
 import com.elex.oa.json.JsonPageResult;
 import com.elex.oa.json.JsonResult;
 import com.elex.oa.query.QueryFilter;
 import com.elex.oa.service.ISysBoDefService;
+import com.elex.oa.util.QueryFilterBuilder;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang.StringUtils;
 import com.elex.oa.util.RequestUtil;
 import com.elex.oa.util.StringUtil;
@@ -34,10 +38,15 @@ import java.util.Date;
 public class SysBoDefController {
     @Autowired
     private ISysBoDefService sysBoDefService;
+
     @Autowired
     private IJson iJson;
+
     @Autowired
     private PoiTableBuilder poiTableBuilder;
+
+    @Autowired
+    private ISysBoDefDao sysBoDefDao;
     public SysBoDefController() {
     }
 
@@ -215,10 +224,10 @@ public class SysBoDefController {
     public ExtBaseManager getBaseManager() {
         return this.sysBoDefManager;
     }*/
-/*    @RequestMapping({"listData"})
+    @RequestMapping({"listData"})
     public void listData(HttpServletRequest request, HttpServletResponse response) throws Exception{
         String export = request.getParameter("_export");
-        if(StringUtils.isNotEmpty(export)) {
+/*        if(StringUtils.isNotEmpty(export)) {
             String queryFilter = request.getParameter("_all");
             if(StringUtils.isNotEmpty(queryFilter)) {
                 this.exportAllPages(request, response);
@@ -235,8 +244,25 @@ public class SysBoDefController {
             pw.println(jsonResult);
             pw.close();
 
-        }
-    }*/
+        }*/
+        response.setContentType("application/json");
+       //QueryFilter queryFilter1 = this.getQueryFilter(request);
+        //List list = this.getPage(queryFilter1);
+        SysBoDef sysBoDef = new SysBoDef();
+        sysBoDef.setTreeId(request.getParameter("Q_TREE_ID__S_EQ"));
+        Integer pageIndex = Integer.valueOf(request.getParameter("pageIndex"));
+        Integer pageSize =Integer.valueOf(request.getParameter("pageSize"));
+        PageHelper.startPage(pageIndex,pageSize);
+        List<SysBoDef> sysBoDefs = this.sysBoDefService.getPage(sysBoDef);
+        Integer count = this.sysBoDefDao.selectCount(sysBoDef);
+        JsonPageResult result = new JsonPageResult(sysBoDefs,count);
+        String jsonResult = this.iJson.toJson(result);
+        response.setCharacterEncoding("utf-8");
+        PrintWriter pw = response.getWriter();
+        pw.println(jsonResult);
+        pw.close();
+
+    }
 
 /*    public void exportCurPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String columns = URLDecoder.decode(request.getParameter("columns"), "UTF-8");
@@ -253,6 +279,14 @@ public class SysBoDefController {
         ServletOutputStream out = response.getOutputStream();
         out.write(outByteStream.toByteArray());
         out.flush();
+    }*/
+
+/*    protected QueryFilter getQueryFilter(HttpServletRequest request) {
+        QueryFilter filter = QueryFilterBuilder.createQueryFilter(request);
+       // String tenantId = ContextUtil.getCurrentTenantId();
+        String tenantId = "1";
+        filter.addFieldParam("TENANT_ID_", tenantId);
+        return filter;
     }*/
 
 }
