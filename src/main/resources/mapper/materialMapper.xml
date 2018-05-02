@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.MaterialMapper">
+    <select id="MaterialList" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material
+    </select>
+
+    <select id="SearchMaterial" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material
+        <where>
+            <if test="id != null and id != ''">
+                OR id LIKE CONCAT(CONCAT('%', #{id}), '%')
+            </if>
+            <if test="bn != null and bn != ''">
+                OR bn = #{bn}
+            </if>
+            <if test="sn != null and sn != ''">
+                OR sn = #{sn}
+            </if>
+            <if test="partner != null and partner != ''">
+                OR partner LIKE CONCAT(CONCAT('%', #{partner}), '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="MaterialId" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="Id" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT id FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <update id="saveMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_material
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="material != null">
+                material = #{material},
+            </if>
+            <if test="brand != null">
+                brand = #{brand},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="maxlimit != null">
+                maxlimit = #{maxlimit},
+            </if>
+            <if test="minlimit != null">
+                minlimit = #{minlimit},
+            </if>
+            <if test="position != null">
+                position = #{position}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+        DELETE FROM eqpt_material WHERE id = #{id}
+    </delete>
+
+    <insert id="newMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+        INSERT INTO eqpt_material VALUES (#{bn},#{sn},#{position},#{category},#{name},#{id},#{date},#{brand},#{spec},#{material},#{maxlimit},#{minlimit},#{remark},#{partner})
+    </insert>
+
+    <update id="updMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_material
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="material != null">
+                material = #{material},
+            </if>
+            <if test="brand != null">
+                brand = #{brand},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="maxlimit != null">
+                maxlimit = #{maxlimit},
+            </if>
+            <if test="minlimit != null">
+                minlimit = #{minlimit},
+            </if>
+            <if test="position != null">
+                position = #{position}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="MinLimit" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT minlimit FROM eqpt_material WHERE id = #{id};
+    </select>
+
+    <select id="MaxLimit" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT maxlimit FROM eqpt_material WHERE id = #{id};
+    </select>
+</mapper>

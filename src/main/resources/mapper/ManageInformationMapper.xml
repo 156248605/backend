@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IManageInformationDao">
+
+	<resultMap id="ManageInformationResultMap" type="ManageInformation">
+		<id column="id" property="id" />
+		<result column="checkworkattendance" property="checkworkattendance" />
+		<result column="workingaddress" property="workingaddress" />
+		<result column="zj" property="zj" />
+		<result column="employeetype" property="employeetype" />
+		<result column="entrydate" property="entrydate" />
+		<result column="zhuanzhengdate" property="zhuanzhengdate" />
+	</resultMap>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="ManageInformationResultMap">
+		SELECT
+			*
+		FROM
+			tb_id_manageinformation
+		WHERE
+			id=#{id}
+	</select>
+
+	<insert id="insertOne" parameterType="ManageInformation" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_id_manageinformation (
+			id,
+			checkworkattendance,
+			workingaddress,
+			zj,
+			employeetype,
+			entrydate,
+			zhuanzhengdate
+			)
+		values (
+			null,
+			#{checkworkattendance},
+			#{workingaddress},
+			#{zj},
+			#{employeetype},
+			#{entrydate},
+			#{zhuanzhengdate}
+			)
+	</insert>
+
+	<update id="updateOne" parameterType="ManageInformation">
+		update tb_id_manageinformation
+		<set>
+			<if test="checkworkattendance!=null and checkworkattendance!=''">
+				checkworkattendance=#{checkworkattendance},
+			</if>
+			<if test="workingaddress!=null and workingaddress!=''">
+				workingaddress=#{workingaddress},
+			</if>
+			<if test="zj!=null and zj!=''">
+				zj=#{zj},
+			</if>
+			<if test="employeetype!=null and employeetype!=''">
+				employeetype=#{employeetype},
+			</if>
+			<if test="entrydate!=null and entrydate!=''">
+				entrydate=#{entrydate},
+			</if><if test="zhuanzhengdate!=null and zhuanzhengdate!=''">
+				zhuanzhengdate=#{zhuanzhengdate},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+</mapper>

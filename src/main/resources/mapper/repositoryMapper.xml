@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.RepositoryMapper">
+    <select id="RepositoryList" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_repository
+    </select>
+
+    <select id="searchRepository" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_repository
+        <where>
+            <if test="reptId != null and reptId != ''">
+                OR reptId = #{reptId}
+            </if>
+            <if test="reptCategory != null and reptCategory != ''">
+                OR reptCategory = #{reptCategory}
+            </if>
+            <if test="bn != null and bn != ''">
+                OR bn = #{bn}
+            </if>
+            <if test="sn != null and sn != ''">
+                OR sn = #{sn}
+            </if>
+            <if test="position != null and position != ''">
+                OR position = #{position}
+            </if>
+        </where>
+    </select>
+
+    <select id="searchIn" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository
+        <where>
+            <if test="reptId != null and reptId != ''">
+                OR reptId = #{reptId}
+            </if>
+            <if test="reptCategory != null and reptCategory != ''">
+                OR reptCategory = #{reptCategory}
+            </if>
+            <if test="inTime != null and inTime != ''">
+                OR inTime = #{inTime}
+            </if>
+            <if test="inId != null and inId != ''">
+                OR inId = #{inId}
+            </if>
+            <if test="bn != null and bn != ''">
+                OR bn = #{bn}
+            </if>
+            <if test="sn != null and sn != ''">
+                OR sn = #{sn}
+            </if>
+            <if test="position != null and position != ''">
+                OR position = #{position}
+            </if>
+        </where>
+    </select>
+
+    <select id="searchOut" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository
+        <where>
+            <if test="reptId != null and reptId != ''">
+                OR reptId = #{reptId}
+            </if>
+            <if test="reptCategory != null and reptCategory != ''">
+                OR reptCategory = #{reptCategory}
+            </if>
+            <if test="outTime != null and outTime != ''">
+                OR outTime = #{outTime}
+            </if>
+            <if test="outId != null and outId != ''">
+                OR outId = #{outId}
+            </if>
+            <if test="bn != null and bn != ''">
+                OR bn = #{bn}
+            </if>
+            <if test="sn != null and sn != ''">
+                OR sn = #{sn}
+            </if>
+            <if test="position != null and position != ''">
+                OR position = #{position}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{position},#{num},#{materialId},#{sn},#{bn})
+    </insert>
+
+    <select id="findPosition" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_repository WHERE position = #{position}
+    </select>
+
+    <update id="changeRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_repository
+        <set>
+            <if test="materialId != null">
+                materialId = #{materialId},
+            </if>
+            <if test="reptId != null">
+                reptId = #{reptId},
+            </if>
+            <if test="reptCategory != null">
+                reptCategory = #{reptCategory},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="sn != null">
+                sn = #{sn},
+            </if>
+            <if test="bn != null">
+                bn = #{bn},
+            </if>
+        </set>
+        WHERE position = #{position}
+    </update>
+
+    <delete id="deleteRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_repository WHERE position = #{position}
+    </delete>
+
+    <insert id="newRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{position},#{num},#{materialId},#{bn},#{sn})
+    </insert>
+
+    <update id="updRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_repository
+        <set>
+            <if test="materialId != null">
+                materialId = #{materialId},
+            </if>
+            <if test="reptId != null">
+                reptId = #{reptId},
+            </if>
+            <if test="reptCategory != null">
+                reptCategory = #{reptCategory},
+            </if>
+            <if test="num != null">
+                num = num+#{num},
+            </if>
+            <if test="sn != null">
+                sn = #{sn},
+            </if>
+            <if test="bn != null">
+                bn = #{bn},
+            </if>
+        </set>
+        WHERE position = #{position}
+    </update>
+
+    <select id="Position" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT position FROM eqpt_repository WHERE position = #{position}
+    </select>
+
+    <select id="Num" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT num FROM eqpt_repository WHERE position = #{position}
+    </select>
+
+    <update id="outRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_repository
+        <set>
+            <if test="materialId != null">
+                materialId = #{materialId},
+            </if>
+            <if test="reptId != null">
+                reptId = #{reptId},
+            </if>
+            <if test="reptCategory != null">
+                reptCategory = #{reptCategory},
+            </if>
+            <if test="num != null">
+                num = num-#{num},
+            </if>
+            <if test="sn != null">
+                sn = #{sn},
+            </if>
+            <if test="bn != null">
+                bn = #{bn},
+            </if>
+        </set>
+        WHERE position = #{position}
+    </update>
+
+    <select id="searchCategory" resultType="string">
+        SELECT reptCategory FROM eqpt_repository WHERE position = #{position}
+    </select>
+
+    <select id="theCategory" resultType="string">
+        SELECT reptCategory FROM eqpt_repository WHERE reptId = #{reptId}
+    </select>
+</mapper>
