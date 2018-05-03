@@ -1,11 +1,13 @@
-package com.elex.oa.service.eqptService;
+package com.example.oa_file.service;
 
-import com.elex.oa.entity.Page;
-import com.elex.oa.entity.eqpt.Material;
+import com.example.oa_file.entity.Material;
+import com.example.oa_file.entity.Page;
 import com.github.pagehelper.PageInfo;
+import com.sun.xml.internal.ws.server.ServerRtException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.List;
 
 public interface MaterialService {
     PageInfo<Material> showMaterial(Page page);

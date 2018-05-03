@@ -156,6 +156,10 @@
         SELECT num FROM eqpt_repository WHERE position = #{position}
     </select>
 
+    <select id="getNum" resultType="com.example.oa_file.entity.Repository">
+        SELECT num FROM eqpt_repository WHERE materialId = #{materialId} AND sn = #{sn} AND bn = #{bn}
+    </select>
+
     <update id="outRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
         UPDATE eqpt_repository
         <set>
