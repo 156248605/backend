@@ -1,15 +1,10 @@
 package com.elex.oa.org.service.impl;
-
 import com.elex.oa.dao.IOsUserDao;
 import com.elex.oa.entity.OsUser;
-import com.elex.oa.entity.SysInst;
-import com.elex.oa.org.model.ITenant;
 import com.elex.oa.org.model.IUser;
 import com.elex.oa.org.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,10 +12,9 @@ import java.util.List;
  *@since 2018/4/26 11:21
 */
 @Service
-public class UserServiceImpl implements UserService {
+public class OsUserServiceImpl implements UserService {
     @Autowired
     private IOsUserDao osUserDao;
-
     @Override
     public IUser getByUserId(String userId) {
         OsUser osUser = this.osUserDao.selectByPrimaryKey(userId);

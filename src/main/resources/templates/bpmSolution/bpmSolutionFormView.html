@@ -59,7 +59,7 @@
                 allowCellSelect="true"
                 ondrawgroup="onDrawGroup"
                 allowAlternating="true"
-                url="http://localhost:8081/bpmSolution/getNodeFormView?solId=${solId}&actDefId=${actDefId}"
+                url="http://192.168.1.180:8081/bpmSolution/getNodeFormView?solId=${solId}&actDefId=${actDefId}"
                 idField="Id"
                 showPager="false"
         >
@@ -275,7 +275,7 @@
             btn.setValue(aryVal.join(","));
             btn.setText(aryName.join(","));
             if(ancientBtnValue!=btn.getValue()){//bo若不一样,则清空页面中的grid
-                formGrid.setUrl("http://localhost:8081/bpmSolution/getEmptyNodeFormView?solId=${solId}&actDefId=${actDefId}");
+                formGrid.setUrl("http://192.168.1.180:8081/bpmSolution/getEmptyNodeFormView?solId=${solId}&actDefId=${actDefId}");
                 formGrid.load();
             }
         },true);

@@ -74,6 +74,8 @@ public class ProcessImageController {
 
     @RequestMapping("/processImage")
     public void processImage(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        resp.setCharacterEncoding("UTF-8");
+        resp.setHeader("Content-Type","text/html;charset=UTF-8");
         resp.setContentType("image/PNG");
         resp.setHeader("Pragma", "No-cache");
         resp.setHeader("Cache-Control", "no-cache");
