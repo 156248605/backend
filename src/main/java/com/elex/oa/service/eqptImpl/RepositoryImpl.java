@@ -1,9 +1,10 @@
-package com.example.oa_file.service.impl;
+package com.elex.oa.service.eqptImpl;
 
-import com.example.oa_file.entity.Page;
-import com.example.oa_file.entity.Repository;
-import com.example.oa_file.mapper.RepositoryMapper;
-import com.example.oa_file.service.RepositoryService;
+
+import com.elex.oa.dao.eqptDao.RepositoryMapper;
+import com.elex.oa.entity.Page;
+import com.elex.oa.entity.eqpt.Repository;
+import com.elex.oa.service.eqptService.RepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
-public class RepositoryImpl implements RepositoryService{
+public class RepositoryImpl implements RepositoryService {
     @Resource
     private RepositoryMapper repositoryMapper;
 

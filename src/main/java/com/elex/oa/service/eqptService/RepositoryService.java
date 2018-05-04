@@ -1,7 +1,8 @@
-package com.example.oa_file.service;
+package com.elex.oa.service.eqptService;
 
-import com.example.oa_file.entity.Page;
-import com.example.oa_file.entity.Repository;
+
+import com.elex.oa.entity.Page;
+import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;

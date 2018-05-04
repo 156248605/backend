@@ -1,16 +1,14 @@
-package com.example.oa_file.service.impl;
-
-import com.example.oa_file.entity.Material;
-import com.example.oa_file.entity.Page;
-import com.example.oa_file.entity.Repository;
-import com.example.oa_file.mapper.MaterialMapper;
-import com.example.oa_file.service.MaterialService;
+package com.elex.oa.service.eqptImpl;
 
 
+import com.elex.oa.dao.eqptDao.MaterialMapper;
+import com.elex.oa.entity.Page;
+import com.elex.oa.entity.eqpt.Material;
+import com.elex.oa.service.eqptService.MaterialService;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mysql.fabric.xmlrpc.base.Param;
+
 import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +22,7 @@ import java.util.List;
 import java.util.NavigableMap;
 
 @Service
-public class MaterialImpl implements MaterialService{
+public class MaterialImpl implements MaterialService {
 
     @Resource
     private MaterialMapper materialMapper;
@@ -122,7 +120,7 @@ public class MaterialImpl implements MaterialService{
         material.setDate(sDate);
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
-        String SN = materialMapper.searchSN(material);
+        String SN = materialMapper.searchSN(material).toString();
         if ( SN != request.getParameter("sn") || SN == "无" ){
             materialMapper.newMaterial(material);
             return "0";

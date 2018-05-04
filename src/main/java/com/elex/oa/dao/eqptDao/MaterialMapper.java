@@ -31,4 +31,5 @@ public interface MaterialMapper {
     // xxxx上限
     Material MaxLimit(Material material);
 
+    List searchSN(Material material);
 }
