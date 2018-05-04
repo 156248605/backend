@@ -22,5 +22,4 @@ public interface InRepositoryMapper {
 
     String OUTID(Repository repository);
 
-    String searchSn(Material material);
 }

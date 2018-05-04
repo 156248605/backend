@@ -14,16 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping({"/bpm/core/bpmInst/"})
 public class BpmInstController {
 
-    @RequestMapping({"start"})
+    /*@RequestMapping({"start"})
     public String start(HttpServletRequest request, HttpServletResponse response) throws Exception{
         return this.start(request,"");
     }
 
-    public String  start(HttpServletRequest request, String solKey) throws Exception {
+    *//*public String  start(HttpServletRequest request, String solKey) throws Exception {
 
 
 
-        
-    }
+
+    }*/
 
 }

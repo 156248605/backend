@@ -156,7 +156,7 @@
         SELECT num FROM eqpt_repository WHERE position = #{position}
     </select>
 
-    <select id="getNum" resultType="com.example.oa_file.entity.Repository">
+    <select id="getNum" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT num FROM eqpt_repository WHERE materialId = #{materialId} AND sn = #{sn} AND bn = #{bn}
     </select>
 
