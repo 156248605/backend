@@ -1,10 +1,9 @@
-package com.elex.oa.service.eqptImpl;
+package com.example.oa_file.service.impl;
 
-
-import com.elex.oa.dao.eqptDao.RepositoryMapper;
-import com.elex.oa.entity.Page;
-import com.elex.oa.entity.eqpt.Repository;
-import com.elex.oa.service.eqptService.RepositoryService;
+import com.example.oa_file.entity.Page;
+import com.example.oa_file.entity.Repository;
+import com.example.oa_file.mapper.RepositoryMapper;
+import com.example.oa_file.service.RepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
-public class RepositoryImpl implements RepositoryService {
+public class RepositoryImpl implements RepositoryService{
     @Resource
     private RepositoryMapper repositoryMapper;
 
@@ -48,7 +47,7 @@ public class RepositoryImpl implements RepositoryService {
     }
 
     @Override
-    public String insertRepository(Repository repository, HttpServletRequest request) {
+    public String insertRepository(Repository repository,HttpServletRequest request) {
         repository.setReptCategory(request.getParameter("reptCategory"));
         repository.setReptId(request.getParameter("reptId"));
         repository.setPosition(request.getParameter("position"));
@@ -84,21 +83,21 @@ public class RepositoryImpl implements RepositoryService {
 
     @Override
     public void changeRepository(Repository repository,HttpServletRequest request) {
-        repository.setReptCategory(request.getParameter("reptCategory"));
-        repository.setReptId(request.getParameter("reptId"));
-        repository.setPosition(request.getParameter("position"));
-        repository.setNum(request.getParameter("num"));
-        repository.setMaterialId(request.getParameter("materialId"));
-        repository.setSn(request.getParameter("sn"));
-        repository.setBn(request.getParameter("bn"));
-        repositoryMapper.changeRepository(repository);
+            repository.setReptCategory(request.getParameter("reptCategory"));
+            repository.setReptId(request.getParameter("reptId"));
+            repository.setPosition(request.getParameter("position"));
+            repository.setNum(request.getParameter("num"));
+            repository.setMaterialId(request.getParameter("materialId"));
+            repository.setSn(request.getParameter("sn"));
+            repository.setBn(request.getParameter("bn"));
+            repositoryMapper.changeRepository(repository);
     }
 
 
     @Override
     public void deleteRepository(Repository repository,HttpServletRequest request) {
-        repository.setPosition(request.getParameter("position"));
-        repositoryMapper.deleteRepository(repository);
+            repository.setPosition(request.getParameter("position"));
+            repositoryMapper.deleteRepository(repository);
     }
 }
 

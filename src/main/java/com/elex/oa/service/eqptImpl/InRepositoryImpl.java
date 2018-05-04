@@ -1,13 +1,13 @@
-package com.elex.oa.service.eqptImpl;
+package com.example.oa_file.service.impl;
 
-
-import com.elex.oa.dao.eqptDao.InRepositoryMapper;
-import com.elex.oa.dao.eqptDao.MaterialMapper;
-import com.elex.oa.dao.eqptDao.RepositoryMapper;
-import com.elex.oa.entity.Page;
-import com.elex.oa.entity.eqpt.Material;
-import com.elex.oa.entity.eqpt.Repository;
-import com.elex.oa.service.eqptService.InRepositoryService;
+import com.example.oa_file.entity.Material;
+import com.example.oa_file.entity.Page;
+import com.example.oa_file.entity.Repository;
+import com.example.oa_file.mapper.InRepositoryMapper;
+import com.example.oa_file.mapper.MaterialMapper;
+import com.example.oa_file.mapper.RepositoryMapper;
+import com.example.oa_file.service.InRepositoryService;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 @Service
 public class InRepositoryImpl implements InRepositoryService {
@@ -90,13 +91,7 @@ public class InRepositoryImpl implements InRepositoryService {
         material.setSn(SN);
         material.setBn(BN);
         material.setId(MATERIALID);
-        // 判断序列号重复否
-        String sn;
-        if (inRepositoryMapper.searchSn(material) == null){
-            sn = SN;
-        } else {
-            sn = SN+"...";
-        }
+
         // 判断物料编码规范
         String ID;
         if ( inRepositoryMapper.searchId(material)!=null ){
@@ -128,7 +123,7 @@ public class InRepositoryImpl implements InRepositoryService {
             num += Integer.parseInt(r.getNum());
         }
         // 判断条件允许才可以插入
-        if (MATERIALID.equals(ID) && num + Integer.parseInt(request.getParameter("inNum")) <= Integer.parseInt(MaxLimit) && REPTCATEGORY.equals(REPTcategory) && inid == null && sn == SN) {
+        if (MATERIALID.equals(ID) && num + Integer.parseInt(request.getParameter("inNum")) <= Integer.parseInt(MaxLimit) && REPTCATEGORY.equals(REPTcategory) && inid == null) {
             inRepositoryMapper.insertNew(REPTCATEGORY, INID, INTIME, INNUM, REPTID, POSITION, SN, BN);
             return "1";
         } else if (!MATERIALID.equals(ID)){
@@ -139,10 +134,8 @@ public class InRepositoryImpl implements InRepositoryService {
             return "4";
         } else if (inid != null){
             return "5";
-        }else if (sn != SN){
-            return "6";
         }else {
-            return "7";
+            return "6";
         }
     }
 

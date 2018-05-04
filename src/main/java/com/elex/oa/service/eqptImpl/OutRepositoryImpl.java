@@ -1,17 +1,18 @@
-package com.elex.oa.service.eqptImpl;
+package com.example.oa_file.service.impl;
 
-
-import com.elex.oa.dao.eqptDao.InRepositoryMapper;
-import com.elex.oa.dao.eqptDao.MaterialMapper;
-import com.elex.oa.dao.eqptDao.OutRepositoryMapper;
-import com.elex.oa.dao.eqptDao.RepositoryMapper;
-import com.elex.oa.entity.Page;
-import com.elex.oa.entity.eqpt.Material;
-import com.elex.oa.entity.eqpt.Repository;
-import com.elex.oa.service.eqptService.OutRepositoryService;
+import com.example.oa_file.entity.Material;
+import com.example.oa_file.entity.Page;
+import com.example.oa_file.entity.Repository;
+import com.example.oa_file.mapper.InRepositoryMapper;
+import com.example.oa_file.mapper.MaterialMapper;
+import com.example.oa_file.mapper.OutRepositoryMapper;
+import com.example.oa_file.mapper.RepositoryMapper;
+import com.example.oa_file.service.OutRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,10 +25,10 @@ import java.util.List;
 public class OutRepositoryImpl implements OutRepositoryService {
 
     @Resource
-    private InRepositoryMapper inRepositoryMapper;
+    private OutRepositoryMapper outRepositoryMapper;
 
     @Resource
-    private OutRepositoryMapper outRepositoryMapper;
+    private InRepositoryMapper inRepositoryMapper;
 
     @Resource
     private MaterialMapper materialMapper;

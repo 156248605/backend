@@ -12,10 +12,10 @@
                 OR id LIKE CONCAT(CONCAT('%', #{id}), '%')
             </if>
             <if test="bn != null and bn != ''">
-                OR bn = #{bn}
+                OR bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
             </if>
             <if test="sn != null and sn != ''">
-                OR sn = #{sn}
+                OR sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
             </if>
             <if test="partner != null and partner != ''">
                 OR partner LIKE CONCAT(CONCAT('%', #{partner}), '%')
@@ -24,52 +24,55 @@
     </select>
 
     <select id="MaterialId" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_material WHERE id = #{id}
+        SELECT * FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
     </select>
 
     <select id="Id" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT id FROM eqpt_material WHERE id = #{id}
+        SELECT id FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
     </select>
 
     <update id="saveMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
         UPDATE eqpt_material
         <set>
-            <if test="name != null">
+            <if test="name != null and name != ''">
                 name = #{name},
             </if>
-            <if test="date != null">
+            <if test="date != null and date != ''">
                 date = #{date},
             </if>
-            <if test="category != null">
+            <if test="category != null and category != ''">
                 category = #{category},
             </if>
-            <if test="spec != null">
+            <if test="spec != null and spec != ''">
                 spec = #{spec},
             </if>
-            <if test="material != null">
+            <if test="material != null and material != ''">
                 material = #{material},
             </if>
-            <if test="brand != null">
+            <if test="brand != null and brand != ''">
                 brand = #{brand},
             </if>
-            <if test="remark != null">
+            <if test="remark != null and remark != ''">
                 remark = #{remark},
             </if>
-            <if test="maxlimit != null">
+            <if test="maxlimit != null and maxlimit != ''">
                 maxlimit = #{maxlimit},
             </if>
-            <if test="minlimit != null">
+            <if test="minlimit != null and minlimit != ''">
                 minlimit = #{minlimit},
             </if>
-            <if test="position != null">
+            <if test="position != null and position != ''">
                 position = #{position}
             </if>
+            <if test="partner != null and partner != ''">
+                partner = #{partner}
+            </if>
         </set>
-        WHERE id = #{id}
+        WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
     </update>
 
     <delete id="deleteMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
-        DELETE FROM eqpt_material WHERE id = #{id}
+        DELETE FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
     </delete>
 
     <insert id="newMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
@@ -110,14 +113,18 @@
                 position = #{position}
             </if>
         </set>
-        WHERE id = #{id}
+        WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
     </update>
 
     <select id="MinLimit" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT minlimit FROM eqpt_material WHERE id = #{id};
+        SELECT minlimit FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
     </select>
 
     <select id="MaxLimit" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT maxlimit FROM eqpt_material WHERE id = #{id};
+        SELECT maxlimit FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
+    </select>
+
+    <select id="searchSN" resultType="string">
+        SELECT sn FROM eqpt_material WHERE sn = #{sn}
     </select>
 </mapper>

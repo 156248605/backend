@@ -1,10 +1,9 @@
-package com.elex.oa.service.eqptImpl;
+package com.example.oa_file.service.impl;
 
-
-import com.elex.oa.dao.eqptDao.PartnerMapper;
-import com.elex.oa.entity.Page;
-import com.elex.oa.entity.eqpt.Partner;
-import com.elex.oa.service.eqptService.PartnerService;
+import com.example.oa_file.entity.Page;
+import com.example.oa_file.entity.Partner;
+import com.example.oa_file.mapper.PartnerMapper;
+import com.example.oa_file.service.PartnerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
