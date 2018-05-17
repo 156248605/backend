@@ -16,32 +16,21 @@
             <if test="company != null and company != ''">
                 OR company = #{company}
             </if>
+            <if test="pjName != null and pjName != ''">
+                OR pjName = #{pjName}
+            </if>
             <if test="name != null and name != ''">
                 OR name = #{name}
-            </if>
-            <if test="tel != null and tel != ''">
-                OR tel = #{tel}
-            </if>
-            <if test="country != null and country != ''">
-                OR country = #{country}
-            </if>
-            <if test="province != null and province != ''">
-                OR province = #{province}
-            </if>
-            <if test="city != null and city != ''">
-                OR city = #{city}
-            </if>
-            <if test="area != null and area != ''">
-                OR area = #{area}
-            </if>
-            <if test="detail != null and detail != ''">
-                OR detail = #{detail}
             </if>
         </where>
     </select>
 
+    <insert id="importPartner" parameterType="com.elex.oa.entity.eqpt.Partner">
+        INSERT INTO eqpt_partner VALUES (NULL,#{pnCategory},#{company},#{pjName},#{name})
+    </insert>
+
     <insert id="insertPartner" parameterType="com.elex.oa.entity.eqpt.Partner">
-        INSERT INTO eqpt_partner VALUES (#{pnCategory},#{company},#{name},#{tel},#{country},#{province},#{city},#{area},#{detail})
+        INSERT INTO eqpt_partner VALUES (#{pnCategory},#{company},#{pjName},#{name})
     </insert>
 
     <select id="findName" resultType="com.elex.oa.entity.eqpt.Partner">
@@ -51,29 +40,17 @@
     <update id="changePartner" parameterType="com.elex.oa.entity.eqpt.Partner">
         UPDATE eqpt_partner
         <set>
-            <if test="pnCategory != null">
-                pnCategory = #{pnCategory},
+            <if test="pnCategory != null and pnCategory != ''">
+                OR pnCategory = #{pnCategory}
             </if>
-            <if test="company != null">
-                company = #{company},
+            <if test="company != null and company != ''">
+                OR company = #{company}
             </if>
-            <if test="tel != null">
-                tel = #{tel},
+            <if test="pjName != null and pjName != ''">
+                OR pjName = #{pjName}
             </if>
-            <if test="country != null">
-                country = #{country},
-            </if>
-            <if test="province != null">
-                province = #{province},
-            </if>
-            <if test="city != null">
-                city = #{city},
-            </if>
-            <if test="area != null">
-                area = #{area},
-            </if>
-            <if test="detail != null">
-                detail = #{detail},
+            <if test="name != null and name != ''">
+                OR name = #{name}
             </if>
         </set>
         WHERE name = #{name}

@@ -82,7 +82,6 @@ public class InRepositoryImpl implements InRepositoryService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String sDate = sdf.format(d);
         String INTIME = sDate;
-
         String SN = request.getParameter("sn");
         String BN = request.getParameter("bn");
         String POSITION = request.getParameter("position");
@@ -92,17 +91,12 @@ public class InRepositoryImpl implements InRepositoryService {
         material.setSn(SN);
         material.setBn(BN);
         material.setId(MATERIALID);
-
-        // 判断物料编码规范
-        String ID;
-        if ( inRepositoryMapper.searchId(material)!=null ){
-            if ( inRepositoryMapper.searchId(material).contains(MATERIALID) ) {
-                ID = inRepositoryMapper.searchId(material).get(0).toString();
-            }else {
-                ID = MATERIALID+"....";
-            }
+        // 判断序列号规范
+        String Sn;
+        if ( inRepositoryMapper.searchSn(material).get(0).toString() != SN){
+            Sn = SN+"...";
         }else {
-            ID = MATERIALID;
+            Sn = SN;
         }
         // 确定物料上限
         String MaxLimit;
@@ -111,10 +105,13 @@ public class InRepositoryImpl implements InRepositoryService {
         } else {
             MaxLimit = request.getParameter("materialMax");
         }
+
         Repository repository = new Repository();
         repository.setInId(request.getParameter("inId"));
         repository.setMaterialId(request.getParameter("materialId"));
         repository.setPosition(request.getParameter("position"));
+        repository.setBn(request.getParameter("bn"));
+        repository.setSn(request.getParameter("sn"));
         String inid = inRepositoryMapper.INID(repository);
         String REPTcategory = repositoryMapper.searchCategory(repository);
         // 库存总量
@@ -123,11 +120,18 @@ public class InRepositoryImpl implements InRepositoryService {
         for (Repository r : list) {
             num += Integer.parseInt(r.getNum());
         }
+        // 确定库位正确
+        String Position;
+        if (repositoryMapper.thePosition(repository).contains(request.getParameter("position"))) {
+            Position = "1";
+        }else {
+            Position = "0";
+        }
         // 判断条件允许才可以插入
-        if (MATERIALID.equals(ID) && num + Integer.parseInt(request.getParameter("inNum")) <= Integer.parseInt(MaxLimit) && REPTCATEGORY.equals(REPTcategory) && inid == null) {
+        if (num + Integer.parseInt(request.getParameter("inNum")) <= Integer.parseInt(MaxLimit) && REPTCATEGORY.equals(REPTcategory) && inid == null && Sn.equals(Sn) && Position.equals("1")) {
             inRepositoryMapper.insertNew(REPTCATEGORY, INID, INTIME, INNUM, REPTID, POSITION, SN, BN);
             return "1";
-        } else if (!MATERIALID.equals(ID)){
+        } else if (!SN.equals(Sn)){
             return "2";
         } else if (num + Integer.parseInt(request.getParameter("inNum")) > Integer.parseInt(MaxLimit)){
             return "3";
@@ -135,8 +139,10 @@ public class InRepositoryImpl implements InRepositoryService {
             return "4";
         } else if (inid != null){
             return "5";
-        }else {
+        } else if (Position.equals("0")){
             return "6";
+        } else {
+            return "7";
         }
     }
 
@@ -160,6 +166,7 @@ public class InRepositoryImpl implements InRepositoryService {
         material.setMaxlimit(request.getParameter("materialMax"));
         material.setMinlimit(request.getParameter("materialMin"));
         material.setPosition(request.getParameter("position"));
+        material.setPrice(request.getParameter("materialPrice"));
         material.setSn(request.getParameter("sn"));
         material.setBn(request.getParameter("bn"));
         material.setRemark(request.getParameter("materialRemark"));
@@ -188,6 +195,8 @@ public class InRepositoryImpl implements InRepositoryService {
         }
         Material material = new Material();
         material.setId(request.getParameter("materialId"));
+        material.setSn(request.getParameter("sn"));
+        material.setBn(request.getParameter("bn"));
         String MaxLimit;
         if (materialMapper.Id(material) != null) {
             MaxLimit = materialMapper.MaxLimit(material).getMaxlimit().toString();
@@ -195,14 +204,14 @@ public class InRepositoryImpl implements InRepositoryService {
             MaxLimit = request.getParameter("materialMax");
         }
         if (num + Integer.parseInt(request.getParameter("inNum")) <= Integer.parseInt(MaxLimit)) {
-            if (request.getParameter("position").equals(repositoryMapper.Position(repository).getPosition()) ) {
+            if (request.getParameter("position").equals(repositoryMapper.Position(repository).getPosition())  ) {
                 repositoryMapper.updRepository(repository);
             } else {
                 repositoryMapper.newRepository(repository);
             }
             return "1";
-        } else {
-            return "0";
+        }  else {
+            return "2";
         }
     }
 

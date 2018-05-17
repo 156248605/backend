@@ -30,27 +30,17 @@ public class PartnerImpl implements PartnerService {
     public PageInfo<Partner> searchPartner(Page page, HttpServletRequest request) {
         String pnCategory = request.getParameter("pnCategory");
         String company = request.getParameter("company");
+        String pjName = request.getParameter("pjName");
         String name = request.getParameter("name");
-        String tel = request.getParameter("tel");
-        String country = request.getParameter("country");
-        String province = request.getParameter("province");
-        String city = request.getParameter("city");
-        String area = request.getParameter("area");
-        String detail = request.getParameter("detail");
-        if (pnCategory.equals("") && company.equals("") && name.equals("") && tel.equals("") && country.equals("") && province.equals("") && city.equals("") && area.equals("") && detail.equals("")){
+        if (pnCategory.equals("") && company.equals("") && pjName.equals("") && name.equals("") ){
             List<Partner> listP = partnerMapper.PartnerList();
             return new PageInfo<>(listP);
         } else {
             Partner partner = new Partner();
             partner.setPnCategory(pnCategory);
             partner.setCompany(company);
+            partner.setPjName(pjName);
             partner.setName(name);
-            partner.setTel(tel);
-            partner.setCountry(country);
-            partner.setProvince(province);
-            partner.setCity(city);
-            partner.setArea(area);
-            partner.setDetail(detail);
             List<Partner> listP = partnerMapper.searchPartner(partner);
             return new PageInfo<>(listP);
         }
@@ -60,13 +50,8 @@ public class PartnerImpl implements PartnerService {
     public void insertPartner(Partner partner, HttpServletRequest request) {
         partner.setPnCategory(request.getParameter("pnCategory"));
         partner.setCompany(request.getParameter("company"));
+        partner.setPjName(request.getParameter("pjName"));
         partner.setName(request.getParameter("name"));
-        partner.setTel(request.getParameter("tel"));
-        partner.setCountry(request.getParameter("country"));
-        partner.setProvince(request.getParameter("province"));
-        partner.setCity(request.getParameter("city"));
-        partner.setArea(request.getParameter("area"));
-        partner.setDetail(request.getParameter("detail"));
         partnerMapper.insertPartner(partner);
     }
 
@@ -82,13 +67,8 @@ public class PartnerImpl implements PartnerService {
     public void changePartner(Partner partner, HttpServletRequest request) {
         partner.setPnCategory(request.getParameter("pnCategory"));
         partner.setCompany(request.getParameter("company"));
+        partner.setPjName(request.getParameter("pjName"));
         partner.setName(request.getParameter("name"));
-        partner.setTel(request.getParameter("tel"));
-        partner.setCountry(request.getParameter("country"));
-        partner.setProvince(request.getParameter("province"));
-        partner.setCity(request.getParameter("city"));
-        partner.setArea(request.getParameter("area"));
-        partner.setDetail(request.getParameter("detail"));
         partnerMapper.changePartner(partner);
     }
 

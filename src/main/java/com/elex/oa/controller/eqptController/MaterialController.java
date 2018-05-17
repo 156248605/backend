@@ -49,7 +49,7 @@ public class MaterialController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public void saveMaterial(HttpServletRequest request){
+    public void saveMaterial(HttpServletRequest request) throws ParseException{
         materialImpl.saveMaterial(request);
     }
 

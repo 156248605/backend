@@ -9,8 +9,8 @@
         INSERT INTO eqpt_inrepository VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7})
     </insert>
 
-    <select id="searchId" resultType="string">
-        SELECT id FROM eqpt_material WHERE sn = #{sn} AND bn = #{bn} AND id = #{id}
+    <select id="searchSn" resultType="string">
+        SELECT sn FROM eqpt_material WHERE sn = #{sn} AND bn = #{bn} AND id = #{id}
     </select>
 
     <select id="ID" resultType="string">
@@ -25,7 +25,4 @@
         SELECT outId FROM eqpt_outrepository WHERE outId = #{outId}
     </select>
 
-    <select id="searchSn" resultType="string">
-        SELECT sn FROM eqpt_material WHERE sn = #{sn}
-    </select>
 </mapper>

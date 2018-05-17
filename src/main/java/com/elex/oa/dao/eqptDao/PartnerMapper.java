@@ -21,4 +21,9 @@ public interface PartnerMapper {
     Partner findName(Partner partner);
 
     void deletePartner(Partner partner);
+
+    //导入excel
+    // int importPartner(String pnCategory,String company,String pjName,String name);
+
+    int importPartner(Partner partner);
 }
