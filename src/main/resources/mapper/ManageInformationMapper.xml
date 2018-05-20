@@ -4,10 +4,8 @@
 
 	<resultMap id="ManageInformationResultMap" type="ManageInformation">
 		<id column="id" property="id" />
-		<result column="checkworkattendance" property="checkworkattendance" />
-		<result column="workingaddress" property="workingaddress" />
-		<result column="zj" property="zj" />
-		<result column="employeetype" property="employeetype" />
+		<result column="rankid" property="rankid" />
+		<result column="employeetypeid" property="employeetypeid" />
 		<result column="entrydate" property="entrydate" />
 		<result column="zhuanzhengdate" property="zhuanzhengdate" />
 	</resultMap>
@@ -24,19 +22,15 @@
 	<insert id="insertOne" parameterType="ManageInformation" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_manageinformation (
 			id,
-			checkworkattendance,
-			workingaddress,
-			zj,
-			employeetype,
+			rankid,
+			employeetypeid,
 			entrydate,
 			zhuanzhengdate
 			)
 		values (
 			null,
-			#{checkworkattendance},
-			#{workingaddress},
-			#{zj},
-			#{employeetype},
+			#{rankid},
+			#{employeetypeid},
 			#{entrydate},
 			#{zhuanzhengdate}
 			)
@@ -45,17 +39,11 @@
 	<update id="updateOne" parameterType="ManageInformation">
 		update tb_id_manageinformation
 		<set>
-			<if test="checkworkattendance!=null and checkworkattendance!=''">
-				checkworkattendance=#{checkworkattendance},
+			<if test="rankid!=null and rankid!=''">
+				rankid=#{rankid},
 			</if>
-			<if test="workingaddress!=null and workingaddress!=''">
-				workingaddress=#{workingaddress},
-			</if>
-			<if test="zj!=null and zj!=''">
-				zj=#{zj},
-			</if>
-			<if test="employeetype!=null and employeetype!=''">
-				employeetype=#{employeetype},
+			<if test="employeetypeid!=null and employeetypeid!=''">
+				employeetypeid=#{employeetypeid},
 			</if>
 			<if test="entrydate!=null and entrydate!=''">
 				entrydate=#{entrydate},

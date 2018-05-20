@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IHRsetSsbDao">
+
+	<resultMap id="SsbMapper" type="HRsetSsb">
+		<id column="id" property="id" />
+		<result column="ssb" property="ssb" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="HRsetSsb" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_set_ssb (
+			id,
+			ssb)
+		values (
+			NULL,
+			#{ssb})
+	</insert>
+
+	<select id="selectAll" resultMap="SsbMapper">
+		SELECT * FROM tb_hr_set_ssb
+	</select>
+
+	<select id="selectByConditions" parameterType="HRsetSsb" resultMap="SsbMapper">
+		SELECT * FROM tb_hr_set_ssb
+		<where>
+			<if test="id!=null and id!=''">AND id=#{id}</if>
+			<if test="ssb!=null and ssb!=''">AND ssb=#{ssb}</if>
+		</where>
+	</select>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_hr_set_ssb WHERE id=#{id}
+	</delete>
+
+	<update id="updateOne" parameterType="HRsetFunctionalType">
+		UPDATE tb_hr_set_ssb
+		SET ssb=#{ssb}
+		WHERE id=#{id}
+	</update>
+</mapper>

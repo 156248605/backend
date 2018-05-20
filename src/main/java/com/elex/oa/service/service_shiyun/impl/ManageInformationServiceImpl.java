@@ -37,7 +37,7 @@ public class ManageInformationServiceImpl implements IManageInformationService {
     @Override
     public Integer saveOne(ManageInformation manageInformation) {
         Integer manageInformationId = iManageInformationDao.insertOne(manageInformation);
-        return manageInformationId;
+        return manageInformation.getId();
     }
 
     /**

@@ -37,7 +37,7 @@ public class CostInformationServiceImpl implements ICostInformationService {
     @Override
     public Integer saveOne(CostInformation costInformation) {
         Integer costInformationId = iCostInformationDao.insertOne(costInformation);
-        return costInformationId;
+        return costInformation.getId();
     }
 
     /**

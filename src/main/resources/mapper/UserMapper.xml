@@ -8,26 +8,33 @@
 		<result column="password" property="password" />
 		<result column="truename" property="truename" />
 		<result column="isactive" property="isactive" />
+		<result column="state" property="state" />
 	</resultMap>
 
 	<insert id="insertOne" parameterType="User" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_user (
 			id,
 			username,
-			password,
 			truename,
-			isactive)
+			isactive,
+			state)
 		values (
 			NULL,
 			#{username},
-			#{password},
 			#{truename},
-			#{isactive},)
+			#{isactive},
+			1)
 	</insert>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="UserMapper">
 		select * from tb_id_user
-		where id=#{id}
+		where id=#{id} and state=1
 	</select>
+
+	<update id="deleteById" parameterType="java.lang.Integer" >
+		UPDATE tb_id_user
+		SET state=0
+		WHERE id=#{id}
+	</update>
 
 </mapper>

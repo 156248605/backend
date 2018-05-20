@@ -2,6 +2,7 @@ package com.elex.oa.dao.dao_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.Dept;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -40,4 +41,32 @@ public interface IDeptDao{
      *@Date: 10:52 2018\4\23 0023
      */
     public Integer insertOne(Dept dept);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:修改部门信息
+     *@Date: 9:59 2018\5\2 0002
+     */
+    public void updateOne(Dept dept);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除部门信息
+     *@Date: 14:03 2018\5\2 0002
+     */
+    public void deleteOne(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除用户信息的修改部门信息
+     *@Date: 15:05 2018\5\10 0010
+     */
+    public void updateByDeleteUser(Dept dept);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据条件查询部门信息
+     *@Date: 15:30 2018\5\10 0010
+     */
+    public List<Dept> selectDeptsByDept(Dept dept);
 }

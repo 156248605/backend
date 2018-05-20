@@ -69,7 +69,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     @Override
     public Integer saveOne(PersonalInformation personalInformation) {
         Integer personalInformationId = iPersonalInformationDao.insertOne(personalInformation);
-        return personalInformationId;
+        return personalInformation.getId();
     }
 
     /**

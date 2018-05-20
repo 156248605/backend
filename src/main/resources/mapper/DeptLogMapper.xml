@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IDeptLogDao">
+
+	<resultMap id="deptLogMapper" type="DeptLog">
+		<id column="id" property="id" />
+		<result column="deptid" property="deptid" />
+		<result column="changeinformation" property="changeinformation" />
+		<result column="beforeinformation" property="beforeinformation" />
+		<result column="afterinformation" property="afterinformation" />
+		<result column="changereason" property="changereason" />
+		<result column="changedate" property="changedate" />
+		<result column="transactoruserid" property="transactoruserid" />
+	</resultMap>
+
+	<select id="selectAllDeptLog" resultMap="deptLogMapper">
+		select * from tb_dept_log
+	</select>
+
+	<insert id="insertOne" parameterType="DeptLog" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_dept_log
+		(id,
+		deptid,
+		changeinformation,
+		beforeinformation,
+		afterinformation,
+		changereason,
+		changedate,
+		transactoruserid
+		)
+		VALUES
+		(NULL ,
+		#{deptid},
+		#{changeinformation},
+		#{beforeinformation},
+		#{afterinformation},
+		#{changereason},
+		#{changedate},
+		#{transactoruserid})
+	</insert>
+
+	<select id="selectByConditions" parameterType="DeptLog" resultMap="deptLogMapper">
+		SELECT * FROM tb_dept_log
+		<where>
+			<if test="deptid!=null and deptid!=''">AND deptid=#{deptid}</if>
+			<if test="changeinformation!=null and changeinformation!=''">AND changeinformation=#{changeinformation}</if>
+			<if test="changedate!=null and changedate!=''">AND changedate=#{changedate}</if>
+		</where>
+	</select>
+
+</mapper>

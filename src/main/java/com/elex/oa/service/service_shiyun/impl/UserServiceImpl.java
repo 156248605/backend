@@ -31,6 +31,16 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         * */
 
         Integer userid = iUserDao.insertOne(user);
-        return userid;
+        return user.getId();
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除用户
+     *@Date: 14:53 2018\5\10 0010
+     */
+    @Override
+    public void removeOne(Integer id) {
+        iUserDao.deleteById(id);
     }
 }

@@ -25,4 +25,11 @@ public interface IUserDao extends BaseDao<User> {
      *@Date: 10:19 2018\4\17 0017
      */
     public User selectById(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除信息
+     *@Date: 14:47 2018\5\10 0010
+     */
+    public void deleteById(Integer id);
 }

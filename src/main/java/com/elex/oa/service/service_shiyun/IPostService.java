@@ -1,6 +1,5 @@
 package com.elex.oa.service.service_shiyun;
 
-
 import com.elex.oa.entity.entity_shiyun.Post;
 
 import java.util.List;
@@ -46,4 +45,18 @@ public interface IPostService  {
      *@Date: 13:07 2018\4\23 0023
      */
     public Integer addOne(Post post);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:修改岗位信息
+     *@Date: 11:10 2018\5\2 0002
+     */
+    public void modifyOne(Post post);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据岗位ID删除岗位信息
+     *@Date: 14:51 2018\5\2 0002
+     */
+    public void remove(Integer id);
 }

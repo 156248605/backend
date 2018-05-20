@@ -1,6 +1,6 @@
 package com.elex.oa.service.service_shiyun.impl;
 
-import com.elex.oa.common.Commons;
+import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.dao.dao_shiyun.*;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.impl.BaseServiceImpl;
@@ -77,7 +77,6 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
             User user = iUserDao.selectById(dimissionuserid);
             User transactoruser = iUserDao.selectById(dimissionInformations.get(i).getTransactoruserid());
             Dept dept = iDeptDao.selectDeptByDepid(personalInformation.getDepid());
-            Post post = iPostDao.selectPostByPostid(personalInformation.getPostid());
             dimissionInformations.get(i).setEmployeenumber(personalInformation.getEmployeenumber());
             dimissionInformations.get(i).setDimissiontruename(user.getTruename());
             if (dept!=null) {
@@ -85,12 +84,6 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
             } else {
                 dimissionInformations.get(i).setDepname("还没有分配部门");
             }
-            if (post!=null) {
-                dimissionInformations.get(i).setPostname(post.getPostname());
-            } else {
-                dimissionInformations.get(i).setPostname("还没有分配岗位");
-            }
-            dimissionInformations.get(i).setTransactortruename(transactoruser.getTruename());
         }
         PageInfo<DimissionInformation> dimissionInformationPageInfo = new PageInfo<DimissionInformation>(dimissionInformations);
         return dimissionInformationPageInfo;

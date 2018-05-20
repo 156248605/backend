@@ -4,24 +4,18 @@
 
 	<resultMap id="CostInformationResultMap" type="CostInformation">
 		<id column="id" property="id" />
-		<result column="costtype" property="costtype" />
-		<result column="costcode" property="costcode" />
-		<result column="salary" property="salary" />
-		<result column="accumulationfund" property="accumulationfund" />
-		<result column="gscdylbx" property="gscdylbx" />
-		<result column="grcdylbx" property="grcdylbx" />
-		<result column="gscdgjj" property="gscdgjj" />
-		<result column="grcdgjj" property="grcdgjj" />
-		<result column="gscdsybx" property="gscdsybx" />
-		<result column="grcdsybx" property="grcdsybx" />
-		<result column="gscdylbx2" property="gscdylbx2" />
-		<result column="grcdylbx2" property="grcdylbx2" />
-		<result column="shengyubx" property="shengyubx" />
-		<result column="gsbx" property="gsbx" />
-		<result column="salarykhh" property="salarykhh" />
+		<result column="salarystandardid" property="salarystandardid" />
+		<result column="ssbid" property="ssbid" />
+		<result column="ssbgscdid" property="ssbgscdid" />
+		<result column="ssbgrcdid" property="ssbgrcdid" />
+		<result column="gjjid" property="gjjid" />
+		<result column="gjjgscdid" property="gjjgscdid" />
+		<result column="gjjgrcdid" property="gjjgrcdid" />
+		<result column="khhid" property="khhid" />
 		<result column="salaryaccount" property="salaryaccount" />
-		<result column="sbjnd" property="sbjnd" />
+		<result column="sbjndid" property="sbjndid" />
 		<result column="sbcode" property="sbcode" />
+		<result column="gjjcode" property="gjjcode" />
 	</resultMap>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="CostInformationResultMap">
@@ -36,67 +30,49 @@
 	<insert id="insertOne" useGeneratedKeys="true" parameterType="CostInformation" keyProperty="id">
 		insert into tb_id_costinformation(
 			id,
-			costtype,
-			costcode,
-			salary,
-			accumulationfund,
-			gscdylbx,
-			grcdylbx,
-			gscdgjj,
-			grcdgjj,
-			gscdsybx,
-			grcdsybx,
-			gscdylbx2,
-			grcdylbx2,
-			shengyubx,
-			gsbx,
-			salarykhh,
+			salarystandardid,
+			ssbid,
+			ssbgscdid,
+			ssbgrcdid,
+			gjjid,
+			gjjgscdid,
+			gjjgrcdid,
+			khhid,
 			salaryaccount,
-			sbjnd,
-			sbcode)
+			sbjndid,
+			sbcode,
+			gjjcode)
 		values(
 			NULL ,
-			#{costtype},
-			#{costcode},
-			#{salary},
-			#{accumulationfund},
-			#{gscdylbx},
-			#{grcdylbx},
-			#{gscdgjj},
-			#{grcdgjj},
-			#{gscdsybx},
-			#{grcdsybx},
-			#{gscdylbx2},
-			#{grcdylbx2},
-			#{shengyubx},
-			#{gsbx},
-			#{salarykhh},
+			#{salarystandardid},
+			#{ssbid},
+			#{ssbgscdid},
+			#{ssbgrcdid},
+			#{gjjid},
+			#{gjjgscdid},
+			#{gjjgrcdid},
+			#{khhid},
 			#{salaryaccount},
-			#{sbjnd},
-			#{sbcode})
+			#{sbjndid},
+			#{sbcode},
+			#{gjjcode})
 	</insert>
 
 	<update id="updateOne" parameterType="CostInformation" >
 		update tb_id_costinformation
 		<set>
-			<if test="costtype!=null and costtype!=''">costtype=#{costtype},</if>
-			<if test="costcode!=null and costcode!=''">costcode=#{costcode},</if>
-			<if test="salary!=null and salary!=''">salary=#{salary},</if>
-			<if test="accumulationfund!=null and accumulationfund!=''">accumulationfund=#{accumulationfund},</if>
-			<if test="gscdylbx!=null and gscdylbx!=''">gscdylbx=#{gscdylbx},</if>
-			<if test="grcdylbx!=null and grcdylbx!=''">grcdylbx=#{grcdylbx},</if>
-			<if test="gscdgjj!=null and gscdgjj!=''">gscdgjj=#{gscdgjj},</if>
-			<if test="grcdgjj!=null and grcdgjj!=''">grcdgjj=#{grcdgjj},</if>
-			<if test="gscdsybx!=null and gscdsybx!=''">gscdsybx=#{gscdsybx},</if>
-			<if test="grcdsybx!=null and grcdsybx!=''">grcdsybx=#{grcdsybx},</if>
-			<if test="gscdylbx2!=null and gscdylbx2!=''">gscdylbx2=#{gscdylbx2},</if>
-			<if test="grcdylbx2!=null and grcdylbx2!=''">grcdylbx2=#{grcdylbx2},</if>
-			<if test="shengyubx!=null and shengyubx!=''">shengyubx=#{shengyubx},</if>
-			<if test="gsbx!=null and gsbx!=''">gsbx=#{gsbx},</if>
-			<if test="salarykhh!=null and salarykhh!=''">salarykhh=#{salarykhh},</if>
+			<if test="salarystandardid!=null and salarystandardid!=''">salarystandardid=#{salarystandardid},</if>
+			<if test="ssbid!=null and ssbid!=''">ssbid=#{ssbid},</if>
+			<if test="ssbgscdid!=null and ssbgscdid!=''">ssbgscdid=#{ssbgscdid},</if>
+			<if test="ssbgrcdid!=null and ssbgrcdid!=''">ssbgrcdid=#{ssbgrcdid},</if>
+			<if test="gjjid!=null and gjjid!=''">gjjid=#{gjjid},</if>
+			<if test="gjjgscdid!=null and gjjgscdid!=''">gjjgscdid=#{gjjgscdid},</if>
+			<if test="gjjgrcdid!=null and gjjgrcdid!=''">gjjgrcdid=#{gjjgrcdid},</if>
+			<if test="khhid!=null and khhid!=''">khhid=#{khhid},</if>
 			<if test="salaryaccount!=null and salaryaccount!=''">salaryaccount=#{salaryaccount},</if>
-			<if test="sbjnd!=null and sbjnd!=''">sbjnd=#{sbjnd},</if>
-			<if test="sbcode!=null and sbcode!=''">sbcode=#{sbcode}</if>
+			<if test="sbjndid!=null and sbjndid!=''">sbjndid=#{sbjndid},</if>
+			<if test="sbcode!=null and sbcode!=''">sbcode=#{sbcode},</if>
+			<if test="gjjcode!=null and gjjcode!=''">gjjcode=#{gjjcode},</if>
 		</set>
 		where id=#{id}
 	</update>

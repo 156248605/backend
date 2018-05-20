@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IHRsetByyxDao">
+
+	<resultMap id="ByyxMapper" type="HRsetByyx">
+		<id column="id" property="id" />
+		<result column="byyx" property="byyx" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="HRsetByyx" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_set_byyx (
+			id,
+			byyx)
+		values (
+			NULL,
+			#{byyx})
+	</insert>
+
+	<select id="selectAll" resultMap="ByyxMapper">
+		SELECT * FROM tb_hr_set_byyx
+	</select>
+
+	<select id="selectByConditions" parameterType="HRsetByyx" resultMap="ByyxMapper">
+		SELECT * FROM tb_hr_set_byyx
+		<where>
+			<if test="id!=null and id!=''">AND id=#{id}</if>
+			<if test="byyx!=null and byyx!=''">AND byyx=#{byyx}</if>
+		</where>
+	</select>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_hr_set_byyx WHERE id=#{id}
+	</delete>
+
+	<update id="updateOne" parameterType="HRsetFunctionalType">
+		UPDATE tb_hr_set_byyx
+		SET byyx=#{byyx}
+		WHERE id=#{id}
+	</update>
+</mapper>

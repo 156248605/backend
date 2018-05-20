@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IPerandpostrsDao">
+
+	<resultMap id="PerandpostrsMapper" type="PerAndPostRs">
+		<id column="perid" property="perid" />
+		<result column="postid" property="postid" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="PerAndPostRs" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_per_and_post_rs (
+			perid,
+			postid)
+		values (
+			#{perid},
+			#{postid})
+	</insert>
+
+	<select id="selectPostidsByPerid" parameterType="PerAndPostRs" resultMap="PerandpostrsMapper">
+		SELECT * FROM tb_hr_per_and_post_rs
+		WHERE perid=#{perid}
+	</select>
+
+	<delete id="deleteByPerid" parameterType="java.lang.Integer" >
+		DELETE FROM tb_hr_per_and_post_rs WHERE perid=#{perid}
+	</delete>
+</mapper>

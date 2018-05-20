@@ -7,9 +7,8 @@
 		<result column="userid" property="userid" />
 		<result column="employeenumber" property="employeenumber" />
 		<result column="depid" property="depid" />
-		<result column="postid" property="postid" />
 		<result column="sex" property="sex" />
-		<result column="telphone" property="telphone" />
+		<result column="telphoneid" property="telphoneid" />
 		<result column="mobilephone" property="mobilephone" />
 		<result column="baseinformationid" property="baseinformationid" />
 		<result column="manageinformationid" property="manageinformationid" />
@@ -19,70 +18,62 @@
 
 	<select id="selectByConditions" parameterType="PersonalInformation" resultMap="PersonalInformationResultMap">
 		SELECT
-			id,
-			userid,
-			employeenumber,
-			depid,
-			postid,
-			sex,
-			telphone,
-			mobilephone
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
 		FROM
-			tb_id_personalinformation
-		<where>
-			<if test="userid!=null and userid!=''">
-				and userid=#{userid}
-			</if>
-			<if test="employeenumber!=null and employeenumber!=''">
-				and employeenumber=#{employeenumber}
-			</if>
-			<if test="depid!=null and depid!=''">
-				and depid=#{depid}
-			</if>
-			<if test="postid!=null and postid!=''">
-				and postid=#{postid}
-			</if>
-		</where>
+			tb_id_personalinformation per
+		JOIN tb_id_user u ON per.userid = u.id
+		JOIN tb_id_department d ON per.depid = d.id
+		JOIN tb_id_baseinformation b ON per.baseinformationid = b.id
 	</select>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="PersonalInformationResultMap">
 		SELECT
-			id,
-			userid,
-			employeenumber,
-			depid,
-			postid,
-			sex,
-			telphone,
-			mobilephone,
-			baseinformationid,
-			manageinformationid,
-			costinformationid,
-			otherinformationid
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
 		FROM
-			tb_id_personalinformation
+			tb_id_personalinformation per
+			JOIN tb_id_user u ON per.userid = u.id
 		WHERE
-			id=#{id}
+			per.id=#{id} and u.state = 1
 	</select>
 
 	<select id="selectByUserid" parameterType="java.lang.Integer" resultMap="PersonalInformationResultMap">
 		SELECT
-			id,
-			userid,
-			employeenumber,
-			depid,
-			postid,
-			sex,
-			telphone,
-			mobilephone,
-			baseinformationid,
-			manageinformationid,
-			costinformationid,
-			otherinformationid
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
 		FROM
-			tb_id_personalinformation
+			tb_id_personalinformation per
+			JOIN tb_id_user u ON per.userid = u.id
 		WHERE
-			userid=#{userid}
+			userid=#{userid} and u.state=1
 	</select>
 
 	<insert id="insertOne" parameterType="PersonalInformation" useGeneratedKeys="true" keyProperty="id">
@@ -91,22 +82,20 @@
 			userid,
 			employeenumber,
 			depid,
-			postid,
 			sex,
-			telphone,
+			telphoneid,
 			mobilephone,
 			baseinformationid,
 			manageinformationid,
 			costinformationid,
 			otherinformationid)
 		values (
-			#{id},
+			NULL ,
 			#{userid},
 			#{employeenumber},
 			#{depid},
-			#{postid},
 			#{sex},
-			#{telphone},
+			#{telphoneid},
 			#{mobilephone},
 			#{baseinformationid},
 			#{manageinformationid},
@@ -123,14 +112,11 @@
 			<if test="depid!=null and depid!=''">
 				depid=#{depid},
 			</if>
-			<if test="postid!=null and postid!=''">
-				postid=#{postid},
-			</if>
 			<if test="sex!=null and sex!=''">
 				sex=#{sex},
 			</if>
-			<if test="telphone!=null and telphone!=''">
-				telphone=#{telphone},
+			<if test="telphoneid!=null and telphoneid!=''">
+				telphoneid=#{telphoneid},
 			</if>
 			<if test="mobilephone!=null and mobilephone!=''">
 				mobilephone=#{mobilephone},
@@ -149,7 +135,23 @@
 	</update>
 
 	<select id="selectAll" resultMap="PersonalInformationResultMap">
-		select * from tb_id_personalinformation
+		select
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		from
+			 tb_id_personalinformation per
+			 JOIN tb_id_user u ON per.userid = u.id
+		WHERE
+			u.state = 1
 	</select>
 
 </mapper>

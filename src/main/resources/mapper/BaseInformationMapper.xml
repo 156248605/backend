@@ -4,32 +4,29 @@
 
 	<resultMap id="BaseInformationResultMap" type="BaseInformation">
 		<id column="id" property="id" />
-		<result column="bloodtype" property="bloodtype" />
-		<result column="marriage" property="marriage" />
+		<result column="userphoto" property="userphoto" />
+		<result column="idphoto1" property="idphoto1" />
+		<result column="idphoto2" property="idphoto2" />
 		<result column="englishname" property="englishname" />
-		<result column="race" property="race" />
 		<result column="idcode" property="idcode" />
-		<result column="hktype" property="hktype" />
 		<result column="birthday" property="birthday" />
-		<result column="zzmm" property="zzmm" />
-		<result column="bysj" property="bysj" />
-		<result column="hkszd" property="hkszd" />
 		<result column="constellation" property="constellation" />
-		<result column="zgxl" property="zgxl" />
-		<result column="nationality" property="nationality" />
-		<result column="byyx" property="byyx" />
-		<result column="sxzy" property="sxzy" />
-		<result column="pyfs" property="pyfs" />
-		<result column="firstla" property="firstla" />
-		<result column="secondla" property="secondla" />
-		<result column="thirdla" property="thirdla" />
-		<result column="elsela" property="elsela" />
-		<result column="zyzstype" property="zyzstype" />
-		<result column="zyzs" property="zyzs" />
-		<result column="zyzscp" property="zyzscp" />
+		<result column="chinesecs" property="chinesecs" />
+		<result column="raceid" property="raceid" />
+		<result column="marriage" property="marriage" />
+		<result column="childrenid" property="childrenid" />
+		<result column="zzmmid" property="zzmmid" />
+		<result column="zgxlid" property="zgxlid" />
+		<result column="byyxid" property="byyxid" />
+		<result column="sxzyid" property="sxzyid" />
+		<result column="pyfsid" property="pyfsid" />
+		<result column="firstlsid" property="firstlsid" />
+		<result column="elselaid" property="elselaid" />
+		<result column="posttitleid" property="posttitleid" />
+		<result column="zyzstypeid" property="zyzstypeid" />
+		<result column="zyzsnameid" property="zyzsnameid" />
 		<result column="firstworkingtime" property="firstworkingtime" />
-		<result column="sbdd" property="sbdd" />
-		<result column="parentcompany" property="parentcompany" />
+		<result column="parentcompanyid" property="parentcompanyid" />
 	</resultMap>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseInformationResultMap">
@@ -44,143 +41,82 @@
 	<insert id="insertOne" parameterType="BaseInformation" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_baseinformation (
 			id,
-			bloodtype,
-			marriage,
+			userphoto,
+			idphoto1,
+			idphoto2,
 			englishname,
-			race,
 			idcode,
-			hktype,
 			birthday,
-			zzmm,
-			bysj,
-			hkszd,
 			constellation,
-			zgxl,
-			nationality,
-			byyx,
-			sxzy,
-			pyfs,
-			firstla,
-			secondla,
-			thirdla,
-			elsela,
-			zyzstype,
-			zyzs,
-			zyzscp,
+			chinesecs,
+			raceid,
+			marriage,
+			childrenid,
+			zzmmid,
+			zgxlid,
+			byyxid,
+			sxzyid,
+			pyfsid,
+			firstlaid,
+			elselaid,
+			posttitleid,
+			zyzstypeid,
+			zyzsnameid,
 			firstworkingtime,
-			sbdd,
-			parentcompany)
+			parentcompanyid)
 		values (
 			null,
-		 	#{bloodtype},
-		 	#{marriage},
+		 	#{userphoto},
+		 	#{idphoto1},
+		 	#{idphoto2},
 		 	#{englishname},
-		 	#{race},
 		 	#{idcode},
-		 	#{hktype},
 		 	#{birthday},
-		 	#{zzmm},
-		 	#{bysj},
-		 	#{hkszd},
 		 	#{constellation},
-		 	#{zgxl},
-		 	#{nationality},
-		 	#{byyx},
-		 	#{sxzy},
-		 	#{pyfs},
-		 	#{firstla},
-		 	#{secondla},
-		 	#{thirdla},
-		 	#{elsela},
-		 	#{zyzstype},
-		 	#{zyzs},
-		 	#{zyzscp},
+		 	#{chinesecs},
+		 	#{raceid},
+		 	#{marriage},
+		 	#{childrenid},
+		 	#{zzmmid},
+		 	#{zgxlid},
+		 	#{byyxid},
+		 	#{sxzyid},
+		 	#{pyfsid},
+		 	#{firstlaid},
+		 	#{elselaid},
+		 	#{zyzstypeid},
+		 	#{posttitleid},
+		 	#{zyzsnameid},
 		 	#{firstworkingtime},
-		 	#{sbdd},
-  			#{parentcompany})
+  			#{parentcompanyid})
 	</insert>
 
 	<update id="updateOne" parameterType="BaseInformation" >
 		update tb_id_baseinformation
 		<set>
-			<if test="bloodtype!=null and bloodtype!=''">
-				bloodtype=#{bloodtype},
-			</if>
-			<if test="marriage!=null and marriage!=''">
-				marriage=#{marriage},
-			</if>
-			<if test="englishname!=null and englishname!=''">
-				englishname=#{englishname},
-			</if>
-			<if test="race!=null and race!=''">
-				race=#{race},
-			</if>
-			<if test="idcode!=null and idcode!=''">
-				idcode=#{idcode},
-			</if>
-			<if test="hktype!=null and hktype!=''">
-				hktype=#{hktype},
-			</if>
-			<if test="birthday!=null and birthday!=''">
-				birthday=#{birthday},
-			</if>
-			<if test="zzmm!=null and zzmm!=''">
-				zzmm=#{zzmm},
-			</if>
-			<if test="bysj!=null and bysj!=''">
-				bysj=#{bysj},
-			</if>
-			<if test="hkszd!=null and hkszd!=''">
-				hkszd=#{hkszd},
-			</if>
-			<if test="constellation!=null and constellation!=''">
-				constellation=#{constellation},
-			</if>
-			<if test="zgxl!=null and zgxl!=''">
-				zgxl=#{zgxl},
-			</if>
-			<if test="nationality!=null and nationality!=''">
-				nationality=#{nationality},
-			</if>
-			<if test="byyx!=null and byyx!=''">
-				byyx=#{byyx},
-			</if>
-			<if test="sxzy!=null and sxzy!=''">
-				sxzy=#{sxzy},
-			</if>
-			<if test="pyfs!=null and pyfs!=''">
-				pyfs=#{pyfs},
-			</if>
-			<if test="firstla!=null and firstla!=''">
-				firstla=#{firstla},
-			</if>
-			<if test="secondla!=null and secondla!=''">
-				secondla=#{secondla},
-			</if>
-			<if test="thirdla!=null and thirdla!=''">
-				thirdla=#{thirdla},
-			</if>
-			<if test="elsela!=null and elsela!=''">
-				elsela=#{elsela},
-			</if>
-			<if test="zyzstype!=null and zyzstype!=''">
-				zyzstype=#{zyzstype},
-			</if>
-			<if test="zyzs!=null and zyzs!=''">
-				zyzs=#{zyzs},
-			</if>
-			<if test="zyzscp!=null and zyzscp!=''">
-				zyzscp=#{zyzscp},
-			</if>
-			<if test="firstworkingtime!=null and firstworkingtime!=''">
-				firstworkingtime=#{firstworkingtime},
-			</if>
-			<if test="sbdd!=null and sbdd!=''">
-				sbdd=#{sbdd},
-			</if>
-			<if test="parentcompany!=null and parentcompany!=''">
-				parentcompany=#{parentcompany}
-			</if>
+			<if test="userphoto!=null and userphoto!=''">userphoto=#{userphoto},</if>
+			<if test="idphoto1!=null and idphoto1!=''">idphoto1=#{idphoto1},</if>
+			<if test="idphoto2!=null and idphoto2!=''">idphoto2=#{idphoto2},</if>
+			<if test="englishname!=null and englishname!=''">englishname=#{englishname},</if>
+			<if test="idcode!=null and idcode!=''">idcode=#{idcode},</if>
+			<if test="birthday!=null and birthday!=''">birthday=#{birthday},</if>
+			<if test="constellation!=null and constellation!=''">constellation=#{constellation},</if>
+			<if test="chinesecs!=null and chinesecs!=''">chinesecs=#{chinesecs},</if>
+			<if test="raceid!=null and raceid!=''">raceid=#{raceid},</if>
+			<if test="marriage!=null and marriage!=''">marriage=#{marriage},</if>
+			<if test="childrenid!=null and childrenid!=''">childrenid=#{childrenid},</if>
+			<if test="zzmmid!=null and zzmmid!=''">zzmmid=#{zzmmid},</if>
+			<if test="zgxlid!=null and zgxlid!=''">zgxlid=#{zgxlid},</if>
+			<if test="byyxid!=null and byyxid!=''">byyxid=#{byyxid},</if>
+			<if test="sxzyid!=null and sxzyid!=''">sxzyid=#{sxzyid},</if>
+			<if test="pyfsid!=null and pyfsid!=''">pyfsid=#{pyfsid},</if>
+			<if test="firstlaid!=null and firstlaid!=''">firstlaid=#{firstlaid},</if>
+			<if test="elselaid!=null and elselaid!=''">elselaid=#{elselaid},</if>
+			<if test="zyzstypeid!=null and zyzstypeid!=''">zyzstypeid=#{zyzstypeid},</if>
+			<if test="posttitleid!=null and posttitleid!=''">posttitleid=#{posttitleid},</if>
+			<if test="zyzsnameid!=null and zyzsnameid!=''">zyzsnameid=#{zyzsnameid},</if>
+			<if test="firstworkingtime!=null and firstworkingtime!=''">firstworkingtime=#{firstworkingtime},</if>
+			<if test="parentcompanyid!=null and parentcompanyid!=''">parentcompanyid=#{parentcompanyid},</if>
 		</set>
 		WHERE id=#{id}
 	</update>

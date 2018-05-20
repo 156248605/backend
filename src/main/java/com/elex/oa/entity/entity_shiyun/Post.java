@@ -10,7 +10,9 @@ public class Post implements Serializable{
     private Integer id;
     private String postname; //名称
     private String functionaltype;  //职能类型
+    private Integer functionaltypeid;//职能类型ID
     private String postlevel; //职级
+    private Integer postlevelid;//职级ID
     private String postcode; //岗位编码
     private Integer parentpostid; //上级岗位id
     private Post parentpost; //上级岗位
@@ -19,23 +21,9 @@ public class Post implements Serializable{
     private String entryrequirements; //入职要求
     private String jobdescription; //岗位描述
     private String dutyfile; //岗位详细描述，文件
+    private Integer state;//状态
 
     public Post() {
-    }
-
-    public Post(Integer id, String postname, String functionaltype, String postlevel, String postcode, Integer parentpostid, Post parentpost, String organization, String duty, String entryrequirements, String jobdescription, String dutyfile) {
-        this.id = id;
-        this.postname = postname;
-        this.functionaltype = functionaltype;
-        this.postlevel = postlevel;
-        this.postcode = postcode;
-        this.parentpostid = parentpostid;
-        this.parentpost = parentpost;
-        this.organization = organization;
-        this.duty = duty;
-        this.entryrequirements = entryrequirements;
-        this.jobdescription = jobdescription;
-        this.dutyfile = dutyfile;
     }
 
     public Integer getId() {
@@ -60,6 +48,22 @@ public class Post implements Serializable{
 
     public void setFunctionaltype(String functionaltype) {
         this.functionaltype = functionaltype;
+    }
+
+    public Integer getFunctionaltypeid() {
+        return functionaltypeid;
+    }
+
+    public void setFunctionaltypeid(Integer functionaltypeid) {
+        this.functionaltypeid = functionaltypeid;
+    }
+
+    public Integer getPostlevelid() {
+        return postlevelid;
+    }
+
+    public void setPostlevelid(Integer postlevelid) {
+        this.postlevelid = postlevelid;
     }
 
     public String getPostlevel() {
@@ -132,6 +136,14 @@ public class Post implements Serializable{
 
     public void setDutyfile(String dutyfile) {
         this.dutyfile = dutyfile;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     @Override
