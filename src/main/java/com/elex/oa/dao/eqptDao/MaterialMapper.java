@@ -6,6 +6,7 @@ import com.elex.oa.entity.eqpt.Material;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MaterialMapper {
@@ -32,4 +33,7 @@ public interface MaterialMapper {
     Material MaxLimit(Material material);
 
     List searchSN(Material material);
+
+    // 导入Excel
+    int importMaterial(Material material);
 }

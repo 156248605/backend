@@ -92,16 +92,17 @@ public class OutRepositoryImpl implements OutRepositoryService {
         material.setBn(BN);
         material.setId(MATERIALID);
         String ID;
-        if (inRepositoryMapper.searchId(material).contains(MATERIALID)){
-            ID = MATERIALID;
+        String Sn;
+        if ( inRepositoryMapper.searchSn(material).get(0).toString() != SN){
+            Sn = SN+"...";
         }else {
-            ID = MATERIALID+"...";
+            Sn = SN;
         }
         String MinLimit;
         if (materialMapper.Id(material) != null) {
             MinLimit = materialMapper.MinLimit(material).getMinlimit().toString();
         } else {
-            MinLimit = request.getParameter("materialMax");
+            MinLimit = request.getParameter("materialMin");
         }
         Repository repository = new Repository();
         repository.setMaterialId(request.getParameter("materialId"));
@@ -109,15 +110,24 @@ public class OutRepositoryImpl implements OutRepositoryService {
         repository.setOutId(request.getParameter("outId"));
         String outid = inRepositoryMapper.OUTID(repository);
         String REPTcategory = repositoryMapper.searchCategory(repository);
+        repository.setBn(request.getParameter("bn"));
+        repository.setSn(request.getParameter("sn"));
         List<Repository> list = repositoryMapper.getNum(repository);
         int num = 0;
         for (Repository r : list) {
             num += Integer.parseInt(r.getNum());
         }
-        if (MATERIALID.equals(ID) && num - Integer.parseInt(request.getParameter("outNum")) >= Integer.parseInt(MinLimit) && REPTCATEGORY.equals(REPTcategory) && outid == null ){
+        // 确定库位正确
+        String Position;
+        if (repositoryMapper.thePosition(repository).contains(request.getParameter("position"))) {
+            Position = "1";
+        }else {
+            Position = "0";
+        }
+        if (Sn.equals(SN) && num - Integer.parseInt(request.getParameter("outNum")) >= Integer.parseInt(MinLimit) && REPTCATEGORY.equals(REPTcategory) && outid == null && Position.equals("1") ){
             outRepositoryMapper.insertNew(REPTCATEGORY,OUTID,OUTTIME,OUTNUM,REPTID,POSITION,SN,BN);
             return "1";
-        }else if ( !MATERIALID.equals(ID) ){
+        }else if ( !Sn.equals(SN) ){
             return "2";
         }else if ( num - Integer.parseInt(request.getParameter("outNum")) < Integer.parseInt(MinLimit)) {
             return "3";
@@ -125,8 +135,10 @@ public class OutRepositoryImpl implements OutRepositoryService {
             return "4";
         } else if (outid != null){
             return "5";
-        }else {
+        } else if (Position.equals("0")){
             return "6";
+        } else {
+            return "7";
         }
     }
 
@@ -134,6 +146,8 @@ public class OutRepositoryImpl implements OutRepositoryService {
     public String OutRepository(HttpServletRequest request) {
         Material material = new Material();
         material.setId(request.getParameter("materialId"));
+        material.setSn(request.getParameter("sn"));
+        material.setBn(request.getParameter("bn"));
         String Id = materialMapper.Id(material).getId().toString();
         String MinLimit;
         if (materialMapper.Id(material) != null) {
