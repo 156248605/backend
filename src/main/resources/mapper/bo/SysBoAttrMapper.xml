@@ -23,7 +23,7 @@
 
     </resultMap>
 
-    <insert id="create" parameterType="com.redxun.sys.bo.entity.SysBoAttr">
+    <insert id="create" parameterType="SysBoAttr">
         INSERT INTO SYS_BO_ATTR
         (ID_,ENT_ID_,NAME_,FIELD_NAME_,COMMENT_,DATA_TYPE_,LENGTH_,DECIMAL_LENGTH_,CONTROL_,EXT_JSON_,CREATE_TIME_,CREATE_BY_,UPDATE_TIME_,UPDATE_BY_,TENANT_ID_,STATUS_,IS_SINGLE_)
         VALUES
@@ -50,7 +50,7 @@
             ORDER BY ID_ DESC
         </if>
     </select>
-    <update id="update" parameterType="com.redxun.sys.bo.entity.SysBoAttr">
+    <update id="update" parameterType="SysBoAttr">
         UPDATE SYS_BO_ATTR SET
         ENT_ID_=#{entId,jdbcType=VARCHAR},
         NAME_=#{name,jdbcType=VARCHAR},

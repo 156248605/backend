@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IDeptLogDao">
+
+	<resultMap id="deptLogMapper" type="DeptLog">
+		<id column="id" property="id" />
+		<result column="deptid" property="deptid" />
+		<result column="changeinformation" property="changeinformation" />
+		<result column="beforeinformation" property="beforeinformation" />
+		<result column="afterinformation" property="afterinformation" />
+		<result column="changereason" property="changereason" />
+		<result column="changedate" property="changedate" />
+		<result column="transactoruserid" property="transactoruserid" />
+	</resultMap>
+
+	<select id="selectAllDeptLog" resultMap="deptLogMapper">
+		select * from tb_dept_log
+	</select>
+
+	<insert id="insertOne" parameterType="DeptLog" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_dept_log
+		(id,
+		deptid,
+		changeinformation,
+		beforeinformation,
+		afterinformation,
+		changereason,
+		changedate,
+		transactoruserid
+		)
+		VALUES
+		(NULL ,
+		#{deptid},
+		#{changeinformation},
+		#{beforeinformation},
+		#{afterinformation},
+		#{changereason},
+		#{changedate},
+		#{transactoruserid})
+	</insert>
+
+	<select id="selectByConditions" parameterType="DeptLog" resultMap="deptLogMapper">
+		SELECT
+			dlog.id,
+		    dlog.deptid,
+		    dlog.changeinformation,
+		    dlog.beforeinformation,
+		    dlog.afterinformation,
+		    dlog.changereason,
+		    dlog.changedate,
+		    dlog.transactoruserid
+		FROM tb_dept_log dlog
+		    LEFT JOIN tb_id_department d ON dlog.deptid = d.id
+		    LEFT JOIN tb_id_user u ON dlog.transactoruserid = u.id
+		<where>
+			<if test="changeinformation!=null and changeinformation!=''">
+			    <if test="changeinformationvalue==''">
+					AND dlog.changeinformation = #{changeinformation}
+				</if>
+				<if test="changeinformationvalue=='包含'">
+					AND dlog.changeinformation LIKE CONCAT(CONCAT('%',#{changeinformation}),'%')
+				</if>
+				<if	test="changeinformationvalue=='不包含'">
+					AND dlog.changeinformation NOT LIKE CONCAT(CONCAT('%',#{changeinformation}),'%')
+				</if>
+			</if>
+			<if test="deptname!=null and deptname!=''">
+			    <if test="deptnamevalue==''">
+					AND d.depname = #{deptname}
+				</if>
+				<if test="deptnamevalue=='包含'">
+					AND d.depname LIKE CONCAT(CONCAT('%',#{deptname}),'%')
+				</if>
+				<if	test="deptnamevalue=='不包含'">
+					AND d.depname NOT LIKE CONCAT(CONCAT('%',#{deptname}),'%')
+				</if>
+			</if>
+			<if test="beforeinformation!=null and beforeinformation!=''">
+				<if test="beforeinformationvalue==''">
+					AND dlog.beforeinformation = #{beforeinformation}
+				</if>
+				<if test="beforeinformationvalue=='包含'">
+					AND dlog.beforeinformation LIKE CONCAT(CONCAT('%',#{beforeinformation}),'%')
+				</if>
+				<if	test="beforeinformationvalue=='不包含'">
+					AND dlog.beforeinformation NOT LIKE CONCAT(CONCAT('%',#{beforeinformation}),'%')
+				</if>
+			</if>
+			<if test="afterinformation!=null and afterinformation!=''">
+				<if test="afterinformationvalue==''">
+					AND dlog.afterinformation = #{afterinformation}
+				</if>
+				<if test="afterinformationvalue=='包含'">
+					AND dlog.afterinformation LIKE CONCAT(CONCAT('%',#{afterinformation}),'%')
+				</if>
+				<if	test="afterinformationvalue=='不包含'">
+					AND dlog.afterinformation NOT LIKE CONCAT(CONCAT('%',#{afterinformation}),'%')
+				</if>
+			</if>
+			<if test="changereason!=null and changereason!=''">
+				<if test="changereasonvalue==''">
+					AND dlog.changereason = #{changereason}
+				</if>
+				<if test="changereasonvalue=='包含'">
+					AND dlog.changereason LIKE CONCAT(CONCAT('%',#{changereason}),'%')
+				</if>
+				<if	test="changereasonvalue=='不包含'">
+					AND dlog.changereason NOT LIKE CONCAT(CONCAT('%',#{changereason}),'%')
+				</if>
+			</if>
+			<if test="changedatevalue1!=null and changedatevalue1!='' and changedatevalue2!=null and changedatevalue2!=''">
+				AND dlog.changedate BETWEEN #{changedatevalue1} AND #{changedatevalue2}
+			</if>
+			<if test="transactortruename!=null and transactortruename!=''">
+				<if test="transactortruenamevalue==''">
+					AND u.truename = #{transactortruename}
+				</if>
+				<if test="transactortruenamevalue=='包含'">
+					AND u.truename LIKE CONCAT(CONCAT('%',#{transactortruename}),'%')
+				</if>
+				<if	test="transactortruenamevalue=='不包含'">
+					AND u.truename NOT LIKE CONCAT(CONCAT('%',#{transactortruename}),'%')
+				</if>
+			</if>
+		</where>
+		GROUP BY dlog.id
+	</select>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer" >
+		DELETE FROM tb_dept_log
+	    WHERE id=#{id}
+	</delete>
+
+</mapper>

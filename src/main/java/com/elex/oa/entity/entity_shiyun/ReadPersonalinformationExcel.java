@@ -24,7 +24,7 @@ import java.util.List;
  * @Date:Created in  16:40 2018\5\7 0007
  * @Modify By:
  */
-public class ReadExcel {
+public class ReadPersonalinformationExcel {
     //总行数
     private int totalRows = 0;
     //总条数
@@ -32,7 +32,7 @@ public class ReadExcel {
     //错误信息接收器
     private String errorMsg;
     //构造方法
-    public ReadExcel(){}
+    public ReadPersonalinformationExcel(){}
     //获取总行数
     public int getTotalRows()  { return totalRows;}
     //获取总列数

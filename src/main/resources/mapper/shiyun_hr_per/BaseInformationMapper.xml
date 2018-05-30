@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IBaseInformationDao">
+
+	<resultMap id="BaseInformationResultMap" type="BaseInformation">
+		<id column="id" property="id" />
+		<result column="userphoto" property="userphoto" />
+		<result column="idphoto1" property="idphoto1" />
+		<result column="idphoto2" property="idphoto2" />
+		<result column="englishname" property="englishname" />
+		<result column="idcode" property="idcode" />
+		<result column="birthday" property="birthday" />
+		<result column="constellation" property="constellation" />
+		<result column="chinesecs" property="chinesecs" />
+		<result column="raceid" property="raceid" />
+		<result column="marriage" property="marriage" />
+		<result column="childrenid" property="childrenid" />
+		<result column="zzmmid" property="zzmmid" />
+		<result column="zgxlid" property="zgxlid" />
+		<result column="byyxid" property="byyxid" />
+		<result column="sxzyid" property="sxzyid" />
+		<result column="pyfsid" property="pyfsid" />
+		<result column="firstlsid" property="firstlsid" />
+		<result column="elselaid" property="elselaid" />
+		<result column="posttitleid" property="posttitleid" />
+		<result column="zyzstypeid" property="zyzstypeid" />
+		<result column="zyzsnameid" property="zyzsnameid" />
+		<result column="firstworkingtime" property="firstworkingtime" />
+		<result column="parentcompanyid" property="parentcompanyid" />
+	</resultMap>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseInformationResultMap">
+		SELECT
+			*
+		FROM
+			tb_id_baseinformation
+		WHERE
+			id=#{id}
+	</select>
+
+	<insert id="insertOne" parameterType="BaseInformation" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_id_baseinformation (
+			id,
+			userphoto,
+			idphoto1,
+			idphoto2,
+			englishname,
+			idcode,
+			birthday,
+			constellation,
+			chinesecs,
+			raceid,
+			marriage,
+			childrenid,
+			zzmmid,
+			zgxlid,
+			byyxid,
+			sxzyid,
+			pyfsid,
+			firstlaid,
+			elselaid,
+			posttitleid,
+			zyzstypeid,
+			zyzsnameid,
+			firstworkingtime,
+			parentcompanyid)
+		values (
+			null,
+		 	#{userphoto},
+		 	#{idphoto1},
+		 	#{idphoto2},
+		 	#{englishname},
+		 	#{idcode},
+		 	#{birthday},
+		 	#{constellation},
+		 	#{chinesecs},
+		 	#{raceid},
+		 	#{marriage},
+		 	#{childrenid},
+		 	#{zzmmid},
+		 	#{zgxlid},
+		 	#{byyxid},
+		 	#{sxzyid},
+		 	#{pyfsid},
+		 	#{firstlaid},
+		 	#{elselaid},
+		 	#{zyzstypeid},
+		 	#{posttitleid},
+		 	#{zyzsnameid},
+		 	#{firstworkingtime},
+  			#{parentcompanyid})
+	</insert>
+
+	<update id="updateOne" parameterType="BaseInformation" >
+		update tb_id_baseinformation
+		<set>
+			<if test="userphoto!=null and userphoto!=''">userphoto=#{userphoto},</if>
+			<if test="idphoto1!=null and idphoto1!=''">idphoto1=#{idphoto1},</if>
+			<if test="idphoto2!=null and idphoto2!=''">idphoto2=#{idphoto2},</if>
+			<if test="englishname!=null and englishname!=''">englishname=#{englishname},</if>
+			<if test="idcode!=null and idcode!=''">idcode=#{idcode},</if>
+			<if test="birthday!=null and birthday!=''">birthday=#{birthday},</if>
+			<if test="constellation!=null and constellation!=''">constellation=#{constellation},</if>
+			<if test="chinesecs!=null and chinesecs!=''">chinesecs=#{chinesecs},</if>
+			<if test="raceid!=null and raceid!=''">raceid=#{raceid},</if>
+			<if test="marriage!=null and marriage!=''">marriage=#{marriage},</if>
+			<if test="childrenid!=null and childrenid!=''">childrenid=#{childrenid},</if>
+			<if test="zzmmid!=null and zzmmid!=''">zzmmid=#{zzmmid},</if>
+			<if test="zgxlid!=null and zgxlid!=''">zgxlid=#{zgxlid},</if>
+			<if test="byyxid!=null and byyxid!=''">byyxid=#{byyxid},</if>
+			<if test="sxzyid!=null and sxzyid!=''">sxzyid=#{sxzyid},</if>
+			<if test="pyfsid!=null and pyfsid!=''">pyfsid=#{pyfsid},</if>
+			<if test="firstlaid!=null and firstlaid!=''">firstlaid=#{firstlaid},</if>
+			<if test="elselaid!=null and elselaid!=''">elselaid=#{elselaid},</if>
+			<if test="zyzstypeid!=null and zyzstypeid!=''">zyzstypeid=#{zyzstypeid},</if>
+			<if test="posttitleid!=null and posttitleid!=''">posttitleid=#{posttitleid},</if>
+			<if test="zyzsnameid!=null and zyzsnameid!=''">zyzsnameid=#{zyzsnameid},</if>
+			<if test="firstworkingtime!=null and firstworkingtime!=''">firstworkingtime=#{firstworkingtime},</if>
+			<if test="parentcompanyid!=null and parentcompanyid!=''">parentcompanyid=#{parentcompanyid},</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="selectByConditions" parameterType="PersonalInformation" resultMap="BaseInformationResultMap">
+		SELECT b.id
+		FROM tb_id_baseinformation b
+		LEFT JOIN tb_hr_set_race race ON b.raceid = race.id
+		LEFT JOIN tb_hr_set_children children ON b.childrenid = children.id
+		LEFT JOIN tb_hr_set_zzmm zzmm ON b.zzmmid = zzmm.id
+		LEFT JOIN tb_hr_set_zgxl zgxl ON b.zgxlid = zgxl.id
+		LEFT JOIN tb_hr_set_byyx byyx ON b.byyxid = byyx.id
+		LEFT JOIN tb_hr_set_sxzy sxzy ON b.sxzyid = sxzy.id
+		LEFT JOIN tb_hr_set_pyfs pyfs ON b.pyfsid = pyfs.id
+		LEFT JOIN tb_hr_set_fla fla1 ON b.firstlaid = fla1.id
+		LEFT JOIN tb_hr_set_fla fla2 ON b.elselaid = fla2.id
+		LEFT JOIN tb_hr_set_posttitle posttitle ON b.posttitleid = posttitle.id
+		LEFT JOIN tb_hr_set_zyzstype zyzstype ON b.zyzstypeid = zyzstype.id
+		LEFT JOIN tb_hr_set_zyzsname zyzsname ON b.zyzsnameid = zyzsname.id
+		LEFT JOIN tb_hr_set_parentcompanyname pc ON b.parentcompanyid = pc.id
+		<where>
+			<if test="englishname!=null and englishname!=''">
+				<if test="englishnamevalue==''">
+					AND b.englishname=#{englishname}
+				</if>
+				<if test="englishnamevalue=='包含'">
+					AND b.englishname LIKE CONCAT(CONCAT('%', #{englishname}), '%')
+				</if>
+				<if test="englishnamevalue=='不包含'">
+					AND b.englishname NOT LIKE CONCAT(CONCAT('%', #{englishname}), '%')
+				</if>
+			</if>
+			<if test="idcode!=null and idcode!=''">
+				<if test="idcodevalue==''">
+					AND b.idcode=#{idcode}
+				</if>
+				<if test="idcodevalue=='包含'">
+					AND b.idcode LIKE CONCAT(CONCAT('%', #{idcode}), '%')
+				</if>
+				<if test="idcodevalue=='不包含'">
+					AND b.idcode NOT LIKE CONCAT(CONCAT('%', #{idcode}), '%')
+				</if>
+			</if>
+			<if test="birthdayvalue1!=null and birthdayvalue1!='' and birthdayvalue2!=null and birthdayvalue2!=''">
+				AND b.birthday BETWEEN #{birthdayvalue1} AND #{birthdayvalue2}
+			</if>
+			<if test="age!=null and age!=''">
+				<if test="agevalue==''">
+					AND b.birthday BETWEEN #{sbir} AND #{ebir}
+				</if>
+				<if test="agevalue== 1">
+					<![CDATA[ AND b.birthday < #{sbir} ]]>
+				</if>
+				<if test="agevalue==2">
+					<![CDATA[ AND b.birthday > #{ebir} ]]>
+				</if>
+				<if test="agevalue==3">
+					<![CDATA[ AND b.birthday <= #{ebir} ]]>
+				</if>
+				<if test="agevalue==4">
+					<![CDATA[ AND b.birthday >= #{sbir} ]]>
+				</if>
+				<if test="agevalue==5">
+					AND b.birthday BETWEEN #{sbir} AND #{ebir}
+				</if>
+				<if test="agevalue==6">
+					<![CDATA[ AND b.birthday > #{ebir} ]]>
+					<![CDATA[ OR b.birthday < #{sbir} ]]>
+				</if>
+			</if>
+			<if test="constellation!=null and constellation!=''">
+				<if test="constellationvalue==''">
+					AND b.constellation=#{constellation}
+				</if>
+				<if test="constellationvalue=='包含'">
+					AND b.constellation LIKE CONCAT(CONCAT('%', #{constellation}), '%')
+				</if>
+				<if test="constellationvalue=='不包含'">
+					AND b.constellation NOT LIKE CONCAT(CONCAT('%', #{constellation}), '%')
+				</if>
+			</if>
+			<if test="chinesecs!=null and chinesecs!=''">
+				<if test="chinesecsvalue==''">
+					AND b.chinesecs=#{chinesecs}
+				</if>
+				<if test="chinesecsvalue=='包含'">
+					AND b.chinesecs=#{chinesecs}
+				</if>
+				<if test="chinesecsvalue=='不包含'">
+					<![CDATA[ AND b.chinesecs != #{chinesecs} ]]>
+				</if>
+			</if>
+			<if test="marriage!=null and marriage!=''">
+				AND b.marriage=#{marriage}
+			</if>
+			<if test="race!=null and race!=''">
+				<if test="racevalue==''">
+					AND race.race=#{race}
+				</if>
+				<if test="racevalue=='包含'">
+					AND race.race LIKE CONCAT(CONCAT('%', #{race}), '%')
+				</if>
+				<if test="racevalue=='不包含'">
+					AND race.race NOT LIKE CONCAT(CONCAT('%', #{race}), '%')
+				</if>
+			</if>
+			<if test="children!=null and children!=''">
+				AND children.children=#{children}
+			</if>
+			<if test="zzmm!=null and zzmm!=''">
+				AND zzmm.zzmm=#{zzmm}
+			</if>
+			<if test="zgxl!=null and zgxl!=''">
+				AND zgxl.zgxl=#{zgxl}
+			</if>
+			<if test="byyx!=null and byyx!=''">
+				<if test="byyxvalue==''">
+					AND byyx.byyx=#{byyx}
+				</if>
+				<if test="byyxvalue=='包含'">
+					AND byyx.byyx LIKE CONCAT(CONCAT('%', #{byyx}), '%')
+				</if>
+				<if test="byyxvalue=='不包含'">
+					AND byyx.byyx NOT LIKE CONCAT(CONCAT('%', #{byyx}), '%')
+				</if>
+			</if>
+			<if test="sxzy!=null and sxzy!=''">
+				<if test="sxzyvalue==''">
+					AND sxzy.sxzy=#{sxzy}
+				</if>
+				<if test="sxzyvalue=='包含'">
+					AND sxzy.sxzy LIKE CONCAT(CONCAT('%', #{sxzy}), '%')
+				</if>
+				<if test="sxzyvalue=='不包含'">
+					AND sxzy.sxzy NOT LIKE CONCAT(CONCAT('%', #{sxzy}), '%')
+				</if>
+			</if>
+			<if test="pyfs!=null and pyfs!=''">
+				AND pyfs.pyfs=#{pyfs}
+			</if>
+			<if test="firstla!=null and firstla!=''">
+				AND fla1.fla=#{firstla}
+			</if>
+			<if test="elsela!=null and elsela!=''">
+				AND fla2.fla=#{elsela}
+			</if>
+			<if test="posttitle!=null and posttitle!=''">
+				AND posttitle.posttitle=#{posttitle}
+			</if>
+			<if test="zyzstype!=null and zyzstype!=''">
+				<if test="zyzstypevalue==''">
+					AND zyzstype.zyzstype=#{zyzstype}
+				</if>
+				<if test="zyzstypevalue=='包含'">
+					AND zyzstype.zyzstype LIKE CONCAT(CONCAT('%', #{zyzstype}), '%')
+				</if>
+				<if test="zyzstypevalue=='不包含'">
+					AND zyzstype.zyzstype NOT LIKE CONCAT(CONCAT('%', #{zyzstype}), '%')
+				</if>
+			</if>
+			<if test="zyzsname!=null and zyzsname!=''">
+				<if test="zyzsnamevalue==''">
+					AND zyzsname.zyzsname=#{zyzsname}
+				</if>
+				<if test="zyzsnamevalue=='包含'">
+					AND zyzsname.zyzsname LIKE CONCAT(CONCAT('%', #{zyzsname}), '%')
+				</if>
+				<if test="zyzsnamevalue=='不包含'">
+					AND zyzsname.zyzsname NOT LIKE CONCAT(CONCAT('%', #{zyzsname}), '%')
+				</if>
+			</if>
+			<if test="firstworkingtimevalue1!=null and firstworkingtimevalue1!='' and firstworkingtimevalue2!=null and firstworkingtimevalue2!=''">
+				AND b.firstworkingtime BETWEEN #{firstworkingtimevalue1} AND #{firstworkingtimevalue2}
+			</if>
+			<if test="workingage!=null and workingage!=''">
+				<if test="workingagevalue==''">
+					AND b.firstworkingtime BETWEEN #{sfwt} AND #{efwt}
+				</if>
+				<if test="workingagevalue==1">
+					<![CDATA[ AND b.firstworkingtime < #{sfwt} ]]>
+				</if>
+				<if test="workingagevalue==2">
+					<![CDATA[ AND b.firstworkingtime > #{efwt} ]]>
+				</if>
+				<if test="workingagevalue==3">
+					<![CDATA[ AND b.firstworkingtime <= #{efwt} ]]>
+				</if>
+				<if test="workingagevalue==4">
+					<![CDATA[ AND b.firstworkingtime >= #{sfwt} ]]>
+				</if>
+				<if test="workingagevalue==5">
+					AND b.firstworkingtime BETWEEN #{sfwt} AND #{efwt}
+				</if>
+				<if test="workingagevalue==6">
+					<![CDATA[ AND b.firstworkingtime > #{efwt} ]]>
+					<![CDATA[ OR b.firstworkingtime < #{sfwt} ]]>
+				</if>
+			</if>
+			<if test="parentcompany!=null and parentcompany!=''">
+				<if test="parentcompanyvalue==''">
+					AND pc.parentcompanyname=#{parentcompany}
+				</if>
+				<if test="parentcompanyvalue=='包含'">
+					AND pc.parentcompanyname LIKE CONCAT(CONCAT('%', #{parentcompany}), '%')
+				</if>
+				<if test="parentcompanyvalue=='不包含'">
+					AND pc.parentcompanyname NOT LIKE CONCAT(CONCAT('%', #{parentcompany}), '%')
+				</if>
+			</if>
+		</where>
+		GROUP BY b.id
+	</select>
+</mapper>

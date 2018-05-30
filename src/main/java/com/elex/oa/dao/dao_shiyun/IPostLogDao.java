@@ -33,4 +33,11 @@ public interface IPostLogDao {
      *@Date: 17:22 2018\5\2 0002
      */
     public List<PostLog> selectByConditions(PostLog postLog);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除信息
+     *@Date: 10:55 2018\5\24 0024
+     */
+    public void deleteOne(Integer id);
 }

@@ -30,7 +30,7 @@ public interface IDimissionInformationDao extends BaseDao<DimissionInformation> 
 
     /**
      *@Author:ShiYun;
-     *@Description:根据dimissionid
+     *@Description:根据dimissionid查询离职信息
      *@Date: 13:37 2018\4\17 0017
      */
     public DimissionInformation selectOneById(Integer id);
@@ -41,4 +41,11 @@ public interface IDimissionInformationDao extends BaseDao<DimissionInformation> 
      *@Date: 13:42 2018\4\17 0017
      */
     public void updateOne(DimissionInformation dimissionInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除离职信息
+     *@Date: 13:53 2018\5\30 0030
+     */
+    public void deleteOne(Integer id);
 }

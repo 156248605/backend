@@ -1,6 +1,7 @@
 package com.elex.oa.dao.dao_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.PerAndPostRs;
+import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface IPerandpostrsDao {
      *@Description:根据人事ID查询其占用哪些岗位IDs
      *@Date: 20:21 2018\5\12 0012
      */
-    public List<PerAndPostRs> selectPostidsByPerid(PerAndPostRs perAndPostRs);
+    public List<PerAndPostRs> selectPostidsByPerid(Integer perid);
 
     /**
      *@Author:ShiYun;
@@ -33,4 +34,18 @@ public interface IPerandpostrsDao {
      *@Date: 9:05 2018\5\18 0018
      */
     public void deleteByPerid(Integer perid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据条件查询信息
+     *@Date: 15:04 2018\5\22 0022
+     */
+    public List<PerAndPostRs> selectByConditions(PersonalInformation personalInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据条件查询信息
+     *@Date: 15:04 2018\5\22 0022
+     */
+    public List<PerAndPostRs> selectByConditions2(PersonalInformation personalInformation);
 }

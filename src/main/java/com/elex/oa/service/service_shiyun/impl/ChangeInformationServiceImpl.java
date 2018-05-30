@@ -50,4 +50,25 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
 
         return changeInformationPageInfo;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有信息（不分页）
+     *@Date: 10:43 2018\5\25 0025
+     */
+    @Override
+    public List<ChangeInformation> queryAll() {
+        List<ChangeInformation> changeInformations = iChangeInformaionDao.selectAll();
+        return changeInformations;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除信息
+     *@Date: 10:44 2018\5\25 0025
+     */
+    @Override
+    public void removeOne(Integer id) {
+        iChangeInformaionDao.deleteOne(id);
+    }
 }

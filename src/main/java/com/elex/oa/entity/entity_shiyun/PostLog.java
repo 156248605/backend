@@ -18,17 +18,89 @@ public class PostLog implements Serializable{
     private Integer id;
     private Integer postid;
     private String changeinformation;
+    private String changeinformationvalue;
     private String beforeinformation;
+    private String beforeinformationvalue;
     private String afterinformation;
+    private String afterinformationvalue;
     private String changereason;
+    private String changereasonvalue;
     private String changedate;
+    private String changedatevalue1;
+    private String changedatevalue2;
     private Integer transactoruserid;
     @Transient
     private String postname;
+    private String postnamevalue;
     @Transient
     private String transactortruename;
+    private String transactortruenamevalue;
 
     public PostLog() {
+    }
+
+    public String getChangeinformationvalue() {
+        return changeinformationvalue;
+    }
+
+    public void setChangeinformationvalue(String changeinformationvalue) {
+        this.changeinformationvalue = changeinformationvalue;
+    }
+
+    public String getBeforeinformationvalue() {
+        return beforeinformationvalue;
+    }
+
+    public void setBeforeinformationvalue(String beforeinformationvalue) {
+        this.beforeinformationvalue = beforeinformationvalue;
+    }
+
+    public String getAfterinformationvalue() {
+        return afterinformationvalue;
+    }
+
+    public void setAfterinformationvalue(String afterinformationvalue) {
+        this.afterinformationvalue = afterinformationvalue;
+    }
+
+    public String getChangereasonvalue() {
+        return changereasonvalue;
+    }
+
+    public void setChangereasonvalue(String changereasonvalue) {
+        this.changereasonvalue = changereasonvalue;
+    }
+
+    public String getChangedatevalue1() {
+        return changedatevalue1;
+    }
+
+    public void setChangedatevalue1(String changedatevalue1) {
+        this.changedatevalue1 = changedatevalue1;
+    }
+
+    public String getChangedatevalue2() {
+        return changedatevalue2;
+    }
+
+    public void setChangedatevalue2(String changedatevalue2) {
+        this.changedatevalue2 = changedatevalue2;
+    }
+
+    public String getPostnamevalue() {
+        return postnamevalue;
+    }
+
+    public void setPostnamevalue(String postnamevalue) {
+        this.postnamevalue = postnamevalue;
+    }
+
+    public String getTransactortruenamevalue() {
+        return transactortruenamevalue;
+    }
+
+    public void setTransactortruenamevalue(String transactortruenamevalue) {
+        this.transactortruenamevalue = transactortruenamevalue;
     }
 
     public static long getSerialVersionUID() {
@@ -121,13 +193,20 @@ public class PostLog implements Serializable{
                 "id=" + id +
                 ", postid=" + postid +
                 ", changeinformation='" + changeinformation + '\'' +
+                ", changeinformationvalue='" + changeinformationvalue + '\'' +
                 ", beforeinformation='" + beforeinformation + '\'' +
                 ", afterinformation='" + afterinformation + '\'' +
+                ", afterinformationvalue='" + afterinformationvalue + '\'' +
                 ", changereason='" + changereason + '\'' +
+                ", changereasonvalue='" + changereasonvalue + '\'' +
                 ", changedate='" + changedate + '\'' +
+                ", changedatevalue1='" + changedatevalue1 + '\'' +
+                ", changedatevalue2='" + changedatevalue2 + '\'' +
                 ", transactoruserid=" + transactoruserid +
                 ", postname='" + postname + '\'' +
+                ", postnamevalue='" + postnamevalue + '\'' +
                 ", transactortruename='" + transactortruename + '\'' +
+                ", transactortruenamevalue='" + transactortruenamevalue + '\'' +
                 '}';
     }
 }

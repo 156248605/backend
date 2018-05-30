@@ -61,4 +61,14 @@ public class DeptLogServiceImpl implements IDeptLogService {
         PageInfo<DeptLog> deptLogPageInfo = new PageInfo<>(deptLogs);
         return deptLogPageInfo;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID查询信息
+     *@Date: 10:57 2018\5\24 0024
+     */
+    @Override
+    public void removeOne(Integer id) {
+        iDeptLogDao.deleteOne(id);
+    }
 }

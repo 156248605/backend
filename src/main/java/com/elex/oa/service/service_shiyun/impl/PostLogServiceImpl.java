@@ -61,4 +61,14 @@ public class PostLogServiceImpl implements IPostLogService {
         PageInfo<PostLog> postLogPageInfo = new PageInfo<PostLog>(postLogs);
         return postLogPageInfo;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除信息
+     *@Date: 16:31 2018\5\24 0024
+     */
+    @Override
+    public void removeOne(Integer id) {
+        iPostLogDao.deleteOne(id);
+    }
 }

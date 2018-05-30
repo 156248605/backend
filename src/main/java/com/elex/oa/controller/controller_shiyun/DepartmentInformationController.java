@@ -2,10 +2,12 @@ package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.service_shiyun.*;
+import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -149,9 +151,28 @@ public class DepartmentInformationController {
     public String addOneDepartment(
             Dept dept
     ){
-        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype());
-        dept.setFunctionaltypeid(hRsetFunctionalType.getId());
+        if (ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype())!=null) {
+            dept.setFunctionaltypeid(ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype()).getId());
+        }
         Integer depid = iDeptService.addOne(dept);
+        Integer principaluserid = dept.getPrincipaluserid();
+        if(principaluserid!=null){
+            PersonalInformation principalPer = iPersonalInformationService.queryOneByUserid(principaluserid);
+            principalPer.setDepid(depid);
+            iPersonalInformationService.modifyOne(principalPer);
+        }
+        Integer deputyuserid = dept.getDeputyuserid();
+        if(deputyuserid!=null){
+            PersonalInformation deputyPer = iPersonalInformationService.queryOneByUserid(deputyuserid);
+            deputyPer.setDepid(depid);
+            iPersonalInformationService.modifyOne(deputyPer);
+        }
+        Integer secretaryuserid = dept.getSecretaryuserid();
+        if(secretaryuserid!=null){
+            PersonalInformation secretaryPer = iPersonalInformationService.queryOneByUserid(secretaryuserid);
+            secretaryPer.setDepid(depid);
+            iPersonalInformationService.modifyOne(secretaryPer);
+        }
         return "提交成功！";
     }
 
@@ -164,8 +185,9 @@ public class DepartmentInformationController {
     @ResponseBody
     public Dept queryOneByDepid(@RequestParam("depid") Integer id){
         Dept dept = iDeptService.queryOneDepByDepid(id);
-        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid());
-        dept.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+        if (ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid())!=null) {
+            dept.setFunctionaltype(ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid()).getFunctionaltype());
+        }
         return dept;
     }
 
@@ -176,7 +198,10 @@ public class DepartmentInformationController {
      */
     @RequestMapping("/updateOneDepartment")
     @ResponseBody
-    public String updateOneDepartment(Dept dept){
+    public String updateOneDepartment(
+            Dept dept,
+            @RequestParam("transactorusername") String transactorusername
+    ){
         try {
             Boolean b = false;
 
@@ -187,11 +212,14 @@ public class DepartmentInformationController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
             String changedate = simpleDateFormat.format(new Date());
             deptLog.setChangedate(changedate);
-            deptLog.setTransactoruserid(1);//默认为管理员，实际从session中拿
+            User user = new User();
+            user.setUsername(transactorusername);
+            deptLog.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());//默认为管理员，实际从session中拿
 
             Dept dept2 = iDeptService.queryOneDepByDepid(dept.getId());
-            HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(dept2.getFunctionaltypeid());
-            dept2.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            if (ihRsetFunctionalTypeService.queryById(dept2.getFunctionaltypeid())!=null) {
+                dept2.setFunctionaltype(ihRsetFunctionalTypeService.queryById(dept2.getFunctionaltypeid()).getFunctionaltype());
+            }
 
             if (!dept.getDepname().equals(dept2.getDepname())){
                 b = true;
@@ -211,25 +239,37 @@ public class DepartmentInformationController {
                 deptLog.setBeforeinformation(dept2.getFunctionaltype());
                 deptLog.setAfterinformation(dept.getFunctionaltype());
                 iDeptLogService.addOne(deptLog);
-            }if (!dept.getParentdepid().toString().equals(dept2.getParentdepid().toString())){
+            }if (dept.getParentdepid()!=null && !dept.getParentdepid().toString().equals(dept2.getParentdepid().toString())){
                 b = true;
                 deptLog.setChangeinformation("上级部门");
                 deptLog.setBeforeinformation(iDeptService.queryOneDepByDepid(dept2.getParentdepid()).getDepname());
                 deptLog.setAfterinformation(iDeptService.queryOneDepByDepid(dept.getParentdepid()).getDepname());
                 iDeptLogService.addOne(deptLog);
-            }if (!dept.getPrincipaluserid().toString().equals(dept2.getPrincipaluserid().toString())){
+            }if (dept2.getPrincipaluserid()!=null && !dept2.getPrincipaluserid().toString().equals(dept.getPrincipaluserid().toString())){
+                Integer depid = iPersonalInformationService.queryOneByUserid(dept.getPrincipaluserid()).getDepid();
+                if(depid!=dept2.getId()){
+                    return "此员工非本部门，不可以提升为本部门正职！";
+                }
                 b = true;
                 deptLog.setChangeinformation("部门正职");
                 deptLog.setBeforeinformation(iUserService.getById(dept2.getPrincipaluserid()).getTruename());
                 deptLog.setAfterinformation(iUserService.getById(dept.getPrincipaluserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
-            }if (!dept.getDeputyuserid().toString().equals(dept2.getDeputyuserid().toString())){
+            }if (dept2.getDeputyuserid()!=null && !dept2.getDeputyuserid().toString().equals(dept.getDeputyuserid().toString())){
+                Integer depid = iPersonalInformationService.queryOneByUserid(dept.getDeputyuserid()).getDepid();
+                if(depid!=dept2.getId()){
+                    return "此员工非本部门，不可以提升为本部门副职！";
+                }
                 b = true;
                 deptLog.setChangeinformation("部门副职");
                 deptLog.setBeforeinformation(iUserService.getById(dept2.getDeputyuserid()).getTruename());
                 deptLog.setAfterinformation(iUserService.getById(dept.getDeputyuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
-            }if (!dept.getSecretaryuserid().toString().equals(dept2.getSecretaryuserid().toString())){
+            }if (dept2.getSecretaryuserid()!=null && !dept2.getSecretaryuserid().toString().equals(dept.getSecretaryuserid().toString())){
+                Integer depid = iPersonalInformationService.queryOneByUserid(dept.getSecretaryuserid()).getDepid();
+                if(depid!=dept2.getId()){
+                    return "此员工非本部门，不可以提升为本部门秘书！";
+                }
                 b = true;
                 deptLog.setChangeinformation("部门秘书");
                 deptLog.setBeforeinformation(iUserService.getById(dept2.getDeputyuserid()).getTruename());
@@ -238,8 +278,9 @@ public class DepartmentInformationController {
             }
 
             if (b) {
-                HRsetFunctionalType hRsetFunctionalType1 = ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype());
-                dept.setFunctionaltypeid(hRsetFunctionalType1.getId());
+                if (ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype())!=null) {
+                    dept.setFunctionaltypeid(ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype()).getId());
+                }
                 iDeptService.modifyOne(dept);
             } else {
                 return "没有需要修改的部门信息！";
@@ -297,21 +338,11 @@ public class DepartmentInformationController {
     public PageInfo<DeptLog> queryDeptLogInformations(
             @RequestParam("page") Integer page,
             @RequestParam("rows") Integer rows,
-            @RequestParam("deptname") String deptname,
-            @RequestParam("changeinformation") String changeinformation,
-            @RequestParam("changedate") String changedate
+            DeptLog deptLog
     ){
-        deptname = deptname.trim();
-        changeinformation =  changeinformation.trim();
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("pageNum",page);
         paramMap.put("pageSize",rows);
-        DeptLog deptLog = new DeptLog();
-        if (iDeptService.queryOneDepByDepname(deptname)!=null) {
-            deptLog.setDeptid(iDeptService.queryOneDepByDepname(deptname).getId());
-        }
-        deptLog.setChangeinformation(changeinformation);
-        deptLog.setChangedate(changedate);
         paramMap.put("entity",deptLog);
         PageInfo<DeptLog> deptLogPageInfo = iDeptLogService.queryByConditions(paramMap);
         List<DeptLog> list = deptLogPageInfo.getList();
@@ -325,4 +356,74 @@ public class DepartmentInformationController {
         return deptLogPageInfo;
     }
 
+    /**
+     *@Author:ShiYun;
+     *@Description:查询部门日志（不分页）
+     *@Date: 9:18 2018\5\24 0024
+     */
+    @RequestMapping("/queryAllDeptLogInformations")
+    @ResponseBody
+    public List<DeptLog> queryAllDeptLogInformations(){
+        List<DeptLog> deptLogs = iDeptLogService.queryAllDeptLogs();
+        for(DeptLog deptLog:deptLogs){
+            if (iDeptService.queryOneDepByDepid(deptLog.getDeptid())!=null) {
+                deptLog.setDeptname(iDeptService.queryOneDepByDepid(deptLog.getDeptid()).getDepname());
+            }
+            if (iUserService.getById(deptLog.getTransactoruserid())!=null) {
+                deptLog.setTransactortruename(iUserService.getById(deptLog.getTransactoruserid()).getTruename());
+            }
+        }
+        return deptLogs;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除部门日志信息
+     *@Date: 10:50 2018\5\24 0024
+     */
+    @RequestMapping("/deleteDeplogByIds")
+    @ResponseBody
+    public String deleteDeplogByIds(
+            @RequestParam("deplogids") List<Integer> deplogids
+    ){
+       for(Integer deplogid:deplogids){
+           try {
+               iDeptLogService.removeOne(deplogid);
+           } catch (Exception e) {
+               return "删除失败！";
+           }
+       }
+       return "删除成功！";
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:数据的导入
+     *@Date: 15:09 2018\5\7 0007
+     */
+    @RequestMapping("/importDeploginformations")
+    @ResponseBody
+    public String importDeploginformations(
+            @RequestParam("file") MultipartFile multipartFile
+    ){
+        try {
+            ReadDeplogExcel readDeplogExcel = new ReadDeplogExcel();
+            List<DeptLog> excelInfo = readDeplogExcel.getExcelInfo(multipartFile);
+            for(DeptLog deptLog:excelInfo){
+                if (iDeptService.queryOneDepByDepname(deptLog.getDeptname())!=null) {
+                    deptLog.setDeptid(iDeptService.queryOneDepByDepname(deptLog.getDeptname()).getId());
+                }
+                User user = new User();
+                user.setTruename(deptLog.getTransactortruename());
+                List<User> users = iUserService.selectByCondition(user);
+                if (users.size()!=0) {
+                    deptLog.setTransactoruserid(users.get(0).getId());
+                }
+                iDeptLogService.addOne(deptLog);
+            }
+        } catch (Exception e) {
+            return "数据导入失败！";
+        }
+        return "数据导入成功！";
+    }
 }

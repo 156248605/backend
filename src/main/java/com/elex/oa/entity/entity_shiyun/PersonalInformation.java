@@ -12,7 +12,7 @@ import java.util.List;
  * @Modify By:
  */
 @Table(name = "tb_id_personalinformation")
-public class PersonalInformation implements Serializable{
+public class  PersonalInformation implements Serializable{
     @Id
     private Integer id;//主键(人事总体表1)
     private Integer userid;//用户ID
@@ -31,44 +31,69 @@ public class PersonalInformation implements Serializable{
     private Integer otherinformationid;//其他信息ID
     private String company;//公司（源自部门信息）（只显示）
     private String depname;//部门（源自部门信息）（只显示）
+    private String depnamevalue;//判断条件
     private String principaltruename;//主管姓名（源于人事信息）（只显示）
     private String principalemployeenumber;//主管工号（源于人事信息）（只显示）
 
     private List<Integer> postids;//岗位IDs（人事和岗位的关系表2）
     private String postnames;//多岗位（源自人事和岗位的关系信息）（只显示）
+    private String postname;//判断条件
+    private String postnamevalue;//判断条件
+    private List<Integer> perids;//条件查询用
+    private List<Integer> ppids;//辅助查询条件
 
     private Integer isactive;//是否激活（用户表3）
     private String username;//登录ID
+    private String usernamevalue;//判断条件
     private String truename;//用户姓名
+    private String truenamevalue;//判断条件
 
     private String userphoto;//免冠照片（基础信息表4）
     private String idphoto1;//身份证正面
     private String idphoto2;//身份证背面
     private String englishname;//英文名
+    private String englishnamevalue;//判断条件
     private String idcode;//身份证号码
+    private String idcodevalue;//判断条件
     private String birthday;//出生日期（源于身份证号码）
     private String birthdayvalue1;//判断条件
     private String birthdayvalue2;//判断条件
     private String age;//年龄（源于身份证号码）（只显示）
+    private String agevalue;//判断条件
+    private String sbir;//将年龄转换成时间
+    private String ebir;//将年龄转换成时间2
     private String constellation;//星座（源于身份证号码）
+    private String constellationvalue;//判断条件
     private String chinesecs;//属相（源于身份证号码）
+    private String chinesecsvalue;//判断条件
     private String race;//民族
+    private String racevalue;//判断条件
     private String marriage;//婚姻状况
     private String children;//生育
     private String zzmm;//政治面貌
     private String zgxl;//最高学历
     private String byyx;//毕业院校
+    private String byyxvalue;//判断条件
     private String sxzy;//所学专业
+    private String sxzyvalue;//判断条件
     private String pyfs;//培养方式
     private String firstla;//第一外语
     private String elsela;//其它外语
     private String posttitle;//职称
     private String zyzstype;//职业证书类型
+    private String zyzstypevalue;//判断条件
     private String zyzsname;//职业证书名称
+    private String zyzsnamevalue;//判断条件
     private String firstworkingtime;//首次工作时间
+    private String firstworkingtimevalue1;//判断条件
+    private String firstworkingtimevalue2;//判断条件
     private String workingage;//工龄（只显示）
+    private String workingagevalue;//判断条件
+    private String sfwt;//将工龄转换成时间
+    private String efwt;//将工龄转换成时间2
     private String parentcompany;//上家雇主
-
+    private String parentcompanyvalue;//判断条件
+    private List<Integer> baseinformationids;//条件查询用
 
     private String zj;//职级（管理信息表5）
     private String entrydate;//入职日期
@@ -98,6 +123,214 @@ public class PersonalInformation implements Serializable{
     private String remark;//备注
 
     public PersonalInformation() {
+    }
+
+    public List<Integer> getPpids() {
+        return ppids;
+    }
+
+    public void setPpids(List<Integer> ppids) {
+        this.ppids = ppids;
+    }
+
+    public String getSbir() {
+        return sbir;
+    }
+
+    public void setSbir(String sbir) {
+        this.sbir = sbir;
+    }
+
+    public String getEbir() {
+        return ebir;
+    }
+
+    public void setEbir(String ebir) {
+        this.ebir = ebir;
+    }
+
+    public List<Integer> getPerids() {
+        return perids;
+    }
+
+    public void setPerids(List<Integer> perids) {
+        this.perids = perids;
+    }
+
+    public List<Integer> getBaseinformationids() {
+        return baseinformationids;
+    }
+
+    public void setBaseinformationids(List<Integer> baseinformationids) {
+        this.baseinformationids = baseinformationids;
+    }
+
+    public String getSfwt() {
+        return sfwt;
+    }
+
+    public void setSfwt(String sfwt) {
+        this.sfwt = sfwt;
+    }
+
+    public String getEfwt() {
+        return efwt;
+    }
+
+    public void setEfwt(String efwt) {
+        this.efwt = efwt;
+    }
+
+    public String getDepnamevalue() {
+        return depnamevalue;
+    }
+
+    public void setDepnamevalue(String depnamevalue) {
+        this.depnamevalue = depnamevalue;
+    }
+
+    public String getPostname() {
+        return postname;
+    }
+
+    public void setPostname(String postname) {
+        this.postname = postname;
+    }
+
+    public String getPostnamevalue() {
+        return postnamevalue;
+    }
+
+    public void setPostnamevalue(String postnamevalue) {
+        this.postnamevalue = postnamevalue;
+    }
+
+    public String getUsernamevalue() {
+        return usernamevalue;
+    }
+
+    public void setUsernamevalue(String usernamevalue) {
+        this.usernamevalue = usernamevalue;
+    }
+
+    public String getTruenamevalue() {
+        return truenamevalue;
+    }
+
+    public void setTruenamevalue(String truenamevalue) {
+        this.truenamevalue = truenamevalue;
+    }
+
+    public String getEnglishnamevalue() {
+        return englishnamevalue;
+    }
+
+    public void setEnglishnamevalue(String englishnamevalue) {
+        this.englishnamevalue = englishnamevalue;
+    }
+
+    public String getIdcodevalue() {
+        return idcodevalue;
+    }
+
+    public void setIdcodevalue(String idcodevalue) {
+        this.idcodevalue = idcodevalue;
+    }
+
+    public String getAgevalue() {
+        return agevalue;
+    }
+
+    public void setAgevalue(String agevalue) {
+        this.agevalue = agevalue;
+    }
+
+    public String getConstellationvalue() {
+        return constellationvalue;
+    }
+
+    public void setConstellationvalue(String constellationvalue) {
+        this.constellationvalue = constellationvalue;
+    }
+
+    public String getChinesecsvalue() {
+        return chinesecsvalue;
+    }
+
+    public void setChinesecsvalue(String chinesecsvalue) {
+        this.chinesecsvalue = chinesecsvalue;
+    }
+
+    public String getRacevalue() {
+        return racevalue;
+    }
+
+    public void setRacevalue(String racevalue) {
+        this.racevalue = racevalue;
+    }
+
+    public String getByyxvalue() {
+        return byyxvalue;
+    }
+
+    public void setByyxvalue(String byyxvalue) {
+        this.byyxvalue = byyxvalue;
+    }
+
+    public String getSxzyvalue() {
+        return sxzyvalue;
+    }
+
+    public void setSxzyvalue(String sxzyvalue) {
+        this.sxzyvalue = sxzyvalue;
+    }
+
+    public String getZyzstypevalue() {
+        return zyzstypevalue;
+    }
+
+    public void setZyzstypevalue(String zyzstypevalue) {
+        this.zyzstypevalue = zyzstypevalue;
+    }
+
+    public String getZyzsnamevalue() {
+        return zyzsnamevalue;
+    }
+
+    public void setZyzsnamevalue(String zyzsnamevalue) {
+        this.zyzsnamevalue = zyzsnamevalue;
+    }
+
+    public String getFirstworkingtimevalue1() {
+        return firstworkingtimevalue1;
+    }
+
+    public void setFirstworkingtimevalue1(String firstworkingtimevalue1) {
+        this.firstworkingtimevalue1 = firstworkingtimevalue1;
+    }
+
+    public String getFirstworkingtimevalue2() {
+        return firstworkingtimevalue2;
+    }
+
+    public void setFirstworkingtimevalue2(String firstworkingtimevalue2) {
+        this.firstworkingtimevalue2 = firstworkingtimevalue2;
+    }
+
+    public String getWorkingagevalue() {
+        return workingagevalue;
+    }
+
+    public void setWorkingagevalue(String workingagevalue) {
+        this.workingagevalue = workingagevalue;
+    }
+
+    public String getParentcompanyvalue() {
+        return parentcompanyvalue;
+    }
+
+    public void setParentcompanyvalue(String parentcompanyvalue) {
+        this.parentcompanyvalue = parentcompanyvalue;
     }
 
     public String getSn() {
@@ -702,80 +935,101 @@ public class PersonalInformation implements Serializable{
 
     @Override
     public String toString() {
-        return "PersonalInformation{" +
-                "id=" + id +
-                ", userid=" + userid +
-                ", employeenumber='" + employeenumber + '\'' +
-                ", employeenumbervalue='" + employeenumbervalue + '\'' +
-                ", sex='" + sex + '\'' +
+        return "PersonalInformation{" + "\n" +
+                "id=" + id + "\n" +
+                ", userid=" + userid + "\n" +
+                ", employeenumber='" + employeenumber + '\'' + "\n" +
+                ", employeenumbervalue='" + employeenumbervalue + '\'' + "\n" +
+                ", sex='" + sex + '\'' + "\n" +
                 ", depid=" + depid +
-                ", telphone='" + telphone + '\'' +
-                ", telphoneid=" + telphoneid +
-                ", telphonevalue='" + telphonevalue + '\'' +
-                ", mobilephone='" + mobilephone + '\'' +
-                ", mobilephonevalue='" + mobilephonevalue + '\'' +
-                ", baseinformationid=" + baseinformationid +
-                ", manageinformationid=" + manageinformationid +
-                ", costinformationid=" + costinformationid +
-                ", otherinformationid=" + otherinformationid +
-                ", company='" + company + '\'' +
-                ", depname='" + depname + '\'' +
-                ", principaltruename='" + principaltruename + '\'' +
-                ", principalemployeenumber='" + principalemployeenumber + '\'' +
-                ", postids=" + postids +
-                ", postnames='" + postnames + '\'' +
-                ", isactive=" + isactive +
-                ", username='" + username + '\'' +
-                ", truename='" + truename + '\'' +
-                ", userphoto='" + userphoto + '\'' +
-                ", idphoto1='" + idphoto1 + '\'' +
-                ", idphoto2='" + idphoto2 + '\'' +
-                ", englishname='" + englishname + '\'' +
-                ", idcode='" + idcode + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", birthdayvalue1='" + birthdayvalue1 + '\'' +
-                ", birthdayvalue2='" + birthdayvalue2 + '\'' +
-                ", age='" + age + '\'' +
-                ", constellation='" + constellation + '\'' +
-                ", chinesecs='" + chinesecs + '\'' +
-                ", race='" + race + '\'' +
-                ", marriage='" + marriage + '\'' +
-                ", children='" + children + '\'' +
-                ", zzmm='" + zzmm + '\'' +
-                ", zgxl='" + zgxl + '\'' +
-                ", byyx='" + byyx + '\'' +
-                ", sxzy='" + sxzy + '\'' +
-                ", pyfs='" + pyfs + '\'' +
-                ", firstla='" + firstla + '\'' +
-                ", elsela='" + elsela + '\'' +
-                ", posttitle='" + posttitle + '\'' +
-                ", zyzstype='" + zyzstype + '\'' +
-                ", zyzsname='" + zyzsname + '\'' +
-                ", firstworkingtime='" + firstworkingtime + '\'' +
-                ", parentcompany='" + parentcompany + '\'' +
-                ", zj='" + zj + '\'' +
-                ", entrydate='" + entrydate + '\'' +
-                ", zhuanzhengdate='" + zhuanzhengdate + '\'' +
-                ", employeetype='" + employeetype + '\'' +
-                ", salary='" + salary + '\'' +
-                ", ssb='" + ssb + '\'' +
-                ", ssbgscd='" + ssbgscd + '\'' +
-                ", ssbgrcd='" + ssbgrcd + '\'' +
-                ", gjj='" + gjj + '\'' +
-                ", gjjgscd='" + gjjgscd + '\'' +
-                ", gjjgrcd='" + gjjgrcd + '\'' +
-                ", khh='" + khh + '\'' +
-                ", salaryaccount='" + salaryaccount + '\'' +
-                ", sbjnd='" + sbjnd + '\'' +
-                ", sbcode='" + sbcode + '\'' +
-                ", gjjcode='" + gjjcode + '\'' +
-                ", privateemail='" + privateemail + '\'' +
-                ", companyemail='" + companyemail + '\'' +
-                ", emergencycontract='" + emergencycontract + '\'' +
-                ", emergencyrp='" + emergencyrp + '\'' +
-                ", emergencyphone='" + emergencyphone + '\'' +
-                ", address='" + address + '\'' +
-                ", remark='" + remark + '\'' +
+                ", telphone='" + telphone + '\'' + "\n" +
+                ", telphoneid=" + telphoneid + "\n" +
+                ", telphonevalue='" + telphonevalue + '\'' + "\n" +
+                ", mobilephone='" + mobilephone + '\'' + "\n" +
+                ", mobilephonevalue='" + mobilephonevalue + '\'' + "\n" +
+                ", baseinformationid=" + baseinformationid + "\n" +
+                ", manageinformationid=" + manageinformationid + "\n" +
+                ", costinformationid=" + costinformationid + "\n" +
+                ", otherinformationid=" + otherinformationid + "\n" +
+                ", company='" + company + '\'' + "\n" +
+                ", depname='" + depname + '\'' + "\n" +
+                ", depnamevalue='" + depnamevalue + '\'' + "\n" +
+                ", principaltruename='" + principaltruename + '\'' + "\n" +
+                ", principalemployeenumber='" + principalemployeenumber + '\'' + "\n" +
+                ", postids=" + postids + "\n" +
+                ", postnames='" + postnames + '\'' + "\n" +
+                ", postname='" + postname + '\'' + "\n" +
+                ", postnamevalue='" + postnamevalue + '\'' + "\n" +
+                ", isactive=" + isactive + "\n" +
+                ", username='" + username + '\'' + "\n" +
+                ", usernamevalue='" + usernamevalue + '\'' + "\n" +
+                ", truename='" + truename + '\'' + "\n" +
+                ", truenamevalue='" + truenamevalue + '\'' + "\n" +
+                ", userphoto='" + userphoto + '\'' + "\n" +
+                ", idphoto1='" + idphoto1 + '\'' + "\n" +
+                ", idphoto2='" + idphoto2 + '\'' + "\n" +
+                ", englishname='" + englishname + '\'' + "\n" +
+                ", englishnamevalue='" + englishnamevalue + '\'' + "\n" +
+                ", idcode='" + idcode + '\'' + "\n" +
+                ", idcodevalue='" + idcodevalue + '\'' + "\n" +
+                ", birthday='" + birthday + '\'' + "\n" +
+                ", birthdayvalue1='" + birthdayvalue1 + '\'' + "\n" +
+                ", birthdayvalue2='" + birthdayvalue2 + '\'' + "\n" +
+                ", age='" + age + '\'' + "\n" +
+                ", agevalue='" + agevalue + '\'' + "\n" +
+                ", constellation='" + constellation + '\'' + "\n" +
+                ", constellationvalue='" + constellationvalue + '\'' + "\n" +
+                ", chinesecs='" + chinesecs + '\'' + "\n" +
+                ", chinesecsvalue='" + chinesecsvalue + '\'' + "\n" +
+                ", race='" + race + '\'' + "\n" +
+                ", racevalue='" + racevalue + '\'' + "\n" +
+                ", marriage='" + marriage + '\'' + "\n" +
+                ", children='" + children + '\'' + "\n" +
+                ", zzmm='" + zzmm + '\'' + "\n" +
+                ", zgxl='" + zgxl + '\'' + "\n" +
+                ", byyx='" + byyx + '\'' + "\n" +
+                ", byyxvalue='" + byyxvalue + '\'' + "\n" +
+                ", sxzy='" + sxzy + '\'' + "\n" +
+                ", sxzyvalue='" + sxzyvalue + '\'' + "\n" +
+                ", pyfs='" + pyfs + '\'' + "\n" +
+                ", firstla='" + firstla + '\'' + "\n" +
+                ", elsela='" + elsela + '\'' + "\n" +
+                ", posttitle='" + posttitle + '\'' + "\n" +
+                ", zyzstype='" + zyzstype + '\'' + "\n" +
+                ", zyzstypevalue='" + zyzstypevalue + '\'' + "\n" +
+                ", zyzsname='" + zyzsname + '\'' + "\n" +
+                ", zyzsnamevalue='" + zyzsnamevalue + '\'' + "\n" +
+                ", firstworkingtime='" + firstworkingtime + '\'' + "\n" +
+                ", firstworkingtimevalue1='" + firstworkingtimevalue1 + '\'' + "\n" +
+                ", firstworkingtimevalue2='" + firstworkingtimevalue2 + '\'' + "\n" +
+                ", workingage='" + workingage + '\'' + "\n" +
+                ", workingagevalue='" + workingagevalue + '\'' + "\n" +
+                ", parentcompany='" + parentcompany + '\'' + "\n" +
+                ", parentcompanyvalue='" + parentcompanyvalue + '\'' + "\n" +
+                ", zj='" + zj + '\'' + "\n" +
+                ", entrydate='" + entrydate + '\'' + "\n" +
+                ", sn='" + sn + '\'' + "\n" +
+                ", zhuanzhengdate='" + zhuanzhengdate + '\'' + "\n" +
+                ", employeetype='" + employeetype + '\'' + "\n" +
+                ", salary='" + salary + '\'' + "\n" +
+                ", ssb='" + ssb + '\'' + "\n" +
+                ", ssbgscd='" + ssbgscd + '\'' + "\n" +
+                ", ssbgrcd='" + ssbgrcd + '\'' + "\n" +
+                ", gjj='" + gjj + '\'' + "\n" +
+                ", gjjgscd='" + gjjgscd + '\'' + "\n" +
+                ", gjjgrcd='" + gjjgrcd + '\'' + "\n" +
+                ", khh='" + khh + '\'' + "\n" +
+                ", salaryaccount='" + salaryaccount + '\'' + "\n" +
+                ", sbjnd='" + sbjnd + '\'' + "\n" +
+                ", sbcode='" + sbcode + '\'' + "\n" +
+                ", gjjcode='" + gjjcode + '\'' + "\n" +
+                ", privateemail='" + privateemail + '\'' + "\n" +
+                ", companyemail='" + companyemail + '\'' + "\n" +
+                ", emergencycontract='" + emergencycontract + '\'' + "\n" +
+                ", emergencyrp='" + emergencyrp + '\'' + "\n" +
+                ", emergencyphone='" + emergencyphone + '\'' + "\n" +
+                ", address='" + address + '\'' + "\n" +
+                ", remark='" + remark + '\'' + "\n" +
                 '}';
     }
 }

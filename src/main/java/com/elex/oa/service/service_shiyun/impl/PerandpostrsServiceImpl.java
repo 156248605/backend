@@ -36,9 +36,7 @@ public class PerandpostrsServiceImpl implements IPerandpostrsService {
      */
     @Override
     public List<PerAndPostRs> queryPerAndPostRsByPerid(Integer perid) {
-        PerAndPostRs perAndPostRs = new PerAndPostRs();
-        perAndPostRs.setPerid(perid);
-        List<PerAndPostRs> perAndPostRs1 = iPerandpostrsDao.selectPostidsByPerid(perAndPostRs);
+        List<PerAndPostRs> perAndPostRs1 = iPerandpostrsDao.selectPostidsByPerid(perid);
         return perAndPostRs1;
     }
 

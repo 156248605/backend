@@ -48,4 +48,11 @@ public interface IHRsetContracttypeDao {
      *@Date: 17:31 2018\5\19 0019
      */
     public void updateOne(HRsetContracttype hRsetContracttype);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID查询信息
+     *@Date: 15:07 2018\5\28 0028
+     */
+    public HRsetContracttype selectById(Integer id);
 }

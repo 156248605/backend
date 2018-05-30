@@ -7,6 +7,7 @@ import com.elex.oa.service.service_shiyun.*;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -145,7 +147,7 @@ public class PostInformationController {
                 Long l = Calendar.getInstance().getTimeInMillis();
                 File file = new File(realPath + "/" + l);
                 file.mkdirs();
-                String dutyfile = "/org/file" + l+ "/" + dfs.get(0).getOriginalFilename();
+                String dutyfile = "/org/file/" + l+ "/" + dfs.get(0).getOriginalFilename();
                 dfs.get(0).transferTo(new File(realPath + "/" + l,dfs.get(0).getOriginalFilename()));
                 post.setDutyfile(dutyfile);
             } catch (IOException e) {
@@ -207,10 +209,20 @@ public class PostInformationController {
      */
     @RequestMapping("/updateOnePost")
     @ResponseBody
-    public String updateOnePost(Post post){
+    public String updateOnePost(
+            @Valid Post post,
+            HttpServletRequest request,
+            @RequestParam("transactorusername") String transactorusername
+    ){
         try {
             Boolean b = false;
-
+            List<MultipartFile> dfs= null;
+            try {
+                MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+                dfs = multipartRequest.getFiles("df");
+            } catch (Exception e) {
+                return "提交失败！";
+            }
             // 添加岗位日志
             PostLog postLog = new PostLog();
             postLog.setPostid(post.getId());
@@ -218,7 +230,9 @@ public class PostInformationController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
             String changedate = simpleDateFormat.format(new Date());
             postLog.setChangedate(changedate);
-            postLog.setTransactoruserid(1);//默认为管理员，实际从session中拿
+            User user = new User();
+            user.setUsername(transactorusername);
+            postLog.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());//默认为管理员，实际从session中拿
 
             Post post2 = iPostService.queryOneByPostid(post.getId());
             HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post2.getFunctionaltypeid());
@@ -287,6 +301,24 @@ public class PostInformationController {
                 postLog.setAfterinformation(post.getJobdescription());
                 iPostLogService.addOne(postLog);
             }
+            if(dfs.size()!=0){
+                try {
+                    String realPath = Commons.realpath + "/org/file/";
+                    Long l = Calendar.getInstance().getTimeInMillis();
+                    File file = new File(realPath + "/" + l);
+                    file.mkdirs();
+                    String dutyfile = "/org/file/" + l+ "/" + dfs.get(0).getOriginalFilename();
+                    dfs.get(0).transferTo(new File(realPath + "/" + l,dfs.get(0).getOriginalFilename()));
+                    post.setDutyfile(dutyfile);
+                    postLog.setChangeinformation("岗位说明书");
+                    postLog.setBeforeinformation(post2.getDutyfile());
+                    postLog.setAfterinformation(dutyfile);
+                    iPostLogService.addOne(postLog);
+                    b = true;
+                } catch (IOException e) {
+                    return "提交失败！";
+                }
+            }
 
             if (b) {
                 HRsetFunctionalType hRsetFunctionalType1 = ihRsetFunctionalTypeService.queryByFuctionaltype(post.getFunctionaltype());
@@ -302,7 +334,6 @@ public class PostInformationController {
                 return "没有需要修改的岗位信息！";
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return "提交失败!";
         }
         return "提交成功！";
@@ -354,31 +385,94 @@ public class PostInformationController {
     public PageInfo<PostLog> queryPostLogInformations(
             @RequestParam("page") Integer page,
             @RequestParam("rows") Integer rows,
-            @RequestParam("postname") String postname,
-            @RequestParam("changeinformation") String changeinformation,
-            @RequestParam("changedate") String changedate
+            PostLog postLog
     ){
-        postname = postname.trim();
-        changeinformation = changeinformation.trim();
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("pageNum",page);
         paramMap.put("pageSize",rows);
-        PostLog postLog = new PostLog();
-        if (iPostService.queryOneByPostname(postname)!=null) {
-            postLog.setPostid(iPostService.queryOneByPostname(postname).getId());
-        }
-        postLog.setChangeinformation(changeinformation);
-        postLog.setChangedate(changedate);
         paramMap.put("entity",postLog);
         PageInfo<PostLog> postLogPageInfo = iPostLogService.queryByConditions(paramMap);
         List<PostLog> list = postLogPageInfo.getList();
         if(list.size()!=0){
             for (int i = 0;i< list.size();i++) {
-                 list.get(i).setPostname(iPostService.queryOneByPostid(list.get(i).getPostid()).getPostname());
+                if (iPostService.queryOneByPostid (list.get(i).getPostid())!=null) {
+                    list.get(i).setPostname(iPostService.queryOneByPostid (list.get(i).getPostid()).getPostname());
+                }
                 list.get(i).setTransactortruename(iUserService.getById(list.get(i).getTransactoruserid()).getTruename());
             }
             postLogPageInfo.setList(list);
         }
         return postLogPageInfo;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询岗位日志（不分页）
+     *@Date: 9:18 2018\5\24 0024
+     */
+    @RequestMapping("/queryAllPostLogInformations")
+    @ResponseBody
+    public List<PostLog> queryAllPostLogInformations(){
+        List<PostLog> postLogs = iPostLogService.queryAllPostLogs();
+        for(PostLog postLog:postLogs){
+            if (iPostService.queryOneByPostid(postLog.getPostid())!=null) {
+                postLog.setPostname(iPostService.queryOneByPostid(postLog.getPostid()).getPostname());
+            }
+            if (iUserService.getById(postLog.getTransactoruserid())!=null) {
+                postLog.setTransactortruename(iUserService.getById(postLog.getTransactoruserid()).getTruename());
+            }
+        }
+        return postLogs;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除部门日志信息
+     *@Date: 10:50 2018\5\24 0024
+     */
+    @RequestMapping("/deletePostlogByIds")
+    @ResponseBody
+    public String deletePostlogByIds(
+            @RequestParam("postlogids") List<Integer> postlogids
+    ){
+        for(Integer postlogid:postlogids){
+            try {
+                iPostLogService.removeOne(postlogid);
+            } catch (Exception e) {
+                return "删除失败！";
+            }
+        }
+        return "删除成功！";
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:数据的导入
+     *@Date: 15:09 2018\5\7 0007
+     */
+    @RequestMapping("/importPostloginformations")
+    @ResponseBody
+    public String importPostloginformations(
+            @RequestParam("file") MultipartFile multipartFile
+    ){
+        try {
+            ReadPostlogExcel readPostlogExcel = new ReadPostlogExcel();
+            List<PostLog> excelInfo = readPostlogExcel.getExcelInfo(multipartFile);
+            for(PostLog postLog:excelInfo){
+                if (iPostService.queryOneByPostname(postLog.getPostname())!=null) {
+                    postLog.setPostid(iPostService.queryOneByPostname(postLog.getPostname()).getId());
+                }
+                User user = new User();
+                user.setTruename(postLog.getTransactortruename());
+                List<User> users = iUserService.selectByCondition(user);
+                if (users.size()!=0) {
+                    postLog.setTransactoruserid(users.get(0).getId());
+                }
+                iPostLogService.addOne(postLog);
+            }
+        } catch (Exception e) {
+            return "数据导入失败！";
+        }
+        return "数据导入成功！";
     }
 }

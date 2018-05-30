@@ -1,12 +1,20 @@
 package com.elex.oa.service.service_shiyun.impl;
 
+import com.elex.oa.dao.dao_shiyun.IBaseInformationDao;
+import com.elex.oa.dao.dao_shiyun.IPerandpostrsDao;
 import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
+import com.elex.oa.entity.entity_shiyun.BaseInformation;
+import com.elex.oa.entity.entity_shiyun.PerAndPostRs;
 import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.service.service_shiyun.IPersonalInformationService;
+import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +29,10 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
 
     @Autowired
     IPersonalInformationDao iPersonalInformationDao;
+    @Autowired
+    IBaseInformationDao iBaseInformationDao;
+    @Autowired
+    IPerandpostrsDao iPerandpostrsDao;
 
     /**
      *@Author:ShiYun;
@@ -28,14 +40,64 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
      *@Date: 10:09 2018\4\8 0008
      */
     @Override
-    public PageInfo<PersonalInformation> queryPIs(Map<String, Object> paramMap) {
+    public PageInfo<PersonalInformation> queryPIs(Map<String, Object> paramMap) throws ParseException {
+
+
+        PersonalInformation personalInformation = (PersonalInformation) paramMap.get("entity");
+        if (personalInformation.getAge()!=null && !"".equals(personalInformation.getAge())) {
+            HashMap<String, String> birdayByAge = IDcodeUtil.getBirdayByAge(personalInformation.getAge());
+            personalInformation.setSbir(birdayByAge.get("sbir"));
+            personalInformation.setEbir(birdayByAge.get("ebir"));
+        }//年龄转换成出生日期
+        if (personalInformation.getWorkingage()!=null && !"".equals(personalInformation.getWorkingage())) {
+            HashMap<String, String> fwtByWorkingage = IDcodeUtil.getFwtByWorkingage(personalInformation.getWorkingage());
+            personalInformation.setSfwt(fwtByWorkingage.get("sfwt"));
+            personalInformation.setEfwt(fwtByWorkingage.get("efwt"));
+            System.out.println(personalInformation.getSfwt() + ":" + personalInformation.getEfwt());
+        }//工龄转换层首次工作时间
+        if (personalInformation!=null) {
+            List<Integer> baseinformationids = new ArrayList<>();
+            List<BaseInformation> baseInformations = iBaseInformationDao.selectByConditions(personalInformation);
+            System.out.println(baseInformations.size());
+            for(int i=0;i<baseInformations.size();i++){
+                baseinformationids.add(baseInformations.get(i).getId());
+            }
+            if (baseinformationids.size()!=0) {
+                personalInformation.setBaseinformationids(baseinformationids);
+            }else {
+                return null;
+            }
+
+            if (personalInformation.getPostname()!=null && !"".equals(personalInformation.getPostname())) {
+                if("不包含".equals(personalInformation.getPostnamevalue())){
+                    List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectByConditions2(personalInformation);
+                    ArrayList<Integer> integers = new ArrayList<>();
+                    for(PerAndPostRs pp:perAndPostRs){
+                        integers.add(pp.getPerid());
+                    }
+                    personalInformation.setPpids(integers);
+                }
+                if (personalInformation.getPpids()!=null) {
+                    System.out.println(personalInformation.getPpids().size());
+                }else {
+                    return null;
+                }
+                List<Integer> perids = new ArrayList<>();
+                List<PerAndPostRs> perAndPostRsList = iPerandpostrsDao.selectByConditions(personalInformation);
+                for(int i = 0;i<perAndPostRsList.size();i++){
+                    perids.add(perAndPostRsList.get(i).getPerid());
+                }
+                if (perids.size()!=0) {
+                    personalInformation.setPerids(perids);
+                }
+            }
+        }
+
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         com.github.pagehelper.PageHelper.startPage(pageNum,pageSize);
 
-        PersonalInformation personalInformation = (PersonalInformation) paramMap.get("entity");
         List<PersonalInformation> list = iPersonalInformationDao.selectByConditions(personalInformation);
-
         return new PageInfo<PersonalInformation>(list);
     }
 
@@ -92,6 +154,16 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         List<PersonalInformation> personalInformations = iPersonalInformationDao.selectByConditions(personalInformation);
         return personalInformations;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门ID查询人事信息
+     *@Date: 16:22 2018\5\28 0028
+     */
+    public List<PersonalInformation> queryByDepid(Integer depid){
+        List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(depid);
+        return personalInformationList;
+    };
 
     /**
      *@Author:ShiYun;

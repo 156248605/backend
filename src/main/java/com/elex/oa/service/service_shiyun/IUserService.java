@@ -24,4 +24,11 @@ public interface IUserService extends BaseService<User> {
      *@Date: 14:52 2018\5\10 0010
      */
     public void removeOne(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据用户姓名查询用户
+     *@Date: 11:16 2018\5\25 0025
+     */
+    public User queryByTruename(String truename);
 }

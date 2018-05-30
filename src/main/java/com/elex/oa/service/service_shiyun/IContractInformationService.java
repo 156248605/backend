@@ -2,6 +2,7 @@ package com.elex.oa.service.service_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.ContractInformation;
 import com.elex.oa.util.util_shiyun.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface IContractInformationService {
      *@Description:根据条件（分页）查询合同信息
      *@Date: 16:49 2018\4\9 0009
      */
-    public PageHelper<ContractInformation> queryByConditions(Map<String,Object> paramMap);
+    public PageInfo<ContractInformation> queryByConditions(Map<String,Object> paramMap);
 
     /**
      *@Author:ShiYun;
@@ -36,8 +37,29 @@ public interface IContractInformationService {
 
     /**
      *@Author:ShiYun;
+     *@Description:查询所有信息
+     *@Date: 17:52 2018\5\25 0025
+     */
+    public List<ContractInformation> queryAll(ContractInformation contractInformation);
+
+    /**
+     *@Author:ShiYun;
      *@Description:添加合同信息并返回主键
      *@Date: 14:27 2018\4\20 0020
      */
     public Integer addOne(ContractInformation contractInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除合同信息
+     *@Date: 17:49 2018\5\25 0025
+     */
+    public void removeOne(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:修改合同信息
+     *@Date: 10:13 2018\5\29 0029
+     */
+    public void modifyOne(ContractInformation contractInformation);
 }

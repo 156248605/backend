@@ -33,4 +33,11 @@ public interface IPostLogService {
      *@Date: 17:29 2018\5\2 0002
      */
     public PageInfo<PostLog> queryByConditions(HashMap<String, Object> paramMap);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID查询信息
+     *@Date: 10:56 2018\5\24 0024
+     */
+    public void removeOne(Integer id);
 }

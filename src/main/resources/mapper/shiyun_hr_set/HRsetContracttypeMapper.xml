@@ -28,6 +28,11 @@
 		</where>
 	</select>
 
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="ContracttypeMapper">
+		SELECT * FROM tb_hr_set_contracttype
+		WHERE id=#{id}
+	</select>
+
 	<delete id="deleteOne" parameterType="java.lang.Integer">
 		DELETE FROM tb_hr_set_contracttype WHERE id=#{id}
 	</delete>

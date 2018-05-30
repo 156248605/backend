@@ -3,7 +3,9 @@ package com.elex.oa.entity.entity_shiyun;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,18 +19,84 @@ public class ContractInformation implements Serializable{
     @Id
     private Integer id;
     private String contractcode;//合同编号
+    private String contractcodevalue;//判断条件
     private Integer userid;//用户ID
     private String employeenumber;//工号
+    private List<Integer> userids;//判断条件
+    private String employeenumbervalue;//判断条件
     private String truename;//姓名
+    private String truenamevalue;//判断条件
     private String startdate;//生效期
+    private String startdatevalue1;//判断条件
+    private String startdatevalue2;//判断条件
     private String enddate;//失效期
-    private String contractlife;//合同年限
+    private String enddatevalue1;//判断条件
+    private String enddatevalue2;//判断条件
+    private String contractage;//合同年限
+    private String contractagevalue;//判断条件
+    private Integer contracttypeid;//合同类型编号
     private String contracttype;//合同类型
-    private String istrainingagreement;//是否有培训协议
+    private String contracttypevalue;//判断条件
+    private String attachment;//附件
     private String remark;//备注
-    private List<RenewContractRecord> renewcontracts = new ArrayList<RenewContractRecord>();// 合同续签集合
+    private String remarkvalue;//判断条件
+    private String curdate;//判断条件
+    private List<ContractInformation> historyContract = new ArrayList<ContractInformation>();// 合同续签集合
+    private Integer transactoruserid;//最后办理人
+    private String transactortruename;//最后办理人姓名
+    private String transdate;//最后办理日期
 
     public ContractInformation() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        this.curdate = sdf.format(new Date());
+    }
+
+    public Integer getTransactoruserid() {
+        return transactoruserid;
+    }
+
+    public void setTransactoruserid(Integer transactoruserid) {
+        this.transactoruserid = transactoruserid;
+    }
+
+    public String getTransactortruename() {
+        return transactortruename;
+    }
+
+    public void setTransactortruename(String transactortruename) {
+        this.transactortruename = transactortruename;
+    }
+
+    public String getTransdate() {
+        return transdate;
+    }
+
+    public void setTransdate(String transdate) {
+        this.transdate = transdate;
+    }
+
+    public String getCurdate() {
+        return curdate;
+    }
+
+    public void setCurdate(String curdate) {
+        this.curdate = curdate;
+    }
+
+    public List<Integer> getUserids() {
+        return userids;
+    }
+
+    public void setUserids(List<Integer> userids) {
+        this.userids = userids;
+    }
+
+    public Integer getContracttypeid() {
+        return contracttypeid;
+    }
+
+    public void setContracttypeid(Integer contracttypeid) {
+        this.contracttypeid = contracttypeid;
     }
 
     public Integer getId() {
@@ -47,6 +115,14 @@ public class ContractInformation implements Serializable{
         this.contractcode = contractcode;
     }
 
+    public String getContractcodevalue() {
+        return contractcodevalue;
+    }
+
+    public void setContractcodevalue(String contractcodevalue) {
+        this.contractcodevalue = contractcodevalue;
+    }
+
     public Integer getUserid() {
         return userid;
     }
@@ -63,12 +139,28 @@ public class ContractInformation implements Serializable{
         this.employeenumber = employeenumber;
     }
 
+    public String getEmployeenumbervalue() {
+        return employeenumbervalue;
+    }
+
+    public void setEmployeenumbervalue(String employeenumbervalue) {
+        this.employeenumbervalue = employeenumbervalue;
+    }
+
     public String getTruename() {
         return truename;
     }
 
     public void setTruename(String truename) {
         this.truename = truename;
+    }
+
+    public String getTruenamevalue() {
+        return truenamevalue;
+    }
+
+    public void setTruenamevalue(String truenamevalue) {
+        this.truenamevalue = truenamevalue;
     }
 
     public String getStartdate() {
@@ -79,6 +171,22 @@ public class ContractInformation implements Serializable{
         this.startdate = startdate;
     }
 
+    public String getStartdatevalue1() {
+        return startdatevalue1;
+    }
+
+    public void setStartdatevalue1(String startdatevalue1) {
+        this.startdatevalue1 = startdatevalue1;
+    }
+
+    public String getStartdatevalue2() {
+        return startdatevalue2;
+    }
+
+    public void setStartdatevalue2(String startdatevalue2) {
+        this.startdatevalue2 = startdatevalue2;
+    }
+
     public String getEnddate() {
         return enddate;
     }
@@ -87,12 +195,36 @@ public class ContractInformation implements Serializable{
         this.enddate = enddate;
     }
 
-    public String getContractlife() {
-        return contractlife;
+    public String getEnddatevalue1() {
+        return enddatevalue1;
     }
 
-    public void setContractlife(String contractlife) {
-        this.contractlife = contractlife;
+    public void setEnddatevalue1(String enddatevalue1) {
+        this.enddatevalue1 = enddatevalue1;
+    }
+
+    public String getEnddatevalue2() {
+        return enddatevalue2;
+    }
+
+    public void setEnddatevalue2(String enddatevalue2) {
+        this.enddatevalue2 = enddatevalue2;
+    }
+
+    public String getContractage() {
+        return contractage;
+    }
+
+    public void setContractage(String contractage) {
+        this.contractage = contractage;
+    }
+
+    public String getContractagevalue() {
+        return contractagevalue;
+    }
+
+    public void setContractagevalue(String contractagevalue) {
+        this.contractagevalue = contractagevalue;
     }
 
     public String getContracttype() {
@@ -103,12 +235,20 @@ public class ContractInformation implements Serializable{
         this.contracttype = contracttype;
     }
 
-    public String getIstrainingagreement() {
-        return istrainingagreement;
+    public String getContracttypevalue() {
+        return contracttypevalue;
     }
 
-    public void setIstrainingagreement(String istrainingagreement) {
-        this.istrainingagreement = istrainingagreement;
+    public void setContracttypevalue(String contracttypevalue) {
+        this.contracttypevalue = contracttypevalue;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 
     public String getRemark() {
@@ -119,12 +259,20 @@ public class ContractInformation implements Serializable{
         this.remark = remark;
     }
 
-    public List<RenewContractRecord> getRenewcontracts() {
-        return renewcontracts;
+    public String getRemarkvalue() {
+        return remarkvalue;
     }
 
-    public void setRenewcontracts(List<RenewContractRecord> renewcontracts) {
-        this.renewcontracts = renewcontracts;
+    public void setRemarkvalue(String remarkvalue) {
+        this.remarkvalue = remarkvalue;
+    }
+
+    public List<ContractInformation> getHistoryContract() {
+        return historyContract;
+    }
+
+    public void setHistoryContract(List<ContractInformation> historyContract) {
+        this.historyContract = historyContract;
     }
 
     @Override
@@ -132,15 +280,25 @@ public class ContractInformation implements Serializable{
         return "ContractInformation{" +
                 "id=" + id +
                 ", contractcode='" + contractcode + '\'' +
+                ", contractcodevalue='" + contractcodevalue + '\'' +
                 ", userid=" + userid +
                 ", employeenumber='" + employeenumber + '\'' +
+                ", employeenumbervalue='" + employeenumbervalue + '\'' +
                 ", truename='" + truename + '\'' +
+                ", truenamevalue='" + truenamevalue + '\'' +
                 ", startdate='" + startdate + '\'' +
+                ", startdatevalue1='" + startdatevalue1 + '\'' +
+                ", startdatevalue2='" + startdatevalue2 + '\'' +
                 ", enddate='" + enddate + '\'' +
-                ", contractlife='" + contractlife + '\'' +
+                ", enddatevalue1='" + enddatevalue1 + '\'' +
+                ", enddatevalue2='" + enddatevalue2 + '\'' +
+                ", contractage='" + contractage + '\'' +
+                ", contractagevalue='" + contractagevalue + '\'' +
                 ", contracttype='" + contracttype + '\'' +
-                ", istrainingagreement='" + istrainingagreement + '\'' +
+                ", contracttypevalue='" + contracttypevalue + '\'' +
+                ", attachment='" + attachment + '\'' +
                 ", remark='" + remark + '\'' +
+                ", remarkvalue='" + remarkvalue + '\'' +
                 '}';
     }
 }
