@@ -33,7 +33,7 @@
 
 	<select id="selectByTruename" resultType="java.lang.String" resultMap="UserMapper">
 		SELECT * FROM tb_id_user
-		WHERE truename=#{truename} AND state=1
+		WHERE truename=#{truename}
 	</select>
 
 	<update id="deleteById" parameterType="java.lang.Integer" >

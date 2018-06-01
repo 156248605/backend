@@ -58,7 +58,6 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if (personalInformation!=null) {
             List<Integer> baseinformationids = new ArrayList<>();
             List<BaseInformation> baseInformations = iBaseInformationDao.selectByConditions(personalInformation);
-            System.out.println(baseInformations.size());
             for(int i=0;i<baseInformations.size();i++){
                 baseinformationids.add(baseInformations.get(i).getId());
             }

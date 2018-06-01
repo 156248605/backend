@@ -90,6 +90,20 @@ public class ContractInformationController {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据userid查询合同信息
+     *@Date: 16:05 2018\5\30 0030
+     */
+    @RequestMapping("/queryContractsByUserid")
+    @ResponseBody
+    public List<ContractInformation> queryContractsByUserid(
+            @RequestParam("personalInformationId")Integer personalInformationId
+    ){
+        List<ContractInformation> contractInformationList = iContractInformationService.queryByUserid(iPersonalInformationService.queryOneById(personalInformationId).getUserid());
+        return contractInformationList;
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:查询合同续签记录
      *@Date: 13:29 2018\4\10 0010
      */
@@ -108,7 +122,7 @@ public class ContractInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:根据userID查询合同信息
+     *@Description:根据ID查询合同信息
      *@Date: 17:21 2018\4\12 0012
      */
     @RequestMapping("/queryContractsById")

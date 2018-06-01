@@ -31,11 +31,18 @@ public interface IUserDao extends BaseDao<User> {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据username查询用户数据
+     *@Date: 11:47 2018\6\1 0001
+     */
+    public User selectByUsername(String username);
+
+    /**
+     *@Author:ShiYun;
      *@Description:删除信息
      *@Date: 14:47 2018\5\10 0010
      */
-    public void deleteById(Integer id);
-    public void deleteById2(Integer id);
+    public void deleteById(Integer id);//删除人事信息(state=0)
+    public void deleteById2(Integer id);//删除离职信息(state=1)
 
     /**
      *@Author:ShiYun;

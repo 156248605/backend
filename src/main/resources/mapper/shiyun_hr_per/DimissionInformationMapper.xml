@@ -6,11 +6,11 @@
 		<id column="id" property="id" />
 		<result column="dimissionuserid" property="dimissionuserid" />
 		<result column="lastworkingdate" property="lastworkingdate" />
-		<result column="dimissiontype" property="dimissiontype" />
-		<result column="dimissionreason" property="dimissionreason" />
+		<result column="dimissiontypeid" property="dimissiontypeid" />
+		<result column="dimissionreasonid" property="dimissionreasonid" />
 		<result column="transactoruserid" property="transactoruserid" />
 		<result column="transactiondate" property="transactiondate" />
-		<result column="dimissiondirection" property="dimissiondirection" />
+		<result column="dimissiondirectionid" property="dimissiondirectionid" />
 		<result column="approvalnumbers" property="approvalnumbers" />
 		<result column="approvalstatue" property="approvalstatue" />
 		<result column="workingnumbers" property="workingnumbers" />
@@ -26,11 +26,11 @@
 		(id,
 		 dimissionuserid,
 		 lastworkingdate,
-		 dimissiontype,
-		 dimissionreason,
+		 dimissiontypeid,
+		 dimissionreasonid,
 		 transactoruserid,
 		 transactiondate,
-		 dimissiondirection,
+		 dimissiondirectionid,
 		 approvalnumbers,
 		 approvalstatue,
 		 workingnumbers,
@@ -43,11 +43,11 @@
 		(NULL ,
 		#{dimissionuserid},
 		#{lastworkingdate},
-		#{dimissiontype},
-		#{dimissionreason},
+		#{dimissiontypeid},
+		#{dimissionreasonid},
 		#{transactoruserid},
 		#{transactiondate},
-		#{dimissiondirection},
+		#{dimissiondirectionid},
 		#{approvalnumbers},
 		#{approvalstatue},
 		#{workingnumbers},
@@ -63,13 +63,16 @@
 			dm.id,
 			dm.dimissionuserid,
 			dm.lastworkingdate,
-			dm.dimissiontype,
-			dm.dimissionreason,
+			dm.dimissiontypeid,
+			dm.dimissionreasonid,
 			dm.transactoruserid,
 			dm.transactiondate,
-			dm.dimissiondirection
+			dm.dimissiondirectionid
 		from tb_hr_dimission dm
 		    JOIN tb_id_user u ON dm.transactoruserid = u.id
+		    JOIN tb_hr_set_dimissiontype dt ON dm.dimissiontypeid = dt.id
+		    JOIN tb_hr_set_dimissiondirection dd ON dm.dimissiondirectionid = dd.id
+		    JOIN tb_hr_set_dimissionreason dr ON dm.dimissionreasonid = dr.id
 		<where>
 			<if test="userids!=null">
 				AND dm.dimissionuserid IN
@@ -82,35 +85,35 @@
 			</if>
 			<if test="dimissiontype!=null and dimissiontype!=''">
 				<if test="dimissiontypevalue==''">
-					AND dm.dimissiontype = #{dimissiontype}
+					AND dt.dimissiontype = #{dimissiontype}
 				</if>
 				<if test="dimissiontypevalue=='包含'">
-					AND dm.dimissiontype LIKE CONCAT('%',#{dimissiontype},'%')
+					AND dt.dimissiontype LIKE CONCAT('%',#{dimissiontype},'%')
 				</if>
 				<if test="dimissiontypevalue=='不包含'">
-					AND dm.dimissiontype NOT LIKE CONCAT('%',#{dimissiontype},'%')
+					AND dt.dimissiontype NOT LIKE CONCAT('%',#{dimissiontype},'%')
 				</if>
 			</if>
 			<if test="dimissionreason!=null and dimissionreason!=''">
 				<if test="dimissionreasonvalue==''">
-					AND dm.dimissionreason = #{dimissionreason}
+					AND dr.dimissionreason = #{dimissionreason}
 				</if>
 				<if test="dimissionreasonvalue=='包含'">
-					AND dm.dimissionreason LIKE CONCAT('%',#{dimissionreason},'%')
+					AND dr.dimissionreason LIKE CONCAT('%',#{dimissionreason},'%')
 				</if>
 				<if test="dimissionreasonvalue=='不包含'">
-					AND dm.dimissionreason NOT LIKE CONCAT('%',#{dimissionreason},'%')
+					AND dr.dimissionreason NOT LIKE CONCAT('%',#{dimissionreason},'%')
 				</if>
 			</if>
 			<if test="dimissiondirection!=null and dimissiondirection!=''">
 				<if test="dimissiondirectionvalue==''">
-					AND dm.dimissiondirection = #{dimissiondirection}
+					AND dd.dimissiondirection = #{dimissiondirection}
 				</if>
 				<if test="dimissiondirectionvalue=='包含'">
-					AND dm.dimissiondirection LIKE CONCAT('%',#{dimissiondirection},'%')
+					AND dd.dimissiondirection LIKE CONCAT('%',#{dimissiondirection},'%')
 				</if>
 				<if test="dimissiondirectionvalue=='不包含'">
-					AND dm.dimissiondirection NOT LIKE CONCAT('%',#{dimissiondirection},'%')
+					AND dd.dimissiondirection NOT LIKE CONCAT('%',#{dimissiondirection},'%')
 				</if>
 			</if>
 			<if test="transactortruename!=null and transactortruename!=''">
@@ -139,9 +142,9 @@
 		update tb_hr_dimission
 		<set>
 			<if test="lastworkingdate!=null and lastworkingdate!=''">lastworkingdate=#{lastworkingdate},</if>
-			<if test="dimissiontype!=null and dimissiontype!=''">dimissiontype=#{dimissiontype},</if>
-			<if test="dimissionreason!=null and dimissionreason!=''">dimissionreason=#{dimissionreason},</if>
-			<if test="dimissiondirection!=null and dimissiondirection!=''">dimissiondirection=#{dimissiondirection},</if>
+			<if test="dimissiontypeid!=null and dimissiontypeid!=''">dimissiontypeid=#{dimissiontypeid},</if>
+			<if test="dimissionreasonid!=null and dimissionreasonid!=''">dimissionreasonid=#{dimissionreasonid},</if>
+			<if test="dimissiondirectionid!=null and dimissiondirectionid!=''">dimissiondirectionid=#{dimissiondirectionid},</if>
 			<if test="approvalstatue!=null and approvalstatue!=''">approvalstatue=#{approvalstatue},</if>
 			<if test="workingstatue!=null and workingstatue!=''">workingstatue=#{workingstatue},</if>
 			<if test="filestatue!=null and filestatue!=''">filestatue=#{filestatue},</if>

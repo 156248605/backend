@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IHRsetDimissiontypeDao">
+
+	<resultMap id="DimissiontypeMapper" type="HRsetDimissiontype">
+		<id column="id" property="id" />
+		<result column="dimissiontype" property="dimissiontype" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="HRsetDimissiontype" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_set_dimissiontype (
+			id,
+			dimissiontype)
+		values (
+			NULL,
+			#{dimissiontype})
+	</insert>
+
+	<select id="selectAll" resultMap="DimissiontypeMapper">
+		SELECT * FROM tb_hr_set_dimissiontype
+	</select>
+
+	<select id="selectByConditions" parameterType="HRsetDimissiontype" resultMap="DimissiontypeMapper">
+		SELECT * FROM tb_hr_set_dimissiontype
+		<where>
+			<if test="id!=null and id!=''">AND id=#{id}</if>
+			<if test="dimissiontype!=null and dimissiontype!=''">AND dimissiontype=#{dimissiontype}</if>
+		</where>
+	</select>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_hr_set_dimissiontype WHERE id=#{id}
+	</delete>
+
+	<update id="updateOne" parameterType="HRsetDimissiontype">
+		UPDATE tb_hr_set_dimissiontype
+		SET dimissiontype=#{dimissiontype}
+		WHERE id=#{id}
+	</update>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="DimissiontypeMapper">
+		SELECT * FROM tb_hr_set_dimissiontype
+		WHERE id=#{id}
+	</select>
+
+	<select id="selectByHR" parameterType="java.lang.String" resultMap="DimissiontypeMapper">
+		SELECT * FROM tb_hr_set_dimissiontype
+		WHERE dimissiontype=#{dimissiontype}
+	</select>
+</mapper>

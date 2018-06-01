@@ -30,6 +30,13 @@ public interface IContractInformationService {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据userid查询合同信息
+     *@Date: 16:12 2018\5\30 0030
+     */
+    public List<ContractInformation> queryByUserid(Integer userid);
+
+    /**
+     *@Author:ShiYun;
      *@Description:根据条件（不分页）查询合同信息
      *@Date: 17:35 2018\4\12 0012
      */

@@ -2,6 +2,7 @@ package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.DimissionInformation;
 import com.elex.oa.entity.entity_shiyun.PerAndPostRs;
+import com.elex.oa.entity.entity_shiyun.ReadDimissioninformationExcel;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +38,12 @@ public class DimissionController {
     IPerandpostrsService iPerandpostrsService;
     @Autowired
     IPostService iPostService;
+    @Autowired
+    IHRsetDimissiontypeService ihRsetDimissiontypeService;
+    @Autowired
+    IHRsetDimissiondirectionService ihRsetDimissiondirectionService;
+    @Autowired
+    IHRsetDimissionreasonService ihRsetDimissionreasonService;
 
     /**
      *@Author:ShiYun;
@@ -152,5 +160,47 @@ public class DimissionController {
             iDimissionInformationService.removeOne(dimissionids.get(i));
         }
         return "提交成功！";
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:数据的导入
+     *@Date: 11:03 2018\6\1 0001
+     */
+    @RequestMapping("/importDimissionInformations")
+    @ResponseBody
+    public String importDimissionInformations(
+            @RequestParam("file") MultipartFile multipartFile
+    ){
+        try {
+            ReadDimissioninformationExcel readDimissioninformationExcel = new ReadDimissioninformationExcel();
+            List<DimissionInformation> excelInfo = readDimissioninformationExcel.getExcelInfo(multipartFile);
+            for(DimissionInformation dimissionInformation:excelInfo){
+                //获得dimissionuserid
+                if (iUserService.queryByTruename(dimissionInformation.getDimissiontruename())!=null) {
+                    dimissionInformation.setDimissionuserid(iUserService.queryByTruename(dimissionInformation.getDimissiontruename()).getId());
+                }
+                //获得dimissiontypeid
+                if (ihRsetDimissiontypeService.queryByDimissiontype(dimissionInformation.getDimissiontype())!=null) {
+                    dimissionInformation.setDimissiontypeid(ihRsetDimissiontypeService.queryByDimissiontype(dimissionInformation.getDimissiontype()).getId());
+                }
+                //获得dimissiondirectionid
+                if (ihRsetDimissiondirectionService.queryByDimissiondirection(dimissionInformation.getDimissiondirection())!=null) {
+                    dimissionInformation.setDimissiondirectionid(ihRsetDimissiondirectionService.queryByDimissiondirection(dimissionInformation.getDimissiondirection()).getId());
+                }
+                //获得transactoruserid
+                if (iUserService.queryByTruename(dimissionInformation.getTransactortruename())!=null) {
+                    dimissionInformation.setTransactoruserid(iUserService.queryByTruename(dimissionInformation.getTransactortruename()).getId());
+                }
+                //获得dimissionreasonid
+                if (ihRsetDimissionreasonService.queryByDimissionreason(dimissionInformation.getDimissionreason())!=null) {
+                    dimissionInformation.setDimissionreasonid(ihRsetDimissionreasonService.queryByDimissionreason(dimissionInformation.getDimissionreason()).getId());
+                }
+                iDimissionInformationService.addOne(dimissionInformation);
+            }
+        } catch (Exception e) {
+            return "数据导入失败！";
+        }
+        return "数据导入成功！";
     }
 }

@@ -27,10 +27,14 @@ public class DimissionInformation  implements Serializable {
     private String lastworkingdatevalue1;//判断条件
     @Transient
     private String lastworkingdatevalue2;//判断条件
+    @Transient
     private String dimissiontype;// 离职类型
+    private Integer dimissiontypeid;//离职类型ID
     @Transient
     private String dimissiontypevalue;//判断条件
+    @Transient
     private String dimissionreason;// 离职原因
+    private Integer dimissionreasonid;//离职原因ID
     @Transient
     private String dimissionreasonvalue;//判断条件
     private Integer transactoruserid;// 办理人的ID
@@ -39,7 +43,9 @@ public class DimissionInformation  implements Serializable {
     private String transactiondatevalue1;//判断条件
     @Transient
     private String transactiondatevalue2;//判断条件
+    @Transient
     private String dimissiondirection;// 离职去向
+    private Integer dimissiondirectionid;//离职去向ID
     @Transient
     private String dimissiondirectionvalue;//判断条件
     @Transient
@@ -77,6 +83,30 @@ public class DimissionInformation  implements Serializable {
     private Integer officesupplystatue;// 办公用品领用是否确认处理
 
     public DimissionInformation() {
+    }
+
+    public Integer getDimissiontypeid() {
+        return dimissiontypeid;
+    }
+
+    public void setDimissiontypeid(Integer dimissiontypeid) {
+        this.dimissiontypeid = dimissiontypeid;
+    }
+
+    public Integer getDimissionreasonid() {
+        return dimissionreasonid;
+    }
+
+    public void setDimissionreasonid(Integer dimissionreasonid) {
+        this.dimissionreasonid = dimissionreasonid;
+    }
+
+    public Integer getDimissiondirectionid() {
+        return dimissiondirectionid;
+    }
+
+    public void setDimissiondirectionid(Integer dimissiondirectionid) {
+        this.dimissiondirectionid = dimissiondirectionid;
     }
 
     public List<Integer> getUserids() {

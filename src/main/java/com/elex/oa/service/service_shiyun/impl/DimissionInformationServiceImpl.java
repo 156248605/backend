@@ -37,6 +37,12 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
     IPostDao iPostDao;
     @Autowired
     IPerandpostrsDao iPerandpostrsDao;
+    @Autowired
+    IHRsetDimissiontypeDao ihRsetDimissiontypeDao;
+    @Autowired
+    IHRsetDimissiondirectionDao ihRsetDimissiondirectionDao;
+    @Autowired
+    IHRsetDimissionreasonDao ihRsetDimissionreasonDao;
 
     /**
      *@Author:ShiYun;
@@ -48,7 +54,9 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         //获得办理日期
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         String transactiondate = simpleDateFormat.format(new Date());
-        dimissionInformation.setTransactiondate(transactiondate);//办理日期
+        if (dimissionInformation.getTransactiondate()!=null && !"".equals(dimissionInformation.getTransactiondate() )) {
+            dimissionInformation.setTransactiondate(transactiondate);//办理日期
+        }
         //获得8个参数
         dimissionInformation.setApprovalnumbers(1);//待审批单数量默认为1，实际中用userID到ACT_RU_TASK表中查询
         dimissionInformation.setApprovalstatue(Commons.未处理);
@@ -61,7 +69,7 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         //添加离职信息
         iDimissionInformationDao.insertOne(dimissionInformation);
         Integer dimissionInformationId = dimissionInformation.getId();
-        //将离职的人员从user表中移除
+        //将离职的人员从user表中移除(其实是修改状态)
         iUserDao.deleteById(dimissionInformation.getDimissionuserid());
         return dimissionInformationId;
     }
@@ -136,6 +144,18 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
             if (iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid())!=null) {
                 dimissionInformations.get(i).setDepname(iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid()).getDepname());
             }
+            //获得离职类型
+            if (ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid())!=null) {
+                dimissionInformations.get(i).setDimissiontype(ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid()).getDimissiontype());
+            }
+            //获得离职去向
+            if (ihRsetDimissiondirectionDao.selectById(dimissionInformations.get(i).getDimissiondirectionid())!=null) {
+                dimissionInformations.get(i).setDimissiondirection(ihRsetDimissiondirectionDao.selectById(dimissionInformations.get(i).getDimissiondirectionid()).getDimissiondirection());
+            }
+            //获得离职原因
+            if (ihRsetDimissionreasonDao.selectById(dimissionInformations.get(i).getDimissionreasonid())!=null) {
+                dimissionInformations.get(i).setDimissionreason(ihRsetDimissionreasonDao.selectById(dimissionInformations.get(i).getDimissionreasonid()).getDimissionreason());
+            }
         }
         PageInfo<DimissionInformation> dimissionInformationPageInfo = new PageInfo<DimissionInformation>(dimissionInformations);
         return dimissionInformationPageInfo;
@@ -203,6 +223,18 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
             //获得部门
             if (iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid())!=null) {
                 dimissionInformations.get(i).setDepname(iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid()).getDepname());
+            }
+            //获得离职类型
+            if (ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid())!=null) {
+                dimissionInformations.get(i).setDimissiontype(ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid()).getDimissiontype());
+            }
+            //获得离职去向
+            if (ihRsetDimissiondirectionDao.selectById(dimissionInformations.get(i).getDimissiondirectionid())!=null) {
+                dimissionInformations.get(i).setDimissiondirection(ihRsetDimissiondirectionDao.selectById(dimissionInformations.get(i).getDimissiondirectionid()).getDimissiondirection());
+            }
+            //获得离职原因
+            if (ihRsetDimissionreasonDao.selectById(dimissionInformations.get(i).getDimissionreasonid())!=null) {
+                dimissionInformations.get(i).setDimissionreason(ihRsetDimissionreasonDao.selectById(dimissionInformations.get(i).getDimissionreasonid()).getDimissionreason());
             }
         }
         return dimissionInformations;

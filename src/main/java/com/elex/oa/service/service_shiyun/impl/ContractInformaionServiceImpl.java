@@ -99,6 +99,35 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
 
     /**
      *@Author:ShiYun;
+     *@Description:根据userid查询合同信息
+     *@Date: 16:12 2018\5\30 0030
+     */
+    @Override
+    public List<ContractInformation> queryByUserid(Integer userid) {
+        List<ContractInformation> contractInformationList = iContractInformationDao.selectByUserid(userid);
+        for(ContractInformation contractInformation:contractInformationList){
+            //获得姓名
+            if (contractInformation!=null && contractInformation.getUserid()!=null && iUserDao.selectById(contractInformation.getUserid())!=null) {
+                contractInformation.setTruename(iUserDao.selectById(contractInformation.getUserid()).getTruename());
+            }
+            //获得工号
+            contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
+            //获得合同类型
+            contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+            //获得办理人姓名
+            contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
+            //获得合同期限
+            try {
+                contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
+            } catch (ParseException e) {
+                System.out.println("获得合同期限失败！");
+            }
+        }
+        return contractInformationList;
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:根据条件（不分页）查询合同信息
      *@Date: 17:37 2018\4\12 0012
      */
