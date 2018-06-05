@@ -6,6 +6,9 @@ import com.elex.oa.service.IBpmSolFvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *@author hugo.zhao
  *@since 2018/4/13 10:23
@@ -16,6 +19,10 @@ public class BpmSolFvServiceImpl extends BaseServiceImpl<BpmSolFv> implements IB
     private IBpmSolFvDao bpmSolFvDao;
     @Override
     public BpmSolFv getBySolIdActDefIdNodeId(String solId, String actDefId, String nodeId) {
-        return this.bpmSolFvDao.getBySolIdActDefIdNodeId(solId,actDefId,nodeId);
+        Map<String,String> map = new HashMap<>();
+        map.put("solId",solId);
+        map.put("actDefId",actDefId);
+        map.put("nodeId",nodeId);
+        return this.bpmSolFvDao.getBySolIdActDefIdNodeId(map);
     }
 }

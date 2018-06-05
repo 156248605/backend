@@ -83,6 +83,7 @@ public class PermissionImpl implements PermissionService {
                 }
             }
             result.put("employeeId",receive.getId());
+
             request.getSession().setAttribute(CommonP.SESSION_EMPLOYEE_ID,receive.getId());
             request.getSession().setAttribute(CommonP.SESSION_EMPLOYEE_NAME,receive.getName());
             request.getSession().setAttribute(CommonP.SESSION_EMPLOYEE_PERMISSIONS,permissionList);

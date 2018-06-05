@@ -9,9 +9,9 @@ import javax.validation.constraints.Size;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
- * @author hugo.zhao
- * @since 2017/11/10 10:53
- */
+ *@author hugo.zhao
+ *@since 2018/5/5 9:52
+*/
 @Table(
         name = "ACT_RU_TASK"
 )

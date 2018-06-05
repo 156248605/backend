@@ -438,8 +438,8 @@ public class OsUser implements UserDetails,IUser {
     }
 
     @Override
-    public void setTenant(ITenant var1) {
-
+    public void setTenant(ITenant tenant) {
+        this.tenant = tenant;
     }
 
     public String getUsername() {

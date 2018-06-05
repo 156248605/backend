@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PropertyPlaceholderConfigurerExt extends PropertyPlaceholderConfigurer {
     private Map<String, String> properties = new HashMap();
 

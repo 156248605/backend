@@ -1,0 +1,23 @@
+<#if formModels??>
+    <#if (formModel.type=="ONLINE-DESIGN")>
+    <div class="customform" style="width: 1080px" id="form-panel">
+    <#if formModels?size==1>
+        <div class="form-model" id="formModel1"  boDefId="${formModel.boDefId}" formKey="${formModel.formKey}">
+            ${formModel.content}
+        </div>
+        <#else>
+            <div class="mini-tabs" activeIndex="0" style="width:100%;">
+                <#list formModels as model>
+                    <div title="${model.description}">
+                        <div class="form-model" id="formModel${i.index}" boDefId="${model.boDefId}" formKey="${model.formKey}">
+                            ${model.content}
+                        </div>
+                    </div>
+                </#list>
+            </div>
+    </#if>
+    </div>
+    <#else>
+        <iframe src="${formModel.content}" style="width:100%;" id="formFrame" frameborder="0" ></iframe>
+</#if>
+</#if>

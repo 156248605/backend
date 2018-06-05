@@ -1,5 +1,6 @@
 package com.elex.oa.entity;
 
+import com.elex.oa.entity.activiti.BpmSolFv;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -412,15 +413,14 @@ public class BpmFormView {
     private String oldViewId = null;
     @Transient
     private String oldBodefId = null;
-/*    @Transient
-    private BpmSolFv bpmSolFv = null;*/
+    @Transient
+    private BpmSolFv bpmSolFv = null;
 
+    public BpmSolFv getBpmSolFv() {
+        return bpmSolFv;
+    }
 
-
-
-
-
-
-
-
+    public void setBpmSolFv(BpmSolFv bpmSolFv) {
+        this.bpmSolFv = bpmSolFv;
+    }
 }

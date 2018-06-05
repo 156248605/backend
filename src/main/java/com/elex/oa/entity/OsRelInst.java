@@ -104,16 +104,36 @@ public class OsRelInst{
             max = 80
     )
     protected String path;
-
-    @ManyToOne
-    @JoinColumn(
+    /*    @ManyToOne
+        @JoinColumn(
+                name = "REL_TYPE_ID_"
+        )*/
+    @Column(
             name = "REL_TYPE_ID_"
     )
+    protected String osRelTypeId;
+
+    public String getOsRelTypeId() {
+        return osRelTypeId;
+    }
+
+    public void setOsRelTypeId(String osRelTypeId) {
+        this.osRelTypeId = osRelTypeId;
+    }
+
+    @Transient
     protected OsRelType osRelType;
+
+    public OsRelType getOsRelType() {
+        return osRelType;
+    }
+
+    public void setOsRelType(OsRelType osRelType) {
+        this.osRelType = osRelType;
+    }
+
     @Transient
     protected String relTypeName;
-    @Transient
-    protected String osRelTypeId;
     @Transient
     protected String relTypeCat;
     @Transient
@@ -196,21 +216,6 @@ public class OsRelInst{
         this.setInstId(in_instId);
     }
 
-    public OsRelType getOsRelType() {
-        return this.osRelType;
-    }
-
-    public void setOsRelType(OsRelType in_osRelType) {
-        this.osRelType = in_osRelType;
-    }
-
-    public String getOsRelTypeId() {
-        return StringUtils.isNotEmpty(this.osRelTypeId)?this.osRelTypeId:(this.osRelType != null?this.osRelType.getId():null);
-    }
-
-    public void setOsRelTypeId(String osRelTypeId) {
-        this.osRelTypeId = osRelTypeId;
-    }
 
     public String getPartyName2() {
         return this.partyName2;
@@ -241,7 +246,12 @@ public class OsRelInst{
     }
 
     public String getRelTypeName() {
-        return StringUtils.isNotEmpty(this.relTypeName)?this.relTypeName:(this.osRelType != null?this.osRelType.getName():null);
+        return relTypeName;
+    }
+
+
+    public String getRelTypeCat() {
+        return relTypeCat;
     }
 
     public void setRelTypeName(String relTypeName) {
@@ -250,21 +260,6 @@ public class OsRelInst{
 
     public void setInstId(String aValue) {
         this.instId = aValue;
-    }
-
-    public String getRelTypeId() {
-        return this.getOsRelType() == null?null:this.getOsRelType().getId();
-    }
-
-    public void setRelTypeId(String aValue) {
-        if(aValue == null) {
-            this.osRelType = null;
-        } else if(this.osRelType == null) {
-            this.osRelType = new OsRelType(aValue);
-        } else {
-            this.osRelType.setId(aValue);
-        }
-
     }
 
     public String getAlias() {
@@ -359,9 +354,6 @@ public class OsRelInst{
         this.groupKey = groupKey;
     }
 
-    public String getRelTypeCat() {
-        return StringUtils.isNotEmpty(this.relTypeCat)?this.relTypeCat:(this.osRelType != null?this.osRelType.getRelType():null);
-    }
 
     public void setRelTypeCat(String relTypeCat) {
         this.relTypeCat = relTypeCat;

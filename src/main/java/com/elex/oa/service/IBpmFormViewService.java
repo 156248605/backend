@@ -3,6 +3,7 @@ package com.elex.oa.service;
 import com.elex.oa.entity.BpmFormView;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,6 +18,9 @@ public interface IBpmFormViewService{
      int update(BpmFormView formView);
      //删除表单记录
      int deleteForm(String viewIds);
-
      BpmFormView getLatestByKey(String key, String tenantId);
+     List<BpmFormView> getDetailFormView(String solId, String actDefId, String instId);
+     List<String> getFormList(String formJson, String instId);
+     List<BpmFormView> getStartFormView(String solId, String actDefId);
+     List<BpmFormView> getTaskFormViews(String solId, String actDefId, String nodeId, String instId);
 }

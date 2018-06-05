@@ -1,6 +1,9 @@
 package com.elex.oa.service.impl;
 import com.elex.oa.activiti.service.ActRepService;
 import com.elex.oa.core.constants.MBoolean;
+import com.elex.oa.core.entity.StartEventConfig;
+import com.elex.oa.entity.activiti.BpmEventConfig;
+import com.elex.oa.json.JSONUtil;
 import com.elex.oa.json.JsonResult;
 import com.elex.oa.json.JsonResultUtil;
 import com.elex.oa.util.BeanUtil;
@@ -22,10 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.activiti.engine.RepositoryService;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.repository.Deployment;
@@ -67,8 +68,27 @@ public class BpmDefServiceImpl implements IBpmDefService {
         return bpmDefDao.getByActDefId(actDefId);
     }
 
-    public BpmDef getLatestBpmByKey(Map<String,String> map){
-        return bpmDefDao.getLatestBpmByKey(map);
+    public BpmDef getLatestBpmByKey(String key, String tenantId){
+        BpmDef  bpmDef = new BpmDef();
+        bpmDef.setTenantId(tenantId);
+        bpmDef.setKey(key);
+        bpmDef.setStatus("DEPLOYED");
+        bpmDef.setIsMain(MBoolean.YES.name());
+        BpmDef maxVersion = this.bpmDefDao.selectOne(bpmDef);
+        if(maxVersion != null) {
+            return maxVersion;
+        }
+        Map<String,String> map = new HashMap<>();
+        map.put("tenantId",tenantId);
+        map.put("key",key);
+        map.put("status","DEPLOYED");
+        Integer maxVersion1=this.bpmDefDao.getMaxVersions(map);
+        if(maxVersion1 !=null && maxVersion1 > 0){
+            bpmDef.setStatus(null);
+            return this.bpmDefDao.selectOne(bpmDef);
+        }else {
+            return null;
+        }
     }
 
     public BpmDef getByDefId(String DefId){
@@ -84,9 +104,7 @@ public class BpmDefServiceImpl implements IBpmDefService {
             }
         }
         if(StringUtil.isNotEmpty(defKey)) {
-            Map<String,String> map = new HashMap<>();
-            map.put(defKey, "1");
-            bpmDef = this.getLatestBpmByKey(map);
+            bpmDef = this.getLatestBpmByKey(defKey,"1");
         }
         return bpmDef;
     }
