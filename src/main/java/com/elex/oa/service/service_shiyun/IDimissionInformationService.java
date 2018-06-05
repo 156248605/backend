@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author:ShiYun;
@@ -42,4 +43,18 @@ public interface IDimissionInformationService extends BaseService<DimissionInfor
      *@Date: 13:48 2018\4\17 0017
      */
     public void modifyOne(DimissionInformation dimissionInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的离职信息
+     *@Date: 18:30 2018\5\29 0029
+     */
+    public List<DimissionInformation> queryAll();
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除离职信息
+     *@Date: 13:48 2018\5\30 0030
+     */
+    public void removeOne(Integer id);
 }

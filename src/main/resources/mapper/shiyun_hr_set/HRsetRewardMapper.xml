@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IHRsetRewardDao">
+
+	<resultMap id="RewardMapper" type="HRsetReward">
+		<id column="id" property="id" />
+		<result column="reward" property="reward" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="HRsetReward" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_set_reward (
+			id,
+			reward)
+		values (
+			NULL,
+			#{reward})
+	</insert>
+
+	<select id="selectAll" resultMap="RewardMapper">
+		SELECT * FROM tb_hr_set_reward
+	</select>
+
+	<select id="selectByConditions" parameterType="HRsetReward" resultMap="RewardMapper">
+		SELECT * FROM tb_hr_set_reward
+		<where>
+			<if test="id!=null and id!=''">AND id=#{id}</if>
+			<if test="reward!=null and reward!=''">AND reward=#{reward}</if>
+		</where>
+	</select>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_hr_set_reward WHERE id=#{id}
+	</delete>
+
+	<update id="updateOne" parameterType="HRsetReward">
+		UPDATE tb_hr_set_reward
+		SET reward=#{reward}
+		WHERE id=#{id}
+	</update>
+
+</mapper>

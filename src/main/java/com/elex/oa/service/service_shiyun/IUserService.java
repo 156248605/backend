@@ -17,4 +17,18 @@ public interface IUserService extends BaseService<User> {
      *@Date: 9:03 2018\4\11 0011
      */
     public Integer saveOne(User user);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除用户
+     *@Date: 14:52 2018\5\10 0010
+     */
+    public void removeOne(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据用户姓名查询用户
+     *@Date: 11:16 2018\5\25 0025
+     */
+    public User queryByTruename(String truename);
 }

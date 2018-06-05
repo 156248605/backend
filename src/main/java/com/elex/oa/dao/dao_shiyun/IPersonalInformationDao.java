@@ -1,5 +1,6 @@
 package com.elex.oa.dao.dao_shiyun;
 
+import com.elex.oa.entity.entity_shiyun.DimissionInformation;
 import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,6 +20,7 @@ public interface IPersonalInformationDao{
      *@Date: 18:07 2018\4\8 0008
      */
     public List<PersonalInformation> selectByConditions(PersonalInformation personalInformation);
+    public List<PersonalInformation> selectByConditions2(DimissionInformation dimissionInformation);
 
     /**
      *@Author:ShiYun;
@@ -33,6 +35,13 @@ public interface IPersonalInformationDao{
      *@Date: 11:03 2018\4\9 0009
      */
     public PersonalInformation selectByUserid(Integer userid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门ID查询人事信息
+     *@Date: 16:18 2018\5\28 0028
+     */
+    public List<PersonalInformation> selectByDepid(Integer depid);
 
     /**
      *@Author:ShiYun;

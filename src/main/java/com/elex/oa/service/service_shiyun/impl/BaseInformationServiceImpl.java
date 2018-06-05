@@ -37,7 +37,7 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
     @Override
     public Integer saveOne(BaseInformation baseInformation) {
         Integer baseInformationId = iBaseInformationDao.insertOne(baseInformation);
-        return baseInformationId;
+        return baseInformation.getId();
     }
 
     /**

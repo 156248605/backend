@@ -40,4 +40,18 @@ public interface IPostDao  {
      *@Date: 11:57 2018\4\23 0023
      */
     public Integer insertOne(Post post);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:修改岗位信息
+     *@Date: 11:04 2018\5\2 0002
+     */
+    public void updateOne(Post post);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据岗位ID删除岗位信息
+     *@Date: 14:49 2018\5\2 0002
+     */
+    public void deleteOne(Integer id);
 }

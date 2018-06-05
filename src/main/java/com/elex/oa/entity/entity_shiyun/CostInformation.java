@@ -14,48 +14,20 @@ import java.io.Serializable;
 public class CostInformation implements Serializable{
     @Id
     private Integer id;
-    private String costtype;//成本类型
-    private String costcode;//成本编号
-    private String salary;//薪资
-    private String accumulationfund;//公积金号
-    private String gscdylbx;//公司承担养老保险
-    private String grcdylbx;//个人承担养老保险
-    private String gscdgjj;//公司承担公积金
-    private String grcdgjj;//个人承担公积金
-    private String gscdsybx;//公司承担失业保险
-    private String grcdsybx;//个人承担失业保险
-    private String gscdylbx2;//公司承担医疗保险
-    private String grcdylbx2;//个人承担医疗保险
-    private String shengyubx;//生育保险
-    private String gsbx;//工伤保险
-    private String salarykhh;//工资开户行
+    private Integer salarystandardid;//薪资标准ID
+    private Integer ssbid;//社保基数ID
+    private Integer ssbgscdid;//社保公司缴费比例ID
+    private Integer ssbgrcdid;//社保个人缴费比例ID
+    private Integer gjjid;//公积金基数ID
+    private Integer gjjgscdid;//公积金公司缴费比例ID
+    private Integer gjjgrcdid;//公积金个人缴费比例ID
+    private Integer khhid;//开户行ID
     private String salaryaccount;//工资账号
-    private String sbjnd;//社保缴纳地
+    private Integer sbjndid;//社保缴纳地ID
     private String sbcode;//社保账号
+    private String gjjcode;//公积金账号
 
     public CostInformation() {
-    }
-
-    public CostInformation(Integer id, String costtype, String costcode, String salary, String accumulationfund, String gscdylbx, String grcdylbx, String gscdgjj, String grcdgjj, String gscdsybx, String grcdsybx, String gscdylbx2, String grcdylbx2, String shengyubx, String gsbx, String salarykhh, String salaryaccount, String sbjnd, String sbcode) {
-        this.id = id;
-        this.costtype = costtype;
-        this.costcode = costcode;
-        this.salary = salary;
-        this.accumulationfund = accumulationfund;
-        this.gscdylbx = gscdylbx;
-        this.grcdylbx = grcdylbx;
-        this.gscdgjj = gscdgjj;
-        this.grcdgjj = grcdgjj;
-        this.gscdsybx = gscdsybx;
-        this.grcdsybx = grcdsybx;
-        this.gscdylbx2 = gscdylbx2;
-        this.grcdylbx2 = grcdylbx2;
-        this.shengyubx = shengyubx;
-        this.gsbx = gsbx;
-        this.salarykhh = salarykhh;
-        this.salaryaccount = salaryaccount;
-        this.sbjnd = sbjnd;
-        this.sbcode = sbcode;
     }
 
     public Integer getId() {
@@ -66,124 +38,68 @@ public class CostInformation implements Serializable{
         this.id = id;
     }
 
-    public String getCosttype() {
-        return costtype;
+    public Integer getSalarystandardid() {
+        return salarystandardid;
     }
 
-    public void setCosttype(String costtype) {
-        this.costtype = costtype;
+    public void setSalarystandardid(Integer salarystandardid) {
+        this.salarystandardid = salarystandardid;
     }
 
-    public String getCostcode() {
-        return costcode;
+    public Integer getSsbid() {
+        return ssbid;
     }
 
-    public void setCostcode(String costcode) {
-        this.costcode = costcode;
+    public void setSsbid(Integer ssbid) {
+        this.ssbid = ssbid;
     }
 
-    public String getSalary() {
-        return salary;
+    public Integer getSsbgscdid() {
+        return ssbgscdid;
     }
 
-    public void setSalary(String salary) {
-        this.salary = salary;
+    public void setSsbgscdid(Integer ssbgscdid) {
+        this.ssbgscdid = ssbgscdid;
     }
 
-    public String getAccumulationfund() {
-        return accumulationfund;
+    public Integer getSsbgrcdid() {
+        return ssbgrcdid;
     }
 
-    public void setAccumulationfund(String accumulationfund) {
-        this.accumulationfund = accumulationfund;
+    public void setSsbgrcdid(Integer ssbgrcdid) {
+        this.ssbgrcdid = ssbgrcdid;
     }
 
-    public String getGscdylbx() {
-        return gscdylbx;
+    public Integer getGjjid() {
+        return gjjid;
     }
 
-    public void setGscdylbx(String gscdylbx) {
-        this.gscdylbx = gscdylbx;
+    public void setGjjid(Integer gjjid) {
+        this.gjjid = gjjid;
     }
 
-    public String getGrcdylbx() {
-        return grcdylbx;
+    public Integer getGjjgscdid() {
+        return gjjgscdid;
     }
 
-    public void setGrcdylbx(String grcdylbx) {
-        this.grcdylbx = grcdylbx;
+    public void setGjjgscdid(Integer gjjgscdid) {
+        this.gjjgscdid = gjjgscdid;
     }
 
-    public String getGscdgjj() {
-        return gscdgjj;
+    public Integer getGjjgrcdid() {
+        return gjjgrcdid;
     }
 
-    public void setGscdgjj(String gscdgjj) {
-        this.gscdgjj = gscdgjj;
+    public void setGjjgrcdid(Integer gjjgrcdid) {
+        this.gjjgrcdid = gjjgrcdid;
     }
 
-    public String getGrcdgjj() {
-        return grcdgjj;
+    public Integer getKhhid() {
+        return khhid;
     }
 
-    public void setGrcdgjj(String grcdgjj) {
-        this.grcdgjj = grcdgjj;
-    }
-
-    public String getGscdsybx() {
-        return gscdsybx;
-    }
-
-    public void setGscdsybx(String gscdsybx) {
-        this.gscdsybx = gscdsybx;
-    }
-
-    public String getGrcdsybx() {
-        return grcdsybx;
-    }
-
-    public void setGrcdsybx(String grcdsybx) {
-        this.grcdsybx = grcdsybx;
-    }
-
-    public String getGscdylbx2() {
-        return gscdylbx2;
-    }
-
-    public void setGscdylbx2(String gscdylbx2) {
-        this.gscdylbx2 = gscdylbx2;
-    }
-
-    public String getGrcdylbx2() {
-        return grcdylbx2;
-    }
-
-    public void setGrcdylbx2(String grcdylbx2) {
-        this.grcdylbx2 = grcdylbx2;
-    }
-
-    public String getShengyubx() {
-        return shengyubx;
-    }
-
-    public void setShengyubx(String shengyubx) {
-        this.shengyubx = shengyubx;
-    }
-
-    public String getGsbx() {
-        return gsbx;
-    }
-
-    public void setGsbx(String gsbx) {
-        this.gsbx = gsbx;
-    }
-
-    public String getSalarykhh() {
-        return salarykhh;
-    }
-
-    public void setSalarykhh(String salarykhh) {
-        this.salarykhh = salarykhh;
+    public void setKhhid(Integer khhid) {
+        this.khhid = khhid;
     }
 
     public String getSalaryaccount() {
@@ -194,12 +110,12 @@ public class CostInformation implements Serializable{
         this.salaryaccount = salaryaccount;
     }
 
-    public String getSbjnd() {
-        return sbjnd;
+    public Integer getSbjndid() {
+        return sbjndid;
     }
 
-    public void setSbjnd(String sbjnd) {
-        this.sbjnd = sbjnd;
+    public void setSbjndid(Integer sbjndid) {
+        this.sbjndid = sbjndid;
     }
 
     public String getSbcode() {
@@ -210,28 +126,30 @@ public class CostInformation implements Serializable{
         this.sbcode = sbcode;
     }
 
+    public String getGjjcode() {
+        return gjjcode;
+    }
+
+    public void setGjjcode(String gjjcode) {
+        this.gjjcode = gjjcode;
+    }
+
     @Override
     public String toString() {
         return "CostInformation{" +
                 "id=" + id +
-                ", costtype='" + costtype + '\'' +
-                ", costcode='" + costcode + '\'' +
-                ", salary='" + salary + '\'' +
-                ", accumulationfund='" + accumulationfund + '\'' +
-                ", gscdylbx='" + gscdylbx + '\'' +
-                ", grcdylbx='" + grcdylbx + '\'' +
-                ", gscdgjj='" + gscdgjj + '\'' +
-                ", grcdgjj='" + grcdgjj + '\'' +
-                ", gscdsybx='" + gscdsybx + '\'' +
-                ", grcdsybx='" + grcdsybx + '\'' +
-                ", gscdylbx2='" + gscdylbx2 + '\'' +
-                ", grcdylbx2='" + grcdylbx2 + '\'' +
-                ", shengyubx='" + shengyubx + '\'' +
-                ", gsbx='" + gsbx + '\'' +
-                ", salarykhh='" + salarykhh + '\'' +
+                ", salarystandardid=" + salarystandardid +
+                ", ssbid=" + ssbid +
+                ", ssbgscdid=" + ssbgscdid +
+                ", ssbgrcdid=" + ssbgrcdid +
+                ", gjjid=" + gjjid +
+                ", gjjgscdid=" + gjjgscdid +
+                ", gjjgrcdid=" + gjjgrcdid +
+                ", khhid=" + khhid +
                 ", salaryaccount='" + salaryaccount + '\'' +
-                ", sbjnd='" + sbjnd + '\'' +
+                ", sbjndid=" + sbjndid +
                 ", sbcode='" + sbcode + '\'' +
+                ", gjjcode='" + gjjcode + '\'' +
                 '}';
     }
 }

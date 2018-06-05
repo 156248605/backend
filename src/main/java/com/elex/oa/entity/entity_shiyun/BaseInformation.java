@@ -13,38 +13,30 @@ import java.io.Serializable;
 @Table(name = "tb_id_baseinformation")
 public class BaseInformation implements Serializable{
     @Id
-    private Integer id;
-    private String truename;
-    private String bloodtype;
-    private String employeenumber;
-    private String marriage;
-    private String englishname;
-    private String race;
-    private String idcode;
-    private String hktype;
-    private String birthday;
-    private String zzmm;
-    private Integer age;
-    private String bysj;
-    private String sex;
-    private String hkszd;
-    private String constellation;
-    private String zgxl;
-    private String nationality;
-    private String byyx;
-    private String sxzy;
-    private String pyfs;
-    private String firstla;
-    private String secondla;
-    private String thirdla;
-    private String elsela;
-    private String zyzstype;
-    private String zyzs;
-    private String zyzscp;
-    private String firstworkingtime;
-    private Integer workingage;
-    private String sbdd;
-    private String parentcompany;
+    private Integer id;//主键
+    private String userphoto;//免冠照片
+    private String idphoto1;//身份证正面
+    private String idphoto2;//身份证背面
+    private String englishname;//英文名
+    private String idcode;//身份证号码
+    private String birthday;//出生日期
+    private String constellation;//星座
+    private String chinesecs;//属相
+    private Integer raceid;//民族ID
+    private String marriage;//婚姻
+    private Integer childrenid;//生育ID
+    private Integer zzmmid;//政治面貌ID
+    private Integer zgxlid;//最高学历ID
+    private Integer byyxid;//毕业院校ID
+    private Integer sxzyid;//所学专业ID
+    private Integer pyfsid;//培养方式ID
+    private Integer firstlaid;//第一外语ID
+    private Integer elselaid;//其他外语ID
+    private Integer posttitleid;//职称ID
+    private Integer zyzstypeid;//职业证书类型ID
+    private Integer zyzsnameid;//职业证书名称ID
+    private String firstworkingtime;//首次参加工作时间
+    private Integer parentcompanyid;//上家雇主ID
 
     public BaseInformation() {
     }
@@ -57,36 +49,28 @@ public class BaseInformation implements Serializable{
         this.id = id;
     }
 
-    public String getTruename() {
-        return truename;
+    public String getUserphoto() {
+        return userphoto;
     }
 
-    public void setTruename(String truename) {
-        this.truename = truename;
+    public void setUserphoto(String userphoto) {
+        this.userphoto = userphoto;
     }
 
-    public String getBloodtype() {
-        return bloodtype;
+    public String getIdphoto1() {
+        return idphoto1;
     }
 
-    public void setBloodtype(String bloodtype) {
-        this.bloodtype = bloodtype;
+    public void setIdphoto1(String idphoto1) {
+        this.idphoto1 = idphoto1;
     }
 
-    public String getEmployeenumber() {
-        return employeenumber;
+    public String getIdphoto2() {
+        return idphoto2;
     }
 
-    public void setEmployeenumber(String employeenumber) {
-        this.employeenumber = employeenumber;
-    }
-
-    public String getMarriage() {
-        return marriage;
-    }
-
-    public void setMarriage(String marriage) {
-        this.marriage = marriage;
+    public void setIdphoto2(String idphoto2) {
+        this.idphoto2 = idphoto2;
     }
 
     public String getEnglishname() {
@@ -97,28 +81,12 @@ public class BaseInformation implements Serializable{
         this.englishname = englishname;
     }
 
-    public String getRace() {
-        return race;
-    }
-
-    public void setRace(String race) {
-        this.race = race;
-    }
-
     public String getIdcode() {
         return idcode;
     }
 
     public void setIdcode(String idcode) {
         this.idcode = idcode;
-    }
-
-    public String getHktype() {
-        return hktype;
-    }
-
-    public void setHktype(String hktype) {
-        this.hktype = hktype;
     }
 
     public String getBirthday() {
@@ -129,46 +97,6 @@ public class BaseInformation implements Serializable{
         this.birthday = birthday;
     }
 
-    public String getZzmm() {
-        return zzmm;
-    }
-
-    public void setZzmm(String zzmm) {
-        this.zzmm = zzmm;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getBysj() {
-        return bysj;
-    }
-
-    public void setBysj(String bysj) {
-        this.bysj = bysj;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getHkszd() {
-        return hkszd;
-    }
-
-    public void setHkszd(String hkszd) {
-        this.hkszd = hkszd;
-    }
-
     public String getConstellation() {
         return constellation;
     }
@@ -177,100 +105,116 @@ public class BaseInformation implements Serializable{
         this.constellation = constellation;
     }
 
-    public String getZgxl() {
-        return zgxl;
+    public String getChinesecs() {
+        return chinesecs;
     }
 
-    public void setZgxl(String zgxl) {
-        this.zgxl = zgxl;
+    public void setChinesecs(String chinesecs) {
+        this.chinesecs = chinesecs;
     }
 
-    public String getNationality() {
-        return nationality;
+    public Integer getRaceid() {
+        return raceid;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setRaceid(Integer raceid) {
+        this.raceid = raceid;
     }
 
-    public String getByyx() {
-        return byyx;
+    public String getMarriage() {
+        return marriage;
     }
 
-    public void setByyx(String byyx) {
-        this.byyx = byyx;
+    public void setMarriage(String marriage) {
+        this.marriage = marriage;
     }
 
-    public String getSxzy() {
-        return sxzy;
+    public Integer getChildrenid() {
+        return childrenid;
     }
 
-    public void setSxzy(String sxzy) {
-        this.sxzy = sxzy;
+    public void setChildrenid(Integer childrenid) {
+        this.childrenid = childrenid;
     }
 
-    public String getPyfs() {
-        return pyfs;
+    public Integer getZzmmid() {
+        return zzmmid;
     }
 
-    public void setPyfs(String pyfs) {
-        this.pyfs = pyfs;
+    public void setZzmmid(Integer zzmmid) {
+        this.zzmmid = zzmmid;
     }
 
-    public String getFirstla() {
-        return firstla;
+    public Integer getZgxlid() {
+        return zgxlid;
     }
 
-    public void setFirstla(String firstla) {
-        this.firstla = firstla;
+    public void setZgxlid(Integer zgxlid) {
+        this.zgxlid = zgxlid;
     }
 
-    public String getSecondla() {
-        return secondla;
+    public Integer getByyxid() {
+        return byyxid;
     }
 
-    public void setSecondla(String secondla) {
-        this.secondla = secondla;
+    public void setByyxid(Integer byyxid) {
+        this.byyxid = byyxid;
     }
 
-    public String getThirdla() {
-        return thirdla;
+    public Integer getSxzyid() {
+        return sxzyid;
     }
 
-    public void setThirdla(String thirdla) {
-        this.thirdla = thirdla;
+    public void setSxzyid(Integer sxzyid) {
+        this.sxzyid = sxzyid;
     }
 
-    public String getElsela() {
-        return elsela;
+    public Integer getPyfsid() {
+        return pyfsid;
     }
 
-    public void setElsela(String elsela) {
-        this.elsela = elsela;
+    public void setPyfsid(Integer pyfsid) {
+        this.pyfsid = pyfsid;
     }
 
-    public String getZyzstype() {
-        return zyzstype;
+    public Integer getFirstlaid() {
+        return firstlaid;
     }
 
-    public void setZyzstype(String zyzstype) {
-        this.zyzstype = zyzstype;
+    public void setFirstlaid(Integer firstlaid) {
+        this.firstlaid = firstlaid;
     }
 
-    public String getZyzs() {
-        return zyzs;
+    public Integer getElselaid() {
+        return elselaid;
     }
 
-    public void setZyzs(String zyzs) {
-        this.zyzs = zyzs;
+    public void setElselaid(Integer elselaid) {
+        this.elselaid = elselaid;
     }
 
-    public String getZyzscp() {
-        return zyzscp;
+    public Integer getPosttitleid() {
+        return posttitleid;
     }
 
-    public void setZyzscp(String zyzscp) {
-        this.zyzscp = zyzscp;
+    public void setPosttitleid(Integer posttitleid) {
+        this.posttitleid = posttitleid;
+    }
+
+    public Integer getZyzstypeid() {
+        return zyzstypeid;
+    }
+
+    public void setZyzstypeid(Integer zyzstypeid) {
+        this.zyzstypeid = zyzstypeid;
+    }
+
+    public Integer getZyzsnameid() {
+        return zyzsnameid;
+    }
+
+    public void setZyzsnameid(Integer zyzsnameid) {
+        this.zyzsnameid = zyzsnameid;
     }
 
     public String getFirstworkingtime() {
@@ -281,27 +225,41 @@ public class BaseInformation implements Serializable{
         this.firstworkingtime = firstworkingtime;
     }
 
-    public Integer getWorkingage() {
-        return workingage;
+    public Integer getParentcompanyid() {
+        return parentcompanyid;
     }
 
-    public void setWorkingage(Integer workingage) {
-        this.workingage = workingage;
+    public void setParentcompanyid(Integer parentcompanyid) {
+        this.parentcompanyid = parentcompanyid;
     }
 
-    public String getSbdd() {
-        return sbdd;
-    }
-
-    public void setSbdd(String sbdd) {
-        this.sbdd = sbdd;
-    }
-
-    public String getParentcompany() {
-        return parentcompany;
-    }
-
-    public void setParentcompany(String parentcompany) {
-        this.parentcompany = parentcompany;
+    @Override
+    public String toString() {
+        return "BaseInformation{" +
+                "id=" + id +
+                ", userphoto='" + userphoto + '\'' +
+                ", idphoto1='" + idphoto1 + '\'' +
+                ", idphoto2='" + idphoto2 + '\'' +
+                ", englishname='" + englishname + '\'' +
+                ", idcode='" + idcode + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", constellation='" + constellation + '\'' +
+                ", chinesecs='" + chinesecs + '\'' +
+                ", raceid=" + raceid +
+                ", marriage='" + marriage + '\'' +
+                ", childrenid=" + childrenid +
+                ", zzmmid=" + zzmmid +
+                ", zgxlid=" + zgxlid +
+                ", byyxid=" + byyxid +
+                ", sxzyid=" + sxzyid +
+                ", pyfsid=" + pyfsid +
+                ", firstlaid=" + firstlaid +
+                ", elselaid=" + elselaid +
+                ", posttitleid=" + posttitleid +
+                ", zyzstypeid=" + zyzstypeid +
+                ", zyzsnameid=" + zyzsnameid +
+                ", firstworkingtime='" + firstworkingtime + '\'' +
+                ", parentcompanyid=" + parentcompanyid +
+                '}';
     }
 }

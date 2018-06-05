@@ -1,4 +1,4 @@
-package com.elex.oa.common;
+package com.elex.oa.common.common_shiyun;
 
 /**
  * @Author:ShiYun;
@@ -21,5 +21,6 @@ public class Commons {
     public static final Integer 奖励 = 1;
     public static final Integer 激活 = 1;
     public static final Integer 未激活 = 0;
+    public static final String realpath = "F:/static";
 
 }

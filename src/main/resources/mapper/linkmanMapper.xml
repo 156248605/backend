@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.eqptDao.LinkmanMapper">
+
+    <select id="LinkmanList" resultType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT * FROM eqpt_linkman
+    </select>
+
+    <select id="searchFor" resultType="com.elex.oa.entity.eqpt.Linkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT * FROM eqpt_linkman
+        <where>
+            <if test="linkId != null and linkId != '' ">
+                linkId = #{linkId}
+            </if>
+            <if test="name != null and name != '' ">
+                AND name = #{name}
+            </if>
+            <if test="tel != null and tel != '' ">
+                AND tel = #{tel}
+            </if>
+            <if test="job != null and job != '' ">
+                AND job = #{job}
+            </if>
+            <if test="address != null and address != '' ">
+                AND address = #{address}
+            </if>
+            <if test="email != null and email != '' ">
+                AND email = #{email}
+            </if>
+            <if test="qqNum != null and qqNum != '' ">
+                AND qqNum = #{qqNum}
+            </if>
+            <if test="wechatNum != null and wechatNum != '' ">
+                AND wechatNum = #{wechatNum}
+            </if>
+        </where>
+    </select>
+
+    <insert id="newLinkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        INSERT INTO eqpt_linkman VALUES (#{linkId},#{job},#{name},#{tel},#{qqNum},#{wechatNum},#{address},#{email},NULL)
+    </insert>
+
+    <delete id="deleteLinkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        DELETE FROM eqpt_linkman
+        <where>
+            <if test="linkId != null and linkId != '' ">
+                linkId = #{linkId},
+            </if>
+            <if test="name != null and name != '' ">
+                name = #{name},
+            </if>
+            <if test="tel != null and tel != '' ">
+                tel = #{tel},
+            </if>
+            <if test="job != null and job != '' ">
+                job = #{job},
+            </if>
+            <if test="address != null and address != '' ">
+                address = #{address},
+            </if>
+            <if test="email != null and email != '' ">
+                email = #{email},
+            </if>
+            <if test="qqNum != null and qqNum != '' ">
+                qqNum = #{qqNum},
+            </if>
+            <if test="wechatNum != null and wechatNum != '' ">
+                wechatNum = #{wechatNum}
+            </if>
+        </where>
+    </delete>
+</mapper>

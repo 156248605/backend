@@ -14,6 +14,7 @@ public class Dept implements Serializable{
     private String depname;// 部门名称
     private String depcode;// 部门编号
     private String functionaltype;// 职能类型
+    private Integer functionaltypeid;// 职能类型ID
     private User principaluser;// 部门正职
     private Integer principaluserid;// 部门正职的ID
     private User deputyuser;// 部门副职
@@ -22,26 +23,10 @@ public class Dept implements Serializable{
     private Integer secretaryuserid;// 部门秘书的ID
     private Integer numbers;// 部门人数
     private String dutydescription;// 部门职责
+    private String depdescription;//部门概述
+    private Integer state;//状态
 
     public Dept() {
-    }
-
-    public Dept(Integer id, Dept parentdep, Integer parentdepid, String companyname, String depname, String depcode, String functionaltype, User principaluser, Integer principaluserid, User deputyuser, Integer deputyuserid, User secretaryuser, Integer secretaryuserid, Integer numbers, String dutydescription) {
-        this.id = id;
-        this.parentdep = parentdep;
-        this.parentdepid = parentdepid;
-        this.companyname = companyname;
-        this.depname = depname;
-        this.depcode = depcode;
-        this.functionaltype = functionaltype;
-        this.principaluser = principaluser;
-        this.principaluserid = principaluserid;
-        this.deputyuser = deputyuser;
-        this.deputyuserid = deputyuserid;
-        this.secretaryuser = secretaryuser;
-        this.secretaryuserid = secretaryuserid;
-        this.numbers = numbers;
-        this.dutydescription = dutydescription;
     }
 
     public Integer getId() {
@@ -98,6 +83,14 @@ public class Dept implements Serializable{
 
     public void setFunctionaltype(String functionaltype) {
         this.functionaltype = functionaltype;
+    }
+
+    public Integer getFunctionaltypeid() {
+        return functionaltypeid;
+    }
+
+    public void setFunctionaltypeid(Integer functionaltypeid) {
+        this.functionaltypeid = functionaltypeid;
     }
 
     public User getPrincipaluser() {
@@ -162,6 +155,22 @@ public class Dept implements Serializable{
 
     public void setDutydescription(String dutydescription) {
         this.dutydescription = dutydescription;
+    }
+
+    public String getDepdescription() {
+        return depdescription;
+    }
+
+    public void setDepdescription(String depdescription) {
+        this.depdescription = depdescription;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     @Override

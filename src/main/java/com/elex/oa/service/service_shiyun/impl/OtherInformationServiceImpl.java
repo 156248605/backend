@@ -37,7 +37,7 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
     @Override
     public Integer saveOne(OtherInformation otherInformation) {
         Integer otherInformationId = iOtherInformationDao.insertOne(otherInformation);
-        return otherInformationId;
+        return otherInformation.getId();
     }
 
     /**

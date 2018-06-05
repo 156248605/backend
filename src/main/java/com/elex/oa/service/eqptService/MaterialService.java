@@ -12,11 +12,16 @@ import java.text.ParseException;
 public interface MaterialService {
     PageInfo<Material> showMaterial(Page page);
 
+/*
+    PageInfo<Material> searchMaterial(Page page, HttpServletRequest request);
+*/
+
+    // 查找物料
     PageInfo<Material> searchMaterial(Page page, HttpServletRequest request);
 
     Material changeMaterial(HttpServletRequest request);
 
-    void saveMaterial(HttpServletRequest request);
+    void saveMaterial(HttpServletRequest request) throws ParseException;
 
     void deleteMaterial (HttpServletRequest request);
 

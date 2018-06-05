@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IPersonalInformationDao">
+
+	<resultMap id="PersonalInformationResultMap" type="PersonalInformation">
+		<id column="id" property="id" />
+		<result column="userid" property="userid" />
+		<result column="employeenumber" property="employeenumber" />
+		<result column="depid" property="depid" />
+		<result column="sex" property="sex" />
+		<result column="telphoneid" property="telphoneid" />
+		<result column="mobilephone" property="mobilephone" />
+		<result column="baseinformationid" property="baseinformationid" />
+		<result column="manageinformationid" property="manageinformationid" />
+		<result column="costinformationid" property="costinformationid" />
+		<result column="otherinformationid" property="otherinformationid" />
+	</resultMap>
+
+	<select id="selectByConditions" parameterType="PersonalInformation" resultMap="PersonalInformationResultMap">
+		SELECT
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		FROM
+			tb_id_personalinformation per
+		LEFT JOIN tb_id_baseinformation b ON per.baseinformationid = b.id
+		LEFT JOIN tb_id_user u ON per.userid = u.id
+		LEFT JOIN tb_id_department d ON per.depid = d.id
+		LEFT JOIN tb_hr_per_and_post_rs r ON per.id = r.perid
+		LEFT JOIN tb_hr_set_telphone t ON per.telphoneid = t.id
+		<where>
+			<if test="isactive!=null and isactive!=''">
+				u.isactive=#{isactive}
+			</if>
+			<if test="username!=null and username!=''">
+				<if test="usernamevalue==''">
+					AND u.username=#{username}
+				</if>
+				<if test="usernamevalue=='包含'">
+					AND u.username LIKE CONCAT(CONCAT('%', #{username}), '%')
+				</if>
+				<if test="usernamevalue=='不包含'">
+					AND u.username NOT LIKE CONCAT(CONCAT('%', #{username}), '%')
+				</if>
+			</if>
+			<if test="truename!=null and truename!=''">
+				<if test="truenamevalue==''">
+					AND u.truename=#{truename}
+				</if>
+				<if test="truenamevalue=='包含'">
+					AND u.truename LIKE CONCAT(CONCAT('%', #{truename}), '%')
+				</if>
+				<if test="truenamevalue=='不包含'">
+					AND u.truename NOT LIKE CONCAT(CONCAT('%', #{truename}), '%')
+				</if>
+			</if>
+			<if test="employeenumber!=null and employeenumber!=''">
+				<if test="employeenumbervalue==''">
+					AND per.employeenumber=#{employeenumber}
+				</if>
+				<if test="employeenumbervalue=='包含'">
+					AND per.employeenumber LIKE CONCAT(CONCAT('%', #{employeenumber}), '%')
+				</if>
+				<if test="employeenumbervalue=='不包含'">
+					AND per.employeenumber NOT LIKE CONCAT(CONCAT('%', #{employeenumber}), '%')
+				</if>
+			</if>
+			<if test="baseinformationids!=null">
+				AND per.baseinformationid IN
+				<foreach collection="baseinformationids" item="param"  open="(" close=")" separator=",">
+					#{param}
+				</foreach>
+			</if>
+			<if test="sex!=null and sex!=''">
+				AND per.sex=#{sex}
+			</if>
+			<if test="depname!=null and depname!=''">
+				<if test="depnamevalue==''">
+					AND d.depname=#{depname}
+				</if>
+				<if test="depnamevalue=='包含'">
+					AND d.depname LIKE CONCAT(CONCAT('%', #{depname}), '%')
+				</if>
+				<if test="depnamevalue=='不包含'">
+					AND d.depname NOT LIKE CONCAT(CONCAT('%', #{depname}), '%')
+				</if>
+			</if>
+			<if test="perids!=null">
+				AND per.id IN
+				<foreach collection="perids" item="param"  open="(" close=")" separator=",">
+					#{param}
+				</foreach>
+			</if>
+			<if test="telphone!=null and telphone!=''">
+				<if test="telphonevalue==''">
+					AND t.telphone=#{telphone}
+				</if>
+				<if test="telphonevalue=='包含'">
+					AND t.telphone LIKE CONCAT(CONCAT('%', #{telphone}), '%')
+				</if>
+				<if test="telphonevalue=='不包含'">
+					AND t.telphone NOT LIKE CONCAT(CONCAT('%', #{telphone}), '%')
+				</if>
+			</if>
+			<if test="mobilephone!=null and mobilephone!=''">
+				<if test="mobilephonevalue==''">
+					AND per.mobilephone=#{mobilephone}
+				</if>
+				<if test="mobilephonevalue=='包含'">
+					AND per.mobilephone LIKE CONCAT(CONCAT('%', #{mobilephone}), '%')
+				</if>
+				<if test="mobilephonevalue=='不包含'">
+					AND per.mobilephone NOT LIKE CONCAT(CONCAT('%', #{mobilephone}), '%')
+				</if>
+			</if>
+			<if test="depid!='' and depid!=null">
+				AND per.depid = #{depid}
+			</if>
+			and u.state = 1
+		</where>
+		GROUP BY per.id
+	</select>
+
+	<select id="selectByConditions2" parameterType="DimissionInformation" resultMap="PersonalInformationResultMap">
+		SELECT
+			per.userid
+		FROM
+			tb_id_personalinformation per
+		LEFT JOIN tb_id_user u ON per.userid = u.id
+		LEFT JOIN tb_id_department d ON per.depid = d.id
+		LEFT JOIN tb_hr_per_and_post_rs r ON per.id = r.perid
+		<where>
+			<if test="dimissiontruename!=null and dimissiontruename!=''">
+				<if test="dimissiontruenamevalue==''">
+					and u.truename = #{dimissiontruename}
+				</if>
+				<if test="dimissiontruenamevalue=='包含'">
+					AND u.truename LIKE CONCAT('%',#{dimissiontruename},'%')
+				</if>
+				<if test="dimissiontruenamevalue=='不包含'">
+					AND u.truename NOT LIKE CONCAT('%',#{dimissiontruename},'%')
+				</if>
+			</if>
+			<if test="employeenumber!=null and employeenumber!=''">
+				<if test="employeenumbervalue==''">
+					AND per.employeenumber=#{employeenumber}
+				</if>
+				<if test="employeenumbervalue=='包含'">
+					AND per.employeenumber LIKE CONCAT(CONCAT('%', #{employeenumber}), '%')
+				</if>
+				<if test="employeenumbervalue=='不包含'">
+					AND per.employeenumber NOT LIKE CONCAT(CONCAT('%', #{employeenumber}), '%')
+				</if>
+			</if>
+			<if test="depname!=null and depname!=''">
+				<if test="depnamevalue==''">
+					AND d.depname=#{depname}
+				</if>
+				<if test="depnamevalue=='包含'">
+					AND d.depname LIKE CONCAT(CONCAT('%', #{depname}), '%')
+				</if>
+				<if test="depnamevalue=='不包含'">
+					AND d.depname NOT LIKE CONCAT(CONCAT('%', #{depname}), '%')
+				</if>
+			</if>
+			<if test="perids!=null">
+				AND per.id IN
+				<foreach collection="perids" item="param"  open="(" close=")" separator=",">
+					#{param}
+				</foreach>
+			</if>
+		</where>
+		GROUP BY per.id
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="PersonalInformationResultMap">
+		SELECT
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		FROM
+			tb_id_personalinformation per
+			JOIN tb_id_user u ON per.userid = u.id
+		WHERE
+			per.id=#{id} and u.state = 1
+	</select>
+
+	<select id="selectByUserid" parameterType="java.lang.Integer" resultMap="PersonalInformationResultMap">
+		SELECT
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		FROM
+			tb_id_personalinformation per
+			JOIN tb_id_user u ON per.userid = u.id
+		WHERE
+			userid=#{userid}
+	</select>
+
+	<select id="selectByDepid" parameterType="java.lang.Integer" resultMap="PersonalInformationResultMap">
+		SELECT
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		FROM
+			tb_id_personalinformation per
+			JOIN tb_id_user u ON per.userid = u.id
+		WHERE
+			depid=#{depid} and u.state=1
+	</select>
+
+	<insert id="insertOne" parameterType="PersonalInformation" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_id_personalinformation (
+			id,
+			userid,
+			employeenumber,
+			depid,
+			sex,
+			telphoneid,
+			mobilephone,
+			baseinformationid,
+			manageinformationid,
+			costinformationid,
+			otherinformationid)
+		values (
+			NULL ,
+			#{userid},
+			#{employeenumber},
+			#{depid},
+			#{sex},
+			#{telphoneid},
+			#{mobilephone},
+			#{baseinformationid},
+			#{manageinformationid},
+			#{costinformationid},
+			#{otherinformationid})
+	</insert>
+
+	<update id="updateOne" parameterType="PersonalInformation" >
+		update tb_id_personalinformation
+		<set>
+			<if test="employeenumber!=null and employeenumber!=''">
+				employeenumber=#{employeenumber},
+			</if>
+			<if test="depid!=null and depid!=''">
+				depid=#{depid},
+			</if>
+			<if test="sex!=null and sex!=''">
+				sex=#{sex},
+			</if>
+			<if test="telphoneid!=null and telphoneid!=''">
+				telphoneid=#{telphoneid},
+			</if>
+			<if test="mobilephone!=null and mobilephone!=''">
+				mobilephone=#{mobilephone},
+			</if>
+			<if test="manageinformationid!=null and manageinformationid!=''">
+				manageinformationid=#{manageinformationid},
+			</if>
+			<if test="costinformationid!=null and costinformationid!=''">
+				costinformationid=#{costinformationid},
+			</if>
+			<if test="otherinformationid!=null and otherinformationid!=''">
+				otherinformationid=#{otherinformationid}
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="selectAll" resultMap="PersonalInformationResultMap">
+		select
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		from
+			 tb_id_personalinformation per
+			 JOIN tb_id_user u ON per.userid = u.id
+		WHERE
+			u.state = 1
+	</select>
+
+</mapper>

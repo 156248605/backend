@@ -3,6 +3,7 @@ package com.elex.oa.service.service_shiyun;
 import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.github.pagehelper.PageInfo;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public interface IPersonalInformationService{
      *@Description:根据条件查询人事信息
      *@Date: 10:03 2018\4\8 0008
      */
-    public PageInfo<PersonalInformation> queryPIs(Map<String,Object> paramMap);
+    public PageInfo<PersonalInformation> queryPIs(Map<String,Object> paramMap) throws ParseException;
 
     /**
      *@Author:ShiYun;
@@ -61,4 +62,11 @@ public interface IPersonalInformationService{
      *@Date: 17:27 2018\4\18 0018
      */
     public List<PersonalInformation> queryAllByNull();
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门ID查询人事信息
+     *@Date: 16:23 2018\5\28 0028
+     */
+    public List<PersonalInformation> queryByDepid(Integer depid);
 }

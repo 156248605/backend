@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IManageInformationDao">
+
+	<resultMap id="ManageInformationResultMap" type="ManageInformation">
+		<id column="id" property="id" />
+		<result column="rankid" property="rankid" />
+		<result column="employeetypeid" property="employeetypeid" />
+		<result column="entrydate" property="entrydate" />
+		<result column="zhuanzhengdate" property="zhuanzhengdate" />
+	</resultMap>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="ManageInformationResultMap">
+		SELECT
+			*
+		FROM
+			tb_id_manageinformation
+		WHERE
+			id=#{id}
+	</select>
+
+	<insert id="insertOne" parameterType="ManageInformation" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_id_manageinformation (
+			id,
+			rankid,
+			employeetypeid,
+			entrydate,
+			zhuanzhengdate
+			)
+		values (
+			null,
+			#{rankid},
+			#{employeetypeid},
+			#{entrydate},
+			#{zhuanzhengdate}
+			)
+	</insert>
+
+	<update id="updateOne" parameterType="ManageInformation">
+		update tb_id_manageinformation
+		<set>
+			<if test="rankid!=null and rankid!=''">
+				rankid=#{rankid},
+			</if>
+			<if test="employeetypeid!=null and employeetypeid!=''">
+				employeetypeid=#{employeetypeid},
+			</if>
+			<if test="entrydate!=null and entrydate!=''">
+				entrydate=#{entrydate},
+			</if><if test="zhuanzhengdate!=null and zhuanzhengdate!=''">
+				zhuanzhengdate=#{zhuanzhengdate},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+</mapper>

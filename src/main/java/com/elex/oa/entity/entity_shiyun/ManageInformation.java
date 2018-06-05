@@ -12,24 +12,14 @@ import javax.persistence.Table;
 @Table(name = "tb_id_manageinformation")
 public class ManageInformation {
     @Id
-    private Integer id;
-    private String company;
-    private String depname;
-    private String postname;
-    private String principalusertruename;
-    private String checkworkattendance;
-    private String principalusercode;
-    private String workingaddress;
-    private String zj;
-    private String employeetype;
-    private String entrydate;
-    private String postlevel;
-    private String zhuanzhengdate;
-    private String sn;
+    private Integer id;//主键
+    private Integer rankid;//职级ID
+    private String entrydate;//入职日期
+    private String zhuanzhengdate;//转正日期
+    private Integer employeetypeid;//员工类型ID
 
     public ManageInformation() {
     }
-
 
     public Integer getId() {
         return id;
@@ -39,76 +29,12 @@ public class ManageInformation {
         this.id = id;
     }
 
-    public String getCompany() {
-        return company;
+    public Integer getRankid() {
+        return rankid;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getDepname() {
-        return depname;
-    }
-
-    public void setDepname(String depname) {
-        this.depname = depname;
-    }
-
-    public String getPostname() {
-        return postname;
-    }
-
-    public void setPostname(String postname) {
-        this.postname = postname;
-    }
-
-    public String getPrincipalusertruename() {
-        return principalusertruename;
-    }
-
-    public void setPrincipalusertruename(String principalusertruename) {
-        this.principalusertruename = principalusertruename;
-    }
-
-    public String getCheckworkattendance() {
-        return checkworkattendance;
-    }
-
-    public void setCheckworkattendance(String checkworkattendance) {
-        this.checkworkattendance = checkworkattendance;
-    }
-
-    public String getPrincipalusercode() {
-        return principalusercode;
-    }
-
-    public void setPrincipalusercode(String principalusercode) {
-        this.principalusercode = principalusercode;
-    }
-
-    public String getWorkingaddress() {
-        return workingaddress;
-    }
-
-    public void setWorkingaddress(String workingaddress) {
-        this.workingaddress = workingaddress;
-    }
-
-    public String getZj() {
-        return zj;
-    }
-
-    public void setZj(String zj) {
-        this.zj = zj;
-    }
-
-    public String getEmployeetype() {
-        return employeetype;
-    }
-
-    public void setEmployeetype(String employeetype) {
-        this.employeetype = employeetype;
+    public void setRankid(Integer rankid) {
+        this.rankid = rankid;
     }
 
     public String getEntrydate() {
@@ -119,14 +45,6 @@ public class ManageInformation {
         this.entrydate = entrydate;
     }
 
-    public String getPostlevel() {
-        return postlevel;
-    }
-
-    public void setPostlevel(String postlevel) {
-        this.postlevel = postlevel;
-    }
-
     public String getZhuanzhengdate() {
         return zhuanzhengdate;
     }
@@ -135,31 +53,22 @@ public class ManageInformation {
         this.zhuanzhengdate = zhuanzhengdate;
     }
 
-    public String getSn() {
-        return sn;
+    public Integer getEmployeetypeid() {
+        return employeetypeid;
     }
 
-    public void setSn(String sn) {
-        this.sn = sn;
+    public void setEmployeetypeid(Integer employeetypeid) {
+        this.employeetypeid = employeetypeid;
     }
 
     @Override
     public String toString() {
         return "ManageInformation{" +
                 "id=" + id +
-                ", company='" + company + '\'' +
-                ", depname='" + depname + '\'' +
-                ", postname='" + postname + '\'' +
-                ", principalusertruename='" + principalusertruename + '\'' +
-                ", checkworkattendance='" + checkworkattendance + '\'' +
-                ", principalusercode='" + principalusercode + '\'' +
-                ", workingaddress='" + workingaddress + '\'' +
-                ", zj='" + zj + '\'' +
-                ", employeetype='" + employeetype + '\'' +
+                ", rankid=" + rankid +
                 ", entrydate='" + entrydate + '\'' +
-                ", postlevel='" + postlevel + '\'' +
                 ", zhuanzhengdate='" + zhuanzhengdate + '\'' +
-                ", sn=" + sn +
+                ", employeetypeid=" + employeetypeid +
                 '}';
     }
 }

@@ -13,29 +13,16 @@ import java.io.Serializable;
 @Table(name = "tb_id_otherformation")
 public class OtherInformation implements Serializable{
     @Id
-    private Integer id;
-    private String telphone;
-    private String mobilephone;
-    private String companyemail;
-    private String privateemail;
-    private String emergencycontract;
-    private String emergencyphone;
-    private String address;
-    private String remark;
+    private Integer id;//主键
+    private String privateemail;//私人邮件
+    private String companyemail;//公司邮件
+    private String emergencycontract;//应急联系人
+    private Integer emergencyrpid;//应急联系人关系ID
+    private String emergencyphone;//应急联系人电话
+    private String address;//应急联系地址
+    private String remark;//备注
 
     public OtherInformation() {
-    }
-
-    public OtherInformation(Integer id, String telphone, String mobilephone, String companyemail, String privateemail, String emergencycontract, String emergencyphone, String address, String remark) {
-        this.id = id;
-        this.telphone = telphone;
-        this.mobilephone = mobilephone;
-        this.companyemail = companyemail;
-        this.privateemail = privateemail;
-        this.emergencycontract = emergencycontract;
-        this.emergencyphone = emergencyphone;
-        this.address = address;
-        this.remark = remark;
     }
 
     public Integer getId() {
@@ -46,20 +33,12 @@ public class OtherInformation implements Serializable{
         this.id = id;
     }
 
-    public String getTelphone() {
-        return telphone;
+    public String getPrivateemail() {
+        return privateemail;
     }
 
-    public void setTelphone(String telphone) {
-        this.telphone = telphone;
-    }
-
-    public String getMobilephone() {
-        return mobilephone;
-    }
-
-    public void setMobilephone(String mobilephone) {
-        this.mobilephone = mobilephone;
+    public void setPrivateemail(String privateemail) {
+        this.privateemail = privateemail;
     }
 
     public String getCompanyemail() {
@@ -70,20 +49,20 @@ public class OtherInformation implements Serializable{
         this.companyemail = companyemail;
     }
 
-    public String getPrivateemail() {
-        return privateemail;
-    }
-
-    public void setPrivateemail(String privateemail) {
-        this.privateemail = privateemail;
-    }
-
     public String getEmergencycontract() {
         return emergencycontract;
     }
 
     public void setEmergencycontract(String emergencycontract) {
         this.emergencycontract = emergencycontract;
+    }
+
+    public Integer getEmergencyrpid() {
+        return emergencyrpid;
+    }
+
+    public void setEmergencyrpid(Integer emergencyrpid) {
+        this.emergencyrpid = emergencyrpid;
     }
 
     public String getEmergencyphone() {
@@ -114,11 +93,10 @@ public class OtherInformation implements Serializable{
     public String toString() {
         return "OtherInformation{" +
                 "id=" + id +
-                ", telphone='" + telphone + '\'' +
-                ", mobilephone='" + mobilephone + '\'' +
-                ", companyemail='" + companyemail + '\'' +
                 ", privateemail='" + privateemail + '\'' +
+                ", companyemail='" + companyemail + '\'' +
                 ", emergencycontract='" + emergencycontract + '\'' +
+                ", emergencyrpid=" + emergencyrpid +
                 ", emergencyphone='" + emergencyphone + '\'' +
                 ", address='" + address + '\'' +
                 ", remark='" + remark + '\'' +

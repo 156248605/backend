@@ -1,7 +1,10 @@
 package com.elex.oa.dao.dao_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.BaseInformation;
+import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @Author:ShiYun;
@@ -31,4 +34,11 @@ public interface IBaseInformationDao {
      *@Date: 14:09 2018\4\12 0012
      */
     public void updateOne(BaseInformation baseInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据条件查询信息
+     *@Date: 15:03 2018\5\22 0022
+     */
+    public List<BaseInformation> selectByConditions(PersonalInformation personalInformation);
 }

@@ -17,33 +17,95 @@ public class ChangeInformation implements Serializable{
     private static final long serialVersionUID = -7210880346745130468L;
     @Id
     private Integer id;//主键
-    private String changedinformation;//变更信息
+    private String changeinformation;//变更信息
+    private String changeinformationvalue;//判断条件
     private Integer changeduserid;//变更人的userid
     @Transient
     private String changedtruename;//变更人姓名
+    private String changedtruenamevalue;//判断条件
     private String beforeinformation;//变更前内容
+    private String beforeinformationvalue;//判断条件
     private String afterinformation;//变更后内容
+    private String afterinformationvalue;//判断条件
     private String changereason;//变更原因
+    private String changereasonvalue;//判断条件
     private String changedate;//变更时间
+    private String changedatevalue1;//判断条件
+    private String changedatevalue2;//判断条件
     private Integer transactoruserid;//办理人userid
     @Transient
     private String transactortruename;//办理人姓名
+    private String transactortruenamevalue;//判断条件
 
     public ChangeInformation() {
     }
 
-    public ChangeInformation(String changedinformation, Integer changeduserid, String beforeinformation, String afterinformation, String changereason, String changedate, Integer transactoruserid) {
-        this.changedinformation = changedinformation;
-        this.changeduserid = changeduserid;
-        this.beforeinformation = beforeinformation;
-        this.afterinformation = afterinformation;
-        this.changereason = changereason;
-        this.changedate = changedate;
-        this.transactoruserid = transactoruserid;
-    }
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getChangeinformationvalue() {
+        return changeinformationvalue;
+    }
+
+    public void setChangeinformationvalue(String changeinformationvalue) {
+        this.changeinformationvalue = changeinformationvalue;
+    }
+
+    public String getChangedtruenamevalue() {
+        return changedtruenamevalue;
+    }
+
+    public void setChangedtruenamevalue(String changedtruenamevalue) {
+        this.changedtruenamevalue = changedtruenamevalue;
+    }
+
+    public String getBeforeinformationvalue() {
+        return beforeinformationvalue;
+    }
+
+    public void setBeforeinformationvalue(String beforeinformationvalue) {
+        this.beforeinformationvalue = beforeinformationvalue;
+    }
+
+    public String getAfterinformationvalue() {
+        return afterinformationvalue;
+    }
+
+    public void setAfterinformationvalue(String afterinformationvalue) {
+        this.afterinformationvalue = afterinformationvalue;
+    }
+
+    public String getChangereasonvalue() {
+        return changereasonvalue;
+    }
+
+    public void setChangereasonvalue(String changereasonvalue) {
+        this.changereasonvalue = changereasonvalue;
+    }
+
+    public String getChangedatevalue1() {
+        return changedatevalue1;
+    }
+
+    public void setChangedatevalue1(String changedatevalue1) {
+        this.changedatevalue1 = changedatevalue1;
+    }
+
+    public String getChangedatevalue2() {
+        return changedatevalue2;
+    }
+
+    public void setChangedatevalue2(String changedatevalue2) {
+        this.changedatevalue2 = changedatevalue2;
+    }
+
+    public String getTransactortruenamevalue() {
+        return transactortruenamevalue;
+    }
+
+    public void setTransactortruenamevalue(String transactortruenamevalue) {
+        this.transactortruenamevalue = transactortruenamevalue;
     }
 
     public Integer getId() {
@@ -54,12 +116,12 @@ public class ChangeInformation implements Serializable{
         this.id = id;
     }
 
-    public String getChangedinformation() {
-        return changedinformation;
+    public String getChangeinformation() {
+        return changeinformation;
     }
 
-    public void setChangedinformation(String changedinformation) {
-        this.changedinformation = changedinformation;
+    public void setChangeinformation(String changeinformation) {
+        this.changeinformation = changeinformation;
     }
 
     public Integer getChangeduserid() {
@@ -130,7 +192,7 @@ public class ChangeInformation implements Serializable{
     public String toString() {
         return "ChangeInformation{" +
                 "id=" + id +
-                ", changedinformation='" + changedinformation + '\'' +
+                ", changeinformation='" + changeinformation + '\'' +
                 ", changeduserid=" + changeduserid +
                 ", changedtruename='" + changedtruename + '\'' +
                 ", beforeinformation='" + beforeinformation + '\'' +

@@ -39,4 +39,9 @@ public interface RepositoryMapper {
     String searchCategory(Repository repository);
 
     List theCategory(Repository repository);
+
+    List thePosition(Repository repository);
+
+    // 导入Excel
+    int importRepository(Repository repository);
 }

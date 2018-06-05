@@ -27,4 +27,18 @@ public interface IChangeInformaionDao extends BaseDao<ChangeInformation> {
      *@Date: 14:24 2018\4\13 0013
      */
     public List<ChangeInformation> selectByConditions(ChangeInformation changeInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的信息
+     *@Date: 10:39 2018\5\25 0025
+     */
+    public List<ChangeInformation> selectAll();
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除信息
+     *@Date: 10:40 2018\5\25 0025
+     */
+    public void deleteOne(Integer id);
 }

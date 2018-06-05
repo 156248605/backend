@@ -18,7 +18,7 @@ import java.util.List;
 public class PostServiceImpl implements IPostService {
 
     @Autowired
-    IPostDao iPostDao;
+    private IPostDao iPostDao;
 
     /**
      *@Author:ShiYun;
@@ -73,5 +73,25 @@ public class PostServiceImpl implements IPostService {
     public Integer addOne(Post post) {
         Integer integer = iPostDao.insertOne(post);
         return post.getId();
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:修改岗位信息
+     *@Date: 11:11 2018\5\2 0002
+     */
+    @Override
+    public void modifyOne(Post post) {
+        iPostDao.updateOne(post);
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据岗位ID删除岗位信息
+     *@Date: 14:53 2018\5\2 0002
+     */
+    @Override
+    public void remove(Integer id) {
+        iPostDao.deleteOne(id);
     }
 }

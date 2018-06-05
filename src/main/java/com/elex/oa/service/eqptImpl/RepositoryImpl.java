@@ -28,20 +28,38 @@ public class RepositoryImpl implements RepositoryService {
     @Override
     public PageInfo<Repository> searchRepository(Page page,HttpServletRequest request){
         String reptId = request.getParameter("reptId");
+        String reptIdC = request.getParameter("reptIdC");
         String reptCategory = request.getParameter("reptCategory");
+        String reptCategoryC = request.getParameter("reptCategoryC");
         String position = request.getParameter("position");
+        String positionC = request.getParameter("positionC");
         String sn = request.getParameter("sn");
+        String snC = request.getParameter("snC");
         String bn = request.getParameter("bn");
-        if (reptId.equals("") && reptCategory.equals("") && position.equals("") && sn.equals("") && bn.equals("")){
+        String bnC = request.getParameter("bnC");
+        String materialId = request.getParameter("materialId");
+        String materialIdC = request.getParameter("materialIdC");
+        String num = request.getParameter("num");
+        String numC = request.getParameter("numC");
+        if (reptId.equals("") && reptCategory.equals("") && position.equals("") && sn.equals("") && bn.equals("") && materialId.equals("") && num.equals("")){
             List<Repository> listR = repositoryMapper.RepositoryList();
             return new PageInfo<>(listR);
         } else {
             Repository repository = new Repository();
             repository.setReptId(reptId);
+            repository.setReptIdC(reptIdC);
             repository.setReptCategory(reptCategory);
+            repository.setReptCateC(reptCategoryC);
             repository.setPosition(position);
+            repository.setPositionC(positionC);
             repository.setBn(bn);
+            repository.setBnC(bnC);
             repository.setSn(sn);
+            repository.setSnC(snC);
+            repository.setNum(num);
+            repository.setNumC(numC);
+            repository.setMaterialId(materialId);
+            repository.setMatIdC(materialIdC);
             List<Repository> listR = repositoryMapper.searchRepository(repository);
             return new PageInfo<>(listR);
         }

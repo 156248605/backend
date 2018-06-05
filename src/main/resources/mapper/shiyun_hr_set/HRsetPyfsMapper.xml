@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IHRsetPyfsDao">
+
+	<resultMap id="PyfsMapper" type="HRsetPyfs">
+		<id column="id" property="id" />
+		<result column="pyfs" property="pyfs" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="HRsetPyfs" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_set_pyfs (
+			id,
+			pyfs)
+		values (
+			NULL,
+			#{pyfs})
+	</insert>
+
+	<select id="selectAll" resultMap="PyfsMapper">
+		SELECT * FROM tb_hr_set_pyfs
+	</select>
+
+	<select id="selectByConditions" parameterType="HRsetPyfs" resultMap="PyfsMapper">
+		SELECT * FROM tb_hr_set_pyfs
+		<where>
+			<if test="id!=null and id!=''">AND id=#{id}</if>
+			<if test="pyfs!=null and pyfs!=''">AND pyfs=#{pyfs}</if>
+		</where>
+	</select>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_hr_set_pyfs WHERE id=#{id}
+	</delete>
+
+	<update id="updateOne" parameterType="HRsetFunctionalType">
+		UPDATE tb_hr_set_pyfs
+		SET pyfs=#{pyfs}
+		WHERE id=#{id}
+	</update>
+</mapper>

@@ -1,8 +1,11 @@
 package com.elex.oa.dao.dao_shiyun;
 
 import com.elex.oa.dao.BaseDao;
+import com.elex.oa.entity.entity_shiyun.ContractInformation;
 import com.elex.oa.entity.entity_shiyun.User;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @Author:ShiYun;
@@ -25,4 +28,33 @@ public interface IUserDao extends BaseDao<User> {
      *@Date: 10:19 2018\4\17 0017
      */
     public User selectById(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据username查询用户数据
+     *@Date: 11:47 2018\6\1 0001
+     */
+    public User selectByUsername(String username);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除信息
+     *@Date: 14:47 2018\5\10 0010
+     */
+    public void deleteById(Integer id);//删除人事信息(state=0)
+    public void deleteById2(Integer id);//删除离职信息(state=1)
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据姓名查询用户
+     *@Date: 16:48 2018\5\25 0025
+     */
+    public User selectByTruename(String truename);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据条件查询用户
+     *@Date: 16:49 2018\5\25 0025
+     */
+    public List<User> selectByConditions(ContractInformation contractInformation);
 }
