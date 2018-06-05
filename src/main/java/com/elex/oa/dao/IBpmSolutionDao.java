@@ -11,4 +11,6 @@ public interface IBpmSolutionDao extends BaseDao<BpmSolution> {
 
     List<BpmSolution> getSolutionsByAdmin(Map<String,Object> map);
 
+    //BpmSolution getByKey()
+
 }

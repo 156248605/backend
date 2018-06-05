@@ -1,5 +1,6 @@
 package com.elex.oa.service;
 
+import com.elex.oa.core.entity.StartEventConfig;
 import com.elex.oa.entity.BpmDef;
 import com.elex.oa.json.JsonResult;
 import com.github.pagehelper.PageInfo;
@@ -16,7 +17,7 @@ public interface IBpmDefService {
 
      BpmDef getByActDefId(String actDefId);
 
-     BpmDef getLatestBpmByKey(Map<String,String> map);
+     BpmDef getLatestBpmByKey(String key, String tenantId);
 
      BpmDef getByDefId(String DefId);
 

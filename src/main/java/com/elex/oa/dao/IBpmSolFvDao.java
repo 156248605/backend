@@ -12,7 +12,8 @@ import java.util.Map;
 */
 @Mapper
 public interface IBpmSolFvDao extends BaseDao<BpmSolFv> {
-    BpmSolFv getBySolIdActDefIdNodeId(String solId,String actDefId,String nodeId);
+    //BpmSolFv getBySolIdActDefIdNodeId(String solId,String actDefId,String nodeId);
+    BpmSolFv getBySolIdActDefIdNodeId(Map<String,String> map);
     //List<BpmSolFv> getBySolutionId(String solId, String actDefId);
     List<BpmSolFv> getBySolutionId(Map<String,String> map);
 }

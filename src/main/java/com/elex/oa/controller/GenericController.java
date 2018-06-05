@@ -1,13 +1,13 @@
 package com.elex.oa.controller;
-
-import com.elex.oa.core.context.HttpServletContext;
+import com.elex.oa.saweb.context.ContextUtil;
+import com.elex.oa.util.WebAppUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.servlet.support.RequestContextUtils;
-
+import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -59,5 +59,8 @@ public class GenericController {
         return this.messageSource.getMessage(msgKey, args, defaultMsg, locale);
     }
 
-
+    protected String getCurTenantId(HttpServletRequest request) {
+        String instId = request.getParameter("tenantId");
+        return StringUtils.isNotEmpty(instId) && !"null".equals("tenantId") && WebAppUtil.getOrgMgrDomain().equals(ContextUtil.getTenant().getDomain())?instId:ContextUtil.getCurrentTenantId();
+    }
 }

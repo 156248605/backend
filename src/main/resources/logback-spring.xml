@@ -64,6 +64,9 @@
     <logger name="org.mybatis.example" level="TRACE">
         <appender-ref ref="STDOUT" />
     </logger>
+
+    <logger name="com.elex.oa.dao" level="DEBUG"/>
+
   <!--  <logger name="org.mybatis.spring.SqlSessionFactoryBea" level="DEBUG">
         <appender-ref ref="STDOUT" />
     </logger>-->

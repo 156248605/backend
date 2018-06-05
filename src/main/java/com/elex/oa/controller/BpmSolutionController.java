@@ -127,12 +127,12 @@ public class BpmSolutionController {
         if(StringUtil.isNotEmpty(actDefId)) {
             bpmDef = bpmDefService.getByActDefId(actDefId);
         }else if(StringUtil.isNotEmpty(bpmSolution.getDefKey())){
-            Map<String,String> params = new HashMap<>();
+           /* Map<String,String> params = new HashMap<>();
             params.put("tenantId","1");
             params.put("key",bpmSolution.getDefKey());
             params.put("status","DEPLOYED");
-            params.put("isMain","YES");
-            bpmDef = bpmDefService.getLatestBpmByKey(params);
+            params.put("isMain","YES");*/
+            bpmDef = bpmDefService.getLatestBpmByKey(bpmSolution.getDefKey(),"1");
         }
         map.put("bpmDef", bpmDef);
         map.put("bpmSolution", bpmSolution);

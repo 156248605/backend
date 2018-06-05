@@ -4,6 +4,7 @@ package com.elex.oa.org.service;
  *@author hugo.zhao
  *@since 2018/4/25 16:14
 */
+import com.elex.oa.entity.OsGroup;
 import com.elex.oa.org.model.GroupType;
 import com.elex.oa.org.model.IGroup;
 
@@ -32,4 +33,22 @@ public interface GroupService {
     IGroup getByCode(String var1, String var2);
 
     List<GroupType> getGroupTypes();
+
+    String getMainDepFullNames(String userId);
+
+    OsGroup getMainDeps(String userId);
+
+    OsGroup getByLevel(String groupId, Integer level);
+
+    OsGroup getByLevel(OsGroup group, Integer level);
+
+    List<OsGroup> getByDimIdAndUserId(String dimId, String userId);
+
+    List<OsGroup> getBelongGroups(String userId);
+
+    List<OsGroup> getBelongDeps(String userId);
+
+
+
+
 }

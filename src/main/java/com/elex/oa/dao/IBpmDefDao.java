@@ -14,7 +14,7 @@ public interface IBpmDefDao extends BaseDao<BpmDef> {
 
     BpmDef getByActDefId(String actDefId);
 
-    BpmDef getLatestBpmByKey(Map<String,String> map);
+    //BpmDef getLatestBpmByKey(Map<String,String> map);
 
     BpmDef getByDefId(String DefId);
 
@@ -29,5 +29,8 @@ public interface IBpmDefDao extends BaseDao<BpmDef> {
      * params String key, String tenantId
      */
     List<BpmDef> getByKey(Map<String,String> map);
+
+    Integer getMaxVersion(Map<String,String> map);
+
 
 }

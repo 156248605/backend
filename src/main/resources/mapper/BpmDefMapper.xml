@@ -140,5 +140,10 @@
         and TENANT_ID_=#{tenantId,jdbcType=VARCHAR} and STATUS_='DEPLOYED'
     </select>
 
+    <select id="getMaxVersion"  parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT MAX(VERSION_) FROM bpm_def WHERE TENANT_ID_ = #{tenantId,jdbcType=VARCHAR} AND KEY_=#{key,jdbcType=VARCHAR} and STATUS_=#{status,jdbcType=VARCHAR}
+    </select>
+
+
 
 </mapper>

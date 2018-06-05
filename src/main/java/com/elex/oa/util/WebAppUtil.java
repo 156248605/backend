@@ -8,8 +8,11 @@ import com.elex.oa.bean.PropertyPlaceholderConfigurerExt;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.stereotype.Component;
+
 import javax.servlet.ServletContext;
 import java.io.File;
+@Component
 public class WebAppUtil implements ApplicationContextAware {
     private static PropertyPlaceholderConfigurerExt configProperties = null;
     private static ApplicationContext applicationContext = null;

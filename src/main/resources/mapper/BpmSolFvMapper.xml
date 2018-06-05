@@ -100,9 +100,9 @@
     <select id="getBySolIdAndNodeId" parameterType="java.lang.String" resultMap="BpmSolFv">
         SELECT *  FROM BPM_SOL_FV WHERE SOL_ID_=#{solId} AND NODE_ID_=#{nodeId}
     </select>
-    <select id="getBySolIdActDefIdNodeId" parameterType="java.lang.String" resultMap="BpmSolFv">
+    <select id="getBySolIdActDefIdNodeId" parameterType="java.util.Map" resultMap="BpmSolFv">
         SELECT *  FROM BPM_SOL_FV
-        WHERE SOL_ID_=#{solId} ADN ACT_DEF_ID_=#{actDefId} AND NODE_ID_=#{nodeId}
+        WHERE SOL_ID_=#{solId} AND ACT_DEF_ID_=#{actDefId} AND NODE_ID_=#{nodeId}
     </select>
 
 </mapper>

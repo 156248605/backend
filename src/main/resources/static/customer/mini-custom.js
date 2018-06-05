@@ -5,7 +5,7 @@ ParamsJson={is_Template_loaded:false,editor_js_loaded:false,related_Template_loa
  */
 function includeFormTemplate(){
 	if(ParamsJson.is_Template_loaded) return;
-	var url=__rootPath +"/scripts/customer/template.html";
+	var url="${ctxPath}/scripts/customer/template.html";
 	var fileContent=$.getFile(url);
 	var jqTemplate=$("#formTemplate");
 	if(jqTemplate.length==0){

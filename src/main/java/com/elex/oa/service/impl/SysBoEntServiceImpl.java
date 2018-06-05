@@ -1,9 +1,15 @@
 package com.elex.oa.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
 import com.elex.oa.dao.ISysBoAttrDao;
 import com.elex.oa.dao.ISysBoEntDao;
+import com.elex.oa.entity.bo.SysBoAttr;
 import com.elex.oa.entity.bo.SysBoEnt;
 import com.elex.oa.service.ISysBoEntService;
+import com.elex.oa.sys.bo.service.impl.AttrParseUtil;
+import com.elex.oa.sys.bo.service.parse.BoAttrParseFactory;
+import com.elex.oa.sys.bo.service.parse.IBoAttrParse;
 import com.elex.oa.util.BeanUtil;
 import com.elex.oa.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +31,51 @@ public class SysBoEntServiceImpl extends BaseServiceImpl<SysBoEnt> implements IS
     @Autowired
     private ISysBoAttrDao sysBoAttrDao;
 
+    @Autowired
+    private BoAttrParseFactory boAttrParseFactory;
+
     public SysBoEnt getByBoDefId(String boDefId) {
         return this.getByBoDefId(boDefId, true);
+    }
+
+    @Override
+    public JSONObject getInitData(SysBoEnt boEnt) {
+        JSONObject rtnJson = this.getJsonByEnt(boEnt);
+        List subList = boEnt.getBoEntList();
+        if(BeanUtil.isEmpty(subList)) {
+            return rtnJson;
+        } else {
+            JSONObject initJson = new JSONObject();
+            Iterator var5 = subList.iterator();
+
+            while(var5.hasNext()) {
+                SysBoEnt subEnt = (SysBoEnt)var5.next();
+                JSONObject subJson = this.getJsonByEnt(subEnt);
+                initJson.put(subEnt.getName(), subJson);
+                JSONArray subAry = new JSONArray();
+                rtnJson.put("SUB_" + subEnt.getName(), subAry);
+            }
+
+            rtnJson.put("initData", initJson);
+            return rtnJson;
+        }
+    }
+
+    @Override
+    public List<SysBoEnt> getListByBoDefId(String boDefId, boolean needAttr) {
+       // List list = this.sysBoEntQueryDao.getByBoDefId(boDefId);
+        List list = this.sysBoEntDao.getByBoDefId(boDefId);
+        if(needAttr) {
+            Iterator var4 = list.iterator();
+
+            while(var4.hasNext()) {
+                SysBoEnt ent = (SysBoEnt)var4.next();
+                //List mainAttrs = this.sysBoAttrQueryDao.getAttrsByEntId(ent.getId());
+                List mainAttrs = this.sysBoAttrDao.getAttrsByEntId(ent.getId());
+                ent.setSysBoAttrs(mainAttrs);
+            }
+        }
+        return list;
     }
 
     public SysBoEnt getByBoDefId(String boDefId, boolean needAttr) {
@@ -90,6 +139,25 @@ public class SysBoEntServiceImpl extends BaseServiceImpl<SysBoEnt> implements IS
         return rtnList;
     }
 
+    private JSONObject getJsonByEnt(SysBoEnt ent) {
+        JSONObject json = new JSONObject();
+        List list = ent.getSysBoAttrs();
+        Iterator var4 = list.iterator();
 
+        while(var4.hasNext()) {
+            SysBoAttr attr = (SysBoAttr)var4.next();
+            String plugin = attr.getControl();
+            IBoAttrParse parse = this.boAttrParseFactory.getByPluginName(plugin);
+            JSONObject obj = parse.getInitData(attr);
+            String key = AttrParseUtil.getKey(obj);
+            String name = AttrParseUtil.getName(obj);
+            json.put(attr.getName(), key);
+            if(!attr.single()) {
+                json.put(attr.getName() + "_NAME".toLowerCase(), name);
+            }
+        }
+
+        return json;
+    }
 
 }

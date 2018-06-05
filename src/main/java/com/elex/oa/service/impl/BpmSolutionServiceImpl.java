@@ -23,4 +23,12 @@ public class BpmSolutionServiceImpl extends BaseServiceImpl<BpmSolution> impleme
          return solutionDao.getSolutionsByAdmin(map);
     }
 
+    @Override
+    public BpmSolution getByKey(String key, String tenantId) {
+        BpmSolution bpmSolution = new BpmSolution();
+        bpmSolution.setKey(key);
+        bpmSolution.setTenantId(tenantId);
+        return this.solutionDao.selectOne(bpmSolution);
+    }
+
 }

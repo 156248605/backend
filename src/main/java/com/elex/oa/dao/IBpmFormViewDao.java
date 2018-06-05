@@ -1,7 +1,6 @@
 package com.elex.oa.dao;
 
 import com.elex.oa.entity.BpmFormView;
-import com.elex.oa.service.BaseService;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public interface IBpmFormViewDao extends BaseDao<BpmFormView> {
     //批量删除表单记录
     int deleteForm(List<String> list);
 
-    BpmFormView getMainByKey(String key, String tenantId);
+    BpmFormView getMainByKey(Map<String,String> map);
 
 
 

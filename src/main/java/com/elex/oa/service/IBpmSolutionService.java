@@ -10,4 +10,6 @@ public interface IBpmSolutionService extends BaseService<BpmSolution> {
     List<BpmSolution> getSolutions(Map<String,Object> map);
 
     List<BpmSolution> getSolutionsByAdmin(Map<String,Object> map);
+
+    BpmSolution getByKey(String key, String tenantId);
 }

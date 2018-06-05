@@ -60,6 +60,7 @@ public class EncryptUtil {
             byte[] bytes = Hex.decodeHex(input.toCharArray());
             out = new String(Base64.encodeBase64(bytes));
         } catch (Exception var3) {
+            System.out.println(var3);
             ;
         }
 

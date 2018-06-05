@@ -10,7 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+import com.elex.oa.core.entity.BaseTenantEntity;
 import com.elex.oa.util.DbUtil;
 import com.elex.oa.util.StringUtil;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -19,7 +19,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Table(
         name = "SYS_BO_ATTR"
 )
-public class SysBoAttr  implements Cloneable {
+public class SysBoAttr extends BaseTenantEntity implements Cloneable  {
 
     @Id
     @Column(
