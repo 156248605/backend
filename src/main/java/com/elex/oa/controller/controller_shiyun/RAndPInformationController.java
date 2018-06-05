@@ -5,12 +5,12 @@ import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.RAndPInformation;
 import com.elex.oa.service.service_shiyun.IPersonalInformationService;
 import com.elex.oa.service.service_shiyun.IRAndPInformationService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author:ShiYun;
@@ -48,7 +48,7 @@ public class RAndPInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:查询奖惩名目
+     *@Description:查询奖惩名目(不分页)
      *@Date: 20:52 2018\4\18 0018
      */
     @RequestMapping("/queryRAndPProjects")
@@ -60,24 +60,22 @@ public class RAndPInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:奖惩信息列表
+     *@Description:奖惩信息列表(分页)
      *@Date: 10:22 2018\4\19 0019
      */
     @RequestMapping("/queryRAndPInformations")
     @ResponseBody
-    public com.elex.oa.util.util_shiyun.PageHelper<RAndPInformation> queryRAndPInformations(
+    public PageInfo<RAndPInformation> queryRAndPInformations(
             @RequestParam("page") Integer page,
             @RequestParam("rows") Integer rows,
-            @RequestParam("changedate") String changedate,
             RAndPInformation rAndPInformation
     ){
         HashMap<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("pageNum",page);
         paramMap.put("pageSize",rows);
-        paramMap.put("changedate",changedate);//奖惩日期的范围
         paramMap.put("entity",rAndPInformation);
 
-        com.elex.oa.util.util_shiyun.PageHelper<RAndPInformation> rAndPInformationPageHelper = irAndPInformationService.queryByCondition(paramMap);
+        PageInfo<RAndPInformation> rAndPInformationPageHelper = irAndPInformationService.queryByCondition(paramMap);
         return rAndPInformationPageHelper;
     }
 

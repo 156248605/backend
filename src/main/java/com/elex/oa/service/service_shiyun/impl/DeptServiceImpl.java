@@ -1,12 +1,16 @@
 package com.elex.oa.service.service_shiyun.impl;
 
 import com.elex.oa.dao.dao_shiyun.IDeptDao;
+import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
+import com.elex.oa.dao.dao_shiyun.IUserDao;
 import com.elex.oa.entity.entity_shiyun.Dept;
+import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,17 +24,36 @@ public class DeptServiceImpl implements IDeptService {
 
     @Autowired
     IDeptDao iDeptDao;
+    @Autowired
+    IPersonalInformationDao iPersonalInformationDao;
+    @Autowired
+    IUserDao iUserDao;
 
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门名称获得部门
+     *@Date: 15:29 2018\6\1 0001
+     */
     @Override
     public Dept queryOneDepByDepname(String depname) {
         return iDeptDao.selectDeptByDeptname(depname);
     }
 
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门ID获得部门
+     *@Date: 15:30 2018\6\1 0001
+     */
     @Override
     public Dept queryOneDepByDepid(Integer id) {
         return iDeptDao.selectDeptByDepid(id);
     }
 
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所有部门
+     *@Date: 15:30 2018\6\1 0001
+     */
     @Override
     public List<Dept> queryAllDepts() {
         List<Dept> depts = iDeptDao.selectAllDept();
@@ -111,5 +134,25 @@ public class DeptServiceImpl implements IDeptService {
             dept.setId(depts1.get(0).getId());
             iDeptDao.updateByDeleteUser(dept);
         }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门ID获得部门名称、人数、总人数
+     *@Date: 15:31 2018\6\1 0001
+     */
+    @Override
+    public HashMap<String, Object> getParamMap1(Integer depid) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        //获得部门名称
+        Dept dept = iDeptDao.selectDeptByDepid(depid);
+        paramMap.put("depName",dept.getDepname());
+        //获得部门的人数
+        List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(depid);
+        paramMap.put("perNum",personalInformationList.size());
+        //获得总人数
+        List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll();
+        paramMap.put("allNum",personalInformationList1.size());
+        return paramMap;
     }
 }

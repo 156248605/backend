@@ -5,6 +5,8 @@ import com.elex.oa.dao.dao_shiyun.IUserDao;
 import com.elex.oa.entity.entity_shiyun.RAndPInformation;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IRAndPInformationService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,38 +79,22 @@ public class RAndPInformationServiceImpl implements IRAndPInformationService {
      *@Date: 11:28 2018\4\19 0019
      */
     @Override
-    public com.elex.oa.util.util_shiyun.PageHelper<RAndPInformation> queryByCondition(HashMap<String, Object> paramMap) {
+    public PageInfo<RAndPInformation> queryByCondition(HashMap<String, Object> paramMap) {
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
+        PageHelper.startPage(pageNum,pageSize);
 
         RAndPInformation rAndPInformation = (RAndPInformation) paramMap.get("entity");
         List<RAndPInformation> list = irAndPInformationDao.selectByCondition(rAndPInformation);
         for(Integer i = 0;i<list.size();i++){
+            //获得姓名
             User user = iUserDao.selectById(list.get(i).getUserid());
             list.get(i).setTruename(user.getTruename());
+            //获得记录人
             User user1 = iUserDao.selectById(list.get(i).getTransactoruserid());
             list.get(i).setTransactortruename(user1.getTruename());
         }
-        List<RAndPInformation> rAndPInformations = new ArrayList<RAndPInformation>();
-
-        String changedate = paramMap.get("changedate").toString();
-
-        if(changedate!=null && !changedate.equals("")){
-            String[] split = changedate.split(",");
-            Long minDate = Long.valueOf(split[0].replace("/",""));
-            Long maxDate = Long.valueOf(split[1].replace("/",""));
-            for(Integer i = 0;i<list.size();i++){
-                Long curDate = Long.valueOf(list.get(i).getRandpdate().replace("/",""));
-                if(curDate>=minDate && curDate<=maxDate){
-                    rAndPInformations.add(list.get(i));
-                }
-            }
-        }else {
-            rAndPInformations = list;
-        }
-
-        com.elex.oa.util.util_shiyun.PageHelper<RAndPInformation> rAndPInformationPageHelper = new com.elex.oa.util.util_shiyun.PageHelper<>(pageNum, pageSize, rAndPInformations);
-        return rAndPInformationPageHelper;
+        return new PageInfo<RAndPInformation>(list);
     }
 
     /**

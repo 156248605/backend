@@ -1,7 +1,9 @@
 package com.elex.oa.service.service_shiyun.impl;
 
 import com.elex.oa.dao.dao_shiyun.IChangeInformaionDao;
+import com.elex.oa.dao.dao_shiyun.IUserDao;
 import com.elex.oa.entity.entity_shiyun.ChangeInformation;
+import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.service_shiyun.IChangeInformationService;
 import com.github.pagehelper.PageHelper;
@@ -22,6 +24,8 @@ import java.util.List;
 public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformation> implements IChangeInformationService {
     @Autowired
     IChangeInformaionDao iChangeInformaionDao;
+    @Autowired
+    IUserDao iUserDao;
 
     /**
      *@Author:ShiYun;
@@ -46,6 +50,14 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
         PageHelper.startPage(pageNum,pageSize);
 
         List<ChangeInformation> changeInformations = iChangeInformaionDao.selectByConditions((ChangeInformation) paramMap.get("entity"));
+        for(Integer i=0;i<changeInformations.size();i++){
+            // 设置姓名
+            User changeduser = iUserDao.selectById(changeInformations.get(i).getChangeduserid());
+            changeInformations.get(i).setChangedtruename(changeduser.getTruename());
+            // 设置办理人姓名
+            User transactoruser = iUserDao.selectById(changeInformations.get(i).getTransactoruserid());
+            changeInformations.get(i).setTransactortruename(transactoruser.getTruename());
+        }
         PageInfo<ChangeInformation> changeInformationPageInfo = new PageInfo<>(changeInformations);
 
         return changeInformationPageInfo;

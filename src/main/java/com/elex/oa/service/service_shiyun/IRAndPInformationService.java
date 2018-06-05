@@ -2,6 +2,7 @@ package com.elex.oa.service.service_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.RAndPInformation;
 import com.elex.oa.util.util_shiyun.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ public interface IRAndPInformationService {
      *@Description:根据条件查询奖惩信息（分页）
      *@Date: 11:26 2018\4\19 0019
      */
-    public PageHelper<RAndPInformation> queryByCondition(HashMap<String,Object> paramMap);
+    public PageInfo<RAndPInformation> queryByCondition(HashMap<String,Object> paramMap);
 
     /**
      *@Author:ShiYun;

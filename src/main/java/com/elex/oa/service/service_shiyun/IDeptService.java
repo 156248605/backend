@@ -3,6 +3,7 @@ package com.elex.oa.service.service_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.Dept;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -60,4 +61,11 @@ public interface IDeptService {
      *@Date: 15:24 2018\5\10 0010
      */
     public void modifyOne(Integer userid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门ID获得部门名称、部门人数、总人数
+     *@Date: 15:25 2018\6\1 0001
+     */
+    public HashMap<String,Object> getParamMap1(Integer depid);
 }

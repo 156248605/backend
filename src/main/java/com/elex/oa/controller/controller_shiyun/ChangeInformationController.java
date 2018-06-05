@@ -48,16 +48,6 @@ public class ChangeInformationController {
         paramMap.put("pageSize",rows);
         paramMap.put("entity",changeInformation);
         PageInfo<ChangeInformation> changeInformationPageInfo = iChangeInformationService.queryAll(paramMap);
-        List<ChangeInformation> list = changeInformationPageInfo.getList();
-        for(Integer i=0;i<list.size();i++){
-            // 设置姓名
-            User changeduser = iUserService.getById(list.get(i).getChangeduserid());
-            list.get(i).setChangedtruename(changeduser.getTruename());
-            // 设置办理人姓名
-            User transactoruser = iUserService.getById(list.get(i).getTransactoruserid());
-            list.get(i).setTransactortruename(transactoruser.getTruename());
-        }
-        changeInformationPageInfo.setList(list);
         return changeInformationPageInfo;
     }
 
@@ -70,14 +60,6 @@ public class ChangeInformationController {
     @ResponseBody
     public List<ChangeInformation> queryAllChangeInformations(){
         List<ChangeInformation> changeInformations = iChangeInformationService.queryAll();
-        for(ChangeInformation changeInformation:changeInformations){
-            if (iUserService.getById(changeInformation.getChangeduserid())!=null) {
-                changeInformation.setChangedtruename(iUserService.getById(changeInformation.getChangeduserid()).getTruename());
-            }
-            if (iUserService.getById(changeInformation.getTransactoruserid())!=null) {
-                changeInformation.setTransactortruename(iUserService.getById(changeInformation.getTransactoruserid()).getTruename());
-            }
-        }
         return changeInformations;
     }
 
