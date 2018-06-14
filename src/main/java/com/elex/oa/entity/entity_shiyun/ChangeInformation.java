@@ -4,6 +4,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author:ShiYun;
@@ -18,16 +19,26 @@ public class ChangeInformation implements Serializable{
     @Id
     private Integer id;//主键
     private String changeinformation;//变更信息
+    @Transient
+    private List<String> changeinformations;
     private String changeinformationvalue;//判断条件
     private Integer changeduserid;//变更人的userid
     @Transient
     private String changedtruename;//变更人姓名
+    @Transient
+    private List<String> changedtruenames;
     private String changedtruenamevalue;//判断条件
     private String beforeinformation;//变更前内容
+    @Transient
+    private List<String> beforeinformations;
     private String beforeinformationvalue;//判断条件
     private String afterinformation;//变更后内容
+    @Transient
+    private List<String> afterinformations;
     private String afterinformationvalue;//判断条件
     private String changereason;//变更原因
+    @Transient
+    private List<String> changereasons;
     private String changereasonvalue;//判断条件
     private String changedate;//变更时间
     private String changedatevalue1;//判断条件
@@ -35,9 +46,59 @@ public class ChangeInformation implements Serializable{
     private Integer transactoruserid;//办理人userid
     @Transient
     private String transactortruename;//办理人姓名
+    @Transient
+    private List<String> transactortruenames;
     private String transactortruenamevalue;//判断条件
 
     public ChangeInformation() {
+    }
+
+    public List<String> getChangeinformations() {
+        return changeinformations;
+    }
+
+    public void setChangeinformations(List<String> changeinformations) {
+        this.changeinformations = changeinformations;
+    }
+
+    public List<String> getChangedtruenames() {
+        return changedtruenames;
+    }
+
+    public void setChangedtruenames(List<String> changedtruenames) {
+        this.changedtruenames = changedtruenames;
+    }
+
+    public List<String> getBeforeinformations() {
+        return beforeinformations;
+    }
+
+    public void setBeforeinformations(List<String> beforeinformations) {
+        this.beforeinformations = beforeinformations;
+    }
+
+    public List<String> getAfterinformations() {
+        return afterinformations;
+    }
+
+    public void setAfterinformations(List<String> afterinformations) {
+        this.afterinformations = afterinformations;
+    }
+
+    public List<String> getChangereasons() {
+        return changereasons;
+    }
+
+    public void setChangereasons(List<String> changereasons) {
+        this.changereasons = changereasons;
+    }
+
+    public List<String> getTransactortruenames() {
+        return transactortruenames;
+    }
+
+    public void setTransactortruenames(List<String> transactortruenames) {
+        this.transactortruenames = transactortruenames;
     }
 
     public static long getSerialVersionUID() {

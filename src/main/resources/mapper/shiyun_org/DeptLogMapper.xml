@@ -53,9 +53,12 @@
 		    LEFT JOIN tb_id_department d ON dlog.deptid = d.id
 		    LEFT JOIN tb_id_user u ON dlog.transactoruserid = u.id
 		<where>
-			<if test="changeinformation!=null and changeinformation!=''">
-			    <if test="changeinformationvalue==''">
-					AND dlog.changeinformation = #{changeinformation}
+			<if test="(changeinformation!=null and changeinformation!='') or changeinformations!=null">
+			    <if test="changeinformationvalue=='' and changeinformations!=null and changeinformations.size!=0">
+					AND dlog.changeinformation IN
+					<foreach collection="changeinformations" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="changeinformationvalue=='包含'">
 					AND dlog.changeinformation LIKE CONCAT(CONCAT('%',#{changeinformation}),'%')
@@ -64,9 +67,12 @@
 					AND dlog.changeinformation NOT LIKE CONCAT(CONCAT('%',#{changeinformation}),'%')
 				</if>
 			</if>
-			<if test="deptname!=null and deptname!=''">
-			    <if test="deptnamevalue==''">
-					AND d.depname = #{deptname}
+			<if test="deptname!=null and deptname!='' or deptnames!=null">
+			    <if test="deptnamevalue=='' and deptnames!=null and deptnames.size!=0">
+					AND d.depname IN
+					<foreach collection="deptnames" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="deptnamevalue=='包含'">
 					AND d.depname LIKE CONCAT(CONCAT('%',#{deptname}),'%')
@@ -75,9 +81,12 @@
 					AND d.depname NOT LIKE CONCAT(CONCAT('%',#{deptname}),'%')
 				</if>
 			</if>
-			<if test="beforeinformation!=null and beforeinformation!=''">
-				<if test="beforeinformationvalue==''">
-					AND dlog.beforeinformation = #{beforeinformation}
+			<if test="beforeinformation!=null and beforeinformation!='' or beforeinformations!=null">
+				<if test="beforeinformationvalue=='' and beforeinformations!=null and beforeinformations.size!=0">
+					AND dlog.beforeinformation IN
+					<foreach collection="beforeinformations" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="beforeinformationvalue=='包含'">
 					AND dlog.beforeinformation LIKE CONCAT(CONCAT('%',#{beforeinformation}),'%')
@@ -86,9 +95,12 @@
 					AND dlog.beforeinformation NOT LIKE CONCAT(CONCAT('%',#{beforeinformation}),'%')
 				</if>
 			</if>
-			<if test="afterinformation!=null and afterinformation!=''">
-				<if test="afterinformationvalue==''">
-					AND dlog.afterinformation = #{afterinformation}
+			<if test="afterinformation!=null and afterinformation!='' or afterinformations!=null">
+				<if test="afterinformationvalue=='' and afterinformations!=null and afterinformations.size!=0">
+					AND dlog.afterinformation IN
+					<foreach collection="afterinformations" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="afterinformationvalue=='包含'">
 					AND dlog.afterinformation LIKE CONCAT(CONCAT('%',#{afterinformation}),'%')
@@ -97,9 +109,12 @@
 					AND dlog.afterinformation NOT LIKE CONCAT(CONCAT('%',#{afterinformation}),'%')
 				</if>
 			</if>
-			<if test="changereason!=null and changereason!=''">
-				<if test="changereasonvalue==''">
-					AND dlog.changereason = #{changereason}
+			<if test="changereason!=null and changereason!='' or changereasons!=null">
+				<if test="changereasonvalue=='' and changereasons!=null and changereasons.size!=0">
+					AND dlog.changereason IN
+					<foreach collection="changereasons" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="changereasonvalue=='包含'">
 					AND dlog.changereason LIKE CONCAT(CONCAT('%',#{changereason}),'%')
@@ -111,9 +126,12 @@
 			<if test="changedatevalue1!=null and changedatevalue1!='' and changedatevalue2!=null and changedatevalue2!=''">
 				AND dlog.changedate BETWEEN #{changedatevalue1} AND #{changedatevalue2}
 			</if>
-			<if test="transactortruename!=null and transactortruename!=''">
-				<if test="transactortruenamevalue==''">
-					AND u.truename = #{transactortruename}
+			<if test="transactortruename!=null and transactortruename!='' or transactortruenames!=null">
+				<if test="transactortruenamevalue=='' and transactortruenames!=null and transactortruenames.size!=0">
+					AND u.truename IN
+					<foreach collection="transactortruenames" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="transactortruenamevalue=='包含'">
 					AND u.truename LIKE CONCAT(CONCAT('%',#{transactortruename}),'%')

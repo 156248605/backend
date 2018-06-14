@@ -4,6 +4,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author:ShiYun;
@@ -15,28 +16,82 @@ import java.io.Serializable;
 public class PostLog implements Serializable{
     private static final long serialVersionUID = 2936731550293683326L;
     @Id
-    private Integer id;
-    private Integer postid;
-    private String changeinformation;
-    private String changeinformationvalue;
-    private String beforeinformation;
-    private String beforeinformationvalue;
-    private String afterinformation;
-    private String afterinformationvalue;
-    private String changereason;
-    private String changereasonvalue;
-    private String changedate;
-    private String changedatevalue1;
-    private String changedatevalue2;
-    private Integer transactoruserid;
+    private Integer id;//主键
+    private Integer postid;//岗位id
+    private String changeinformation;//变更项目
+    private List<String> changeinformations;//判断条件
+    private String changeinformationvalue;//判断条件
+    private String beforeinformation;//变更前内容
+    private List<String> beforeinformations;//判断条件
+    private String beforeinformationvalue;//判断条件
+    private String afterinformation;//变更后内容
+    private List<String> afterinformations;//判断条件
+    private String afterinformationvalue;//判断条件
+    private String changereason;//变更原因
+    private List<String> changereasons;//判断条件
+    private String changereasonvalue;//判断条件
+    private String changedate;//变更日期
+    private String changedatevalue1;//判断条件
+    private String changedatevalue2;//判断条件
+    private Integer transactoruserid;//变更人id
     @Transient
-    private String postname;
-    private String postnamevalue;
+    private String postname;//岗位名称
+    private List<String> postnames;//判断条件
+    private String postnamevalue;//判断条件
     @Transient
-    private String transactortruename;
-    private String transactortruenamevalue;
+    private String transactortruename;//变更人姓名
+    private List<String> transactortruenames;//判断条件
+    private String transactortruenamevalue;//判断条件
 
     public PostLog() {
+    }
+
+    public List<String> getChangeinformations() {
+        return changeinformations;
+    }
+
+    public void setChangeinformations(List<String> changeinformations) {
+        this.changeinformations = changeinformations;
+    }
+
+    public List<String> getBeforeinformations() {
+        return beforeinformations;
+    }
+
+    public void setBeforeinformations(List<String> beforeinformations) {
+        this.beforeinformations = beforeinformations;
+    }
+
+    public List<String> getAfterinformations() {
+        return afterinformations;
+    }
+
+    public void setAfterinformations(List<String> afterinformations) {
+        this.afterinformations = afterinformations;
+    }
+
+    public List<String> getChangereasons() {
+        return changereasons;
+    }
+
+    public void setChangereasons(List<String> changereasons) {
+        this.changereasons = changereasons;
+    }
+
+    public List<String> getPostnames() {
+        return postnames;
+    }
+
+    public void setPostnames(List<String> postnames) {
+        this.postnames = postnames;
+    }
+
+    public List<String> getTransactortruenames() {
+        return transactortruenames;
+    }
+
+    public void setTransactortruenames(List<String> transactortruenames) {
+        this.transactortruenames = transactortruenames;
     }
 
     public String getChangeinformationvalue() {

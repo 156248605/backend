@@ -83,9 +83,12 @@
 			<if test="lastworkingdatevalue1!=null and lastworkingdatevalue1!='' and lastworkingdatevalue2!=null and lastworkingdatevalue2!=''">
 				AND dm.lastworkingdate BETWEEN #{lastworkingdatevalue1} AND #{lastworkingdatevalue2}
 			</if>
-			<if test="dimissiontype!=null and dimissiontype!=''">
-				<if test="dimissiontypevalue==''">
-					AND dt.dimissiontype = #{dimissiontype}
+			<if test="dimissiontype!=null and dimissiontype!='' or dimissiontypes!=null">
+				<if test="dimissiontypevalue=='' and dimissiontypes.size!=0">
+					AND dt.dimissiontype IN
+					<foreach collection="dimissiontypes" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="dimissiontypevalue=='包含'">
 					AND dt.dimissiontype LIKE CONCAT('%',#{dimissiontype},'%')
@@ -94,9 +97,12 @@
 					AND dt.dimissiontype NOT LIKE CONCAT('%',#{dimissiontype},'%')
 				</if>
 			</if>
-			<if test="dimissionreason!=null and dimissionreason!=''">
-				<if test="dimissionreasonvalue==''">
-					AND dr.dimissionreason = #{dimissionreason}
+			<if test="dimissionreason!=null and dimissionreason!='' or dimissionreasons!=null">
+				<if test="dimissionreasonvalue=='' and dimissionreasons.size!=0">
+					AND dr.dimissionreason IN
+					<foreach collection="dimissionreasons" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="dimissionreasonvalue=='包含'">
 					AND dr.dimissionreason LIKE CONCAT('%',#{dimissionreason},'%')
@@ -105,9 +111,12 @@
 					AND dr.dimissionreason NOT LIKE CONCAT('%',#{dimissionreason},'%')
 				</if>
 			</if>
-			<if test="dimissiondirection!=null and dimissiondirection!=''">
-				<if test="dimissiondirectionvalue==''">
-					AND dd.dimissiondirection = #{dimissiondirection}
+			<if test="dimissiondirection!=null and dimissiondirection!='' or dimissiondirections!=null">
+				<if test="dimissiondirectionvalue=='' and dimissiondirections.size!=0">
+					AND dd.dimissiondirection IN
+					<foreach collection="dimissiondirections" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="dimissiondirectionvalue=='包含'">
 					AND dd.dimissiondirection LIKE CONCAT('%',#{dimissiondirection},'%')
@@ -116,9 +125,12 @@
 					AND dd.dimissiondirection NOT LIKE CONCAT('%',#{dimissiondirection},'%')
 				</if>
 			</if>
-			<if test="transactortruename!=null and transactortruename!=''">
-				<if test="transactortruenamevalue==''">
-					AND u.truename = #{transactortruename}
+			<if test="transactortruename!=null and transactortruename!='' or transactortruenames!=null">
+				<if test="transactortruenamevalue=='' and transactortruenames.size!=0">
+					AND u.truename IN
+					<foreach collection="transactortruenames" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="transactortruenamevalue=='包含'">
 					AND u.truename LIKE CONCAT('%',#{transactortruename},'%')
@@ -157,4 +169,5 @@
 		DELETE FROM tb_hr_dimission
 		WHERE id=#{id}
 	</delete>
+
 </mapper>

@@ -55,9 +55,12 @@
 		tb_id_user u
 		JOIN tb_id_personalinformation p ON u.id = p.userid
 		<where>
-			<if test="truename!=null and truename!=''">
-				<if test="truenamevalue==''">
-					AND u.truename = #{truename}
+			<if test="truename!=null and truename!='' or truenames!=null">
+				<if test="truenamevalue=='' and truenames.size!=0">
+					AND u.truename IN
+					<foreach collection="truenames" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="truenamevalue=='包含'">
 					AND u.truename LIKE CONCAT(CONCAT('%',#{truename}),'%')
@@ -66,9 +69,12 @@
 					AND u.truename NOT LIKE CONCAT(CONCAT('%',#{truename}),'%')
 				</if>
 			</if>
-			<if test="employeenumber!=null and employeenumber!=''">
-				<if test="employeenumbervalue==''">
-					AND p.employeenumber = #{employeenumber}
+			<if test="employeenumber!=null and employeenumber!='' or employeenumbers!=null">
+				<if test="employeenumbervalue=='' and employeenumbers.size!=0">
+					AND p.employeenumber IN
+					<foreach collection="employeenumbers" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="employeenumbervalue=='包含'">
 					AND p.employeenumber LIKE CONCAT(CONCAT('%',#{employeenumber}),'%')

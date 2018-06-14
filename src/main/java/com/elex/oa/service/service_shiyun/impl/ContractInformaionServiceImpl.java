@@ -144,6 +144,11 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      */
     public List<ContractInformation> queryAll(ContractInformation contractInformation){
         List<ContractInformation> contractInformationList = iContractInformationDao.selectAll(contractInformation);
+        for (ContractInformation con:contractInformationList
+             ) {
+            Integer state = iUserDao.selectById(con.getUserid()).getState();
+            con.setState(state.toString());
+        }
         return contractInformationList;
     }
 

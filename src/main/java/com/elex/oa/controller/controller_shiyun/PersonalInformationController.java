@@ -201,24 +201,10 @@ public class PersonalInformationController {
                 }
                 //添加manageinformation的六个字段
                 ManageInformation manageInformation = iManageInformationService.queryOneById(pi.getManageinformationid());
-                /*pi.setZj(manageInformation.getZj());
-                pi.setEmployeetype(manageInformation.getEmployeetype());
-                pi.setEntrydate(manageInformation.getEntrydate());
-                pi.setZhuanzhengdate(manageInformation.getZhuanzhengdate());*/
                 //添加costinformation的18个字段
                 CostInformation costInformation = iCostInformationService.queryOneById(pi.getCostinformationid());
-                /*pi.setSalary(costInformation.getSalary());
-                pi.setSalaryaccount(costInformation.getSalaryaccount());
-                pi.setSbjnd(costInformation.getSbjnd());
-                pi.setSbcode(costInformation.getSbcode());*/
                 //添加otherinformation的六个字段
                 OtherInformation otherInformation = iOtherInformationService.queryOneById(pi.getOtherinformationid());
-                /*pi.setCompanyemail(otherInformation.getCompanyemail());
-                pi.setPrivateemail(otherInformation.getPrivateemail());
-                pi.setEmergencycontract(otherInformation.getEmergencycontract());
-                pi.setEmergencyphone(otherInformation.getEmergencyphone());
-                pi.setAddress(otherInformation.getAddress());
-                pi.setRemark(otherInformation.getRemark());*/
             }
             list.setList(list1);
         }
@@ -1578,6 +1564,7 @@ public class PersonalInformationController {
             pi.setIsactive(user.getIsactive());
             pi.setUsername(user.getUsername());
             pi.setTruename(user.getTruename());
+            pi.setState(user.getState().toString());
 
             //添加信息personalinformation的六个字段
             Dept dept = new Dept();

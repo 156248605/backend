@@ -4,6 +4,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -17,13 +18,16 @@ public class  PersonalInformation implements Serializable{
     private Integer id;//主键(人事总体表1)
     private Integer userid;//用户ID
     private String employeenumber;//员工号
+    private List<String> employeenumbers;//
     private String employeenumbervalue;//判断条件
     private String sex;//性别
     private Integer depid;//部门ID
     private String telphone;//办公电话
+    private List<String> telphones;//
     private Integer telphoneid;//办公电话ID
     private String telphonevalue;//判断条件
     private String mobilephone;//移动电话
+    private List<String> mobilephones;//
     private String mobilephonevalue;//判断条件
     private Integer baseinformationid;//基本信息ID
     private Integer manageinformationid;//管理信息ID
@@ -31,6 +35,7 @@ public class  PersonalInformation implements Serializable{
     private Integer otherinformationid;//其他信息ID
     private String company;//公司（源自部门信息）（只显示）
     private String depname;//部门（源自部门信息）（只显示）
+    private List<String> depnames;//
     private String depnamevalue;//判断条件
     private String principaltruename;//主管姓名（源于人事信息）（只显示）
     private String principalemployeenumber;//主管工号（源于人事信息）（只显示）
@@ -38,60 +43,85 @@ public class  PersonalInformation implements Serializable{
     private List<Integer> postids;//岗位IDs（人事和岗位的关系表2）
     private String postnames;//多岗位（源自人事和岗位的关系信息）（只显示）
     private String postname;//判断条件
+    private List<String> postnameList;//
     private String postnamevalue;//判断条件
     private List<Integer> perids;//条件查询用
     private List<Integer> ppids;//辅助查询条件
 
     private Integer isactive;//是否激活（用户表3）
     private String username;//登录ID
+    private List<String> usernames;//
     private String usernamevalue;//判断条件
     private String truename;//用户姓名
+    private List<String> truenames;//
     private String truenamevalue;//判断条件
+    private String state;//用户状态
 
     private String userphoto;//免冠照片（基础信息表4）
     private String idphoto1;//身份证正面
     private String idphoto2;//身份证背面
     private String englishname;//英文名
+    private List<String> englishnames;//
     private String englishnamevalue;//判断条件
     private String idcode;//身份证号码
+    private List<String> idcodes;//
     private String idcodevalue;//判断条件
     private String birthday;//出生日期（源于身份证号码）
     private String birthdayvalue1;//判断条件
     private String birthdayvalue2;//判断条件
-    private String age;//年龄（源于身份证号码）（只显示）
+    private String age;//年龄（源于|身份证号码）（只显示）
+    private List<String> ages;//
     private String agevalue;//判断条件
+    private Map<String,String> ageMap;//
     private String sbir;//将年龄转换成时间
     private String ebir;//将年龄转换成时间2
     private String constellation;//星座（源于身份证号码）
+    private List<String> constellations;//
     private String constellationvalue;//判断条件
     private String chinesecs;//属相（源于身份证号码）
+    private List<String> chinesecses;//
     private String chinesecsvalue;//判断条件
     private String race;//民族
+    private List<String> races;//
     private String racevalue;//判断条件
     private String marriage;//婚姻状况
     private String children;//生育
+    private List<String> childrens;//
     private String zzmm;//政治面貌
+    private List<String> zzmms;//
     private String zgxl;//最高学历
+    private List<String> zgxls;//
     private String byyx;//毕业院校
+    private List<String> byyxs;//
     private String byyxvalue;//判断条件
     private String sxzy;//所学专业
+    private List<String> sxzys;//
     private String sxzyvalue;//判断条件
     private String pyfs;//培养方式
+    private List<String> pyfses;//
     private String firstla;//第一外语
+    private List<String> firstlas;//
     private String elsela;//其它外语
+    private List<String> elselas;//
     private String posttitle;//职称
+    private List<String> posttitles;//
     private String zyzstype;//职业证书类型
+    private List<String> zyzstypes;//
     private String zyzstypevalue;//判断条件
     private String zyzsname;//职业证书名称
+    private List<String> zyzsnames;//
     private String zyzsnamevalue;//判断条件
     private String firstworkingtime;//首次工作时间
     private String firstworkingtimevalue1;//判断条件
     private String firstworkingtimevalue2;//判断条件
     private String workingage;//工龄（只显示）
+    private List<String> workingages;//
     private String workingagevalue;//判断条件
+    private Map<String,String> workingageMap;//
     private String sfwt;//将工龄转换成时间
     private String efwt;//将工龄转换成时间2
     private String parentcompany;//上家雇主
+    private List<String> parentcompanys;//
     private String parentcompanyvalue;//判断条件
     private List<Integer> baseinformationids;//条件查询用
 
@@ -123,6 +153,238 @@ public class  PersonalInformation implements Serializable{
     private String remark;//备注
 
     public PersonalInformation() {
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Map<String, String> getAgeMap() {
+        return ageMap;
+    }
+
+    public void setAgeMap(Map<String, String> ageMap) {
+        this.ageMap = ageMap;
+    }
+
+    public Map<String, String> getWorkingageMap() {
+        return workingageMap;
+    }
+
+    public void setWorkingageMap(Map<String, String> workingageMap) {
+        this.workingageMap = workingageMap;
+    }
+
+    public List<String> getEmployeenumbers() {
+        return employeenumbers;
+    }
+
+    public void setEmployeenumbers(List<String> employeenumbers) {
+        this.employeenumbers = employeenumbers;
+    }
+
+    public List<String> getTelphones() {
+        return telphones;
+    }
+
+    public void setTelphones(List<String> telphones) {
+        this.telphones = telphones;
+    }
+
+    public List<String> getMobilephones() {
+        return mobilephones;
+    }
+
+    public void setMobilephones(List<String> mobilephones) {
+        this.mobilephones = mobilephones;
+    }
+
+    public List<String> getDepnames() {
+        return depnames;
+    }
+
+    public void setDepnames(List<String> depnames) {
+        this.depnames = depnames;
+    }
+
+    public List<String> getPostnameList() {
+        return postnameList;
+    }
+
+    public void setPostnameList(List<String> postnameList) {
+        this.postnameList = postnameList;
+    }
+
+    public List<String> getUsernames() {
+        return usernames;
+    }
+
+    public void setUsernames(List<String> usernames) {
+        this.usernames = usernames;
+    }
+
+    public List<String> getTruenames() {
+        return truenames;
+    }
+
+    public void setTruenames(List<String> truenames) {
+        this.truenames = truenames;
+    }
+
+    public List<String> getEnglishnames() {
+        return englishnames;
+    }
+
+    public void setEnglishnames(List<String> englishnames) {
+        this.englishnames = englishnames;
+    }
+
+    public List<String> getIdcodes() {
+        return idcodes;
+    }
+
+    public void setIdcodes(List<String> idcodes) {
+        this.idcodes = idcodes;
+    }
+
+    public List<String> getAges() {
+        return ages;
+    }
+
+    public void setAges(List<String> ages) {
+        this.ages = ages;
+    }
+
+    public List<String> getConstellations() {
+        return constellations;
+    }
+
+    public void setConstellations(List<String> constellations) {
+        this.constellations = constellations;
+    }
+
+    public List<String> getChinesecses() {
+        return chinesecses;
+    }
+
+    public void setChinesecses(List<String> chinesecses) {
+        this.chinesecses = chinesecses;
+    }
+
+    public List<String> getRaces() {
+        return races;
+    }
+
+    public void setRaces(List<String> races) {
+        this.races = races;
+    }
+
+    public List<String> getChildrens() {
+        return childrens;
+    }
+
+    public void setChildrens(List<String> childrens) {
+        this.childrens = childrens;
+    }
+
+    public List<String> getZzmms() {
+        return zzmms;
+    }
+
+    public void setZzmms(List<String> zzmms) {
+        this.zzmms = zzmms;
+    }
+
+    public List<String> getZgxls() {
+        return zgxls;
+    }
+
+    public void setZgxls(List<String> zgxls) {
+        this.zgxls = zgxls;
+    }
+
+    public List<String> getByyxs() {
+        return byyxs;
+    }
+
+    public void setByyxs(List<String> byyxs) {
+        this.byyxs = byyxs;
+    }
+
+    public List<String> getSxzys() {
+        return sxzys;
+    }
+
+    public void setSxzys(List<String> sxzys) {
+        this.sxzys = sxzys;
+    }
+
+    public List<String> getPyfses() {
+        return pyfses;
+    }
+
+    public void setPyfses(List<String> pyfses) {
+        this.pyfses = pyfses;
+    }
+
+    public List<String> getFirstlas() {
+        return firstlas;
+    }
+
+    public void setFirstlas(List<String> firstlas) {
+        this.firstlas = firstlas;
+    }
+
+    public List<String> getElselas() {
+        return elselas;
+    }
+
+    public void setElselas(List<String> elselas) {
+        this.elselas = elselas;
+    }
+
+    public List<String> getPosttitles() {
+        return posttitles;
+    }
+
+    public void setPosttitles(List<String> posttitles) {
+        this.posttitles = posttitles;
+    }
+
+    public List<String> getZyzstypes() {
+        return zyzstypes;
+    }
+
+    public void setZyzstypes(List<String> zyzstypes) {
+        this.zyzstypes = zyzstypes;
+    }
+
+    public List<String> getZyzsnames() {
+        return zyzsnames;
+    }
+
+    public void setZyzsnames(List<String> zyzsnames) {
+        this.zyzsnames = zyzsnames;
+    }
+
+    public List<String> getWorkingages() {
+        return workingages;
+    }
+
+    public void setWorkingages(List<String> workingages) {
+        this.workingages = workingages;
+    }
+
+    public List<String> getParentcompanys() {
+        return parentcompanys;
+    }
+
+    public void setParentcompanys(List<String> parentcompanys) {
+        this.parentcompanys = parentcompanys;
     }
 
     public List<Integer> getPpids() {
@@ -1032,4 +1294,5 @@ public class  PersonalInformation implements Serializable{
                 ", remark='" + remark + '\'' + "\n" +
                 '}';
     }
+
 }

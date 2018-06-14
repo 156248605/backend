@@ -29,11 +29,15 @@ public class DimissionInformation  implements Serializable {
     private String lastworkingdatevalue2;//判断条件
     @Transient
     private String dimissiontype;// 离职类型
+    @Transient
+    private List<String> dimissiontypes;
     private Integer dimissiontypeid;//离职类型ID
     @Transient
     private String dimissiontypevalue;//判断条件
     @Transient
     private String dimissionreason;// 离职原因
+    @Transient
+    private List<String> dimissionreasons;
     private Integer dimissionreasonid;//离职原因ID
     @Transient
     private String dimissionreasonvalue;//判断条件
@@ -45,19 +49,27 @@ public class DimissionInformation  implements Serializable {
     private String transactiondatevalue2;//判断条件
     @Transient
     private String dimissiondirection;// 离职去向
+    @Transient
+    private List<String> dimissiondirections;
     private Integer dimissiondirectionid;//离职去向ID
     @Transient
     private String dimissiondirectionvalue;//判断条件
     @Transient
     private String dimissiontruename;// 离职人员的姓名
     @Transient
+    private List<String> dimissiontruenames;
+    @Transient
     private String dimissiontruenamevalue;//判断条件
     @Transient
     private String employeenumber;// 离职人员的工号
     @Transient
+    private List<String> employeenumbers;
+    @Transient
     private String employeenumbervalue;//判断条件
     @Transient
     private String depname;// 离职人员的部门名称
+    @Transient
+    private List<String> depnames;
     @Transient
     private String depnamevalue;//判断条件
     @Transient
@@ -65,11 +77,15 @@ public class DimissionInformation  implements Serializable {
     @Transient
     private String postname;//判断条件
     @Transient
+    private List<String> postnameList;
+    @Transient
     private String postnamevalue;//判断条件
     @Transient
     private List<Integer> perids;//判断条件
     @Transient
     private String transactortruename;// 办理人的姓名
+    @Transient
+    private List<String> transactortruenames;
     @Transient
     private String transactortruenamevalue;//判断条件
 
@@ -83,6 +99,70 @@ public class DimissionInformation  implements Serializable {
     private Integer officesupplystatue;// 办公用品领用是否确认处理
 
     public DimissionInformation() {
+    }
+
+    public List<String> getDimissiontypes() {
+        return dimissiontypes;
+    }
+
+    public void setDimissiontypes(List<String> dimissiontypes) {
+        this.dimissiontypes = dimissiontypes;
+    }
+
+    public List<String> getDimissionreasons() {
+        return dimissionreasons;
+    }
+
+    public void setDimissionreasons(List<String> dimissionreasons) {
+        this.dimissionreasons = dimissionreasons;
+    }
+
+    public List<String> getDimissiondirections() {
+        return dimissiondirections;
+    }
+
+    public void setDimissiondirections(List<String> dimissiondirections) {
+        this.dimissiondirections = dimissiondirections;
+    }
+
+    public List<String> getDimissiontruenames() {
+        return dimissiontruenames;
+    }
+
+    public void setDimissiontruenames(List<String> dimissiontruenames) {
+        this.dimissiontruenames = dimissiontruenames;
+    }
+
+    public List<String> getEmployeenumbers() {
+        return employeenumbers;
+    }
+
+    public void setEmployeenumbers(List<String> employeenumbers) {
+        this.employeenumbers = employeenumbers;
+    }
+
+    public List<String> getDepnames() {
+        return depnames;
+    }
+
+    public void setDepnames(List<String> depnames) {
+        this.depnames = depnames;
+    }
+
+    public List<String> getPostnameList() {
+        return postnameList;
+    }
+
+    public void setPostnameList(List<String> postnameList) {
+        this.postnameList = postnameList;
+    }
+
+    public List<String> getTransactortruenames() {
+        return transactortruenames;
+    }
+
+    public void setTransactortruenames(List<String> transactortruenames) {
+        this.transactortruenames = transactortruenames;
     }
 
     public Integer getDimissiontypeid() {

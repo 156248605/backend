@@ -71,6 +71,13 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
     @Override
     public List<ChangeInformation> queryAll() {
         List<ChangeInformation> changeInformations = iChangeInformaionDao.selectAll();
+        for (ChangeInformation changeinformation:changeInformations
+             ) {
+            String truename = iUserDao.selectById(changeinformation.getChangeduserid()).getTruename();
+            changeinformation.setChangedtruename(truename);
+            String transactortruename = iUserDao.selectById(changeinformation.getTransactoruserid()).getTruename();
+            changeinformation.setTransactortruename(transactortruename);
+        }
         return changeInformations;
     }
 

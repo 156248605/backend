@@ -38,9 +38,12 @@
 					#{param}
 				</foreach>
 			</if>
-			<if test="contractcode!=null and contractcode!=''">
-				<if test="contractcodevalue==''">
-					AND c.contractcode = #{contractcode}
+			<if test="contractcode!=null and contractcode!='' or contractcodes!=null">
+				<if test="contractcodevalue=='' and contractcodes.size!=0">
+					AND c.contractcode IN
+					<foreach collection="contractcodes" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="contractcodevalue=='包含'">
 					AND c.contractcode LIKE CONCAT(CONCAT('%',#{contractcode}),'%')
@@ -49,9 +52,12 @@
 					AND c.contractcode NOT LIKE CONCAT(CONCAT('%',#{contractcode}),'%')
 				</if>
 			</if>
-			<if test="contracttype!=null and contracttype!=''">
-				<if test="contracttypevalue==''">
-					AND ct.contracttype = #{contracttype}
+			<if test="contracttype!=null and contracttype!='' or contracttypes!=null">
+				<if test="contracttypevalue=='' and contracttypes.size!=0">
+					AND ct.contracttype IN
+					<foreach collection="contracttypes" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="contracttypevalue=='包含'">
 					AND ct.contracttype LIKE CONCAT(CONCAT('%',#{contracttype}),'%')
@@ -60,9 +66,12 @@
 					AND ct.contracttype NOT LIKE CONCAT(CONCAT('%',#{contracttype}),'%')
 				</if>
 			</if>
-			<if test="contractage!=null and contractage!=''">
-				<if test="contractagevalue==''">
-					AND c.enddate - c.startdate = #{contractage}
+			<if test="contractage!=null and contractage!='' or contractages!=null">
+				<if test="contractagevalue=='' and contractages.size!=0">
+					AND (c.enddate - c.startdate) IN
+					<foreach collection="contractages" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="contractagevalue== 1">
 					<![CDATA[ AND c.enddate - c.startdate > #{contractage} ]]>

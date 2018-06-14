@@ -49,15 +49,32 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             personalInformation.setSbir(birdayByAge.get("sbir"));
             personalInformation.setEbir(birdayByAge.get("ebir"));
         }//年龄转换成出生日期
+        if(personalInformation.getAges()!=null && personalInformation.getAges().size()!=0){
+            Map<String,String> ageMap = new HashMap<>();
+            for (String age:personalInformation.getAges()
+                 ) {
+                HashMap<String, String> birdayByAge = IDcodeUtil.getBirdayByAge(age);
+                ageMap.put(birdayByAge.get("sbir"),birdayByAge.get("ebir"));
+            }
+            personalInformation.setAgeMap(ageMap);
+        }//年龄数组转换成出生日期
         if (personalInformation.getWorkingage()!=null && !"".equals(personalInformation.getWorkingage())) {
             HashMap<String, String> fwtByWorkingage = IDcodeUtil.getFwtByWorkingage(personalInformation.getWorkingage());
             personalInformation.setSfwt(fwtByWorkingage.get("sfwt"));
             personalInformation.setEfwt(fwtByWorkingage.get("efwt"));
-            System.out.println(personalInformation.getSfwt() + ":" + personalInformation.getEfwt());
-        }//工龄转换层首次工作时间
+        }//工龄转换成首次工作时间
+        if(personalInformation.getWorkingages()!=null && personalInformation.getWorkingages().size()!=0){
+            Map<String,String> workingageMap = new HashMap<>();
+            for (String workingage:personalInformation.getWorkingages()
+                 ) {
+                HashMap<String, String> fwtByWorkingage = IDcodeUtil.getBirdayByAge(workingage);
+                workingageMap.put(fwtByWorkingage.get("sbir"),fwtByWorkingage.get("ebir"));
+            }
+            personalInformation.setWorkingageMap(workingageMap);
+        }//工龄数组转换成首次工作时间
         if (personalInformation!=null) {
             List<Integer> baseinformationids = new ArrayList<>();
-            List<BaseInformation> baseInformations = iBaseInformationDao.selectByConditions(personalInformation);
+            List<BaseInformation> baseInformations = iBaseInformationDao.selectByConditions(personalInformation);//先进行基本信息的查询
             for(int i=0;i<baseInformations.size();i++){
                 baseinformationids.add(baseInformations.get(i).getId());
             }
@@ -65,22 +82,21 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
                 personalInformation.setBaseinformationids(baseinformationids);
             }else {
                 return null;
-            }
+            }//再进行基本信息的id集合提取
 
-            if (personalInformation.getPostname()!=null && !"".equals(personalInformation.getPostname())) {
+            if (personalInformation.getPostname()!=null && !"".equals(personalInformation.getPostname()) || personalInformation.getPostnameList().size()!=0) {
                 if("不包含".equals(personalInformation.getPostnamevalue())){
                     List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectByConditions2(personalInformation);
+                    //这里查出来的是包含的部分，到时候只需not in 一下这部分即可
                     ArrayList<Integer> integers = new ArrayList<>();
                     for(PerAndPostRs pp:perAndPostRs){
                         integers.add(pp.getPerid());
                     }
-                    personalInformation.setPpids(integers);
+                    if (integers.size()!=0) {
+                        personalInformation.setPpids(integers);
+                    }
                 }
-                if (personalInformation.getPpids()!=null) {
-                    System.out.println(personalInformation.getPpids().size());
-                }else {
-                    return null;
-                }
+
                 List<Integer> perids = new ArrayList<>();
                 List<PerAndPostRs> perAndPostRsList = iPerandpostrsDao.selectByConditions(personalInformation);
                 for(int i = 0;i<perAndPostRsList.size();i++){
@@ -89,13 +105,11 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
                 if (perids.size()!=0) {
                     personalInformation.setPerids(perids);
                 }
-            }
+            }//将符合岗位条件的perid集合提取出来
         }
-
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         com.github.pagehelper.PageHelper.startPage(pageNum,pageSize);
-
         List<PersonalInformation> list = iPersonalInformationDao.selectByConditions(personalInformation);
         return new PageInfo<PersonalInformation>(list);
     }

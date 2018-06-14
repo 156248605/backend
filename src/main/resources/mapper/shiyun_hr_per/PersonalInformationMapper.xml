@@ -37,12 +37,15 @@
 		LEFT JOIN tb_hr_per_and_post_rs r ON per.id = r.perid
 		LEFT JOIN tb_hr_set_telphone t ON per.telphoneid = t.id
 		<where>
-			<if test="isactive!=null and isactive!=''">
+			<if test="isactive!=null and isactive!='' or isactive==0">
 				u.isactive=#{isactive}
 			</if>
-			<if test="username!=null and username!=''">
-				<if test="usernamevalue==''">
-					AND u.username=#{username}
+			<if test="username!=null and username!='' or usernames!=null">
+				<if test="usernamevalue=='' and usernames.size!=0">
+					AND u.username IN
+					<foreach collection="usernames" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="usernamevalue=='包含'">
 					AND u.username LIKE CONCAT(CONCAT('%', #{username}), '%')
@@ -51,9 +54,12 @@
 					AND u.username NOT LIKE CONCAT(CONCAT('%', #{username}), '%')
 				</if>
 			</if>
-			<if test="truename!=null and truename!=''">
-				<if test="truenamevalue==''">
-					AND u.truename=#{truename}
+			<if test="truename!=null and truename!='' or truenames!=null">
+				<if test="truenamevalue=='' and truenames.size!=0">
+					AND u.truename IN
+					<foreach collection="truenames" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="truenamevalue=='包含'">
 					AND u.truename LIKE CONCAT(CONCAT('%', #{truename}), '%')
@@ -62,9 +68,12 @@
 					AND u.truename NOT LIKE CONCAT(CONCAT('%', #{truename}), '%')
 				</if>
 			</if>
-			<if test="employeenumber!=null and employeenumber!=''">
-				<if test="employeenumbervalue==''">
-					AND per.employeenumber=#{employeenumber}
+			<if test="employeenumber!=null and employeenumber!='' or employeenumbers!=null">
+				<if test="employeenumbervalue=='' and employeenumbers.size!=0">
+					AND per.employeenumber IN
+					<foreach collection="employeenumbers" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="employeenumbervalue=='包含'">
 					AND per.employeenumber LIKE CONCAT(CONCAT('%', #{employeenumber}), '%')
@@ -82,9 +91,12 @@
 			<if test="sex!=null and sex!=''">
 				AND per.sex=#{sex}
 			</if>
-			<if test="depname!=null and depname!=''">
-				<if test="depnamevalue==''">
-					AND d.depname=#{depname}
+			<if test="depname!=null and depname!='' or depnames!=null">
+				<if test="depnamevalue=='' and depnames.size!=0">
+					AND d.depname IN
+					<foreach collection="depnames" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="depnamevalue=='包含'">
 					AND d.depname LIKE CONCAT(CONCAT('%', #{depname}), '%')
@@ -99,9 +111,12 @@
 					#{param}
 				</foreach>
 			</if>
-			<if test="telphone!=null and telphone!=''">
-				<if test="telphonevalue==''">
-					AND t.telphone=#{telphone}
+			<if test="telphone!=null and telphone!='' or telphones!=null">
+				<if test="telphonevalue=='' and telphones.size!=0">
+					AND t.telphone IN
+					<foreach collection="telphones" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="telphonevalue=='包含'">
 					AND t.telphone LIKE CONCAT(CONCAT('%', #{telphone}), '%')
@@ -110,9 +125,12 @@
 					AND t.telphone NOT LIKE CONCAT(CONCAT('%', #{telphone}), '%')
 				</if>
 			</if>
-			<if test="mobilephone!=null and mobilephone!=''">
-				<if test="mobilephonevalue==''">
-					AND per.mobilephone=#{mobilephone}
+			<if test="mobilephone!=null and mobilephone!='' or mobilephones!=null">
+				<if test="mobilephonevalue=='' and mobilephones.size!=0">
+					AND per.mobilephone IN
+					<foreach collection="mobilephones" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="mobilephonevalue=='包含'">
 					AND per.mobilephone LIKE CONCAT(CONCAT('%', #{mobilephone}), '%')
@@ -138,9 +156,12 @@
 		LEFT JOIN tb_id_department d ON per.depid = d.id
 		LEFT JOIN tb_hr_per_and_post_rs r ON per.id = r.perid
 		<where>
-			<if test="dimissiontruename!=null and dimissiontruename!=''">
-				<if test="dimissiontruenamevalue==''">
-					and u.truename = #{dimissiontruename}
+			<if test="dimissiontruename!=null and dimissiontruename!='' or dimissiontruenames!=null">
+				<if test="dimissiontruenamevalue=='' and dimissiontruenames.size!=0">
+					AND u.truename IN
+					<foreach collection="dimissiontruenames" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="dimissiontruenamevalue=='包含'">
 					AND u.truename LIKE CONCAT('%',#{dimissiontruename},'%')
@@ -149,9 +170,12 @@
 					AND u.truename NOT LIKE CONCAT('%',#{dimissiontruename},'%')
 				</if>
 			</if>
-			<if test="employeenumber!=null and employeenumber!=''">
-				<if test="employeenumbervalue==''">
-					AND per.employeenumber=#{employeenumber}
+			<if test="employeenumber!=null and employeenumber!='' or employeenumbers!=null">
+				<if test="employeenumbervalue=='' and employeenumbers.size!=0">
+					AND per.employeenumber IN
+					<foreach collection="employeenumbers" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="employeenumbervalue=='包含'">
 					AND per.employeenumber LIKE CONCAT(CONCAT('%', #{employeenumber}), '%')
@@ -160,9 +184,12 @@
 					AND per.employeenumber NOT LIKE CONCAT(CONCAT('%', #{employeenumber}), '%')
 				</if>
 			</if>
-			<if test="depname!=null and depname!=''">
-				<if test="depnamevalue==''">
-					AND d.depname=#{depname}
+			<if test="depname!=null and depname!='' or depnames!=null">
+				<if test="depnamevalue=='' and depnames.size!=0">
+					AND d.depname IN
+					<foreach collection="depnames" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="depnamevalue=='包含'">
 					AND d.depname LIKE CONCAT(CONCAT('%', #{depname}), '%')
@@ -316,7 +343,7 @@
 			 tb_id_personalinformation per
 			 JOIN tb_id_user u ON per.userid = u.id
 		WHERE
-			u.state = 1
+			u.state = 1 or u.state=0
 	</select>
 
 </mapper>

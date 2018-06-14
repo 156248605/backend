@@ -86,18 +86,27 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         DimissionInformation dimissionInformation = (DimissionInformation) paramMap.get("entity");
 
         //先查询关系表，获得perids
-        if(dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname())){
+        if(dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname()) || dimissionInformation.getPostnameList()!=null){
             PersonalInformation personalInformation = new PersonalInformation();
-            personalInformation.setPostname(dimissionInformation.getPostname());
-            personalInformation.setPostnamevalue(dimissionInformation.getPostnamevalue());
-            //如何是不包含就多走一步
-            if (personalInformation.getPostnamevalue().equals("不包含")) {
-                List<Integer> perids = new ArrayList<>();
-                List<PerAndPostRs> perAndPostRs2 = iPerandpostrsDao.selectByConditions2(personalInformation);
-                for(PerAndPostRs perAndPostRs1:perAndPostRs2){
-                    perids.add(perAndPostRs1.getPerid());
+
+            if (dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname())) {
+                personalInformation.setPostname(dimissionInformation.getPostname());
+                personalInformation.setPostnamevalue(dimissionInformation.getPostnamevalue());
+
+                //如何是不包含就多走一步
+                if (personalInformation.getPostnamevalue().equals("不包含")) {
+                    List<Integer> perids = new ArrayList<>();
+                    List<PerAndPostRs> perAndPostRs2 = iPerandpostrsDao.selectByConditions2(personalInformation);
+                    for(PerAndPostRs perAndPostRs1:perAndPostRs2){
+                        perids.add(perAndPostRs1.getPerid());
+                    }
+                    personalInformation.setPerids(perids);
                 }
-                personalInformation.setPerids(perids);
+            }
+
+            if (dimissionInformation.getPostnameList()!=null) {
+                personalInformation.setPostnameList(dimissionInformation.getPostnameList());
+                personalInformation.setPostnamevalue(dimissionInformation.getPostnamevalue());
             }
             //这里获得perids是最终的
             List<Integer> perids = new ArrayList<>();
