@@ -42,7 +42,6 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     @Override
     public PageInfo<PersonalInformation> queryPIs(Map<String, Object> paramMap) throws ParseException {
 
-
         PersonalInformation personalInformation = (PersonalInformation) paramMap.get("entity");
         if (personalInformation.getAge()!=null && !"".equals(personalInformation.getAge())) {
             HashMap<String, String> birdayByAge = IDcodeUtil.getBirdayByAge(personalInformation.getAge());

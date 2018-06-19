@@ -1,5 +1,7 @@
 package com.elex.oa.controller.controller_shiyun;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.permission.JobService;
@@ -7,7 +9,6 @@ import com.elex.oa.service.service_shiyun.*;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -474,5 +475,106 @@ public class PostInformationController {
             return "数据导入失败！";
         }
         return "数据导入成功！";
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:岗位排序--》根据父节点查询所有的同级数据
+     *@Date: 11:15 2018\6\15 0015
+     */
+    @RequestMapping("/sortPostinformation")
+    @ResponseBody
+    public List<TitleAndCode> sortPostinformation(
+            @RequestParam("title") String title
+    ){
+        List<TitleAndCode> list = new ArrayList<>();
+        List<Post> posts = iPostService.queryByParentpostid(iPostService.queryOneByPostname(title).getId());
+        for(int i = 0;i<posts.size();i++){
+            TitleAndCode titleAndCode = new TitleAndCode();
+            titleAndCode.setTitle(posts.get(i).getPostname());
+            titleAndCode.setCode((i+1)*10);
+            list.add(titleAndCode);
+        }
+        return list;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:对数据进行排序
+     *@Date: 14:52 2018\6\15 0015
+     */
+    @RequestMapping("/submitSortdata2")
+    @ResponseBody
+    public DeptTree submitSortdata2(
+            @RequestParam("sortdata") String sortdata,
+            @RequestParam("title") String title,
+            @RequestParam("deptTree") String deptTree
+    ){
+        List<TitleAndCode> list = JSONObject.parseArray(sortdata, TitleAndCode.class);
+        //先将树形结构数据查出来
+        List<Post> posts = iPostService.queryByParentpostid(null);
+        DeptTree deptTree1 = JSONObject.parseObject(deptTree,new TypeReference<DeptTree>(){});
+        //先排序
+        if(title!=null && !"".equals(title) && list.size()>=2){
+            list.sort(new Comparator<TitleAndCode>() {
+                @Override
+                public int compare(TitleAndCode o1, TitleAndCode o2) {
+                    return o1.getCode().compareTo(o2.getCode());
+                }
+            });
+        }
+        //再换节点
+        //首先将父节点是定点的情况去除
+        if(deptTree1.getTitle().equals(title)){
+            List<DeptTree> old = deptTree1.getChildren();
+            List<DeptTree> renew = new ArrayList<>();
+            for (TitleAndCode titleAndCode:list
+                    ) {
+                for (DeptTree dtt:old
+                        ) {
+                    if(dtt.getTitle().equals(titleAndCode.getTitle())){
+                        renew.add(dtt);
+                    }
+                }
+            }
+            deptTree1.setChildren(renew);
+            return deptTree1;
+        }
+        DeptTree newDepttree = getNewDepttree(deptTree1, title, list);
+        return newDepttree;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:同级排序
+     *@Date: 18:41 2018\6\15 0015
+     */
+    public DeptTree getNewDepttree(DeptTree deptTree,String title,List<TitleAndCode> list){
+        for(int i = 0;i<deptTree.getChildren().size();i++){
+            if(deptTree.getChildren().get(i).getTitle().equals(title)){
+                List<DeptTree> old = deptTree.getChildren().get(i).getChildren();
+                List<DeptTree> renew = new ArrayList<>();
+                for (TitleAndCode titleAndCode:list
+                        ) {
+                    for (DeptTree dtt:old
+                            ) {
+                        if(dtt.getTitle().equals(titleAndCode.getTitle())){
+                            renew.add(dtt);
+                        }
+                    }
+                }
+                deptTree.getChildren().get(i).setChildren(renew);
+                return deptTree;
+            }else {
+                if(deptTree.getChildren().get(i).getChildren().size()>0){
+                    DeptTree parentDepttree = getNewDepttree(deptTree.getChildren().get(i), title,list);
+                    if(parentDepttree!=null){
+                        deptTree.getChildren().get(i).setChildren(parentDepttree.getChildren());
+                        return deptTree;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

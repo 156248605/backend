@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @Author:ShiYun;
- * @Description:部门树
+ * @Description:部门树或岗位树
  * @Date:Created in  10:16 2018\4\16 0016
  * @Modify By:
  */
