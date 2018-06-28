@@ -1,5 +1,6 @@
 package com.elex.oa.service.service_shiyun.impl;
 
+import com.elex.oa.dao.dao_shiyun.IPerandpostrsDao;
 import com.elex.oa.dao.dao_shiyun.IPostDao;
 import com.elex.oa.entity.entity_shiyun.Post;
 import com.elex.oa.service.service_shiyun.IPostService;
@@ -18,7 +19,9 @@ import java.util.List;
 public class PostServiceImpl implements IPostService {
 
     @Autowired
-    private IPostDao iPostDao;
+    IPostDao iPostDao;
+    @Autowired
+    IPerandpostrsDao iPerandpostrsDao;
 
     /**
      *@Author:ShiYun;
@@ -92,6 +95,9 @@ public class PostServiceImpl implements IPostService {
      */
     @Override
     public void remove(Integer id) {
+        /*先删除关系表中的相关数据*/
+        iPerandpostrsDao.deleteByPostid(id);
+        /*再删除相应的岗位信息*/
         iPostDao.deleteOne(id);
     }
 }

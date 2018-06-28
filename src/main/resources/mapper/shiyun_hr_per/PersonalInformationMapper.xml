@@ -346,4 +346,13 @@
 			u.state = 1 or u.state=0
 	</select>
 
+	<update id="updateDeptinformation" parameterType="PersonalInformation">
+		update tb_id_personalinformation
+		<set>
+			<if test="depid!=null and depid!=''">
+				depid=NULL
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
 </mapper>

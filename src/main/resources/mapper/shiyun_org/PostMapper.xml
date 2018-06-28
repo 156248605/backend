@@ -88,10 +88,9 @@
 		WHERE id=#{id}
 	</update>
 
-	<update id="deleteOne" parameterType="java.lang.Integer">
-		UPDATE tb_id_post
-		SET state=0
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_post
 		WHERE id=#{_parameter,jdbcType=NUMERIC}
-	</update>
+	</delete>
 
 </mapper>

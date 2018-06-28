@@ -4,12 +4,16 @@ import com.elex.oa.dao.dao_shiyun.IDeptDao;
 import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
 import com.elex.oa.dao.dao_shiyun.IUserDao;
 import com.elex.oa.entity.entity_shiyun.Dept;
+import com.elex.oa.entity.entity_shiyun.HRManageCard;
 import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -94,11 +98,21 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:根据部门ID删除部门信息
+     *@Description:先要将该部门下的所有员工的部门信息改为无部门，再根据部门ID删除部门信息
      *@Date: 14:07 2018\5\2 0002
      */
     @Override
     public void removeOne(Integer id) {
+        List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(id);
+        PersonalInformation personalInformation = new PersonalInformation();
+        //先清空人员的相应部门信息
+        for (PersonalInformation personalinformation:personalInformationList
+             ) {
+            personalInformation.setId(personalinformation.getId());
+            personalInformation.setDepid(personalinformation.getDepid());
+            iPersonalInformationDao.updateDeptinformation(personalInformation);
+        }
+        //再删除相应的部门
         iDeptDao.deleteOne(id);
     }
 
@@ -138,6 +152,16 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
+     *@Description:修改部门时将在其他部门的信息休息掉
+     *@Date: 10:33 2018\6\20 0020
+     */
+    @Override
+    public void modifyByDeptidAndOtherinformation(Dept dept){
+        iDeptDao.updateByDeleteUser(dept);
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:根据部门ID获得部门名称、人数、总人数
      *@Date: 15:31 2018\6\1 0001
      */
@@ -153,6 +177,47 @@ public class DeptServiceImpl implements IDeptService {
         //获得总人数
         List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll();
         paramMap.put("allNum",personalInformationList1.size());
+        return paramMap;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:在职的人事管理看板
+     *@Date: 11:53 2018\6\28 0028
+     */
+    @Override
+    public HashMap<String, Object> getHRManageCard() {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        List<HRManageCard> hrManageCardList = new ArrayList<>();
+        List<Dept> depts = iDeptDao.selectAllDept();
+        //获得总人数
+        List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll();
+        Integer num = personalInformationList1.size();
+        paramMap.put("allNum",num);
+        for (Dept dept:depts
+             ) {
+            HRManageCard hrManageCard = new HRManageCard();
+            //获得部门名称
+            hrManageCard.setDepname(dept.getDepname());
+            //获得部门的在职人数
+            List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(dept.getId());
+            Integer ratio = personalInformationList.size();
+            hrManageCard.setNum(personalInformationList.size());
+            //人数占比
+            Double db = ratio.doubleValue()/num.doubleValue()*100;
+            BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
+            hrManageCard.setRatio(bg.doubleValue() + "%");
+            //获得部门相应的人员
+            List<User> users = new ArrayList<>();
+            for (PersonalInformation per:personalInformationList
+                 ) {
+                User user = iUserDao.selectById(per.getUserid());
+                users.add(user);
+            }
+            hrManageCard.setUsers(users);
+            hrManageCardList.add(hrManageCard);
+        }
+        paramMap.put("HRManageCards",hrManageCardList);
         return paramMap;
     }
 }

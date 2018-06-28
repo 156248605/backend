@@ -63,4 +63,11 @@ public interface IPersonalInformationDao{
      *@Date: 17:24 2018\4\18 0018
      */
     public List<PersonalInformation> selectAll();
+
+    /**
+     *@Author:ShiYun;
+     *@Description:删除部门前先将人员的部门信息清空为NULL
+     *@Date: 17:03 2018\6\20 0020
+     */
+    public void updateDeptinformation(PersonalInformation personalInformation);
 }

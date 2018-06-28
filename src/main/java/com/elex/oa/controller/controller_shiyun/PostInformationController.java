@@ -363,7 +363,6 @@ public class PostInformationController {
         }
         return "删除成功！";
     }
-
     // 通过递归获得需要删除的所有岗位ID
     public List<Integer> getPostids(Integer parentpostid,List<Integer> list){
         List<Post> posts = iPostService.queryByParentpostid(parentpostid);

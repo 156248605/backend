@@ -2,16 +2,19 @@ package com.elex.oa.service.service_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.DeptLog;
 import com.github.pagehelper.PageInfo;
+
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 /**
  * @Author:ShiYun;
- * @Description:部门日志信息接口
- * @Date:Created in  16:06 2018\5\2 0002
+ * @Description:
+ * @Date:Created in  17:03 2018\6\22 0022
  * @Modify By:
  */
-public interface IDeptLogService {
+public interface IDeptLogServiceTest<T> {
     /**
      *@Author:ShiYun;
      *@Description:添加部门信息

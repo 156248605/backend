@@ -64,8 +64,22 @@ public interface IDeptService {
 
     /**
      *@Author:ShiYun;
+     *@Description:修改部门信息时，将在其他部门信息的相应职位修改掉
+     *@Date: 10:34 2018\6\20 0020
+     */
+    public void modifyByDeptidAndOtherinformation(Dept dept);
+
+    /**
+     *@Author:ShiYun;
      *@Description:根据部门ID获得部门名称、部门人数、总人数
      *@Date: 15:25 2018\6\1 0001
      */
     public HashMap<String,Object> getParamMap1(Integer depid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:在职的人事看板信息
+     *@Date: 13:39 2018\6\28 0028
+     */
+    public HashMap<String,Object> getHRManageCard();
 }

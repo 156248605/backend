@@ -25,6 +25,10 @@
 		DELETE FROM tb_hr_per_and_post_rs WHERE perid=#{perid}
 	</delete>
 
+	<delete id="deleteByPostid" parameterType="java.lang.Integer" >
+		DELETE FROM tb_hr_per_and_post_rs WHERE postid=#{postid}
+	</delete>
+
 	<select id="selectByConditions" parameterType="PersonalInformation" resultMap="PerandpostrsMapper">
 		SELECT rs.perid
 		FROM tb_hr_per_and_post_rs rs

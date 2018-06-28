@@ -33,6 +33,9 @@ public class DepartmentInformationController {
     @Autowired
     IHRsetFunctionalTypeService ihRsetFunctionalTypeService;
 
+    @Autowired
+    IChangeInformationService iChangeInformationService;
+
     /**
      *@Author:ShiYun;
      *@Description:根据部门名称获取部门对象
@@ -148,29 +151,186 @@ public class DepartmentInformationController {
     @RequestMapping("/addOneDepartment")
     @ResponseBody
     public String addOneDepartment(
-            Dept dept
+            Dept dept,
+            @RequestParam("transactorusername") String transactorusername
     ){
+        /**1.添加新部门
+         * 2.正职、副职、秘书的原部门信息修改、并添加相应的部门信息修改日志
+         * 3.人事信息的修改、并添加相应的人事信息修改日志
+         * */
+        //查询办理人
+        User user = new User();
+        user.setUsername(transactorusername);
+        User user1 = iUserService.selectOne(user);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String changedate = simpleDateFormat.format(new Date());
+        //先将部门信息添加到数据库中
         if (ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype())!=null) {
             dept.setFunctionaltypeid(ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype()).getId());
         }
         Integer depid = iDeptService.addOne(dept);
+        //正职、副职、秘书的原部门信息修改、并添加相应的部门信息修改日志
         Integer principaluserid = dept.getPrincipaluserid();
         if(principaluserid!=null){
+            //如果在其他部门任正职、副职、秘书的话，需先将原部门信息相应信息修改并添加部门信息修改日志
             PersonalInformation principalPer = iPersonalInformationService.queryOneByUserid(principaluserid);
+            Dept dept1 = iDeptService.queryOneDepByDepid(principalPer.getDepid());
+            String perBeforeinformation = dept1.getDepname();
+            if(principaluserid==dept1.getPrincipaluserid()||principaluserid==dept1.getDeputyuserid()||principaluserid==dept1.getSecretaryuserid()){
+                /*修改部门信息*/
+                Dept dept2 = new Dept();
+                dept2.setId(dept1.getId());
+                String str = "";
+                //如果任正职
+                if(principaluserid==dept1.getPrincipaluserid()){
+                    dept2.setPrincipaluserid(principaluserid);
+                    str = "正职";
+                }
+                //如果任副职
+                if(principaluserid==dept1.getDeputyuserid()){
+                    dept2.setDeputyuserid(principaluserid);
+                    str = "副职";
+                }
+                //如果任秘书
+                if(principaluserid==dept1.getSecretaryuserid()){
+                    dept2.setSecretaryuserid(principaluserid);
+                    str = "秘书";
+                }
+                iDeptService.modifyByDeptidAndOtherinformation(dept2);
+
+                /*添加相应部门的部门信息修改日志*/
+                DeptLog deptLog1 = new DeptLog();
+                deptLog1.setChangeinformation(str);
+                deptLog1.setDeptid(depid);
+                deptLog1.setBeforeinformation(iUserService.getById(principaluserid).getTruename());
+                deptLog1.setAfterinformation(null);
+                deptLog1.setChangereason("系统需要");
+                deptLog1.setChangedate(changedate);
+                deptLog1.setTransactoruserid(user1.getId());
+                iDeptLogService.addOne(deptLog1);
+            }
+
+            //人事信息的修改
             principalPer.setDepid(depid);
             iPersonalInformationService.modifyOne(principalPer);
+            //添加人事信息的日志
+            ChangeInformation changeInformation = new ChangeInformation();
+            changeInformation.setChangeinformation("部门");//变更项目
+            changeInformation.setChangeduserid(principaluserid);//变更姓名
+            changeInformation.setBeforeinformation(perBeforeinformation);//变更前内容
+            changeInformation.setAfterinformation(dept.getDepname());//变更后内容
+            changeInformation.setChangereason("系统需要");//变更原因
+            changeInformation.setChangedate(changedate);//变更日期
+            changeInformation.setTransactoruserid(user1.getId());//变更人
+            iChangeInformationService.addOne(changeInformation);
         }
         Integer deputyuserid = dept.getDeputyuserid();
         if(deputyuserid!=null){
+            //如果在其他部门任正职、副职、秘书的话，需先将原部门信息相应信息修改并添加部门信息修改日志
             PersonalInformation deputyPer = iPersonalInformationService.queryOneByUserid(deputyuserid);
+            Dept dept1 = iDeptService.queryOneDepByDepid(deputyPer.getDepid());
+            String perBeforeinformation = dept1.getDepname();
+            if(deputyuserid==dept1.getPrincipaluserid()||deputyuserid==dept1.getDeputyuserid()||deputyuserid==dept1.getSecretaryuserid()){
+                /*修改部门信息*/
+                Dept dept2 = new Dept();
+                dept2.setId(dept1.getId());
+                String str = "";
+                //如果任正职
+                if(deputyuserid==dept1.getPrincipaluserid()){
+                    dept2.setPrincipaluserid(deputyuserid);
+                    str = "正职";
+                }
+                //如果任副职
+                if(deputyuserid==dept1.getDeputyuserid()){
+                    dept2.setDeputyuserid(deputyuserid);
+                    str = "副职";
+                }
+                //如果任秘书
+                if(deputyuserid==dept1.getSecretaryuserid()){
+                    dept2.setSecretaryuserid(deputyuserid);
+                    str = "秘书";
+                }
+                iDeptService.modifyByDeptidAndOtherinformation(dept2);
+
+                /*添加相应部门的部门信息修改日志*/
+                DeptLog deptLog1 = new DeptLog();
+                deptLog1.setChangeinformation(str);
+                deptLog1.setDeptid(depid);
+                deptLog1.setBeforeinformation(iUserService.getById(deputyuserid).getTruename());
+                deptLog1.setAfterinformation(null);
+                deptLog1.setChangereason("系统需要");
+                deptLog1.setChangedate(changedate);
+                deptLog1.setTransactoruserid(user1.getId());
+                iDeptLogService.addOne(deptLog1);
+            }
+
+            //人事信息的修改
             deputyPer.setDepid(depid);
             iPersonalInformationService.modifyOne(deputyPer);
+            //添加人事信息的日志
+            ChangeInformation changeInformation = new ChangeInformation();
+            changeInformation.setChangeinformation("部门");//变更项目
+            changeInformation.setChangeduserid(deputyuserid);//变更姓名
+            changeInformation.setBeforeinformation(perBeforeinformation);//变更前内容
+            changeInformation.setAfterinformation(dept.getDepname());//变更后内容
+            changeInformation.setChangereason("系统需要");//变更原因
+            changeInformation.setChangedate(changedate);//变更日期
+            changeInformation.setTransactoruserid(user1.getId());//变更人
+            iChangeInformationService.addOne(changeInformation);
         }
         Integer secretaryuserid = dept.getSecretaryuserid();
         if(secretaryuserid!=null){
+            //如果在其他部门任正职、副职、秘书的话，需先将原部门信息相应信息修改并添加部门信息修改日志
             PersonalInformation secretaryPer = iPersonalInformationService.queryOneByUserid(secretaryuserid);
+            Dept dept1 = iDeptService.queryOneDepByDepid(secretaryPer.getDepid());
+            String perBeforeinformation = dept1.getDepname();
+            if(secretaryuserid==dept1.getPrincipaluserid()||secretaryuserid==dept1.getDeputyuserid()||secretaryuserid==dept1.getSecretaryuserid()){
+                /*修改部门信息*/
+                Dept dept2 = new Dept();
+                dept2.setId(dept1.getId());
+                String str = "";
+                //如果任正职
+                if(secretaryuserid==dept1.getPrincipaluserid()){
+                    dept2.setPrincipaluserid(secretaryuserid);
+                    str = "正职";
+                }
+                //如果任副职
+                if(secretaryuserid==dept1.getDeputyuserid()){
+                    dept2.setDeputyuserid(secretaryuserid);
+                    str = "副职";
+                }
+                //如果任秘书
+                if(secretaryuserid==dept1.getSecretaryuserid()){
+                    dept2.setSecretaryuserid(secretaryuserid);
+                    str = "秘书";
+                }
+                iDeptService.modifyByDeptidAndOtherinformation(dept2);
+
+                /*添加相应部门的部门信息修改日志*/
+                DeptLog deptLog1 = new DeptLog();
+                deptLog1.setChangeinformation(str);
+                deptLog1.setDeptid(depid);
+                deptLog1.setBeforeinformation(iUserService.getById(secretaryuserid).getTruename());
+                deptLog1.setAfterinformation(null);
+                deptLog1.setChangereason("系统需要");
+                deptLog1.setChangedate(changedate);
+                deptLog1.setTransactoruserid(user1.getId());
+                iDeptLogService.addOne(deptLog1);
+            }
+
+            //人事信息的修改
             secretaryPer.setDepid(depid);
             iPersonalInformationService.modifyOne(secretaryPer);
+            //添加人事信息的日志
+            ChangeInformation changeInformation = new ChangeInformation();
+            changeInformation.setChangeinformation("部门");//变更项目
+            changeInformation.setChangeduserid(secretaryuserid);//变更姓名
+            changeInformation.setBeforeinformation(perBeforeinformation);//变更前内容
+            changeInformation.setAfterinformation(dept.getDepname());//变更后内容
+            changeInformation.setChangereason("系统需要");//变更原因
+            changeInformation.setChangedate(changedate);//变更日期
+            changeInformation.setTransactoruserid(user1.getId());//变更人
+            iChangeInformationService.addOne(changeInformation);
         }
         return "提交成功！";
     }
@@ -200,7 +360,7 @@ public class DepartmentInformationController {
     public String updateOneDepartment(
             Dept dept,
             @RequestParam("transactorusername") String transactorusername
-    ){
+    ) {
         try {
             Boolean b = false;
 
@@ -245,9 +405,88 @@ public class DepartmentInformationController {
                 deptLog.setAfterinformation(iDeptService.queryOneDepByDepid(dept.getParentdepid()).getDepname());
                 iDeptLogService.addOne(deptLog);
             }if (dept2.getPrincipaluserid()!=null && !dept2.getPrincipaluserid().toString().equals(dept.getPrincipaluserid().toString())){
-                Integer depid = iPersonalInformationService.queryOneByUserid(dept.getPrincipaluserid()).getDepid();
+                PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(dept.getPrincipaluserid());
+                Integer depid = personalInformation.getDepid();
+                Dept dept1 = iDeptService.queryOneDepByDepid(depid);//其他部门
                 if(depid!=dept2.getId()){
-                    return "此员工非本部门，不可以提升为本部门正职！";
+                    //说明此员工非本部门，需要先将该员工的部门信息改为该部门信息,并添加人事信息修改日志,
+                    // 如果还在其他部门信息担任正职、副职、秘书等职位，则需要先将相应的部门相应信息修改一下,并添加相应部门的部门信息修改日志
+                    if(dept.getPrincipaluserid()==dept1.getPrincipaluserid() || dept.getPrincipaluserid()==dept1.getDeputyuserid() || dept.getPrincipaluserid()==dept1.getSecretaryuserid()){
+                        String str = "";
+                        /*修改相应的部门信息*/
+                        Dept dept3 = new Dept();//需要修改的部门
+                        dept3.setId(depid);
+                        //如果是正职
+                        if (dept.getPrincipaluserid()==dept1.getPrincipaluserid()) {
+                            dept3.setPrincipaluserid(dept.getPrincipaluserid());
+                            str = "部门正职";
+                        }
+                        //如果是副职
+                        if (dept.getPrincipaluserid()==dept1.getDeputyuserid()) {
+                            dept3.setDeputyuserid(dept.getPrincipaluserid());
+                            str = "部门副职";
+                        }
+                        //如果是秘书
+                        if (dept.getPrincipaluserid()==dept1.getSecretaryuserid()) {
+                            dept3.setSecretaryuserid(dept.getPrincipaluserid());
+                            str = "部门秘书";
+                        }
+                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                        /*添加相应部门的部门信息修改日志*/
+                        DeptLog deptLog1 = new DeptLog();
+                        deptLog1.setChangeinformation(str);
+                        deptLog1.setDeptid(depid);
+                        deptLog1.setBeforeinformation(iUserService.getById(dept.getPrincipaluserid()).getTruename());
+                        deptLog1.setAfterinformation(null);
+                        deptLog1.setChangereason("系统需要");
+                        deptLog1.setChangedate(changedate);
+                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                        iDeptLogService.addOne(deptLog1);
+                    }
+                    //根据ID修改员工信息,此时该员工是该部门的普通员工
+                    PersonalInformation per = new PersonalInformation();
+                    per.setId(personalInformation.getId());
+                    per.setDepid(dept2.getId());
+                    iPersonalInformationService.modifyOne(per);
+                    //添加人事信息修改日志，此时该员工是无部门员工
+                    ChangeInformation changeInformation = new ChangeInformation();
+                    changeInformation.setChangeinformation("部门");//变更项目
+                    changeInformation.setChangeduserid(dept.getPrincipaluserid());//变更姓名
+                    changeInformation.setBeforeinformation(iDeptService.queryOneDepByDepid(depid).getDepname());//变更前内容
+                    changeInformation.setAfterinformation(dept.getDepname());//变更后内容
+                    changeInformation.setChangereason("系统需要");//变更原因
+                    changeInformation.setChangedate(changedate);//变更日期
+                    changeInformation.setTransactoruserid(deptLog.getTransactoruserid());//变更人
+                    iChangeInformationService.addOne(changeInformation);
+                }else {
+                    //说明是本部门内部职位的变动，需要先将其原职位取消掉，再添加新职位
+                    if(dept.getPrincipaluserid()==dept1.getDeputyuserid() || dept.getPrincipaluserid()==dept1.getSecretaryuserid()){
+                        String str = "";
+                        /*修改相应的部门信息*/
+                        Dept dept3 = new Dept();//需要修改的部门
+                        dept3.setId(depid);
+                        //如果是副职
+                        if (dept.getPrincipaluserid()==dept1.getDeputyuserid()) {
+                            dept3.setDeputyuserid(dept.getPrincipaluserid());
+                            str = "部门副职";
+                        }
+                        //如果是秘书
+                        if (dept.getPrincipaluserid()==dept1.getSecretaryuserid()) {
+                            dept3.setSecretaryuserid(dept.getPrincipaluserid());
+                            str = "部门秘书";
+                        }
+                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                        /*添加相应部门的部门信息修改日志*/
+                        DeptLog deptLog1 = new DeptLog();
+                        deptLog1.setChangeinformation(str);
+                        deptLog1.setDeptid(depid);
+                        deptLog1.setBeforeinformation(iUserService.getById(dept.getPrincipaluserid()).getTruename());
+                        deptLog1.setAfterinformation(null);
+                        deptLog1.setChangereason("系统需要");
+                        deptLog1.setChangedate(changedate);
+                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                        iDeptLogService.addOne(deptLog1);
+                    }
                 }
                 b = true;
                 deptLog.setChangeinformation("部门正职");
@@ -255,9 +494,87 @@ public class DepartmentInformationController {
                 deptLog.setAfterinformation(iUserService.getById(dept.getPrincipaluserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
             }if (dept2.getDeputyuserid()!=null && !dept2.getDeputyuserid().toString().equals(dept.getDeputyuserid().toString())){
-                Integer depid = iPersonalInformationService.queryOneByUserid(dept.getDeputyuserid()).getDepid();
+                PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(dept.getDeputyuserid());
+                Integer depid = personalInformation.getDepid();
+                Dept dept1 = iDeptService.queryOneDepByDepid(depid);//其他部门
                 if(depid!=dept2.getId()){
-                    return "此员工非本部门，不可以提升为本部门副职！";
+                    //说明此员工非本部门，需要先将该员工的部门信息改为该部门信息,并添加人事信息修改日志,
+                    // 如果还在其他部门信息担任正职、副职、秘书等职位，则需要先将相应的部门相应信息修改一下,并添加相应部门的部门信息修改日志
+                    if(dept.getDeputyuserid()==dept1.getPrincipaluserid() || dept.getDeputyuserid()==dept1.getDeputyuserid() || dept.getDeputyuserid()==dept1.getSecretaryuserid()){
+                        String str = "";
+                        /*修改相应的部门信息*/
+                        Dept dept3 = new Dept();//需要修改的部门
+                        dept3.setId(depid);
+                        //如果是正职
+                        if (dept.getDeputyuserid()==dept1.getPrincipaluserid()) {
+                            dept3.setPrincipaluserid(dept.getDeputyuserid());
+                            str = "部门正职";
+                        }
+                        //如果是副职
+                        if (dept.getDeputyuserid()==dept1.getDeputyuserid()) {
+                            dept3.setDeputyuserid(dept.getDeputyuserid());
+                            str = "部门副职";
+                        }
+                        //如果是秘书
+                        if (dept.getDeputyuserid()==dept1.getSecretaryuserid()) {
+                            dept3.setSecretaryuserid(dept.getDeputyuserid());
+                            str = "部门秘书";
+                        }
+                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                        /*添加相应部门的部门信息修改日志*/
+                        DeptLog deptLog1 = new DeptLog();
+                        deptLog1.setChangeinformation(str);
+                        deptLog1.setDeptid(depid);
+                        deptLog1.setBeforeinformation(iUserService.getById(dept.getDeputyuserid()).getTruename());
+                        deptLog1.setAfterinformation(null);
+                        deptLog1.setChangereason("系统需要");
+                        deptLog1.setChangedate(changedate);
+                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                        iDeptLogService.addOne(deptLog1);
+                    }
+                    //根据ID修改员工信息,此时该员工是该部门的普通员工
+                    PersonalInformation per = new PersonalInformation();
+                    per.setId(personalInformation.getId());
+                    per.setDepid(dept2.getId());
+                    iPersonalInformationService.modifyOne(per);
+                    //添加人事信息修改日志，此时该员工是无部门员工
+                    ChangeInformation changeInformation = new ChangeInformation();
+                    changeInformation.setChangeinformation("部门");//变更项目
+                    changeInformation.setChangeduserid(dept.getPrincipaluserid());//变更姓名
+                    changeInformation.setBeforeinformation(iDeptService.queryOneDepByDepid(depid).getDepname());//变更前内容
+                    changeInformation.setAfterinformation(dept.getDepname());//变更后内容
+                    changeInformation.setChangereason("系统需要");//变更原因
+                    changeInformation.setChangedate(changedate);//变更日期
+                    changeInformation.setTransactoruserid(deptLog.getTransactoruserid());//变更人
+                    iChangeInformationService.addOne(changeInformation);
+                }else {
+                    if(dept.getDeputyuserid()==dept1.getPrincipaluserid() || dept.getDeputyuserid()==dept1.getSecretaryuserid()){
+                        String str = "";
+                        /*修改相应的部门信息*/
+                        Dept dept3 = new Dept();//需要修改的部门
+                        dept3.setId(depid);
+                        //如果是正职
+                        if (dept.getDeputyuserid()==dept1.getPrincipaluserid()) {
+                            dept3.setPrincipaluserid(dept.getDeputyuserid());
+                            str = "部门正职";
+                        }
+                        //如果是秘书
+                        if (dept.getDeputyuserid()==dept1.getSecretaryuserid()) {
+                            dept3.setSecretaryuserid(dept.getDeputyuserid());
+                            str = "部门秘书";
+                        }
+                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                        /*添加相应部门的部门信息修改日志*/
+                        DeptLog deptLog1 = new DeptLog();
+                        deptLog1.setChangeinformation(str);
+                        deptLog1.setDeptid(depid);
+                        deptLog1.setBeforeinformation(iUserService.getById(dept.getDeputyuserid()).getTruename());
+                        deptLog1.setAfterinformation(null);
+                        deptLog1.setChangereason("系统需要");
+                        deptLog1.setChangedate(changedate);
+                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                        iDeptLogService.addOne(deptLog1);
+                    }
                 }
                 b = true;
                 deptLog.setChangeinformation("部门副职");
@@ -265,14 +582,92 @@ public class DepartmentInformationController {
                 deptLog.setAfterinformation(iUserService.getById(dept.getDeputyuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
             }if (dept2.getSecretaryuserid()!=null && !dept2.getSecretaryuserid().toString().equals(dept.getSecretaryuserid().toString())){
-                Integer depid = iPersonalInformationService.queryOneByUserid(dept.getSecretaryuserid()).getDepid();
+                PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(dept.getSecretaryuserid());
+                Integer depid = personalInformation.getDepid();
+                Dept dept1 = iDeptService.queryOneDepByDepid(depid);//其他部门
                 if(depid!=dept2.getId()){
-                    return "此员工非本部门，不可以提升为本部门秘书！";
+                    //说明此员工非本部门，需要先将该员工的部门信息改为该部门信息,并添加人事信息修改日志,
+                    // 如果还在其他部门信息担任正职、副职、秘书等职位，则需要先将相应的部门相应信息修改一下,并添加相应部门的部门信息修改日志
+                    if(dept.getSecretaryuserid()==dept1.getPrincipaluserid() || dept.getSecretaryuserid()==dept1.getDeputyuserid() || dept.getSecretaryuserid()==dept1.getSecretaryuserid()){
+                        String str = "";
+                        /*修改相应的部门信息*/
+                        Dept dept3 = new Dept();//需要修改的部门
+                        dept3.setId(depid);
+                        //如果是正职
+                        if (dept.getSecretaryuserid()==dept1.getPrincipaluserid()) {
+                            dept3.setPrincipaluserid(dept.getSecretaryuserid());
+                            str = "部门正职";
+                        }
+                        //如果是副职
+                        if (dept.getSecretaryuserid()==dept1.getDeputyuserid()) {
+                            dept3.setDeputyuserid(dept.getSecretaryuserid());
+                            str = "部门副职";
+                        }
+                        //如果是秘书
+                        if (dept.getSecretaryuserid()==dept1.getSecretaryuserid()) {
+                            dept3.setSecretaryuserid(dept.getSecretaryuserid());
+                            str = "部门秘书";
+                        }
+                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                        /*添加相应部门的部门信息修改日志*/
+                        DeptLog deptLog1 = new DeptLog();
+                        deptLog1.setChangeinformation(str);
+                        deptLog1.setDeptid(depid);
+                        deptLog1.setBeforeinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
+                        deptLog1.setAfterinformation(null);
+                        deptLog1.setChangereason("系统需要");
+                        deptLog1.setChangedate(changedate);
+                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                        iDeptLogService.addOne(deptLog1);
+                    }
+                    //根据ID修改员工信息,此时该员工是该部门的普通员工
+                    PersonalInformation per = new PersonalInformation();
+                    per.setId(personalInformation.getId());
+                    per.setDepid(dept2.getId());
+                    iPersonalInformationService.modifyOne(per);
+                    //添加人事信息修改日志，此时该员工是无部门员工
+                    ChangeInformation changeInformation = new ChangeInformation();
+                    changeInformation.setChangeinformation("部门");//变更项目
+                    changeInformation.setChangeduserid(dept.getPrincipaluserid());//变更姓名
+                    changeInformation.setBeforeinformation(iDeptService.queryOneDepByDepid(depid).getDepname());//变更前内容
+                    changeInformation.setAfterinformation(dept.getDepname());//变更后内容
+                    changeInformation.setChangereason("系统需要");//变更原因
+                    changeInformation.setChangedate(changedate);//变更日期
+                    changeInformation.setTransactoruserid(deptLog.getTransactoruserid());//变更人
+                    iChangeInformationService.addOne(changeInformation);
+                }else {
+                    if(dept.getSecretaryuserid()==dept1.getPrincipaluserid() || dept.getSecretaryuserid()==dept1.getDeputyuserid()){
+                        String str = "";
+                        /*修改相应的部门信息*/
+                        Dept dept3 = new Dept();//需要修改的部门
+                        dept3.setId(depid);
+                        //如果是正职
+                        if (dept.getSecretaryuserid()==dept1.getPrincipaluserid()) {
+                            dept3.setPrincipaluserid(dept.getSecretaryuserid());
+                            str = "部门正职";
+                        }
+                        //如果是副职
+                        if (dept.getSecretaryuserid()==dept1.getDeputyuserid()) {
+                            dept3.setDeputyuserid(dept.getSecretaryuserid());
+                            str = "部门副职";
+                        }
+                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                        /*添加相应部门的部门信息修改日志*/
+                        DeptLog deptLog1 = new DeptLog();
+                        deptLog1.setChangeinformation(str);
+                        deptLog1.setDeptid(depid);
+                        deptLog1.setBeforeinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
+                        deptLog1.setAfterinformation(null);
+                        deptLog1.setChangereason("系统需要");
+                        deptLog1.setChangedate(changedate);
+                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                        iDeptLogService.addOne(deptLog1);
+                    }
                 }
                 b = true;
                 deptLog.setChangeinformation("部门秘书");
-                deptLog.setBeforeinformation(iUserService.getById(dept2.getDeputyuserid()).getTruename());
-                deptLog.setAfterinformation(iUserService.getById(dept.getDeputyuserid()).getTruename());
+                deptLog.setBeforeinformation(iUserService.getById(dept2.getSecretaryuserid()).getTruename());
+                deptLog.setAfterinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
             }
 
@@ -314,7 +709,6 @@ public class DepartmentInformationController {
         }
         return "删除成功！";
     }
-
     // 通过递归获得需要删除的所有部门ID
     public List<Integer> getDeptids(Integer parentdepid,List<Integer> list){
         List<Dept> depts = iDeptService.queryByParentId(parentdepid);
@@ -527,5 +921,15 @@ public class DepartmentInformationController {
         return null;
     }
 
-
+    /**
+     *@Author:ShiYun;
+     *@Description:人事的管理看板
+     *@Date: 14:16 2018\6\28 0028
+     */
+    @RequestMapping("/queryHRManageCard")
+    @ResponseBody
+    public Map<String,Object> queryHRManageCard(){
+        HashMap<String, Object> hrManageCard = iDeptService.getHRManageCard();
+        return hrManageCard;
+    }
 }
