@@ -231,11 +231,53 @@ public class PersonalInformationController {
      */
     @RequestMapping("/queryPersonalInformationByUserid")
     @ResponseBody
-    public PersonalInformation queryPersonalInformationByUserid(
+    public ArrayList<HashMap> queryPersonalInformationByUserid(
             @RequestParam("userid") int userid
     ) throws ParseException {
-        PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(userid);
-        return getOnePersonalinformation(personalInformation.getId());
+        PersonalInformation onePersonalinformation = iPersonalInformationService.queryOneByUserid(userid);
+        PersonalInformation personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
+        ArrayList<HashMap> list = new ArrayList<>();
+        HashMap<String, String> map1 = new HashMap<>();
+        map1.put("title","姓名");
+        map1.put("value",personalInformation.getTruename());
+        list.add(map1);
+        HashMap<String, String> map2 = new HashMap<>();
+        map2.put("title","性别");
+        map2.put("value",personalInformation.getSex());
+        list.add(map2);
+        HashMap<String, String> map3 = new HashMap<>();
+        map3.put("title","出生年月");
+        map3.put("value",personalInformation.getBirthday());
+        list.add(map3);
+        HashMap<String, String> map4 = new HashMap<>();
+        map4.put("title","最高学历");
+        map4.put("value",personalInformation.getZgxl());
+        list.add(map4);
+        HashMap<String, String> map5 = new HashMap<>();
+        map5.put("title","毕业院校");
+        map5.put("value",personalInformation.getByyx());
+        list.add(map5);
+        HashMap<String, String> map6 = new HashMap<>();
+        map6.put("title","婚姻状态");
+        map6.put("value",personalInformation.getMarriage());
+        list.add(map6);
+        HashMap<String, String> map7 = new HashMap<>();
+        map7.put("title","手机号");
+        map7.put("value",personalInformation.getMobilephone());
+        list.add(map7);
+        HashMap<String, String> map8 = new HashMap<>();
+        map8.put("title","邮箱");
+        map8.put("value",personalInformation.getCompanyemail());
+        list.add(map8);
+        HashMap<String, String> map9 = new HashMap<>();
+        map9.put("title","岗位");
+        map9.put("value",personalInformation.getPostnames());
+        list.add(map9);
+        HashMap<String, String> map10 = new HashMap<>();
+        map10.put("title","住址");
+        map10.put("value",personalInformation.getAddress());
+        list.add(map10);
+        return list;
     }
 
     /**

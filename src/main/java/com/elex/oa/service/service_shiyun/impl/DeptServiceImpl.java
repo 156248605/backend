@@ -16,6 +16,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -181,12 +182,16 @@ public class DeptServiceImpl implements IDeptService {
         //获得上级部门ID
         hrManageCard.setParentid(dept.getParentdepid());
         //获得部门的人员
-        List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(depid);
-        List<User> users = new ArrayList<>();
+        List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(dept.getId());
+        List<Map> users = new ArrayList<>();
         for (PersonalInformation per:personalInformationList
                 ) {
+            HashMap<String, Object> map = new HashMap<>();
             User user = iUserDao.selectById(per.getUserid());
-            users.add(user);
+            map.put("id",user.getId());
+            map.put("truename",user.getTruename());
+            map.put("deptname",iDeptDao.selectDeptByDepid(per.getDepid()).getDepname());
+            users.add(map);
         }
         hrManageCard.setUsers(users);
         //获得子部门
@@ -223,11 +228,15 @@ public class DeptServiceImpl implements IDeptService {
             BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
             hrManageCard.setRatio(bg.doubleValue() + "%");
             //获得部门相应的人员
-            List<User> users = new ArrayList<>();
+            List<Map> users = new ArrayList<>();
             for (PersonalInformation per:personalInformationList
                  ) {
+                HashMap<String, Object> map = new HashMap<>();
                 User user = iUserDao.selectById(per.getUserid());
-                users.add(user);
+                map.put("id",user.getId());
+                map.put("truename",user.getTruename());
+                map.put("deptname",iDeptDao.selectDeptByDepid(per.getDepid()).getDepname());
+                users.add(map);
             }
             hrManageCard.setUsers(users);
             hrManageCardList.add(hrManageCard);

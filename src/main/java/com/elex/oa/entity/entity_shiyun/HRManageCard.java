@@ -2,6 +2,7 @@ package com.elex.oa.entity.entity_shiyun;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -16,7 +17,7 @@ public class HRManageCard implements Serializable{
     private Integer parentid;//上级部门ID
     private Integer num;//部门人数
     private String ratio;//部门占比
-    private List<User> users;//相应的人员
+    private List<Map> users;//相应的人员
     private List<Dept> childDepts;//子部门
 
     public HRManageCard() {
@@ -74,11 +75,11 @@ public class HRManageCard implements Serializable{
         this.ratio = ratio;
     }
 
-    public List<User> getUsers() {
+    public List<Map> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<Map> users) {
         this.users = users;
     }
 
