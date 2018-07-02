@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.project.WeeklyPlanDao">
+
+    <resultMap id="weekPlanDetail" type="com.elex.oa.entity.project.WeeklyPlanDetail">
+        <id column="id" javaType="int" property="id"></id>
+        <result column="issues"   javaType="string"   property="issues"></result>
+        <result column="involving"  javaType="string"  property="involving"></result>
+        <result column="work_hours"  javaType="string"  property="workHours"></result>
+        <result column="deliver_result"  javaType="string"  property="deliverResult"></result>
+        <result column="note"  javaType="string"  property="note"></result>
+        <result column="related_id"  javaType="int"  property="relatedId"></result>
+    </resultMap>
+
+    <resultMap id="approvalList" type="com.elex.oa.entity.project.ApprovalList">
+        <result column="project_code"  javaType="string"  property="projectCode"></result>
+        <result column="project_name"  javaType="string"  property="projectName"></result>
+        <result column="in_department"  javaType="string"  property="inDepartment"></result>
+        <result column="write_date"  javaType="string"  property="writeDate"></result>
+        <result column="project_manager"  javaType="string"  property="projectManager"></result>
+        <result column="project_source"  javaType="string"  property="projectSource"></result>
+        <result column="business_manager"  javaType="string"  property="businessManager"></result>
+        <result column="project_type"  javaType="string"  property="projectType"></result>
+    </resultMap>
+
+    <select id="queryList" parameterType="com.elex.oa.entity.project.WeeklyPlanQuery" resultType="java.util.Map">
+        SELECT week.id AS id,week.project_code AS projectCode,app.project_name AS projectName,app.in_department AS inDepartment, app.write_date AS writeDate,app.business_manager AS businessManager,
+          app.project_source AS projectSource, week.project_manager AS projectManager,app.project_type AS projectType,week.start_date AS startDate, week.end_date AS endDate, week.complete AS complete,
+          week.risk AS risk, week.department_manager AS departmentManager FROM pro_week_plan week LEFT JOIN  pro_app_list app ON week.project_code = app.project_code
+          <where>
+              <if test="select1 == 1 and input1 != ''">
+                  AND `week`.project_code LIKE CONCAT('%',#{input1},'%')
+              </if>
+              <if test="select1 == 2 and input1 != ''">
+                  AND  `week`.project_code NOT LIKE CONCAT('%',#{input1},'%')
+              </if>
+              <if test="select2 == 1 and input2 != ''">
+                  AND app.project_name LIKE CONCAT('%',#{input2},'%')
+              </if>
+              <if test="select2 == 2 and input2 != ''">
+                  AND app.project_name NOT LIKE CONCAT('%',#{input2},'%')
+              </if>
+              <if test="select3 == 1 and input3 != ''">
+                  AND app.in_department LIKE CONCAT('%',#{input3},'%')
+              </if>
+              <if test="select3 == 2 and input3 != ''">
+                  AND app.in_department NOT LIKE CONCAT('%',#{input3},'%')
+              </if>
+              <if test="date4a != null and date4b != null">
+                  AND app.write_date BETWEEN #{date4a} AND #{date4b}
+              </if>
+              <if test="select5 == 1 and input5 != ''">
+                  AND app.business_manager LIKE CONCAT('%',#{input5},'%')
+              </if>
+              <if test="select5 == 2 and input5 != ''">
+                  AND app.business_manager NOT LIKE CONCAT('%',#{input5},'%')
+              </if>
+              <if test="list6 != null">
+                  AND app.project_source IN
+                  <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
+                      #{item}
+                  </foreach>
+              </if>
+              <if test="select7 == 1 and input7 != ''">
+                  AND week.project_manager LIKE CONCAT('%',#{input7},'%')
+              </if>
+              <if test="select7 == 2 and input7 != ''">
+                  AND `week`.project_manager NOT LIKE CONCAT('%',#{input7},'%')
+              </if>
+              <if test="list8 != null">
+                  AND app.project_type IN
+                  <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
+                      #{item}
+                  </foreach>
+              </if>
+              <if test="date9a != null and date9b != null">
+                  AND `week`.start_date BETWEEN #{date9a} AND #{date9b}
+              </if>
+              <if test="date10a != null and date10b != null">
+                  AND `week`.end_date BETWEEN #{date10a} AND #{date10b}
+              </if>
+              <if test="type != 3 and approval == 1">
+                  AND `week`.department_manager IS NOT NULL
+              </if>
+              <if test="type !=3 and approval == 2">
+                  AND `week`.department_manager IS NULL
+              </if>
+              <if test="type == 2">
+                  AND `week`.project_manager = #{name}
+              </if>
+              <if test="type == 3 and approval == 1">
+                  AND `week`.department_manager = #{name}
+              </if>
+              <if test="type == 3 and approval == 2">
+                  AND app.department_manager = #{name} AND `week`.department_manager IS NULL
+              </if>
+
+          </where>
+    </select>
+
+    <select id="queryPlansById" parameterType="int" resultMap="weekPlanDetail">
+        SELECT id,issues,involving,work_hours,deliver_result,note,related_id FROM pro_week_plan_detail WHERE related_id = #{relatedId}
+    </select>
+
+    <select id="queryCodeByName" parameterType="string"  resultType="approvalList">
+        SELECT project_code,project_name,in_department,project_manager,project_source,business_manager,project_type  FROM pro_app_list WHERE project_manager = #{name}
+
+    </select>
+
+    <select id="qeuryDetailByCode" parameterType="string" resultType="java.util.Map">
+        SELECT project_name AS projectName,project_name AS projectName,in_department AS inDepartment,write_date AS writeDate,business_manager AS businessManager,project_source AS projectSource,
+        business_manager AS businessManager,project_type AS projectType FROM pro_app_list WHERE project_code =#{code}
+    </select>
+
+    <insert id="addWeeklyPlan" parameterType="com.elex.oa.entity.project.WeeklyPlan">
+        INSERT INTO pro_week_plan (id,project_code,start_date,end_date,risk,project_manager) VALUES (NULL,#{projectCode},#{startDate},#{endDate},#{risk},#{projectManager})
+    </insert>
+
+    <select id="queryMaxId" resultType="int">
+        SELECT MAX(id) FROM pro_week_plan
+    </select>
+
+    <insert id="addWeeklyPlanDetail" parameterType="java.util.List">
+        INSERT INTO pro_week_plan_detail (id,issues,involving,work_hours,deliver_result,note,related_id) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (NULL,#{item.issues},#{item.involving},#{item.workHours},#{item.deliverResult},#{item.note},#{item.relatedId,jdbcType = INTEGER})
+        </foreach>
+    </insert>
+
+    <update id="updateWeeklyPlan" parameterType="com.elex.oa.entity.project.WeeklyPlan">
+        UPDATE pro_week_plan SET complete = #{complete},department_manager = #{departmentManager} WHERE id = #{id}
+    </update>
+
+    <!--<update id="updateWeeklyPlanDetail" parameterType="java.util.List">
+        UPDATE pro_week_plan_detail SET completion = 
+        <foreach collection="list" item="item" index="index" separator="" open="case ID" close="end">
+            WHEN #{item.id} THEN #{item.completion}
+        </foreach>
+        WHERE id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>-->
+
+    <!--<select id="">
+        SELECT project_name as projectName,app.in_department as inDepartment,app.write_date as writeDate,app.business_manager as businessManager,app.project_source as projectSource,app.project_type as projectType
+         FROM pro_week_plan week LEFT JOIN  pro_app_list app ON week.project_code = app.project_code WHERE week.project_code = #{code}
+    </select>-->
+
+    <select id="queryProjectName" resultType="com.elex.oa.entity.project.OperationQuery" resultMap="approvalList">
+        SELECT project_code,project_name,in_department,write_date,project_manager,project_source,business_manager,project_type  FROM pro_app_list WHERE project_manager = #{name}
+
+        <if test="select1 == 1 and input1 != ''">
+            AND project_code LIKE CONCAT('%',#{input1},'%')
+        </if>
+        <if test="select1 == 2 and input1 != ''">
+            AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+        </if>
+        <if test="select2 == 1 and input2 != ''">
+            AND project_name LIKE CONCAT('%',#{input2},'%')
+        </if>
+        <if test="select2 == 2 and input2 != ''">
+            AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+        </if>
+        <if test="select3 == 1 and input3 != ''">
+            AND in_department LIKE CONCAT('%',#{input3},'%')
+        </if>
+        <if test="select3 == 2 and input3 != ''">
+            AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+        </if>
+        <if test="list6 != null">
+            AND project_source IN
+            <foreach collection="list6" item="item6" index="index6" open="(" close=")" separator=",">
+                #{item6}
+            </foreach>
+        </if>
+        <if test="select7 == 1 and input7 != ''">
+            AND business_manager LIKE CONCAT('%',#{input7},'%')
+        </if>
+        <if test="select7 == 2 and input7 != ''">
+            AND business_manager NOT LIKE CONCAT('%',#{input7},'%')
+        </if>
+        <if test="list8 != null">
+            AND project_type IN
+            <foreach collection="list8" item="item8" index="index8" open="(" close=")" separator=",">
+                #{item8}
+            </foreach>
+        </if>
+    </select>
+</mapper>
