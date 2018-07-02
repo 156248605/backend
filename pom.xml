@@ -47,11 +47,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.33</version>
@@ -83,7 +78,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.0.29</version>
+			<version>1.1.2</version>
 		</dependency>
 		<!--集成mybatis-->
 		<dependency>
@@ -251,12 +246,13 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 
+
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.11.2</version>
 		</dependency>
-<<<<<<< HEAD
+
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -290,65 +286,26 @@
 			<artifactId>easypoi-annotation</artifactId>
 			<version>3.0.3</version>
 		</dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>RELEASE</version>
-        </dependency>
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>RELEASE</version>
 		</dependency>
+
 	</dependencies>
-=======
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>4.5.3</version>
-		</dependency>
->>>>>>> 8a979ac38ede549711ca1e0d3dbf9adb849368fd
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-base</artifactId>
-			<version>3.0.3</version>
-	</dependency>
-	<dependency>
-		<groupId>cn.afterturn</groupId>
-		<artifactId>easypoi-web</artifactId>
-		<version>3.0.3</version>
-	</dependency>
-	<dependency>
-		<groupId>cn.afterturn</groupId>
-		<artifactId>easypoi-annotation</artifactId>
-		<version>3.0.3</version>
-	</dependency>
-</dependencies>
-
-<build>
-<plugins>
-	<plugin>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-maven-plugin</artifactId>
-		<configuration>
-			<fork>true</fork>
-		</configuration>
-	</plugin>
-</plugins>
-</build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>true</fork>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 
-		</project>
+</project>
