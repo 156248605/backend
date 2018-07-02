@@ -166,18 +166,33 @@ public class DeptServiceImpl implements IDeptService {
      *@Date: 15:31 2018\6\1 0001
      */
     @Override
-    public HashMap<String, Object> getParamMap1(Integer depid) {
-        HashMap<String, Object> paramMap = new HashMap<>();
+    public HRManageCard getParamMap1(Integer depid) {
+        HRManageCard hrManageCard = new HRManageCard();
         //获得部门名称
-        Dept dept = iDeptDao.selectDeptByDepid(depid);
-        paramMap.put("depName",dept.getDepname());
-        //获得部门的人数
+        Dept dept;
+        if (depid!=null) {
+            dept = iDeptDao.selectDeptByDepid(depid);
+        } else {
+            dept = iDeptDao.selectDeptByDeptname("江苏博智软件科技股份有限公司");
+        }
+        hrManageCard.setDepname(dept.getDepname());
+        //获得部门ID
+        hrManageCard.setDeptid(dept.getId());
+        //获得上级部门ID
+        hrManageCard.setParentid(dept.getParentdepid());
+        //获得部门的人员
         List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(depid);
-        paramMap.put("perNum",personalInformationList.size());
-        //获得总人数
-        List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll();
-        paramMap.put("allNum",personalInformationList1.size());
-        return paramMap;
+        List<User> users = new ArrayList<>();
+        for (PersonalInformation per:personalInformationList
+                ) {
+            User user = iUserDao.selectById(per.getUserid());
+            users.add(user);
+        }
+        hrManageCard.setUsers(users);
+        //获得子部门
+        List<Dept> depts = iDeptDao.selectByParentId(dept.getId());
+        hrManageCard.setChildDepts(depts);
+        return hrManageCard;
     }
 
     /**

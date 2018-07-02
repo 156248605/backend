@@ -12,11 +12,42 @@ import java.util.List;
 public class HRManageCard implements Serializable{
     private static final long serialVersionUID = -4463644380735948544L;
     private String depname;//部门名称
+    private Integer deptid;//部门ID
+    private Integer parentid;//上级部门ID
     private Integer num;//部门人数
     private String ratio;//部门占比
     private List<User> users;//相应的人员
+    private List<Dept> childDepts;//子部门
 
     public HRManageCard() {
+    }
+
+    public Integer getParentid() {
+        return parentid;
+    }
+
+    public void setParentid(Integer parentid) {
+        this.parentid = parentid;
+    }
+
+    public Integer getDeptid() {
+        return deptid;
+    }
+
+    public void setDeptid(Integer deptid) {
+        this.deptid = deptid;
+    }
+
+    public HRManageCard(Integer deptid) {
+        this.deptid = deptid;
+    }
+
+    public List<Dept> getChildDepts() {
+        return childDepts;
+    }
+
+    public void setChildDepts(List<Dept> childDepts) {
+        this.childDepts = childDepts;
     }
 
     public String getDepname() {

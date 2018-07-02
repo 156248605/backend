@@ -932,4 +932,18 @@ public class DepartmentInformationController {
         HashMap<String, Object> hrManageCard = iDeptService.getHRManageCard();
         return hrManageCard;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:IOS的通讯录数据
+     *@Date: 10:52 2018\6\29 0029
+     */
+    @RequestMapping("/queryIOSData")
+    @ResponseBody
+    public HRManageCard queryIOSData(
+            Integer deptid
+    ){
+        HRManageCard paramMap1 = iDeptService.getParamMap1(deptid);
+        return paramMap1;
+    }
 }

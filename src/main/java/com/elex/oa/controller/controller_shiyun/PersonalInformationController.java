@@ -225,6 +225,20 @@ public class PersonalInformationController {
     }
 
     /**
+     * @Author:ShiYun;
+     * @Description:人事信息查询（一条）
+     * @Date: 18:02 2018\4\8 0008
+     */
+    @RequestMapping("/queryPersonalInformationByUserid")
+    @ResponseBody
+    public PersonalInformation queryPersonalInformationByUserid(
+            @RequestParam("userid") int userid
+    ) throws ParseException {
+        PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(userid);
+        return getOnePersonalinformation(personalInformation.getId());
+    }
+
+    /**
      *@Author:ShiYun;
      *@Description:根据perid查询信息
      *@Date: 17:36 2018\5\17 0017
