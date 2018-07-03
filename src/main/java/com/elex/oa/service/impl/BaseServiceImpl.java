@@ -2,6 +2,7 @@ package com.elex.oa.service.impl;
 
 import com.elex.oa.service.BaseService;
 import com.github.pagehelper.PageHelper;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -47,18 +48,18 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         PageHelper.startPage(pageNum,pageSize);
         return mapper.selectAll();
     }
-    
+
     @Override
     public T selectOne(T entity)
     {
     	return mapper.selectOne(entity);
     }
-    
+
     @Override
     public List<T> selectAll()
     {
     	return mapper.selectAll();
     }
-    
+
 }
 

@@ -191,6 +191,7 @@ public class DeptServiceImpl implements IDeptService {
             map.put("id",user.getId());
             map.put("truename",user.getTruename());
             map.put("deptname",iDeptDao.selectDeptByDepid(per.getDepid()).getDepname());
+            map.put("mobilephone",per.getMobilephone());
             users.add(map);
         }
         hrManageCard.setUsers(users);

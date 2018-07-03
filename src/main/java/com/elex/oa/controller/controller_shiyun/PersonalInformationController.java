@@ -281,6 +281,23 @@ public class PersonalInformationController {
     }
 
     /**
+     * @Author:ShiYun;
+     * @Description:人事信息查询（一条）
+     * @Date: 18:02 2018\4\8 0008
+     */
+    @RequestMapping("/queryPersonalInformationByTruename")
+    @ResponseBody
+    public PersonalInformation queryPersonalInformationByTruename(
+            @RequestParam("truename") String truename
+    ) throws ParseException {
+        User user = iUserService.queryByTruename(truename);
+        PersonalInformation onePersonalinformation = iPersonalInformationService.queryOneByUserid(user.getId());
+        PersonalInformation personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
+
+        return personalInformation;
+    }
+
+    /**
      *@Author:ShiYun;
      *@Description:根据perid查询信息
      *@Date: 17:36 2018\5\17 0017
