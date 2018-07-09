@@ -5,6 +5,7 @@ import com.elex.oa.entity.objectives.Target;
 import com.elex.oa.entity.objectives.TargetQuery;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface TargetService {
@@ -30,4 +31,6 @@ public interface TargetService {
     String amendInvention(Target target);
     //管理总板
     Map<String,Object> boardTotal(String annual);
+    //管理看板（手机端）
+    List<Map<String, String>> boardPhone();
 }

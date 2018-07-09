@@ -1,10 +1,7 @@
 package com.elex.oa.service.project.impl;
 
 import com.elex.oa.dao.project.ProjectBoardDao;
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.MileStonePlan;
-import com.elex.oa.entity.project.ProjectInfor;
-import com.elex.oa.entity.project.WeeklyPlan;
+import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectBoardService;
 import org.springframework.stereotype.Service;
 
@@ -477,5 +474,163 @@ public class ProjectBoardImpl implements ProjectBoardService {
         result.put("expense",expense); //物品消耗
         result.put("miles",mileStonePlans); //里程碑计划
         return result;
+    }
+
+    //看板信息（手机）
+    @Override
+    public List<Map<String, Object>> projectPhone() {
+        List<Map<String,Object>> list = new ArrayList<>();
+        List<ProjectVarious> typeList = projectBoardDao.queryProjectType(); //查询所有项目类型
+        List<ProjectVarious> sourceList = projectBoardDao.queryProjectSource(); //查询所有项目来源
+        List<ProjectInfor> projectInforList = projectBoardDao.queryProInforP(); //查询项目信息 （手机）
+        for(ProjectInfor projectInfor: projectInforList) {
+            Map<String,Object> map = new HashMap<>();
+            //项目进本情况
+            map.put("projectCode",projectInfor.getProjectCode());
+            map.put("projectName",projectInfor.getProjectName());
+            map.put("inDepartment",projectInfor.getInDepartment());
+            map.put("projectStatus","进行");
+            map.put("projectManager",projectInfor.getProjectManager());
+            for(ProjectVarious source : sourceList) {
+                if(projectInfor.getProjectSource().equals(source.getCode())) {
+                    map.put("projectSource",source.getName());
+                }
+            }
+            map.put("businessManager",projectInfor.getBusinessManager());
+            for(ProjectVarious type: typeList) {
+                if(projectInfor.getProjectType().equals(type.getCode())) {
+                    map.put("projectType",type.getName());
+                }
+            }
+            map.put("situation",projectInfor.getGeneralSituation());
+            //收入支出
+            ProjectIncome projectIncome = projectBoardDao.queryIncomeContent(projectInfor.getProjectCode()); //查询项目收入的内容
+            if(projectIncome == null) {
+                map.put("payAmount", "");
+                map.put("payDate","");
+                map.put("invoiceAmount","");
+                map.put("invoiceProportion","");
+                map.put("receivableAmount","");
+                map.put("receivableProportion","");
+                map.put("acceptanceAmount","");
+                map.put("acceptanceProportion","");
+            } else {
+                map.put("payAmount", projectIncome.getPayAmount());
+                map.put("payDate", projectIncome.getPayDate());
+                map.put("invoiceAmount", projectIncome.getInvoiceAmount());
+                map.put("invoiceProportion", projectIncome.getInvoiceProportion());
+                map.put("receivableAmount", projectIncome.getReceivableAmount());
+                map.put("receivableProportion", projectIncome.getReceivableProportion());
+                map.put("acceptanceAmount", projectIncome.getAcceptanceAmount());
+                map.put("acceptanceProportion", projectIncome.getAcceptanceProportion());
+            }
+            List<String> projectIncomeDetailList = projectBoardDao.queryIncomeDetail(projectInfor.getProjectCode()); //查询项目收入合同收入金额
+            double income = 0;
+            if(projectIncomeDetailList.size() == 0) {
+
+            } else {
+                for(String str: projectIncomeDetailList) {
+                    income += Double.parseDouble(str);
+                }
+            }
+
+            double consume = 0;
+            ProjectMaterial projectMaterial = projectBoardDao.queryProjectMaterial(projectInfor.getProjectCode()); //查询物品消耗
+            if(projectMaterial == null) {
+                map.put("projectMaterial","");
+            } else {
+                map.put("projectMaterial", projectMaterial.getTotalAmountL());
+                consume += Double.parseDouble(projectMaterial.getTotalAmountL());
+            }
+            ProjectHuman projectHuman = projectBoardDao.queryProjectHuman(projectInfor.getProjectCode()); //查询人力成本
+            if(projectHuman == null) {
+                map.put("projectHuman","");
+            } else {
+                map.put("projectHuman",projectHuman.getTotalAmountL());
+                consume += Double.parseDouble(projectHuman.getTotalAmountL());
+            }
+            ProjectExpense projectExpense = projectBoardDao.queryProjectExpense(projectInfor.getProjectCode()); //查询费用报销
+            if(projectExpense == null) {
+                map.put("projectExpense","");
+            } else {
+                map.put("projectExpense",projectExpense.getTotalAmountL());
+                consume += Double.parseDouble(projectExpense.getTotalAmountL());
+            }
+            if(income == 0) {
+                map.put("grossProfit","");
+                map.put("gorssProfitMargin","");
+            } else {
+                map.put("grossProfit",(income - consume)+"");
+                String grossProfitMargin = new BigDecimal((income - consume) / income * 100).setScale(2,RoundingMode.UP) + "%";
+                map.put("gorssProfitMargin",grossProfitMargin);
+            }
+
+            map.put("writeDate",projectInfor.getWriteDate()); //立项日期
+            List<MileStonePlan> mileStonePlans = projectBoardDao.queryMileStonePlans(projectInfor.getProjectCode()); //查询该项目的所有里程碑计划
+            boolean mileMarker = true;
+            if(mileStonePlans.size() > 0) {
+                for(MileStonePlan mileStonePlan: mileStonePlans) {
+                    if(mileStonePlan.getStatus().equals("1")) {
+                        mileStonePlan.setStatus("进行");
+                        map.put("projectPhase",mileStonePlan.getPhase()); //项目阶段
+                        map.put("startDate",mileStonePlan.getStartDate()); //启动日期
+                        map.put("endDate",mileStonePlan.getEndDate()); //预计完成
+                        try {
+                            long date1 = new SimpleDateFormat("yyyy-MM-dd").parse(mileStonePlan.getStartDate()).getTime();
+                            long date2 = new SimpleDateFormat("yyyy-MM-dd").parse(mileStonePlan.getEndDate()).getTime();
+                            long date3 = new Date().getTime();
+                            String schedule = new BigDecimal((double) (date3 - date1) / (double) (date2 - date1)*100).setScale(2,RoundingMode.UP).doubleValue() + "%";
+                            map.put("mileSchedule",schedule);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        mileMarker = false;
+                    } else if(mileStonePlan.getStatus().equals("2")) {
+                        mileStonePlan.setStatus("延期");
+                    } else if(mileStonePlan.getStatus().equals("3")) {
+                        mileStonePlan.setStatus("暂停");
+                    } else if(mileStonePlan.getStatus().equals("4")) {
+                        mileStonePlan.setStatus("完成");
+                    } else if(mileStonePlan.getStatus().equals("5")) {
+                        mileStonePlan.setStatus("中止");
+                    }
+                }
+                map.put("milePlan",mileStonePlans); //里程碑计划
+            } else {
+                map.put("milePlan",null); //里程碑计划
+            }
+            if(mileMarker) {
+                map.put("projectPhase","");
+                map.put("startDate","");
+                map.put("endDate","");
+                map.put("mileSchedule","");
+            }
+
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+            String start = simpleDateFormat.format(calendar.getTime());
+            Map<String,String> content = new HashMap<>();
+            content.put("code",projectInfor.getProjectCode());
+            content.put("start",start);
+            WeeklyPlan weeklyPlan = projectBoardDao.queryWeeklyPlan(content); //查询当前周计划
+            if(weeklyPlan == null) {
+                map.put("weeklyPlan",null);
+                map.put("currentProgress",""); //当前进度
+            } else {
+                List<String> weeklyPlanDetails = projectBoardDao.queryWeeklyPlanDetail(weeklyPlan.getId()); //查询周计划详情
+                map.put("weeklyPlan",weeklyPlanDetails);
+                StringBuilder stringBuilder = new StringBuilder();
+                for(String string: weeklyPlanDetails) {
+                    stringBuilder.append(string);
+                    stringBuilder.append(";");
+                }
+                map.put("currentProgress",stringBuilder.toString()); //当前进度
+            }
+            list.add(map);
+        }
+
+        return list;
     }
 }

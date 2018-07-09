@@ -34,6 +34,45 @@
         <result  column="risk"  javaType="string"  property="risk"></result>
     </resultMap>
 
+    <resultMap id="projectVarious" type="com.elex.oa.entity.project.ProjectVarious">
+        <result  column="code"  javaType="string"  property="code"></result>
+        <result  column="name"  javaType="string"  property="name"></result>
+    </resultMap>
+
+    <resultMap id="projectIncome" type="com.elex.oa.entity.project.ProjectIncome">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="project_code"  javaType="string"  property="projectCode"></result>
+        <result  column="pay_amount"  javaType="string"  property="payAmount"></result>
+        <result  column="pay_date"  javaType="string"  property="payDate"></result>
+        <result  column="invoice_amount"  javaType="string"  property="invoiceAmount"></result>
+        <result  column="invoice_proportion"  javaType="string"  property="invoiceProportion"></result>
+        <result  column="receivable_amount"  javaType="string"  property="receivableAmount"></result>
+        <result  column="receivable_proportion"  javaType="string"  property="receivableProportion"></result>
+        <result  column="acceptance_amount"  javaType="string"  property="acceptanceAmount"></result>
+        <result  column="acceptance_proportion"  javaType="string"  property="acceptanceProportion"></result>
+    </resultMap>
+
+    <resultMap id="projectMaterial" type="com.elex.oa.entity.project.ProjectMaterial">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="project_code"  javaType="string"  property="projectCode"></result>
+        <result  column="total_amount_l"  javaType="string"  property="totalAmountL"></result>
+        <result  column="total_amount_c"  javaType="string"  property="totalAmountC"></result>
+    </resultMap>
+
+    <resultMap id="projectHuman" type="com.elex.oa.entity.project.ProjectHuman">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="project_code"  javaType="string"  property="projectCode"></result>
+        <result  column="total_amount_l"  javaType="string"  property="totalAmountL"></result>
+        <result  column="total_amount_c"  javaType="string"  property="totalAmountC"></result>
+    </resultMap>
+
+    <resultMap id="projectExpense" type="com.elex.oa.entity.project.ProjectExpense">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="project_code"  javaType="string"  property="projectCode"></result>
+        <result  column="total_amount_l"  javaType="string"  property="totalAmountL"></result>
+        <result  column="total_amount_c"  javaType="string"  property="totalAmountC"></result>
+    </resultMap>
+
     <select id="queryApprovalList"  resultMap="approvalList">
         SELECT project_code, project_name ,project_type FROM pro_app_list
     </select>
@@ -72,5 +111,39 @@
 
     <select id="queryWeeklyPlanDetail" parameterType="int" resultType="string">
         SELECT issues FROM pro_week_plan_detail WHERE related_id = #{id}
+    </select>
+
+    <select id="queryProInforP" resultMap="projectInfor">
+        SELECT project_code, project_name, in_department, project_status, write_date, business_manager, project_source, project_manager, project_type, general_situation FROM pro_pro_infor
+        WHERE project_status = '1'
+    </select>
+
+    <select id="queryProjectType" resultMap="projectVarious">
+        SELECT code, name FROM pro_type
+    </select>
+
+    <select id="queryProjectSource"  resultMap="projectVarious">
+        SELECT code, name FROM pro_source
+    </select>
+
+    <select id="queryIncomeContent" parameterType="string" resultMap="projectIncome">
+        SELECT pay_amount, pay_date, invoice_amount, invoice_proportion, receivable_amount, receivable_proportion, acceptance_amount, acceptance_proportion FROM pro_income
+        WHERE project_code = #{projectCode}
+    </select>
+
+    <select id="queryIncomeDetail" parameterType="string" resultType="string">
+        SELECT contract_amount FROM pro_income_detail WHERE project_code = #{project_code}
+    </select>
+
+    <select id="queryProjectMaterial" parameterType="string" resultMap="projectMaterial">
+        SELECT total_amount_l, total_amount_c FROM pro_material
+    </select>
+
+    <select id="queryProjectHuman"  parameterType="string"  resultMap="projectHuman">
+        SELECT total_amount_l, total_amount_c FROM pro_human
+    </select>
+
+    <select id="queryProjectExpense" parameterType="string" resultMap="projectExpense">
+         SELECT total_amount_l, total_amount_c FROM pro_expense
     </select>
 </mapper>

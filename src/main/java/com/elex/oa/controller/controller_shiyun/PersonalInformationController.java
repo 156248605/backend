@@ -8,7 +8,10 @@ import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -2090,13 +2093,13 @@ public class PersonalInformationController {
                 continue;
             }
             Map<String,Object> map = new HashMap<String,Object>();
-            HashMap<String, Object> deptMap = new HashMap<>();
+           // HashMap<String, Object> deptMap = new HashMap<>();
             ArrayList<Object> postList = new ArrayList<>();
-            map.put("employeenumber",onePersonalinformation.getEmployeenumber());
-            map.put("truename",onePersonalinformation.getTruename());
-            deptMap.put("deptid",onePersonalinformation.getDepid());
-            deptMap.put("deptname",iDeptService.queryOneDepByDepid(onePersonalinformation.getDepid()).getDepname());
-            map.put("dept",deptMap);
+            map.put("employeeName",onePersonalinformation.getEmployeenumber());
+            map.put("id",onePersonalinformation.getTruename());
+            map.put("deptid",onePersonalinformation.getDepid());
+            map.put("deptname",iDeptService.queryOneDepByDepid(onePersonalinformation.getDepid()).getDepname());
+            //map.put("dept",deptMap);
             List<PerAndPostRs> perAndPostRsList = iPerandpostrsService.queryPerAndPostRsByPerid(onePersonalinformation.getId());
             for(PerAndPostRs perAndPostRs:perAndPostRsList){
                 HashMap<String, Object> postMap = new HashMap<>();
@@ -2121,7 +2124,7 @@ public class PersonalInformationController {
         List<Object> list = new ArrayList<>();
         List<Dept> depts = iDeptService.queryAllDepts();
         for(Dept dept:depts){
-            HashMap<String, Object> deptMap = new HashMap<>();
+            Map<String, Object> deptMap = new HashMap<>();
             deptMap.put("deptid",dept.getId());
             deptMap.put("deptname",dept.getDepname());
             list.add(deptMap);
@@ -2140,7 +2143,7 @@ public class PersonalInformationController {
         ArrayList<Object> list = new ArrayList<>();
         List<Post> posts = iPostService.queryAllPosts();
         for(Post post:posts){
-            HashMap<String, Object> postMap = new HashMap<>();
+            Map<String, Object> postMap = new HashMap<>();
             postMap.put("postid",post.getId());
             postMap.put("postname",post.getPostname());
             list.add(postMap);

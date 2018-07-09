@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/board")
@@ -29,5 +30,12 @@ public class ProjectBoardController {
     @ResponseBody
     public Map<String,Object> detail(String projectCode) {
         return projectBoardService.detail(projectCode);
+    }
+
+    //看板信息（手机）
+    @RequestMapping("/project_phone")
+    @ResponseBody
+    public List<Map<String,Object>> projectPhone() {
+        return projectBoardService.projectPhone();
     }
 }
