@@ -54,9 +54,7 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         //获得办理日期
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         String transactiondate = simpleDateFormat.format(new Date());
-        if (dimissionInformation.getTransactiondate()!=null && !"".equals(dimissionInformation.getTransactiondate() )) {
-            dimissionInformation.setTransactiondate(transactiondate);//办理日期
-        }
+        dimissionInformation.setTransactiondate(transactiondate);//办理日期
         //获得8个参数
         dimissionInformation.setApprovalnumbers(1);//待审批单数量默认为1，实际中用userID到ACT_RU_TASK表中查询
         dimissionInformation.setApprovalstatue(Commons.未处理);
@@ -230,8 +228,10 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
                 dimissionInformations.get(i).setDimissiontruename(iUserDao.selectById(dimissionInformations.get(i).getDimissionuserid()).getTruename());
             }
             //获得部门
-            if (iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid())!=null) {
-                dimissionInformations.get(i).setDepname(iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid()).getDepname());
+            if (iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid())!=null) {
+                if (iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid())!=null) {
+                    dimissionInformations.get(i).setDepname(iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid()).getDepname());
+                }
             }
             //获得离职类型
             if (ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid())!=null) {

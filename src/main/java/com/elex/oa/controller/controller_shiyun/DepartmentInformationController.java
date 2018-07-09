@@ -831,7 +831,12 @@ public class DepartmentInformationController {
             @RequestParam("title") String title
     ){
         List<TitleAndCode> list = new ArrayList<>();
-        List<Dept> depts = iDeptService.queryByParentId(iDeptService.queryOneDepByDepname(title).getId());
+        List<Dept> depts;
+        if (iDeptService.queryOneDepByDepname(title)!=null) {
+            depts = iDeptService.queryByParentId(iDeptService.queryOneDepByDepname(title).getId());
+        } else {
+            return null;
+        }
         for(int i = 0;i<depts.size();i++){
             TitleAndCode titleAndCode = new TitleAndCode();
             titleAndCode.setTitle(depts.get(i).getDepname());
@@ -853,7 +858,12 @@ public class DepartmentInformationController {
             @RequestParam("title") String title,
             @RequestParam("deptTree") String deptTree
     ){
-        List<TitleAndCode> list = JSONObject.parseArray(sortdata, TitleAndCode.class);
+        List<TitleAndCode> list = null;
+        try {
+            list = JSONObject.parseArray(sortdata, TitleAndCode.class);
+        } catch (Exception e) {
+            return null;
+        }
         //先将树形结构数据查出来
         List<Dept> depts = iDeptService.queryByParentId(null);
         DeptTree deptTree1 = JSONObject.parseObject(deptTree,new TypeReference<DeptTree>(){});

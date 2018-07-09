@@ -304,8 +304,12 @@ public class PersonalInformationController {
      */
     public  PersonalInformation getOnePersonalinformation(Integer personalInformationId) throws ParseException {
         PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationId);
+        if(personalInformation==null){
+            return null;
+        }
         //1.获得User信息
         User user = iUserService.getById(personalInformation.getUserid());
+        System.out.println(456);
         if (user!=null) {
             personalInformation.setIsactive(user.getIsactive());
             personalInformation.setUsername(user.getUsername());
@@ -2068,5 +2072,79 @@ public class PersonalInformationController {
             iDeptService.modifyOne(personalInformation.getUserid());
         }
         return "删除成功！";
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:所有人员的工号、人名、部门（ID、名称）、岗位（ID、名称）
+     *@Date: 14:15 2018\7\9 0009
+     */
+    @RequestMapping("/queryGXF001")
+    @ResponseBody
+    public List<Object> queryGXF001() throws ParseException {
+        List<Object> list = new ArrayList<>();
+        List<PersonalInformation> personalInformationList = iPersonalInformationService.queryAllByNull();
+        for(PersonalInformation per:personalInformationList){
+            PersonalInformation onePersonalinformation = getOnePersonalinformation(per.getId());
+            if(onePersonalinformation==null){
+                continue;
+            }
+            Map<String,Object> map = new HashMap<String,Object>();
+            HashMap<String, Object> deptMap = new HashMap<>();
+            ArrayList<Object> postList = new ArrayList<>();
+            map.put("employeenumber",onePersonalinformation.getEmployeenumber());
+            map.put("truename",onePersonalinformation.getTruename());
+            deptMap.put("deptid",onePersonalinformation.getDepid());
+            deptMap.put("deptname",iDeptService.queryOneDepByDepid(onePersonalinformation.getDepid()).getDepname());
+            map.put("dept",deptMap);
+            List<PerAndPostRs> perAndPostRsList = iPerandpostrsService.queryPerAndPostRsByPerid(onePersonalinformation.getId());
+            for(PerAndPostRs perAndPostRs:perAndPostRsList){
+                HashMap<String, Object> postMap = new HashMap<>();
+                postMap.put("postid",perAndPostRs.getPostid());
+                postMap.put("postname",iPostService.queryOneByPostid(perAndPostRs.getPostid()).getPostname());
+                postList.add(postMap);
+            }
+            map.put("post",postList);
+            list.add(map);
+        }
+        return list;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:所有部门的ID、名称
+     *@Date: 14:33 2018\7\9 0009
+     */
+    @RequestMapping("/queryGXF002")
+    @ResponseBody
+    public List<Object> queryGXF002(){
+        List<Object> list = new ArrayList<>();
+        List<Dept> depts = iDeptService.queryAllDepts();
+        for(Dept dept:depts){
+            HashMap<String, Object> deptMap = new HashMap<>();
+            deptMap.put("deptid",dept.getId());
+            deptMap.put("deptname",dept.getDepname());
+            list.add(deptMap);
+        }
+        return list;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:所有岗位的ID、名称
+     *@Date: 14:38 2018\7\9 0009
+     */
+    @RequestMapping("/queryGXF003")
+    @ResponseBody
+    public List<Object> queryGXF003(){
+        ArrayList<Object> list = new ArrayList<>();
+        List<Post> posts = iPostService.queryAllPosts();
+        for(Post post:posts){
+            HashMap<String, Object> postMap = new HashMap<>();
+            postMap.put("postid",post.getId());
+            postMap.put("postname",post.getPostname());
+            list.add(postMap);
+        }
+        return list;
     }
 }
