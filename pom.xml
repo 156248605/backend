@@ -65,11 +65,11 @@
 		</dependency>
 
 		<!--activiti-->
-		<dependency>
+	<!--	<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring-boot-starter-basic</artifactId>
 			<version>5.22.0</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -157,7 +157,7 @@
 			<artifactId>batik-svggen</artifactId>
 			<version>1.7</version>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-explorer</artifactId>
 			<version>${activiti.version}</version>
@@ -176,7 +176,7 @@
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring</artifactId>
 			<version>${activiti.version}</version>
-		</dependency>
+		</dependency>-->
 
 		<!-- ueditot依赖的json包 -->
 		<dependency>

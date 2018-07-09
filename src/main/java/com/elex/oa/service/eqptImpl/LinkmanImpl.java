@@ -6,7 +6,6 @@ import com.elex.oa.entity.eqpt.Linkman;
 import com.elex.oa.service.eqptService.LinkmanService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
