@@ -92,6 +92,7 @@ public class NewProjectImpl implements NewProjcetService {
             nProjectQuery.setDate31(dateList.get(0));
             nProjectQuery.setDate32(dateList.get(1));
         }
+        System.out.println(nProjectQuery.getSelect4());
         List<String> list4 = JSONArray.parseArray(nProjectQuery.getSelect4(),String.class);
         List<String> list5 = JSONArray.parseArray(nProjectQuery.getSelect5(),String.class);
         if(list4.size() > 0) {

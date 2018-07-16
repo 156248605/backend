@@ -381,11 +381,14 @@ public class DepartmentInformationController {
             }
 
             if (!dept.getDepname().equals(dept2.getDepname())){
-                b = true;
-                deptLog.setChangeinformation("部门名称");
-                deptLog.setBeforeinformation(dept2.getDepname());
-                deptLog.setAfterinformation(dept.getDepname());
-                iDeptLogService.addOne(deptLog);
+                Dept dept1 = iDeptService.queryOneDepByDepname(dept.getDepname());
+                if (dept1==null) {
+                    b = true;
+                    deptLog.setChangeinformation("部门名称");
+                    deptLog.setBeforeinformation(dept2.getDepname());
+                    deptLog.setAfterinformation(dept.getDepname());
+                    iDeptLogService.addOne(deptLog);
+                }
             }if (!dept.getDepcode().equals(dept2.getDepcode())){
                 b = true;
                 deptLog.setChangeinformation("部门编号");
@@ -955,5 +958,41 @@ public class DepartmentInformationController {
     ){
         HRManageCard paramMap1 = iDeptService.getParamMap1(deptid);
         return paramMap1;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:添加部门的时候校验部门名称
+     *@Date: 10:08 2018\7\16 0016
+     */
+    @RequestMapping("/validateDeptnameForAddDept")
+    @ResponseBody
+    public Boolean validateDeptnameForAddDept(
+            @RequestParam("deptname") String deptname
+    ){
+        Dept dept = iDeptService.queryOneDepByDepname(deptname);
+        if(dept!=null){
+            return true;
+        }else{
+            return  false;
+        }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:添加部门的时候校验部门编号
+     *@Date: 10:12 2018\7\16 0016
+     */
+    @RequestMapping("/validateDeptcodeForAddDept")
+    @ResponseBody
+    public Boolean validateDeptcodeForAddDept(
+            @RequestParam("deptcode") String deptcode
+    ){
+        Dept dept = iDeptService.queryOneDepByDepname(deptcode);
+        if(dept!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

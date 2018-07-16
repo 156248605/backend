@@ -291,7 +291,10 @@ public class PersonalInformationController {
             @RequestParam("truename") String truename
     ) throws ParseException {
         User user = iUserService.queryByTruename(truename);
-        PersonalInformation onePersonalinformation = iPersonalInformationService.queryOneByUserid(user.getId());
+        PersonalInformation onePersonalinformation = null;
+        if (user.getId()!=null) {
+            onePersonalinformation = iPersonalInformationService.queryOneByUserid(user.getId());
+        }
         PersonalInformation personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
 
         return personalInformation;
@@ -1717,7 +1720,9 @@ public class PersonalInformationController {
                     pi.setZyzsname(ihRsetZyzsnameService.queryById(baseInformation.getZyzsnameid()).getZyzsname());
                 }
                 pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
-                pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                if (baseInformation.getFirstworkingtime()!=null && !baseInformation.getFirstworkingtime().equals("")) {
+                    pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                }
                 if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
                     pi.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
                 }
