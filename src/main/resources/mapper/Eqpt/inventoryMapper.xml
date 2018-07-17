@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.InventoryMapper">
+
+    <select id="find" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inventory
+    </select>
+
+    <delete id="delete" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE * FROM eqpt_inventory WHERE onlyIdInv = #{onlyIdInv}
+    </delete>
+
+    <insert id="insert" parameterType="com.elex.oa.entity.eqpt.Repository">
+        INSERT INTO eqpt_inventory VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{reptId},#{position},#{price},#{num},#{numInv},#{pal},#{palCal},#{remark})
+    </insert>
+
+    <select id="showINVID" resultType="java.lang.String">
+        SELECT invId FROM eqpt_inventory WHERE invId LIKE CONCAT(CONCAT('%',#{invId},'%'))
+    </select>
+
+    <select id="matinrept" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_repository WHERE reptId = #{reptId}
+    </select>
+
+    <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT reptId FROM eqpt_repository WHERE materialId != '无'
+    </select>
+
+    <select id="search" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inventory
+        <where>
+            <if test="invId != null and invId != '' and invIdC == ''">
+                AND invId LIKE CONCAT(CONCAT('%', #{invId}), '%')
+            </if>
+            <if test="invId != null and invId != '' and invIdC == 1">
+                AND invId LIKE CONCAT(CONCAT('%', #{invId}), '%')
+            </if>
+            <if test="invId != null and invId != '' and invIdC == 2">
+                AND invId NOT LIKE CONCAT(CONCAT('%', #{invId}), '%')
+            </if>
+            <if test="invTime != null and invTime != '' and invTimeC == ''">
+                AND invTime LIKE CONCAT(CONCAT('%', #{invTime}), '%')
+            </if>
+            <if test="invTime != null and invTime != '' and invTimeC == ''">
+                AND invTime LIKE CONCAT(CONCAT('%', #{invTime}), '%')
+            </if>
+            <if test="invTime != null and invTime != '' and invTimeC == ''">
+                AND invTime NOT LIKE CONCAT(CONCAT('%', #{invTime}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == ''">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 1">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 2">
+                AND materialId NOT LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialName != null and materialName != '' and matNameC == ''">
+                AND bn LIKE CONCAT(CONCAT('%', #{materialName}), '%')
+            </if>
+            <if test="materialName != null and materialName != '' and matNameC == 1">
+                AND materialName LIKE CONCAT(CONCAT('%', #{materialName}), '%')
+            </if>
+            <if test="materialName != null and materialName != '' and matNameC == 2">
+                AND materialName NOT LIKE CONCAT(CONCAT('%', #{materialName}), '%')
+            </if>
+            <if test="position != null and position != '' and positionC == ''">
+                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>
+            <if test="position != null and position != '' and positionC == 1">
+                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>
+            <if test="position != null and position != '' and positionC == 2">
+                AND position NOT LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == ''">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 1">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 2">
+                AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="price != null and price != '' and priceC == ''">
+                AND price LIKE CONCAT(CONCAT('%', #{price}), '%')
+            </if>
+            <if test="price != null and price != '' and priceC == 1">
+                AND price &lt; #{price}
+            </if>
+            <if test="price != null and price != '' and priceC == 2">
+                AND price > #{price}
+            </if>
+            <if test="price != null and price != '' and priceC == 3">
+                AND price = #{price}
+            </if>
+            <if test="price != null and price != '' and priceC == 4">
+                AND price &lt;= #{price}
+            </if>
+            <if test="price != null and price != '' and priceC == 5">
+                AND price >= #{price}
+            </if>
+            <if test="num != null and num != '' and numC == ''">
+                AND num LIKE CONCAT(CONCAT('%', #{num}), '%')
+            </if>
+            <if test="num != null and num != '' and numC == 1">
+                AND num &lt; #{num}
+            </if>
+            <if test="num != null and num != '' and numC == 2">
+                AND num > #{num}
+            </if>
+            <if test="num != null and num != '' and numC == 3">
+                AND num = #{num}
+            </if>
+            <if test="num != null and num != '' and numC == 4">
+                AND num &lt;= #{num}
+            </if>
+            <if test="num != null and num != '' and numC == 5">
+                AND num >= #{num}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == ''">
+                AND numInv LIKE CONCAT(CONCAT('%', #{numInv}), '%')
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 1">
+                AND numInv &lt; #{numInv}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 2">
+                AND numInv > #{numInv}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 3">
+                AND numInv = #{numInv}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 4">
+                AND numInv &lt;= #{numInv}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 5">
+                AND numInv >= #{numInv}
+            </if>
+            <if test="pal != null and pal != '' and palC == ''">
+                AND pal LIKE CONCAT(CONCAT('%', #{pal}), '%')
+            </if>
+            <if test="pal != null and pal != '' and palC == 1">
+                AND pal &lt; #{pal}
+            </if>
+            <if test="pal != null and pal != '' and palC == 2">
+                AND pal > #{pal}
+            </if>
+            <if test="pal != null and pal != '' and palC == 3">
+                AND pal = #{pal}
+            </if>
+            <if test="pal != null and pal != '' and palC == 4">
+                AND pal &lt;= #{pal}
+            </if>
+            <if test="pal != null and pal != '' and palC == 5">
+                AND pal >= #{pal}
+            </if>
+
+        </where>
+    </select>
+</mapper>

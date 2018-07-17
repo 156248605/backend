@@ -3,7 +3,28 @@
 <mapper namespace="com.elex.oa.dao.eqptDao.MaterialMapper">
 
     <select id="MaterialList" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE materialState = '启用'
+    </select>
+
+    <select id="searchList" resultType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_material
+        <where>
+            <if test="arg0 != null and arg0.size > 0">
+                AND id in
+                <foreach collection="arg0" item="item" separator="," index="index" close=")" open="(">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="arg1 != null and arg1.size > 0">
+                AND name in
+                <foreach collection="arg1" item="item" separator="," index="index" close=")" open="(">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="arg2 != null and arg2 != '' and arg3 != null and arg3 != ''">
+                AND date BETWEEN #{arg2} AND #{arg3}
+            </if>
+        </where>
     </select>
 
     <select id="SearchMaterial" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
@@ -26,24 +47,6 @@
             </if>
             <if test="name != null and name != '' and nameC == 2">
                 AND name NOT LIKE CONCAT(CONCAT('%', #{name}), '%')
-            </if>
-            <if test="sn != null and sn != '' and snC == ''">
-                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
-            <if test="sn != null and sn != '' and snC == 1">
-                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
-            <if test="sn != null and sn != '' and snC == 2">
-                AND sn NOT LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == ''">
-                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == 1">
-                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == 2">
-                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
             </if>
             <if test="material != null and material != '' and materialC == ''">
                 AND material LIKE CONCAT(CONCAT('%', #{material}), '%')
@@ -117,16 +120,15 @@
             <if test="remark != null and remark != ''">
                 AND remark LIKE CONCAT(CONCAT('%', #{remark}), '%')
             </if>
-
         </where>
     </select>
 
     <select id="MaterialId" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
+        SELECT * FROM eqpt_material WHERE id = #{id}
     </select>
 
-    <select id="Id" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT id FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
+    <select id="canShow" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_materialmt WHERE materialState = '启用'
     </select>
 
     <update id="saveMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
@@ -166,7 +168,19 @@
                 position = #{position},
             </if>
             <if test="partner != null and partner != ''">
-                partner = #{partner}
+                partner = #{partner},
+            </if>
+            <if test="price != null and price != ''">
+                price = #{price},
+            </if>
+            <if test="unit != null and unit != ''">
+                unit = #{unit},
+            </if>
+            <if test="num != null and num != ''">
+                num = #{num},
+            </if>
+            <if test="materialState != null and materialState != ''">
+                materialState = #{materialState}
             </if>
         </set>
         WHERE onlyId = #{onlyId}
@@ -177,14 +191,18 @@
     </delete>
 
     <insert id="newMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
-        INSERT INTO eqpt_material VALUES (#{bn},#{sn},#{position},#{category},#{name},#{id},#{date},#{brand},#{spec},#{material},#{maxlimit},#{minlimit},#{remark},#{partner},#{price},NULL)
+        INSERT INTO eqpt_material VALUES (#{position},#{category},#{name},#{id},#{date},#{brand},#{spec},#{material},#{maxlimit},#{minlimit},#{remark},#{partner},#{num},#{unit},#{price},NULL,'启用','否')
     </insert>
 
     <insert id="importMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
-        INSERT INTO eqpt_material VALUES (#{bn},#{sn},#{position},#{category},#{name},#{id},#{date},#{brand},#{spec},#{material},#{maxlimit},#{minlimit},#{remark},#{partner},#{price},NULL)
+        INSERT INTO eqpt_material VALUES (#{position},#{category},#{name},#{id},#{date},#{brand},#{spec},#{material},#{maxlimit},#{minlimit},#{remark},#{partner},#{num},#{unit},#{price},NULL,'启用','否')
     </insert>
 
-    <update id="updMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+    <select id="getNum" resultType="string">
+        SELECT num FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <update id="updMat" parameterType="com.elex.oa.entity.eqpt.Material">
         UPDATE eqpt_material
         <set>
             <if test="name != null">
@@ -214,22 +232,89 @@
             <if test="minlimit != null">
                 minlimit = #{minlimit},
             </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="num != null">
+                num = num + #{num},
+            </if>
+            <if test="unit != null">
+                unit = #{unit},
+            </if>
             <if test="position != null">
                 position = #{position}
             </if>
         </set>
-        WHERE onlyId = #{onlyId}
+        WHERE id = #{id}
     </update>
 
-    <select id="MinLimit" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT minlimit FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
+    <update id="updMatM" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_material
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="material != null">
+                material = #{material},
+            </if>
+            <if test="brand != null">
+                brand = #{brand},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="maxlimit != null">
+                maxlimit = #{maxlimit},
+            </if>
+            <if test="minlimit != null">
+                minlimit = #{minlimit},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="num != null">
+                num = num - #{num},
+            </if>
+            <if test="unit != null">
+                unit = #{unit},
+            </if>
+            <if test="position != null">
+                position = #{position}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="MinLimit" resultType="string">
+        SELECT minlimit FROM eqpt_material WHERE id = #{id}
     </select>
 
-    <select id="MaxLimit" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT maxlimit FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
+    <select id="MaxLimit" resultType="string">
+        SELECT maxlimit FROM eqpt_material WHERE id = #{id}
     </select>
 
     <select id="searchSN" resultType="string">
         SELECT sn FROM eqpt_material WHERE sn = #{sn}
+    </select>
+
+    <select id="lockBn" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT id FROM eqpt_material WHERE id = #{id} AND bn = #{bn}
+    </select>
+
+    <select id="lockSn" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT id FROM eqpt_material WHERE id = #{id} AND sn = #{sn}
+    </select>
+
+    <select id="lockPrice" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT price FROM eqpt_material WHERE id = #{id}
     </select>
 </mapper>

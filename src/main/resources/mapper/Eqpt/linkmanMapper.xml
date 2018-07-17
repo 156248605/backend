@@ -41,8 +41,12 @@
     </insert>
 
     <delete id="deleteLinkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
-        DELETE FROM eqpt_linkman
-        <where>
+        DELETE FROM eqpt_linkman WHERE onlyIdL = #{onlyIdL}
+    </delete>
+
+    <update id="changeLinkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        UPDATE eqpt_linkman
+        <set>
             <if test="linkId != null and linkId != '' ">
                 linkId = #{linkId},
             </if>
@@ -67,6 +71,7 @@
             <if test="wechatNum != null and wechatNum != '' ">
                 wechatNum = #{wechatNum}
             </if>
-        </where>
-    </delete>
+        </set>
+        WHERE onlyIdL = #{onlyIdL}
+    </update>
 </mapper>

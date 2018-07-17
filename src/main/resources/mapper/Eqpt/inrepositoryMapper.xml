@@ -6,23 +6,27 @@
     </select>
 
     <insert id="insertNew" parameterType="string">
-        INSERT INTO eqpt_inrepository VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7})
+        INSERT INTO eqpt_inrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15})
     </insert>
-
-    <select id="searchSn" resultType="string">
-        SELECT sn FROM eqpt_material WHERE sn = #{sn} AND bn = #{bn} AND id = #{id}
-    </select>
 
     <select id="ID" resultType="string">
         SELECT id FROM eqpt_material WHERE id = #{id}
     </select>
 
-    <select id="INID" resultType="string">
+    <select id="INID" resultType="java.lang.String">
         SELECT inId FROM eqpt_inrepository WHERE inId = #{inId}
     </select>
 
     <select id="OUTID" resultType="string">
         SELECT outId FROM eqpt_outrepository WHERE outId = #{outId}
+    </select>
+
+    <delete id="delete" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inrepository WHERE onlyIdIn = #{onlyIdIn}
+    </delete>
+
+    <select id="showINID" resultType="java.lang.String">
+        SELECT inId FROM eqpt_inrepository WHERE inId LIKE CONCAT(CONCAT('%',#{inId},'%'))
     </select>
 
 </mapper>

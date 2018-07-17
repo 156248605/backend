@@ -373,26 +373,19 @@ public class ReadExcel {
                         }
                     } else if (c == 3) {
                         if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-                            String num = String.valueOf(cell.getNumericCellValue());
-                            repository.setNum(num.substring(0, num.length() - 2 > 0 ? num.length() - 2 : 1));
-                        } else {
-                            repository.setNum(cell.getStringCellValue());
-                        }
-                    } else if (c == 4) {
-                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
                             String materialId = String.valueOf(cell.getNumericCellValue());
                             repository.setMaterialId(materialId.substring(0, materialId.length() - 2 > 0 ? materialId.length() - 2 : 1));
                         } else {
                             repository.setMaterialId(cell.getStringCellValue());
                         }
-                    } else if (c == 5) {
+                    } else if (c == 4) {
                         if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
                             String sn = String.valueOf(cell.getNumericCellValue());
                             repository.setSn(sn.substring(0, sn.length() - 2 > 0 ? sn.length() - 2 : 1));
                         } else {
                             repository.setSn(cell.getStringCellValue());
                         }
-                    } else if (c == 6) {
+                    } else if (c == 5) {
                         if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
                             String bn = String.valueOf(cell.getNumericCellValue());
                             repository.setBn(bn.substring(0, bn.length() - 2 > 0 ? bn.length() - 2 : 1));
@@ -435,32 +428,57 @@ public class ReadExcel {
                     if (c == 0) {
                         // 如果是纯数字,比如你写的是25,cell.getNumericCellValue()获得是25.0,通过截取字符串去掉.0获得25
                         if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-                            String pnCategory = String.valueOf(cell.getNumericCellValue());
-                            partner.setPnCategory(pnCategory.substring(0, pnCategory.length() - 2 > 0 ? pnCategory.length() - 2 : 1));
-                            // map.put("pnCategory", pnCategory.substring(0, pnCategory.length() - 2 > 0 ? pnCategory.length() - 2 : 1));// 业务种类
+                            String pnId = String.valueOf(cell.getNumericCellValue());
+                            partner.setPnId(pnId.substring(0, pnId.length() - 2 > 0 ? pnId.length() - 2 : 1));
                         } else {
-                            partner.setPnCategory(cell.getStringCellValue());
-                            // map.put("pnCategory", cell.getStringCellValue());// 业务种类
+                            partner.setPnId(cell.getStringCellValue());
                         }
                     } else if (c == 1) {
                         if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-                            String company = String.valueOf(cell.getNumericCellValue());
-                            partner.setCompany(company.substring(0, company.length() - 2 > 0 ? company.length() - 2 : 1));
-                            // map.put("company",company.substring(0, company.length() - 2 > 0 ? company.length() - 2 : 1));// 公司
+                            String pnCategory = String.valueOf(cell.getNumericCellValue());
+                            partner.setPnCategory(pnCategory.substring(0, pnCategory.length() - 2 > 0 ? pnCategory.length() - 2 : 1));
+                            // map.put("pnCategory",pnCategory.substring(0, pnCategory.length() - 2 > 0 ? pnCategory.length() - 2 : 1));// 业务伙伴类别
                         } else {
-                            partner.setCompany(cell.getStringCellValue());
-                            // map.put("company",cell.getStringCellValue());// 公司
+                            partner.setPnCategory(cell.getStringCellValue());
+                            // map.put("pnCategory",cell.getStringCellValue());// 业务伙伴类别
                         }
                     } else if (c == 2) {
                         if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-                            String pjName = String.valueOf(cell.getNumericCellValue());
-                            partner.setPjName(pjName.substring(0, pjName.length() - 2 > 0 ? pjName.length() - 2 : 1));
-                            // map.put("pjName", pjName.substring(0, pjName.length() - 2 > 0 ? pjName.length() - 2 : 1));// 项目
+                            String company = String.valueOf(cell.getNumericCellValue());
+                            partner.setCompany(company.substring(0, company.length() - 2 > 0 ? company.length() - 2 : 1));
+                            // map.put("company",company.substring(0, company.length() - 2 > 0 ? company.length() - 2 : 1));// 业务伙伴名称
                         } else {
-                            partner.setPjName(cell.getStringCellValue());
-                            // map.put("pjName", cell.getStringCellValue());// 项目
+                            partner.setCompany(cell.getStringCellValue());
+                            // map.put("company",cell.getStringCellValue());// 业务伙伴名称
                         }
                     } else if (c == 3) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String corp = String.valueOf(cell.getNumericCellValue());
+                            partner.setCorp(corp.substring(0, corp.length() - 2 > 0 ? corp.length() - 2 : 1));
+                            // map.put("corp", corp.substring(0, corp.length() - 2 > 0 ? corp.length() - 2 : 1));// 法人代表
+                        } else {
+                            partner.setCorp(cell.getStringCellValue());
+                            // map.put("corp", cell.getStringCellValue());// 法人代表
+                        }
+                    } else if (c == 4) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String comAddr = String.valueOf(cell.getNumericCellValue());
+                            partner.setComAddr(comAddr.substring(0, comAddr.length() - 2 > 0 ? comAddr.length() - 2 : 1));
+                            // map.put("comAddr", comAddr.substring(0, comAddr.length() - 2 > 0 ? comAddr.length() - 2 : 1));// 联系地址
+                        } else {
+                            partner.setComAddr(cell.getStringCellValue());
+                            //  map.put("comAddr", cell.getStringCellValue());// 联系地址
+                        }
+                    } else if (c == 5) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String comTel = String.valueOf(cell.getNumericCellValue());
+                            partner.setComTel(comTel.substring(0, comTel.length() - 2 > 0 ? comTel.length() - 2 : 1));
+                            // map.put("comTel", comTel.substring(0, comTel.length() - 2 > 0 ? comTel.length() - 2 : 1));// 公司电话
+                        } else {
+                            partner.setComTel(cell.getStringCellValue());
+                            //  map.put("comTel", cell.getStringCellValue());// 公司电话
+                        }
+                    } else if (c == 6) {
                         if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
                             String name = String.valueOf(cell.getNumericCellValue());
                             partner.setName(name.substring(0, name.length() - 2 > 0 ? name.length() - 2 : 1));
@@ -468,6 +486,60 @@ public class ReadExcel {
                         } else {
                             partner.setName(cell.getStringCellValue());
                             //  map.put("name", cell.getStringCellValue());// 姓名
+                        }
+                    } else if (c == 7) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String capital = String.valueOf(cell.getNumericCellValue());
+                            partner.setCapital(capital.substring(0, capital.length() - 2 > 0 ? capital.length() - 2 : 1));
+                            // map.put("capital", capital.substring(0, capital.length() - 2 > 0 ? capital.length() - 2 : 1));// 注册资本
+                        } else {
+                            partner.setCapital(cell.getStringCellValue());
+                            //  map.put("capital", cell.getStringCellValue());// 注册资本
+                        }
+                    } else if (c == 8) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String staffNum = String.valueOf(cell.getNumericCellValue());
+                            partner.setStaffNum(staffNum.substring(0, staffNum.length() - 2 > 0 ? staffNum.length() - 2 : 1));
+                            // map.put("staffNum", staffNum.substring(0, staffNum.length() - 2 > 0 ? staffNum.length() - 2 : 1));// 员工人数
+                        } else {
+                            partner.setStaffNum(cell.getStringCellValue());
+                            //  map.put("staffNum", cell.getStringCellValue());// 员工人数
+                        }
+                    } else if (c == 9) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String sales = String.valueOf(cell.getNumericCellValue());
+                            partner.setSales(sales.substring(0, sales.length() - 2 > 0 ? sales.length() - 2 : 1));
+                            // map.put("sales", sales.substring(0, sales.length() - 2 > 0 ? sales.length() - 2 : 1));// 年销售额
+                        } else {
+                            partner.setSales(cell.getStringCellValue());
+                            //  map.put("sales", cell.getStringCellValue());// 年销售额
+                        }
+                    } else if (c == 10) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String brief = String.valueOf(cell.getNumericCellValue());
+                            partner.setBrief(brief.substring(0, brief.length() - 2 > 0 ? brief.length() - 2 : 1));
+                            // map.put("brief", brief.substring(0, brief.length() - 2 > 0 ? brief.length() - 2 : 1));// 公司简介
+                        } else {
+                            partner.setBrief(cell.getStringCellValue());
+                            //  map.put("brief", cell.getStringCellValue());// 公司简介
+                        }
+                    } else if (c == 11) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String industry = String.valueOf(cell.getNumericCellValue());
+                            partner.setIndustry(industry.substring(0, industry.length() - 2 > 0 ? industry.length() - 2 : 1));
+                            // map.put("industry", industry.substring(0, industry.length() - 2 > 0 ? industry.length() - 2 : 1));// 行业
+                        } else {
+                            partner.setIndustry(cell.getStringCellValue());
+                            //  map.put("industry", cell.getStringCellValue());// 行业
+                        }
+                    } else if (c == 12) {
+                        if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+                            String area = String.valueOf(cell.getNumericCellValue());
+                            partner.setArea(area.substring(0, area.length() - 2 > 0 ? area.length() - 2 : 1));
+                            // map.put("area", area.substring(0, area.length() - 2 > 0 ? area.length() - 2 : 1));// 区域
+                        } else {
+                            partner.setArea(cell.getStringCellValue());
+                            //  map.put("area", cell.getStringCellValue());// 区域
                         }
                     }
                 }

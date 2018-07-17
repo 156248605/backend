@@ -18,7 +18,7 @@ public class Linkman {
     // 联系地址
     private String address;
     // 唯一识别Id
-    private int onlyIdLink;
+    private int onlyIdL;
     // 查询条件
     // 查询条件
     private String linkIdC;
@@ -33,7 +33,7 @@ public class Linkman {
     public Linkman() {
     }
 
-    public Linkman(String linkId, String job, String name, String tel, String email, String qqNum, String wechatNum, String address, int onlyIdLink, String linkIdC, String nameC, String telC, String jobC, String emailC, String qqNumC, String wechatNumC, String addressC) {
+    public Linkman(String linkId, String job, String name, String tel, String email, String qqNum, String wechatNum, String address, int onlyIdL, String linkIdC, String nameC, String telC, String jobC, String emailC, String qqNumC, String wechatNumC, String addressC) {
         this.linkId = linkId;
         this.job = job;
         this.name = name;
@@ -42,7 +42,7 @@ public class Linkman {
         this.qqNum = qqNum;
         this.wechatNum = wechatNum;
         this.address = address;
-        this.onlyIdLink = onlyIdLink;
+        this.onlyIdL = onlyIdL;
         this.linkIdC = linkIdC;
         this.nameC = nameC;
         this.telC = telC;
@@ -117,12 +117,12 @@ public class Linkman {
         this.address = address;
     }
 
-    public int getOnlyIdLink() {
-        return onlyIdLink;
+    public int getOnlyIdL() {
+        return onlyIdL;
     }
 
-    public void setOnlyIdLink(int onlyIdLink) {
-        this.onlyIdLink = onlyIdLink;
+    public void setOnlyIdL(int onlyIdL) {
+        this.onlyIdL = onlyIdL;
     }
 
     public String getLinkIdC() {
@@ -200,7 +200,7 @@ public class Linkman {
                 ", qqNum='" + qqNum + '\'' +
                 ", wechatNum='" + wechatNum + '\'' +
                 ", address='" + address + '\'' +
-                ", onlyIdLink=" + onlyIdLink +
+                ", onlyIdL=" + onlyIdL +
                 ", linkIdC='" + linkIdC + '\'' +
                 ", nameC='" + nameC + '\'' +
                 ", telC='" + telC + '\'' +

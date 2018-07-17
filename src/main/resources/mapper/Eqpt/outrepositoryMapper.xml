@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.OutRepositoryMapper">
+    <select id="findAll" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository
+    </select>
+
+    <insert id="insertNew" parameterType="string">
+        INSERT INTO eqpt_outrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14})
+    </insert>
+
+    <select id="searchId" resultType="string">
+        SELECT id FROM eqpt_material WHERE sn = #{sn} AND bn = #{bn} AND id = #{id}
+    </select>
+
+    <select id="showOUTID" resultType="java.lang.String">
+        SELECT outId FROM eqpt_outrepository WHERE outId LIKE CONCAT(CONCAT('%',#{outId},'%'))
+    </select>
+
+    <delete id="delete" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_outrepository WHERE onlyIdOut = #{onlyIdOut}
+    </delete>
+
+    <update id="updUser" parameterType="string">
+        UPDATE eqpt_outrepository SET two = '1' WHERE outId = #{outId}
+    </update>
+
+    <select id="warn" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository WHERE one = '1' AND two = '1' AND warn = '0' AND outId = (SELECT outId FROM eqpt_outrepository WHERE one = '1' AND two = '1' AND warn = '0' limit 1)
+    </select>
+
+    <select id="warning" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository WHERE one = '1' AND two = '0' AND warn = '0' AND outId = (SELECT outId FROM eqpt_outrepository WHERE one = '1' AND two = '0' AND warn = '0' limit 1)
+    </select>
+
+    <update id="updWarn" parameterType="string">
+        UPDATE eqpt_outrepository SET warn = '1' WHERE outId = #{outId}
+    </update>
+</mapper>
