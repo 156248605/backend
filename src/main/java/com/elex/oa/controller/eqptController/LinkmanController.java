@@ -5,7 +5,6 @@ import com.elex.oa.entity.eqpt.Linkman;
 import com.elex.oa.entity.eqpt.Partner;
 import com.elex.oa.service.eqptImpl.LinkmanImpl;
 import com.github.pagehelper.PageInfo;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
