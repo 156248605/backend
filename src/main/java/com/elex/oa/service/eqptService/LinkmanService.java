@@ -18,4 +18,7 @@ public interface LinkmanService {
 
     // 删除联系人
     void deleteLinkman(HttpServletRequest request);
+
+    // 修改联系人
+    void changeLinkman(HttpServletRequest request);
 }

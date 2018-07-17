@@ -6,11 +6,14 @@ import com.elex.oa.entity.eqpt.Linkman;
 import com.elex.oa.service.eqptService.LinkmanService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 @Service
 public class LinkmanImpl implements LinkmanService{
@@ -95,7 +98,6 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setWechatNum(wechatNum);
         // 判断是否重复
         List<Linkman> listL = linkmanMapper.searchFor(linkman);
-        System.out.println(listL);
         if (listL.isEmpty() ){
             linkmanMapper.newLinkman(linkman);
             return "1";
@@ -107,6 +109,14 @@ public class LinkmanImpl implements LinkmanService{
     // 删除联系人
     @Override
     public void deleteLinkman(HttpServletRequest request) {
+        String onlyIdL = request.getParameter("onlyIdL");
+        Linkman linkman = new Linkman();
+        linkman.setOnlyIdL(parseInt(onlyIdL));
+        linkmanMapper.deleteLinkman(linkman);
+    }
+
+    @Override
+    public void changeLinkman(HttpServletRequest request) {
         String linkId = request.getParameter("linkId");
         String name = request.getParameter("name");
         String tel = request.getParameter("tel");
@@ -115,6 +125,7 @@ public class LinkmanImpl implements LinkmanService{
         String email = request.getParameter("email");
         String qqNum = request.getParameter("qqNum");
         String wechatNum = request.getParameter("wechatNum");
+        String onlyIdL = request.getParameter("onlyIdL");
         Linkman linkman = new Linkman();
         linkman.setLinkId(linkId);
         linkman.setName(name);
@@ -124,6 +135,7 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setEmail(email);
         linkman.setQqNum(qqNum);
         linkman.setWechatNum(wechatNum);
-        linkmanMapper.deleteLinkman(linkman);
+        linkman.setOnlyIdL(parseInt(onlyIdL));
+        linkmanMapper.changeLinkman(linkman);
     }
 }

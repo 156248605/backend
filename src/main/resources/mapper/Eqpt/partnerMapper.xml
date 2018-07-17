@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.PartnerMapper">
+    <select id="PartnerList" resultType="com.elex.oa.entity.eqpt.Partner">
+        SELECT * FROM eqpt_partner
+    </select>
+
+    <select id="searchPartner" resultType="com.elex.oa.entity.eqpt.Partner" parameterType="com.elex.oa.entity.eqpt.Partner">
+        SELECT * FROM eqpt_partner
+        <where>
+            <if test="pnCategory != null and pnCategory != ''">
+                AND pnCategory = #{pnCategory}
+            </if>
+            <if test="pnId != null and pnId != ''">
+                AND pnId = #{pnId}
+            </if>
+            <if test="company != null and company != ''">
+                AND company = #{company}
+            </if>
+            <if test="corp != null and corp != ''">
+                AND corp = #{corp}
+            </if>
+            <if test="comAddr != null and comAddr != ''">
+                AND comAddr = #{comAddr}
+            </if>
+            <if test="comTel != null and comTel != ''">
+                AND comTel = #{comTel}
+            </if>
+            <if test="capital != null and capital != ''">
+                AND capital = #{capital}
+            </if>
+            <if test="staffNum != null and staffNum != ''">
+                AND staffNum = #{staffNum}
+            </if>
+            <if test="sales != null and sales != ''">
+                AND sales = #{sales}
+            </if>
+            <if test="brief != null and brief != ''">
+                AND brief = #{brief}
+            </if>
+            <if test="industry != null and industry != ''">
+                AND industry = #{industry}
+            </if>
+            <if test="area != null and area != ''">
+                AND area = #{area}
+            </if>
+            <if test="name != null and name != ''">
+                AND name = #{name}
+            </if>
+        </where>
+    </select>
+
+    <insert id="importPartner" parameterType="com.elex.oa.entity.eqpt.Partner">
+        INSERT INTO eqpt_partner VALUES (NULL,#{pnCategory},#{company},#{name},#{pnId},#{corp},#{comAddr},#{comTel},#{capital},#{staffNum},#{sales},#{brief},#{industry},#{area})
+    </insert>
+
+    <insert id="insertPartner" parameterType="com.elex.oa.entity.eqpt.Partner">
+        INSERT INTO eqpt_partner VALUES (NULL,#{pnCategory},#{company},#{name},#{pnId},#{corp},#{comAddr},#{comTel},#{capital},#{staffNum},#{sales},#{brief},#{industry},#{area})
+    </insert>
+
+    <select id="findName" resultType="com.elex.oa.entity.eqpt.Partner">
+        SELECT * FROM eqpt_partner WHERE name = #{name}
+    </select>
+
+    <update id="changePartner" parameterType="com.elex.oa.entity.eqpt.Partner">
+        UPDATE eqpt_partner
+        <set>
+            <if test="pnCategory != null and pnCategory != ''">
+                pnCategory = #{pnCategory},
+            </if>
+            <if test="pnId != null and pnId != ''">
+                pnId = #{pnId},
+            </if>
+            <if test="company != null and company != ''">
+                company = #{company},
+            </if>
+            <if test="corp != null and corp != ''">
+                corp = #{corp},
+            </if>
+            <if test="comAddr != null and comAddr != ''">
+                comAddr = #{comAddr},
+            </if>
+            <if test="comTel != null and comTel != ''">
+                comTel = #{comTel},
+            </if>
+            <if test="capital != null and capital != ''">
+                capital = #{capital},
+            </if>
+            <if test="staffNum != null and staffNum != ''">
+                staffNum = #{staffNum},
+            </if>
+            <if test="sales != null and sales != ''">
+                sales = #{sales},
+            </if>
+            <if test="brief != null and brief != ''">
+                brief = #{brief},
+            </if>
+            <if test="industry != null and industry != ''">
+                industry = #{industry},
+            </if>
+            <if test="area != null and area != ''">
+                area = #{area},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name}
+            </if>
+        </set>
+        WHERE onlyIdP = #{onlyIdP}
+    </update>
+
+    <delete id="deletePartner" parameterType="com.elex.oa.entity.eqpt.Partner">
+        DELETE FROM eqpt_partner WHERE onlyIdP = #{onlyIdP}
+    </delete>
+
+</mapper>

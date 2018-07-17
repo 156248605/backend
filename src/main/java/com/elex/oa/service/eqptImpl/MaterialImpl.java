@@ -1,13 +1,13 @@
 package com.elex.oa.service.eqptImpl;
 
-
+import com.alibaba.fastjson.JSON;
 import com.elex.oa.dao.eqptDao.MaterialMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.service.eqptService.MaterialService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
+import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +27,8 @@ public class MaterialImpl implements MaterialService {
     @Override
     public PageInfo<Material> showMaterial(Page page){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
+        Material material = new Material();
+        material.setMaterialState("启用");
         List<Material> listM = materialMapper.MaterialList();
         return new PageInfo<>(listM);
     }
@@ -35,13 +37,19 @@ public class MaterialImpl implements MaterialService {
     @Override
     public PageInfo<Material> searchMaterial(Page page, HttpServletRequest request){
         String ID = request.getParameter("id");
+        /*List<String> listID = null;
+        if (ID.length() > 2) {
+            JSONArray jsonArrayID = JSONArray.fromObject(ID);
+            listID = (List) JSONArray.toCollection(jsonArrayID);
+        }*/
         String IDC = request.getParameter("idC");
         String NAME = request.getParameter("name");
+        /*List<String> listName = null;
+        if (NAME.length() > 2) {
+            JSONArray jsonArrayNAME = JSONArray.fromObject(NAME);
+            listName = (List) JSONArray.toCollection(jsonArrayNAME);
+        }*/
         String NAMEC = request.getParameter("nameC");
-        String BN = request.getParameter("bn");
-        String BNC = request.getParameter("bnC");
-        String SN = request.getParameter("sn");
-        String SNC = request.getParameter("snC");
         String MAT = request.getParameter("material");
         String MATC = request.getParameter("materialC");
         String SPEC = request.getParameter("spec");
@@ -66,18 +74,22 @@ public class MaterialImpl implements MaterialService {
         String MINLIMITC = request.getParameter("minlimitC");
         String POSITION = request.getParameter("position");
         String POSITIONC = request.getParameter("positionC");
+        String NUM = request.getParameter("num");
+        String NUMC = request.getParameter("numC");
+        String UNIT = request.getParameter("unit");
+        String UNITC = request.getParameter("unitC");
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        if (ID.equals("") && NAME.equals("") && CATEGORY.equals("") && PRICE.equals("") && REMARK.equals("") && PARTNER.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && POSITION.equals("") && SN.equals("") && BN.equals("") && request.getParameter("date").length() <= 10 && BRAND.equals("") && MAT.equals("") && SPEC.equals("") ){
+        if (IDC.equals("") && NAMEC.equals("") && SPECC.equals("") && MATC.equals("") && BRANDC.equals("") && CATEGORYC.equals("") && MAXLIMITC.equals("") && MINLIMITC.equals("") && UNITC.equals("") && NUMC.equals("") && PRICEC.equals("") && POSITIONC.equals("") ) {
+            PageHelper.startPage(page.getCurrentPage(), page.getRows());
+            Material material = new Material();
+            material.setMaterialState("启用");
             List<Material> listM = materialMapper.MaterialList();
             return new PageInfo<>(listM);
         }else {
+            PageHelper.startPage(page.getCurrentPage(), page.getRows());
             Material material = new Material();
             material.setId(ID);
             material.setIdC(IDC);
-            material.setSn(SN);
-            material.setSn(SNC);
-            material.setBn(BN);
-            material.setBnC(BNC);
             material.setName(NAME);
             material.setNameC(NAMEC);
             material.setsDate(SDATE);
@@ -100,6 +112,10 @@ public class MaterialImpl implements MaterialService {
             material.setRemark(REMARK);
             material.setPosition(POSITION);
             material.setPositionC(POSITIONC);
+            material.setUnit(UNIT);
+            material.setUnitC(UNITC);
+            material.setNum(NUM);
+            material.setNumC(NUMC);
             List<Material> listM = materialMapper.SearchMaterial(material);
             return new PageInfo<>(listM);
         }
@@ -110,8 +126,6 @@ public class MaterialImpl implements MaterialService {
     public Material changeMaterial (HttpServletRequest request) {
         Material material = new Material();
         material.setId(request.getParameter("id"));
-        material.setBn(request.getParameter("bn"));
-        material.setSn(request.getParameter("sn"));
         Material material1 = materialMapper.MaterialId(material);
         return material1;
     }
@@ -123,25 +137,38 @@ public class MaterialImpl implements MaterialService {
         Material material = new Material();
         material.setId(request.getParameter("id"));
         material.setPartner(request.getParameter("partner"));
-        material.setBn(request.getParameter("bn"));
-        material.setSn(request.getParameter("sn"));
         material.setName(request.getParameter("name"));
         material.setSpec(request.getParameter("spec"));
         material.setCategory(request.getParameter("category"));
         material.setMaterial(request.getParameter("material"));
         material.setPosition(request.getParameter("position"));
         material.setBrand(request.getParameter("brand"));
-        String date = request.getParameter("date");
-        date = date.replace("Z", " UTC");//注意是空格+UTC
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-        Date d = format.parse(date);
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        String sDate = sdf.format(d);
+        String date = "";
+        String sDate = "";
+        if (request.getParameter("date") == null ){
+            System.out.println("...");
+        } else {
+            date = request.getParameter("date");
+            date = date.replace("Z", " UTC");//注意是空格+UTC
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
+            Date d = format.parse(date);
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            sDate = sdf.format(d);
+        }
         material.setDate(sDate);
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
         material.setPrice(request.getParameter("price"));
+        material.setNum(request.getParameter("num"));
+        material.setUnit(request.getParameter("unit"));
         material.setOnlyId(onlyId);
+        String State = "";
+        if (request.getParameter("materialState") == null){
+            State = "启用";
+        }else {
+            State = request.getParameter("materialState");
+        }
+        material.setMaterialState(State);
         materialMapper.saveMaterial(material);
     }
 
@@ -155,11 +182,9 @@ public class MaterialImpl implements MaterialService {
 
     // 插入物料
     @Override
-    public String insertMaterial(Material material, HttpServletRequest request)throws ParseException {
+    public void insertMaterial(Material material, HttpServletRequest request)throws ParseException {
         material.setId(request.getParameter("id"));
         material.setPartner(request.getParameter("partner"));
-        material.setBn(request.getParameter("bn"));
-        material.setSn(request.getParameter("sn"));
         material.setName(request.getParameter("name"));
         material.setSpec(request.getParameter("spec"));
         material.setCategory(request.getParameter("category"));
@@ -167,6 +192,8 @@ public class MaterialImpl implements MaterialService {
         material.setPosition(request.getParameter("position"));
         material.setBrand(request.getParameter("brand"));
         material.setPrice(request.getParameter("price"));
+        material.setNum(request.getParameter("num"));
+        material.setUnit(request.getParameter("unit"));
         String date = request.getParameter("date");
         date = date.replace("Z", " UTC");//注意是空格+UTC
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
@@ -176,12 +203,6 @@ public class MaterialImpl implements MaterialService {
         material.setDate(sDate);
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
-        String SN = materialMapper.searchSN(material).toString();
-        if ( SN != request.getParameter("sn") || SN == "无" ){
-            materialMapper.newMaterial(material);
-            return "0";
-        }else {
-            return "1";
-        }
+        materialMapper.newMaterial(material);
     }
 }

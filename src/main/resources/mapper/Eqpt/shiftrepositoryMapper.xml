@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.ShiftRepositoryMapper">
+
+    <select id="showRepository" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository
+    </select>
+
+    <insert id="insertNew" parameterType="string">
+        INSERT INTO eqpt_shiftrepository VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},NULL)
+    </insert>
+
+    <select id="showSHIFTID" resultType="java.lang.String">
+        SELECT shiftId FROM eqpt_shiftrepository WHERE shiftId LIKE CONCAT(CONCAT('%',#{shiftId},'%'))
+    </select>
+
+    <select id="lockMat" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE id = #{id}
+    </select>
+</mapper>

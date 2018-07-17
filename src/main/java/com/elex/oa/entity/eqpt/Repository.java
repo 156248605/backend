@@ -4,16 +4,14 @@ public class Repository {
 
     // 仓库类型
     private String reptCategory;
-    // 移出库类型
+    // 移出类型
     private String outReptC;
-    // 移入库类型
+    // 移入类型
     private String inReptC;
-    // 普通库
-    private String commonR;
-    // 寄存库
-    private String depositR;
-    // 库存数量
-    private String num;
+    // 盘点
+    private String invId;
+    // 盘点时间
+    private String invTime;
     // 库位
     private String position;
     // 移出库位
@@ -23,9 +21,13 @@ public class Repository {
     // 仓库编号
     private String reptId;
     // 移出库编号
-    private String outReptId;
+    private String outRept;
     // 移入库编号
-    private String inReptId;
+    private String inRept;
+    // 移出库库位
+    private String outPost;
+    // 移入库库位
+    private String inPost;
     // 入库
     private String in;
     // 出库
@@ -50,6 +52,30 @@ public class Repository {
     private String outNum;
     // 移库数量
     private String shiftNum;
+    // 入库通知
+    private String inInfo;
+    // 出库通知
+    private String outInfo;
+    // 移库通知
+    private String shiftInfo;
+    // 库存数量
+    private String num;
+    // 盘点数量
+    private String numInv;
+    // 物品单价
+    private String price;
+    // 规格型号
+    private String spec;
+    // 单位
+    private String unit;
+    // 物料种类
+    private String category;
+    // 检验单号
+    private String check;
+    // 盘盈盘亏
+    private String pal;
+    // 盘盈盘亏(大写)
+    private String palCal;
     // 采购入库
     private String purchaseIn;
     // 生产入库
@@ -68,42 +94,83 @@ public class Repository {
     private String sn;
     // 物料编号
     private String materialId;
+    // 物料名称
+    private String materialName;
     // 启用状态
     private String reptState;
     // 库位管理
     private String postManage;
     // 地址
-    private String reptAddress;
+    private String reptAddr;
+    // 仓库名称
+    private String reptName;
+    // 仓库管理员
+    private String reptAdmin;
+    // 库位编号
+    private String postId;
+    // 库位名称
+    private String postName;
+    // 库位类别
+    private String postCate;
+    // 固定库位物品
+    private String fixPostMat;
+    // 库位容量
+    private String postCap;
     // 备注
     private String remark;
     // 唯一
-    private int onlyId;
+    private int onlyIdR;
+    private int onlyIdIn;
+    private int onlyIdOut;
+    private int onlyIdInv;
     // 对应判断条件
     private String bnC;
     private String snC;
     private String matIdC;
+    private String matNameC;
     private String reptIdC;
     private String reptCateC;
-    private String numC;
     private String positionC;
-
+    private String inNumC;
+    private String inIdC;
+    private String inTimeC;
+    private String outNumC;
+    private String outIdC;
+    private String outTimeC;
+    private String numC;
+    private String numInvC;
+    private String invIdC;
+    private String invTimeC;
+    private String palC;
+    private String priceC;
+    private String reptNameC;
+    private String reptAdminC;
+    private String reptStateC;
+    private String postManageC;
+    private String postIdC;
+    private String postNameC;
+    private String postCateC;
+    private String fixPostMatC;
+    private String postCapC;
+    private String reptAddrC;
 
     public Repository() {
     }
 
-    public Repository(String reptCategory, String outReptC, String inReptC, String commonR, String depositR, String num, String position, String outPosition, String inPosition, String reptId, String outReptId, String inReptId, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String reptState, String postManage, String reptAddress, String remark, int onlyId, String bnC, String snC, String matIdC, String reptIdC, String reptCateC, String numC, String positionC) {
+    public Repository(String reptCategory, String outReptC, String inReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String inInfo, String outInfo, String shiftInfo, String num, String numInv, String price, String spec, String unit, String category, String check, String pal, String palCal, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String materialName, String reptState, String postManage, String reptAddr, String reptName, String reptAdmin, String postId, String postName, String postCate, String fixPostMat, String postCap, String remark, int onlyIdR, int onlyIdIn, int onlyIdOut, int onlyIdInv, String bnC, String snC, String matIdC, String matNameC, String reptIdC, String reptCateC, String positionC, String inNumC, String inIdC, String inTimeC, String outNumC, String outIdC, String outTimeC, String numC, String numInvC, String invIdC, String invTimeC, String palC, String priceC, String reptNameC, String reptAdminC, String reptStateC, String postManageC, String postIdC, String postNameC, String postCateC, String fixPostMatC, String postCapC, String reptAddrC) {
         this.reptCategory = reptCategory;
         this.outReptC = outReptC;
         this.inReptC = inReptC;
-        this.commonR = commonR;
-        this.depositR = depositR;
-        this.num = num;
+        this.invId = invId;
+        this.invTime = invTime;
         this.position = position;
         this.outPosition = outPosition;
         this.inPosition = inPosition;
         this.reptId = reptId;
-        this.outReptId = outReptId;
-        this.inReptId = inReptId;
+        this.outRept = outRept;
+        this.inRept = inRept;
+        this.outPost = outPost;
+        this.inPost = inPost;
         this.in = in;
         this.out = out;
         this.shift = shift;
@@ -116,6 +183,18 @@ public class Repository {
         this.inNum = inNum;
         this.outNum = outNum;
         this.shiftNum = shiftNum;
+        this.inInfo = inInfo;
+        this.outInfo = outInfo;
+        this.shiftInfo = shiftInfo;
+        this.num = num;
+        this.numInv = numInv;
+        this.price = price;
+        this.spec = spec;
+        this.unit = unit;
+        this.category = category;
+        this.check = check;
+        this.pal = pal;
+        this.palCal = palCal;
         this.purchaseIn = purchaseIn;
         this.productIn = productIn;
         this.depositIn = depositIn;
@@ -125,18 +204,75 @@ public class Repository {
         this.bn = bn;
         this.sn = sn;
         this.materialId = materialId;
+        this.materialName = materialName;
         this.reptState = reptState;
         this.postManage = postManage;
-        this.reptAddress = reptAddress;
+        this.reptAddr = reptAddr;
+        this.reptName = reptName;
+        this.reptAdmin = reptAdmin;
+        this.postId = postId;
+        this.postName = postName;
+        this.postCate = postCate;
+        this.fixPostMat = fixPostMat;
+        this.postCap = postCap;
         this.remark = remark;
-        this.onlyId = onlyId;
+        this.onlyIdR = onlyIdR;
+        this.onlyIdIn = onlyIdIn;
+        this.onlyIdOut = onlyIdOut;
+        this.onlyIdInv = onlyIdInv;
         this.bnC = bnC;
         this.snC = snC;
         this.matIdC = matIdC;
+        this.matNameC = matNameC;
         this.reptIdC = reptIdC;
         this.reptCateC = reptCateC;
-        this.numC = numC;
         this.positionC = positionC;
+        this.inNumC = inNumC;
+        this.inIdC = inIdC;
+        this.inTimeC = inTimeC;
+        this.outNumC = outNumC;
+        this.outIdC = outIdC;
+        this.outTimeC = outTimeC;
+        this.numC = numC;
+        this.numInvC = numInvC;
+        this.invIdC = invIdC;
+        this.invTimeC = invTimeC;
+        this.palC = palC;
+        this.priceC = priceC;
+        this.reptNameC = reptNameC;
+        this.reptAdminC = reptAdminC;
+        this.reptStateC = reptStateC;
+        this.postManageC = postManageC;
+        this.postIdC = postIdC;
+        this.postNameC = postNameC;
+        this.postCateC = postCateC;
+        this.fixPostMatC = fixPostMatC;
+        this.postCapC = postCapC;
+        this.reptAddrC = reptAddrC;
+    }
+
+    public String getNumInvC() {
+        return numInvC;
+    }
+
+    public void setNumInvC(String numInvC) {
+        this.numInvC = numInvC;
+    }
+
+    public String getInvTimeC() {
+        return invTimeC;
+    }
+
+    public void setInvTimeC(String invTimeC) {
+        this.invTimeC = invTimeC;
+    }
+
+    public String getPalC() {
+        return palC;
+    }
+
+    public void setPalC(String palC) {
+        this.palC = palC;
     }
 
     public String getReptCategory() {
@@ -163,28 +299,20 @@ public class Repository {
         this.inReptC = inReptC;
     }
 
-    public String getCommonR() {
-        return commonR;
+    public String getInvId() {
+        return invId;
     }
 
-    public void setCommonR(String commonR) {
-        this.commonR = commonR;
+    public void setInvId(String invId) {
+        this.invId = invId;
     }
 
-    public String getDepositR() {
-        return depositR;
+    public String getInvTime() {
+        return invTime;
     }
 
-    public void setDepositR(String depositR) {
-        this.depositR = depositR;
-    }
-
-    public String getNum() {
-        return num;
-    }
-
-    public void setNum(String num) {
-        this.num = num;
+    public void setInvTime(String invTime) {
+        this.invTime = invTime;
     }
 
     public String getPosition() {
@@ -219,20 +347,36 @@ public class Repository {
         this.reptId = reptId;
     }
 
-    public String getOutReptId() {
-        return outReptId;
+    public String getOutRept() {
+        return outRept;
     }
 
-    public void setOutReptId(String outReptId) {
-        this.outReptId = outReptId;
+    public void setOutRept(String outRept) {
+        this.outRept = outRept;
     }
 
-    public String getInReptId() {
-        return inReptId;
+    public String getInRept() {
+        return inRept;
     }
 
-    public void setInReptId(String inReptId) {
-        this.inReptId = inReptId;
+    public void setInRept(String inRept) {
+        this.inRept = inRept;
+    }
+
+    public String getOutPost() {
+        return outPost;
+    }
+
+    public void setOutPost(String outPost) {
+        this.outPost = outPost;
+    }
+
+    public String getInPost() {
+        return inPost;
+    }
+
+    public void setInPost(String inPost) {
+        this.inPost = inPost;
     }
 
     public String getIn() {
@@ -331,6 +475,102 @@ public class Repository {
         this.shiftNum = shiftNum;
     }
 
+    public String getInInfo() {
+        return inInfo;
+    }
+
+    public void setInInfo(String inInfo) {
+        this.inInfo = inInfo;
+    }
+
+    public String getOutInfo() {
+        return outInfo;
+    }
+
+    public void setOutInfo(String outInfo) {
+        this.outInfo = outInfo;
+    }
+
+    public String getShiftInfo() {
+        return shiftInfo;
+    }
+
+    public void setShiftInfo(String shiftInfo) {
+        this.shiftInfo = shiftInfo;
+    }
+
+    public String getNum() {
+        return num;
+    }
+
+    public void setNum(String num) {
+        this.num = num;
+    }
+
+    public String getNumInv() {
+        return numInv;
+    }
+
+    public void setNumInv(String numInv) {
+        this.numInv = numInv;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getSpec() {
+        return spec;
+    }
+
+    public void setSpec(String spec) {
+        this.spec = spec;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCheck() {
+        return check;
+    }
+
+    public void setCheck(String check) {
+        this.check = check;
+    }
+
+    public String getPal() {
+        return pal;
+    }
+
+    public void setPal(String pal) {
+        this.pal = pal;
+    }
+
+    public String getPalCal() {
+        return palCal;
+    }
+
+    public void setPalCal(String palCal) {
+        this.palCal = palCal;
+    }
+
     public String getPurchaseIn() {
         return purchaseIn;
     }
@@ -403,6 +643,14 @@ public class Repository {
         this.materialId = materialId;
     }
 
+    public String getMaterialName() {
+        return materialName;
+    }
+
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
+    }
+
     public String getReptState() {
         return reptState;
     }
@@ -419,12 +667,68 @@ public class Repository {
         this.postManage = postManage;
     }
 
-    public String getReptAddress() {
-        return reptAddress;
+    public String getReptAddr() {
+        return reptAddr;
     }
 
-    public void setReptAddress(String reptAddress) {
-        this.reptAddress = reptAddress;
+    public void setReptAddr(String reptAddr) {
+        this.reptAddr = reptAddr;
+    }
+
+    public String getReptName() {
+        return reptName;
+    }
+
+    public void setReptName(String reptName) {
+        this.reptName = reptName;
+    }
+
+    public String getReptAdmin() {
+        return reptAdmin;
+    }
+
+    public void setReptAdmin(String reptAdmin) {
+        this.reptAdmin = reptAdmin;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public String getPostName() {
+        return postName;
+    }
+
+    public void setPostName(String postName) {
+        this.postName = postName;
+    }
+
+    public String getPostCate() {
+        return postCate;
+    }
+
+    public void setPostCate(String postCate) {
+        this.postCate = postCate;
+    }
+
+    public String getFixPostMat() {
+        return fixPostMat;
+    }
+
+    public void setFixPostMat(String fixPostMat) {
+        this.fixPostMat = fixPostMat;
+    }
+
+    public String getPostCap() {
+        return postCap;
+    }
+
+    public void setPostCap(String postCap) {
+        this.postCap = postCap;
     }
 
     public String getRemark() {
@@ -435,12 +739,36 @@ public class Repository {
         this.remark = remark;
     }
 
-    public int getOnlyId() {
-        return onlyId;
+    public int getOnlyIdR() {
+        return onlyIdR;
     }
 
-    public void setOnlyId(int onlyId) {
-        this.onlyId = onlyId;
+    public void setOnlyIdR(int onlyIdR) {
+        this.onlyIdR = onlyIdR;
+    }
+
+    public int getOnlyIdIn() {
+        return onlyIdIn;
+    }
+
+    public void setOnlyIdIn(int onlyIdIn) {
+        this.onlyIdIn = onlyIdIn;
+    }
+
+    public int getOnlyIdOut() {
+        return onlyIdOut;
+    }
+
+    public void setOnlyIdOut(int onlyIdOut) {
+        this.onlyIdOut = onlyIdOut;
+    }
+
+    public int getOnlyIdInv() {
+        return onlyIdInv;
+    }
+
+    public void setOnlyIdInv(int onlyIdInv) {
+        this.onlyIdInv = onlyIdInv;
     }
 
     public String getBnC() {
@@ -467,6 +795,14 @@ public class Repository {
         this.matIdC = matIdC;
     }
 
+    public String getMatNameC() {
+        return matNameC;
+    }
+
+    public void setMatNameC(String matNameC) {
+        this.matNameC = matNameC;
+    }
+
     public String getReptIdC() {
         return reptIdC;
     }
@@ -483,14 +819,6 @@ public class Repository {
         this.reptCateC = reptCateC;
     }
 
-    public String getNumC() {
-        return numC;
-    }
-
-    public void setNumC(String numC) {
-        this.numC = numC;
-    }
-
     public String getPositionC() {
         return positionC;
     }
@@ -499,21 +827,175 @@ public class Repository {
         this.positionC = positionC;
     }
 
+    public String getInNumC() {
+        return inNumC;
+    }
+
+    public void setInNumC(String inNumC) {
+        this.inNumC = inNumC;
+    }
+
+    public String getInIdC() {
+        return inIdC;
+    }
+
+    public void setInIdC(String inIdC) {
+        this.inIdC = inIdC;
+    }
+
+    public String getInTimeC() {
+        return inTimeC;
+    }
+
+    public void setInTimeC(String inTimeC) {
+        this.inTimeC = inTimeC;
+    }
+
+    public String getOutNumC() {
+        return outNumC;
+    }
+
+    public void setOutNumC(String outNumC) {
+        this.outNumC = outNumC;
+    }
+
+    public String getOutIdC() {
+        return outIdC;
+    }
+
+    public void setOutIdC(String outIdC) {
+        this.outIdC = outIdC;
+    }
+
+    public String getOutTimeC() {
+        return outTimeC;
+    }
+
+    public void setOutTimeC(String outTimeC) {
+        this.outTimeC = outTimeC;
+    }
+
+    public String getNumC() {
+        return numC;
+    }
+
+    public void setNumC(String numC) {
+        this.numC = numC;
+    }
+
+    public String getInvIdC() {
+        return invIdC;
+    }
+
+    public void setInvIdC(String invIdC) {
+        this.invIdC = invIdC;
+    }
+
+    public String getPriceC() {
+        return priceC;
+    }
+
+    public void setPriceC(String priceC) {
+        this.priceC = priceC;
+    }
+
+
+    public String getReptNameC() {
+        return reptNameC;
+    }
+
+    public void setReptNameC(String reptNameC) {
+        this.reptNameC = reptNameC;
+    }
+
+    public String getReptAdminC() {
+        return reptAdminC;
+    }
+
+    public void setReptAdminC(String reptAdminC) {
+        this.reptAdminC = reptAdminC;
+    }
+
+    public String getReptStateC() {
+        return reptStateC;
+    }
+
+    public void setReptStateC(String reptStateC) {
+        this.reptStateC = reptStateC;
+    }
+
+    public String getPostManageC() {
+        return postManageC;
+    }
+
+    public void setPostManageC(String postManageC) {
+        this.postManageC = postManageC;
+    }
+
+    public String getPostIdC() {
+        return postIdC;
+    }
+
+    public void setPostIdC(String postIdC) {
+        this.postIdC = postIdC;
+    }
+
+    public String getPostNameC() {
+        return postNameC;
+    }
+
+    public void setPostNameC(String postNameC) {
+        this.postNameC = postNameC;
+    }
+
+    public String getPostCateC() {
+        return postCateC;
+    }
+
+    public void setPostCateC(String postCateC) {
+        this.postCateC = postCateC;
+    }
+
+    public String getFixPostMatC() {
+        return fixPostMatC;
+    }
+
+    public void setFixPostMatC(String fixPostMatC) {
+        this.fixPostMatC = fixPostMatC;
+    }
+
+    public String getPostCapC() {
+        return postCapC;
+    }
+
+    public void setPostCapC(String postCapC) {
+        this.postCapC = postCapC;
+    }
+
+    public String getReptAddrC() {
+        return reptAddrC;
+    }
+
+    public void setReptAddrC(String reptAddrC) {
+        this.reptAddrC = reptAddrC;
+    }
+
     @Override
     public String toString() {
         return "Repository{" +
                 "reptCategory='" + reptCategory + '\'' +
                 ", outReptC='" + outReptC + '\'' +
                 ", inReptC='" + inReptC + '\'' +
-                ", commonR='" + commonR + '\'' +
-                ", depositR='" + depositR + '\'' +
-                ", num='" + num + '\'' +
+                ", invId='" + invId + '\'' +
+                ", invTime='" + invTime + '\'' +
                 ", position='" + position + '\'' +
                 ", outPosition='" + outPosition + '\'' +
                 ", inPosition='" + inPosition + '\'' +
                 ", reptId='" + reptId + '\'' +
-                ", outReptId='" + outReptId + '\'' +
-                ", inReptId='" + inReptId + '\'' +
+                ", outRept='" + outRept + '\'' +
+                ", inRept='" + inRept + '\'' +
+                ", outPost='" + outPost + '\'' +
+                ", inPost='" + inPost + '\'' +
                 ", in='" + in + '\'' +
                 ", out='" + out + '\'' +
                 ", shift='" + shift + '\'' +
@@ -526,6 +1008,18 @@ public class Repository {
                 ", inNum='" + inNum + '\'' +
                 ", outNum='" + outNum + '\'' +
                 ", shiftNum='" + shiftNum + '\'' +
+                ", inInfo='" + inInfo + '\'' +
+                ", outInfo='" + outInfo + '\'' +
+                ", shiftInfo='" + shiftInfo + '\'' +
+                ", num='" + num + '\'' +
+                ", numInv='" + numInv + '\'' +
+                ", price='" + price + '\'' +
+                ", spec='" + spec + '\'' +
+                ", unit='" + unit + '\'' +
+                ", category='" + category + '\'' +
+                ", check='" + check + '\'' +
+                ", pal='" + pal + '\'' +
+                ", palCal='" + palCal + '\'' +
                 ", purchaseIn='" + purchaseIn + '\'' +
                 ", productIn='" + productIn + '\'' +
                 ", depositIn='" + depositIn + '\'' +
@@ -535,18 +1029,51 @@ public class Repository {
                 ", bn='" + bn + '\'' +
                 ", sn='" + sn + '\'' +
                 ", materialId='" + materialId + '\'' +
+                ", materialName='" + materialName + '\'' +
                 ", reptState='" + reptState + '\'' +
                 ", postManage='" + postManage + '\'' +
-                ", reptAddress='" + reptAddress + '\'' +
+                ", reptAddr='" + reptAddr + '\'' +
+                ", reptName='" + reptName + '\'' +
+                ", reptAdmin='" + reptAdmin + '\'' +
+                ", postId='" + postId + '\'' +
+                ", postName='" + postName + '\'' +
+                ", postCate='" + postCate + '\'' +
+                ", fixPostMat='" + fixPostMat + '\'' +
+                ", postCap='" + postCap + '\'' +
                 ", remark='" + remark + '\'' +
-                ", onlyId=" + onlyId +
+                ", onlyIdR=" + onlyIdR +
+                ", onlyIdIn=" + onlyIdIn +
+                ", onlyIdOut=" + onlyIdOut +
+                ", onlyIdInv=" + onlyIdInv +
                 ", bnC='" + bnC + '\'' +
                 ", snC='" + snC + '\'' +
                 ", matIdC='" + matIdC + '\'' +
+                ", matNameC='" + matNameC + '\'' +
                 ", reptIdC='" + reptIdC + '\'' +
                 ", reptCateC='" + reptCateC + '\'' +
-                ", numC='" + numC + '\'' +
                 ", positionC='" + positionC + '\'' +
+                ", inNumC='" + inNumC + '\'' +
+                ", inIdC='" + inIdC + '\'' +
+                ", inTimeC='" + inTimeC + '\'' +
+                ", outNumC='" + outNumC + '\'' +
+                ", outIdC='" + outIdC + '\'' +
+                ", outTimeC='" + outTimeC + '\'' +
+                ", numC='" + numC + '\'' +
+                ", numInvC='" + numInvC + '\'' +
+                ", invIdC='" + invIdC + '\'' +
+                ", invTimeC='" + invTimeC + '\'' +
+                ", palC='" + palC + '\'' +
+                ", priceC='" + priceC + '\'' +
+                ", reptNameC='" + reptNameC + '\'' +
+                ", reptAdminC='" + reptAdminC + '\'' +
+                ", reptStateC='" + reptStateC + '\'' +
+                ", postManageC='" + postManageC + '\'' +
+                ", postIdC='" + postIdC + '\'' +
+                ", postNameC='" + postNameC + '\'' +
+                ", postCateC='" + postCateC + '\'' +
+                ", fixPostMatC='" + fixPostMatC + '\'' +
+                ", postCapC='" + postCapC + '\'' +
+                ", reptAddrC='" + reptAddrC + '\'' +
                 '}';
     }
 }
