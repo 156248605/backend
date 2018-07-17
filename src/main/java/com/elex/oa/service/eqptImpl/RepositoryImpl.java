@@ -47,7 +47,6 @@ public class RepositoryImpl implements RepositoryService {
         String num = request.getParameter("num");
         String numC = request.getParameter("numC");
         if ( !reptIdC.equals("") || !reptCategory.equals("") || !positionC.equals("") || !materialIdC.equals("") || !numC.equals("") ){
-            PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setNum(num);
             repository.setNumC(numC);

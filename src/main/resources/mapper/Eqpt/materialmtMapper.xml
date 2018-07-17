@@ -180,7 +180,7 @@
     </delete>
 
     <insert id="newMaterialMt" parameterType="com.elex.oa.entity.eqpt.Material">
-        INSERT INTO eqpt_materialmt VALUES (NULL,#{sn},#{bn},#{id},#{name},#{category},#{spec},#{brand},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{price},#{maxlimit},#{minlimit},#{partner},#{remark})
+        INSERT INTO eqpt_materialmt VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{price},#{maxlimit},#{minlimit},#{partner},#{remark})
     </insert>
 
     <select id="state" resultType="string">

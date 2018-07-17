@@ -78,15 +78,13 @@ public class MaterialImpl implements MaterialService {
         String NUMC = request.getParameter("numC");
         String UNIT = request.getParameter("unit");
         String UNITC = request.getParameter("unitC");
-        PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        if (IDC.equals("") && NAMEC.equals("") && SPECC.equals("") && MATC.equals("") && BRANDC.equals("") && CATEGORYC.equals("") && MAXLIMITC.equals("") && MINLIMITC.equals("") && UNITC.equals("") && NUMC.equals("") && PRICEC.equals("") && POSITIONC.equals("") ) {
+        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && POSITION.equals("") ) {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
             Material material = new Material();
             material.setMaterialState("启用");
             List<Material> listM = materialMapper.MaterialList();
             return new PageInfo<>(listM);
         }else {
-            PageHelper.startPage(page.getCurrentPage(), page.getRows());
             Material material = new Material();
             material.setId(ID);
             material.setIdC(IDC);
