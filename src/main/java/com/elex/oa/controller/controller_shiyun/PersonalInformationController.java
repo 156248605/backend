@@ -4,6 +4,8 @@ import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.permission.EmployeeService;
 import com.elex.oa.service.service_shiyun.*;
+import com.elex.oa.util.resp.RespUtil;
+import com.elex.oa.util.util_per.SpellUtils;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -510,7 +512,11 @@ public class PersonalInformationController {
         }
         // 在tb_id_user表中保存用户
         user.setIsactive(personalInformation.getIsactive());
-        user.setUsername(personalInformation.getUsername());
+        if (personalInformation.getUsername()!=null && !"".equals(personalInformation.getUsername())) {
+            user.setUsername(personalInformation.getUsername());
+        } else {
+            user.setUsername(SpellUtils.phoneticize(personalInformation.getTruename()));//如果没有人工输入，则自动将名字的汉字转换为汉语拼音
+        }
         user.setTruename(personalInformation.getTruename());
         Integer userid = iUserService.saveOne(user);
 
@@ -2151,5 +2157,31 @@ public class PersonalInformationController {
             list.add(postMap);
         }
         return list;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:赵宏钢的接口，根据账号查询信息
+     *@Date: 18:30 2018\7\17 0017
+     */
+    @RequestMapping("/queryZHG001")
+    @ResponseBody
+    public Object queryZHG001(
+            @RequestParam("username")String username
+    ){
+        User user = new User();
+        user.setUsername(username);
+        User user1 = iUserService.selectOne(user);
+        if(user1==null){
+            return RespUtil.successResp("205","没有查到此用户信息",null);
+        }else{
+            PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(user1.getId());
+            try {
+               // return this.getOnePersonalinformation(personalInformation.getId());
+                return RespUtil.successResp("205","没有查到此用户信息",this.getOnePersonalinformation(personalInformation.getId()));
+            } catch (ParseException e) {
+                return RespUtil.successResp("205","没有查到此用户信息",null);
+            }
+        }
     }
 }

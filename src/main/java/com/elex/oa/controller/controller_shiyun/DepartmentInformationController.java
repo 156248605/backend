@@ -672,7 +672,20 @@ public class DepartmentInformationController {
                 deptLog.setBeforeinformation(iUserService.getById(dept2.getSecretaryuserid()).getTruename());
                 deptLog.setAfterinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
+            }if (!dept.getDutydescription().equals(dept2.getDutydescription())){
+                b = true;
+                deptLog.setChangeinformation("部门职责");
+                deptLog.setBeforeinformation(dept2.getDutydescription());
+                deptLog.setAfterinformation(dept.getDutydescription());
+                iDeptLogService.addOne(deptLog);
+            }if (!dept.getDepdescription().equals(dept2.getDepdescription())){
+                b = true;
+                deptLog.setChangeinformation("部门概述");
+                deptLog.setBeforeinformation(dept2.getDepdescription());
+                deptLog.setAfterinformation(dept.getDepdescription());
+                iDeptLogService.addOne(deptLog);
             }
+
 
             if (b) {
                 if (ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype())!=null) {
@@ -744,8 +757,16 @@ public class DepartmentInformationController {
         List<DeptLog> list = deptLogPageInfo.getList();
         if(list.size()!=0){
             for (int i = 0;i< list.size();i++) {
-                list.get(i).setDeptname(iDeptService.queryOneDepByDepid(list.get(i).getDeptid()).getDepname());
-                list.get(i).setTransactortruename(iUserService.getById(list.get(i).getTransactoruserid()).getTruename());
+                if (iDeptService.queryOneDepByDepid(list.get(i).getDeptid())!=null) {
+                    list.get(i).setDeptname(iDeptService.queryOneDepByDepid(list.get(i).getDeptid()).getDepname());
+                } else {
+                    list.get(i).setDeptname("此部门已经不存在");
+                }
+                if (iUserService.getById(list.get(i).getTransactoruserid())!=null){
+                    list.get(i).setTransactortruename(iUserService.getById(list.get(i).getTransactoruserid()).getTruename());
+                } else {
+                    list.get(i).setTransactortruename("此员工已经不存在");
+                }
             }
             deptLogPageInfo.setList(list);
         }
