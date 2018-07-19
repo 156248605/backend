@@ -13,6 +13,8 @@ public interface LinkmanMapper {
 
     List<Linkman> searchFor(Linkman linkman);
 
+    List<Linkman> search(Linkman linkman);
+
     void newLinkman(Linkman linkman);
 
     void deleteLinkman(Linkman linkman);

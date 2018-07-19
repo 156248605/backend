@@ -28,24 +28,6 @@
             <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
                 AND reptCategory NOT LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
             </if>
-            <if test="sn != null and sn != '' and snC == ''">
-                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
-            <if test="sn != null and sn != '' and snC == 1">
-                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
-            <if test="sn != null and sn != '' and snC == 2">
-                AND sn NOT LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == ''">
-                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == 1">
-                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == 2">
-                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
             <if test="position != null and position != '' and positionC == ''">
                 AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
             </if>
@@ -124,24 +106,6 @@
             <if test="inId != null and inId != '' and inIdC == 2">
                 AND inId NOT LIKE CONCAT(CONCAT('%', #{inId}), '%')
             </if>
-            <if test="bn != null and bn != '' and bnC == ''">
-                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == 1">
-                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == 2">
-                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="sn != null and sn != '' and snC == ''">
-                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
-            <if test="sn != null and sn != '' and snC == 1">
-                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
-            <if test="sn != null and sn != '' and snC == 2">
-                AND sn NOT LIKE CONCAT(CONCAT('%', #{sn}), '%')
-            </if>
             <if test="position != null and position != '' and position == ''">
                 AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
             </if>
@@ -193,15 +157,6 @@
             <if test="outId != null and outId != '' and outIdC == 2">
                 AND outId NOT LIKE CONCAT(CONCAT('%', #{outId}), '%')
             </if>
-            <if test="bn != null and bn != '' and bnC == ''">
-                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == 1">
-                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
-            <if test="bn != null and bn != '' and bnC == 2">
-                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
-            </if>
             <if test="sn != null and sn != '' and snC == ''">
                 AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
             </if>
@@ -224,7 +179,7 @@
     </select>
 
     <insert id="insertRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{position},#{price},#{num},#{materialId},#{materialName},#{spec},#{category},#{sn},#{bn},#{remark},NULL,'是')
+        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{position},#{price},#{num},#{materialId},#{materialName},#{spec},#{category},#{remark},NULL,'是')
     </insert>
 
     <update id="changeRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -257,12 +212,6 @@
             <if test="reptCategory != null">
                 reptCategory = #{reptCategory},
             </if>
-            <if test="sn != null">
-                sn = #{sn},
-            </if>
-            <if test="bn != null">
-                bn = #{bn},
-            </if>
             <if test="reptState != null and reptState != ''">
                 reptState = #{reptState},
             </if>
@@ -275,7 +224,7 @@
     </delete>
 
     <insert id="newRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{position},#{materialId},#{bn},#{sn})
+        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{position},#{materialId})
     </insert>
 
     <update id="updRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -289,12 +238,6 @@
             </if>
             <if test="reptCategory != null">
                 reptCategory = #{reptCategory},
-            </if>
-            <if test="sn != null">
-                sn = #{sn},
-            </if>
-            <if test="bn != null">
-                bn = #{bn},
             </if>
             <if test="num != null">
                 num = #{num},
@@ -340,12 +283,6 @@
             <if test="reptCategory != null">
                 reptCategory = #{reptCategory},
             </if>
-            <if test="sn != null">
-                sn = #{sn},
-            </if>
-            <if test="bn != null">
-                bn = #{bn},
-            </if>
         </set>
         WHERE position = #{position}
     </update>
@@ -363,19 +300,19 @@
     </select>
 
     <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT reptId FROM eqpt_repository WHERE (materialId = #{materialId} AND sn = #{sn} AND bn = #{bn}) OR (materialId = '无' AND sn = '无' AND bn = '无')
+        SELECT DISTINCT reptId FROM eqpt_repository WHERE (materialId = #{materialId}) OR (materialId = '无')
     </select>
 
     <select id="matInPost" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT position FROM eqpt_repository WHERE (materialId = #{materialId} AND sn = #{sn} AND bn = #{bn}) OR (materialId = '无' AND sn = '无' AND bn = '无')
+        SELECT DISTINCT position FROM eqpt_repository WHERE (materialId = #{materialId}) OR (materialId = '无')
     </select>
 
     <select id="matOutRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT reptId FROM eqpt_repository WHERE materialId = #{materialId} AND sn = #{sn} AND bn = #{bn}
+        SELECT DISTINCT reptId FROM eqpt_repository WHERE materialId = #{materialId}
     </select>
 
     <select id="matOutPost" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT position FROM eqpt_repository WHERE materialId = #{materialId} AND sn = #{sn} AND bn = #{bn}
+        SELECT DISTINCT position FROM eqpt_repository WHERE materialId = #{materialId}
     </select>
 
     <select id="postlist" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -383,15 +320,15 @@
     </select>
 
     <select id="otherInfo" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
+        SELECT * FROM eqpt_material WHERE id = #{id}
     </select>
 
     <select id="invInfo" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT price,spec,category FROM eqpt_material WHERE id = #{id} AND sn = #{sn} AND bn = #{bn}
+        SELECT price,spec,category FROM eqpt_material WHERE id = #{id}
     </select>
 
     <select id="getNum" resultType="string">
-        SELECT num FROM eqpt_repository WHERE materialId = #{materialId} AND sn = #{sn} AND bn = #{bn} AND reptId = #{reptId} AND position = #{position}
+        SELECT num FROM eqpt_repository WHERE materialId = #{materialId}AND reptId = #{reptId} AND position = #{position}
     </select>
 
     <select id="getNumber" resultType="string">

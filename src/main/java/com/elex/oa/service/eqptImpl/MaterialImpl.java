@@ -1,13 +1,11 @@
 package com.elex.oa.service.eqptImpl;
 
-import com.alibaba.fastjson.JSON;
 import com.elex.oa.dao.eqptDao.MaterialMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.service.eqptService.MaterialService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -78,15 +76,13 @@ public class MaterialImpl implements MaterialService {
         String NUMC = request.getParameter("numC");
         String UNIT = request.getParameter("unit");
         String UNITC = request.getParameter("unitC");
-        PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        if (IDC.equals("") && NAMEC.equals("") && SPECC.equals("") && MATC.equals("") && BRANDC.equals("") && CATEGORYC.equals("") && MAXLIMITC.equals("") && MINLIMITC.equals("") && UNITC.equals("") && NUMC.equals("") && PRICEC.equals("") && POSITIONC.equals("") ) {
+        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && POSITION.equals("") && REMARK.equals("") ) {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
             Material material = new Material();
             material.setMaterialState("启用");
             List<Material> listM = materialMapper.MaterialList();
             return new PageInfo<>(listM);
         }else {
-            PageHelper.startPage(page.getCurrentPage(), page.getRows());
             Material material = new Material();
             material.setId(ID);
             material.setIdC(IDC);
@@ -99,7 +95,7 @@ public class MaterialImpl implements MaterialService {
             material.setMaterial(MAT);
             material.setMaterialC(MATC);
             material.setBrand(BRAND);
-            material.setBnC(BRANDC);
+            material.setBrandC(BRANDC);
             material.setCategory(CATEGORY);
             material.setCategoryC(CATEGORYC);
             material.setMaxlimit(MAXLIMIT);

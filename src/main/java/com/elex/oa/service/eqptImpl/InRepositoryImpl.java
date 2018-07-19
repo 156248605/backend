@@ -8,7 +8,6 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
-import static org.hibernate.internal.util.collections.ArrayHelper.toList;
 
 @Service
 public class InRepositoryImpl implements InRepositoryService {

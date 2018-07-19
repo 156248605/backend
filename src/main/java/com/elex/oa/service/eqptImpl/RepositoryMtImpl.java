@@ -1,7 +1,6 @@
 package com.elex.oa.service.eqptImpl;
 
 import com.elex.oa.dao.dao_shiyun.IUserDao;
-import com.elex.oa.dao.eqptDao.MaterialMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMtMapper;
 import com.elex.oa.entity.Page;
@@ -12,7 +11,6 @@ import com.elex.oa.service.eqptService.RepositoryMtService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

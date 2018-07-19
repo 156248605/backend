@@ -3,7 +3,7 @@ package com.elex.oa.service.eqptImpl;
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.dao.eqptDao.InventoryMapper;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.eqpt.Material;
+
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InventoryService;
 import com.github.pagehelper.PageHelper;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.ref.ReferenceQueue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

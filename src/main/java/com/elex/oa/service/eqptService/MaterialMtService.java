@@ -3,7 +3,6 @@ package com.elex.oa.service.eqptService;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.github.pagehelper.PageInfo;
-import com.sun.tools.internal.ws.wsdl.document.http.HTTPOperation;
 
 import javax.servlet.http.HttpServletRequest;
 

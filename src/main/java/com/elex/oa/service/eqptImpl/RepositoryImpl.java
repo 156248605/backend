@@ -1,22 +1,16 @@
 package com.elex.oa.service.eqptImpl;
 
 
-import com.alibaba.fastjson.JSON;
-import com.elex.oa.dao.eqptDao.InRepositoryMapper;
-import com.elex.oa.dao.eqptDao.MaterialMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.RepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -47,7 +41,6 @@ public class RepositoryImpl implements RepositoryService {
         String num = request.getParameter("num");
         String numC = request.getParameter("numC");
         if ( !reptIdC.equals("") || !reptCategory.equals("") || !positionC.equals("") || !materialIdC.equals("") || !numC.equals("") ){
-            PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setNum(num);
             repository.setNumC(numC);
