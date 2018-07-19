@@ -1,13 +1,11 @@
 package com.elex.oa.service.eqptImpl;
 
-import com.alibaba.fastjson.JSON;
 import com.elex.oa.dao.eqptDao.MaterialMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.service.eqptService.MaterialService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

@@ -6,7 +6,6 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.HttpRetryException;
 import java.text.ParseException;
 import java.util.List;
 

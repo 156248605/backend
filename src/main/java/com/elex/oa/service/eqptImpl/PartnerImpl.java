@@ -9,7 +9,6 @@ import com.elex.oa.service.eqptService.PartnerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import sun.awt.image.ImageWatched;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
