@@ -224,7 +224,7 @@
     </select>
 
     <insert id="insertRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{position},#{price},#{num},#{materialId},#{materialName},#{spec},#{category},#{sn},#{bn},#{remark},NULL,'是')
+        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{position},#{price},#{num},#{materialId},#{materialName},#{spec},#{category},#{remark},NULL,'是')
     </insert>
 
     <update id="changeRepository" parameterType="com.elex.oa.entity.eqpt.Repository">

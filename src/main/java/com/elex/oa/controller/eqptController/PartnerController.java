@@ -1,6 +1,7 @@
 package com.elex.oa.controller.eqptController;
 
 import com.elex.oa.entity.Page;
+import com.elex.oa.entity.eqpt.Linkman;
 import com.elex.oa.entity.eqpt.Partner;
 import com.elex.oa.service.eqptImpl.PartnerImpl;
 import com.github.pagehelper.PageInfo;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @CrossOrigin
@@ -57,5 +59,34 @@ public class PartnerController {
     @ResponseBody
     public void DeletePartner (Partner partner,HttpServletRequest request){
         partnerImpl.deletePartner(partner,request);
+    }
+
+    @RequestMapping("/authorize")
+    @ResponseBody
+    public List<Linkman> authorize(){
+        List<Linkman> linkmanList = partnerImpl.authorize();
+        return linkmanList;
+    }
+
+    @RequestMapping("/authorizeId")
+    @ResponseBody
+    public List<Linkman> authorizeId(HttpServletRequest request){
+        List<Linkman> linkmanList = partnerImpl.authorizeId(request);
+        return linkmanList;
+    }
+
+
+    @RequestMapping("/otherName")
+    @ResponseBody
+    public List<Linkman> otherName(HttpServletRequest request){
+        List<Linkman> linkmanList = partnerImpl.otherName(request);
+        return linkmanList;
+    }
+
+    @RequestMapping("/authorizeInfo")
+    @ResponseBody
+    public List<Linkman> authorizeInfo(HttpServletRequest request){
+        List<Linkman> linkmanList = partnerImpl.authorizeInfo(request);
+        return linkmanList;
     }
 }

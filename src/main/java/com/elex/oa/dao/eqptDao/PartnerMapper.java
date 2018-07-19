@@ -1,6 +1,7 @@
 package com.elex.oa.dao.eqptDao;
 
 
+import com.elex.oa.entity.eqpt.Linkman;
 import com.elex.oa.entity.eqpt.Partner;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -26,4 +27,12 @@ public interface PartnerMapper {
     // int importPartner(String pnCategory,String company,String pjName,String name);
 
     int importPartner(Partner partner);
+
+    List<Linkman> authorize();
+
+    List<Linkman> authorizeId(Linkman linkman);
+
+    List<Linkman> authorizeInfo(Linkman linkman);
+
+    List<Linkman> otherName(Linkman linkman);
 }

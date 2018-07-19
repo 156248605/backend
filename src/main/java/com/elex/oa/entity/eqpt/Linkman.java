@@ -5,6 +5,8 @@ public class Linkman {
     private String linkId;
     // 联系人职务
     private String job;
+    // 联系人单位
+    private String workPlace;
     // 联系人姓名
     private String name;
     // 联系人电话
@@ -29,13 +31,15 @@ public class Linkman {
     private String qqNumC;
     private String wechatNumC;
     private String addressC;
+    private String workPlaceC;
 
     public Linkman() {
     }
 
-    public Linkman(String linkId, String job, String name, String tel, String email, String qqNum, String wechatNum, String address, int onlyIdL, String linkIdC, String nameC, String telC, String jobC, String emailC, String qqNumC, String wechatNumC, String addressC) {
+    public Linkman(String linkId, String job, String workPlace, String name, String tel, String email, String qqNum, String wechatNum, String address, int onlyIdL, String linkIdC, String nameC, String telC, String jobC, String emailC, String qqNumC, String wechatNumC, String addressC, String workPlaceC) {
         this.linkId = linkId;
         this.job = job;
+        this.workPlace = workPlace;
         this.name = name;
         this.tel = tel;
         this.email = email;
@@ -51,6 +55,7 @@ public class Linkman {
         this.qqNumC = qqNumC;
         this.wechatNumC = wechatNumC;
         this.addressC = addressC;
+        this.workPlaceC = workPlaceC;
     }
 
     public String getJob() {
@@ -189,11 +194,28 @@ public class Linkman {
         this.addressC = addressC;
     }
 
+    public String getWorkPlace() {
+        return workPlace;
+    }
+
+    public void setWorkPlace(String workPlace) {
+        this.workPlace = workPlace;
+    }
+
+    public String getWorkPlaceC() {
+        return workPlaceC;
+    }
+
+    public void setWorkPlaceC(String workPlaceC) {
+        this.workPlaceC = workPlaceC;
+    }
+
     @Override
     public String toString() {
         return "Linkman{" +
                 "linkId='" + linkId + '\'' +
                 ", job='" + job + '\'' +
+                ", workPlace='" + workPlace + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
                 ", email='" + email + '\'' +
@@ -209,6 +231,7 @@ public class Linkman {
                 ", qqNumC='" + qqNumC + '\'' +
                 ", wechatNumC='" + wechatNumC + '\'' +
                 ", addressC='" + addressC + '\'' +
+                ", workPlaceC='" + workPlaceC + '\'' +
                 '}';
     }
 }

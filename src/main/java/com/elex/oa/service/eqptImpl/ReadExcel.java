@@ -481,10 +481,10 @@ public class ReadExcel {
                     } else if (c == 6) {
                         if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
                             String name = String.valueOf(cell.getNumericCellValue());
-                            partner.setName(name.substring(0, name.length() - 2 > 0 ? name.length() - 2 : 1));
+                            partner.setAuthorize(name.substring(0, name.length() - 2 > 0 ? name.length() - 2 : 1));
                             // map.put("name", name.substring(0, name.length() - 2 > 0 ? name.length() - 2 : 1));// 姓名
                         } else {
-                            partner.setName(cell.getStringCellValue());
+                            partner.setAuthorize(cell.getStringCellValue());
                             //  map.put("name", cell.getStringCellValue());// 姓名
                         }
                     } else if (c == 7) {

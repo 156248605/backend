@@ -78,7 +78,7 @@ public class MaterialImpl implements MaterialService {
         String NUMC = request.getParameter("numC");
         String UNIT = request.getParameter("unit");
         String UNITC = request.getParameter("unitC");
-        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && POSITION.equals("") ) {
+        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && POSITION.equals("") && REMARK.equals("") ) {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
             Material material = new Material();
             material.setMaterialState("启用");
@@ -97,7 +97,7 @@ public class MaterialImpl implements MaterialService {
             material.setMaterial(MAT);
             material.setMaterialC(MATC);
             material.setBrand(BRAND);
-            material.setBnC(BRANDC);
+            material.setBrandC(BRANDC);
             material.setCategory(CATEGORY);
             material.setCategoryC(CATEGORYC);
             material.setMaxlimit(MAXLIMIT);

@@ -43,22 +43,23 @@ public class Partner {
     @Excel(name = "区域")
     private String area;
     // 联系人职务
-    private String job;
+    private String auJob;
     // 联系人编号
-    private String linkId;
+    private String auId;
     // 联系人QQ
-    private String qqNum;
-    // 联系人姓名
-    @Excel(name = "联系人姓名")
-    private String name;
+    private String auQq;
+    // 授权联系人
+    private String authorize;
     // 联系人电话
-    private String tel;
+    private String auTel;
     // 联系人邮箱
-    private String email;
+    private String auMail;
     // 联系人微信
-    private String wechatNum;
+    private String auWechat;
     // 联系地址
-    private String address;
+    private String auAddr;
+    // 其他联系人
+    private String otherLink;
     // 查询条件
     private String pnCateC;
     private String companyC;
@@ -73,11 +74,20 @@ public class Partner {
     private String briefC;
     private String industryC;
     private String areaC;
+    private String auJobC;
+    private String auIdC;
+    private String auQqC;
+    private String authorizeC;
+    private String auTelC;
+    private String auMailC;
+    private String auWechatC;
+    private String auAddrC;
+    private String otherLinkC;
 
     public Partner() {
     }
 
-    public Partner(int onlyIdP, String pnCategory, String pnId, String company, String corp, String comAddr, String comTel, String capital, String staffNum, String sales, String brief, String industry, String area, String job, String linkId, String qqNum, String name, String tel, String email, String wechatNum, String address, String pnCateC, String companyC, String pjNameC, String nameC, String pnIdC, String corpC, String comAddrC, String comTelC, String capitalC, String staffNumC, String salesC, String briefC, String industryC, String areaC) {
+    public Partner(int onlyIdP, String pnCategory, String pnId, String company, String corp, String comAddr, String comTel, String capital, String staffNum, String sales, String brief, String industry, String area, String auJob, String auId, String auQq, String authorize, String auTel, String auMail, String auWechat, String auAddr, String otherLink, String pnCateC, String companyC, String nameC, String pnIdC, String corpC, String comAddrC, String comTelC, String capitalC, String staffNumC, String salesC, String briefC, String industryC, String areaC, String auJobC, String auIdC, String auQqC, String authorizeC, String auTelC, String auMailC, String auWechatC, String auAddrC, String otherLinkC) {
         this.onlyIdP = onlyIdP;
         this.pnCategory = pnCategory;
         this.pnId = pnId;
@@ -91,14 +101,15 @@ public class Partner {
         this.brief = brief;
         this.industry = industry;
         this.area = area;
-        this.job = job;
-        this.linkId = linkId;
-        this.qqNum = qqNum;
-        this.name = name;
-        this.tel = tel;
-        this.email = email;
-        this.wechatNum = wechatNum;
-        this.address = address;
+        this.auJob = auJob;
+        this.auId = auId;
+        this.auQq = auQq;
+        this.authorize = authorize;
+        this.auTel = auTel;
+        this.auMail = auMail;
+        this.auWechat = auWechat;
+        this.auAddr = auAddr;
+        this.otherLink = otherLink;
         this.pnCateC = pnCateC;
         this.companyC = companyC;
         this.nameC = nameC;
@@ -112,86 +123,15 @@ public class Partner {
         this.briefC = briefC;
         this.industryC = industryC;
         this.areaC = areaC;
-    }
-
-    public String getPnCategory() {
-        return pnCategory;
-    }
-
-    public void setPnCategory(String pnCategory) {
-        this.pnCategory = pnCategory;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLinkId() {
-        return linkId;
-    }
-
-    public void setLinkId(String linkId) {
-        this.linkId = linkId;
-    }
-
-    public String getQqNum() {
-        return qqNum;
-    }
-
-    public void setQqNum(String qqNum) {
-        this.qqNum = qqNum;
-    }
-
-    public String getWechatNum() {
-        return wechatNum;
-    }
-
-    public void setWechatNum(String wechatNum) {
-        this.wechatNum = wechatNum;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+        this.auJobC = auJobC;
+        this.auIdC = auIdC;
+        this.auQqC = auQqC;
+        this.authorizeC = authorizeC;
+        this.auTelC = auTelC;
+        this.auMailC = auMailC;
+        this.auWechatC = auWechatC;
+        this.auAddrC = auAddrC;
+        this.otherLinkC = otherLinkC;
     }
 
     public int getOnlyIdP() {
@@ -202,28 +142,12 @@ public class Partner {
         this.onlyIdP = onlyIdP;
     }
 
-    public String getPnCateC() {
-        return pnCateC;
+    public String getPnCategory() {
+        return pnCategory;
     }
 
-    public void setPnCateC(String pnCateC) {
-        this.pnCateC = pnCateC;
-    }
-
-    public String getCompanyC() {
-        return companyC;
-    }
-
-    public void setCompanyC(String companyC) {
-        this.companyC = companyC;
-    }
-
-    public String getNameC() {
-        return nameC;
-    }
-
-    public void setNameC(String nameC) {
-        this.nameC = nameC;
+    public void setPnCategory(String pnCategory) {
+        this.pnCategory = pnCategory;
     }
 
     public String getPnId() {
@@ -232,6 +156,14 @@ public class Partner {
 
     public void setPnId(String pnId) {
         this.pnId = pnId;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public String getCorp() {
@@ -304,6 +236,102 @@ public class Partner {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public String getAuJob() {
+        return auJob;
+    }
+
+    public void setAuJob(String auJob) {
+        this.auJob = auJob;
+    }
+
+    public String getAuId() {
+        return auId;
+    }
+
+    public void setAuId(String auId) {
+        this.auId = auId;
+    }
+
+    public String getAuQq() {
+        return auQq;
+    }
+
+    public void setAuQq(String auQq) {
+        this.auQq = auQq;
+    }
+
+    public String getAuthorize() {
+        return authorize;
+    }
+
+    public void setAuthorize(String authorize) {
+        this.authorize = authorize;
+    }
+
+    public String getAuTel() {
+        return auTel;
+    }
+
+    public void setAuTel(String auTel) {
+        this.auTel = auTel;
+    }
+
+    public String getAuMail() {
+        return auMail;
+    }
+
+    public void setAuMail(String auMail) {
+        this.auMail = auMail;
+    }
+
+    public String getAuWechat() {
+        return auWechat;
+    }
+
+    public void setAuWechat(String auWechat) {
+        this.auWechat = auWechat;
+    }
+
+    public String getAuAddr() {
+        return auAddr;
+    }
+
+    public void setAuAddr(String auAddr) {
+        this.auAddr = auAddr;
+    }
+
+    public String getOtherLink() {
+        return otherLink;
+    }
+
+    public void setOtherLink(String otherLink) {
+        this.otherLink = otherLink;
+    }
+
+    public String getPnCateC() {
+        return pnCateC;
+    }
+
+    public void setPnCateC(String pnCateC) {
+        this.pnCateC = pnCateC;
+    }
+
+    public String getCompanyC() {
+        return companyC;
+    }
+
+    public void setCompanyC(String companyC) {
+        this.companyC = companyC;
+    }
+
+    public String getNameC() {
+        return nameC;
+    }
+
+    public void setNameC(String nameC) {
+        this.nameC = nameC;
     }
 
     public String getPnIdC() {
@@ -386,6 +414,78 @@ public class Partner {
         this.areaC = areaC;
     }
 
+    public String getAuJobC() {
+        return auJobC;
+    }
+
+    public void setAuJobC(String auJobC) {
+        this.auJobC = auJobC;
+    }
+
+    public String getAuIdC() {
+        return auIdC;
+    }
+
+    public void setAuIdC(String auIdC) {
+        this.auIdC = auIdC;
+    }
+
+    public String getAuQqC() {
+        return auQqC;
+    }
+
+    public void setAuQqC(String auQqC) {
+        this.auQqC = auQqC;
+    }
+
+    public String getAuthorizeC() {
+        return authorizeC;
+    }
+
+    public void setAuthorizeC(String authorizeC) {
+        this.authorizeC = authorizeC;
+    }
+
+    public String getAuTelC() {
+        return auTelC;
+    }
+
+    public void setAuTelC(String auTelC) {
+        this.auTelC = auTelC;
+    }
+
+    public String getAuMailC() {
+        return auMailC;
+    }
+
+    public void setAuMailC(String auMailC) {
+        this.auMailC = auMailC;
+    }
+
+    public String getAuWechatC() {
+        return auWechatC;
+    }
+
+    public void setAuWechatC(String auWechatC) {
+        this.auWechatC = auWechatC;
+    }
+
+    public String getAuAddrC() {
+        return auAddrC;
+    }
+
+    public void setAuAddrC(String auAddrC) {
+        this.auAddrC = auAddrC;
+    }
+
+    public String getOtherLinkC() {
+        return otherLinkC;
+    }
+
+    public void setOtherLinkC(String otherLinkC) {
+        this.otherLinkC = otherLinkC;
+    }
+
     @Override
     public String toString() {
         return "Partner{" +
@@ -402,14 +502,15 @@ public class Partner {
                 ", brief='" + brief + '\'' +
                 ", industry='" + industry + '\'' +
                 ", area='" + area + '\'' +
-                ", job='" + job + '\'' +
-                ", linkId='" + linkId + '\'' +
-                ", qqNum='" + qqNum + '\'' +
-                ", name='" + name + '\'' +
-                ", tel='" + tel + '\'' +
-                ", email='" + email + '\'' +
-                ", wechatNum='" + wechatNum + '\'' +
-                ", address='" + address + '\'' +
+                ", auJob='" + auJob + '\'' +
+                ", auId='" + auId + '\'' +
+                ", auQq='" + auQq + '\'' +
+                ", authorize='" + authorize + '\'' +
+                ", auTel='" + auTel + '\'' +
+                ", auMail='" + auMail + '\'' +
+                ", auWechat='" + auWechat + '\'' +
+                ", auAddr='" + auAddr + '\'' +
+                ", otherLink='" + otherLink + '\'' +
                 ", pnCateC='" + pnCateC + '\'' +
                 ", companyC='" + companyC + '\'' +
                 ", nameC='" + nameC + '\'' +
@@ -423,6 +524,15 @@ public class Partner {
                 ", briefC='" + briefC + '\'' +
                 ", industryC='" + industryC + '\'' +
                 ", areaC='" + areaC + '\'' +
+                ", auJobC='" + auJobC + '\'' +
+                ", auIdC='" + auIdC + '\'' +
+                ", auQqC='" + auQqC + '\'' +
+                ", authorizeC='" + authorizeC + '\'' +
+                ", auTelC='" + auTelC + '\'' +
+                ", auMailC='" + auMailC + '\'' +
+                ", auWechatC='" + auWechatC + '\'' +
+                ", auAddrC='" + auAddrC + '\'' +
+                ", otherLinkC='" + otherLinkC + '\'' +
                 '}';
     }
 }

@@ -10,58 +10,235 @@
     <select id="searchPartner" resultType="com.elex.oa.entity.eqpt.Partner" parameterType="com.elex.oa.entity.eqpt.Partner">
         SELECT * FROM eqpt_partner
         <where>
-            <if test="pnCategory != null and pnCategory != ''">
-                AND pnCategory = #{pnCategory}
+            <if test="pnCategory != null and pnCategory != '' and pnCateC == ''">
+                AND pnCategory LIKE CONCAT(CONCAT('%', #{pnCategory}), '%')
             </if>
-            <if test="pnId != null and pnId != ''">
-                AND pnId = #{pnId}
+            <if test="pnCategory != null and pnCategory != '' and pnCateC == 1">
+                AND pnCategory LIKE CONCAT(CONCAT('%', #{pnCategory}), '%')
             </if>
-            <if test="company != null and company != ''">
-                AND company = #{company}
+            <if test="pnCategory != null and pnCategory != '' and pnCateC == 2">
+                AND pnCategory NOT LIKE CONCAT(CONCAT('%', #{pnCategory}), '%')
             </if>
-            <if test="corp != null and corp != ''">
-                AND corp = #{corp}
+            <if test="pnId != null and pnId != '' and pnId == ''">
+                AND pnId LIKE CONCAT(CONCAT('%', #{pnId}), '%')
             </if>
-            <if test="comAddr != null and comAddr != ''">
-                AND comAddr = #{comAddr}
+            <if test="pnId != null and pnId != '' and pnId == 1">
+                AND pnId LIKE CONCAT(CONCAT('%', #{pnId}), '%')
             </if>
-            <if test="comTel != null and comTel != ''">
-                AND comTel = #{comTel}
+            <if test="pnId != null and pnId != '' and pnId == 2">
+                AND pnId NOT LIKE CONCAT(CONCAT('%', #{pnId}), '%')
             </if>
-            <if test="capital != null and capital != ''">
+            <if test="company != null and company != '' and companyC == ''">
+                AND company LIKE CONCAT(CONCAT('%', #{company}), '%')
+            </if>
+            <if test="company != null and company != '' and companyC == 1">
+                AND company LIKE CONCAT(CONCAT('%', #{company}), '%')
+            </if>
+            <if test="company != null and company != '' and companyC == 2">
+                AND company NOT LIKE CONCAT(CONCAT('%', #{company}), '%')
+            </if>
+            <if test="corp != null and corp != '' and corpC == ''">
+                AND corp LIKE CONCAT(CONCAT('%', #{corp}), '%')
+            </if>
+            <if test="corp != null and corp != '' and corpC == 1">
+                AND corp LIKE CONCAT(CONCAT('%', #{corp}), '%')
+            </if>
+            <if test="corp != null and corp != '' and corpC == 2">
+                AND corp NOT LIKE CONCAT(CONCAT('%', #{corp}), '%')
+            </if>
+            <if test="comAddr != null and comAddr != '' and comAddrC == ''">
+                AND comAddr LIKE CONCAT(CONCAT('%', #{comAddr}), '%')
+            </if>
+            <if test="comAddr != null and comAddr != '' and comAddrC == 1">
+                AND comAddr LIKE CONCAT(CONCAT('%', #{comAddr}), '%')
+            </if>
+            <if test="comAddr != null and comAddr != '' and comAddrC == 2">
+                AND comAddr NOT LIKE CONCAT(CONCAT('%', #{comAddr}), '%')
+            </if>
+            <if test="comTel != null and comTel != '' and comTelC == ''">
+                AND comTel LIKE CONCAT(CONCAT('%', #{comTel}), '%')
+            </if>
+            <if test="comTel != null and comTel != '' and comTelC == 1">
+                AND comTel LIKE CONCAT(CONCAT('%', #{comTel}), '%')
+            </if>
+            <if test="comTel != null and comTel != '' and comTelC == 2">
+                AND comTel NOT LIKE CONCAT(CONCAT('%', #{comTel}), '%')
+            </if>
+            <if test="capital != null and capital != '' and capitalC == ''">
+                AND capital LIKE CONCAT(CONCAT('%', #{capital}), '%')
+            </if>
+            <if test="capital != null and capital != '' and capitalC == 1">
+                AND capital &lt; #{capital}
+            </if>
+            <if test="capital != null and capital != '' and capitalC == 2">
+                AND capital > #{capital}
+            </if>
+            <if test="capital != null and capital != '' and capitalC == 3">
                 AND capital = #{capital}
             </if>
-            <if test="staffNum != null and staffNum != ''">
+            <if test="capital != null and capital != '' and capitalC == 4">
+                AND capital &lt;= #{capital}
+            </if>
+            <if test="capital != null and capital != '' and capitalC == 5">
+                AND capital >= #{capital}
+            </if>
+            <if test="staffNum != null and staffNum != '' and staffNumC == ''">
+                AND staffNum LIKE CONCAT(CONCAT('%', #{staffNum}), '%')
+            </if>
+            <if test="staffNum != null and staffNum != '' and staffNumC == 1">
+                AND staffNum &lt; #{staffNum}
+            </if>
+            <if test="staffNum != null and staffNum != '' and staffNumC == 2">
+                AND staffNum > #{staffNum}
+            </if>
+            <if test="staffNum != null and staffNum != '' and staffNumC == 3">
                 AND staffNum = #{staffNum}
             </if>
-            <if test="sales != null and sales != ''">
+            <if test="staffNum != null and staffNum != '' and staffNumC == 4">
+                AND staffNum &lt;= #{staffNum}
+            </if>
+            <if test="staffNum != null and staffNum != '' and staffNumC == 5">
+                AND staffNum >= #{staffNum}
+            </if>
+            <if test="sales != null and sales != '' and salesC == ''">
+                AND sales LIKE CONCAT(CONCAT('%', #{sales}), '%')
+            </if>
+            <if test="sales != null and sales != '' and salesC == 1">
+                AND sales &lt; #{sales}
+            </if>
+            <if test="sales != null and sales != '' and salesC == 2">
+                AND sales > #{sales}
+            </if>
+            <if test="sales != null and sales != '' and salesC == 3">
                 AND sales = #{sales}
             </if>
-            <if test="brief != null and brief != ''">
-                AND brief = #{brief}
+            <if test="sales != null and sales != '' and salesC == 4">
+                AND sales &lt;= #{sales}
             </if>
-            <if test="industry != null and industry != ''">
-                AND industry = #{industry}
+            <if test="sales != null and sales != '' and salesC == 5">
+                AND sales >= #{sales}
             </if>
-            <if test="area != null and area != ''">
-                AND area = #{area}
+            <if test="brief != null and brief != '' and briefC == ''">
+                AND brief LIKE CONCAT(CONCAT('%', #{brief}), '%')
             </if>
-            <if test="name != null and name != ''">
-                AND name = #{name}
+            <if test="brief != null and brief != '' and briefC == 1">
+                AND brief LIKE CONCAT(CONCAT('%', #{brief}), '%')
+            </if>
+            <if test="brief != null and brief != '' and briefC == 2">
+                AND brief NOT LIKE CONCAT(CONCAT('%', #{brief}), '%')
+            </if>
+            <if test="industry != null and industry != '' and industryC == ''">
+                AND industry LIKE CONCAT(CONCAT('%', #{industry}), '%')
+            </if>
+            <if test="industry != null and industry != '' and industryC == 1">
+                AND industry LIKE CONCAT(CONCAT('%', #{industry}), '%')
+            </if>
+            <if test="industry != null and industry != '' and industryC == 2">
+                AND industry NOT LIKE CONCAT(CONCAT('%', #{industry}), '%')
+            </if>
+            <if test="area != null and area != '' and areaC == ''">
+                AND area LIKE CONCAT(CONCAT('%', #{area}), '%')
+            </if>
+            <if test="area != null and area != '' and areaC == 1">
+                AND area LIKE CONCAT(CONCAT('%', #{area}), '%')
+            </if>
+            <if test="area != null and area != '' and areaC == 2">
+                AND area NOT LIKE CONCAT(CONCAT('%', #{area}), '%')
+            </if>
+            <if test="authorize != null and authorize != '' and authorizeC == ''">
+                AND authorize LIKE CONCAT(CONCAT('%', #{authorize}), '%')
+            </if>
+            <if test="authorize != null and authorize != '' and authorizeC == 1">
+                AND authorize LIKE CONCAT(CONCAT('%', #{authorize}), '%')
+            </if>
+            <if test="authorize != null and authorize != '' and authorizeC == 2">
+                AND authorize NOT LIKE CONCAT(CONCAT('%', #{authorize}), '%')
+            </if>
+            <if test="auId != null and auId != '' and auIdC == ''">
+                AND auId LIKE CONCAT(CONCAT('%', #{auId}), '%')
+            </if>
+            <if test="auId != null and auId != '' and auIdC == 1">
+                AND auId LIKE CONCAT(CONCAT('%', #{auId}), '%')
+            </if>
+            <if test="auId != null and auId != '' and auIdC == 2">
+                AND auId NOT LIKE CONCAT(CONCAT('%', #{auId}), '%')
+            </if>
+            <if test="auJob != null and auJob != '' and auJobC == ''">
+                AND auJob LIKE CONCAT(CONCAT('%', #{auJob}), '%')
+            </if>
+            <if test="auJob != null and auJob != '' and auJobC == 1">
+                AND auJob LIKE CONCAT(CONCAT('%', #{auJob}), '%')
+            </if>
+            <if test="auJob != null and auJob != '' and auJobC == 2">
+                AND auJob NOT LIKE CONCAT(CONCAT('%', #{auJob}), '%')
+            </if>
+            <if test="auTel != null and auTel != '' and auTelC == ''">
+                AND auTel LIKE CONCAT(CONCAT('%', #{auTel}), '%')
+            </if>
+            <if test="auTel != null and auTel != '' and auTelC == 1">
+                AND auTel LIKE CONCAT(CONCAT('%', #{auTel}), '%')
+            </if>
+            <if test="auTel != null and auTel != '' and auTelC == 2">
+                AND auTel NOT LIKE CONCAT(CONCAT('%', #{auTel}), '%')
+            </if>
+            <if test="auMail != null and auMail != '' and auMailC == ''">
+                AND auMail LIKE CONCAT(CONCAT('%', #{auMail}), '%')
+            </if>
+            <if test="auMail != null and auMail != '' and auMailC == 1">
+                AND auMail LIKE CONCAT(CONCAT('%', #{auMail}), '%')
+            </if>
+            <if test="auMail != null and auMail != '' and auMailC == 2">
+                AND auMail NOT LIKE CONCAT(CONCAT('%', #{auMail}), '%')
+            </if>
+            <if test="auQq != null and auQq != '' and auQqC == ''">
+                AND auQq LIKE CONCAT(CONCAT('%', #{auQq}), '%')
+            </if>
+            <if test="auQq != null and auQq != '' and auQqC == 1">
+                AND auQq LIKE CONCAT(CONCAT('%', #{auQq}), '%')
+            </if>
+            <if test="auQq != null and auQq != '' and auQqC == 2">
+                AND auQq NOT LIKE CONCAT(CONCAT('%', #{auQq}), '%')
+            </if>
+            <if test="auWechat != null and auWechat != '' and auWechatC == ''">
+                AND auWechat LIKE CONCAT(CONCAT('%', #{auWechat}), '%')
+            </if>
+            <if test="auWechat != null and auWechat != '' and auWechatC == 1">
+                AND auWechat LIKE CONCAT(CONCAT('%', #{auWechat}), '%')
+            </if>
+            <if test="auWechat != null and auWechat != '' and auWechatC == 2">
+                AND auWechat NOT LIKE CONCAT(CONCAT('%', #{auWechat}), '%')
+            </if>
+            <if test="auAddr != null and auAddr != '' and auAddrC == ''">
+                AND auAddrC LIKE CONCAT(CONCAT('%', #{auAddrC}), '%')
+            </if>
+            <if test="auAddr != null and auAddr != '' and auAddrC == 1">
+                AND auAddr LIKE CONCAT(CONCAT('%', #{auAddr}), '%')
+            </if>
+            <if test="auAddr != null and auAddr != '' and auAddrC == 2">
+                AND auAddr NOT LIKE CONCAT(CONCAT('%', #{auAddr}), '%')
+            </if>
+            <if test="otherLink != null and otherLink != '' and otherLinkC == ''">
+                AND otherLink LIKE CONCAT(CONCAT('%', #{otherLink}), '%')
+            </if>
+            <if test="otherLink != null and otherLink != '' and otherLinkC == 1">
+                AND otherLink LIKE CONCAT(CONCAT('%', #{otherLink}), '%')
+            </if>
+            <if test="otherLink != null and otherLink != '' and otherLinkC == 2">
+                AND otherLink NOT LIKE CONCAT(CONCAT('%', #{otherLink}), '%')
             </if>
         </where>
     </select>
 
     <insert id="importPartner" parameterType="com.elex.oa.entity.eqpt.Partner">
-        INSERT INTO eqpt_partner VALUES (NULL,#{pnCategory},#{company},#{name},#{pnId},#{corp},#{comAddr},#{comTel},#{capital},#{staffNum},#{sales},#{brief},#{industry},#{area})
+        INSERT INTO eqpt_partner VALUES (NULL,#{pnCategory},#{company},#{pnId},#{authorize},#{auId},#{auJob},#{auTel},#{auMail},#{auWechat},#{auQq},#{auAddr},#{otherLink},#{corp},#{comAddr},#{comTel},#{capital},#{staffNum},#{sales},#{brief},#{industry},#{area})
     </insert>
 
     <insert id="insertPartner" parameterType="com.elex.oa.entity.eqpt.Partner">
-        INSERT INTO eqpt_partner VALUES (NULL,#{pnCategory},#{company},#{name},#{pnId},#{corp},#{comAddr},#{comTel},#{capital},#{staffNum},#{sales},#{brief},#{industry},#{area})
+        INSERT INTO eqpt_partner VALUES (NULL,#{pnCategory},#{company},#{pnId},#{authorize},#{auId},#{auJob},#{auTel},#{auMail},#{auWechat},#{auQq},#{auAddr},#{otherLink},#{corp},#{comAddr},#{comTel},#{capital},#{staffNum},#{sales},#{brief},#{industry},#{area})
     </insert>
 
     <select id="findName" resultType="com.elex.oa.entity.eqpt.Partner">
-        SELECT * FROM eqpt_partner WHERE name = #{name}
+        SELECT * FROM eqpt_partner WHERE authorize = #{authorize}
     </select>
 
     <update id="changePartner" parameterType="com.elex.oa.entity.eqpt.Partner">
@@ -103,8 +280,32 @@
             <if test="area != null and area != ''">
                 area = #{area},
             </if>
-            <if test="name != null and name != ''">
-                name = #{name}
+            <if test="authorize != null and authorize != ''">
+                authorize = #{authorize},
+            </if>
+            <if test="auId != null and auId != ''">
+                auId = #{auId},
+            </if>
+            <if test="auJob != null and auJob != ''">
+                auJob = #{auJob},
+            </if>
+            <if test="auTel != null and auTel != ''">
+                auTel = #{auTel},
+            </if>
+            <if test="auMail != null and auMail != ''">
+                auMail = #{auMail},
+            </if>
+            <if test="auQq != null and auQq != ''">
+                auQq = #{auQq},
+            </if>
+            <if test="auWechat != null and auWechat != ''">
+                auWechat = #{auWechat},
+            </if>
+            <if test="auAddr != null and auAddr != ''">
+                auAddr = #{auAddr},
+            </if>
+            <if test="otherLink != null and otherLink != ''">
+                otherLink = #{otherLink}
             </if>
         </set>
         WHERE onlyIdP = #{onlyIdP}
@@ -114,4 +315,19 @@
         DELETE FROM eqpt_partner WHERE onlyIdP = #{onlyIdP}
     </delete>
 
+    <select id="authorize" resultType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT DISTINCT name FROM eqpt_linkman
+    </select>
+
+    <select id="authorizeId" resultType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT DISTINCT linkId FROM eqpt_linkman WHERE name = #{name}
+    </select>
+
+    <select id="otherName" resultType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT DISTINCT name FROM eqpt_linkman WHERE name != #{name}
+    </select>
+
+    <select id="authorizeInfo" resultType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT * FROM eqpt_linkman WHERE name = #{name} AND linkId = #{linkId}
+    </select>
 </mapper>
