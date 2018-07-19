@@ -99,7 +99,7 @@
             <if test="linkId != null and linkId != '' ">
                 AND linkId = #{linkId}
             </if>
-            <if test="name != null and name != '' ">
+            <!--<if test="name != null and name != '' ">
                 AND name = #{name}
             </if>
             <if test="tel != null and tel != '' ">
@@ -122,7 +122,7 @@
             </if>
             <if test="workPlace != null and workPlace != '' ">
                 AND workPlace = #{workPlace}
-            </if>
+            </if>-->
         </where>
     </select>
 

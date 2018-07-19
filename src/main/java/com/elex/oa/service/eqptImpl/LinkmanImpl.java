@@ -102,7 +102,6 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setWorkPlace(workPlace);
         // 判断是否重复
         List<Linkman> listL = linkmanMapper.search(linkman);
-        System.out.println(listL.isEmpty());
         if (listL.isEmpty() ){
             linkmanMapper.newLinkman(linkman);
             return "1";
