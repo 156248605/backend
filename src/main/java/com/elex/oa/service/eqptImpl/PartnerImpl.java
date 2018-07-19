@@ -32,7 +32,7 @@ public class PartnerImpl implements PartnerService {
     @Override
     public PageInfo<Partner> searchPartner(Page page, HttpServletRequest request) {
         String pnCategory = request.getParameter("pnCategory");
-        String pnCategoryC = request.getParameter("pnCategoryC");
+        String pnCategoryC = request.getParameter("pnCateC");
         String company = request.getParameter("company");
         String companyC = request.getParameter("companyC");
         String authorize = request.getParameter("authorize");
