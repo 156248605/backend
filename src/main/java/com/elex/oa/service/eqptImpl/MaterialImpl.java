@@ -25,8 +25,6 @@ public class MaterialImpl implements MaterialService {
     @Override
     public PageInfo<Material> showMaterial(Page page){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        Material material = new Material();
-        material.setMaterialState("启用");
         List<Material> listM = materialMapper.MaterialList();
         return new PageInfo<>(listM);
     }
@@ -54,12 +52,12 @@ public class MaterialImpl implements MaterialService {
         String SPECC = request.getParameter("specC");
         String BRAND = request.getParameter("brand");
         String BRANDC = request.getParameter("brandC");
-        String SDATE = "";
+        /*String SDATE = "";
         String EDATE = "";
         if (request.getParameter("date").length() > 10) {
             SDATE = request.getParameter("date").substring(2,12);
             EDATE = request.getParameter("date").substring(15,25);
-        }
+        }*/
         String CATEGORY = request.getParameter("category");
         String CATEGORYC = request.getParameter("categoryC");
         String PRICE = request.getParameter("price");
@@ -70,16 +68,24 @@ public class MaterialImpl implements MaterialService {
         String MAXLIMITC = request.getParameter("maxlimitC");
         String MINLIMIT = request.getParameter("minlimit");
         String MINLIMITC = request.getParameter("minlimitC");
-        String POSITION = request.getParameter("position");
-        String POSITIONC = request.getParameter("positionC");
+        /*String POSITION = request.getParameter("position");
+        String POSITIONC = request.getParameter("positionC");*/
         String NUM = request.getParameter("num");
         String NUMC = request.getParameter("numC");
         String UNIT = request.getParameter("unit");
         String UNITC = request.getParameter("unitC");
-        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && POSITION.equals("") && REMARK.equals("") ) {
+        String BSMANAGE = request.getParameter("BSManage");
+        String BSMANAGEC = request.getParameter("BSManageC");
+        String NEEDCHECK = request.getParameter("needCheck");
+        String NEEDCHECKC = request.getParameter("needCheckC");
+        String MATERIALSTATE = request.getParameter("materialState");
+        String MATERIALSTATEC = request.getParameter("materialStateC");
+        String SINGLEMANAGE = request.getParameter("singleManage");
+        String SINGLEMANAGEC = request.getParameter("singleManageC");
+        String NOTSINGLE = request.getParameter("notSingle");
+        String NOTSINGLEC = request.getParameter("notSingleC");
+        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && REMARK.equals("") && SPEC.equals("") && NOTSINGLE.equals("") && SINGLEMANAGE.equals("") && BSMANAGE.equals("") && NEEDCHECK.equals("") && MATERIALSTATE.equals("")) {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
-            Material material = new Material();
-            material.setMaterialState("启用");
             List<Material> listM = materialMapper.MaterialList();
             return new PageInfo<>(listM);
         }else {
@@ -88,8 +94,8 @@ public class MaterialImpl implements MaterialService {
             material.setIdC(IDC);
             material.setName(NAME);
             material.setNameC(NAMEC);
-            material.setsDate(SDATE);
-            material.seteDate(EDATE);
+            /*material.setsDate(SDATE);
+            material.seteDate(EDATE);*/
             material.setSpec(SPEC);
             material.setSpecC(SPECC);
             material.setMaterial(MAT);
@@ -106,12 +112,22 @@ public class MaterialImpl implements MaterialService {
             material.setPrice(PRICE);
             material.setPriceC(PRICEC);
             material.setRemark(REMARK);
-            material.setPosition(POSITION);
-            material.setPositionC(POSITIONC);
+            /*material.setPosition(POSITION);
+            material.setPositionC(POSITIONC);*/
             material.setUnit(UNIT);
             material.setUnitC(UNITC);
             material.setNum(NUM);
             material.setNumC(NUMC);
+            material.setBSManage(BSMANAGE);
+            material.setBSManageC(BSMANAGEC);
+            material.setNeedCheck(NEEDCHECK);
+            material.setNeedCheckC(NEEDCHECKC);
+            material.setMaterialState(MATERIALSTATE);
+            material.setMaterialStateC(MATERIALSTATEC);
+            material.setSingleManage(SINGLEMANAGE);
+            material.setSingleManageC(SINGLEMANAGEC);
+            material.setNotSingle(NOTSINGLE);
+            material.setNotSingleC(NOTSINGLEC);
             List<Material> listM = materialMapper.SearchMaterial(material);
             return new PageInfo<>(listM);
         }
@@ -128,7 +144,7 @@ public class MaterialImpl implements MaterialService {
 
     // 修改物料(保存修改后数据)
     @Override
-    public void saveMaterial (HttpServletRequest request) throws ParseException{
+    public void saveMaterial (HttpServletRequest request) {
         int onlyId = parseInt(request.getParameter("onlyId"));
         Material material = new Material();
         material.setId(request.getParameter("id"));
@@ -137,9 +153,14 @@ public class MaterialImpl implements MaterialService {
         material.setSpec(request.getParameter("spec"));
         material.setCategory(request.getParameter("category"));
         material.setMaterial(request.getParameter("material"));
-        material.setPosition(request.getParameter("position"));
+        /*material.setPosition(request.getParameter("position"));*/
         material.setBrand(request.getParameter("brand"));
-        String date = "";
+        material.setBSManage(request.getParameter("BSManage"));
+        material.setNeedCheck(request.getParameter("needCheck"));
+        material.setMaterialState(request.getParameter("materialState"));
+        material.setSingleManage(request.getParameter("singleManage"));
+        material.setNotSingle(request.getParameter("notSingle"));
+        /*String date = "";
         String sDate = "";
         if (request.getParameter("date") == null ){
             System.out.println("...");
@@ -151,20 +172,20 @@ public class MaterialImpl implements MaterialService {
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
             sDate = sdf.format(d);
         }
-        material.setDate(sDate);
+        material.setDate(sDate);*/
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
         material.setPrice(request.getParameter("price"));
-        material.setNum(request.getParameter("num"));
+        /*material.setNum(request.getParameter("num"));*/
         material.setUnit(request.getParameter("unit"));
         material.setOnlyId(onlyId);
-        String State = "";
+        /*String State = "";
         if (request.getParameter("materialState") == null){
             State = "启用";
         }else {
             State = request.getParameter("materialState");
         }
-        material.setMaterialState(State);
+        material.setMaterialState(State);*/
         materialMapper.saveMaterial(material);
     }
 
@@ -178,27 +199,32 @@ public class MaterialImpl implements MaterialService {
 
     // 插入物料
     @Override
-    public void insertMaterial(Material material, HttpServletRequest request)throws ParseException {
+    public void insertMaterial(Material material, HttpServletRequest request) {
         material.setId(request.getParameter("id"));
         material.setPartner(request.getParameter("partner"));
         material.setName(request.getParameter("name"));
         material.setSpec(request.getParameter("spec"));
         material.setCategory(request.getParameter("category"));
         material.setMaterial(request.getParameter("material"));
-        material.setPosition(request.getParameter("position"));
+        /*material.setPosition(request.getParameter("position"));*/
         material.setBrand(request.getParameter("brand"));
         material.setPrice(request.getParameter("price"));
-        material.setNum(request.getParameter("num"));
+        material.setNum("0");
         material.setUnit(request.getParameter("unit"));
-        String date = request.getParameter("date");
+        /*String date = request.getParameter("date");
         date = date.replace("Z", " UTC");//注意是空格+UTC
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
         Date d = format.parse(date);
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         String sDate = sdf.format(d);
-        material.setDate(sDate);
+        material.setDate(sDate);*/
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
+        material.setBSManage(request.getParameter("BSManage"));
+        material.setNeedCheck(request.getParameter("needCheck"));
+        material.setMaterialState(request.getParameter("materialState"));
+        material.setSingleManage(request.getParameter("singleManage"));
+        material.setNotSingle(request.getParameter("notSingle"));
         materialMapper.newMaterial(material);
     }
 }

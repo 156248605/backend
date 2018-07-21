@@ -166,7 +166,7 @@
     </delete>
 
     <select id="searchPostCap" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT postCap FROM eqpt_repositorymt WHERE reptId = #{reptId} AND postId = #{postId}
+        SELECT postCap FROM eqpt_repository WHERE reptId = #{reptId} AND postId = #{postId}
     </select>
 
     <select id="matlist" resultType="com.elex.oa.entity.eqpt.Material">

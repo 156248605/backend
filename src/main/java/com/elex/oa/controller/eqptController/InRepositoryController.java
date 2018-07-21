@@ -31,8 +31,8 @@ public class InRepositoryController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void InsertRepository (HttpServletRequest request) throws ParseException {
-        inRepositoryImpl.NewRepository(request);
+    public String InsertRepository (HttpServletRequest request) throws ParseException {
+        return inRepositoryImpl.NewRepository(request);
     }
 
     @RequestMapping("/search")

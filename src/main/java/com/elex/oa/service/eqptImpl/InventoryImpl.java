@@ -113,7 +113,7 @@ public class InventoryImpl implements InventoryService {
             repository.setNumInv(listINV.get(i).get("theMatNumInv").toString());
             repository.setPal(request.getParameter("pal"));
             repository.setPalCal(request.getParameter("palCal"));
-            repository.setRemark(listINV.get(i).get("theMatRemark").toString());
+            repository.setRemark("");
             inventoryMapper.insert(repository);
         }
     }

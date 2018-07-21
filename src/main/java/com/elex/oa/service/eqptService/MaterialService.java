@@ -17,9 +17,9 @@ public interface MaterialService {
 
     Material changeMaterial(HttpServletRequest request);
 
-    void saveMaterial(HttpServletRequest request) throws ParseException;
+    void saveMaterial(HttpServletRequest request);
 
     void deleteMaterial (HttpServletRequest request);
 
-    void insertMaterial(Material material, HttpServletRequest request)throws ParseException;
+    void insertMaterial(Material material, HttpServletRequest request);
 }

@@ -2,6 +2,8 @@ package com.elex.oa.controller.eqptController;
 
 
 import com.elex.oa.entity.Page;
+import com.elex.oa.entity.entity_shiyun.User;
+import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.RepositoryImpl;
 import com.github.pagehelper.PageInfo;
@@ -72,6 +74,19 @@ public class RepositoryController {
     @ResponseBody
     public List<Repository> PostList(){
         return repositoryImpl.PostList();
+    }
+
+    @RequestMapping("/matlist")
+    @ResponseBody
+    public List<Material> MatList(){
+        return repositoryImpl.MatList();
+    }
+
+    @RequestMapping("/getUser")
+    @ResponseBody
+    public List<User> getUser() {
+        List<User> getUser = repositoryImpl.username();
+        return getUser;
     }
 
     /*@RequestMapping("/matInRept")

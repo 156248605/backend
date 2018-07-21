@@ -73,4 +73,6 @@ public interface RepositoryMapper {
 
     // 是否库位管理
     String managePost(Repository repository);
+
+    List<Material> matlist();
 }

@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 
 
 public interface MaterialMtService {
-    PageInfo<Material> showMaterialMt(Page page);
+    PageInfo<Material> showDetail(Page page);
     // 查找物料
-    PageInfo<Material> searchMaterialMt(Page page, HttpServletRequest request);
+    PageInfo<Material> searchDetail(Page page, HttpServletRequest request);
 
-    Material changeMaterialMt(HttpServletRequest request);
+    /*Material changeMaterialMt(HttpServletRequest request);
 
     void saveMaterialMt(HttpServletRequest request);
 
@@ -22,6 +22,6 @@ public interface MaterialMtService {
 
     String state(HttpServletRequest request);
 
-    String record(HttpServletRequest request);
+    String record(HttpServletRequest request);*/
 
 }

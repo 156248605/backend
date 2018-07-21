@@ -18,7 +18,7 @@ public interface RepositoryMtMapper {
 
     void deleteRepositoryMt(Repository repository);
 
-    String searchPostCap (Repository repository);
+    Repository searchPostCap (Repository repository);
 
     List<Material> matlist();
 

@@ -12,7 +12,7 @@ import java.util.List;
 public interface InRepositoryMapper {
     List<Repository> findAll();
 
-    void insertNew(String reptCategory, String inId, String inTime, String inNum, String inInfo, String reptId, String position, String materialId, String materialName, String spec, String unit, String sn, String bn,String inReptC, String check, String remark);
+    void insertNew(String reptCategory, String inId, String inTime, String inNum, String inInfo, String reptId, String postId, String materialId, String materialName, String spec, String unit, String sn, String bn,String inReptC, String check, String remark);
 
     String ID (Material material);
 

@@ -7,21 +7,21 @@ import java.util.List;
 
 @Mapper
 public interface MaterialMtMapper {
-    List<Material> MaterialMtList();
+    List<Material> detailList();
 
-    List<Material> SearchMaterialMt(Material material);
+    List<Material> searchDetail(Material material);
 
-    Material MaterialMtId(Material material);
+    /*Material MaterialMtId(Material material);
 
     void saveMaterialMt(Material material);
 
     void deleteMaterialMt(Material material);
 
-    void newMaterialMt(Material material);
+    void newMaterialMt(Material material);*/
 
     String manageBS(Material material);
 
-    String state(Material material);
+    String needCheck(Material material);
 
     String recordin(Material material);
     String recordout(Material material);
