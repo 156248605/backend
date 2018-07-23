@@ -16,7 +16,7 @@ import java.text.ParseException;
 
 @CrossOrigin
 @Controller
-@RequestMapping("/materialmt")
+@RequestMapping("/materialD")
 public class MaterialMtController {
 
     @Resource
@@ -25,18 +25,18 @@ public class MaterialMtController {
     @RequestMapping("/list")
     @ResponseBody
     public PageInfo<Material> materialList(Page page){
-        PageInfo<Material> list = materialMtImpl.showMaterialMt(page);
+        PageInfo<Material> list = materialMtImpl.showDetail(page);
         return list;
     }
 
     @RequestMapping("/search")
     @ResponseBody
     public PageInfo<Material> materialSearch(Page page, HttpServletRequest request){
-        PageInfo<Material> list = materialMtImpl.searchMaterialMt(page,request);
+        PageInfo<Material> list = materialMtImpl.searchDetail(page,request);
         return list;
     }
 
-    @RequestMapping("/new")
+    /*@RequestMapping("/new")
     @ResponseBody
     public void InsertMaterial (Material material,HttpServletRequest request) throws ParseException {
         materialMtImpl.insertMaterialMt(material,request);
@@ -70,6 +70,6 @@ public class MaterialMtController {
     @ResponseBody
     public String state (HttpServletRequest request) {
         return materialMtImpl.state(request);
-    }
+    }*/
 
 }

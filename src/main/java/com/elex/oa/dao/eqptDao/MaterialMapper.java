@@ -46,4 +46,9 @@ public interface MaterialMapper {
 
     // 确定价格
     Material lockPrice(Material material);
+
+    // 更新库存
+    void updDetail(Material material);
+
+    void updDetailM(Material material);
 }

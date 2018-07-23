@@ -37,7 +37,7 @@ public class MaterialController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void InsertMaterial (Material material,HttpServletRequest request) throws ParseException {
+    public void InsertMaterial (Material material,HttpServletRequest request) {
         materialImpl.insertMaterial(material,request);
     }
 
@@ -49,7 +49,7 @@ public class MaterialController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public void saveMaterial(HttpServletRequest request) throws ParseException{
+    public void saveMaterial(HttpServletRequest request) {
         materialImpl.saveMaterial(request);
     }
 

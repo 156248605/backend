@@ -18,12 +18,12 @@
         SELECT invId FROM eqpt_inventory WHERE invId LIKE CONCAT(CONCAT('%',#{invId},'%'))
     </select>
 
-    <select id="matinrept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_repository WHERE reptId = #{reptId}
+    <select id="matinrept" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_detail WHERE reptId = #{reptId}
     </select>
 
     <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT reptId FROM eqpt_repository WHERE materialId != '无'
+        SELECT DISTINCT reptId FROM eqpt_repository
     </select>
 
     <select id="search" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">

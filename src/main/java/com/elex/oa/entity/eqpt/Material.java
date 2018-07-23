@@ -69,6 +69,9 @@ public class Material {
     private String fixPosition;
     // 是否需要检验
     private String needCheck;
+    // 仓库ID
+    private String reptId;
+    private String postId;
 
     // 对应查询条件
     private String bnC;
@@ -98,12 +101,13 @@ public class Material {
     private String eDate;
     private String numInvC;
     private String palC;
+    private String reptIdC;
 
     public Material() {
     }
 
-
-    public Material(int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC) {
+    public Material(String postId, int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC) {
+        this.postId = postId;
         this.onlyId = onlyId;
         this.bn = bn;
         this.sn = sn;
@@ -128,6 +132,7 @@ public class Material {
         this.BSManage = BSManage;
         this.fixPosition = fixPosition;
         this.needCheck = needCheck;
+        this.reptId = reptId;
         this.bnC = bnC;
         this.snC = snC;
         this.positionC = positionC;
@@ -155,6 +160,7 @@ public class Material {
         this.eDate = eDate;
         this.numInvC = numInvC;
         this.palC = palC;
+        this.reptIdC = reptIdC;
     }
 
     public String getBn() {
@@ -566,6 +572,30 @@ public class Material {
         this.palC = palC;
     }
 
+    public String getReptId() {
+        return reptId;
+    }
+
+    public void setReptId(String reptId) {
+        this.reptId = reptId;
+    }
+
+    public String getReptIdC() {
+        return reptIdC;
+    }
+
+    public void setReptIdC(String reptIdC) {
+        this.reptIdC = reptIdC;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
     @Override
     public String toString() {
         return "Material{" +
@@ -593,6 +623,8 @@ public class Material {
                 ", BSManage='" + BSManage + '\'' +
                 ", fixPosition='" + fixPosition + '\'' +
                 ", needCheck='" + needCheck + '\'' +
+                ", reptId='" + reptId + '\'' +
+                ", postId='" + postId + '\'' +
                 ", bnC='" + bnC + '\'' +
                 ", snC='" + snC + '\'' +
                 ", positionC='" + positionC + '\'' +
@@ -620,6 +652,7 @@ public class Material {
                 ", eDate='" + eDate + '\'' +
                 ", numInvC='" + numInvC + '\'' +
                 ", palC='" + palC + '\'' +
+                ", reptIdC='" + reptIdC + '\'' +
                 '}';
     }
 }

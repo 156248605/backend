@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.eqptDao.MaterialMtMapper">
-    <select id="MaterialMtList" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_materialmt
+    <select id="detailList" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_detail
     </select>
 
-    <select id="SearchMaterialMt" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_materialmt
+    <select id="searchDetail" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_detail
         <where>
             <if test="id != null and id != '' and idC == ''">
                 AND id LIKE CONCAT(CONCAT('%', #{id}), '%')
@@ -26,24 +26,6 @@
             <if test="name != null and name != '' and nameC == 2">
                 AND name NOT LIKE CONCAT(CONCAT('%', #{name}), '%')
             </if>
-            <if test="BSManage != null and BSManage != '' and BSManageC == ''">
-                AND BSManage LIKE CONCAT(CONCAT('%', #{BSManage}), '%')
-            </if>
-            <if test="BSManage != null and BSManage != '' and BSManageC == 1">
-                AND BSManage LIKE CONCAT(CONCAT('%', #{BSManage}), '%')
-            </if>
-            <if test="BSManage != null and BSManage != '' and BSManageC == 2">
-                AND BSManage NOT LIKE CONCAT(CONCAT('%', #{BSManage}), '%')
-            </if>
-            <if test="material != null and material != '' and materialC == ''">
-                AND material LIKE CONCAT(CONCAT('%', #{material}), '%')
-            </if>
-            <if test="material != null and material != '' and materialC == 1">
-                AND material LIKE CONCAT(CONCAT('%', #{material}), '%')
-            </if>
-            <if test="material != null and material != '' and materialC == 2">
-                AND material NOT LIKE CONCAT(CONCAT('%', #{material}), '%')
-            </if>
             <if test="spec != null and spec != '' and specC == ''">
                 AND spec LIKE CONCAT(CONCAT('%', #{spec}), '%')
             </if>
@@ -62,15 +44,6 @@
             <if test="brand != null and brand != '' and brandC == 2">
                 AND brand NOT LIKE CONCAT(CONCAT('%', #{brand}), '%')
             </if>
-            <if test="needCheck != null and needCheck != '' and needCheckC == ''">
-                AND needCheck LIKE CONCAT(CONCAT('%', #{needCheck}), '%')
-            </if>
-            <if test="needCheck != null and needCheck != '' and needCheckC == 1">
-                AND needCheck LIKE CONCAT(CONCAT('%', #{needCheck}), '%')
-            </if>
-            <if test="needCheck != null and needCheck != '' and needCheckC == 2">
-                AND needCheck NOT LIKE CONCAT(CONCAT('%', #{needCheck}), '%')
-            </if>
             <if test="category != null and category != '' and categoryC == ''">
                 AND category LIKE CONCAT(CONCAT('%', #{category}), '%')
             </if>
@@ -80,38 +53,32 @@
             <if test="category != null and category != '' and categoryC == 2">
                 AND category NOT LIKE CONCAT(CONCAT('%', #{category}), '%')
             </if>
-            <if test="materialState != null and materialState != '' and materialStateC == ''">
-                AND materialState LIKE CONCAT(CONCAT('%', #{materialState}), '%')
+            <if test="num != null and num != '' and numC == ''">
+                AND num LIKE CONCAT(CONCAT('%', #{num}), '%')
             </if>
-            <if test="materialState != null and materialState != '' and materialStateC == 1">
-                AND materialState LIKE CONCAT(CONCAT('%', #{materialState}), '%')
+            <if test="num != null and num != '' and numC == 1">
+                AND num &lt; #{num}
             </if>
-            <if test="materialState != null and materialState != '' and materialStateC == 2">
-                AND materialState NOT LIKE CONCAT(CONCAT('%', #{materialState}), '%')
+            <if test="num != null and num != '' and numC == 2">
+                AND num > #{num}
             </if>
-            <if test="singleManage != null and singleManage != '' and singleManageC == ''">
-                AND singleManage LIKE CONCAT(CONCAT('%', #{singleManage}), '%')
+            <if test="num != null and num != '' and numC == 3">
+                AND num = #{num}
             </if>
-            <if test="singleManage != null and singleManage != '' and singleManageC == 1">
-                AND singleManage LIKE CONCAT(CONCAT('%', #{singleManage}), '%')
+            <if test="num != null and num != '' and numC == 4">
+                AND num &lt;= #{num}
             </if>
-            <if test="singleManage != null and singleManage != '' and singleManageC == 2">
-                AND singleManage NOT LIKE CONCAT(CONCAT('%', #{singleManage}), '%')
+            <if test="num != null and num != '' and numC == 5">
+                AND num >= #{num}
             </if>
-            <if test="notSingle != null and notSingle != '' and notSingleC == ''">
-                AND notSingle LIKE CONCAT(CONCAT('%', #{notSingle}), '%')
+            <if test="reptId != null and reptId != '' and reptIdC == ''">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
             </if>
-            <if test="notSingle != null and notSingle != '' and notSingleC == 1">
-                AND notSingle LIKE CONCAT(CONCAT('%', #{notSingle}), '%')
+            <if test="reptId != null and reptId != '' and reptIdC == 1">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
             </if>
-            <if test="notSingle != null and notSingle != '' and notSingleC == 2">
-                AND notSingle NOT LIKE CONCAT(CONCAT('%', #{notSingle}), '%')
-            </if>
-            <if test="partner != null and partner != ''">
-                AND partner LIKE CONCAT(CONCAT('%', #{partner}), '%')
-            </if>
-            <if test="remark != null and remark != ''">
-                AND remark LIKE CONCAT(CONCAT('%', #{remark}), '%')
+            <if test="reptId != null and reptId != '' and reptIdC == 2">
+                AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
             </if>
         </where>
     </select>
@@ -183,8 +150,8 @@
         INSERT INTO eqpt_materialmt VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{price},#{maxlimit},#{minlimit},#{partner},#{remark})
     </insert>
 
-    <select id="state" resultType="string">
-        SELECT * FROM eqpt_materialmt WHERE materialState = '启用'
+    <select id="needCheck" resultType="string">
+        SELECT needCheck FROM eqpt_material WHERE id = #{id}
     </select>
 
     <select id="recordin" resultType="string">
@@ -198,6 +165,6 @@
     </select>
 
     <select id="manageBS" resultType="string">
-        SELECT BSManage FROM eqpt_materialmt WHERE id = #{id}
+        SELECT BSManage FROM eqpt_material WHERE id = #{id}
     </select>
 </mapper>

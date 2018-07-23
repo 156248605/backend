@@ -19,7 +19,7 @@ public interface InRepositoryService {
     List showInId(HttpServletRequest request);
 
     /*新建入库单*/
-    void NewRepository(HttpServletRequest request) throws ParseException;
+    String NewRepository(HttpServletRequest request) throws ParseException;
 
     /*入库申请*/
     String checkInRepository(HttpServletRequest request);

@@ -48,13 +48,20 @@ public class OutRepositoryImpl implements OutRepositoryService {
     @Override
     public PageInfo<Repository> searchRepository(Page page, HttpServletRequest request){
         String reptId = request.getParameter("reptId");
+        String reptIdC = request.getParameter("reptIdC");
         String reptCategory = request.getParameter("reptCategory");
-        String position = request.getParameter("position");
+        String reptCategoryC = request.getParameter("reptCategoryC");
+        String postId = request.getParameter("postId");
+        String postIdC = request.getParameter("postIdC");
         String outId = request.getParameter("outId");
+        String outIdC = request.getParameter("outIdC");
         String sn = request.getParameter("sn");
+        String snC = request.getParameter("snC");
         String bn = request.getParameter("bn");
+        String bnC = request.getParameter("bnC");
         String outTime = request.getParameter("outTime");
-        if (reptId.equals("") && reptCategory.equals("") && position.equals("") && outId.equals("") && sn.equals("") && bn.equals("") && outTime.equals("")){
+        String outTimeC = request.getParameter("outTimeC");
+        if (reptId.equals("") && reptCategory.equals("") && postId.equals("") && outId.equals("") && sn.equals("") && bn.equals("") && outTime.equals("")){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Repository> listR = outRepositoryMapper.findAll();
             return new PageInfo<>(listR);
@@ -62,12 +69,19 @@ public class OutRepositoryImpl implements OutRepositoryService {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setReptId(reptId);
+            repository.setReptIdC(reptIdC);
             repository.setReptCategory(reptCategory);
-            repository.setPosition(position);
+            repository.setReptCateC(reptCategoryC);
+            repository.setPostId(postId);
+            repository.setPostIdC(postIdC);
             repository.setOutId(outId);
+            repository.setOutIdC(outIdC);
             repository.setBn(bn);
+            repository.setBnC(bnC);
             repository.setSn(sn);
+            repository.setSnC(snC);
             repository.setOutTime(outTime);
+            repository.setOutTimeC(outTimeC);
             List<Repository> listR = repositoryMapper.searchOut(repository);
             return new PageInfo<>(listR);
         }
@@ -105,7 +119,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
                 bn = listOUT.get(i).get("theMatBnSn").toString();
                 sn = "无";
             }
-            String POSITION = listOUT.get(i).get("position").toString();
+            String POSTID = listOUT.get(i).get("postId").toString();
             String REPTID = listOUT.get(i).get("reptId").toString();
             String MATERIALID = listOUT.get(i).get("theMatId").toString();
             String MATERIALNAME = listOUT.get(i).get("theMatName").toString();
@@ -114,13 +128,13 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String REMARK = listOUT.get(i).get("theMatRemark").toString();
             Repository repository = new Repository();
             repository.setMaterialId(MATERIALID);
-            repository.setPosition(POSITION);
+            repository.setPostId(POSTID);
             repository.setReptId(REPTID);
             repository.setOutId(OUTID);
             repository.setBn(bn);
             repository.setSn(sn);
             String REPTcategory = repositoryMapper.searchCategory(repository);
-            outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSITION,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK);
+            outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK);
         }
     }
 
@@ -133,7 +147,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
             Repository repository = new Repository();
             repository.setMaterialId(listOUT.get(i).get("theMatId").toString());
             repository.setReptId(listOUT.get(i).get("reptId").toString());
-            repository.setPosition(listOUT.get(i).get("position").toString());
+            repository.setPostId(listOUT.get(i).get("postId").toString());
             String REPTcategory = repositoryMapper.searchCategory(repository);
             repository.setReptCategory(REPTcategory);
             /*更新数量*/
@@ -152,11 +166,11 @@ public class OutRepositoryImpl implements OutRepositoryService {
         String OUTLIST = request.getParameter("outList");
         List<HashMap> listOUT =JSON.parseArray(OUTLIST, HashMap.class);
         for (int i = 0; i < listOUT.size(); i++) {
-            Material material = new Material();
+            /*Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
             material.setNum(listOUT.get(i).get("theMatNum").toString());
             material.setUnit(listOUT.get(i).get("theMatUnit").toString());
-            material.setPosition(listOUT.get(i).get("position").toString());
+            material.setPostId(listOUT.get(i).get("postId").toString());
             String date = request.getParameter("outTime");
             date = date.replace("Z", " UTC");// 注意是空格+UTC
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
@@ -164,7 +178,14 @@ public class OutRepositoryImpl implements OutRepositoryService {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String sDate = sdf.format(d);
             material.setDate(sDate);
+            materialMapper.updMatM(material);*/
+            Material material = new Material();
+            material.setId(listOUT.get(i).get("theMatId").toString());
+            material.setNum(listOUT.get(i).get("theMatNum").toString());
+            material.setPostId(listOUT.get(i).get("postId").toString());
+            material.setReptId(listOUT.get(i).get("reptId").toString());
             materialMapper.updMatM(material);
+            materialMapper.updDetailM(material);
         }
     }
 

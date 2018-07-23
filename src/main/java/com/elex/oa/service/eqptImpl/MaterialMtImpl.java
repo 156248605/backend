@@ -12,37 +12,34 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
-
 @Service
 public class MaterialMtImpl implements MaterialMtService {
     @Resource
     private MaterialMtMapper materialMtMapper;
 
     @Override
-    public PageInfo<Material> showMaterialMt(Page page) {
+    public PageInfo<Material> showDetail(Page page) {
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Material> listM = materialMtMapper.MaterialMtList();
+        List<Material> listM = materialMtMapper.detailList();
         return new PageInfo<>(listM);
     }
 
     @Override
-    public PageInfo<Material> searchMaterialMt(Page page, HttpServletRequest request) {
+    public PageInfo<Material> searchDetail(Page page, HttpServletRequest request) {
         String ID = request.getParameter("id");
         String IDC = request.getParameter("idC");
         String NAME = request.getParameter("name");
         String NAMEC = request.getParameter("nameC");
-        String MAT = request.getParameter("material");
-        String MATC = request.getParameter("materialC");
         String SPEC = request.getParameter("spec");
         String SPECC = request.getParameter("specC");
         String BRAND = request.getParameter("brand");
         String BRANDC = request.getParameter("brandC");
         String CATEGORY = request.getParameter("category");
         String CATEGORYC = request.getParameter("categoryC");
-        String PRICE = request.getParameter("price");
+        String REPTID = request.getParameter("reptId");
+        String REPTIDC = request.getParameter("reptIdC");
+        /*String PRICE = request.getParameter("price");
         String PRICEC = request.getParameter("priceC");
-        String REMARK = request.getParameter("remark");
         String PARTNER = request.getParameter("partner");
         String MAXLIMIT = request.getParameter("maxlimit");
         String MAXLIMITC = request.getParameter("maxlimitC");
@@ -57,49 +54,31 @@ public class MaterialMtImpl implements MaterialMtService {
         String SINGLEMANAGE = request.getParameter("singleManage");
         String SINGLEMANAGEC = request.getParameter("singleManageC");
         String NOTSINGLE = request.getParameter("notSingle");
-        String NOTSINGLEC = request.getParameter("notSingleC");
+        String NOTSINGLEC = request.getParameter("notSingleC");*/
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        if (ID.equals("") && NAME.equals("") && CATEGORY.equals("") && PRICE.equals("") && REMARK.equals("") && PARTNER.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && BSMANAGE.equals("") && NEEDCHECK.equals("") && MATERIALSTATE.equals("") && BRAND.equals("") && MAT.equals("") && SPEC.equals("") && NOTSINGLE.equals("") && SINGLEMANAGE.equals("") ){
-            List<Material> listM = materialMtMapper.MaterialMtList();
+        if (ID.equals("") && NAME.equals("") && CATEGORY.equals("") && REPTID.equals("") ){
+            List<Material> listM = materialMtMapper.detailList();
             return new PageInfo<>(listM);
         }else {
             Material material = new Material();
             material.setId(ID);
             material.setIdC(IDC);
-            material.setBSManage(BSMANAGE);
-            material.setBSManageC(BSMANAGEC);
-            material.setNeedCheck(NEEDCHECK);
-            material.setNeedCheckC(NEEDCHECKC);
             material.setName(NAME);
             material.setNameC(NAMEC);
             material.setSpec(SPEC);
             material.setSpecC(SPECC);
-            material.setMaterial(MAT);
-            material.setMaterialC(MATC);
             material.setBrand(BRAND);
             material.setBrandC(BRANDC);
             material.setCategory(CATEGORY);
             material.setCategoryC(CATEGORYC);
-            material.setMaxlimit(MAXLIMIT);
-            material.setMaxlimitC(MAXLIMITC);
-            material.setMinlimit(MINLIMIT);
-            material.setMinlimitC(MINLIMITC);
-            material.setPartner(PARTNER);
-            material.setPrice(PRICE);
-            material.setPriceC(PRICEC);
-            material.setRemark(REMARK);
-            material.setMaterialState(MATERIALSTATE);
-            material.setMaterialStateC(MATERIALSTATEC);
-            material.setSingleManage(SINGLEMANAGE);
-            material.setSingleManageC(SINGLEMANAGEC);
-            material.setNotSingle(NOTSINGLE);
-            material.setNotSingleC(NOTSINGLEC);
-            List<Material> listM = materialMtMapper.SearchMaterialMt(material);
+            material.setReptId(REPTID);
+            material.setReptIdC(REPTIDC);
+            List<Material> listM = materialMtMapper.searchDetail(material);
             return new PageInfo<>(listM);
         }
     }
 
-    @Override
+    /*@Override
     public Material changeMaterialMt(HttpServletRequest request) {
         Material material = new Material();
         material.setOnlyId( parseInt(request.getParameter("onlyId")) );
@@ -187,6 +166,6 @@ public class MaterialMtImpl implements MaterialMtService {
         } else{
             return "0";
         }
-    }
+    }*/
 
 }

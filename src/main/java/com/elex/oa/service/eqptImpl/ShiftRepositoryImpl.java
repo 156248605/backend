@@ -144,7 +144,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             String theNumber = repositoryMapper.getNumber(repositoryOne);
             if (material2.getNum().equals(shiftNum) || theNumber.equals(shiftNum)) {
                 Repository repository = new Repository();
-                repository.setPosition(request.getParameter("outPost"));
+                repository.setPostId(request.getParameter("outPost"));
                 repository.setReptId(request.getParameter("outRept"));
                 repository.setPrice("0");
                 repository.setNum("0");
@@ -235,9 +235,18 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             Material material = new Material();
             material.setId(listSHIFT.get(i).get("theMatId").toString());
             String INNUM = listSHIFT.get(i).get("theMatNum").toString();
-            String NUM = repositoryMapper.getNumber(repository);
+            /*String NUM = repositoryMapper.getNumber(repository);*/
+            String NUM = "";
+            if (!postId.equals("无")){
+                NUM = repositoryMapper.getNumber(repository);
+            }else {
+                NUM = "0";
+            }
+            int a = parseInt(NUM);
+            int b = parseInt(INNUM);
             String postCap = "";
-            if (repositoryMtMapper.searchPostCap(repository).equals("无限制")){
+            Repository repository1 = repositoryMtMapper.searchPostCap(repository);
+            if (repository1.getPostCap().equals("无限制")){
                 postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
             }
             if (parseInt(NUM) + parseInt(INNUM) > parseInt(postCap) ){
