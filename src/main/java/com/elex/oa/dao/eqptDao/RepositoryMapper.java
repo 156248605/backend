@@ -53,9 +53,6 @@ public interface RepositoryMapper {
 
     List<Repository> postlist();
 
-    // 更新数量(精确)
-    String getNum(Repository repository);
-
     // 更新数量
     String getNumber(Repository repository);
 
@@ -65,14 +62,18 @@ public interface RepositoryMapper {
     // 确定仓库
     int lockOnlyIdR(Repository repository);
 
+    // 确定库位
+    int lockOnlyIdP(Repository repository);
+
     // 确定某个物料所在仓库
     List<Repository> matInRept(Repository repository);
     List<Repository> matInPost(Repository repository);
     List<Repository> matOutRept(Repository repository);
     List<Repository> matOutPost(Repository repository);
 
-    // 是否库位管理
-    String managePost(Repository repository);
-
     List<Material> matlist();
+
+    void updPosition(Repository repository);
+
+    void updPostState(Repository repository);
 }

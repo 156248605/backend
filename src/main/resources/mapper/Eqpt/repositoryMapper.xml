@@ -64,7 +64,7 @@
             <if test="postManage != null and postManage != '' and postManageC == 2">
                 AND postManage NOT LIKE CONCAT(CONCAT('%', #{postManage}), '%')
             </if>
-            <if test="postId != null and postId != '' and postIdC == ''">
+            <!--<if test="postId != null and postId != '' and postIdC == ''">
                 AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
             </if>
             <if test="postId != null and postId != '' and postIdC == 1">
@@ -108,7 +108,7 @@
             </if>
             <if test="postCap != null and postCap != '' and postCapC == 2">
                 AND postCap NOT LIKE CONCAT(CONCAT('%', #{postCap}), '%')
-            </if>
+            </if>-->
             <if test="reptAddr != null and reptAddr != '' and reptAddrC == ''">
                 AND reptAddr LIKE CONCAT(CONCAT('%', #{reptAddr}), '%')
             </if>
@@ -227,7 +227,7 @@
     </select>
 
     <insert id="insertRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{reptName},#{reptAdmin},#{reptState},#{reptAddr},#{postManage},#{postId},#{postName},#{postCate},#{fixPostMat},#{postCap},#{price},#{spec},#{category},#{remark},NULL,#{num})
+        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{reptName},#{reptAdmin},#{reptState},#{reptAddr},#{postManage},#{price},#{spec},#{category},#{remark},NULL,#{num},#{materialId})
     </insert>
 
     <update id="changeRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -278,7 +278,7 @@
             <if test="postManage != null">
                 postManage = #{postManage},
             </if>
-            <if test="postId != null">
+            <!--<if test="postId != null">
                 postId = #{postId},
             </if>
             <if test="postName != null">
@@ -292,7 +292,7 @@
             </if>
             <if test="postCap != null">
                 postCap = #{postCap},
-            </if>
+            </if>-->
             <if test="remark != null">
                 remark = #{remark}
             </if>
@@ -354,7 +354,7 @@
     </update>
 
     <select id="searchCategory" resultType="string">
-        SELECT reptCategory FROM eqpt_repository WHERE reptId = #{reptId} AND postId = #{postId}
+        SELECT reptCategory FROM eqpt_repository WHERE reptId = #{reptId}
     </select>
 
     <select id="theCategory" resultType="string">
@@ -382,7 +382,7 @@
     </select>
 
     <select id="postlist" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT postId FROM eqpt_repository
+        SELECT DISTINCT postId FROM eqpt_position
     </select>
 
     <select id="otherInfo" resultType="com.elex.oa.entity.eqpt.Material">
@@ -398,7 +398,7 @@
     </select>
 
     <select id="getNumber" resultType="string">
-        SELECT num FROM eqpt_repository WHERE reptId = #{reptId} AND postId = #{postId}
+        SELECT num FROM eqpt_position WHERE reptId = #{reptId} AND postId = #{postId}
     </select>
 
     <select id="getOtherInfo" resultType="com.elex.oa.entity.eqpt.Material">
@@ -412,4 +412,67 @@
     <select id="managePost" resultType="string">
         SELECT postManage FROM eqpt_repositorymt WHERE reptId = #{reptId}
     </select>
+
+    <select id="lockOnlyIdP" resultType="int">
+        SELECT onlyIdP FROM eqpt_position WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
+
+    <update id="updPosition" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_position
+        <set>
+            <if test="reptId != null">
+                reptId = #{reptId},
+            </if>
+            <if test="reptName != null">
+                reptName = #{reptName},
+            </if>
+            <if test="reptState != null">
+                reptState = #{reptState},
+            </if>
+            <if test="postId != null">
+                postId = #{postId},
+            </if>
+            <if test="postName != null">
+                postName = #{postName},
+            </if>
+            <if test="postCate != null">
+                postCate = #{postCate},
+            </if>
+            <if test="fixPostMat != null">
+                fixPostMat = #{fixPostMat},
+            </if>
+            <if test="postCap != null">
+                postCap = #{postCap},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="materialId != null">
+                materialId = #{materialId},
+            </if>
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
+        </set>
+        WHERE onlyIdP = #{onlyIdP}
+    </update>
+
+    <update id="updPostState" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_position
+        <set>
+            <if test="reptState != null">
+                reptState = #{reptState}
+            </if>
+        </set>
+        WHERE reptId = #{reptId}
+    </update>
 </mapper>

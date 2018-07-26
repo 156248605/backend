@@ -20,5 +20,8 @@ public interface InRepositoryMapper {
 
     List showINID(Repository repository);
 
+    List<Repository> wdbh();
+
+    List<Repository> showmat(String wdbh);
 
 }

@@ -10,6 +10,8 @@ import com.elex.oa.service.eqptService.OutRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -154,9 +156,12 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String number = repositoryMapper.getNumber(repository);
             String numAfterOut = String.valueOf(parseInt(number) - parseInt(listOUT.get(i).get("theMatNum").toString()));
             repository.setNum(numAfterOut);
-            int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
+            /*int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
             repository.setOnlyIdR(onlyIdR);
-            repositoryMapper.updRepository(repository);
+            repositoryMapper.updRepository(repository);*/
+            int onlyIdP = repositoryMapper.lockOnlyIdP(repository);
+            repository.setOnlyIdP(onlyIdP);
+            repositoryMapper.updPosition(repository);
         }
     }
 
@@ -226,6 +231,43 @@ public class OutRepositoryImpl implements OutRepositoryService {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Repository> wdbhR() {
+        List<Repository> list = outRepositoryMapper.wdbhR();
+        return list;
+    }
+
+    @Override
+    public List<Repository> wdbhX() {
+        List<Repository> list = outRepositoryMapper.wdbhX();
+        return list;
+    }
+
+    @Override
+    public List<Repository> wdbhC() {
+        List<Repository> list = outRepositoryMapper.wdbhC();
+        return list;
+    }
+
+
+    public List<Repository> showmatR(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = outRepositoryMapper.showmatR(wdbh);
+        return list;
+    }
+
+    public List<Repository> showmatX(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = outRepositoryMapper.showmatX(wdbh);
+        return list;
+    }
+
+    public List<Repository> showmatC(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = outRepositoryMapper.showmatC(wdbh);
+        return list;
     }
 }
 

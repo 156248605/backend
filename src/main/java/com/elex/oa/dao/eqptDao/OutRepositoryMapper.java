@@ -25,4 +25,16 @@ public interface OutRepositoryMapper {
     List<Repository> warn();
 
     void updUser(Repository repository);
+
+    List<Repository> wdbhR();
+
+    List<Repository> wdbhX();
+
+    List<Repository> wdbhC();
+
+    List<Repository> showmatX(String wdbh);
+
+    List<Repository> showmatR(String wdbh);
+
+    List<Repository> showmatC(String wdbh);
 }

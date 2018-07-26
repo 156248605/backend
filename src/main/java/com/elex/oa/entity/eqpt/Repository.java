@@ -120,6 +120,7 @@ public class Repository {
     private String remark;
     // 唯一
     private int onlyIdR;
+    private int onlyIdP;
     private int onlyIdIn;
     private int onlyIdOut;
     private int onlyIdInv;
@@ -157,7 +158,7 @@ public class Repository {
     public Repository() {
     }
 
-    public Repository(String reptCategory, String outReptC, String inReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String inInfo, String outInfo, String shiftInfo, String num, String numInv, String price, String spec, String unit, String category, String check, String pal, String palCal, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String materialName, String reptState, String postManage, String reptAddr, String reptName, String reptAdmin, String postId, String postName, String postCate, String fixPostMat, String postCap, String remark, int onlyIdR, int onlyIdIn, int onlyIdOut, int onlyIdInv, String bnC, String snC, String matIdC, String matNameC, String reptIdC, String reptCateC, String positionC, String inNumC, String inIdC, String inTimeC, String outNumC, String outIdC, String outTimeC, String numC, String numInvC, String invIdC, String invTimeC, String palC, String priceC, String reptNameC, String reptAdminC, String reptStateC, String postManageC, String postIdC, String postNameC, String postCateC, String fixPostMatC, String postCapC, String reptAddrC) {
+    public Repository(String reptCategory, String outReptC, String inReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String inInfo, String outInfo, String shiftInfo, String num, String numInv, String price, String spec, String unit, String category, String check, String pal, String palCal, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String materialName, String reptState, String postManage, String reptAddr, String reptName, String reptAdmin, String postId, String postName, String postCate, String fixPostMat, String postCap, String remark, int onlyIdR, int onlyIdP, int onlyIdIn, int onlyIdOut, int onlyIdInv, String bnC, String snC, String matIdC, String matNameC, String reptIdC, String reptCateC, String positionC, String inNumC, String inIdC, String inTimeC, String outNumC, String outIdC, String outTimeC, String numC, String numInvC, String invIdC, String invTimeC, String palC, String priceC, String reptNameC, String reptAdminC, String reptStateC, String postManageC, String postIdC, String postNameC, String postCateC, String fixPostMatC, String postCapC, String reptAddrC) {
         this.reptCategory = reptCategory;
         this.outReptC = outReptC;
         this.inReptC = inReptC;
@@ -217,6 +218,7 @@ public class Repository {
         this.postCap = postCap;
         this.remark = remark;
         this.onlyIdR = onlyIdR;
+        this.onlyIdP = onlyIdP;
         this.onlyIdIn = onlyIdIn;
         this.onlyIdOut = onlyIdOut;
         this.onlyIdInv = onlyIdInv;
@@ -980,6 +982,14 @@ public class Repository {
         this.reptAddrC = reptAddrC;
     }
 
+    public int getOnlyIdP() {
+        return onlyIdP;
+    }
+
+    public void setOnlyIdP(int onlyIdP) {
+        this.onlyIdP = onlyIdP;
+    }
+
     @Override
     public String toString() {
         return "Repository{" +
@@ -1042,6 +1052,7 @@ public class Repository {
                 ", postCap='" + postCap + '\'' +
                 ", remark='" + remark + '\'' +
                 ", onlyIdR=" + onlyIdR +
+                ", onlyIdP=" + onlyIdP +
                 ", onlyIdIn=" + onlyIdIn +
                 ", onlyIdOut=" + onlyIdOut +
                 ", onlyIdInv=" + onlyIdInv +

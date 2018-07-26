@@ -78,6 +78,22 @@ public class MaterialMtImpl implements MaterialMtService {
         }
     }
 
+    // 是否有记录
+    @Override
+    public String record (HttpServletRequest request){
+        Material material = new Material();
+        material.setId(request.getParameter("materialId"));
+        String resultin = materialMtMapper.recordin(material);
+        String resultout = materialMtMapper.recordout(material);
+        String resultshift = materialMtMapper.recordshift(material);
+        // 有记录返回1
+        if ( resultin == null && resultout == null && resultshift == null){
+            return "0";
+        } else{
+            return "1";
+        }
+    }
+
     /*@Override
     public Material changeMaterialMt(HttpServletRequest request) {
         Material material = new Material();
@@ -138,21 +154,7 @@ public class MaterialMtImpl implements MaterialMtService {
         materialMtMapper.newMaterialMt(material);
     }
 
-    // 是否有记录
-    @Override
-    public String record (HttpServletRequest request){
-        Material material = new Material();
-        material.setId(request.getParameter("materialId"));
-        String resultin = materialMtMapper.recordin(material);
-        String resultout = materialMtMapper.recordout(material);
-        String resultshift = materialMtMapper.recordshift(material);
-        // 有记录返回1
-        if ( resultin == null && resultout == null && resultshift == null){
-            return "0";
-        } else{
-            return "1";
-        }
-    }
+
 
     // 是否是启用
     @Override

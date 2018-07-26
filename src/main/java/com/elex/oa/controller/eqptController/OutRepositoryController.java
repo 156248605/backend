@@ -73,4 +73,40 @@ public class OutRepositoryController {
         String result = outRepositoryImpl.canOut(request);
         return result;
     }
+
+    @RequestMapping("/rcly")
+    @ResponseBody
+    public List<Repository> rcly () {
+        return outRepositoryImpl.wdbhR();
+    }
+
+    @RequestMapping("/xsfh")
+    @ResponseBody
+    public List<Repository> xsfh () {
+        return outRepositoryImpl.wdbhX();
+    }
+
+    @RequestMapping("/cgth")
+    @ResponseBody
+    public List<Repository> cgth () {
+        return outRepositoryImpl.wdbhC();
+    }
+
+    @RequestMapping("/showmatR")
+    @ResponseBody
+    public List<Repository> showmatR (HttpServletRequest request) {
+        return outRepositoryImpl.showmatR(request);
+    }
+
+    @RequestMapping("/showmatX")
+    @ResponseBody
+    public List<Repository> showmatX (HttpServletRequest request) {
+        return outRepositoryImpl.showmatX(request);
+    }
+
+    @RequestMapping("/showmatC")
+    @ResponseBody
+    public List<Repository> showmatC (HttpServletRequest request) {
+        return outRepositoryImpl.showmatC(request);
+    }
 }

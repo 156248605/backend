@@ -38,4 +38,8 @@ public interface InRepositoryService {
 
     /*判断库位容量*/
     String postCap(HttpServletRequest request);
+
+    List wdbh();
+
+    List<Repository> showmat(HttpServletRequest request);
 }

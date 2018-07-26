@@ -322,4 +322,23 @@
     <select id="lockPrice" resultType="com.elex.oa.entity.eqpt.Material">
         SELECT price FROM eqpt_material WHERE id = #{id}
     </select>
+
+    <insert id="newDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},'无','0','无',#{price},#{materialState})
+    </insert>
+
+    <delete id="deleteDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        DELETE FROM eqpt_detail WHERE id = #{id}
+    </delete>
+
+
+    <update id="saveDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_detail
+        <set>
+            <if test="materialState != null">
+                materialState = #{materialState}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

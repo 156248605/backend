@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.elex.oa.dao.eqptDao.RepositoryMtMapper">
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.PositionMapper">
 
-    <select id="RepositoryMtList" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_repositorymt
+    <select id="PositionList" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_position WHERE reptState = '是'
     </select>
 
-    <select id="SearchRepositoryMt" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_repositorymt
+    <select id="searchPosition" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_position
         <where>
             <if test="reptId != null and reptId != '' and reptIdC == ''">
                 AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
@@ -26,33 +28,6 @@
             </if>
             <if test="reptName != null and reptName != '' and reptNameC == 2">
                 AND reptName NOT LIKE CONCAT(CONCAT('%', #{reptName}), '%')
-            </if>
-            <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == ''">
-                AND reptAdmin LIKE CONCAT(CONCAT('%', #{reptAdmin}), '%')
-            </if>
-            <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == 1">
-                AND reptAdmin LIKE CONCAT(CONCAT('%', #{reptAdmin}), '%')
-            </if>
-            <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == 2">
-                AND reptAdmin NOT LIKE CONCAT(CONCAT('%', #{reptAdmin}), '%')
-            </if>
-            <if test="reptState != null and reptState != '' and reptStateC == ''">
-                AND reptState LIKE CONCAT(CONCAT('%', #{reptState}), '%')
-            </if>
-            <if test="reptState != null and reptState != '' and reptStateC == 1">
-                AND reptState LIKE CONCAT(CONCAT('%', #{reptState}), '%')
-            </if>
-            <if test="reptState != null and reptState != '' and reptStateC == 2">
-                AND reptState NOT LIKE CONCAT(CONCAT('%', #{reptState}), '%')
-            </if>
-            <if test="postManage != null and postManage != '' and postManageC == ''">
-                AND postManage LIKE CONCAT(CONCAT('%', #{postManage}), '%')
-            </if>
-            <if test="postManage != null and postManage != '' and postManageC == 1">
-                AND postManage LIKE CONCAT(CONCAT('%', #{postManage}), '%')
-            </if>
-            <if test="postManage != null and postManage != '' and postManageC == 2">
-                AND postManage NOT LIKE CONCAT(CONCAT('%', #{postManage}), '%')
             </if>
             <if test="postId != null and postId != '' and postIdC == ''">
                 AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
@@ -99,27 +74,18 @@
             <if test="postCap != null and postCap != '' and postCapC == 2">
                 AND postCap NOT LIKE CONCAT(CONCAT('%', #{postCap}), '%')
             </if>
-            <if test="reptAddr != null and reptAddr != '' and reptAddrC == ''">
-                AND reptAddr LIKE CONCAT(CONCAT('%', #{reptAddr}), '%')
-            </if>
-            <if test="reptAddr != null and reptAddr != '' and reptAddrC == 1">
-                AND reptAddr LIKE CONCAT(CONCAT('%', #{reptAddr}), '%')
-            </if>
-            <if test="reptAddr != null and reptAddr != '' and reptAddrC == 2">
-                AND reptAddr NOT LIKE CONCAT(CONCAT('%', #{reptAddr}), '%')
-            </if>
             <if test="remark != null and remark != ''">
                 AND remark LIKE CONCAT(CONCAT('%', #{remark}), '%')
             </if>
         </where>
     </select>
 
-    <insert id="newRepositoryMt" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_repositorymt VALUES (#{reptId},#{reptName},#{reptAdmin},#{reptState},#{reptAddr},#{postManage},#{postId},#{postName},#{postCate},#{fixPostMat},#{postCap},#{remark},NULL)
+    <insert id="insertPosition" parameterType="com.elex.oa.entity.eqpt.Repository">
+        INSERT INTO eqpt_position VALUES (#{reptId},#{reptName},#{postId},#{postName},#{postCate},#{fixPostMat},#{postCap},#{remark},#{reptState},'无','无','无','无','0',NULL)
     </insert>
 
-    <update id="saveRepositoryMt" parameterType="com.elex.oa.entity.eqpt.Repository">
-        UPDATE eqpt_repositorymt
+    <update id="changePosition" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_position
         <set>
             <if test="reptId != null">
                 reptId = #{reptId},
@@ -127,17 +93,8 @@
             <if test="reptName != null">
                 reptName = #{reptName},
             </if>
-            <if test="reptAdmin != null">
-                reptAdmin = #{reptAdmin},
-            </if>
             <if test="reptState != null">
                 reptState = #{reptState},
-            </if>
-            <if test="reptAddr != null">
-                reptAddr = #{reptAddr},
-            </if>
-            <if test="postManage != null">
-                postManage = #{postManage},
             </if>
             <if test="postId != null">
                 postId = #{postId},
@@ -154,30 +111,45 @@
             <if test="postCap != null">
                 postCap = #{postCap},
             </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="materialId != null">
+                materialId = #{materialId},
+            </if>
             <if test="remark != null">
                 remark = #{remark}
             </if>
         </set>
-        WHERE onlyIdR = #{onlyIdR}
+        WHERE onlyIdP = #{onlyIdP}
     </update>
 
-    <delete id="deleteRepositoryMt" parameterType="com.elex.oa.entity.eqpt.Repository">
-        DELETE eqpt_repositorymt WHERE onlyIdR = #{onlyIdR}
+    <delete id="deletePosition" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_position WHERE onlyIdP = #{onlyIdP}
     </delete>
 
-    <select id="searchPostCap" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT postCap FROM eqpt_position WHERE reptId = #{reptId} AND postId = #{postId}
+    <select id="showPosition" resultType="string">
+        SELECT reptState FROM eqpt_repository WHERE reptId = #{reptId}
     </select>
 
-    <select id="matlist" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT DISTINCT id FROM eqpt_material WHERE fixPosition = '否'
+    <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT reptId FROM eqpt_repository WHERE reptState = '是' AND postManage = '是'
     </select>
 
-    <update id="updMatFix" parameterType="com.elex.oa.entity.eqpt.Material">
-        UPDATE eqpt_material SET fixPosition = '是' WHERE id = #{id}
-    </update>
+    <select id="reptname" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptName FROM eqpt_repository WHERE reptId = #{reptId}
+    </select>
 
-    <update id="updOtherFix" parameterType="com.elex.oa.entity.eqpt.Material">
-        UPDATE eqpt_material SET fixPosition = '否' WHERE id != #{id}
-    </update>
+    <select id="checkPostId" resultType="string">
+        SELECT postId FROM eqpt_position WHERE postId = #{postId}
+    </select>
 </mapper>

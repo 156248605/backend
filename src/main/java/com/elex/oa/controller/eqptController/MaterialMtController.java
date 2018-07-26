@@ -36,6 +36,11 @@ public class MaterialMtController {
         return list;
     }
 
+    @RequestMapping("/record")
+    @ResponseBody
+    public String record (HttpServletRequest request) {
+        return materialMtImpl.record(request);
+    }
     /*@RequestMapping("/new")
     @ResponseBody
     public void InsertMaterial (Material material,HttpServletRequest request) throws ParseException {
@@ -60,11 +65,7 @@ public class MaterialMtController {
         materialMtImpl.deleteMaterialMt(request);
     }
 
-    @RequestMapping("/record")
-    @ResponseBody
-    public String record (HttpServletRequest request) {
-        return materialMtImpl.record(request);
-    }
+
 
     @RequestMapping("/state")
     @ResponseBody
