@@ -37,7 +37,6 @@ public interface MaterialMapper {
 
     void updMatM(Material material);
 
-
     List<Material> searchList(List<String> listId, List<String> listName, String SDATE, String EDATE);
 
     // 确定批次号还是序列号
@@ -51,4 +50,11 @@ public interface MaterialMapper {
     void updDetail(Material material);
 
     void updDetailM(Material material);
+
+    void newDetail(Material material);
+
+    void deleteDetail(Material material);
+
+    void saveDetail(Material material1);
+
 }

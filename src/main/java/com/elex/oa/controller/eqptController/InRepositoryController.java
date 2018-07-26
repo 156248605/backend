@@ -79,4 +79,15 @@ public class InRepositoryController {
         return result;
     }
 
+    @RequestMapping("/cgsh")
+    @ResponseBody
+    public List<Repository> cgsh () {
+        return inRepositoryImpl.wdbh();
+    }
+
+    @RequestMapping("/showmat")
+    @ResponseBody
+    public List<Repository> showmat (HttpServletRequest request) {
+        return inRepositoryImpl.showmat(request);
+    }
 }

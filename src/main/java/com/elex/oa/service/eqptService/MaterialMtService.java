@@ -12,6 +12,9 @@ public interface MaterialMtService {
     // 查找物料
     PageInfo<Material> searchDetail(Page page, HttpServletRequest request);
 
+    // 是否有记录
+    String record(HttpServletRequest request);
+
     /*Material changeMaterialMt(HttpServletRequest request);
 
     void saveMaterialMt(HttpServletRequest request);

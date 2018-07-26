@@ -187,6 +187,10 @@ public class MaterialImpl implements MaterialService {
         }
         material.setMaterialState(State);*/
         materialMapper.saveMaterial(material);
+        Material material1 = new Material();
+        material1.setId(request.getParameter("id"));
+        material1.setMaterialState(request.getParameter("materialState"));
+        materialMapper.saveDetail(material1);
     }
 
     // 删除物料
@@ -194,7 +198,9 @@ public class MaterialImpl implements MaterialService {
     public void deleteMaterial (HttpServletRequest request){
         Material material = new Material();
         material.setOnlyId( parseInt(request.getParameter("onlyId")) );
+        material.setId(request.getParameter("id"));
         materialMapper.deleteMaterial(material);
+        materialMapper.deleteDetail(material);
     }
 
     // 插入物料
@@ -226,5 +232,18 @@ public class MaterialImpl implements MaterialService {
         material.setSingleManage(request.getParameter("singleManage"));
         material.setNotSingle(request.getParameter("notSingle"));
         materialMapper.newMaterial(material);
+        materialMapper.newDetail(material);
+    }
+
+    @Override
+    public String checkId(HttpServletRequest request) {
+        Material material = new Material();
+        material.setId(request.getParameter("id"));
+        Material material1 = materialMapper.MaterialId(material);
+        if (material1 == null){
+            return "1";
+        }else {
+            return "0";
+        }
     }
 }

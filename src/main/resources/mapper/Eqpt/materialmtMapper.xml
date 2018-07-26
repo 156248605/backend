@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.eqptDao.MaterialMtMapper">
     <select id="detailList" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_detail
+        SELECT * FROM eqpt_detail WHERE materialState = '启用'
     </select>
 
     <select id="searchDetail" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">

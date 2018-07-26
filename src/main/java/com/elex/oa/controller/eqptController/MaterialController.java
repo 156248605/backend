@@ -59,4 +59,9 @@ public class MaterialController {
         materialImpl.deleteMaterial(request);
     }
 
+    @RequestMapping("/check")
+    @ResponseBody
+    public String checkId (HttpServletRequest request){
+        return materialImpl.checkId(request);
+    }
 }

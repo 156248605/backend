@@ -233,9 +233,12 @@ public class InRepositoryImpl implements InRepositoryService {
                 String numAfterIn = String.valueOf(parseInt(number) + parseInt(listIN.get(i).get("theMatNum").toString()));
                 repository.setNum(numAfterIn);
             }
-            int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
+            /*int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
             repository.setOnlyIdR(onlyIdR);
-            repositoryMapper.updRepository(repository);
+            repositoryMapper.updRepository(repository);*/
+            int onlyIdP = repositoryMapper.lockOnlyIdP(repository);
+            repository.setOnlyIdP(onlyIdP);
+            repositoryMapper.updPosition(repository);
         }
     }
 
@@ -283,26 +286,6 @@ public class InRepositoryImpl implements InRepositoryService {
             repository.setPosition(postId);
             Material material = new Material();
             material.setId(listIN.get(i).get("theMatId").toString());
-            /*material.setBn(listIN.get(i).get("theMatBnSn").toString());
-            material.setSn(listIN.get(i).get("theMatBnSn").toString());
-            Material material1 = materialMapper.lockBn(material);
-            Material material2 = materialMapper.lockSn(material);
-            String bn = null;
-            String sn = null;
-            if (material1 != null){
-                bn = listIN.get(i).get("theMatBnSn").toString();
-                sn = "无";
-            }else if (material2 != null){
-                sn = listIN.get(i).get("theMatBnSn").toString();
-                bn = "无";
-            }else {
-                sn = "无";
-                bn = "无";
-            }
-            Material material3 = new Material();
-            material3.setId(listIN.get(i).get("theMatId").toString());
-            material3.setSn(sn);
-            material3.setBn(bn);*/
             String INNUM = listIN.get(i).get("theMatNum").toString();
             String NUM = "";
             if (!postId.equals("无")){
@@ -325,5 +308,16 @@ public class InRepositoryImpl implements InRepositoryService {
         return result;
     }
 
+    @Override
+    public List<Repository> wdbh() {
+        List<Repository> list = inRepositoryMapper.wdbh();
+        return list;
+    }
 
+    @Override
+    public List<Repository> showmat(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = inRepositoryMapper.showmat(wdbh);
+        return list;
+    }
 }

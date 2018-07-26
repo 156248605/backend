@@ -55,7 +55,7 @@ public class RepositoryImpl implements RepositoryService {
         String REPTSTATEC = request.getParameter("reptStateC");
         String POSTMANAGE = request.getParameter("postManage");
         String POSTMANAGEC = request.getParameter("postManageC");
-        String POSTID = request.getParameter("postId");
+        /*String POSTID = request.getParameter("postId");
         String POSTIDC = request.getParameter("postIdC");
         String POSTNAME = request.getParameter("postName");
         String POSTNAMEC = request.getParameter("postNameC");
@@ -64,11 +64,11 @@ public class RepositoryImpl implements RepositoryService {
         String FIXPOSTMAT = request.getParameter("fixPostMat");
         String FIXPOSTMATC = request.getParameter("fixPostMatC");
         String POSTCAP = request.getParameter("postCap");
-        String POSTCAPC = request.getParameter("postCapC");
+        String POSTCAPC = request.getParameter("postCapC");*/
         String REPTADDR = request.getParameter("reptAddr");
         String REPTADDRC = request.getParameter("reptAddrC");
         String REMARK = request.getParameter("remark");
-        if (  REPTID.equals("") && REPTNAME.equals("") && REPTADMIN.equals("") && REPTSTATE.equals("") && REMARK.equals("") && POSTMANAGE.equals("") && POSTID.equals("") && POSTNAME.equals("") && POSTCATE.equals("") && FIXPOSTMAT.equals("") && POSTCAP.equals("") && REPTADDR.equals("") && REPTCATEGORY.equals("")  ){
+        if (  REPTID.equals("") && REPTNAME.equals("") && REPTADMIN.equals("") && REPTSTATE.equals("") && REMARK.equals("") && POSTMANAGE.equals("") &&/* POSTID.equals("") && POSTNAME.equals("") && POSTCATE.equals("") && FIXPOSTMAT.equals("") && POSTCAP.equals("") &&*/ REPTADDR.equals("") && REPTCATEGORY.equals("")  ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Repository> listR = repositoryMapper.RepositoryList();
             return new PageInfo<>(listR);
@@ -94,7 +94,7 @@ public class RepositoryImpl implements RepositoryService {
             repository.setReptStateC(REPTSTATEC);
             repository.setPostManage(POSTMANAGE);
             repository.setPostManageC(POSTMANAGEC);
-            repository.setPostId(POSTID);
+            /*repository.setPostId(POSTID);
             repository.setPostIdC(POSTIDC);
             repository.setPostName(POSTNAME);
             repository.setPostNameC(POSTNAMEC);
@@ -103,7 +103,7 @@ public class RepositoryImpl implements RepositoryService {
             repository.setFixPostMat(FIXPOSTMAT);
             repository.setFixPostMatC(FIXPOSTMATC);
             repository.setPostCap(POSTCAP);
-            repository.setPostCapC(POSTCAPC);
+            repository.setPostCapC(POSTCAPC);*/
             repository.setReptAddr(REPTADDR);
             repository.setReptAddrC(REPTADDRC);
             repository.setRemark(REMARK);
@@ -125,11 +125,11 @@ public class RepositoryImpl implements RepositoryService {
         repository.setReptAdmin(request.getParameter("reptAdmin"));
         repository.setReptState(request.getParameter("reptState"));
         repository.setPostManage(request.getParameter("postManage"));
-        repository.setPostId(request.getParameter("postId"));
+        /*repository.setPostId(request.getParameter("postId"));
         repository.setPostName(request.getParameter("postName"));
         repository.setPostCate(request.getParameter("postCate"));
         repository.setFixPostMat(request.getParameter("fixPostMat"));
-        repository.setPostCap(request.getParameter("postCap"));
+        repository.setPostCap(request.getParameter("postCap"));*/
         repository.setReptAddr(request.getParameter("reptAddr"));
         String A;
         if (repositoryMapper.theCategory(repository).isEmpty()){
@@ -143,6 +143,7 @@ public class RepositoryImpl implements RepositoryService {
         repository.setSpec("无");
         repository.setCategory("无");
         repository.setRemark("无");
+        repository.setMaterialId("无");
         if (request.getParameter("reptCategory").equals(A)) {
             repositoryMapper.insertRepository(repository);
             return "1";
@@ -160,11 +161,11 @@ public class RepositoryImpl implements RepositoryService {
         repository.setReptAdmin(request.getParameter("reptAdmin"));
         repository.setReptState(request.getParameter("reptState"));
         repository.setPostManage(request.getParameter("postManage"));
-        repository.setPostId(request.getParameter("postId"));
+        /*repository.setPostId(request.getParameter("postId"));
         repository.setPostName(request.getParameter("postName"));
         repository.setPostCate(request.getParameter("postCate"));
         repository.setFixPostMat(request.getParameter("fixPostMat"));
-        repository.setPostCap(request.getParameter("postCap"));
+        repository.setPostCap(request.getParameter("postCap"));*/
         repository.setReptAddr(request.getParameter("reptAddr"));
         /*String position;
         String result = repositoryMapper.managePost(repository);
@@ -178,6 +179,10 @@ public class RepositoryImpl implements RepositoryService {
         repository.setNum(request.getParameter("num"));*/
         repository.setOnlyIdR( Integer.parseInt(request.getParameter("onlyIdR")) );
         repositoryMapper.changeRepository(repository);
+        Repository repository1 = new Repository();
+        repository1.setReptState(request.getParameter("postManage"));
+        repository1.setReptId(request.getParameter("reptId"));
+        repositoryMapper.updPostState(repository);
     }
 
 
