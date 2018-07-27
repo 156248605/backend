@@ -267,7 +267,7 @@ public class InRepositoryImpl implements InRepositoryService {
     @Override
     public void DeleteInRept(HttpServletRequest request){
         Repository repository = new Repository();
-        repository.setOnlyIdIn( parseInt(request.getParameter("inId")) );
+        repository.setOnlyIdIn( parseInt(request.getParameter("onlyIdIn")) );
         inRepositoryMapper.delete(repository);
     }
 
