@@ -25,4 +25,6 @@ public interface RepositoryMtMapper {
     void updMatFix(Material material);
 
     void updOtherFix(Material material);
+
+    Repository noPost(Repository repository);
 }

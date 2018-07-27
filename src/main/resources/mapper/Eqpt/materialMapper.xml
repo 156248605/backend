@@ -324,13 +324,16 @@
     </select>
 
     <insert id="newDetail" parameterType="com.elex.oa.entity.eqpt.Material">
-        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},'无','0','无',#{price},#{materialState})
+        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},'','0','',#{price},#{materialState})
+    </insert>
+
+    <insert id="insertDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},#{reptId},#{num},#{postId},#{price},'启用')
     </insert>
 
     <delete id="deleteDetail" parameterType="com.elex.oa.entity.eqpt.Material">
         DELETE FROM eqpt_detail WHERE id = #{id}
     </delete>
-
 
     <update id="saveDetail" parameterType="com.elex.oa.entity.eqpt.Material">
         UPDATE eqpt_detail
@@ -341,4 +344,8 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="matInDetail" resultType="string">
+        SELECT DISTINCT id FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
 </mapper>

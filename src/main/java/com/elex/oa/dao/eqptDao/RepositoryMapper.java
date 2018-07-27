@@ -76,4 +76,6 @@ public interface RepositoryMapper {
     void updPosition(Repository repository);
 
     void updPostState(Repository repository);
+
+    List<Repository> getPost(Repository repository);
 }

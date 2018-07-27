@@ -38,6 +38,8 @@ public class MaterialMtImpl implements MaterialMtService {
         String CATEGORYC = request.getParameter("categoryC");
         String REPTID = request.getParameter("reptId");
         String REPTIDC = request.getParameter("reptIdC");
+        String POSTID = request.getParameter("postId");
+        String POSTIDC = request.getParameter("postIdC");
         /*String PRICE = request.getParameter("price");
         String PRICEC = request.getParameter("priceC");
         String PARTNER = request.getParameter("partner");
@@ -73,6 +75,8 @@ public class MaterialMtImpl implements MaterialMtService {
             material.setCategoryC(CATEGORYC);
             material.setReptId(REPTID);
             material.setReptIdC(REPTIDC);
+            material.setPostId(POSTID);
+            material.setPostIdC(POSTIDC);
             List<Material> listM = materialMtMapper.searchDetail(material);
             return new PageInfo<>(listM);
         }

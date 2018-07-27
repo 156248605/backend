@@ -199,6 +199,14 @@ public class RepositoryImpl implements RepositoryService {
         return reptlist;
     }
 
+    // 获取库位
+    @Override
+    public List<Repository> getPost(HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setReptId(request.getParameter("reptId"));
+        List<Repository> postlist = repositoryMapper.getPost(repository);
+        return postlist;
+    }
     /*@Override
     public List<Repository> matInRept(HttpServletRequest request) {
         List<Repository> reptList = null;

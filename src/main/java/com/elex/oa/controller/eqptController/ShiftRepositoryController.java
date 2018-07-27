@@ -62,4 +62,29 @@ public class ShiftRepositoryController {
         String result = shiftRepositoryImpl.postCap(request);
         return result;
     }
+
+    @RequestMapping("/jy")
+    @ResponseBody
+    public List<Repository> jy () {
+        return shiftRepositoryImpl.wdbhJ();
+    }
+
+    @RequestMapping("/scll")
+    @ResponseBody
+    public List<Repository> scll () {
+        return shiftRepositoryImpl.wdbhS();
+    }
+
+    @RequestMapping("/showmatJ")
+    @ResponseBody
+    public List<Repository> showmatJ (HttpServletRequest request) {
+        return shiftRepositoryImpl.showmatJ(request);
+    }
+
+    @RequestMapping("/showmatS")
+    @ResponseBody
+    public List<Repository> showmatS (HttpServletRequest request) {
+        return shiftRepositoryImpl.showmatS(request);
+    }
+
 }

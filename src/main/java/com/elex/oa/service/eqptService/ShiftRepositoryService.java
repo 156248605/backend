@@ -29,4 +29,12 @@ public interface ShiftRepositoryService {
     List showShiftId(HttpServletRequest request);
 
     String postCap(HttpServletRequest request);
+
+    List<Repository> wdbhJ();
+
+    List<Repository> wdbhS();
+
+    List<Repository> showmatJ(HttpServletRequest request);
+
+    List<Repository> showmatS(HttpServletRequest request);
 }
