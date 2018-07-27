@@ -258,4 +258,24 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         }
         return result;
     }
+
+    @Override
+    public List<Repository> wdbhJ() {
+        return null;
+    }
+
+    @Override
+    public List<Repository> wdbhS() {
+        return null;
+    }
+
+    @Override
+    public List<Repository> showmatJ(HttpServletRequest request) {
+        return null;
+    }
+
+    @Override
+    public List<Repository> showmatS(HttpServletRequest request) {
+        return null;
+    }
 }

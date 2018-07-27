@@ -102,12 +102,12 @@ public class Material {
     private String numInvC;
     private String palC;
     private String reptIdC;
+    private String postIdC;
 
     public Material() {
     }
 
-    public Material(String postId, int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC) {
-        this.postId = postId;
+    public Material(int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String postId, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC, String postIdC) {
         this.onlyId = onlyId;
         this.bn = bn;
         this.sn = sn;
@@ -133,6 +133,7 @@ public class Material {
         this.fixPosition = fixPosition;
         this.needCheck = needCheck;
         this.reptId = reptId;
+        this.postId = postId;
         this.bnC = bnC;
         this.snC = snC;
         this.positionC = positionC;
@@ -161,6 +162,7 @@ public class Material {
         this.numInvC = numInvC;
         this.palC = palC;
         this.reptIdC = reptIdC;
+        this.postIdC = postIdC;
     }
 
     public String getBn() {
@@ -596,6 +598,14 @@ public class Material {
         this.postId = postId;
     }
 
+    public String getPostIdC() {
+        return postIdC;
+    }
+
+    public void setPostIdC(String postIdC) {
+        this.postIdC = postIdC;
+    }
+
     @Override
     public String toString() {
         return "Material{" +
@@ -653,6 +663,7 @@ public class Material {
                 ", numInvC='" + numInvC + '\'' +
                 ", palC='" + palC + '\'' +
                 ", reptIdC='" + reptIdC + '\'' +
+                ", postIdC='" + postIdC + '\'' +
                 '}';
     }
 }

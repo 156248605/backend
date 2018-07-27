@@ -53,8 +53,12 @@ public interface MaterialMapper {
 
     void newDetail(Material material);
 
+    void insertDetail(Material material);
+
     void deleteDetail(Material material);
 
     void saveDetail(Material material1);
 
+    //查询是否有库存记录
+    String matInDetail(Material material);
 }

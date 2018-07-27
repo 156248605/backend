@@ -31,6 +31,9 @@ public interface RepositoryService {
     List<Repository> matOutRept(HttpServletRequest request);*/
 
     // 获取库位
+    List<Repository> getPost(HttpServletRequest request);
+
+    // 获取库位
     List<Repository> PostList();
     /*List<Repository> matInPost(HttpServletRequest request);
     List<Repository> matOutPost(HttpServletRequest request);*/

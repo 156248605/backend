@@ -362,7 +362,11 @@
     </select>
 
     <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT reptId FROM eqpt_repository
+        SELECT DISTINCT reptId FROM eqpt_repository WHERE reptState = '是'
+    </select>
+
+    <select id="getPost" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT postId FROM eqpt_position WHERE reptId = #{reptId}
     </select>
 
     <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -382,7 +386,7 @@
     </select>
 
     <select id="postlist" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT postId FROM eqpt_position
+        SELECT DISTINCT postId FROM eqpt_position WHERE reptState = '是'
     </select>
 
     <select id="otherInfo" resultType="com.elex.oa.entity.eqpt.Material">

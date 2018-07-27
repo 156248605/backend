@@ -147,7 +147,10 @@ public class InRepositoryImpl implements InRepositoryService {
             String sDate = sdf.format(d);
             String INTIME = sDate;
             String ININFO = request.getParameter("inInfo");
-            String POSTID = listIN.get(i).get("postId").toString();
+            String POSTID = "无";
+            if (listIN.get(i).get("postId") != null){
+                POSTID = listIN.get(i).get("postId").toString();
+            }
             String REPTID = listIN.get(i).get("reptId").toString();
             String MATERIALID = listIN.get(i).get("theMatId").toString();
             String MATERIALNAME = listIN.get(i).get("theMatName").toString();
@@ -207,10 +210,27 @@ public class InRepositoryImpl implements InRepositoryService {
             Material material = new Material();
             material.setId(listIN.get(i).get("theMatId").toString());
             material.setNum(listIN.get(i).get("theMatNum").toString());
-            material.setPostId(listIN.get(i).get("postId").toString());
+            String postId = "";
+            if (listIN.get(i).get("postId") != null) {
+                postId = listIN.get(i).get("postId").toString();
+            }
+            material.setPostId(postId);
             material.setReptId(listIN.get(i).get("reptId").toString());
+            material.setName(listIN.get(i).get("theMatName").toString());
+            material.setSpec(listIN.get(i).get("theMatSpec").toString());
+            Material material1 = materialMapper.MaterialId(material);
+            material.setCategory(material1.getCategory());
+            material.setBrand(material1.getBrand());
+            material.setPrice(material1.getPrice());
             materialMapper.updMat(material);
-            materialMapper.updDetail(material);
+            System.out.println(listIN.get(i).get("theMatNum").toString());
+            // 查询是否库存记录
+            String result = materialMapper.matInDetail(material);
+            if(result == null){
+                materialMapper.insertDetail(material);
+            }else {
+                materialMapper.updDetail(material);
+            }
         }
     }
 
@@ -224,6 +244,7 @@ public class InRepositoryImpl implements InRepositoryService {
             repository.setReptId(listIN.get(i).get("reptId").toString());
             repository.setPostId(listIN.get(i).get("postId").toString());
             repository.setMaterialId(listIN.get(i).get("theMatId").toString());
+            repository.setSpec(listIN.get(i).get("theMatSpec").toString());
             /*更新数量*/
             String emptyRept = repositoryMapper.getNumber(repository);
             if (emptyRept.equals("0")) {
@@ -279,30 +300,52 @@ public class InRepositoryImpl implements InRepositoryService {
         List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
         for (int i = 0; i < listIN.size(); i++) {
             String reptId = listIN.get(i).get("reptId").toString();
-            String postId = listIN.get(i).get("postId").toString();
+            String postId = "";
+            String NUM = "0";
+            String INNUM = listIN.get(i).get("theMatNum").toString();
+            String postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
             Repository repository = new Repository();
+            repository.setReptId(reptId);
+            repository.setPostId(postId);
+            repository.setPosition(postId);
+            if (listIN.get(i).get("postId") != null){
+                postId = listIN.get(i).get("postId").toString();
+                Material material = new Material();
+                material.setId(listIN.get(i).get("theMatId").toString());
+                INNUM = listIN.get(i).get("theMatNum").toString();
+                if (!postId.equals("无")){
+                    NUM = repositoryMapper.getNumber(repository);
+                }else {
+                    NUM = "0";
+                }
+                Repository repository1 = repositoryMtMapper.searchPostCap(repository);
+                if (repository1.getPostCap().equals("无限制")){
+                    postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
+                }
+            }
+            Repository repository2 = repositoryMtMapper.noPost(repository);
+            /*Repository repository = new Repository();
             repository.setReptId(reptId);
             repository.setPostId(postId);
             repository.setPosition(postId);
             Material material = new Material();
             material.setId(listIN.get(i).get("theMatId").toString());
             String INNUM = listIN.get(i).get("theMatNum").toString();
-            String NUM = "";
             if (!postId.equals("无")){
                 NUM = repositoryMapper.getNumber(repository);
             }else {
                 NUM = "0";
             }
-            String postCap = "";
             Repository repository1 = repositoryMtMapper.searchPostCap(repository);
+            Repository repository2 = repositoryMtMapper.noPost(repository);
             if (repository1.getPostCap().equals("无限制")){
                 postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
-            }
-            if (parseInt(NUM) + parseInt(INNUM) > parseInt(postCap) ){
+            }*/
+            if (parseInt(NUM) + parseInt(INNUM) <= parseInt(postCap) || repository2.getPostManage().equals("否")){
+                result = "0";
+            }else {
                 result = "1";
                 break;
-            }else {
-                result = "0";
             }
         }
         return result;

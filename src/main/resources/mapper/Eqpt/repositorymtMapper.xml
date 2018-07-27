@@ -169,6 +169,10 @@
         SELECT postCap FROM eqpt_position WHERE reptId = #{reptId} AND postId = #{postId}
     </select>
 
+    <select id="noPost" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT postManage FROM eqpt_repository WHERE reptId = #{reptId}
+    </select>
+
     <select id="matlist" resultType="com.elex.oa.entity.eqpt.Material">
         SELECT DISTINCT id FROM eqpt_material WHERE fixPosition = '否'
     </select>

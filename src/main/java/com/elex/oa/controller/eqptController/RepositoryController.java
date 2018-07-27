@@ -70,6 +70,12 @@ public class RepositoryController {
         return repositoryImpl.ReptList();
     }
 
+    @RequestMapping("/getPost")
+    @ResponseBody
+    public List<Repository> getPost(HttpServletRequest request){
+        return repositoryImpl.getPost(request);
+    }
+
     @RequestMapping("/postlist")
     @ResponseBody
     public List<Repository> PostList(){
