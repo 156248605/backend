@@ -86,6 +86,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         for (int i = 0; i < listSHIFT.size(); i++) {
             String shiftId = request.getParameter("shiftId");
             String shiftNum = listSHIFT.get(i).get("theMatNum").toString();
+            if (listSHIFT.get(0).containsKey("number")){
+                shiftNum = listSHIFT.get(i).get("number").toString();
+            }
             String shiftReptC = request.getParameter("shiftReptC");
             String shiftInfo = "";
             if (shiftReptC.equals("归还") || shiftReptC.equals("生产退料")){
@@ -136,6 +139,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         for (int i = 0; i < listSHIFT.size(); i++){
             String materialName = listSHIFT.get(i).get("theMatName").toString();
             String shiftNum = listSHIFT.get(i).get("theMatNum").toString();
+            if (listSHIFT.get(0).containsKey("number")){
+                shiftNum = listSHIFT.get(i).get("number").toString();
+            }
             String materialId = listSHIFT.get(i).get("theMatId").toString();
             String outRept = "";
             if (listSHIFT.get(0).containsKey("outRept")){
@@ -294,6 +300,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             material.setReptId(reptId);
             material.setPostId(postId);
             String INNUM = listSHIFT.get(i).get("theMatNum").toString();
+            if (listSHIFT.get(0).containsKey("number")){
+                INNUM = listSHIFT.get(i).get("number").toString();
+            }
             /*String NUM = repositoryMapper.getNumber(repository);*/
             String NUM = "";
             System.out.println(postId);
@@ -332,6 +341,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             Material material = new Material();
             material.setId(listSHIFT.get(i).get("theMatId").toString());
             String INNUM = listSHIFT.get(i).get("theMatNum").toString();
+            if (listSHIFT.get(0).containsKey("number")){
+                INNUM = listSHIFT.get(i).get("number").toString();
+            }
             String MAX = materialMapper.MaxLimit(material);
             String NUM = materialMapper.getNum(material);
             if (parseInt(NUM) + parseInt(INNUM) > parseInt(MAX)) {
@@ -353,6 +365,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             Material material = new Material();
             material.setId(listSHIFT.get(i).get("theMatId").toString());
             String OUTNUM = listSHIFT.get(i).get("theMatNum").toString();
+            if (listSHIFT.get(0).containsKey("number")){
+                OUTNUM = listSHIFT.get(i).get("number").toString();
+            }
             String MIN = materialMapper.MinLimit(material);
             String NUM = materialMapper.getNum(material);
             if (parseInt(NUM) - parseInt(OUTNUM) < parseInt(MIN)) {
