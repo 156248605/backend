@@ -5,6 +5,7 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Mapper
@@ -80,5 +81,9 @@ public interface RepositoryMapper {
     void updPostState(Repository repository);
 
     List<Repository> getPost(Repository repository);
+
+    void changeManagePost(Repository repository);
+
+    void changeDetail(Repository repository);
 
 }

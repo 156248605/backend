@@ -498,4 +498,12 @@
         </set>
         WHERE reptId = #{reptId}
     </update>
+
+    <update id="changeManagePost" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_position SET postId = #{postId} WHERE reptId = #{reptId}
+    </update>
+
+    <update id="changeDetail" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_detail SET postId = #{postId} WHERE reptId = #{reptId}
+    </update>
 </mapper>
