@@ -1,12 +1,16 @@
 package com.elex.oa.service.eqptImpl;
 
+import com.elex.oa.dao.eqptDao.MaterialMapper;
+import com.elex.oa.dao.eqptDao.MaterialMtMapper;
 import com.elex.oa.dao.eqptDao.PositionMapper;
 import com.elex.oa.entity.Page;
+import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.PositionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +18,9 @@ import java.util.List;
 
 @Service
 public class PositionServiceImpl implements PositionService {
+
+    @Resource
+    private MaterialMapper materialMapper;
 
     @Resource
     private PositionMapper positionMapper;
@@ -128,6 +135,12 @@ public class PositionServiceImpl implements PositionService {
         repository.setNum(request.getParameter("num"));*/
         repository.setOnlyIdP( Integer.parseInt(request.getParameter("onlyIdP")) );
         positionMapper.changePosition(repository);
+        Repository repository1 = positionMapper.locationPosition(repository);
+        Material material = new Material();
+        material.setReptId(repository1.getReptId());
+        material.setPostId(repository1.getPostId());
+        String position = request.getParameter("postId");
+        materialMapper.updateDetail(material,position);
     }
 
 

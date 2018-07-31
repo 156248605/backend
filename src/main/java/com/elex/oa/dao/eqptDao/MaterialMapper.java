@@ -61,4 +61,7 @@ public interface MaterialMapper {
 
     //查询是否有库存记录
     String matInDetail(Material material);
+
+    // 修改库位时修改库存查询
+    void updateDetail(Material material,String position);
 }

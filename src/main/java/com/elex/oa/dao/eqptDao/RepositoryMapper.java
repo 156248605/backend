@@ -55,6 +55,7 @@ public interface RepositoryMapper {
 
     // 更新数量
     String getNumber(Repository repository);
+    String numInPost(Material material);
 
     // 更新其他数据
     Material getOtherInfo(Material material);
@@ -66,10 +67,11 @@ public interface RepositoryMapper {
     int lockOnlyIdP(Repository repository);
 
     // 确定某个物料所在仓库
-    List<Repository> matInRept(Repository repository);
-    List<Repository> matInPost(Repository repository);
-    List<Repository> matOutRept(Repository repository);
-    List<Repository> matOutPost(Repository repository);
+    List<Repository> matInRept(Material material);
+    List<Repository> matInPost(Material material);
+    List<Repository> matInPostReplace();
+    List<Repository> matOutRept(Material material);
+    List<Repository> matOutPost(Material material);
 
     List<Material> matlist();
 
@@ -78,4 +80,5 @@ public interface RepositoryMapper {
     void updPostState(Repository repository);
 
     List<Repository> getPost(Repository repository);
+
 }

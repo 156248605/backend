@@ -10,8 +10,6 @@ import com.elex.oa.service.eqptService.OutRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -121,7 +119,10 @@ public class OutRepositoryImpl implements OutRepositoryService {
                 bn = listOUT.get(i).get("theMatBnSn").toString();
                 sn = "无";
             }
-            String POSTID = listOUT.get(i).get("postId").toString();
+            String POSTID = "无";
+            if (listOUT.get(i).get("postId") != null){
+                POSTID = listOUT.get(i).get("postId").toString();
+            }
             String REPTID = listOUT.get(i).get("reptId").toString();
             String MATERIALID = listOUT.get(i).get("theMatId").toString();
             String MATERIALNAME = listOUT.get(i).get("theMatName").toString();
@@ -187,10 +188,19 @@ public class OutRepositoryImpl implements OutRepositoryService {
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
             material.setNum(listOUT.get(i).get("theMatNum").toString());
-            material.setPostId(listOUT.get(i).get("postId").toString());
+            String postId = "";
+            if (listOUT.get(i).containsKey("postId")){
+                postId = listOUT.get(i).get("postId").toString();
+            }
+            material.setPostId(postId);
             material.setReptId(listOUT.get(i).get("reptId").toString());
+            String number = repositoryMapper.numInPost(material);
+            if (parseInt(number) == parseInt(listOUT.get(i).get("theMatNum").toString())) {
+                materialMapper.deleteDetail(material);
+            } else {
+                materialMapper.updDetailM(material);
+            }
             materialMapper.updMatM(material);
-            materialMapper.updDetailM(material);
         }
     }
 

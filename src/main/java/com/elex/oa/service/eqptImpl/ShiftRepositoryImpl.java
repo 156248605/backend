@@ -9,6 +9,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.ShiftRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -133,13 +134,63 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         String SHIFTLIST = request.getParameter("shiftList");
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
         for (int i = 0; i < listSHIFT.size(); i++){
+            String materialName = listSHIFT.get(i).get("theMatName").toString();
             String shiftNum = listSHIFT.get(i).get("theMatNum").toString();
+            String materialId = listSHIFT.get(i).get("theMatId").toString();
+            String outRept = "";
+            if (listSHIFT.get(0).containsKey("outRept")){
+                outRept = listSHIFT.get(i).get("outRept").toString();
+            }
+            String outPost = "";
+            if (listSHIFT.get(i).containsKey("outPost")){
+                outPost = listSHIFT.get(i).get("outPost").toString();
+            }
+            String inRept = "";
+            if (listSHIFT.get(i).containsKey("inRept")){
+                inRept = listSHIFT.get(i).get("inRept").toString();
+            }
+            String inPost = "";
+            if (listSHIFT.get(i).containsKey("inPost")){
+                inPost = listSHIFT.get(i).get("inPost").toString();
+            }
+            Repository repository = new Repository();
+            repository.setReptId(outRept);
+            repository.setPostId(outPost);
+            String outNum = shiftRepositoryMapper.theNumberOut(repository);
+            Material material = new Material();
+            material.setReptId(outRept);
+            material.setPostId(outPost);
+            material.setId(materialId);
+            material.setNum(shiftNum);
+            if (parseInt(outNum) == parseInt(shiftNum)){
+                materialMapper.deleteDetail(material);
+            }else {
+                materialMapper.updDetailM(material);
+            }
+            Material material1 = new Material();
+            material1.setReptId(inRept);
+            material1.setPostId(inPost);
+            material1.setId(materialId);
+            material1.setNum(shiftNum);
+            material1.setName(materialName);
+            material1.setSpec(listSHIFT.get(i).get("theMatSpec").toString());
+            Material material2 = materialMapper.MaterialId(material);
+            material1.setCategory(material2.getCategory());
+            material1.setBrand(material2.getBrand());
+            material1.setPrice(material2.getPrice());
+            String result = materialMapper.matInDetail(material1);
+            if(result == null){
+                materialMapper.insertDetail(material1);
+            }else {
+                materialMapper.updDetail(material1);
+            }
+            /*String shiftNum = listSHIFT.get(i).get("theMatNum").toString();
             String materialId = listSHIFT.get(i).get("theMatId").toString();
             Material material = new Material();
             material.setId(materialId);
             Material material2 = shiftRepositoryMapper.lockMat(material);
             Repository repositoryOne = new Repository();
-            repositoryOne.setPosition(request.getParameter("outPost"));
+            repositoryOne.setPostId(request.getParameter("outPost"));
             repositoryOne.setReptId(request.getParameter("outRept"));
             String theNumber = repositoryMapper.getNumber(repositoryOne);
             if (material2.getNum().equals(shiftNum) || theNumber.equals(shiftNum)) {
@@ -188,7 +239,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                 int onlyIdR = repositoryMapper.lockOnlyIdR(repository1);
                 repository1.setOnlyIdR(onlyIdR);
                 repositoryMapper.changeRepository(repository1);
-            }
+            }*/
         }
     }
 
@@ -226,22 +277,35 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         String SHIFTLIST = request.getParameter("shiftList");
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
         for (int i = 0; i < listSHIFT.size(); i++) {
-            String reptId = request.getParameter("inRept");
-            String postId = request.getParameter("inPost");
+            String reptId = "";
+            if (listSHIFT.get(i).containsKey("inRept")){
+                reptId = listSHIFT.get(i).get("inRept").toString();
+            }
+            String postId = "";
+            if (listSHIFT.get(i).containsKey("inPost")){
+                postId = listSHIFT.get(i).get("inPost").toString();
+            }
             Repository repository = new Repository();
             repository.setReptId(reptId);
             repository.setPostId(postId);
             repository.setPosition(postId);
             Material material = new Material();
             material.setId(listSHIFT.get(i).get("theMatId").toString());
+            material.setReptId(reptId);
+            material.setPostId(postId);
             String INNUM = listSHIFT.get(i).get("theMatNum").toString();
             /*String NUM = repositoryMapper.getNumber(repository);*/
             String NUM = "";
-            if (!postId.equals("无")){
-                NUM = repositoryMapper.getNumber(repository);
+            System.out.println(postId);
+            if (!postId.equals("")){
+                NUM = repositoryMapper.numInPost(material);
+                if (NUM == null){
+                    NUM = "0";
+                }
             }else {
                 NUM = "0";
             }
+            System.out.println(NUM);
             int a = parseInt(NUM);
             int b = parseInt(INNUM);
             String postCap = "";
@@ -260,22 +324,96 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     }
 
     @Override
-    public List<Repository> wdbhJ() {
-        return null;
+    public String canIn(HttpServletRequest request) {
+        String result = "";
+        String SHIFTLIST = request.getParameter("shiftList");
+        List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
+        for (int i = 0; i < listSHIFT.size(); i++) {
+            Material material = new Material();
+            material.setId(listSHIFT.get(i).get("theMatId").toString());
+            String INNUM = listSHIFT.get(i).get("theMatNum").toString();
+            String MAX = materialMapper.MaxLimit(material);
+            String NUM = materialMapper.getNum(material);
+            if (parseInt(NUM) + parseInt(INNUM) > parseInt(MAX)) {
+                result = "1";
+                break;
+            } else{
+                result = "0";
+            }
+        }
+        return result;
     }
 
     @Override
-    public List<Repository> wdbhS() {
-        return null;
+    public String canOut(HttpServletRequest request) {
+        String result = "";
+        String SHIFTLIST = request.getParameter("shiftList");
+        List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
+        for (int i = 0; i < listSHIFT.size(); i++) {
+            Material material = new Material();
+            material.setId(listSHIFT.get(i).get("theMatId").toString());
+            String OUTNUM = listSHIFT.get(i).get("theMatNum").toString();
+            String MIN = materialMapper.MinLimit(material);
+            String NUM = materialMapper.getNum(material);
+            if (parseInt(NUM) - parseInt(OUTNUM) < parseInt(MIN)) {
+                result = "1";
+                break;
+            } else{
+                result = "0";
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Repository> wdbhJ() {
+        List<Repository> list = shiftRepositoryMapper.wdbhJ();
+        return list;
+    }
+
+    @Override
+    public List<Repository> wdbhL() {
+        List<Repository> list = shiftRepositoryMapper.wdbhL();
+        return list;
+    }
+
+    @Override
+    public List<Repository> wdbhG() {
+        List<Repository> list = shiftRepositoryMapper.wdbhG();
+        return list;
+    }
+
+    @Override
+    public List<Repository> wdbhT() {
+        List<Repository> list = shiftRepositoryMapper.wdbhT();
+        return list;
     }
 
     @Override
     public List<Repository> showmatJ(HttpServletRequest request) {
-        return null;
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = shiftRepositoryMapper.showmatJ(wdbh);
+        return list;
     }
 
     @Override
-    public List<Repository> showmatS(HttpServletRequest request) {
-        return null;
+    public List<Repository> showmatL(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = shiftRepositoryMapper.showmatL(wdbh);
+        return list;
+    }
+
+    @Override
+    public List<Repository> showmatG(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = shiftRepositoryMapper.showmatG(wdbh);
+        return list;
+    }
+
+    @Override
+    public List<Repository> showmatT(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = shiftRepositoryMapper.showmatT(wdbh);
+        return list;
     }
 }

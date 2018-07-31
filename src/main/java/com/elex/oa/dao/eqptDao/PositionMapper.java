@@ -15,6 +15,8 @@ public interface PositionMapper {
 
     void changePosition(Repository repository);
 
+    Repository locationPosition(Repository repository);
+
     String showPosition(Repository repository);
 
     void deletePosition(Repository repository);

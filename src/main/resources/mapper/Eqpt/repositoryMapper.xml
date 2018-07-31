@@ -370,19 +370,23 @@
     </select>
 
     <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT reptId FROM eqpt_repository WHERE (materialId = #{materialId}) OR (materialId = '无')
+        SELECT reptId FROM eqpt_repository WHERE reptId NOT IN (SELECT reptId FROM eqpt_detail WHERE id != #{id})
     </select>
 
     <select id="matInPost" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT position FROM eqpt_repository WHERE (materialId = #{materialId}) OR (materialId = '无')
+        SELECT DISTINCT postId FROM eqpt_position WHERE reptId = #{reptId} ORDER BY postId
+    </select>
+
+    <select id="matInPostReplace" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_replace
     </select>
 
     <select id="matOutRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT reptId FROM eqpt_repository WHERE materialId = #{materialId}
+        SELECT DISTINCT reptId FROM eqpt_detail WHERE id = #{id} ORDER BY reptId
     </select>
 
     <select id="matOutPost" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT position FROM eqpt_repository WHERE materialId = #{materialId}
+        SELECT DISTINCT postId FROM eqpt_detail WHERE id = #{id} AND reptId = #{reptId} ORDER BY postId
     </select>
 
     <select id="postlist" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -403,6 +407,21 @@
 
     <select id="getNumber" resultType="string">
         SELECT num FROM eqpt_position WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
+
+    <select id="numInPost" resultType="string">
+        SELECT num FROM eqpt_detail
+        <where>
+            <if test="reptId != null">
+                AND reptId = #{reptId}
+            </if>
+            <if test="postId != null">
+                AND postId = #{postId}
+            </if>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+        </where>
     </select>
 
     <select id="getOtherInfo" resultType="com.elex.oa.entity.eqpt.Material">

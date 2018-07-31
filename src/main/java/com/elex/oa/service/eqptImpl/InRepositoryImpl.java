@@ -223,7 +223,6 @@ public class InRepositoryImpl implements InRepositoryService {
             material.setBrand(material1.getBrand());
             material.setPrice(material1.getPrice());
             materialMapper.updMat(material);
-            System.out.println(listIN.get(i).get("theMatNum").toString());
             // 查询是否库存记录
             String result = materialMapper.matInDetail(material);
             if(result == null){
