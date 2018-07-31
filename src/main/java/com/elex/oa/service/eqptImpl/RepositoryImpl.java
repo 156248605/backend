@@ -182,9 +182,17 @@ public class RepositoryImpl implements RepositoryService {
         repository.setOnlyIdR( Integer.parseInt(request.getParameter("onlyIdR")) );
         repositoryMapper.changeRepository(repository);
         Repository repository1 = new Repository();
-        repository1.setReptState(request.getParameter("postManage"));
+        repository1.setReptState(request.getParameter("reptState"));
         repository1.setReptId(request.getParameter("reptId"));
         repositoryMapper.updPostState(repository);
+        if (request.getParameter("postManage").equals("")) {
+            Repository repository2 = new Repository();
+            String postId = "";
+            repository2.setPostId(postId);
+            repository2.setReptId(request.getParameter("reptId"));
+            repositoryMapper.changeManagePost(repository2);
+            repositoryMapper.changeDetail(repository2);
+        }
     }
 
 
@@ -209,71 +217,6 @@ public class RepositoryImpl implements RepositoryService {
         List<Repository> postlist = repositoryMapper.getPost(repository);
         return postlist;
     }
-    /*@Override
-    public List<Repository> matInRept(HttpServletRequest request) {
-        List<Repository> reptList = null;
-        String LIST = request.getParameter("inList");
-        List<HashMap> list =JSON.parseArray(LIST, HashMap.class);
-        for (int i = 0; i < list.size(); i++) {
-            Repository repository = new Repository();
-            repository.setMaterialId(list.get(i).get("theMatId").toString());
-            Material material = new Material();
-            material.setId(list.get(i).get("theMatId").toString());
-            material.setBn(list.get(i).get("theMatBnSn").toString());
-            material.setSn(list.get(i).get("theMatBnSn").toString());
-            Material material1 = materialMapper.lockBn(material);
-            Material material2 = materialMapper.lockSn(material);
-            String bn = null;
-            String sn = null;
-            if (material1 != null){
-                bn = list.get(i).get("theMatBnSn").toString();
-                sn = "无";
-            }else if (material2 != null){
-                sn = list.get(i).get("theMatBnSn").toString();
-                bn = "无";
-            }else {
-                sn = "无";
-                bn = "无";
-            }
-            repository.setSn(sn);
-            repository.setBn(bn);
-            reptList = repositoryMapper.matInRept(repository);
-        }
-        return reptList;
-    }
-
-    @Override
-    public List<Repository> matOutRept(HttpServletRequest request) {
-        List<Repository> reptList = null;
-        String LIST = request.getParameter("outList");
-        List<HashMap> list =JSON.parseArray(LIST, HashMap.class);
-        for (int i = 0; i < list.size(); i++) {
-            Repository repository = new Repository();
-            repository.setMaterialId(list.get(i).get("theMatId").toString());
-            Material material = new Material();
-            material.setId(list.get(i).get("theMatId").toString());
-            material.setBn(list.get(i).get("theMatBnSn").toString());
-            material.setSn(list.get(i).get("theMatBnSn").toString());
-            Material material1 = materialMapper.lockBn(material);
-            Material material2 = materialMapper.lockSn(material);
-            String bn = null;
-            String sn = null;
-            if (material1 != null){
-                bn = list.get(i).get("theMatBnSn").toString();
-                sn = "无";
-            }else if (material2 != null){
-                sn = list.get(i).get("theMatBnSn").toString();
-                bn = "无";
-            }else {
-                sn = "无";
-                bn = "无";
-            }
-            repository.setSn(sn);
-            repository.setBn(bn);
-            reptList = repositoryMapper.matOutRept(repository);
-        }
-        return reptList;
-    }*/
 
     @Override
     public List<Repository> matInRept(HttpServletRequest request) {
