@@ -2,6 +2,7 @@ package com.elex.oa.service.eqptService;
 
 
 import com.elex.oa.entity.Page;
+import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 
@@ -35,6 +36,9 @@ public interface RepositoryService {
 
     // 获取库位
     List<Repository> PostList();
-    /*List<Repository> matInPost(HttpServletRequest request);
-    List<Repository> matOutPost(HttpServletRequest request);*/
+
+    List<Repository> matOutRept(HttpServletRequest request);
+    List<Repository> matOutPost(HttpServletRequest request);
+    List<Repository> matInRept(HttpServletRequest request);
+    List<Repository> matInPost(HttpServletRequest request);
 }

@@ -18,4 +18,24 @@ public interface ShiftRepositoryMapper {
     List showSHIFTID(Repository repository);
 
     Material lockMat(Material material);
+
+    List<Repository> wdbhJ();
+
+    List<Repository> wdbhL();
+
+    List<Repository> wdbhG();
+
+    List<Repository> wdbhT();
+
+    List<Repository> showmatJ(String wdbh);
+
+    List<Repository> showmatL(String wdbh);
+
+    List<Repository> showmatG(String wdbh);
+
+    List<Repository> showmatT(String wdbh);
+
+    String theNumberOut(Repository repository);
+
+    String theNumberIn(Repository repository);
 }

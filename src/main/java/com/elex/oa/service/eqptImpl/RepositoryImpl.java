@@ -1,6 +1,7 @@
 package com.elex.oa.service.eqptImpl;
 
 
+import com.alibaba.fastjson.JSON;
 import com.elex.oa.dao.dao_shiyun.IUserDao;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.entity.Page;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -273,6 +275,69 @@ public class RepositoryImpl implements RepositoryService {
         return reptList;
     }*/
 
+    @Override
+    public List<Repository> matInRept(HttpServletRequest request) {
+        List<Repository> reptList = null;
+        String LIST = "["+request.getParameter("inList")+"]";
+        List<HashMap> list = JSON.parseArray(LIST, HashMap.class);
+        Material material = new Material();
+        material.setId(list.get(0).get("theMatId").toString());
+        reptList = repositoryMapper.matInRept(material);
+        return reptList;
+    }
+
+    @Override
+    public List<Repository> matInPost(HttpServletRequest request) {
+        List<Repository> reptList = null;
+        String LIST = "["+request.getParameter("inList")+"]";
+        List<HashMap> list = JSON.parseArray(LIST, HashMap.class);
+        Material material = new Material();
+        material.setId(list.get(0).get("theMatId").toString());
+        String reptId = "";
+        if (list.get(0).containsKey("reptId")){
+            reptId = list.get(0).get("reptId").toString();
+        }
+        if (list.get(0).containsKey("inRept")){
+            reptId = list.get(0).get("inRept").toString();
+        }
+        material.setReptId(reptId);
+        reptList = repositoryMapper.matInPost(material);
+        if (reptList.size() == 0){
+            reptList = repositoryMapper.matInPostReplace();
+        }
+        return reptList;
+    }
+
+    @Override
+    public List<Repository> matOutRept(HttpServletRequest request) {
+        List<Repository> reptList = null;
+        String LIST = "["+request.getParameter("outList")+"]";
+        List<HashMap> list = JSON.parseArray(LIST, HashMap.class);
+        Material material = new Material();
+        material.setId(list.get(0).get("theMatId").toString());
+        reptList = repositoryMapper.matOutRept(material);
+        return reptList;
+    }
+
+    @Override
+    public List<Repository> matOutPost(HttpServletRequest request) {
+        List<Repository> reptList = null;
+        String LIST = "["+request.getParameter("outList")+"]";
+        List<HashMap> list = JSON.parseArray(LIST, HashMap.class);
+        Material material = new Material();
+        material.setId(list.get(0).get("theMatId").toString());
+        String reptId = "";
+        if (list.get(0).containsKey("reptId")){
+            reptId = list.get(0).get("reptId").toString();
+        }
+        if (list.get(0).containsKey("outRept")){
+            reptId = list.get(0).get("outRept").toString();
+        }
+        material.setReptId(reptId);
+        reptList = repositoryMapper.matOutPost(material);
+        return reptList;
+    }
+
     // 获取库位
     @Override
     public List<Repository> PostList() {
@@ -289,6 +354,10 @@ public class RepositoryImpl implements RepositoryService {
         List<User> selectUser = iUserDao.selectAll();
         return selectUser;
     }
+
+
+
+
 
    /* @Override
     public List<Repository> matInPost(HttpServletRequest request) {

@@ -333,6 +333,12 @@
 
     <delete id="deleteDetail" parameterType="com.elex.oa.entity.eqpt.Material">
         DELETE FROM eqpt_detail WHERE id = #{id}
+        <if test="reptId != null">
+            AND reptId = #{reptId}
+        </if>
+        <if test="postId != null">
+            AND postId = #{postId}
+        </if>
     </delete>
 
     <update id="saveDetail" parameterType="com.elex.oa.entity.eqpt.Material">
@@ -348,4 +354,8 @@
     <select id="matInDetail" resultType="string">
         SELECT DISTINCT id FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
     </select>
+
+    <update id="updateDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_detail SET postId = #{position} WHERE reptId = #{reptId} AND postId = #{postId}
+    </update>
 </mapper>

@@ -7,6 +7,7 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.RepositoryImpl;
 import com.github.pagehelper.PageInfo;
+import org.apache.regexp.RE;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,6 +94,34 @@ public class RepositoryController {
     public List<User> getUser() {
         List<User> getUser = repositoryImpl.username();
         return getUser;
+    }
+
+    @RequestMapping("/matOutRept")
+    @ResponseBody
+    public List<Repository> matOutRept(HttpServletRequest request){
+        List<Repository> list = repositoryImpl.matOutRept(request);
+        return list;
+    }
+
+    @RequestMapping("/matOutPost")
+    @ResponseBody
+    public List<Repository> matOutPost(HttpServletRequest request){
+        List<Repository> list = repositoryImpl.matOutPost(request);
+        return list;
+    }
+
+    @RequestMapping("/matInRept")
+    @ResponseBody
+    public List<Repository> matInRept(HttpServletRequest request){
+        List<Repository> list = repositoryImpl.matInRept(request);
+        return list;
+    }
+
+    @RequestMapping("/matInPost")
+    @ResponseBody
+    public List<Repository> matInPost(HttpServletRequest request){
+        List<Repository> list = repositoryImpl.matInPost(request);
+        return list;
     }
 
     /*@RequestMapping("/matInRept")

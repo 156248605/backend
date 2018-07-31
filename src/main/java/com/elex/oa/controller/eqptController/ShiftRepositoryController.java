@@ -63,6 +63,20 @@ public class ShiftRepositoryController {
         return result;
     }
 
+    @RequestMapping("/canIn")
+    @ResponseBody
+    public String canIn(HttpServletRequest request){
+        String result = shiftRepositoryImpl.canIn(request);
+        return result;
+    }
+
+    @RequestMapping("/canOut")
+    @ResponseBody
+    public String canOut(HttpServletRequest request){
+        String result = shiftRepositoryImpl.canOut(request);
+        return result;
+    }
+
     @RequestMapping("/jy")
     @ResponseBody
     public List<Repository> jy () {
@@ -72,7 +86,19 @@ public class ShiftRepositoryController {
     @RequestMapping("/scll")
     @ResponseBody
     public List<Repository> scll () {
-        return shiftRepositoryImpl.wdbhS();
+        return shiftRepositoryImpl.wdbhL();
+    }
+
+    @RequestMapping("/gh")
+    @ResponseBody
+    public List<Repository> gh () {
+        return shiftRepositoryImpl.wdbhG();
+    }
+
+    @RequestMapping("/sctl")
+    @ResponseBody
+    public List<Repository> sctl () {
+        return shiftRepositoryImpl.wdbhT();
     }
 
     @RequestMapping("/showmatJ")
@@ -81,10 +107,21 @@ public class ShiftRepositoryController {
         return shiftRepositoryImpl.showmatJ(request);
     }
 
-    @RequestMapping("/showmatS")
+    @RequestMapping("/showmatL")
     @ResponseBody
-    public List<Repository> showmatS (HttpServletRequest request) {
-        return shiftRepositoryImpl.showmatS(request);
+    public List<Repository> showmatL (HttpServletRequest request) {
+        return shiftRepositoryImpl.showmatL(request);
     }
 
+    @RequestMapping("/showmatG")
+    @ResponseBody
+    public List<Repository> showmatG (HttpServletRequest request) {
+        return shiftRepositoryImpl.showmatG(request);
+    }
+
+    @RequestMapping("/showmatT")
+    @ResponseBody
+    public List<Repository> showmatT (HttpServletRequest request) {
+        return shiftRepositoryImpl.showmatT(request);
+    }
 }

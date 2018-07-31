@@ -30,11 +30,23 @@ public interface ShiftRepositoryService {
 
     String postCap(HttpServletRequest request);
 
+    String canIn(HttpServletRequest request);
+
+    String canOut(HttpServletRequest request);
+
     List<Repository> wdbhJ();
 
-    List<Repository> wdbhS();
+    List<Repository> wdbhL();
+
+    List<Repository> wdbhG();
+
+    List<Repository> wdbhT();
 
     List<Repository> showmatJ(HttpServletRequest request);
 
-    List<Repository> showmatS(HttpServletRequest request);
+    List<Repository> showmatL(HttpServletRequest request);
+
+    List<Repository> showmatG(HttpServletRequest request);
+
+    List<Repository> showmatT(HttpServletRequest request);
 }

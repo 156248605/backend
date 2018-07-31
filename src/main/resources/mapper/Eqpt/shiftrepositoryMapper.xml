@@ -17,4 +17,44 @@
     <select id="lockMat" resultType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_material WHERE id = #{id}
     </select>
+
+    <select id="theNumberOut" resultType="string">
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
+
+    <select id="theNumberIn" resultType="string">
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
+
+    <select id="wdbhJ" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS shiftId FROM eqpt_jysqd
+    </select>
+
+    <select id="wdbhL" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS shiftId FROM eqpt_sclld
+    </select>
+
+    <select id="wdbhG" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS shiftId FROM eqpt_jysqd
+    </select>
+
+    <select id="wdbhT" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS shiftId FROM eqpt_sclld
+    </select>
+
+    <select id="showmatJ" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT eqpt_jysqd.wlbh AS materialId,eqpt_jysqd.wlmc AS materialName,eqpt_jysqd.ggxh AS spec,eqpt_jysqd.lysl AS shiftNum,eqpt_jysqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,eqpt_jysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = eqpt_jysqd.wlbh
+    </select>
+
+    <select id="showmatL" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT eqpt_sclld.wlbh AS materialId,eqpt_sclld.wlmc AS materialName,eqpt_sclld.ggxh AS spec,eqpt_sclld.lysl AS shiftNum,eqpt_sclld.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,eqpt_sclld WHERE wdbh = #{wdbh} AND eqpt_material.id = eqpt_sclld.wlbh
+    </select>
+
+    <select id="showmatG" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT eqpt_jysqd.wlbh AS materialId,eqpt_jysqd.wlmc AS materialName,eqpt_jysqd.ggxh AS spec,eqpt_jysqd.xqsl AS shiftNum,eqpt_jysqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,eqpt_jysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = eqpt_jysqd.wlbh
+    </select>
+
+    <select id="showmatT" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT eqpt_sclld.wlbh AS materialId,eqpt_sclld.wlmc AS materialName,eqpt_sclld.ggxh AS spec,eqpt_sclld.lysl AS shiftNum,eqpt_sclld.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,eqpt_sclld WHERE wdbh = #{wdbh} AND eqpt_material.id = eqpt_sclld.wlbh
+    </select>
 </mapper>

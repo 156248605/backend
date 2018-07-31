@@ -133,6 +133,10 @@
         WHERE onlyIdP = #{onlyIdP}
     </update>
 
+    <select id="locationPosition" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_position WHERE onlyIdP = #{onlyIdP}
+    </select>
+
     <delete id="deletePosition" parameterType="com.elex.oa.entity.eqpt.Repository">
         DELETE FROM eqpt_position WHERE onlyIdP = #{onlyIdP}
     </delete>
