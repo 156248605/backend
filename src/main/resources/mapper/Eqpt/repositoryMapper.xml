@@ -370,11 +370,11 @@
     </select>
 
     <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT reptId FROM eqpt_repository WHERE reptId NOT IN (SELECT reptId FROM eqpt_detail WHERE id != #{id})
+        SELECT reptId FROM eqpt_repository WHERE reptId NOT IN (SELECT reptId FROM eqpt_detail WHERE id != #{id}) OR reptId IN (SELECT reptId FROM eqpt_detail WHERE id = #{id})
     </select>
 
     <select id="matInPost" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT postId FROM eqpt_position WHERE reptId = #{reptId} ORDER BY postId
+        SELECT DISTINCT eqpt_position.postId FROM eqpt_detail,eqpt_position WHERE eqpt_detail.postId = eqpt_position.postId AND eqpt_detail.id = #{id} AND eqpt_position.reptId = #{reptId}
     </select>
 
     <select id="matInPostReplace" resultType="com.elex.oa.entity.eqpt.Repository">

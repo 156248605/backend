@@ -30,10 +30,10 @@
     </select>
 
     <select id="wdbh" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT wdbh AS inId FROM eqpt_rccgddhtpsd
+        SELECT DISTINCT wdbh AS inId FROM w_rccgddhtpsd
     </select>
 
     <select id="showmat" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT eqpt_rccgddhtpsd.wlbh AS materialId,eqpt_rccgddhtpsd.wlmc AS materialName,eqpt_rccgddhtpsd.ggxh AS spec,eqpt_rccgddhtpsd.cgsl AS inNum,eqpt_rccgddhtpsd.jydh AS 'check',eqpt_rccgddhtpsd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,eqpt_rccgddhtpsd WHERE wdbh = #{wdbh} AND eqpt_material.id = eqpt_rccgddhtpsd.wlbh
+        SELECT w_rccgddhtpsd.wlbh AS materialId,w_rccgddhtpsd.wlmc AS materialName,w_rccgddhtpsd.ggxh AS spec,w_rccgddhtpsd.cgsl AS inNum,w_rccgddhtpsd.jydh AS 'check',w_rccgddhtpsd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_rccgddhtpsd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_rccgddhtpsd.wlbh
     </select>
 </mapper>
