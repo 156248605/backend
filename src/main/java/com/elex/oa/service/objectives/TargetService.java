@@ -33,4 +33,8 @@ public interface TargetService {
     Map<String,Object> boardTotal(String annual);
     //管理看板（手机端）
     List<Map<String, String>> boardPhone();
+    //管理看板项目部门相关
+    List<Target> boardDepartment(String department, String annual);
+    //查看销售收入或税后净利（手机）
+    List<Target> boardVarious(String various);
 }

@@ -24,7 +24,7 @@
             <if test="input1 != '' and select1 == 1">
                 AND project_code LIKE CONCAT('%',#{input1},'%')
             </if>
-            <if test="input1 != '' and select == 2">
+            <if test="input1 != '' and select1 == 2">
                 AND  project_code NOT LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="input2 != '' and select2 == 1">

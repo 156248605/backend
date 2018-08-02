@@ -3,8 +3,8 @@ package com.elex.oa.entity.project;
 public class ProjectIncome {
     private int id;
     private String projectCode;
-    private String payAmount; //尾款金额
-    private String payDate; //尾款日期
+    private String amount; //合同金额
+    private String copies; //合同份数
     private String invoiceAmount; //开票合计
     private String invoiceProportion; //开票比例
     private String receivableAmount; //回款合计
@@ -15,11 +15,11 @@ public class ProjectIncome {
     public ProjectIncome() {
     }
 
-    public ProjectIncome(int id, String projectCode, String payAmount, String payDate, String invoiceAmount, String invoiceProportion, String receivableAmount, String receivableProportion, String acceptanceAmount, String acceptanceProportion) {
+    public ProjectIncome(int id, String projectCode, String amount, String copies, String invoiceAmount, String invoiceProportion, String receivableAmount, String receivableProportion, String acceptanceAmount, String acceptanceProportion) {
         this.id = id;
         this.projectCode = projectCode;
-        this.payAmount = payAmount;
-        this.payDate = payDate;
+        this.amount = amount;
+        this.copies = copies;
         this.invoiceAmount = invoiceAmount;
         this.invoiceProportion = invoiceProportion;
         this.receivableAmount = receivableAmount;
@@ -44,20 +44,20 @@ public class ProjectIncome {
         this.projectCode = projectCode;
     }
 
-    public String getPayAmount() {
-        return payAmount;
+    public String getAmount() {
+        return amount;
     }
 
-    public void setPayAmount(String payAmount) {
-        this.payAmount = payAmount;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
-    public String getPayDate() {
-        return payDate;
+    public String getCopies() {
+        return copies;
     }
 
-    public void setPayDate(String payDate) {
-        this.payDate = payDate;
+    public void setCopies(String copies) {
+        this.copies = copies;
     }
 
     public String getInvoiceAmount() {
@@ -113,8 +113,8 @@ public class ProjectIncome {
         return "ProjectIncome{" +
                 "id=" + id +
                 ", projectCode='" + projectCode + '\'' +
-                ", payAmount='" + payAmount + '\'' +
-                ", payDate='" + payDate + '\'' +
+                ", amount='" + amount + '\'' +
+                ", copies='" + copies + '\'' +
                 ", invoiceAmount='" + invoiceAmount + '\'' +
                 ", invoiceProportion='" + invoiceProportion + '\'' +
                 ", receivableAmount='" + receivableAmount + '\'' +

@@ -20,9 +20,13 @@ public interface WeeklyPlanService {
     //根据code 查询详情
     Map<String,String> queryDetailByCode(String code);
     //添加周计划
-    String addPlans(WeeklyPlan weeklyPlan, String dataS);
+    String addPlans(WeeklyPlan weeklyPlan);
     //审批周计划
     String approvalPlans(WeeklyPlan weeklyPlan);
     //查询项目信息
     PageInfo<ApprovalList> queryProjectName(OperationQuery operationQuery, Page page);
+    //修改周计划
+    String amendPlans(WeeklyPlan weeklyPlan);
+    //删除周计划
+    String deleteWeek(int id);
 }

@@ -77,6 +77,9 @@ public class TargetImpl implements TargetService {
     //添加销售收入
     @Override
     public String addSales(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.addSales(target);
         return "1";
     }
@@ -84,6 +87,9 @@ public class TargetImpl implements TargetService {
     //添加税后净利
     @Override
     public String addNet(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.addNet(target);
         return "1";
     }
@@ -91,6 +97,9 @@ public class TargetImpl implements TargetService {
     //添加发明专利
     @Override
     public String addInvention(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.addInvention(target);
         return "1";
     }
@@ -99,6 +108,9 @@ public class TargetImpl implements TargetService {
     //修改销售收入
     @Override
     public String amendSales(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.amendSales(target);
         return "1";
     }
@@ -106,6 +118,9 @@ public class TargetImpl implements TargetService {
     //修改税后净利
     @Override
     public String amendNet(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.amendNet(target);
         return "1";
     }
@@ -113,6 +128,9 @@ public class TargetImpl implements TargetService {
     //修改发明专利
     @Override
     public String amendInvention(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.amendInvention(target);
         return "1";
     }
@@ -194,5 +212,38 @@ public class TargetImpl implements TargetService {
         list.add(map2);
         list.add(map3);
         return list;
+    }
+
+    //管理看板项目部门相关
+    @Override
+    public List<Target> boardDepartment(String department, String annual) {
+        Map<String,String> condition = new HashMap<>();
+        condition.put("department",department);
+        condition.put("annual",annual);
+        Target sales = targetDao.querySalesDepartment(condition); //查询某部门的销售收入
+        Target net = targetDao.queryNetDepartment(condition); //查询某部门的收入净利
+        List<Target> result = new ArrayList<>();
+        result.add(sales);
+        result.add(net);
+        return result;
+    }
+
+    //查看销售收入或税后净利（手机）
+    @Override
+    public List<Target> boardVarious(String various) {
+        if(various.equals("sales") || various.equals("net")) {
+
+        } else {
+            return null;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+        String annual = simpleDateFormat.format(new Date());
+        List<Target> targets;
+        if(various.equals("sales")) {
+            targets = targetDao.querySalesAnnual(annual);
+        } else {
+            targets = targetDao.queryNetAnnual(annual);
+        }
+        return targets;
     }
 }

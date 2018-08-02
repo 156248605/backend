@@ -1,10 +1,7 @@
 package com.elex.oa.controller.project;
 
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.project.OperationQuery;
-import com.elex.oa.entity.project.ProjectExpense;
-import com.elex.oa.entity.project.ProjectHuman;
-import com.elex.oa.entity.project.ProjectIncome;
+import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.OperationService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,4 +104,66 @@ public class OperationController {
         return operationService.modifyExpense(projectExpense, detail);
     }
 
+    //查询项目收入相关可新建的项目
+    @RequestMapping("/query_project_income")
+    @ResponseBody
+    public PageInfo<ProjectInfor> queryProjectIncome(OperationQuery operationQuery, Page page) {
+        return operationService.queryProjectIncome(operationQuery, page);
+    }
+
+    //添加新的项目收入
+    @RequestMapping("/insert_income")
+    @ResponseBody
+    public String insertIncome(ProjectIncome projectIncome, String contract1, String contract2) {
+        return operationService.insertIncome(projectIncome,contract1,contract2);
+    }
+
+    //查询项目收入列表
+    @RequestMapping("/query_income_list")
+    @ResponseBody
+    public PageInfo<ProjectInfor> queryIncomeList(OperationQuery operationQuery, Page page) {
+        return operationService.queryIncomeList(operationQuery, page);
+    }
+
+    //查询项目收入的内容
+    @RequestMapping("/query_income_content")
+    @ResponseBody
+    public Map<String,Object> queryIncomeContent(String projectCode) {
+        return operationService.queryIncomeContent(projectCode);
+    }
+
+    //更新项目收入的内容
+    @RequestMapping("/update_income")
+    @ResponseBody
+    public String updateIncome(ProjectIncome projectIncome, String contract1, String contract2) {
+        return  operationService.updateIncome(projectIncome, contract1, contract2);
+    }
+
+    //查询人力成本相关可新建的项目
+    @RequestMapping("/query_project_human")
+    @ResponseBody
+    public PageInfo<ProjectInfor> queryProjectHuman(OperationQuery operationQuery, Page page) {
+        return operationService.queryProjectHuman(operationQuery, page);
+    }
+
+    //查询人力成本列表
+    @RequestMapping("/query_human_list")
+    @ResponseBody
+    public PageInfo<ProjectInfor> queryHumanList(OperationQuery operationQuery, Page page) {
+        return operationService.queryHumanList(operationQuery, page);
+    }
+
+    //查询费用成本列表
+    @RequestMapping("/query_expense_list")
+    @ResponseBody
+    public PageInfo<ProjectInfor> queryExpenseList(OperationQuery operationQuery, Page page) {
+        return operationService.queryExpenseList(operationQuery, page);
+    }
+
+    //查询费用成本相关可新建的项目
+    @RequestMapping("/query_project_expense")
+    @ResponseBody
+    public PageInfo<ProjectInfor> queryProjectExpense(OperationQuery operationQuery, Page page) {
+        return operationService.queryProjectExpense(operationQuery, page);
+    }
 }

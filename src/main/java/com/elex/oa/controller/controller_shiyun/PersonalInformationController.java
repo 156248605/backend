@@ -2097,14 +2097,14 @@ public class PersonalInformationController {
             ArrayList<Object> postList = new ArrayList<>();
             map.put("employeeName",onePersonalinformation.getEmployeenumber());
             map.put("id",onePersonalinformation.getTruename());
-            map.put("deptid",onePersonalinformation.getDepid());
-            map.put("deptname",iDeptService.queryOneDepByDepid(onePersonalinformation.getDepid()).getDepname());
+            map.put("deptId",onePersonalinformation.getDepid());
+            map.put("deptName",iDeptService.queryOneDepByDepid(onePersonalinformation.getDepid()).getDepname());
             //map.put("dept",deptMap);
             List<PerAndPostRs> perAndPostRsList = iPerandpostrsService.queryPerAndPostRsByPerid(onePersonalinformation.getId());
             for(PerAndPostRs perAndPostRs:perAndPostRsList){
                 HashMap<String, Object> postMap = new HashMap<>();
-                postMap.put("postid",perAndPostRs.getPostid());
-                postMap.put("postname",iPostService.queryOneByPostid(perAndPostRs.getPostid()).getPostname());
+                postMap.put("postId",perAndPostRs.getPostid());
+                postMap.put("postName",iPostService.queryOneByPostid(perAndPostRs.getPostid()).getPostname());
                 postList.add(postMap);
             }
             map.put("post",postList);
@@ -2125,8 +2125,8 @@ public class PersonalInformationController {
         List<Dept> depts = iDeptService.queryAllDepts();
         for(Dept dept:depts){
             Map<String, Object> deptMap = new HashMap<>();
-            deptMap.put("deptid",dept.getId());
-            deptMap.put("deptname",dept.getDepname());
+            deptMap.put("deptId",dept.getId());
+            deptMap.put("deptName",dept.getDepname());
             list.add(deptMap);
         }
         return list;
@@ -2144,8 +2144,8 @@ public class PersonalInformationController {
         List<Post> posts = iPostService.queryAllPosts();
         for(Post post:posts){
             Map<String, Object> postMap = new HashMap<>();
-            postMap.put("postid",post.getId());
-            postMap.put("postname",post.getPostname());
+            postMap.put("postId",post.getId());
+            postMap.put("postName",post.getPostname());
             list.add(postMap);
         }
         return list;

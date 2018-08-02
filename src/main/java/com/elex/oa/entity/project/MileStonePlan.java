@@ -2,26 +2,27 @@ package com.elex.oa.entity.project;
 
 public class MileStonePlan {
     private int id;
+    private String projectCode; // 关联项目编号
     private String phase; //阶段
     private String keyWork; //关键工作
-    private String status; //状态
     private String startDate; //起始时间
     private String endDate; //截止时间
+    private String status; //状态
     private String note; //备注
-    private String projectCode; // 关联项目编号
+
 
     public MileStonePlan() {
     }
 
-    public MileStonePlan(int id, String phase, String keyWork, String status, String startDate, String endDate, String note, String projectCode) {
+    public MileStonePlan(int id, String projectCode, String phase, String keyWork, String startDate, String endDate, String status, String note) {
         this.id = id;
+        this.projectCode = projectCode;
         this.phase = phase;
         this.keyWork = keyWork;
-        this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = status;
         this.note = note;
-        this.projectCode = projectCode;
     }
 
     public int getId() {
@@ -30,6 +31,14 @@ public class MileStonePlan {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     public String getPhase() {
@@ -48,14 +57,6 @@ public class MileStonePlan {
         this.keyWork = keyWork;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getStartDate() {
         return startDate;
     }
@@ -72,6 +73,14 @@ public class MileStonePlan {
         this.endDate = endDate;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getNote() {
         return note;
     }
@@ -80,26 +89,17 @@ public class MileStonePlan {
         this.note = note;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-
     @Override
-    public String       toString() {
+    public String toString() {
         return "MileStonePlan{" +
                 "id=" + id +
+                ", projectCode='" + projectCode + '\'' +
                 ", phase='" + phase + '\'' +
                 ", keyWork='" + keyWork + '\'' +
-                ", status='" + status + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
+                ", status='" + status + '\'' +
                 ", note='" + note + '\'' +
-                ", projectCode='" + projectCode + '\'' +
                 '}';
     }
 }
