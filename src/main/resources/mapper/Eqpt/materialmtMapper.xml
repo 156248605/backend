@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.MaterialMtMapper">
+    <select id="detailList" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_detail WHERE materialState = '启用'
+    </select>
+
+    <select id="searchDetail" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_detail
+        <where>
+            <if test="id != null and id != '' and idC == ''">
+                AND id LIKE CONCAT(CONCAT('%', #{id}), '%')
+            </if>
+            <if test="id != null and id != '' and idC == 1">
+                AND id LIKE CONCAT(CONCAT('%', #{id}), '%')
+            </if>
+            <if test="id != null and id != '' and idC == 2">
+                AND id NOT LIKE CONCAT(CONCAT('%', #{id}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == ''">
+                AND name LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == 1">
+                AND name LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == 2">
+                AND name NOT LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="spec != null and spec != '' and specC == ''">
+                AND spec LIKE CONCAT(CONCAT('%', #{spec}), '%')
+            </if>
+            <if test="spec != null and spec != '' and specC == 1">
+                AND spec LIKE CONCAT(CONCAT('%', #{spec}), '%')
+            </if>
+            <if test="spec != null and spec != '' and specC == 2">
+                AND spec NOT LIKE CONCAT(CONCAT('%', #{spec}), '%')
+            </if>
+            <if test="brand != null and brand != '' and brandC == ''">
+                AND brand LIKE CONCAT(CONCAT('%', #{brand}), '%')
+            </if>
+            <if test="brand != null and brand != '' and brandC == 1">
+                AND brand LIKE CONCAT(CONCAT('%', #{brand}), '%')
+            </if>
+            <if test="brand != null and brand != '' and brandC == 2">
+                AND brand NOT LIKE CONCAT(CONCAT('%', #{brand}), '%')
+            </if>
+            <if test="category != null and category != '' and categoryC == ''">
+                AND category LIKE CONCAT(CONCAT('%', #{category}), '%')
+            </if>
+            <if test="category != null and category != '' and categoryC == 1">
+                AND category LIKE CONCAT(CONCAT('%', #{category}), '%')
+            </if>
+            <if test="category != null and category != '' and categoryC == 2">
+                AND category NOT LIKE CONCAT(CONCAT('%', #{category}), '%')
+            </if>
+            <if test="num != null and num != '' and numC == ''">
+                AND num LIKE CONCAT(CONCAT('%', #{num}), '%')
+            </if>
+            <if test="num != null and num != '' and numC == 1">
+                AND num &lt; #{num}
+            </if>
+            <if test="num != null and num != '' and numC == 2">
+                AND num > #{num}
+            </if>
+            <if test="num != null and num != '' and numC == 3">
+                AND num = #{num}
+            </if>
+            <if test="num != null and num != '' and numC == 4">
+                AND num &lt;= #{num}
+            </if>
+            <if test="num != null and num != '' and numC == 5">
+                AND num >= #{num}
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == ''">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 1">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 2">
+                AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == ''">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == 1">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == 2">
+                AND postId NOT LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="MaterialMtId" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_materialmt WHERE id = #{id}
+    </select>
+
+    <update id="saveMaterialMt" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_materialmt
+        <set>
+            <if test="id != null and id != ''">
+                id = #{id},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="category != null and category != ''">
+                category = #{category},
+            </if>
+            <if test="spec != null and spec != ''">
+                spec = #{spec},
+            </if>
+            <if test="material != null and material != ''">
+                material = #{material},
+            </if>
+            <if test="brand != null and brand != ''">
+                brand = #{brand},
+            </if>
+            <if test="BSManage != null and BSManage != ''">
+                BSManage = #{BSManage},
+            </if>
+            <if test="needCheck != null and needCheck != ''">
+                needCheck = #{needCheck},
+            </if>
+            <if test="materialState != null and materialState != ''">
+                materialState = #{materialState},
+            </if>
+            <if test="singleManage != null and singleManage != ''">
+                singleManage = #{singleManage},
+            </if>
+            <if test="notSingle != null and notSingle != ''">
+                notSingle = #{notSingle},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="maxlimit != null and maxlimit != ''">
+                maxlimit = #{maxlimit},
+            </if>
+            <if test="minlimit != null and minlimit != ''">
+                minlimit = #{minlimit},
+            </if>
+            <if test="position != null and position != ''">
+                position = #{position},
+            </if>
+            <if test="partner != null and partner != ''">
+                partner = #{partner}
+            </if>
+        </set>
+        WHERE onlyId = #{onlyId}
+    </update>
+
+    <delete id="deleteMaterialMt" parameterType="com.elex.oa.entity.eqpt.Material">
+        DELETE FROM eqpt_materialmt WHERE onlyId = #{onlyId}
+    </delete>
+
+    <insert id="newMaterialMt" parameterType="com.elex.oa.entity.eqpt.Material">
+        INSERT INTO eqpt_materialmt VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{price},#{maxlimit},#{minlimit},#{partner},#{remark})
+    </insert>
+
+    <select id="needCheck" resultType="string">
+        SELECT needCheck FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="recordin" resultType="string">
+        SELECT * FROM eqpt_inrepository WHERE materialId = #{id}
+    </select>
+    <select id="recordout" resultType="string">
+        SELECT * FROM eqpt_outrepository WHERE materialId = #{id}
+    </select>
+    <select id="recordshift" resultType="string">
+        SELECT * FROM eqpt_shiftrepository WHERE materialId = #{id}
+    </select>
+
+    <select id="manageBS" resultType="string">
+        SELECT BSManage FROM eqpt_material WHERE id = #{id}
+    </select>
+</mapper>

@@ -12,6 +12,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 @Service
 public class LinkmanImpl implements LinkmanService{
 
@@ -33,6 +35,8 @@ public class LinkmanImpl implements LinkmanService{
         String linkIdC = request.getParameter("linkIdC");
         String name = request.getParameter("name");
         String nameC = request.getParameter("nameC");
+        String workPlace = request.getParameter("workPlace");
+        String workPlaceC = request.getParameter("workPlaceC");
         String tel = request.getParameter("tel");
         String telC = request.getParameter("telC");
         String job = request.getParameter("job");
@@ -50,6 +54,8 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setLinkIdC(linkIdC);
         linkman.setName(name);
         linkman.setNameC(nameC);
+        linkman.setWorkPlace(workPlace);
+        linkman.setWorkPlaceC(workPlaceC);
         linkman.setTel(tel);
         linkman.setTelC(telC);
         linkman.setJob(job);
@@ -62,12 +68,11 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setQqNumC(qqNumC);
         linkman.setWechatNum(wechatNum);
         linkman.setWechatNumC(wechatNumC);
-        if (linkId.equals("") && name.equals("") && tel.equals("") && job.equals("") && email.equals("") && qqNum.equals("") && wechatNum.equals("") && address.equals("")) {
+        if (linkId.equals("") && name.equals("") && tel.equals("") && job.equals("") && email.equals("") && qqNum.equals("") && wechatNum.equals("") && address.equals("") && workPlace.equals("")) {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Linkman> listL = linkmanMapper.LinkmanList();
             return new PageInfo<>(listL);
         }else {
-            PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Linkman> listL = linkmanMapper.searchFor(linkman);
             return new PageInfo<>(listL);
         }
@@ -84,6 +89,7 @@ public class LinkmanImpl implements LinkmanService{
         String email = request.getParameter("email");
         String qqNum = request.getParameter("qqNum");
         String wechatNum = request.getParameter("wechatNum");
+        String workPlace = request.getParameter("workPlace");
         Linkman linkman = new Linkman();
         linkman.setLinkId(linkId);
         linkman.setName(name);
@@ -93,9 +99,9 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setEmail(email);
         linkman.setQqNum(qqNum);
         linkman.setWechatNum(wechatNum);
+        linkman.setWorkPlace(workPlace);
         // 判断是否重复
-        List<Linkman> listL = linkmanMapper.searchFor(linkman);
-        System.out.println(listL);
+        List<Linkman> listL = linkmanMapper.search(linkman);
         if (listL.isEmpty() ){
             linkmanMapper.newLinkman(linkman);
             return "1";
@@ -107,6 +113,14 @@ public class LinkmanImpl implements LinkmanService{
     // 删除联系人
     @Override
     public void deleteLinkman(HttpServletRequest request) {
+        String onlyIdL = request.getParameter("onlyIdL");
+        Linkman linkman = new Linkman();
+        linkman.setOnlyIdL(parseInt(onlyIdL));
+        linkmanMapper.deleteLinkman(linkman);
+    }
+
+    @Override
+    public void changeLinkman(HttpServletRequest request) {
         String linkId = request.getParameter("linkId");
         String name = request.getParameter("name");
         String tel = request.getParameter("tel");
@@ -115,6 +129,7 @@ public class LinkmanImpl implements LinkmanService{
         String email = request.getParameter("email");
         String qqNum = request.getParameter("qqNum");
         String wechatNum = request.getParameter("wechatNum");
+        String onlyIdL = request.getParameter("onlyIdL");
         Linkman linkman = new Linkman();
         linkman.setLinkId(linkId);
         linkman.setName(name);
@@ -124,6 +139,7 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setEmail(email);
         linkman.setQqNum(qqNum);
         linkman.setWechatNum(wechatNum);
-        linkmanMapper.deleteLinkman(linkman);
+        linkman.setOnlyIdL(parseInt(onlyIdL));
+        linkmanMapper.changeLinkman(linkman);
     }
 }

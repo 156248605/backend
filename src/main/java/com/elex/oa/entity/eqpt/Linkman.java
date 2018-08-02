@@ -5,6 +5,8 @@ public class Linkman {
     private String linkId;
     // 联系人职务
     private String job;
+    // 联系人单位
+    private String workPlace;
     // 联系人姓名
     private String name;
     // 联系人电话
@@ -18,7 +20,7 @@ public class Linkman {
     // 联系地址
     private String address;
     // 唯一识别Id
-    private int onlyIdLink;
+    private int onlyIdL;
     // 查询条件
     // 查询条件
     private String linkIdC;
@@ -29,20 +31,22 @@ public class Linkman {
     private String qqNumC;
     private String wechatNumC;
     private String addressC;
+    private String workPlaceC;
 
     public Linkman() {
     }
 
-    public Linkman(String linkId, String job, String name, String tel, String email, String qqNum, String wechatNum, String address, int onlyIdLink, String linkIdC, String nameC, String telC, String jobC, String emailC, String qqNumC, String wechatNumC, String addressC) {
+    public Linkman(String linkId, String job, String workPlace, String name, String tel, String email, String qqNum, String wechatNum, String address, int onlyIdL, String linkIdC, String nameC, String telC, String jobC, String emailC, String qqNumC, String wechatNumC, String addressC, String workPlaceC) {
         this.linkId = linkId;
         this.job = job;
+        this.workPlace = workPlace;
         this.name = name;
         this.tel = tel;
         this.email = email;
         this.qqNum = qqNum;
         this.wechatNum = wechatNum;
         this.address = address;
-        this.onlyIdLink = onlyIdLink;
+        this.onlyIdL = onlyIdL;
         this.linkIdC = linkIdC;
         this.nameC = nameC;
         this.telC = telC;
@@ -51,6 +55,7 @@ public class Linkman {
         this.qqNumC = qqNumC;
         this.wechatNumC = wechatNumC;
         this.addressC = addressC;
+        this.workPlaceC = workPlaceC;
     }
 
     public String getJob() {
@@ -117,12 +122,12 @@ public class Linkman {
         this.address = address;
     }
 
-    public int getOnlyIdLink() {
-        return onlyIdLink;
+    public int getOnlyIdL() {
+        return onlyIdL;
     }
 
-    public void setOnlyIdLink(int onlyIdLink) {
-        this.onlyIdLink = onlyIdLink;
+    public void setOnlyIdL(int onlyIdL) {
+        this.onlyIdL = onlyIdL;
     }
 
     public String getLinkIdC() {
@@ -189,18 +194,35 @@ public class Linkman {
         this.addressC = addressC;
     }
 
+    public String getWorkPlace() {
+        return workPlace;
+    }
+
+    public void setWorkPlace(String workPlace) {
+        this.workPlace = workPlace;
+    }
+
+    public String getWorkPlaceC() {
+        return workPlaceC;
+    }
+
+    public void setWorkPlaceC(String workPlaceC) {
+        this.workPlaceC = workPlaceC;
+    }
+
     @Override
     public String toString() {
         return "Linkman{" +
                 "linkId='" + linkId + '\'' +
                 ", job='" + job + '\'' +
+                ", workPlace='" + workPlace + '\'' +
                 ", name='" + name + '\'' +
                 ", tel='" + tel + '\'' +
                 ", email='" + email + '\'' +
                 ", qqNum='" + qqNum + '\'' +
                 ", wechatNum='" + wechatNum + '\'' +
                 ", address='" + address + '\'' +
-                ", onlyIdLink=" + onlyIdLink +
+                ", onlyIdL=" + onlyIdL +
                 ", linkIdC='" + linkIdC + '\'' +
                 ", nameC='" + nameC + '\'' +
                 ", telC='" + telC + '\'' +
@@ -209,6 +231,7 @@ public class Linkman {
                 ", qqNumC='" + qqNumC + '\'' +
                 ", wechatNumC='" + wechatNumC + '\'' +
                 ", addressC='" + addressC + '\'' +
+                ", workPlaceC='" + workPlaceC + '\'' +
                 '}';
     }
 }

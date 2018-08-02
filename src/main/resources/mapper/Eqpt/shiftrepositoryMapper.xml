@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.ShiftRepositoryMapper">
+
+    <select id="showRepository" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository
+    </select>
+
+    <insert id="insertNew" parameterType="string">
+        INSERT INTO eqpt_shiftrepository VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},NULL)
+    </insert>
+
+    <select id="showSHIFTID" resultType="java.lang.String">
+        SELECT shiftId FROM eqpt_shiftrepository WHERE shiftId LIKE CONCAT(CONCAT('%',#{shiftId},'%'))
+    </select>
+
+    <select id="lockMat" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="theNumberOut" resultType="string">
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
+
+    <select id="theNumberIn" resultType="string">
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
+
+    <select id="wdbhJ" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS shiftId FROM w_jysqd
+    </select>
+
+    <select id="wdbhL" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS shiftId FROM w_sclld
+    </select>
+
+    <select id="wdbhG" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS shiftId FROM w_jysqd
+    </select>
+
+    <select id="wdbhT" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS shiftId FROM w_sclld
+    </select>
+
+    <select id="showmatJ" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_jysqd.wlbh AS materialId,w_jysqd.wlmc AS materialName,w_jysqd.ggxh AS spec,w_jysqd.lysl AS shiftNum,w_jysqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_jysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_jysqd.wlbh
+    </select>
+
+    <select id="showmatL" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_sclld.wlbh AS materialId,w_sclld.wlmc AS materialName,w_sclld.ggxh AS spec,w_sclld.lysl AS shiftNum,w_sclld.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_sclld WHERE wdbh = #{wdbh} AND eqpt_material.id = w_sclld.wlbh
+    </select>
+
+    <select id="showmatG" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_jysqd.wlbh AS materialId,w_jysqd.wlmc AS materialName,w_jysqd.ggxh AS spec,w_jysqd.xqsl AS shiftNum,w_jysqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_jysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_jysqd.wlbh
+    </select>
+
+    <select id="showmatT" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_sclld.wlbh AS materialId,w_sclld.wlmc AS materialName,w_sclld.ggxh AS spec,w_sclld.lysl AS shiftNum,w_sclld.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_sclld WHERE wdbh = #{wdbh} AND eqpt_material.id = w_sclld.wlbh
+    </select>
+</mapper>

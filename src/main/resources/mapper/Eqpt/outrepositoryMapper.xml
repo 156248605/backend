@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.OutRepositoryMapper">
+    <select id="findAll" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository
+    </select>
+
+    <insert id="insertNew" parameterType="string">
+        INSERT INTO eqpt_outrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14})
+    </insert>
+
+    <select id="searchId" resultType="string">
+        SELECT id FROM eqpt_material WHERE sn = #{sn} AND bn = #{bn} AND id = #{id}
+    </select>
+
+    <select id="showOUTID" resultType="java.lang.String">
+        SELECT outId FROM eqpt_outrepository WHERE outId LIKE CONCAT(CONCAT('%',#{outId},'%'))
+    </select>
+
+    <delete id="delete" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_outrepository WHERE onlyIdOut = #{onlyIdOut}
+    </delete>
+
+    <update id="updUser" parameterType="string">
+        UPDATE eqpt_outrepository SET two = '1' WHERE outId = #{outId}
+    </update>
+
+    <select id="warn" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository WHERE one = '1' AND two = '1' AND warn = '0' AND outId = (SELECT outId FROM eqpt_outrepository WHERE one = '1' AND two = '1' AND warn = '0' limit 1)
+    </select>
+
+    <select id="warning" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository WHERE one = '1' AND two = '0' AND warn = '0' AND outId = (SELECT outId FROM eqpt_outrepository WHERE one = '1' AND two = '0' AND warn = '0' limit 1)
+    </select>
+
+    <update id="updWarn" parameterType="string">
+        UPDATE eqpt_outrepository SET warn = '1' WHERE outId = #{outId}
+    </update>
+
+    <select id="wdbhR" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS outId FROM w_lysqd
+    </select>
+
+    <select id="wdbhX" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS outId FROM w_zdsqd
+    </select>
+
+    <select id="wdbhC" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT wdbh AS outId FROM w_xsfhtzd
+    </select>
+
+    <select id="showmatR" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_lysqd.wlbh AS materialId,w_lysqd.wlmc AS materialName,w_lysqd.ggxh AS spec,w_lysqd.lysl AS outNum,w_lysqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_lysqd.wlbh
+    </select>
+
+    <select id="showmatX" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_zdsqd.wlbh AS materialId,w_zdsqd.wlmc AS materialName,w_zdsqd.ggxh AS spec,w_zdsqd.lysl AS outNum,w_zdsqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_zdsqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_zdsqd.wlbh
+    </select>
+
+    <select id="showmatC" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_xsfhtzd.wlbh AS materialId,w_xsfhtzd.wlmc AS materialName,w_xsfhtzd.ggxh AS spec,w_xsfhtzd.xqsl AS outNum,w_xsfhtzd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_xsfhtzd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_xsfhtzd.wlbh
+    </select>
+</mapper>

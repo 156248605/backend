@@ -12,7 +12,29 @@ import java.util.List;
 public interface OutRepositoryMapper {
     List<Repository> findAll();
 
-    void insertNew(String reptCategory, String outId, String outTime, String outNum, String reptId, String position, String sn, String bn);
+    void insertNew(String reptCategory, String outId, String outTime, String outNum, String outInfo, String reptId, String position, String materialId, String materialName, String spec, String unit, String sn, String bn, String outReptC, String remark);
 
-    String searchId(Material material);
+    List showOUTID(Repository repository);
+
+    void delete(Repository repository);
+
+    List<Repository> warning();
+
+    void updWarn(Repository repository);
+
+    List<Repository> warn();
+
+    void updUser(Repository repository);
+
+    List<Repository> wdbhR();
+
+    List<Repository> wdbhX();
+
+    List<Repository> wdbhC();
+
+    List<Repository> showmatX(String wdbh);
+
+    List<Repository> showmatR(String wdbh);
+
+    List<Repository> showmatC(String wdbh);
 }
