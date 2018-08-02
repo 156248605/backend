@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.project.ProjectSetDao">
+
+    <resultMap id="projectVarious" type="com.elex.oa.entity.project.ProjectVarious">
+        <result column="code" javaType="int" property="code"></result>
+        <result column="name" javaType="string" property="name"></result>
+    </resultMap>
+
+    <select id="queryType" resultMap="projectVarious">
+        SELECT code, name FROM pro_type
+    </select>
+
+    <select id="querySource" resultMap="projectVarious">
+        SELECT code, name FROM pro_source
+    </select>
+
+    <select id="queryStatus" resultMap="projectVarious">
+        SELECT code, name FROM pro_status
+    </select>
+
+    <select id="queryPhase" resultMap="projectVarious">
+        SELECT code, name FROM pro_phase
+    </select>
+
+    <insert id="addType" parameterType="string">
+        INSERT INTO pro_type (code, name) VALUES(NULL,#{name})
+    </insert>
+
+    <insert id="addSource" parameterType="string">
+        INSERT INTO pro_source (code,name) VALUES(NULL,#{name})
+    </insert>
+
+    <insert id="addStatus" parameterType="string">
+        INSERT INTO pro_status (code,name) VALUES(NULL,#{name})
+    </insert>
+
+    <insert id="addPhase" parameterType="string">
+        INSERT INTO pro_phase (code, name) VALUES(NULL, #{name})
+    </insert>
+
+    <select id="countType" parameterType="string" resultType="int">
+        SELECT COUNT(id) FROM pro_pro_infor WHERE project_type = #{s}
+    </select>
+
+    <delete id="deleteType" parameterType="int">
+        DELETE FROM pro_type  WHERE code = #{code}
+    </delete>
+
+    <select id="countSource" parameterType="string" resultType="int">
+        SELECT COUNT(id) FROM pro_pro_infor WHERE project_source = #{s}
+    </select>
+
+    <delete id="deleteSource" parameterType="int">
+        DELETE FROM pro_source WHERE code = #{code}
+    </delete>
+
+    <select id="countStatus" parameterType="string" resultType="int">
+        SELECT COUNT(id) FROM pro_pro_infor WHERE project_status = #{s}
+    </select>
+
+    <select id="deleteStatus" parameterType="int">
+        DELETE FROM pro_status WHERE code = #{code}
+    </select>
+</mapper>

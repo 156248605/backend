@@ -147,4 +147,12 @@
     <update id="amendInvention" parameterType="com.elex.oa.entity.objectives.Target">
         UPDATE tar_in SET goal = #{goal}, cumulative = #{cumulative}, ratio = #{ratio} WHERE id = #{id}
     </update>
+
+    <select id="querySalesDepartment" parameterType="java.util.Map" resultMap="target">
+        SELECT  goal, cumulative, ratio FROM tar_sales WHERE department = #{department} AND annual = #{annual}
+    </select>
+
+    <select id="queryNetDepartment" parameterType="java.util.Map" resultMap="target">
+        SELECT  goal, cumulative, ratio FROM tar_net WHERE department = #{department} AND annual = #{annual}
+    </select>
 </mapper>

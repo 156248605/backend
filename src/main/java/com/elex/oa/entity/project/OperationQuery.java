@@ -21,12 +21,13 @@ public class OperationQuery {
     private List<String> list8;
     private String type;
     private String name;
+    private List<String> codes; //项目编号
 
 
     public OperationQuery() {
     }
 
-    public OperationQuery(String select1, String input1, String select2, String input2, String select3, String input3, String select4, List<String> list4, String select5, String input5, String select6, List<String> list6, String select7, String input7, String select8, List<String> list8, String type, String name) {
+    public OperationQuery(String select1, String input1, String select2, String input2, String select3, String input3, String select4, List<String> list4, String select5, String input5, String select6, List<String> list6, String select7, String input7, String select8, List<String> list8, String type, String name, List<String> codes) {
         this.select1 = select1;
         this.input1 = input1;
         this.select2 = select2;
@@ -45,6 +46,7 @@ public class OperationQuery {
         this.list8 = list8;
         this.type = type;
         this.name = name;
+        this.codes = codes;
     }
 
     public String getSelect1() {
@@ -191,6 +193,14 @@ public class OperationQuery {
         this.name = name;
     }
 
+    public List<String> getCodes() {
+        return codes;
+    }
+
+    public void setCodes(List<String> codes) {
+        this.codes = codes;
+    }
+
     @Override
     public String toString() {
         return "OperationQuery{" +
@@ -212,6 +222,7 @@ public class OperationQuery {
                 ", list8=" + list8 +
                 ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
+                ", codes=" + codes +
                 '}';
     }
 }

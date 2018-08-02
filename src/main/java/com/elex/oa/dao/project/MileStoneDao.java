@@ -1,35 +1,26 @@
 package com.elex.oa.dao.project;
 
-import com.elex.oa.entity.project.AListQuery;
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.MileStonePlan;
-import com.elex.oa.entity.project.OperationQuery;
+import com.elex.oa.entity.project.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface MileStoneDao {
-    //数据列表查询
-    List<ApprovalList> queryList(AListQuery aListQuery);
-    //查询某项目编号相关的里程碑计划
-    List<MileStonePlan> queryPlanByCode(String projectCode);
-    //查询某人可新建计划的项目编号
-    List<String> queryCodeByName(String manager);
-    //根据项目编号查询项目信息
-    ApprovalList queryInforByCode(String projectCode);
-    //修改已通过审批项目的状态 n => y
-    int modifyStatusByCode(String projectCode);
-    //添加计划
-    int addPlan(MileStonePlan mileStonePlan);
-    //修改已通过审批项目的状态 y => n
-    int modifyStatus2ByCode(String projectCode);
-    //根据项目编号删除计划
-    void deletePlansByCode(String projectCode);
-    //根据id删除计划
-    void deletePlanById(int id);
-    //根据id更新计划
-    int updatePlanById(MileStonePlan mileStonePlan1);
-    //查询可新建的项目信息
-    List<ApprovalList> queryProjectList(OperationQuery operationQuery);
+    //查询已建立的里程碑计划的项目编号
+    List<String> queryCodes();
+    //里程碑计划列表查询
+    List<ProjectInfor> queryList(AListQuery aListQuery);
+    //查询可新建里程碑计划的项目信息
+    List<ProjectInfor> queryProjectList(OperationQuery operationQuery);
+    //添加里程碑信息
+    void addMileStone(MileStone mileStone);
+    //添加里程碑信息详情
+    void addMileStonePlans(List<MileStonePlan> mileStonePlans);
+    //查询里程碑计划详情
+    List<MileStonePlan> queryPlansCode(String projectCode);
+    //删除里程碑信息
+    void deleteMileStone(String projectCode);
+    //删除里程碑信息详情
+    void deleteMileStonePlans(String projectCode);
 }

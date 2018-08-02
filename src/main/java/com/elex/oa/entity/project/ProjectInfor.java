@@ -6,6 +6,7 @@ public class ProjectInfor {
     private String projectName; //项目名称
     private String inDepartment; //立项部门
     private String projectStatus; //项目状态
+    private String deptManager; //立项部门的部门经理
     private String proposer; //申请人
     private String writeDate; //立项日期
     private String department1;
@@ -31,17 +32,18 @@ public class ProjectInfor {
     private String contactPosition; //联系人职务
     private String contactMobile; //联系人手机
     private String contactEmail; //联系人邮件
-    private String departmentManager; //部门经理
+    private String departmentManager; //项目经理的部门经理
 
     public ProjectInfor() {
     }
 
-    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String proposer, String writeDate, String department1, String businessManager, String projectSource, String department2, String projectManager, String projectType, String generalSituation, String projectMembers, String relatedMembers, String startDate, String endDate, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
+    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String department1, String businessManager, String projectSource, String department2, String projectManager, String projectType, String generalSituation, String projectMembers, String relatedMembers, String startDate, String endDate, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
         this.inDepartment = inDepartment;
         this.projectStatus = projectStatus;
+        this.deptManager = deptManager;
         this.proposer = proposer;
         this.writeDate = writeDate;
         this.department1 = department1;
@@ -108,6 +110,14 @@ public class ProjectInfor {
 
     public void setProjectStatus(String projectStatus) {
         this.projectStatus = projectStatus;
+    }
+
+    public String getDeptManager() {
+        return deptManager;
+    }
+
+    public void setDeptManager(String deptManager) {
+        this.deptManager = deptManager;
     }
 
     public String getProposer() {
@@ -326,6 +336,7 @@ public class ProjectInfor {
                 ", projectName='" + projectName + '\'' +
                 ", inDepartment='" + inDepartment + '\'' +
                 ", projectStatus='" + projectStatus + '\'' +
+                ", deptManager='" + deptManager + '\'' +
                 ", proposer='" + proposer + '\'' +
                 ", writeDate='" + writeDate + '\'' +
                 ", department1='" + department1 + '\'' +

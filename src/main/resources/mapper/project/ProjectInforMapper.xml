@@ -8,6 +8,7 @@
         <result column="in_department"        javaType="string"  property="inDepartment"></result>
         <result column="project_status"       javaType="string"  property="projectStatus"></result>
         <result column="proposer"              javaType="string" property="proposer"></result>
+        <result column="dept_manager"          javaType="string" property="deptManager"></result>
         <result column="write_date"            javaType="string" property="writeDate"></result>
         <result column="business_manager"     javaType="string" property="businessManager"></result>
         <result column="project_source"       javaType="string" property="projectSource"></result>
@@ -46,11 +47,13 @@
         <result column="department2"  javaType="string"  property="department2"></result>
         <result column="project_manager"  javaType="string"  property="projectManager"></result>
         <result column="general_situation"  javaType="string"  property="generalSituation"></result>
+        <result column="department_manager"  javaType="string"  property="departmentManager"></result>
     </resultMap>
 
     <select id="listQuery" parameterType="com.elex.oa.entity.project.ProjectInforQuery" resultMap="projectInfor">
-        SELECT id,project_code,project_name,in_department,project_status,proposer,write_date,business_manager,project_source,project_manager,project_type,general_situation,project_members,related_members,
-        start_date,end_date,party_name,party_address,party_phone,party_fax,head_name,head_position,head_mobile,head_email,contact_name,contact_position,contact_mobile,contact_email,department_manager from pro_pro_infor
+        SELECT id,project_code,project_name,in_department,project_status,dept_manager,proposer,write_date,department1,business_manager,project_source,department2,project_manager,
+        project_type,general_situation,project_members,related_members,start_date,end_date,party_name,party_address,party_phone,party_fax,head_name,head_position,head_mobile,
+        head_email,contact_name,contact_position,contact_mobile,contact_email,department_manager FROM pro_pro_infor
         <where>
             <if test="select1 == 1 and input1 != ''">
                 AND project_code like CONCAT('%',#{input1},'%')
@@ -119,7 +122,10 @@
                 AND project_manager LIKE CONCAT('%',#{input13},'%')
             </if>
             <if test="type == 3">
-                AND (project_members LIKE CONCAT('%',#{user},'%') OR related_members LIKE CONCAT('%',#{user},'%'))
+                AND project_members LIKE CONCAT('%',#{user},'%')
+            </if>
+            <if test="type == 4">
+                AND related_members LIKE CONCAT('%',#{user},'%')
             </if>
         </where>
     </select>
@@ -129,9 +135,9 @@
     </select>
 
     <insert id="constructionDetails" parameterType="com.elex.oa.entity.project.ProjectInfor" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO pro_pro_infor (id,project_code,project_name,in_department,project_status,proposer,write_date,department1,business_manager,project_source,department2,project_manager,project_type,general_situation,project_members,related_members,
+        INSERT INTO pro_pro_infor (id,project_code,project_name,in_department,project_status,dept_manager,proposer,write_date,department1,business_manager,project_source,department2,project_manager,project_type,general_situation,project_members,related_members,
         start_date,end_date,party_name,party_address,party_phone,party_fax,head_name,head_position,head_mobile,head_email,contact_name,contact_position,contact_mobile,contact_email,department_manager) VALUES(NULL,#{projectCode},
-        #{projectName},#{inDepartment},#{projectStatus},#{proposer},#{writeDate},#{department1},#{businessManager},#{projectSource},#{department2},#{projectManager},#{projectType},#{generalSituation},#{projectMembers},#{relatedMembers},#{startDate},
+        #{projectName},#{inDepartment},#{projectStatus},#{deptManager},#{proposer},#{writeDate},#{department1},#{businessManager},#{projectSource},#{department2},#{projectManager},#{projectType},#{generalSituation},#{projectMembers},#{relatedMembers},#{startDate},
         #{endDate},#{partyName},#{partyAddress},#{partyPhone},#{partyFax},#{headName},#{headPosition},#{headMobile},#{headEmail},#{contactName},#{contactPosition},#{contactMobile},#{contactEmail},#{departmentManager})
     </insert>
 
@@ -146,8 +152,8 @@
     </delete>
 
     <select id="queryProjectList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="approvalList">
-        SELECT project_code, project_name, write_date, project_source, project_type, in_department, proposer, department1, business_manager, department2 ,project_manager, general_situation FROM pro_app_list
-        WHERE ( business_manager = #{name} OR project_manager = #{name} )
+        SELECT project_code, project_name, write_date, project_source, project_type, in_department, proposer, department1, business_manager, department2 ,project_manager, general_situation, department_manager
+        FROM pro_app_list WHERE ( business_manager = #{name} OR project_manager = #{name} )
         <if test="select1 == 1 and input1 != ''">
             AND project_code LIKE CONCAT('%',#{input1},'%')
         </if>
@@ -172,29 +178,23 @@
                 #{item}
             </foreach>
         </if>
-        <!--<if test="select5 == 1 and input5 != ''">
-            AND project_manager LIKE CONCAT('%',#{input5},'%')
-        </if>
-        <if test="select5 == 2 and input5 != ''">
-            AND project_manager NOT LIKE CONCAT('%',#{input5},'%')
-        </if>-->
         <if test="list6 != null">
             AND project_source IN
             <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
-        <!--<if test="select7 == 1 and input7 != ''">
-            AND business_manager LIKE CONCAT('%',#{input7},'%')
-        </if>
-        <if test="select7 == 2 and input7 != ''">
-            AND business_manager NOT LIKE CONCAT('%',#{input7},'%')
-        </if>-->
         <if test="list8 != null">
             AND project_type IN
             <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
+    </select>
+
+    <select id="queryProName" parameterType="java.util.Map" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, write_date, project_source, project_type, in_department, business_manager ,project_manager, start_date, end_date
+        FROM pro_pro_infor WHERE (project_manager = #{name} OR business_manager = #{name} OR project_members LIKE CONCAT('%',#{name},'%'))
+         AND (project_status = #{status1} OR project_status = #{status2})
     </select>
 </mapper>

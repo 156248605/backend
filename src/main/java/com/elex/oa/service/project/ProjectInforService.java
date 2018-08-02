@@ -25,4 +25,6 @@ public interface ProjectInforService {
     Map<String,String> deleteDetails(Integer id);
     //查询可新建详情的项目信息
     PageInfo<ApprovalList> queryProjectList(OperationQuery operationQuery, Page page);
+    //查询跟某人相关的项目
+    List<ProjectInfor> queryProName(String name);
 }

@@ -3,10 +3,16 @@ package com.elex.oa.entity.project;
 public class WeeklyPlan { //项目周报
     private int id;
     private String projectCode; //项目编号
-    private String startDate; //起始时间
-    private String endDate; //截止时间
-    private String complete; //完成概况
+    private String startDate; //实施启动时间
+    private String endDate; //预计完成时间
+    private String timeSchedule; //时间进度
+    private String fulfillment; //完成进度
+    private String punctuality; //是否按期
+    private String projectPhase; //项目阶段
+    private String completion; //完成概况
+    private String nextPlan; //下周计划
     private String risk; //风险提醒
+    //private String progress; //事项进度比例
     private String projectManager; //项目经理
     private String departmentManager; //部门经理
     //private String leaderShip; //分管领导
@@ -14,12 +20,17 @@ public class WeeklyPlan { //项目周报
     public WeeklyPlan() {
     }
 
-    public WeeklyPlan(int id, String projectCode, String startDate, String endDate, String complete, String risk, String projectManager, String departmentManager) {
+    public WeeklyPlan(int id, String projectCode, String startDate, String endDate, String timeSchedule, String fulfillment, String punctuality, String projectPhase, String completion, String nextPlan, String risk, String projectManager, String departmentManager) {
         this.id = id;
         this.projectCode = projectCode;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.complete = complete;
+        this.timeSchedule = timeSchedule;
+        this.fulfillment = fulfillment;
+        this.punctuality = punctuality;
+        this.projectPhase = projectPhase;
+        this.completion = completion;
+        this.nextPlan = nextPlan;
         this.risk = risk;
         this.projectManager = projectManager;
         this.departmentManager = departmentManager;
@@ -57,12 +68,52 @@ public class WeeklyPlan { //项目周报
         this.endDate = endDate;
     }
 
-    public String getComplete() {
-        return complete;
+    public String getTimeSchedule() {
+        return timeSchedule;
     }
 
-    public void setComplete(String complete) {
-        this.complete = complete;
+    public void setTimeSchedule(String timeSchedule) {
+        this.timeSchedule = timeSchedule;
+    }
+
+    public String getFulfillment() {
+        return fulfillment;
+    }
+
+    public void setFulfillment(String fulfillment) {
+        this.fulfillment = fulfillment;
+    }
+
+    public String getPunctuality() {
+        return punctuality;
+    }
+
+    public void setPunctuality(String punctuality) {
+        this.punctuality = punctuality;
+    }
+
+    public String getProjectPhase() {
+        return projectPhase;
+    }
+
+    public void setProjectPhase(String projectPhase) {
+        this.projectPhase = projectPhase;
+    }
+
+    public String getCompletion() {
+        return completion;
+    }
+
+    public void setCompletion(String completion) {
+        this.completion = completion;
+    }
+
+    public String getNextPlan() {
+        return nextPlan;
+    }
+
+    public void setNextPlan(String nextPlan) {
+        this.nextPlan = nextPlan;
     }
 
     public String getRisk() {
@@ -96,7 +147,12 @@ public class WeeklyPlan { //项目周报
                 ", projectCode='" + projectCode + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
-                ", complete='" + complete + '\'' +
+                ", timeSchedule='" + timeSchedule + '\'' +
+                ", fulfillment='" + fulfillment + '\'' +
+                ", punctuality='" + punctuality + '\'' +
+                ", projectPhase='" + projectPhase + '\'' +
+                ", completion='" + completion + '\'' +
+                ", nextPlan='" + nextPlan + '\'' +
                 ", risk='" + risk + '\'' +
                 ", projectManager='" + projectManager + '\'' +
                 ", departmentManager='" + departmentManager + '\'' +

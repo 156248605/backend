@@ -5,6 +5,7 @@ import com.elex.oa.entity.objectives.TargetQuery;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TargetDao {
@@ -32,4 +33,8 @@ public interface TargetDao {
     void amendNet(Target target);
     //修改发明专利
     void amendInvention(Target target);
+    //查询某部门的销售收入
+    Target querySalesDepartment(Map<String,String> condition);
+    //查询某部门的收入净利
+    Target queryNetDepartment(Map<String,String> condition);
 }
