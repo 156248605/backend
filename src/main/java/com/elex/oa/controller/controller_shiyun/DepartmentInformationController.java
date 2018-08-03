@@ -3,6 +3,7 @@ package com.elex.oa.controller.controller_shiyun;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.entity.entity_shiyun.*;
+import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
@@ -35,6 +36,9 @@ public class DepartmentInformationController {
 
     @Autowired
     IChangeInformationService iChangeInformationService;
+
+    @Autowired
+    private ProjectBoardService projectBoardService;
 
     /**
      *@Author:ShiYun;

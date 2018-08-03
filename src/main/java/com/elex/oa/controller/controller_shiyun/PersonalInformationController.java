@@ -1,8 +1,10 @@
 package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.common.common_shiyun.Commons;
+import com.elex.oa.dao.dao_shiyun.IGzrzDao;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.permission.EmployeeService;
+import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
@@ -106,6 +108,12 @@ public class PersonalInformationController {
     IHRsetTelphoneService ihRsetTelphoneService;//办公电话
     @Autowired
     IHRsetEmergencyrpService ihRsetEmergencyrpService;//应急联系人关系
+    @Autowired
+    IGzrzService iGzrzService;//工作日志
+
+    @Autowired
+    private ProjectBoardService projectBoardService;//高晓飞
+
 
     /**
      * @Author:ShiYun;
@@ -635,6 +643,7 @@ public class PersonalInformationController {
         personalInformation.setUserid(userid);
         personalInformation.setBaseinformationid(baseInformationId);
         Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
+        projectBoardService.informationUpdate();
         return userid;
     }
 
@@ -674,6 +683,7 @@ public class PersonalInformationController {
             PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
             iPerandpostrsService.addOne(perAndPostRs);
         }
+        projectBoardService.informationUpdate();
         return "管理信息添加成功！";
     }
 
@@ -1158,6 +1168,7 @@ public class PersonalInformationController {
             iChangeInformationService.addOne(changeInformation);
         }
         iPersonalInformationService.modifyOne(personalInformation);
+        projectBoardService.informationUpdate();
         return "信息提交成功！";
     }
 
@@ -1291,6 +1302,7 @@ public class PersonalInformationController {
         }
 
         iPersonalInformationService.modifyOne(personalInformation2);
+        projectBoardService.informationUpdate();
         return "提交信息成功！";
     }
 
@@ -2062,7 +2074,7 @@ public class PersonalInformationController {
                 }
             }
         }
-
+        projectBoardService.informationUpdate();
         return "数据导入成功！";
     }
 
@@ -2085,6 +2097,7 @@ public class PersonalInformationController {
             //注：如果将要删除的员工是某部门的正职、副职、秘书则需要修改该字段
             iDeptService.modifyOne(personalInformation.getUserid());
         }
+        projectBoardService.informationUpdate();
         return "删除成功！";
     }
 
@@ -2186,5 +2199,27 @@ public class PersonalInformationController {
                 return RespUtil.successResp("205","没有查到此用户信息",null);
             }
         }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据日期查询工作日志
+     *@Date: 9:40 2018\8\3 0003
+     */
+    @RequestMapping("/queryWriteGzrz")
+    @ResponseBody
+    public Object queryWriteGzrz(
+            @RequestParam("year") Integer year,
+            @RequestParam("month") Integer month
+    ){
+        Object o = false;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            Date date = simpleDateFormat.parse(year + "/" + month + "/01 00:00:00");
+            o = iGzrzService.queryGzrzByTime(date);
+        } catch (ParseException e) {
+            System.out.println("格式转换出错！");
+        }
+       return RespUtil.successResp("205","相应成功！",o);
     }
 }
