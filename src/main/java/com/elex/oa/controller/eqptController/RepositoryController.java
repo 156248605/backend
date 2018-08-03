@@ -6,8 +6,10 @@ import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.RepositoryImpl;
+import com.elex.oa.service.project.ProjectBoardService;
 import com.github.pagehelper.PageInfo;
 import org.apache.regexp.RE;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +28,14 @@ public class RepositoryController {
     @Resource
     private RepositoryImpl repositoryImpl;
 
+    @Autowired
+    private ProjectBoardService projectBoardService;
+
     @RequestMapping("/list")
     @ResponseBody
     public PageInfo<Repository> repositoryList(Page page){
         PageInfo<Repository> list = repositoryImpl.showRepository(page);
+        projectBoardService.informationUpdate();
         return list;
     }
 

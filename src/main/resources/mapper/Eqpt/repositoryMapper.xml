@@ -145,6 +145,24 @@
             <if test="reptCategory != null and reptCategory != '' and reptCategoryC == 2">
                 AND reptCategory NOT LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
             </if>
+            <if test="inNum != null and inNum != '' and inNumC == ''">
+                AND inNum LIKE CONCAT(CONCAT('%', #{inNum}), '%')
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 1">
+                AND inNum &lt; #{inNum}
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 2">
+                AND inNum > #{inNum}
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 3">
+                AND inNum = #{inNum}
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 4">
+                AND inNum &lt;= #{inNum}
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 5">
+                AND inNum >= #{inNum}
+            </if>
             <if test="inTime != null and inTime != '' and inTimeC == ''">
                 AND inTime LIKE CONCAT(CONCAT('%', #{inTime}), '%')
             </if>
@@ -163,14 +181,59 @@
             <if test="inId != null and inId != '' and inIdC == 2">
                 AND inId NOT LIKE CONCAT(CONCAT('%', #{inId}), '%')
             </if>
-            <if test="position != null and position != '' and position == ''">
-                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            <if test="postId != null and postId != '' and postIdC == ''">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
             </if>
-            <if test="position != null and position != '' and position == 1">
-                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            <if test="postId != null and postId != '' and postIdC == 1">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
             </if>
-            <if test="position != null and position != '' and position == 2">
-                AND position NOT LIKE CONCAT(CONCAT('%', #{position}), '%')
+            <if test="postId != null and postId != '' and postIdC == 2">
+                AND postId NOT LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == ''">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 1">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 2">
+                AND projId NOT LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == ''">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 1">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 2">
+                AND projName NOT LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == ''">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 1">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 2">
+                AND materialId NOT LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == ''">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 1">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 2">
+                AND sn NOT LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == ''">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 1">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 2">
+                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
             </if>
         </where>
     </select>
@@ -196,6 +259,24 @@
             <if test="reptCategory != null and reptCategory != '' and reptCateC == 2">
                 AND reptCategory NOT LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
             </if>
+            <if test="outNum != null and outNum != '' and outNumC == ''">
+                AND outNum LIKE CONCAT(CONCAT('%', #{outNum}), '%')
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 1">
+                AND outNum &lt; #{outNum}
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 2">
+                AND outNum > #{outNum}
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 3">
+                AND outNum = #{outNum}
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 4">
+                AND outNum &lt;= #{outNum}
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 5">
+                AND outNum >= #{outNum}
+            </if>
             <if test="outTime != null and outTime != '' and outTimeC == ''">
                 AND outTime LIKE CONCAT(CONCAT('%', #{outTime}), '%')
             </if>
@@ -214,14 +295,59 @@
             <if test="outId != null and outId != '' and outIdC == 2">
                 AND outId NOT LIKE CONCAT(CONCAT('%', #{outId}), '%')
             </if>
-            <if test="position != null and position != '' and position == ''">
-                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            <if test="postId != null and postId != '' and postIdC == ''">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
             </if>
-            <if test="position != null and position != '' and position == 1">
-                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            <if test="postId != null and postId != '' and postIdC == 1">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
             </if>
-            <if test="position != null and position != '' and position == 2">
-                AND position NOT LIKE CONCAT(CONCAT('%', #{position}), '%')
+            <if test="postId != null and postId != '' and postIdC == 2">
+                AND postId NOT LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == ''">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 1">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 2">
+                AND projId NOT LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == ''">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 1">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 2">
+                AND projName NOT LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == ''">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 1">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 2">
+                AND materialId NOT LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == ''">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 1">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 2">
+                AND sn NOT LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == ''">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 1">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 2">
+                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
             </if>
         </where>
     </select>

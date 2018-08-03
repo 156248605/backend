@@ -61,7 +61,11 @@ public class OutRepositoryImpl implements OutRepositoryService {
         String bnC = request.getParameter("bnC");
         String outTime = request.getParameter("outTime");
         String outTimeC = request.getParameter("outTimeC");
-        if (reptId.equals("") && reptCategory.equals("") && postId.equals("") && outId.equals("") && sn.equals("") && bn.equals("") && outTime.equals("")){
+        String projId = request.getParameter("projId");
+        String projIdC = request.getParameter("projIdC");
+        String projName = request.getParameter("projName");
+        String projNameC = request.getParameter("projNameC");
+        if (projId.equals("") && projName.equals("") && reptId.equals("") && reptCategory.equals("") && postId.equals("") && outId.equals("") && sn.equals("") && bn.equals("") && outTime.equals("")){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Repository> listR = outRepositoryMapper.findAll();
             return new PageInfo<>(listR);
@@ -82,6 +86,10 @@ public class OutRepositoryImpl implements OutRepositoryService {
             repository.setSnC(snC);
             repository.setOutTime(outTime);
             repository.setOutTimeC(outTimeC);
+            repository.setProjName(projName);
+            repository.setProjNameC(projNameC);
+            repository.setProjId(projId);
+            repository.setProjIdC(projIdC);
             List<Repository> listR = repositoryMapper.searchOut(repository);
             return new PageInfo<>(listR);
         }
@@ -129,6 +137,8 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String UNIT = listOUT.get(i).get("theMatUnit").toString();
             String SPEC = listOUT.get(i).get("theMatSpec").toString();
             String REMARK = listOUT.get(i).get("theMatRemark").toString();
+            String PROJID = request.getParameter("projId");
+            String PROJNAME = request.getParameter("projName");
             Repository repository = new Repository();
             repository.setMaterialId(MATERIALID);
             repository.setPostId(POSTID);
@@ -136,8 +146,10 @@ public class OutRepositoryImpl implements OutRepositoryService {
             repository.setOutId(OUTID);
             repository.setBn(bn);
             repository.setSn(sn);
+            repository.setProjId(PROJID);
+            repository.setProjName(PROJNAME);
             String REPTcategory = repositoryMapper.searchCategory(repository);
-            outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK);
+            outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME);
         }
     }
 

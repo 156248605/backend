@@ -3,6 +3,7 @@ package com.elex.oa.controller.controller_shiyun;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.entity.entity_shiyun.*;
+import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
@@ -35,6 +36,9 @@ public class DepartmentInformationController {
 
     @Autowired
     IChangeInformationService iChangeInformationService;
+
+    @Autowired
+    private ProjectBoardService projectBoardService;
 
     /**
      *@Author:ShiYun;
@@ -381,11 +385,14 @@ public class DepartmentInformationController {
             }
 
             if (!dept.getDepname().equals(dept2.getDepname())){
-                b = true;
-                deptLog.setChangeinformation("部门名称");
-                deptLog.setBeforeinformation(dept2.getDepname());
-                deptLog.setAfterinformation(dept.getDepname());
-                iDeptLogService.addOne(deptLog);
+                Dept dept1 = iDeptService.queryOneDepByDepname(dept.getDepname());
+                if (dept1==null) {
+                    b = true;
+                    deptLog.setChangeinformation("部门名称");
+                    deptLog.setBeforeinformation(dept2.getDepname());
+                    deptLog.setAfterinformation(dept.getDepname());
+                    iDeptLogService.addOne(deptLog);
+                }
             }if (!dept.getDepcode().equals(dept2.getDepcode())){
                 b = true;
                 deptLog.setChangeinformation("部门编号");
@@ -669,7 +676,20 @@ public class DepartmentInformationController {
                 deptLog.setBeforeinformation(iUserService.getById(dept2.getSecretaryuserid()).getTruename());
                 deptLog.setAfterinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
+            }if (!dept.getDutydescription().equals(dept2.getDutydescription())){
+                b = true;
+                deptLog.setChangeinformation("部门职责");
+                deptLog.setBeforeinformation(dept2.getDutydescription());
+                deptLog.setAfterinformation(dept.getDutydescription());
+                iDeptLogService.addOne(deptLog);
+            }if (!dept.getDepdescription().equals(dept2.getDepdescription())){
+                b = true;
+                deptLog.setChangeinformation("部门概述");
+                deptLog.setBeforeinformation(dept2.getDepdescription());
+                deptLog.setAfterinformation(dept.getDepdescription());
+                iDeptLogService.addOne(deptLog);
             }
+
 
             if (b) {
                 if (ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype())!=null) {
@@ -741,8 +761,16 @@ public class DepartmentInformationController {
         List<DeptLog> list = deptLogPageInfo.getList();
         if(list.size()!=0){
             for (int i = 0;i< list.size();i++) {
-                list.get(i).setDeptname(iDeptService.queryOneDepByDepid(list.get(i).getDeptid()).getDepname());
-                list.get(i).setTransactortruename(iUserService.getById(list.get(i).getTransactoruserid()).getTruename());
+                if (iDeptService.queryOneDepByDepid(list.get(i).getDeptid())!=null) {
+                    list.get(i).setDeptname(iDeptService.queryOneDepByDepid(list.get(i).getDeptid()).getDepname());
+                } else {
+                    list.get(i).setDeptname("此部门已经不存在");
+                }
+                if (iUserService.getById(list.get(i).getTransactoruserid())!=null){
+                    list.get(i).setTransactortruename(iUserService.getById(list.get(i).getTransactoruserid()).getTruename());
+                } else {
+                    list.get(i).setTransactortruename("此员工已经不存在");
+                }
             }
             deptLogPageInfo.setList(list);
         }
@@ -955,5 +983,41 @@ public class DepartmentInformationController {
     ){
         HRManageCard paramMap1 = iDeptService.getParamMap1(deptid);
         return paramMap1;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:添加部门的时候校验部门名称
+     *@Date: 10:08 2018\7\16 0016
+     */
+    @RequestMapping("/validateDeptnameForAddDept")
+    @ResponseBody
+    public Boolean validateDeptnameForAddDept(
+            @RequestParam("deptname") String deptname
+    ){
+        Dept dept = iDeptService.queryOneDepByDepname(deptname);
+        if(dept!=null){
+            return true;
+        }else{
+            return  false;
+        }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:添加部门的时候校验部门编号
+     *@Date: 10:12 2018\7\16 0016
+     */
+    @RequestMapping("/validateDeptcodeForAddDept")
+    @ResponseBody
+    public Boolean validateDeptcodeForAddDept(
+            @RequestParam("deptcode") String deptcode
+    ){
+        Dept dept = iDeptService.queryOneDepByDepname(deptcode);
+        if(dept!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

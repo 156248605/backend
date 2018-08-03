@@ -1,6 +1,7 @@
 package com.elex.oa.service.eqptService;
 
 import com.elex.oa.entity.Page;
+import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +27,11 @@ public interface InventoryService {
     // 确定盘点单号
     List showInvId(HttpServletRequest request);
 
-    // 查询盘点的仓库内物料情况
-    List<Repository> matinrept(HttpServletRequest request);
+    // 查询盘点的仓库内物料情况(选物料)
+    List<Material> chooseMat(HttpServletRequest request);
+
+    // 查询盘点的仓库内物料情况(选物料)
+    List<Material> matinrept(HttpServletRequest request);
 
     // 获取仓库ID
     List<Repository> ReptList();

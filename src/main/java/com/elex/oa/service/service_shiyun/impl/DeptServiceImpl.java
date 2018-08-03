@@ -46,6 +46,23 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据部门code查询部门信息
+     *@Date: 10:20 2018\7\16 0016
+     */
+    @Override
+    public Dept queryOneByDepcode(String depcode) {
+        Dept dept = new Dept();
+        dept.setDepcode(depcode);
+        List<Dept> depts = iDeptDao.selectDeptsByDept(dept);
+        if(depts.isEmpty()){
+            return null;
+        }else {
+            return depts.get(0);
+        }
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:根据部门ID获得部门
      *@Date: 15:30 2018\6\1 0001
      */
