@@ -95,4 +95,11 @@ public class ProjectSetController {
         return projectSetService.deleteStatus(code);
     }
 
+    //删除项目阶段
+    @RequestMapping("/delete_phase")
+    @ResponseBody
+    public String deletePhase(int code) {
+        return projectSetService.deletePhase(code);
+    }
+
 }

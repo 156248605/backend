@@ -59,7 +59,15 @@
         SELECT COUNT(id) FROM pro_pro_infor WHERE project_status = #{s}
     </select>
 
-    <select id="deleteStatus" parameterType="int">
+    <delete id="deleteStatus" parameterType="int">
         DELETE FROM pro_status WHERE code = #{code}
+    </delete>
+
+    <select id="countPhase" parameterType="string" resultType="int">
+        SELECT COUNT(DISTINCT project_code) FROM pro_week WHERE project_phase = #{code}
     </select>
+
+    <delete id="deletePhase" parameterType="int">
+        DELETE FROM pro_phase WHERE code = #{code}
+    </delete>
 </mapper>

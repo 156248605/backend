@@ -2,7 +2,6 @@ package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
-import com.elex.oa.service.permission.EmployeeService;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
@@ -50,8 +49,6 @@ public class PersonalInformationController {
     IOtherInformationService iOtherInformationService;
     @Autowired
     IChangeInformationService iChangeInformationService;
-    @Autowired
-    EmployeeService employeeService;//权限相关部分，岗位信息添加修改
     @Autowired
     IPerandpostrsService iPerandpostrsService;
     @Autowired

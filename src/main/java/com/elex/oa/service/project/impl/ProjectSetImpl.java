@@ -100,4 +100,16 @@ public class ProjectSetImpl implements ProjectSetService {
             return "0";
         }
     }
+
+    //删除项目阶段
+    @Override
+    public String deletePhase(int code) {
+        int count = projectSetDao.countPhase(code + ""); //查询当前项目中使用该阶段的数量
+        if(count > 0) {
+            return count + "";
+        } else {
+            projectSetDao.deletePhase(code); //删除项目阶段
+        }
+        return null;
+    }
 }
