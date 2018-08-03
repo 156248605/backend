@@ -9,6 +9,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.ShiftRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.regexp.RE;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.stereotype.Service;
 
@@ -53,13 +54,30 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     public PageInfo<Repository> searchRepository(Page page, HttpServletRequest request) {
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         String shiftId = request.getParameter("shiftId");
+        String shiftIdC = request.getParameter("shiftIdC");
         String shiftTime = request.getParameter("shiftTime");
+        String shiftTimeC = request.getParameter("shiftTimeC");
+        String shiftNum = request.getParameter("shiftNum");
+        String shiftNumC = request.getParameter("shiftNumC");
         String outReptId = request.getParameter("outReptId");
+        String outReptIdC = request.getParameter("outReptIdC");
+        String outPostId = request.getParameter("outPostId");
+        String outPostIdC = request.getParameter("outPostIdC");
         String inReptId = request.getParameter("inReptId");
+        String inReptIdC = request.getParameter("inReptIdC");
+        String inPostId = request.getParameter("inPostId");
+        String inPostIdC = request.getParameter("inPostIdC");
         String materialId = request.getParameter("materialId");
+        String materialIdC = request.getParameter("materialIdC");
         String sn = request.getParameter("sn");
+        String snC = request.getParameter("sn");
         String bn = request.getParameter("bn");
-        if (shiftId.equals("") && shiftTime.equals("") && outReptId.equals("") && inReptId.equals("") && materialId.equals("") && sn.equals("") && bn.equals("") ){
+        String bnC = request.getParameter("bn");
+        String projId = request.getParameter("projId");
+        String projIdC = request.getParameter("projIdC");
+        String projName = request.getParameter("projName");
+        String projNameC = request.getParameter("projNameC");
+        if (shiftId.equals("") && shiftTime.equals("") && shiftNum.equals("") && outReptId.equals("") && outPostId.equals("") && inReptId.equals("") && inPostId.equals("") && materialId.equals("") && sn.equals("") && bn.equals("") && projId.equals("") && projName.equals("") ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Repository> listR = shiftRepositoryMapper.showRepository();
             return new PageInfo<>(listR);
@@ -67,13 +85,30 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setShiftId(shiftId);
+            repository.setShiftIdC(shiftIdC);
             repository.setShiftTime(shiftTime);
+            repository.setShiftTimeC(shiftTimeC);
+            repository.setShiftNum(shiftNum);
+            repository.setShiftNumC(shiftNumC);
             repository.setOutRept(outReptId);
+            repository.setOutReptC(outReptIdC);
+            repository.setOutPost(outPostId);
+            repository.setOutPostC(outPostIdC);
             repository.setInRept(inReptId);
+            repository.setInReptC(inReptIdC);
+            repository.setInPost(inPostId);
+            repository.setInPostC(inPostIdC);
             repository.setMaterialId(materialId);
+            repository.setMatIdC(materialIdC);
             repository.setSn(sn);
+            repository.setSnC(snC);
             repository.setBn(bn);
-            List<Repository> listR = shiftRepositoryMapper.searchShift();
+            repository.setBnC(bnC);
+            repository.setProjName(projName);
+            repository.setProjNameC(projNameC);
+            repository.setProjId(projId);
+            repository.setProjIdC(projIdC);
+            List<Repository> listR = shiftRepositoryMapper.searchShift(repository);
             return new PageInfo<>(listR);
         }
     }
@@ -112,6 +147,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             String unit = listSHIFT.get(i).get("theMatUnit").toString();
             String spec = listSHIFT.get(i).get("theMatSpec").toString();
             String remark = listSHIFT.get(i).get("theMatRemark").toString();
+            String PROJID = request.getParameter("projId");
+            String PROJNAME = request.getParameter("projName");
             Material material = new Material();
             material.setId(materialId);
             String bn = null;
@@ -127,7 +164,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                 bn = listSHIFT.get(i).get("theMatBnSn").toString();
                 sn = "无";
             }
-            shiftRepositoryMapper.insertNew(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark);
+            shiftRepositoryMapper.insertNew(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME);
         }
     }
 

@@ -11,9 +11,9 @@ import java.util.List;
 public interface ShiftRepositoryMapper {
     List<Repository> showRepository();
 
-    List<Repository> searchShift();
+    List<Repository> searchShift(Repository repository);
 
-    void insertNew(String shiftId, String shiftTime, String shiftReptC, String shiftNum, String shiftInfo, String outRept, String outPost, String inRept, String inPost, String materialId, String materialName, String spec, String unit, String sn, String bn, String remark);
+    void insertNew(String shiftId, String shiftTime, String shiftReptC, String shiftNum, String shiftInfo, String outRept, String outPost, String inRept, String inPost, String materialId, String materialName, String spec, String unit, String sn, String bn, String remark,String projId,String projName);
 
     List showSHIFTID(Repository repository);
 
