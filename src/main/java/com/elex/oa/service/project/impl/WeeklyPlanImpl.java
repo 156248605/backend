@@ -3,7 +3,10 @@ package com.elex.oa.service.project.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.elex.oa.dao.project.WeeklyPlanDao;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.project.*;
+import com.elex.oa.entity.project.ApprovalList;
+import com.elex.oa.entity.project.OperationQuery;
+import com.elex.oa.entity.project.WeeklyPlan;
+import com.elex.oa.entity.project.WeeklyPlanQuery;
 import com.elex.oa.service.project.WeeklyPlanService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -83,14 +86,8 @@ public class WeeklyPlanImpl implements WeeklyPlanService {
     //添加周计划
     @Override
     @Transactional
-    public String addPlans(WeeklyPlan weeklyPlan, String dataS) {
-        List<WeeklyPlanDetail> weeklyPlanDetails = JSONArray.parseArray(dataS,WeeklyPlanDetail.class);
+    public String addPlans(WeeklyPlan weeklyPlan) {
         weeklyPlanDao.addWeeklyPlan(weeklyPlan); //添加周计划
-        int maxId = weeklyPlanDao.queryMaxId();
-        for(WeeklyPlanDetail weeklyPlanDetail:weeklyPlanDetails) {
-            weeklyPlanDetail.setRelatedId(maxId);
-        }
-        weeklyPlanDao.addWeeklyPlanDetail(weeklyPlanDetails);
         return "1";
     }
 
@@ -116,6 +113,21 @@ public class WeeklyPlanImpl implements WeeklyPlanService {
 
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         List<ApprovalList> list = weeklyPlanDao.queryProjectName(operationQuery);
+        System.out.println(list);
         return new PageInfo<>(list);
+    }
+
+    //修改周计划
+    @Override
+    public String amendPlans(WeeklyPlan weeklyPlan) {
+        weeklyPlanDao.amendPlans(weeklyPlan);
+        return "1";
+    }
+
+    //删除周计划
+    @Override
+    public String deleteWeek(int id) {
+        weeklyPlanDao.deleteWeek(id);
+        return "1";
     }
 }

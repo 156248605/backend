@@ -54,8 +54,8 @@ public class WeeklyPlanController {
     //添加周计划
     @RequestMapping("/add_plans")
     @ResponseBody
-    public String addPlans(WeeklyPlan weeklyPlan, String dataS) {
-        return weeklyPlanService.addPlans(weeklyPlan,dataS);
+    public String addPlans(WeeklyPlan weeklyPlan) {
+        return weeklyPlanService.addPlans(weeklyPlan);
     }
 
     //审批周计划
@@ -70,5 +70,19 @@ public class WeeklyPlanController {
     @ResponseBody
     public PageInfo<ApprovalList> queryProjectName(OperationQuery operationQuery, Page page) {
         return weeklyPlanService.queryProjectName(operationQuery, page);
+    }
+
+    //修改周计划
+    @RequestMapping("/amend_plans")
+    @ResponseBody
+    public String amendPlans(WeeklyPlan weeklyPlan) {
+        return weeklyPlanService.amendPlans(weeklyPlan);
+    }
+
+    //删除周计划
+    @RequestMapping("/delete_week")
+    @ResponseBody
+    public String deleteWeek(int id) {
+        return weeklyPlanService.deleteWeek(id);
     }
 }

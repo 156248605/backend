@@ -3,11 +3,9 @@ package com.elex.oa.service.project.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.elex.oa.dao.project.ListingDao;
 import com.elex.oa.dao.project.ProjectInforDao;
+import com.elex.oa.dao.project.ProjectSetDao;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.OperationQuery;
-import com.elex.oa.entity.project.ProjectInfor;
-import com.elex.oa.entity.project.ProjectInforQuery;
+import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,6 +25,9 @@ public class ProjectInforImpl implements ProjectInforService {
     private ProjectInforDao projectInforDao;
     @Resource
     private ListingDao listingDao;
+
+    @Resource
+    private ProjectSetDao projectSetDao;
 
     //数据列表查询
     @Override
@@ -144,17 +145,58 @@ public class ProjectInforImpl implements ProjectInforService {
     @Override
     public PageInfo<ApprovalList> queryProjectList(OperationQuery operationQuery, Page page) {
         List<String> list2 = projectInforDao.queryCodeByName(operationQuery.getName()); //在已有的项目详情中查询某人主管的项目编号
-        operationQuery.setList4(list2);
-        List<String> list6 = JSONArray.parseArray(operationQuery.getSelect6(),String.class);
+        if(list2.size() > 0) {
+            operationQuery.setList4(list2);
+        }
+       /* List<String> list6 = JSONArray.parseArray(operationQuery.getSelect6(),String.class);
         List<String> list8 = JSONArray.parseArray(operationQuery.getSelect8(),String.class);
         if(list6.size() > 0) {
             operationQuery.setList6(list6);
         }
         if(list8.size() > 0) {
             operationQuery.setList8(list8);
-        }
+        }*/
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         List<ApprovalList> list = projectInforDao.queryProjectList(operationQuery);
         return new PageInfo<>(list);
+    }
+
+    //查询跟某人相关的项目
+    @Override
+    public List<ProjectInfor> queryProName(String name) {
+        List<ProjectVarious> statusList = projectSetDao.queryStatus();
+        List<ProjectVarious> typeList = projectSetDao.queryType();
+        List<ProjectVarious> sourceList = projectSetDao.querySource();
+        List<String> status = new ArrayList<>();
+        Map<String,String> map = new HashMap<>();
+        map.put("name",name);
+        for(ProjectVarious projectVarious: statusList) {
+            if(projectVarious.getName().equals("进行")) {
+                map.put("status1",projectVarious.getCode()+"");
+            }
+            if(projectVarious.getName().equals("日常")) {
+                map.put("status2",projectVarious.getCode()+"");
+            }
+        }
+        List<ProjectInfor> list = projectInforDao.queryProName(map);
+        for(ProjectInfor projectInfor:list){
+            for(ProjectVarious st: statusList) {
+                if(projectInfor.getProjectStatus().equals(st.getCode()+"")) {
+                    projectInfor.setProjectStatus(st.getName());
+                }
+            }
+            for(ProjectVarious source: sourceList) {
+                if(projectInfor.getProjectSource().equals(source.getCode()+"")) {
+                    projectInfor.setProjectSource(source.getName());
+                }
+            }
+
+            for(ProjectVarious type: typeList) {
+                if(projectInfor.getProjectType().equals(type.getCode()+"")) {
+                    projectInfor.setProjectType(type.getName());
+                }
+            }
+        }
+        return list;
     }
 }

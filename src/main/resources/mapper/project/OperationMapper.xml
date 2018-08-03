@@ -4,6 +4,7 @@
     <resultMap id="projectInfor" type="com.elex.oa.entity.project.ProjectInfor">
         <result column="project_code"       javaType="string"  property="projectCode"></result>
         <result column="project_name"       javaType="string"  property="projectName"></result>
+        <result column="dept_manager"       javaType="string"  property="deptManager"></result>
         <result column="in_department"      javaType="string"  property="inDepartment"></result>
         <result column="project_status"     javaType="string"  property="projectStatus"></result>
         <result column="project_manager"    javaType="string"  property="projectManager"></result>
@@ -15,14 +16,37 @@
     <resultMap id="projectIncome" type="com.elex.oa.entity.project.ProjectIncome">
         <id column="id"                           javaType="int"    property="id"></id>
         <result column="project_code"           javaType="string" property="projectCode"></result>
-        <result column="pay_amount"              javaType="string" property="payAmount"></result>
-        <result column="pay_date"                javaType="string" property="payDate"></result>
+        <result column="amount"                  javaType="string" property="amount"></result>
+        <result column="copies"                  javaType="string" property="copies"></result>
         <result column="invoice_amount"         javaType="string" property="invoiceAmount"></result>
         <result column="invoice_proportion"     javaType="string" property="invoiceProportion"></result>
         <result column="receivable_amount"      javaType="string" property="receivableAmount"></result>
         <result column="receivable_proportion"  javaType="string" property="receivableProportion"></result>
         <result column="acceptance_amount"      javaType="string" property="acceptanceAmount"></result>
         <result column="acceptance_proportion"  javaType="string" property="acceptanceProportion"></result>
+    </resultMap>
+
+    <resultMap id="incomeOne" type="com.elex.oa.entity.project.IncomeOne">
+        <id column="id"                 javaType="int"    property="id"></id>
+        <result column="project_code" javaType="string" property="projectCode"></result>
+        <result column="code"          javaType="string" property="code"></result>
+        <result column="name"          javaType="string" property="name"></result>
+        <result column="situation"    javaType="string" property="situation"></result>
+        <result column="type"          javaType="string" property="type"></result>
+        <result column="amount"        javaType="string" property="amount"></result>
+        <result column="effective"    javaType="string" property="effective"></result>
+        <result column="pay_amount"   javaType="string" property="payAmount"></result>
+        <result column="pay_date"     javaType="string" property="payDate"></result>
+    </resultMap>
+
+    <resultMap id="incomeTwo" type="com.elex.oa.entity.project.IncomeTwo">
+        <id column="id"                 javaType="int"    property="id"></id>
+        <result column="project_code" javaType="string" property="projectCode"></result>
+        <result column="in_code"       javaType="string" property="inCode"></result>
+        <result column="execution"    javaType="string" property="execution"></result>
+        <result column="category"     javaType="string" property="category"></result>
+        <result column="p_amount"     javaType="string" property="pAmount"></result>
+        <result column="note"          javaType="string" property="note"></result>
     </resultMap>
 
     <resultMap id="projectIncomeDetail" type="com.elex.oa.entity.project.ProjectIncomeDetail">
@@ -226,7 +250,7 @@
     </insert>
 
     <select id="queryProjectIncome" parameterType="string" resultMap="projectIncome">
-        SELECT id,project_code,pay_amount,pay_date,invoice_amount,invoice_proportion,receivable_amount,receivable_proportion,acceptance_amount,acceptance_proportion
+        SELECT id,project_code, amount,copies , invoice_amount,invoice_proportion,receivable_amount,receivable_proportion,acceptance_amount,acceptance_proportion
         FROM pro_income WHERE project_code = #{projectCode}
     </select>
 
@@ -431,4 +455,408 @@
             #{item.id}
         </foreach>
     </update>
+
+    <select id="queryIncomeCodes" resultType="string">
+        SELECT project_code FROM pro_income
+    </select>
+
+    <select id="queryInforIncome" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, dept_manager, in_department, project_manager, project_source, business_manager, project_type FROM pro_pro_infor
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
+                AND project_status IN
+                <foreach collection="list4" item="item4" index="index4" open="(" close=")" separator=",">
+                    #{item4}
+                </foreach>
+            </if>
+            <if test="select5 == 1 and input5 != ''">
+                AND project_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select5 == 2 and input5 != ''">
+                AND project_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list6 != null">
+                AND project_source IN
+                <foreach collection="list6" item="item6" index="index6" open="(" close=")" separator=",">
+                    #{item6}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND business_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND project_type IN
+                <foreach collection="list8" item="item8" index="index8" open="(" close=")" separator=",">
+                    #{item8}
+                </foreach>
+            </if>
+            <if test="codes != null">
+                AND project_code NOT IN
+                <foreach collection="codes" item="code" index="index" open="(" close=")" separator=",">
+                    #{code}
+                </foreach>
+            </if>
+            AND department_manager IS NOT NULL
+        </where>
+    </select>
+
+    <insert id="addIncome" parameterType="com.elex.oa.entity.project.ProjectIncome">
+        INSERT INTO pro_income (id, project_code, amount, copies, invoice_amount, invoice_proportion, receivable_amount, receivable_proportion, acceptance_amount, acceptance_proportion)
+        VALUES(NULL, #{projectCode}, #{amount}, #{copies}, #{invoiceAmount}, #{invoiceProportion}, #{receivableAmount}, #{receivableProportion}, #{acceptanceAmount}, #{acceptanceProportion})
+    </insert>
+
+    <insert id="addIncomeOne" parameterType="java.util.List">
+        INSERT INTO pro_in_one (id, project_code, code, name, situation, type, amount, effective, pay_amount, pay_date) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (NULL, #{item.projectCode}, #{item.code}, #{item.name}, #{item.situation}, #{item.type}, #{item.amount}, #{item.effective}, #{item.payAmount}, #{item.payDate})
+        </foreach>
+    </insert>
+
+    <insert id="addIncomeTwo" parameterType="java.util.List">
+        INSERT INTO pro_in_two (id, project_code, in_code, execution, category, p_amount, note) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (NULL, #{item.projectCode}, #{item.inCode}, #{item.execution}, #{item.category}, #{item.pAmount}, #{item.note})
+        </foreach>
+    </insert>
+
+    <select id="queryIncomeList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+         SELECT infor.project_code, infor.project_name, infor.dept_manager, infor.in_department, infor.project_status, infor.project_manager, infor.project_source, infor.business_manager, infor.project_type
+         FROM pro_income inc LEFT JOIN pro_pro_infor infor ON inc.project_code = infor.project_code
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND infor.project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND infor.project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND infor.project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND infor.project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND infor.in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND infor.in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
+                AND infor.project_status IN
+                <foreach collection="list4" item="item4" index="index4" open="(" close=")" separator=",">
+                    #{item4}
+                </foreach>
+            </if>
+            <if test="select5 == 1 and input5 != ''">
+                AND infor.project_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select5 == 2 and input5 != ''">
+                AND infor.project_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list6 != null">
+                AND infor.project_source IN
+                <foreach collection="list6" item="item6" index="index6" open="(" close=")" separator=",">
+                    #{item6}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND infor.business_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND infor.business_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND infor.project_type IN
+                <foreach collection="list8" item="item8" index="index8" open="(" close=")" separator=",">
+                    #{item8}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="queryIncomeContent" parameterType="string" resultMap="projectIncome">
+        SELECT id, amount, copies, invoice_amount, invoice_proportion, receivable_amount, receivable_proportion, acceptance_amount, acceptance_proportion FROM pro_income WHERE project_code = #{projectCode}
+    </select>
+
+    <select id="queryIncomeOnes" parameterType="string" resultMap="incomeOne">
+        SELECT id, project_code, code,  name, situation, type, amount, effective, pay_amount, pay_date FROM pro_in_one WHERE project_code = #{projectCode}
+    </select>
+
+    <select id="queryIncomeTwos" parameterType="string" resultMap="incomeTwo">
+        SELECT id, project_code, in_code, execution, category, p_amount, note FROM pro_in_two WHERE project_code = #{projectCode}
+    </select>
+
+    <delete id="deleteIncomeOnes" parameterType="string">
+        DELETE FROM pro_in_one WHERE project_code = #{projectCode}
+    </delete>
+
+    <delete id="deleteIncomeTwos" parameterType="string">
+        DELETE FROM pro_in_two WHERE project_code = #{projectCode}
+    </delete>
+
+    <update id="updateIncome" parameterType="com.elex.oa.entity.project.ProjectIncome">
+        UPDATE pro_income SET amount = #{amount}, copies = #{copies}, invoice_amount = #{invoiceAmount}, invoice_proportion = #{invoiceProportion}, receivable_amount = #{receivableAmount},
+        receivable_proportion = #{receivableProportion}, acceptance_amount = #{acceptanceAmount}, acceptance_proportion = #{acceptanceProportion} WHERE project_code = #{projectCode}
+    </update>
+
+    <select id="queryHumanCodes" resultType="string">
+        SELECT project_code FROM pro_human
+    </select>
+
+    <select id="queryInforHuman" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, dept_manager, in_department, project_manager, project_source, business_manager, project_type FROM pro_pro_infor
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
+                AND project_status IN
+                <foreach collection="list4" item="item4" index="index4" open="(" close=")" separator=",">
+                    #{item4}
+                </foreach>
+            </if>
+            <if test="select5 == 1 and input5 != ''">
+                AND project_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select5 == 2 and input5 != ''">
+                AND project_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list6 != null">
+                AND project_source IN
+                <foreach collection="list6" item="item6" index="index6" open="(" close=")" separator=",">
+                    #{item6}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND business_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND project_type IN
+                <foreach collection="list8" item="item8" index="index8" open="(" close=")" separator=",">
+                    #{item8}
+                </foreach>
+            </if>
+            <if test="codes != null">
+                AND project_code NOT IN
+                <foreach collection="codes" item="code" index="index" open="(" close=")" separator=",">
+                    #{code}
+                </foreach>
+            </if>
+            AND department_manager IS NOT NULL
+        </where>
+    </select>
+
+    <select id="queryHumanList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT infor.project_code, infor.project_name, infor.dept_manager, infor.in_department, infor.project_status, infor.project_manager, infor.project_source, infor.business_manager, infor.project_type
+        FROM pro_human man LEFT JOIN pro_pro_infor infor ON man.project_code = infor.project_code
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND infor.project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND infor.project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND infor.project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND infor.project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND infor.in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND infor.in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
+                AND infor.project_status IN
+                <foreach collection="list4" item="item4" index="index4" open="(" close=")" separator=",">
+                    #{item4}
+                </foreach>
+            </if>
+            <if test="select5 == 1 and input5 != ''">
+                AND infor.project_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select5 == 2 and input5 != ''">
+                AND infor.project_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list6 != null">
+                AND infor.project_source IN
+                <foreach collection="list6" item="item6" index="index6" open="(" close=")" separator=",">
+                    #{item6}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND infor.business_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND infor.business_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND infor.project_type IN
+                <foreach collection="list8" item="item8" index="index8" open="(" close=")" separator=",">
+                    #{item8}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="queryExpenseList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT infor.project_code, infor.project_name, infor.dept_manager, infor.in_department, infor.project_status, infor.project_manager, infor.project_source, infor.business_manager, infor.project_type
+        FROM pro_expense exp LEFT JOIN pro_pro_infor infor ON exp.project_code = infor.project_code
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND infor.project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND infor.project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND infor.project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND infor.project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND infor.in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND infor.in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
+                AND infor.project_status IN
+                <foreach collection="list4" item="item4" index="index4" open="(" close=")" separator=",">
+                    #{item4}
+                </foreach>
+            </if>
+            <if test="select5 == 1 and input5 != ''">
+                AND infor.project_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select5 == 2 and input5 != ''">
+                AND infor.project_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list6 != null">
+                AND infor.project_source IN
+                <foreach collection="list6" item="item6" index="index6" open="(" close=")" separator=",">
+                    #{item6}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND infor.business_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND infor.business_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND infor.project_type IN
+                <foreach collection="list8" item="item8" index="index8" open="(" close=")" separator=",">
+                    #{item8}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="queryExpenseCodes" resultType="string">
+        SELECT project_code FROM pro_expense
+    </select>
+
+    <select id="queryInforExpense" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, dept_manager, in_department, project_manager, project_source, business_manager, project_type FROM pro_pro_infor
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
+                AND project_status IN
+                <foreach collection="list4" item="item4" index="index4" open="(" close=")" separator=",">
+                    #{item4}
+                </foreach>
+            </if>
+            <if test="select5 == 1 and input5 != ''">
+                AND project_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select5 == 2 and input5 != ''">
+                AND project_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list6 != null">
+                AND project_source IN
+                <foreach collection="list6" item="item6" index="index6" open="(" close=")" separator=",">
+                    #{item6}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND business_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND project_type IN
+                <foreach collection="list8" item="item8" index="index8" open="(" close=")" separator=",">
+                    #{item8}
+                </foreach>
+            </if>
+            <if test="codes != null">
+                AND project_code NOT IN
+                <foreach collection="codes" item="code" index="index" open="(" close=")" separator=",">
+                    #{code}
+                </foreach>
+            </if>
+            AND department_manager IS NOT NULL
+        </where>
+    </select>
 </mapper>

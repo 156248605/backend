@@ -23,10 +23,24 @@
         <result column="project_type"  javaType="string"  property="projectType"></result>
     </resultMap>
 
+    <resultMap id="projectInfor" type="com.elex.oa.entity.project.ProjectInfor">
+        <result column="project_code"  javaType="string"  property="projectCode"></result>
+        <result column="project_name"  javaType="string"  property="projectName"></result>
+        <result column="in_department"  javaType="string"  property="inDepartment"></result>
+        <result column="write_date"  javaType="string"  property="writeDate"></result>
+        <result column="dept_manager"  javaType="string"  property="deptManager"></result>
+        <result column="project_manager"  javaType="string"  property="projectManager"></result>
+        <result column="project_source"  javaType="string"  property="projectSource"></result>
+        <result column="business_manager"  javaType="string"  property="businessManager"></result>
+        <result column="project_type"  javaType="string"  property="projectType"></result>
+    </resultMap>
+
     <select id="queryList" parameterType="com.elex.oa.entity.project.WeeklyPlanQuery" resultType="java.util.Map">
-        SELECT week.id AS id,week.project_code AS projectCode,app.project_name AS projectName,app.in_department AS inDepartment, app.write_date AS writeDate,app.business_manager AS businessManager,
-          app.project_source AS projectSource, week.project_manager AS projectManager,app.project_type AS projectType,week.start_date AS startDate, week.end_date AS endDate, week.complete AS complete,
-          week.risk AS risk, week.department_manager AS departmentManager FROM pro_week_plan week LEFT JOIN  pro_app_list app ON week.project_code = app.project_code
+        SELECT week.id AS id, week.project_code AS projectCode, infor.project_name AS projectName, infor.dept_manager AS deptManager, infor.in_department AS inDepartment, infor.write_date AS writeDate,
+        infor.business_manager AS businessManager, infor.project_source AS projectSource, week.project_manager AS projectManager, infor.project_type AS projectType, week.start_date AS startDate,
+        week.end_date AS endDate, week.time_schedule AS timeSchedule, week.fulfillment AS fulfillment, week.punctuality AS punctuality, week.project_phase AS projectPhase,
+        week.completion AS completion, week.next_plan AS nextPlan, week.risk AS risk,  week.department_manager AS departmentManager FROM pro_week week LEFT JOIN pro_pro_infor infor
+        ON week.project_code = infor.project_code
           <where>
               <if test="select1 == 1 and input1 != ''">
                   AND `week`.project_code LIKE CONCAT('%',#{input1},'%')
@@ -35,28 +49,28 @@
                   AND  `week`.project_code NOT LIKE CONCAT('%',#{input1},'%')
               </if>
               <if test="select2 == 1 and input2 != ''">
-                  AND app.project_name LIKE CONCAT('%',#{input2},'%')
+                  AND infor.project_name LIKE CONCAT('%',#{input2},'%')
               </if>
               <if test="select2 == 2 and input2 != ''">
-                  AND app.project_name NOT LIKE CONCAT('%',#{input2},'%')
+                  AND infor.project_name NOT LIKE CONCAT('%',#{input2},'%')
               </if>
               <if test="select3 == 1 and input3 != ''">
-                  AND app.in_department LIKE CONCAT('%',#{input3},'%')
+                  AND infor.in_department LIKE CONCAT('%',#{input3},'%')
               </if>
               <if test="select3 == 2 and input3 != ''">
-                  AND app.in_department NOT LIKE CONCAT('%',#{input3},'%')
+                  AND infor.in_department NOT LIKE CONCAT('%',#{input3},'%')
               </if>
               <if test="date4a != null and date4b != null">
-                  AND app.write_date BETWEEN #{date4a} AND #{date4b}
+                  AND infor.write_date BETWEEN #{date4a} AND #{date4b}
               </if>
               <if test="select5 == 1 and input5 != ''">
-                  AND app.business_manager LIKE CONCAT('%',#{input5},'%')
+                  AND infor.business_manager LIKE CONCAT('%',#{input5},'%')
               </if>
               <if test="select5 == 2 and input5 != ''">
-                  AND app.business_manager NOT LIKE CONCAT('%',#{input5},'%')
+                  AND infor.business_manager NOT LIKE CONCAT('%',#{input5},'%')
               </if>
               <if test="list6 != null">
-                  AND app.project_source IN
+                  AND infor.project_source IN
                   <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
                       #{item}
                   </foreach>
@@ -68,7 +82,7 @@
                   AND `week`.project_manager NOT LIKE CONCAT('%',#{input7},'%')
               </if>
               <if test="list8 != null">
-                  AND app.project_type IN
+                  AND infor.project_type IN
                   <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
                       #{item}
                   </foreach>
@@ -92,7 +106,7 @@
                   AND `week`.department_manager = #{name}
               </if>
               <if test="type == 3 and approval == 2">
-                  AND app.department_manager = #{name} AND `week`.department_manager IS NULL
+                  AND infor.department_manager = #{name} AND `week`.department_manager IS NULL
               </if>
 
           </where>
@@ -113,7 +127,8 @@
     </select>
 
     <insert id="addWeeklyPlan" parameterType="com.elex.oa.entity.project.WeeklyPlan">
-        INSERT INTO pro_week_plan (id,project_code,start_date,end_date,risk,project_manager) VALUES (NULL,#{projectCode},#{startDate},#{endDate},#{risk},#{projectManager})
+        INSERT INTO pro_week (id,project_code,start_date,end_date,time_schedule,fulfillment,punctuality,project_phase,completion,next_plan,risk,project_manager)
+        VALUES (NULL,#{projectCode},#{startDate},#{endDate},#{timeSchedule},#{fulfillment},#{punctuality},#{projectPhase},#{completion},#{nextPlan},#{risk},#{projectManager})
     </insert>
 
     <select id="queryMaxId" resultType="int">
@@ -128,28 +143,12 @@
     </insert>
 
     <update id="updateWeeklyPlan" parameterType="com.elex.oa.entity.project.WeeklyPlan">
-        UPDATE pro_week_plan SET complete = #{complete},department_manager = #{departmentManager} WHERE id = #{id}
+        UPDATE pro_week SET completion = #{completion},department_manager = #{departmentManager} WHERE id = #{id}
     </update>
 
-    <!--<update id="updateWeeklyPlanDetail" parameterType="java.util.List">
-        UPDATE pro_week_plan_detail SET completion = 
-        <foreach collection="list" item="item" index="index" separator="" open="case ID" close="end">
-            WHEN #{item.id} THEN #{item.completion}
-        </foreach>
-        WHERE id in
-        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
-            #{item.id}
-        </foreach>
-    </update>-->
-
-    <!--<select id="">
-        SELECT project_name as projectName,app.in_department as inDepartment,app.write_date as writeDate,app.business_manager as businessManager,app.project_source as projectSource,app.project_type as projectType
-         FROM pro_week_plan week LEFT JOIN  pro_app_list app ON week.project_code = app.project_code WHERE week.project_code = #{code}
-    </select>-->
-
-    <select id="queryProjectName" resultType="com.elex.oa.entity.project.OperationQuery" resultMap="approvalList">
-        SELECT project_code,project_name,in_department,write_date,project_manager,project_source,business_manager,project_type  FROM pro_app_list WHERE project_manager = #{name}
-
+    <select id="queryProjectName" resultType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT project_code,project_name,in_department,write_date,dept_manager,project_manager,project_source,business_manager,project_type
+        FROM pro_pro_infor WHERE project_manager = #{name} AND department_manager IS NOT NULL
         <if test="select1 == 1 and input1 != ''">
             AND project_code LIKE CONCAT('%',#{input1},'%')
         </if>
@@ -186,5 +185,22 @@
                 #{item8}
             </foreach>
         </if>
+    </select>
+
+    <update id="amendPlans" parameterType="com.elex.oa.entity.project.WeeklyPlan">
+        UPDATE pro_week SET start_date = #{startDate}, end_date = #{endDate}, time_schedule = #{timeSchedule}, fulfillment = #{fulfillment}, punctuality = #{punctuality},
+        project_phase = #{projectPhase}, completion = #{completion}, next_plan = #{nextPlan}, risk = #{risk} WHERE id = #{id}
+    </update>
+
+    <delete id="deleteWeek" parameterType="int">
+        DELETE FROM pro_week WHERE id = #{id}
+    </delete>
+
+    <select id="queryPlanByCon" parameterType="java.util.Map" resultType="string">
+        SELECT project_phase FROM pro_week WHERE project_code = #{code} AND start_date BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="queryCodeByPhase" parameterType="string" resultType="string">
+        SELECT project_code FROM pro_week WHERE project_phase = #{phase}
     </select>
 </mapper>

@@ -11,11 +11,10 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TargetImpl implements TargetService {
@@ -78,6 +77,9 @@ public class TargetImpl implements TargetService {
     //添加销售收入
     @Override
     public String addSales(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.addSales(target);
         return "1";
     }
@@ -85,6 +87,9 @@ public class TargetImpl implements TargetService {
     //添加税后净利
     @Override
     public String addNet(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.addNet(target);
         return "1";
     }
@@ -92,6 +97,9 @@ public class TargetImpl implements TargetService {
     //添加发明专利
     @Override
     public String addInvention(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.addInvention(target);
         return "1";
     }
@@ -100,6 +108,9 @@ public class TargetImpl implements TargetService {
     //修改销售收入
     @Override
     public String amendSales(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.amendSales(target);
         return "1";
     }
@@ -107,6 +118,9 @@ public class TargetImpl implements TargetService {
     //修改税后净利
     @Override
     public String amendNet(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.amendNet(target);
         return "1";
     }
@@ -114,6 +128,9 @@ public class TargetImpl implements TargetService {
     //修改发明专利
     @Override
     public String amendInvention(Target target) {
+        double num = Double.parseDouble(target.getCumulative()) / Double.parseDouble(target.getGoal())  * 100;
+        String ratio = new BigDecimal(num).setScale(2,RoundingMode.UP).doubleValue() + "%";
+        target.setRatio(ratio);
         targetDao.amendInvention(target);
         return "1";
     }
@@ -130,5 +147,103 @@ public class TargetImpl implements TargetService {
         map.put("net",netList);
         map.put("invention", invention);
         return map;
+    }
+
+    //管理看板（手机端）
+    @Override
+    public List<Map<String, String>> boardPhone() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+        String annual = simpleDateFormat.format(new Date());
+        List<Target> salesList = targetDao.querySalesAnnual(annual);
+        List<Target> netList = targetDao.queryNetAnnual(annual);
+        Target invention = targetDao.queryInventionAnnual(annual);
+
+        double goal1 = 0, goal2 = 0, cumulative1 = 0, cumulative2 = 0, ratio1 = 0, ratio2 = 0, ratio3 = 0;
+        for(Target target: salesList) {
+            goal1 += Double.parseDouble(target.getGoal());
+            if(target.getCumulative().equals("")) {
+
+            } else {
+                cumulative1 += Double.parseDouble(target.getCumulative());
+            }
+        }
+        Map<String,String> map1 = new HashMap<>();
+        goal1 = new BigDecimal(goal1 / 10000).setScale(2,RoundingMode.UP).doubleValue();
+        map1.put("name","销售收入");
+        map1.put("goal",goal1+"");
+        cumulative1 = new BigDecimal(cumulative1 / 10000).setScale(2,RoundingMode.UP).doubleValue();
+        ratio1 = new BigDecimal((cumulative1 / goal1) * 100).setScale(2,RoundingMode.UP).doubleValue();
+        map1.put("cumu",cumulative1+"");
+        map1.put("ratio",ratio1+"");
+
+        for(Target target: netList) {
+            goal2 += Double.parseDouble(target.getGoal());
+            if(target.getCumulative().equals("")) {
+
+            } else {
+                cumulative2 += Double.parseDouble(target.getCumulative());
+            }
+        }
+        Map<String,String> map2 = new HashMap<>();
+        goal2 = new BigDecimal( goal2 / 10000).setScale(2,RoundingMode.UP).doubleValue();
+        cumulative2 = new BigDecimal(cumulative2 / 10000).setScale(2,RoundingMode.UP).doubleValue();
+        ratio2 = new BigDecimal( (cumulative2 / goal2) * 100).setScale(2,RoundingMode.UP).doubleValue();
+        map2.put("name","税后净利");
+        map2.put("goal",goal2+"");
+        map2.put("cumu", cumulative2+"");
+        map2.put("ratio",ratio2+"");
+
+        Map<String,String> map3 = new HashMap<>();
+        map3.put("name","发明专利");
+        map3.put("goal",invention.getGoal());
+        if(invention.getCumulative().equals("")) {
+            map3.put("cumu","0");
+        } else {
+            map3.put("cumu",invention.getCumulative());
+        }
+        if(invention.getGoal().equals("") || invention.getCumulative().equals("")) {
+            map3.put("ratio","0.00");
+        } else {
+            ratio3 = new BigDecimal( ( Double.parseDouble(invention.getCumulative()) / Double.parseDouble(invention.getGoal())) * 100).setScale(2,RoundingMode.UP).doubleValue();
+            map3.put("ratio",ratio3+"");
+        }
+        List<Map<String,String>> list =  new ArrayList<>();
+        list.add(map1);
+        list.add(map2);
+        list.add(map3);
+        return list;
+    }
+
+    //管理看板项目部门相关
+    @Override
+    public List<Target> boardDepartment(String department, String annual) {
+        Map<String,String> condition = new HashMap<>();
+        condition.put("department",department);
+        condition.put("annual",annual);
+        Target sales = targetDao.querySalesDepartment(condition); //查询某部门的销售收入
+        Target net = targetDao.queryNetDepartment(condition); //查询某部门的收入净利
+        List<Target> result = new ArrayList<>();
+        result.add(sales);
+        result.add(net);
+        return result;
+    }
+
+    //查看销售收入或税后净利（手机）
+    @Override
+    public List<Target> boardVarious(String various) {
+        if(various.equals("sales") || various.equals("net")) {
+
+        } else {
+            return null;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+        String annual = simpleDateFormat.format(new Date());
+        List<Target> targets;
+        if(various.equals("sales")) {
+            targets = targetDao.querySalesAnnual(annual);
+        } else {
+            targets = targetDao.queryNetAnnual(annual);
+        }
+        return targets;
     }
 }

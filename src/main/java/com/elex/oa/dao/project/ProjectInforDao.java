@@ -7,6 +7,7 @@ import com.elex.oa.entity.project.ProjectInforQuery;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ProjectInforDao {
@@ -22,4 +23,6 @@ public interface ProjectInforDao {
     int deleteDetails(Integer id);
     //查询可新建详情的项目信息
     List<ApprovalList> queryProjectList(OperationQuery operationQuery);
+    //查询跟某人相关的项目
+    List<ProjectInfor> queryProName(Map<String,String> name);
 }

@@ -1,41 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.project.MileStoneDao">
-    <resultMap id="approvalList" type="com.elex.oa.entity.project.ApprovalList">
-        <id column="id"                         javaType="int"        property="id"></id>
-        <result column="project_code"         javaType="string"     property="projectCode"></result>
-        <result column="project_name"         javaType="string"     property="projectName"></result>
-        <result column="write_date"           javaType="string"     property="writeDate"></result>
-        <result column="project_source"       javaType="string"    property="projectSource"></result>
-        <result column="project_type"         javaType="string"    property="projectType"></result>
-        <result column="in_department"        javaType="string"    property="inDepartment"></result>
-        <result column="proposer"              javaType="string"    property="proposer"></result>
-        <result column="department1"           javaType="string"    property="department1"></result>
-        <result column="business_manager"     javaType="string"    property="businessManager"></result>
-        <result column="department2"           javaType="string"    property="department2"></result>
-        <result column="project_manager"      javaType="string"    property="projectManager"></result>
-        <result column="general_situation"    javaType="string"    property="generalSituation"></result>
-        <result column="department_manager"   javaType="string"    property="departmentManager"></result>
-        <result column="leader_ship"           javaType="string"    property="leaderShip"></result>
-        <result column="review_sign"           javaType="string"    property="reviewSign"></result>
-        <result column="general_manager"       javaType="string"   property="generalManager"></result>
-        <result column="distribution"          javaType="string"    property="distribution"></result>
-        <result column="mile_stone"            javaType="string"    property="mileStone"></result>
+
+    <resultMap id="projectInfor" type="com.elex.oa.entity.project.ProjectInfor">
+        <result column="project_code"       javaType="string"  property="projectCode"></result>
+        <result column="project_name"       javaType="string"  property="projectName"></result>
+        <result column="dept_manager"       javaType="string"  property="deptManager"></result>
+        <result column="in_department"      javaType="string"  property="inDepartment"></result>
+        <result column="project_status"     javaType="string"  property="projectStatus"></result>
+        <result column="project_manager"    javaType="string"  property="projectManager"></result>
+        <result column="project_source"     javaType="string"  property="projectSource"></result>
+        <result column="business_manager"   javaType="string"  property="businessManager"></result>
+        <result column="project_type"        javaType="string"  property="projectType"></result>
+        <result column="write_date"          javaType="string"  property="writeDate"></result>
+        <result column="general_situation"  javaType="string"  property="generalSituation"></result>
     </resultMap>
 
     <resultMap id="mileStonePlan" type="com.elex.oa.entity.project.MileStonePlan">
-        <id column="id"  javaType="int"   property="id"></id>
-        <result column="phase" javaType="string"   property="phase"></result>
-        <result column="key_work" javaType="string" property="keyWork"></result>
-        <result column="status"  javaType="string"  property="status"></result>
-        <result column="start_date"  javaType="string"  property="startDate"></result>
-        <result column="end_date"  javaType="string"  property="endDate"></result>
-        <result column="note"  javaType="string"  property="note"></result>
-        <result column="project_code"  javaType="string"  property="projectCode"></result>
+        <result column="phase"       javaType="string" property="phase"></result>
+        <result column="key_work"   javaType="string" property="keyWork"></result>
+        <result column="status"      javaType="string" property="status"></result>
+        <result column="start_date" javaType="string" property="startDate"></result>
+        <result column="end_date"   javaType="string" property="endDate"></result>
+        <result column="note"        javaType="string" property="note"></result>
     </resultMap>
 
-    <select id="queryList" parameterType="com.elex.oa.entity.project.AListQuery" resultMap="approvalList">
-        SELECT id,project_code,project_name,write_date,project_source,project_type,in_department,business_manager,project_manager,general_situation,department_manager,leader_ship,general_manager,mile_stone FROM pro_app_list/* WHERE mile_stone = 'y'*/
+    <select id="queryCodes" resultType="string">
+        SELECT project_code FROM pro_miles
+    </select>
+
+    <select id="queryList" parameterType="com.elex.oa.entity.project.AListQuery" resultMap="projectInfor">
+        SELECT project_code, project_name, dept_manager, in_department, project_status, project_manager, project_source, business_manager, project_type, write_date, general_situation
+        FROM pro_pro_infor
         <where>
             <if test="select1 == 1 and input1 != ''">
                 AND project_code LIKE CONCAT('%',#{input1},'%')
@@ -49,8 +45,8 @@
             <if test="select2 == 2 and input2 != ''">
                 AND project_name NOT LIKE CONCAT('%',#{input2},'%')
             </if>
-            <if test="date31 != null and date32 != null">
-                AND write_date BETWEEN #{date3a} AND #{date3b}
+            <if test="date31 != null">
+                AND write_date BETWEEN #{date31} AND #{date32}
             </if>
             <if test="list4 != null">
                 AND project_source IN
@@ -65,102 +61,105 @@
                 </foreach>
             </if>
             <if test="select6 == 1 and input6 != ''">
-                AND in_department like CONCAT('%',#{input6},'%')
+                AND in_department LIKE CONCAT('%',#{input6},'%')
             </if>
             <if test="select6 == 2 and input6 != ''">
                 AND in_department NOT LIKE CONCAT('%',#{input6},'%')
             </if>
-            <if test="type ==1 and select7 == 1 and input7 != ''">
+            <if test="select7 == 1 and input7 != ''">
                 AND business_manager LIKE CONCAT('%',#{input7},'%')
             </if>
-            <if test="type ==1 and select7 == 2 and input7 != ''">
+            <if test="select7 == 2 and input7 != ''">
                 AND business_manager NOT LIKE CONCAT('%',#{input7},'%')
             </if>
             <if test="type == 1 and select8 == 1 and input8 != ''">
                 AND project_manager LIKE CONCAT('%',#{input8},'%')
             </if>
-            <if test="type ==1 and select8 == 2 and input8 != ''">
+            <if test="type == 1 and select8 == 2 and input8 != ''">
                 AND project_manager NOT LIKE CONCAT('%',#{input8},'%')
             </if>
-            <if test=" type == 2 ">
-                AND (business_manager = #{input7} OR project_manager = #{input8})
+            <if test="type == 2">
+                AND project_manager = #{input8}
             </if>
-            <if test="type != null and type != ''">
-                AND mile_stone = 'y'
-            </if>
-
+            AND project_code IN
+            <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
         </where>
     </select>
 
+    <select id="queryProjectList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT project_code, project_name, dept_manager, in_department, project_status, project_manager, project_source, business_manager, project_type, write_date, general_situation
+        FROM pro_pro_infor
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
 
-    <select id="queryPlanByCode" parameterType="string" resultMap="mileStonePlan">
-        SELECT id,phase,key_work,status,start_date,end_date,note FROM pro_miles_plan WHERE project_code = #{projectCode}
+            <if test="list6 != null">
+                AND project_source IN
+                <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND business_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND project_type IN
+                <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="codes != null">
+                AND project_code NOT IN
+                <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            AND project_manager = #{name}
+            AND department_manager IS NOT NULL
+        </where>
     </select>
 
-    <select id="queryCodeByName" parameterType="string" resultType="string">
-        SELECT project_code as projectCode FROM pro_app_list WHERE mile_stone = 'n' AND (business_manager = #{manager} OR project_manager = #{manager})
-    </select>
-
-    <select id="queryInforByCode" parameterType="string" resultMap="approvalList">
-        SELECT project_name,in_department,write_date,business_manager,project_source,project_manager,project_type,general_situation FROM pro_app_list WHERE project_code = #{projectCode}
-    </select>
-
-    <update id="modifyStatusByCode" parameterType="string" useGeneratedKeys="true" keyProperty="id">
-        UPDATE pro_app_list SET mile_stone = 'y' WHERE project_code = #{projectCode}
-    </update>
-
-    <insert id="addPlan" parameterType="com.elex.oa.entity.project.MileStonePlan" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO pro_miles_plan (id,phase,key_work,status,start_date,end_date,note,project_code) VALUES (NULL,#{phase},#{keyWork},#{status},#{startDate},#{endDate},#{note},#{projectCode})
+    <insert id="addMileStone" parameterType="com.elex.oa.entity.project.MileStone">
+        INSERT INTO pro_miles (id, project_code, project_manager) VALUES (NULL, #{projectCode}, #{projectManager})
     </insert>
 
-    <update id="modifyStatus2ByCode" parameterType="string" useGeneratedKeys="true" keyProperty="id">
-        UPDATE pro_app_list SET mile_stone = 'n' WHERE project_code = #{projectCode}
-    </update>
+    <insert id="addMileStonePlans" parameterType="java.util.List">
+        INSERT INTO pro_miles_plan (id, phase, key_work, status, start_date, end_date, note, project_code) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (NULL, #{item.phase}, #{item.keyWork}, #{item.status}, #{item.startDate}, #{item.endDate}, #{item.note}, #{item.projectCode})
+        </foreach>
+    </insert>
 
-    <delete id="deletePlansByCode" parameterType="string">
-        DELETE FROM pro_miles_plan WHERE project_code = #{proectCode}
-    </delete>
-
-    <delete id="deletePlanById" parameterType="int">
-        DELETE FROM pro_miles_plan WHERE id = #{id}
-    </delete>
-
-    <update id="updatePlanById" parameterType="com.elex.oa.entity.project.MileStonePlan" useGeneratedKeys="true" keyProperty="id">
-        UPDATE pro_miles_plan SET phase = #{phase},key_work = #{keyWork},status = #{status}, start_date = #{startDate},end_date = #{endDate}, note = #{note} WHERE id = #{id}
-    </update>
-
-    <select id="queryProjectList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="approvalList">
-         SELECT project_code,project_name,in_department,write_date,project_manager,project_source,business_manager,project_type  FROM pro_app_list
-         WHERE mile_stone = 'n' AND (project_manager = #{name} OR business_manager = #{name})
-        <if test="select1 == 1 and input1 != ''">
-            AND project_code LIKE CONCAT('%',#{input1},'%')
-        </if>
-        <if test="select1 == 2 and input1 != ''">
-            AND project_code NOT LIKE CONCAT('%',#{input1},'%')
-        </if>
-        <if test="select2 == 1 and input2 != ''">
-            AND project_name LIKE CONCAT('%',#{input2},'%')
-        </if>
-        <if test="select2 == 2 and input2 != ''">
-            AND project_name NOT LIKE CONCAT('%',#{input2},'%')
-        </if>
-        <if test="select3 == 1 and input3 != ''">
-            AND in_department LIKE CONCAT('%',#{input3},'%')
-        </if>
-        <if test="select3 == 2 and input3 != ''">
-            AND in_department NOT LIKE CONCAT('%',#{input3},'%')
-        </if>
-        <if test="list6 != null">
-            AND project_source IN
-            <foreach collection="list6" item="item6" index="index6" open="(" close=")" separator=",">
-                #{item6}
-            </foreach>
-        </if>
-        <if test="list8 != null">
-            AND project_type IN
-            <foreach collection="list8" item="item8" index="index8" open="(" close=")" separator=",">
-                #{item8}
-            </foreach>
-        </if>
+    <select id="queryPlansCode" parameterType="string" resultMap="mileStonePlan">
+        SELECT  phase, key_work, status, start_date, end_date, note FROM pro_miles_plan WHERE project_code = #{projectCode}
     </select>
+
+    <delete id="deleteMileStone" parameterType="string">
+        DELETE FROM pro_miles WHERE project_code = #{projectCode}
+    </delete>
+
+    <delete id="deleteMileStonePlans" parameterType="string">
+        DELETE FROM pro_miles_plan WHERE project_code = #{projectCode}
+    </delete>
 </mapper>

@@ -5,6 +5,11 @@
     <resultMap id="approvalList" type="com.elex.oa.entity.project.ApprovalList">
         <result column="project_code"  javaType="string"  property="projectCode"></result>
         <result column="project_name"  javaType="string"  property="projectName"></result>
+        <result column="in_department"  javaType="string"  property="inDepartment"></result>
+        <result column="write_date"  javaType="string"  property="writeDate"></result>
+        <result column="project_manager"  javaType="string"  property="projectManager"></result>
+        <result column="project_source"  javaType="string"  property="projectSource"></result>
+        <result column="business_manager"  javaType="string"  property="businessManager"></result>
         <result column="project_type"  javaType="string"  property="projectType"></result>
     </resultMap>
 
@@ -31,15 +36,70 @@
 
     <resultMap id="weeklyPlan" type="com.elex.oa.entity.project.WeeklyPlan">
         <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="start_date"  javaType="string"  property="startDate"></result>
+        <result  column="end_date"  javaType="string"  property="endDate"></result>
+        <result  column="time_schedule"  javaType="string"  property="timeSchedule"></result>
+        <result  column="fulfillment"  javaType="string"  property="fulfillment"></result>
+        <result  column="punctuality"  javaType="string"  property="punctuality"></result>
+        <result  column="project_phase"  javaType="string"  property="projectPhase"></result>
+        <result  column="completion"  javaType="string"  property="completion"></result>
+        <result  column="next_plan"  javaType="string"  property="nextPlan"></result>
         <result  column="risk"  javaType="string"  property="risk"></result>
     </resultMap>
 
+    <resultMap id="weeklyPlanDetail" type="com.elex.oa.entity.project.WeeklyPlanDetail">
+        <result column="issues" javaType="string" property="issues"></result>
+        <result column="involving" javaType="string" property="involving"></result>
+        <result column="work_hours" javaType="string" property="workHours"></result>
+        <result column="deliver_result" javaType="string" property="deliverResult"></result>
+        <result column="note" javaType="string" property="note"></result>
+    </resultMap>
+
+    <resultMap id="projectVarious" type="com.elex.oa.entity.project.ProjectVarious">
+        <result  column="code"  javaType="string"  property="code"></result>
+        <result  column="name"  javaType="string"  property="name"></result>
+    </resultMap>
+
+    <resultMap id="projectIncome" type="com.elex.oa.entity.project.ProjectIncome">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="project_code"  javaType="string"  property="projectCode"></result>
+        <result  column="pay_amount"  javaType="string"  property="payAmount"></result>
+        <result  column="pay_date"  javaType="string"  property="payDate"></result>
+        <result  column="invoice_amount"  javaType="string"  property="invoiceAmount"></result>
+        <result  column="invoice_proportion"  javaType="string"  property="invoiceProportion"></result>
+        <result  column="receivable_amount"  javaType="string"  property="receivableAmount"></result>
+        <result  column="receivable_proportion"  javaType="string"  property="receivableProportion"></result>
+        <result  column="acceptance_amount"  javaType="string"  property="acceptanceAmount"></result>
+        <result  column="acceptance_proportion"  javaType="string"  property="acceptanceProportion"></result>
+    </resultMap>
+
+    <resultMap id="projectMaterial" type="com.elex.oa.entity.project.ProjectMaterial">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="project_code"  javaType="string"  property="projectCode"></result>
+        <result  column="total_amount_l"  javaType="string"  property="totalAmountL"></result>
+        <result  column="total_amount_c"  javaType="string"  property="totalAmountC"></result>
+    </resultMap>
+
+    <resultMap id="projectHuman" type="com.elex.oa.entity.project.ProjectHuman">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="project_code"  javaType="string"  property="projectCode"></result>
+        <result  column="total_amount_l"  javaType="string"  property="totalAmountL"></result>
+        <result  column="total_amount_c"  javaType="string"  property="totalAmountC"></result>
+    </resultMap>
+
+    <resultMap id="projectExpense" type="com.elex.oa.entity.project.ProjectExpense">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="project_code"  javaType="string"  property="projectCode"></result>
+        <result  column="total_amount_l"  javaType="string"  property="totalAmountL"></result>
+        <result  column="total_amount_c"  javaType="string"  property="totalAmountC"></result>
+    </resultMap>
+
     <select id="queryApprovalList"  resultMap="approvalList">
-        SELECT project_code, project_name ,project_type FROM pro_app_list
+        SELECT project_code, project_name ,project_type, in_department FROM pro_app_list
     </select>
 
     <select id="queryProjectInfor" resultMap="projectInfor">
-        SELECT project_code, project_name, project_status, project_type FROM pro_pro_infor
+        SELECT project_code, project_name, project_status, project_type, in_department FROM pro_pro_infor
     </select>
 
     <select id="queryInforDetail" parameterType="string" resultMap="projectInfor">
@@ -67,10 +127,120 @@
     </select>
 
     <select id="queryWeeklyPlan" parameterType="java.util.Map" resultMap="weeklyPlan">
-        SELECT id,risk FROM pro_week_plan WHERE start_date = #{start} AND project_code = #{code}
+        SELECT id, start_date, end_date, time_schedule, fulfillment, punctuality, project_phase, completion, next_plan, risk
+        FROM pro_week WHERE project_code = #{code} AND start_date BETWEEN #{start} AND #{end}
     </select>
 
-    <select id="queryWeeklyPlanDetail" parameterType="int" resultType="string">
-        SELECT issues FROM pro_week_plan_detail WHERE related_id = #{id}
+    <select id="queryWeeklyPlanDetail" parameterType="int" resultType="weeklyPlanDetail">
+        SELECT issues, involving, work_hours, deliver_result, note FROM pro_week_plan_detail WHERE related_id = #{id}
+    </select>
+
+    <select id="queryProInforP" resultMap="projectInfor">
+        SELECT project_code, project_name, in_department, project_status, write_date, business_manager, project_source, project_manager, project_type, general_situation FROM pro_pro_infor
+        WHERE project_status = '1'
+    </select>
+
+    <select id="queryProjectType" resultMap="projectVarious">
+        SELECT code, name FROM pro_type
+    </select>
+
+    <select id="queryProjectSource"  resultMap="projectVarious">
+        SELECT code, name FROM pro_source
+    </select>
+
+    <select id="queryIncomeContent" parameterType="string" resultMap="projectIncome">
+        SELECT pay_amount, pay_date, invoice_amount, invoice_proportion, receivable_amount, receivable_proportion, acceptance_amount, acceptance_proportion FROM pro_income
+        WHERE project_code = #{projectCode}
+    </select>
+
+    <select id="queryIncomeDetail" parameterType="string" resultType="string">
+        SELECT contract_amount FROM pro_income_detail WHERE project_code = #{project_code}
+    </select>
+
+    <select id="queryProjectMaterial" parameterType="string" resultMap="projectMaterial">
+        SELECT total_amount_l, total_amount_c FROM pro_material WHERE project_code = #{projectCode}
+    </select>
+
+    <select id="queryProjectHuman"  parameterType="string"  resultMap="projectHuman">
+        SELECT total_amount_l, total_amount_c FROM pro_human WHERE project_code = #{projectCode}
+    </select>
+
+    <select id="queryProjectExpense" parameterType="string" resultMap="projectExpense">
+         SELECT total_amount_l, total_amount_c FROM pro_expense WHERE project_code = #{projectCode}
+    </select>
+
+    <select id="queryApprovalByDepartment" parameterType="string" resultMap="approvalList">
+         SELECT project_code, project_name ,project_type FROM pro_app_list WHERE in_department = #{department}
+    </select>
+
+    <select id="queryProjectInforByDepartment" parameterType="string" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor WHERE in_department = #{department} AND department_manager IS NOT NULL
+    </select>
+
+    <select id="queryInforExclusive" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor WHERE (in_department != '上海臻相' AND in_department != '贵州中科') AND department_manager IS NOT NULL
+    </select>
+
+    <select id="queryApprovalByCon" parameterType="java.util.Map" resultMap="approvalList">
+        SELECT project_code, project_name, in_department, write_date, project_manager, project_source, business_manager, project_type FROM pro_app_list WHERE  project_type = #{type}
+        <if test="department != '博智'">
+            AND in_department = #{department}
+        </if>
+    </select>
+
+    <select id="queryInforByCon" parameterType="java.util.Map" resultMap="projectInfor">
+        SELECT project_code, project_name, in_department, write_date, project_manager, project_source, business_manager, project_type FROM pro_pro_infor WHERE project_status = #{status} AND project_type = #{type}
+        <if test="department != '博智'">
+            AND in_department = #{department}
+        </if>
+    </select>
+
+    <select id="queryInforCon" parameterType="java.util.Map" resultMap="projectInfor">
+        SELECT project_code, project_name, in_department, write_date, project_manager, project_source, business_manager, project_type FROM pro_pro_infor
+        <where>
+            <if test="type != 'Total'">
+                AND project_type = #{type}
+            </if>
+            <if test="status != 'Total'">
+                AND project_status = #{status}
+            </if>
+            <if test="department != '博智'">
+                AND in_department = #{department}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryInforPhase" parameterType="java.util.Map" resultMap="projectInfor">
+         SELECT project_code, project_name, in_department, write_date, project_manager, project_source, business_manager, project_type FROM pro_pro_infor
+         <where>
+             <if test="type != 'Total'">
+                 AND project_type = #{type}
+             </if>
+             <if test="department != '博智'">
+                 AND in_department = #{department}
+             </if>
+             AND project_code IN
+             <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
+                 #{item}
+             </foreach>
+         </where>
+    </select>
+
+    <select id="queryApprovalByType" parameterType="string" resultMap="approvalList">
+        SELECT project_code, project_name, in_department,  project_manager  FROM pro_app_list WHERE project_type = #{type}
+    </select>
+
+    <select id="queryInforByType" parameterType="java.util.Map" resultMap="projectInfor">
+        SELECT project_code, project_name, in_department, write_date, project_manager, project_status FROM pro_pro_infor WHERE project_type = #{type}
+        <if test="status == '进行'">
+            AND project_status = '1'
+        </if>
+        <if test="status == '其他'">
+            AND project_status != '1'
+        </if>
+    </select>
+
+    <select id="queryInforMain" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, project_type FROM pro_pro_infor WHERE in_department != "上海臻相" AND in_department != "贵州中科"
     </select>
 </mapper>

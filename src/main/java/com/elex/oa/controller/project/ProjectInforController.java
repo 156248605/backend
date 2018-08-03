@@ -73,4 +73,12 @@ public class ProjectInforController {
     public PageInfo<ApprovalList> queryProjectList(OperationQuery operationQuery, Page page) {
         return projectInforService.queryProjectList(operationQuery, page);
     }
+
+
+    //查询跟某人相关的项目
+    @RequestMapping("/query_pro_name")
+    @ResponseBody
+    public List<ProjectInfor> queryProName(String name) {
+        return  projectInforService.queryProName(name);
+    }
 }

@@ -22,13 +22,12 @@ public class AListQuery {
     private String input7;
     private String select8;
     private String input8;
-    private String select9;
-    private String input9;
+    private List<String> codes;
 
     public AListQuery() {
     }
 
-    public AListQuery(String type, String select1, String input1, String select2, String input2, String date3, String date31, String date32, String select4, List<String> list4, String select5, List<String> list5, String select6, String input6, String select7, String input7, String select8, String input8, String select9, String input9) {
+    public AListQuery(String type, String select1, String input1, String select2, String input2, String date3, String date31, String date32, String select4, List<String> list4, String select5, List<String> list5, String select6, String input6, String select7, String input7, String select8, String input8, List<String> codes) {
         this.type = type;
         this.select1 = select1;
         this.input1 = input1;
@@ -47,8 +46,7 @@ public class AListQuery {
         this.input7 = input7;
         this.select8 = select8;
         this.input8 = input8;
-        this.select9 = select9;
-        this.input9 = input9;
+        this.codes = codes;
     }
 
     public String getType() {
@@ -195,20 +193,12 @@ public class AListQuery {
         this.input8 = input8;
     }
 
-    public String getSelect9() {
-        return select9;
+    public List<String> getCodes() {
+        return codes;
     }
 
-    public void setSelect9(String select9) {
-        this.select9 = select9;
-    }
-
-    public String getInput9() {
-        return input9;
-    }
-
-    public void setInput9(String input9) {
-        this.input9 = input9;
+    public void setCodes(List<String> codes) {
+        this.codes = codes;
     }
 
     @Override
@@ -232,8 +222,7 @@ public class AListQuery {
                 ", input7='" + input7 + '\'' +
                 ", select8='" + select8 + '\'' +
                 ", input8='" + input8 + '\'' +
-                ", select9='" + select9 + '\'' +
-                ", input9='" + input9 + '\'' +
+                ", codes=" + codes +
                 '}';
     }
 }

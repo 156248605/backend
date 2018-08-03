@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -97,4 +98,27 @@ public class TargetController {
     public Map<String,Object> boardTotal(String annual) {
         return targetService.boardTotal(annual);
     }
+
+    //管理看板（手机端）
+    @RequestMapping("/board_phone")
+    @ResponseBody
+    public List<Map<String, String>> boardPhone() {
+        return targetService.boardPhone();
+    }
+
+
+    //管理看板项目部门相关
+    @RequestMapping("/board_department")
+    @ResponseBody
+    public List<Target> boardDepartment(String department, String annual) {
+        return targetService.boardDepartment(department, annual);
+    }
+
+    //查看销售收入或税后净利（手机）
+    @RequestMapping("/board_various")
+    @ResponseBody
+    public List<Target> boardVarious(String various) {
+        return targetService.boardVarious(various);
+    }
+
 }

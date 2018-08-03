@@ -69,4 +69,40 @@ public interface OperationDao {
     void deleteExpenseDetail(List<Integer> deleteList);
     //修改费用报销详情
     void modifyExpenseDetail(List<ProjectExpenseDetail> modifyList);
+    //查询已建立收入的项目编号
+    List<String> queryIncomeCodes();
+    //查询项目收入相关可新建的项目
+    List<ProjectInfor> queryInforIncome(OperationQuery operationQuery);
+    //添加项目收入
+    void addIncome(ProjectIncome projectIncome);
+    //添加项目收入合同
+    void addIncomeOne(List<IncomeOne> ones);
+    //添加项目收入的收入合同
+    void addIncomeTwo(List<IncomeTwo> twos);
+    //查询项目收入列表
+    List<ProjectInfor> queryIncomeList(OperationQuery operationQuery);
+    //查询项目收入的内容
+    ProjectIncome queryIncomeContent(String projectCode);
+    //查询项目收入的合同
+    List<IncomeOne> queryIncomeOnes(String projectCode);
+    //查询项目收入的收入合同
+    List<IncomeTwo> queryIncomeTwos(String projectCode);
+    //删除项目收入的合同
+    void deleteIncomeOnes(String projectCode);
+    //删除项目收入的收入合同
+    void deleteIncomeTwos(String projectCode);
+    //更新项目收入内容
+    void updateIncome(ProjectIncome projectIncome);
+    //查询已建立人力的项目编号
+    List<String> queryHumanCodes();
+    //查询人力成本相关可新建的项目
+    List<ProjectInfor> queryInforHuman(OperationQuery operationQuery);
+    //查询人力成本列表
+    List<ProjectInfor> queryHumanList(OperationQuery operationQuery);
+    //查询费用成本列表
+    List<ProjectInfor> queryExpenseList(OperationQuery operationQuery);
+    //查询已建立费用的项目编号
+    List<String> queryExpenseCodes();
+    //查询费用成本相关可新建的项目
+    List<ProjectInfor> queryInforExpense(OperationQuery operationQuery);
 }
