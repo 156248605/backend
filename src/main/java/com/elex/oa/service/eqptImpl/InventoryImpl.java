@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.elex.oa.dao.eqptDao.InventoryMapper;
 import com.elex.oa.entity.Page;
 
+import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InventoryService;
 import com.github.pagehelper.PageHelper;
@@ -141,11 +142,27 @@ public class InventoryImpl implements InventoryService {
     }
 
     @Override
-    public List<Repository> matinrept(HttpServletRequest request) {
+    public List<Material> chooseMat(HttpServletRequest request) {
         String reptId = request.getParameter("reptId");
-        Repository repository = new Repository();
-        repository.setReptId(reptId);
-        List<Repository> listMIR = inventoryMapper.matinrept(repository);
+        Material material = new Material();
+        material.setReptId(reptId);
+        List<Material> listMIR = inventoryMapper.chooseMat(material);
+        return listMIR;
+    }
+
+    @Override
+    public List<Material> matinrept(HttpServletRequest request) {
+        String reptId = request.getParameter("reptId");
+        String id = request.getParameter("id");
+        List<HashMap> ID =JSON.parseArray(id, HashMap.class);
+        String matId = "";
+        for (int i = 0; i < ID.size(); i++){
+            matId += ID.get(i).get("id").toString() + ",";
+        }
+        Material material = new Material();
+        material.setReptId(reptId);
+        material.setId(matId.substring(0,matId.length() - 1));
+        List<Material> listMIR = inventoryMapper.matinrept(material);
         return listMIR;
     }
 

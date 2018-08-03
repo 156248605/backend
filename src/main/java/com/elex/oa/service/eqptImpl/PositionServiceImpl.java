@@ -88,13 +88,7 @@ public class PositionServiceImpl implements PositionService {
         repository.setFixPostMat(request.getParameter("fixPostMat"));
         repository.setPostCap(request.getParameter("postCap"));
         repository.setRemark("无");
-        repository.setReptState("否");
-        /*repository.setPrice("0");
-        repository.setNum("0");
-        repository.setMaterialName("无");
-        repository.setSpec("无");
-        repository.setCategory("无");
-        repository.setMaterialId("无");*/
+        repository.setReptState("是");
         String postId = positionMapper.checkPostId(repository);
         if (postId == null){
             positionMapper.insertPosition(repository);

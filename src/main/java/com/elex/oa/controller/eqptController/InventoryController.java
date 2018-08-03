@@ -2,6 +2,7 @@ package com.elex.oa.controller.eqptController;
 
 import antlr.debug.ParserReporter;
 import com.elex.oa.entity.Page;
+import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.InventoryImpl;
 import com.github.pagehelper.PageInfo;
@@ -57,10 +58,17 @@ public class InventoryController {
         return dateToId;
     }
 
+    @RequestMapping("/chooseMat")
+    @ResponseBody
+    public List<Material> chooseMat(HttpServletRequest request){
+        List<Material> ListMir = inventoryImpl.chooseMat(request);
+        return ListMir;
+    }
+
     @RequestMapping("/matinrept")
     @ResponseBody
-    public List<Repository> matinrept(HttpServletRequest request){
-        List<Repository> ListMir = inventoryImpl.matinrept(request);
+    public List<Material> matinrept(HttpServletRequest request){
+        List<Material> ListMir = inventoryImpl.matinrept(request);
         return ListMir;
     }
 

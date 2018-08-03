@@ -1,5 +1,6 @@
 package com.elex.oa.dao.eqptDao;
 
+import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,7 +25,10 @@ public interface InventoryMapper {
     List showINVID(Repository repository);
 
     // 仓库里需要盘点的物料
-    List<Repository> matinrept(Repository repository);
+    List<Material> matinrept(Material material);
+
+    List<Material> chooseMat(Material material);
 
     List<Repository> reptlist();
+
 }

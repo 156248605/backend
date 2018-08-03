@@ -67,8 +67,12 @@ public class InRepositoryImpl implements InRepositoryService {
         String inNumC = request.getParameter("inNumC");
         String materialId = request.getParameter("materialId");
         String materialIdC = request.getParameter("materialIdC");
+        String projId = request.getParameter("projId");
+        String projIdC = request.getParameter("projIdC");
+        String projName = request.getParameter("projName");
+        String projNameC = request.getParameter("projNameC");
         // 查询判断
-        if (reptId.equals("") && reptCategory.equals("") && postId.equals("") && inId.equals("") && sn.equals("") && bn.equals("") && inTime.equals("") && inNum.equals("") && materialId.equals("")){
+        if (projId.equals("") && projName.equals("") && reptId.equals("") && reptCategory.equals("") && postId.equals("") && inId.equals("") && sn.equals("") && bn.equals("") && inTime.equals("") && inNum.equals("") && materialId.equals("")){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Repository> listR = inRepositoryMapper.findAll();
             return new PageInfo<>(listR);
@@ -93,6 +97,10 @@ public class InRepositoryImpl implements InRepositoryService {
             repository.setInTimeC(inTimeC);
             repository.setMaterialId(materialId);
             repository.setMatIdC(materialIdC);
+            repository.setProjName(projName);
+            repository.setProjNameC(projNameC);
+            repository.setProjId(projId);
+            repository.setProjIdC(projIdC);
             List<Repository> listR = repositoryMapper.searchIn(repository);
             return new PageInfo<>(listR);
         }
@@ -158,6 +166,8 @@ public class InRepositoryImpl implements InRepositoryService {
             String SPEC = listIN.get(i).get("theMatSpec").toString();
             String CHECK = listIN.get(i).get("theMatCheck").toString();
             String REMARK = listIN.get(i).get("theMatRemark").toString();
+            String PROJID = request.getParameter("projId");
+            String PROJNAME = request.getParameter("projName");
             Material material = new Material();
             material.setId(MATERIALID);
             if ( materialMtMapper.needCheck(material).equals("是") && CHECK == null){
@@ -193,8 +203,10 @@ public class InRepositoryImpl implements InRepositoryService {
                 repository.setCheck(CHECK);
                 repository.setRemark(REMARK);
                 repository.setInInfo(ININFO);
+                repository.setProjId(PROJID);
+                repository.setProjName(PROJNAME);
                 String REPTcategory = repositoryMapper.searchCategory(repository);
-                inRepositoryMapper.insertNew(REPTcategory, INID, INTIME, INNUM, ININFO, REPTID, POSTID, MATERIALID, MATERIALNAME, SPEC, UNIT, sn, bn,INREPTC, CHECK, REMARK);
+                inRepositoryMapper.insertNew(REPTcategory, INID, INTIME, INNUM, ININFO, REPTID, POSTID, MATERIALID, MATERIALNAME, SPEC, UNIT, sn, bn,INREPTC, CHECK, REMARK,PROJID,PROJNAME);
                 a = "0";
             }
         }

@@ -8,7 +8,7 @@
     </select>
 
     <insert id="insertNew" parameterType="string">
-        INSERT INTO eqpt_outrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14})
+        INSERT INTO eqpt_outrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16})
     </insert>
 
     <select id="searchId" resultType="string">
@@ -22,22 +22,6 @@
     <delete id="delete" parameterType="com.elex.oa.entity.eqpt.Repository">
         DELETE FROM eqpt_outrepository WHERE onlyIdOut = #{onlyIdOut}
     </delete>
-
-    <update id="updUser" parameterType="string">
-        UPDATE eqpt_outrepository SET two = '1' WHERE outId = #{outId}
-    </update>
-
-    <select id="warn" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_outrepository WHERE one = '1' AND two = '1' AND warn = '0' AND outId = (SELECT outId FROM eqpt_outrepository WHERE one = '1' AND two = '1' AND warn = '0' limit 1)
-    </select>
-
-    <select id="warning" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_outrepository WHERE one = '1' AND two = '0' AND warn = '0' AND outId = (SELECT outId FROM eqpt_outrepository WHERE one = '1' AND two = '0' AND warn = '0' limit 1)
-    </select>
-
-    <update id="updWarn" parameterType="string">
-        UPDATE eqpt_outrepository SET warn = '1' WHERE outId = #{outId}
-    </update>
 
     <select id="wdbhR" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT DISTINCT wdbh AS outId FROM w_lysqd

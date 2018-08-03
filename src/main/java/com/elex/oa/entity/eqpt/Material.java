@@ -72,6 +72,9 @@ public class Material {
     // 仓库ID
     private String reptId;
     private String postId;
+    // 项目相关
+    private String projId;
+    private String projName;
 
     // 对应查询条件
     private String bnC;
@@ -103,11 +106,13 @@ public class Material {
     private String palC;
     private String reptIdC;
     private String postIdC;
+    private String projIdC;
+    private String projNameC;
 
     public Material() {
     }
 
-    public Material(int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String postId, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC, String postIdC) {
+    public Material(int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String postId, String projId, String projName, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC, String postIdC, String projIdC, String projNameC) {
         this.onlyId = onlyId;
         this.bn = bn;
         this.sn = sn;
@@ -134,6 +139,8 @@ public class Material {
         this.needCheck = needCheck;
         this.reptId = reptId;
         this.postId = postId;
+        this.projId = projId;
+        this.projName = projName;
         this.bnC = bnC;
         this.snC = snC;
         this.positionC = positionC;
@@ -163,6 +170,8 @@ public class Material {
         this.palC = palC;
         this.reptIdC = reptIdC;
         this.postIdC = postIdC;
+        this.projIdC = projIdC;
+        this.projNameC = projNameC;
     }
 
     public String getBn() {
@@ -557,7 +566,6 @@ public class Material {
         this.needCheckC = needCheckC;
     }
 
-
     public String getNumInvC() {
         return numInvC;
     }
@@ -606,6 +614,38 @@ public class Material {
         this.postIdC = postIdC;
     }
 
+    public String getProjId() {
+        return projId;
+    }
+
+    public void setProjId(String projId) {
+        this.projId = projId;
+    }
+
+    public String getProjName() {
+        return projName;
+    }
+
+    public void setProjName(String projName) {
+        this.projName = projName;
+    }
+
+    public String getProjIdC() {
+        return projIdC;
+    }
+
+    public void setProjIdC(String projIdC) {
+        this.projIdC = projIdC;
+    }
+
+    public String getProjNameC() {
+        return projNameC;
+    }
+
+    public void setProjNameC(String projNameC) {
+        this.projNameC = projNameC;
+    }
+
     @Override
     public String toString() {
         return "Material{" +
@@ -635,6 +675,8 @@ public class Material {
                 ", needCheck='" + needCheck + '\'' +
                 ", reptId='" + reptId + '\'' +
                 ", postId='" + postId + '\'' +
+                ", projId='" + projId + '\'' +
+                ", projName='" + projName + '\'' +
                 ", bnC='" + bnC + '\'' +
                 ", snC='" + snC + '\'' +
                 ", positionC='" + positionC + '\'' +
@@ -664,6 +706,8 @@ public class Material {
                 ", palC='" + palC + '\'' +
                 ", reptIdC='" + reptIdC + '\'' +
                 ", postIdC='" + postIdC + '\'' +
+                ", projIdC='" + projIdC + '\'' +
+                ", projNameC='" + projNameC + '\'' +
                 '}';
     }
 }
