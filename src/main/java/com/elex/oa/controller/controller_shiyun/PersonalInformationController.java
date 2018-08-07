@@ -2203,7 +2203,7 @@ public class PersonalInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:根据日期查询工作日志
+     *@Description:根据日期查询工作日志（填写）
      *@Date: 9:40 2018\8\3 0003
      */
     @RequestMapping("/queryWriteGzrz")
@@ -2221,5 +2221,27 @@ public class PersonalInformationController {
             System.out.println("格式转换出错！");
         }
        return RespUtil.successResp("205","相应成功！",o);
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据日期查询工作日志（审查）
+     *@Date: 14:52 2018\8\3 0003
+     */
+    @RequestMapping("/queryApproveGzrz")
+    @ResponseBody
+    public Object queryApproveGzrz(
+            @RequestParam("year") Integer year,
+            @RequestParam("month") Integer month
+    ){
+        Object o = false;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            Date date = simpleDateFormat.parse(year + "/" + month + "/01 00:00:00");
+            o = iGzrzService.queryGzrzByTime2(date);
+        } catch (ParseException e) {
+            System.out.println("格式转换出错！");
+        }
+        return RespUtil.successResp("205","相应成功！",o);
     }
 }

@@ -47,6 +47,13 @@ public class GzrzVO implements Serializable{
     private Integer weekday;
 
     public GzrzVO() {
+        this.d1="";this.d2="";this.d3="";this.d4="";this.d5="";
+        this.d6="";this.d7="";this.d8="";this.d9="";this.d10="";
+        this.d11="";this.d12="";this.d13="";this.d14="";this.d15="";
+        this.d16="";this.d17="";this.d18="";this.d19="";this.d20="";
+        this.d21="";this.d22="";this.d23="";this.d24="";this.d25="";
+        this.d26="";this.d27="";this.d28="";this.d29="";this.d30="";
+        this.d31="";
     }
 
     public String getDepname() {

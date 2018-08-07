@@ -358,4 +358,15 @@ public class IDcodeUtil {
         }
         return 0;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据时间获得天
+     *@Date: 11:43 2018\8\3 0003
+     */
+    public static Integer getMonthByDate(String str){
+        String[] split = str.split("/|-");
+        Integer day = Integer.parseInt(split[2].substring(0,2));
+        return day;
+    }
 }

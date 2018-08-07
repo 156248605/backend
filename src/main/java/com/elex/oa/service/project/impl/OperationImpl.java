@@ -301,6 +301,7 @@ public class OperationImpl implements OperationService {
         }
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         List<ProjectInfor> list = operationDao.queryIncomeList(operationQuery);
+        System.out.println(list);
         return new PageInfo<>(list);
     }
 

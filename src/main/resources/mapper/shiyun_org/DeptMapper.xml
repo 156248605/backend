@@ -15,6 +15,8 @@
 		<result column="secretaryuserid" property="secretaryuserid" />
 		<result column="depdescription" property="depdescription" />
 		<result column="state" property="state" />
+		<result column="ordercode" property="ordercode" />
+		<result column="deptypeid" property="deptypeid" />
 	</resultMap>
 
 	<select id="selectDeptByDeptname" parameterType="java.lang.String" resultMap="deptMapper">
@@ -25,16 +27,19 @@
 	<select id="selectDeptByDeptcode" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
 		where depcode = #{depcode} and state=1
+		ORDER BY ordercode
 	</select>
 
 	<select id="selectDeptByDepid" parameterType="java.lang.Integer" resultMap="deptMapper">
 		select * from tb_id_department
 		where id = #{id} and state=1
+		ORDER BY ordercode
 	</select>
 
 	<select id="selectAllDept" resultMap="deptMapper">
 		select * from tb_id_department
 		WHERE state=1
+		ORDER BY ordercode
 	</select>
 
 	<select id="selectByParentId" parameterType="java.lang.Integer" resultMap="deptMapper">
@@ -48,6 +53,7 @@
 			</if>
 			and state=1
 		</where>
+		ORDER BY ordercode
 	</select>
 
 	<insert id="insertOne" parameterType="Dept" useGeneratedKeys="true" keyProperty="id">
@@ -63,7 +69,9 @@
 		deputyuserid,
 		secretaryuserid,
 		depdescription,
-		state
+		state,
+		ordercode,
+		deptypeid
 		)
 		VALUES
 		(NULL ,
@@ -77,7 +85,7 @@
 		#{deputyuserid},
 		#{secretaryuserid},
 		#{depdescription},
-		1)
+		1,0,#{deptypeid})
 	</insert>
 
 	<update id="updateOne" parameterType="Dept" >
@@ -92,6 +100,8 @@
 			<if test="secretaryuserid!=null and secretaryuserid!=''">secretaryuserid=#{secretaryuserid},</if>
 			<if test="dutydescription!=null and dutydescription!=''">dutydescription=#{dutydescription},</if>
 			<if test="depdescription!=null and depdescription!=''">depdescription=#{depdescription},</if>
+			<if test="ordercode!=null and ordercode!=''">ordercode=#{ordercode},</if>
+			<if test="deptypeid!=null and deptypeid!=''">deptypeid=#{deptypeid},</if>
 		</set>
 		WHERE id=#{id}
 	</update>
@@ -123,7 +133,9 @@
 			<if test="principaluserid!=null and principaluserid!=''"> and principaluserid=#{principaluserid}</if>
 			<if test="deputyuserid!=null and deputyuserid!=''"> and deputyuserid=#{deputyuserid}</if>
 			<if test="secretaryuserid!=null and secretaryuserid!=''"> and secretaryuserid=#{secretaryuserid}</if>
+			<if test="deptypeid!=null and deptypeid!=''"> and deptypeid=#{deptypeid}</if>
 			and state=1
 		</where>
+		ORDER BY ordercode
 	</select>
 </mapper>
