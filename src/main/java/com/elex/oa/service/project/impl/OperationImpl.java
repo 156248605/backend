@@ -61,59 +61,17 @@ public class OperationImpl implements OperationService {
         return new PageInfo(list);
     }
 
-    //添加收入合同信息
+    //列表查询物品消耗
     @Override
-    @Transactional
-    public String addIncome(ProjectIncome projectIncome, String contract) {
-        operationDao.modifyAppIncome(projectIncome.getProjectCode()); //修改审批清单中income的值
-        operationDao.insertIncome(projectIncome); //添加收入合同信息
-        List<ProjectIncomeDetail> list = JSONArray.parseArray(contract,ProjectIncomeDetail.class);
-        for(ProjectIncomeDetail projectIncomeDetail: list) {
-            projectIncomeDetail.setProjectCode(projectIncome.getProjectCode());
+    public PageInfo queryMaterialList(OperationQuery operationQuery, Page page) {
+        List<String> codes = operationDao.queryMaterialCodes(); //查询已添加物品消耗的项目编号
+        List<ProjectInfor> list =  new ArrayList<>();
+        if(codes.size() > 0) {
+            operationQuery.setCodes(codes);
+            PageHelper.startPage(page.getCurrentPage(),10);
+            list = operationDao.queryMaterialList(operationQuery);
         }
-        operationDao.insertIncomeDetail(list); //添加收入合同的详情
-        return "1";
-    }
-
-    //查询收入合同信息
-    @Override
-    public Map<String, Object> queryIncomeDetail(String projectCode) {
-        Map<String,Object> map = new HashMap<>();
-        ProjectIncome projectIncome = operationDao.queryProjectIncome(projectCode); //查询收入合同的信息
-        List<ProjectIncomeDetail> projectIncomeDetails = operationDao.queryProjectIncomeDetail(projectCode); //查询收入合同详情
-        map.put("income",projectIncome);
-        map.put("detail",projectIncomeDetails);
-        return map;
-    }
-
-    //修改收入合同信息
-    @Override
-    @Transactional
-    public String modifyIncome(ProjectIncome projectIncome, String contract) {
-        operationDao.modifyIncome(projectIncome); //修改收入合同信息
-        List<ProjectIncomeDetail> projectIncomeDetails = JSONArray.parseArray(contract,ProjectIncomeDetail.class);
-        List<Integer> deleteDetail = operationDao.queryProjectIncomeDetailId(projectIncome.getProjectCode()); //根据项目编号查询收入合同的id
-        List<ProjectIncomeDetail> modifyDetail = new ArrayList<>();
-        List<ProjectIncomeDetail> addDetail = new ArrayList<>();
-        for(ProjectIncomeDetail projectIncomeDetail: projectIncomeDetails) {
-            if(projectIncomeDetail.getId() == 0 ) {
-                projectIncomeDetail.setProjectCode(projectIncome.getProjectCode());
-                addDetail.add(projectIncomeDetail);
-            } else if(deleteDetail.contains(projectIncomeDetail.getId())) {
-                modifyDetail.add(projectIncomeDetail);
-                deleteDetail.remove(new Integer(projectIncomeDetail.getId()));
-            }
-        }
-        if(addDetail.size() > 0) {
-            operationDao.insertIncomeDetail(addDetail); //添加收入合同详情
-        }
-        if(modifyDetail.size() > 0) {
-            operationDao.updateIncomeDetail(modifyDetail); //修改收入合同详情
-        }
-        if(deleteDetail.size() > 0) {
-            operationDao.deleteIncomeDetail(deleteDetail); //删除收入合同详情
-        }
-        return "1";
+        return new PageInfo(list);
     }
 
     //查询物品消耗详情

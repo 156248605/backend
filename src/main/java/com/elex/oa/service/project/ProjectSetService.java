@@ -27,4 +27,6 @@ public interface ProjectSetService {
     String deleteSource(int code);
     //删除项目状态
     String deleteStatus(int code);
+    //删除项目阶段
+    String deletePhase(int code);
 }

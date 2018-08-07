@@ -24,12 +24,6 @@ public class NewProjectController {
     @Autowired
     private NewProjcetService newProjcetService;
 
-    //新建项目时弹窗初始化信息（部门、人员、项目编号）
-    @RequestMapping("/initialize_info")
-    @ResponseBody
-    public Map<String,Object> initializeInfo() {
-        return newProjcetService.initializeInfo();
-    }
 
     //对新建项目进行处理
     @RequestMapping("/new_submit")

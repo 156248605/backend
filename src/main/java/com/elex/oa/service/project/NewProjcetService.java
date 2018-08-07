@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface NewProjcetService {
-    //新建项目时弹窗初始化信息（部门、人员、项目编号）
-    Map<String,Object> initializeInfo();
     //对新建项目信息处理
     Map<String,Object> newSubmit(NewProject newProject);
     //对某人已建项目进行列表查询

@@ -35,4 +35,8 @@ public interface ProjectSetDao {
     int countStatus(String s);
     //删除项目状态
     void deleteStatus(int code);
+    //查询当前项目中使用该阶段的数量
+    int countPhase(String s);
+    //删除项目阶段
+    void deletePhase(int code);
 }

@@ -7,18 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProjectBoardService {
-    //列表总览
-    //Map<String,Object> overviewOld();
     //详情
     Map<String,Object> detail(String projectCode);
-    //看板信息（手机）
-    List<Map<String,Object>> projectPhone();
     //项目数量
     Map<String, Object> overview(String department);
     //查看某一类型的项目
     PageInfo projectVarious(Integer pageNum, String status, String type, String department);
-    //看板详情详情（手机）
-    Map<String, Object> projectDetail(String projectCode);
     //数据库人员更新
     void informationUpdate();
     //查询所有人员

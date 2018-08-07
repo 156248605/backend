@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
-import com.elex.oa.service.permission.JobService;
 import com.elex.oa.service.service_shiyun.*;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,7 @@ public class PostInformationController {
     private IPostLogService iPostLogService;
     @Autowired
     private IUserService iUserService;
-    @Autowired
-    JobService jobService;//权限相关部分,岗位信息添加修改
+
     @Autowired
     IHRsetFunctionalTypeService ihRsetFunctionalTypeService;
     @Autowired
@@ -160,14 +158,7 @@ public class PostInformationController {
         HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryByPostlevel(post.getPostlevel());
         post.setPostlevelid(hRsetPostlevel.getId());
         Integer postid = iPostService.addOne(post);
-        if (postid == post.getId()) {
-            /*
-             *id,name
-             * post.getPostname()即为name
-             * post.getId()即为id
-             */
-            int judgment = jobService.addJob(post.getId(), post.getPostname());
-        }
+
         /*
          *Map<String,Object> result = new HashMap<>();
          * if(postid == post.getId()){

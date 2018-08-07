@@ -1,9 +1,7 @@
 package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.common.common_shiyun.Commons;
-import com.elex.oa.dao.dao_shiyun.IGzrzDao;
 import com.elex.oa.entity.entity_shiyun.*;
-import com.elex.oa.service.permission.EmployeeService;
 import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.resp.RespUtil;
@@ -54,8 +52,6 @@ public class PersonalInformationController {
     IOtherInformationService iOtherInformationService;
     @Autowired
     IChangeInformationService iChangeInformationService;
-    @Autowired
-    EmployeeService employeeService;//权限相关部分，岗位信息添加修改
     @Autowired
     IPerandpostrsService iPerandpostrsService;
     @Autowired
@@ -109,7 +105,7 @@ public class PersonalInformationController {
     @Autowired
     IHRsetEmergencyrpService ihRsetEmergencyrpService;//应急联系人关系
     @Autowired
-    IGzrzService iGzrzService;//工作日志
+    private IGzrzService iGzrzService;//工作日志
 
     @Autowired
     private ProjectBoardService projectBoardService;//高晓飞
@@ -683,7 +679,6 @@ public class PersonalInformationController {
             PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
             iPerandpostrsService.addOne(perAndPostRs);
         }
-        projectBoardService.informationUpdate();
         return "管理信息添加成功！";
     }
 
