@@ -3,19 +3,39 @@
 <mapper namespace="com.elex.oa.dao.eqptDao.InventoryMapper">
 
     <select id="find" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_inventory
+        SELECT * FROM eqpt_inventory UNION SELECT * FROM eqpt_inventory_draft ORDER BY invId
+    </select>
+
+    <select id="checkDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inventory_draft WHERE invId = #{invId}
     </select>
 
     <delete id="delete" parameterType="com.elex.oa.entity.eqpt.Repository">
-        DELETE * FROM eqpt_inventory WHERE onlyIdInv = #{onlyIdInv}
+        DELETE FROM eqpt_inventory WHERE onlyIdInv = #{onlyIdInv} AND invId = #{invId}
+    </delete>
+
+    <delete id="deleteD" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inventory_draft WHERE onlyIdInv = #{onlyIdInv} AND invId = #{invId}
+    </delete>
+
+    <delete id="deleteDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inventory_draft WHERE invId = #{invId}
     </delete>
 
     <insert id="insert" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_inventory VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{reptId},#{position},#{price},#{num},#{numInv},#{pal},#{palCal},#{remark})
+        INSERT INTO eqpt_inventory VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{spec},#{category},#{reptId},#{position},#{price},#{num},#{numInv},#{pal},#{palCal},#{remark})
+    </insert>
+
+    <insert id="insertDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        INSERT INTO eqpt_inventory_draft VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{spec},#{category},#{reptId},#{position},#{price},#{num},#{numInv},#{pal},#{palCal},#{remark})
     </insert>
 
     <select id="showINVID" resultType="java.lang.String">
         SELECT invId FROM eqpt_inventory WHERE invId LIKE CONCAT(CONCAT('%',#{invId},'%'))
+    </select>
+
+    <select id="showINVIDd" resultType="java.lang.String">
+        SELECT invId FROM eqpt_inventory_draft WHERE invId LIKE CONCAT(CONCAT('%',#{invId},'%'))
     </select>
 
     <select id="chooseMat" resultType="com.elex.oa.entity.eqpt.Material">
@@ -24,6 +44,10 @@
 
     <select id="matinrept" resultType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_detail WHERE reptId = #{reptId} AND id IN (${id})
+    </select>
+
+    <select id="openDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inventory_draft WHERE invId = #{invId}
     </select>
 
     <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -159,7 +183,74 @@
             <if test="pal != null and pal != '' and palC == 5">
                 AND pal >= #{pal}
             </if>
-
         </where>
     </select>
+
+    <update id="changeInv" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_inventory
+        <set>
+            <if test="invId != null and invId != ''">
+                invId = #{invId},
+            </if>
+            <if test="invTime != null and invTime != ''">
+                invTime = #{invTime},
+            </if>
+            <if test="materialId != null and materialId != ''">
+                materialId = #{materialId},
+            </if>
+            <if test="materialName != null and materialName != ''">
+                materialName = #{materialName},
+            </if>
+            <if test="reptId != null and reptId != ''">
+                reptId = #{reptId},
+            </if>
+            <if test="position != null and position != ''">
+                position = #{position},
+            </if>
+            <if test="price != null and price != ''">
+                price = #{price},
+            </if>
+            <if test="num != null and num != ''">
+                num = #{num},
+            </if>
+            <if test="numInv != null and numInv != ''">
+                numInv = #{numInv},
+            </if>
+            <if test="pal != null and pal != ''">
+                pal = #{pal},
+            </if>
+            <if test="palCal != null and palCal != ''">
+                palCal = #{palCal},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="spec != null and spec != ''">
+                spec = #{spec},
+            </if>
+            <if test="category != null and category != ''">
+                category = #{category},
+            </if>
+        </set>
+        WHERE onlyIdInv = #{onlyIdInv} AND invId = #{invId}
+    </update>
+
+    <update id="changeInvD" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_inventory_draft
+        <set>
+            <if test="invTime != null and invTime != ''">
+                invTime = #{invTime},
+            </if>
+            <if test="numInv != null and numInv != ''">
+                numInv = #{numInv},
+            </if>
+            <if test="pal != null and pal != ''">
+                pal = #{pal},
+            </if>
+            <if test="palCal != null and palCal != ''">
+                palCal = #{palCal},
+            </if>
+        </set>
+        WHERE invId = #{invId} AND reptId = #{reptId} AND position = #{position} AND materialId = #{materialId}
+    </update>
 </mapper>
