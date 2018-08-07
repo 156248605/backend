@@ -34,25 +34,11 @@ public class OperationController {
         return operationService.queryProjectList(operationQuery, page);
     }
 
-    //添加收入合同信息
-    @RequestMapping("/add_income")
+    //列表查询物品消耗
+    @RequestMapping("/query_material_list")
     @ResponseBody
-    public String addIncome(ProjectIncome projectIncome, String contract) {
-        return operationService.addIncome(projectIncome,contract);
-    }
-
-    //查询收入合同信息
-    @RequestMapping("/query_income_detail")
-    @ResponseBody
-    public Map<String,Object> queryIncomeDetail (String projectCode) {
-        return operationService.queryIncomeDetail(projectCode);
-    }
-
-    //修改收入合同信息
-    @RequestMapping("/modify_income")
-    @ResponseBody
-    public String modifyIncome(ProjectIncome projectIncome, String contract) {
-        return operationService.modifyIncome(projectIncome,contract);
+    public PageInfo queryMaterialList(OperationQuery operationQuery, Page page) {
+        return operationService.queryMaterialList(operationQuery, page);
     }
 
     //查询物品消耗详情

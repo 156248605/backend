@@ -49,29 +49,14 @@
         <result column="note"          javaType="string" property="note"></result>
     </resultMap>
 
-    <resultMap id="projectIncomeDetail" type="com.elex.oa.entity.project.ProjectIncomeDetail">
-        <id column="id"                        javaType="int"    property="id"></id>
-        <result column="project_code"        javaType="string" property="projectCode"></result>
-        <result column="contract_code"       javaType="string" property="contractCode"></result>
-        <result column="contract_situation" javaType="string" property="contractSituation"></result>
-        <result column="contract_type"       javaType="string" property="contractType"></result>
-        <result column="contract_amount"     javaType="string" property="contractAmount"></result>
-        <result column="effective_date"      javaType="string" property="effectiveDate"></result>
-        <result column="execution_date"      javaType="string" property="executionDate"></result>
-        <result column="perform_category"    javaType="string" property="performCategory"></result>
-        <result column="perform_amount"      javaType="string" property="performAmount"></result>
-        <result column="note"                 javaType="string" property="note"></result>
-    </resultMap>
 
     <resultMap id="projectMaterial" type="com.elex.oa.entity.project.ProjectMaterial">
-        <id column="id"   javaType="int"  property="id"></id>
         <result column="project_code"  javaType="string"  property="projectCode"></result>
         <result column="total_amount_l"  javaType="string"  property="totalAmountL"></result>
         <result column="total_amount_c"  javaType="string"  property="totalAmountC"></result>
     </resultMap>
 
     <resultMap id="projectMaterialDetail" type="com.elex.oa.entity.project.ProjectMaterialDetail">
-        <id column="id"  javaType="int"  property="id"></id>
         <result column="project_code"  javaType="string"  property="projectCode"></result>
         <result column="out_order"  javaType="string"  property="outOrder"></result>
         <result column="good_code"  javaType="string"  property="goodCode"></result>
@@ -242,31 +227,16 @@
         VALUES (NULL,#{projectCode},#{payAmount},#{payDate},#{invoiceAmount},#{invoiceProportion},#{receivableAmount},#{receivableProportion},#{acceptanceAmount},#{acceptanceProportion})
     </insert>
 
-    <insert id="insertIncomeDetail" parameterType="java.util.List">
-        INSERT INTO pro_income_detail (id,project_code,contract_code,contract_situation,contract_type,contract_amount,effective_date,execution_date,perform_category,perform_amount,note) VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
-            (NULL,#{item.projectCode},#{item.contractCode},#{item.contractSituation},#{item.contractType},#{item.contractAmount},#{item.effectiveDate},#{item.executionDate},#{item.performCategory},#{item.performAmount},#{item.note})
-        </foreach>
-    </insert>
 
     <select id="queryProjectIncome" parameterType="string" resultMap="projectIncome">
         SELECT id,project_code, amount,copies , invoice_amount,invoice_proportion,receivable_amount,receivable_proportion,acceptance_amount,acceptance_proportion
         FROM pro_income WHERE project_code = #{projectCode}
     </select>
 
-    <select id="queryProjectIncomeDetail" parameterType="string" resultMap="projectIncomeDetail">
-      SELECT id,project_code,contract_code,contract_situation,contract_type,contract_amount,effective_date,execution_date,perform_category,perform_amount,note
-      FROM pro_income_detail WHERE project_code = #{projectCode}
-    </select>
-
     <update id="modifyIncome" parameterType="com.elex.oa.entity.project.ProjectIncome">
         UPDATE pro_income SET pay_amount = #{payAmount}, pay_date = #{payDate}, invoice_amount = #{invoiceAmount}, invoice_proportion = #{invoiceProportion}, receivable_amount = #{receivableAmount},
         receivable_proportion = #{receivableProportion}, acceptance_amount = #{acceptanceAmount}, acceptance_proportion = #{acceptanceProportion} WHERE project_code = #{projectCode}
     </update>
-
-    <select id="queryProjectIncomeDetailId" parameterType="string" resultType="int">
-        SELECT id FROM pro_income_detail WHERE project_code = #{projectCode}
-    </select>
 
     <update id="updateIncomeDetail" parameterType="java.util.List">
         UPDATE pro_income_detail SET contract_code =
@@ -319,11 +289,11 @@
     </delete>
 
     <select id="queryMaterial" parameterType="string" resultMap="projectMaterial">
-        SELECT id,project_code,total_amount_l,total_amount_c FROM pro_material WHERE project_code = #{projectCode}
+        SELECT total_amount_l,total_amount_c FROM pro_material WHERE project_code = #{projectCode}
     </select>
 
     <select id="queryMaterialDetail" parameterType="string" resultMap="projectMaterialDetail">
-        SELECT id,project_code,out_order,good_code,good_name,number,unit_price,amount FROM pro_material_detail WHERE project_code = #{projectCode}
+        SELECT out_order, good_code, good_name, number, unit_price, amount FROM pro_material_detail WHERE project_code = #{projectCode}
     </select>
 
     <update id="modifyAppHuman" parameterType="string">
@@ -857,6 +827,68 @@
                 </foreach>
             </if>
             AND department_manager IS NOT NULL
+        </where>
+    </select>
+
+    <select id="queryMaterialCodes" resultType="string">
+        SELECT project_code FROM pro_material
+    </select>
+
+    <select id="queryMaterialList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT project_code, project_status, project_name, dept_manager, in_department, project_manager, project_source, business_manager, project_type FROM pro_pro_infor
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
+                AND project_status IN
+                <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="select5 == 1 and input5 != ''">
+                AND project_manager LIKE CONCAT('%',#{input5},'%')
+            </if>
+            <if test="select5 == 2 and input5 != ''">
+                AND project_manager NOT LIKE CONCAT('%',#{input5},'%')
+            </if>
+            <if test="list6 != null">
+                AND project_source IN
+                <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND business_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND project_type IN
+                <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            AND project_code IN
+            <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
         </where>
     </select>
 </mapper>

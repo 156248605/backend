@@ -110,6 +110,6 @@ public class ProjectSetImpl implements ProjectSetService {
         } else {
             projectSetDao.deletePhase(code); //删除项目阶段
         }
-        return null;
+        return "0";
     }
 }

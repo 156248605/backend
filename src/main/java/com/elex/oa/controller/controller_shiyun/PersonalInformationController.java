@@ -1,8 +1,8 @@
 package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.common.common_shiyun.Commons;
-import com.elex.oa.dao.dao_shiyun.IGzrzDao;
 import com.elex.oa.entity.entity_shiyun.*;
+import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
@@ -105,7 +105,7 @@ public class PersonalInformationController {
     @Autowired
     IHRsetEmergencyrpService ihRsetEmergencyrpService;//应急联系人关系
     @Autowired
-    IGzrzService iGzrzService;//工作日志
+    private IGzrzService iGzrzService;//工作日志
 
     @Autowired
     private ProjectBoardService projectBoardService;//高晓飞

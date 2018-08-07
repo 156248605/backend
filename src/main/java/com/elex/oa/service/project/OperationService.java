@@ -11,12 +11,8 @@ public interface OperationService {
     PageInfo queryMainList(OperationQuery operationQuery, Page page);
     //列表查询当前可新建的项目
     PageInfo queryProjectList(OperationQuery operationQuery, Page page);
-    //添加收入合同信息
-    String addIncome(ProjectIncome projectIncome, String contract);
-    //查询收入合同信息
-    Map<String,Object> queryIncomeDetail(String projectCode);
-    //修改收入合同信息
-    String modifyIncome(ProjectIncome projectIncome, String contract);
+    //列表查询物品消耗
+    PageInfo queryMaterialList(OperationQuery operationQuery, Page page);
     //查询物品消耗详情
     Map<String,Object> queryMaterialDetail(String projectCode);
     //添加人力成本
@@ -49,4 +45,5 @@ public interface OperationService {
     PageInfo<ProjectInfor> queryExpenseList(OperationQuery operationQuery, Page page);
     //查询费用成本相关可新建的项目
     PageInfo<ProjectInfor> queryProjectExpense(OperationQuery operationQuery, Page page);
+
 }
