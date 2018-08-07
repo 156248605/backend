@@ -2,8 +2,10 @@ package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
-import com.elex.oa.service.permission.EmployeeService;
+import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
+import com.elex.oa.util.resp.RespUtil;
+import com.elex.oa.util.util_per.SpellUtils;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,6 @@ public class PersonalInformationController {
     IOtherInformationService iOtherInformationService;
     @Autowired
     IChangeInformationService iChangeInformationService;
-    @Autowired
-    EmployeeService employeeService;//权限相关部分，岗位信息添加修改
     @Autowired
     IPerandpostrsService iPerandpostrsService;
     @Autowired
@@ -104,6 +104,12 @@ public class PersonalInformationController {
     IHRsetTelphoneService ihRsetTelphoneService;//办公电话
     @Autowired
     IHRsetEmergencyrpService ihRsetEmergencyrpService;//应急联系人关系
+    @Autowired
+    private IGzrzService iGzrzService;//工作日志
+
+    @Autowired
+    private ProjectBoardService projectBoardService;//高晓飞
+
 
     /**
      * @Author:ShiYun;
@@ -294,7 +300,10 @@ public class PersonalInformationController {
             @RequestParam("truename") String truename
     ) throws ParseException {
         User user = iUserService.queryByTruename(truename);
-        PersonalInformation onePersonalinformation = iPersonalInformationService.queryOneByUserid(user.getId());
+        PersonalInformation onePersonalinformation = null;
+        if (user.getId()!=null) {
+            onePersonalinformation = iPersonalInformationService.queryOneByUserid(user.getId());
+        }
         PersonalInformation personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
 
         return personalInformation;
@@ -510,7 +519,11 @@ public class PersonalInformationController {
         }
         // 在tb_id_user表中保存用户
         user.setIsactive(personalInformation.getIsactive());
-        user.setUsername(personalInformation.getUsername());
+        if (personalInformation.getUsername()!=null && !"".equals(personalInformation.getUsername())) {
+            user.setUsername(personalInformation.getUsername());
+        } else {
+            user.setUsername(SpellUtils.phoneticize(personalInformation.getTruename()));//如果没有人工输入，则自动将名字的汉字转换为汉语拼音
+        }
         user.setTruename(personalInformation.getTruename());
         Integer userid = iUserService.saveOne(user);
 
@@ -626,6 +639,7 @@ public class PersonalInformationController {
         personalInformation.setUserid(userid);
         personalInformation.setBaseinformationid(baseInformationId);
         Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
+        projectBoardService.informationUpdate();
         return userid;
     }
 
@@ -1149,6 +1163,7 @@ public class PersonalInformationController {
             iChangeInformationService.addOne(changeInformation);
         }
         iPersonalInformationService.modifyOne(personalInformation);
+        projectBoardService.informationUpdate();
         return "信息提交成功！";
     }
 
@@ -1282,6 +1297,7 @@ public class PersonalInformationController {
         }
 
         iPersonalInformationService.modifyOne(personalInformation2);
+        projectBoardService.informationUpdate();
         return "提交信息成功！";
     }
 
@@ -1720,7 +1736,9 @@ public class PersonalInformationController {
                     pi.setZyzsname(ihRsetZyzsnameService.queryById(baseInformation.getZyzsnameid()).getZyzsname());
                 }
                 pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
-                pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                if (baseInformation.getFirstworkingtime()!=null && !baseInformation.getFirstworkingtime().equals("")) {
+                    pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                }
                 if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
                     pi.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
                 }
@@ -2051,7 +2069,7 @@ public class PersonalInformationController {
                 }
             }
         }
-
+        projectBoardService.informationUpdate();
         return "数据导入成功！";
     }
 
@@ -2074,6 +2092,7 @@ public class PersonalInformationController {
             //注：如果将要删除的员工是某部门的正职、副职、秘书则需要修改该字段
             iDeptService.modifyOne(personalInformation.getUserid());
         }
+        projectBoardService.informationUpdate();
         return "删除成功！";
     }
 
@@ -2149,5 +2168,75 @@ public class PersonalInformationController {
             list.add(postMap);
         }
         return list;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:赵宏钢的接口，根据账号查询信息
+     *@Date: 18:30 2018\7\17 0017
+     */
+    @RequestMapping("/queryZHG001")
+    @ResponseBody
+    public Object queryZHG001(
+            @RequestParam("username")String username
+    ){
+        User user = new User();
+        user.setUsername(username);
+        User user1 = iUserService.selectOne(user);
+        if(user1==null){
+            return RespUtil.successResp("205","没有查到此用户信息",null);
+        }else{
+            PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(user1.getId());
+            try {
+               // return this.getOnePersonalinformation(personalInformation.getId());
+                return RespUtil.successResp("205","没有查到此用户信息",this.getOnePersonalinformation(personalInformation.getId()));
+            } catch (ParseException e) {
+                return RespUtil.successResp("205","没有查到此用户信息",null);
+            }
+        }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据日期查询工作日志（填写）
+     *@Date: 9:40 2018\8\3 0003
+     */
+    @RequestMapping("/queryWriteGzrz")
+    @ResponseBody
+    public Object queryWriteGzrz(
+            @RequestParam("year") Integer year,
+            @RequestParam("month") Integer month
+    ){
+        Object o = false;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            Date date = simpleDateFormat.parse(year + "/" + month + "/01 00:00:00");
+            o = iGzrzService.queryGzrzByTime(date);
+        } catch (ParseException e) {
+            System.out.println("格式转换出错！");
+        }
+       return RespUtil.successResp("205","相应成功！",o);
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据日期查询工作日志（审查）
+     *@Date: 14:52 2018\8\3 0003
+     */
+    @RequestMapping("/queryApproveGzrz")
+    @ResponseBody
+    public Object queryApproveGzrz(
+            @RequestParam("year") Integer year,
+            @RequestParam("month") Integer month
+    ){
+        Object o = false;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            Date date = simpleDateFormat.parse(year + "/" + month + "/01 00:00:00");
+            o = iGzrzService.queryGzrzByTime2(date);
+        } catch (ParseException e) {
+            System.out.println("格式转换出错！");
+        }
+        return RespUtil.successResp("205","相应成功！",o);
     }
 }

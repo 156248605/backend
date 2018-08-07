@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.elex.oa.dao.dao_shiyun.IDeptDao;
 import com.elex.oa.dao.project.NewProjectDao;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.entity_shiyun.Dept;
-import com.elex.oa.entity.permission.Employee;
 import com.elex.oa.entity.project.NProjectQuery;
 import com.elex.oa.entity.project.NewProject;
 import com.elex.oa.mongo.project.NewProjectMongo;
@@ -16,7 +14,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,29 +27,7 @@ public class NewProjectImpl implements NewProjcetService {
     @Resource
     private NewProjectDao newProjectDao;
 
-    //新建项目时弹窗初始化信息（部门、人员、项目编号）
-    @Override
-    public Map<String, Object> initializeInfo() {
-        Map<String,Object> map = new HashMap<>();
-        String projectCode = newProjectMongo.getProjectCode(); //项目编码
-        List<Employee> employeeList = newProjectMongo.getEmployees(); //获取所有员工信息
-        List<Map<String,String>> departmentList = new ArrayList<>(); //获取所有岗位信息
-        List<Dept> depts = iDeptDao.selectAllDept();
-        Map<String,String> map1 = new HashMap<>();
-        map1.put("id","000");
-        map1.put("name","系统");
-        departmentList.add(map1);
-        for(Dept d:depts){
-            Map<String,String> map2 = new HashMap<>();
-            map2.put("id",d.getId()+"");
-            map2.put("name",d.getDepname());
-            departmentList.add(map2);
-        }
-        map.put("projectCode",projectCode);
-        map.put("departmentList",departmentList);
-        map.put("employeeList",employeeList);
-        return map;
-    }
+
 
     @Override
     public Map<String, Object> newSubmit(NewProject newProject) {
@@ -92,6 +67,7 @@ public class NewProjectImpl implements NewProjcetService {
             nProjectQuery.setDate31(dateList.get(0));
             nProjectQuery.setDate32(dateList.get(1));
         }
+        System.out.println(nProjectQuery.getSelect4());
         List<String> list4 = JSONArray.parseArray(nProjectQuery.getSelect4(),String.class);
         List<String> list5 = JSONArray.parseArray(nProjectQuery.getSelect5(),String.class);
         if(list4.size() > 0) {

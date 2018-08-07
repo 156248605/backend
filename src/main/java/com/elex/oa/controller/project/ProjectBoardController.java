@@ -34,19 +34,6 @@ public class ProjectBoardController {
         return projectBoardService.detail(projectCode);
     }
 
-    //看板信息（手机）
-    @RequestMapping("/project_phone")
-    @ResponseBody
-    public List<Map<String,Object>> projectPhone() {
-        return projectBoardService.projectPhone();
-    }
-
-    //项目详情（手机）
-    @RequestMapping("/project_detail")
-    @ResponseBody
-    public Map<String, Object> projectDetail(String projectCode){
-        return projectBoardService.projectDetail(projectCode);
-    }
 
     //看板手机部门相关详情（手机）
     @RequestMapping("/project_total")

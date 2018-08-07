@@ -35,19 +35,33 @@
     </resultMap>
 
     <resultMap id="approvalList" type="com.elex.oa.entity.project.ApprovalList">
-        <result column="project_code"  javaType="string"  property="projectCode"></result>
-        <result column="project_name"  javaType="string"  property="projectName"></result>
-        <result column="write_date"  javaType="string"  property="writeDate"></result>
-        <result column="project_source"  javaType="string"  property="projectSource"></result>
-        <result column="project_type"  javaType="string"  property="projectType"></result>
-        <result column="in_department"  javaType="string"  property="inDepartment"></result>
-        <result column="proposer"  javaType="string"  property="proposer"></result>
-        <result column="department1"  javaType="string"  property="department1"></result>
-        <result column="business_manager" javaType="string"  property="businessManager"></result>
-        <result column="department2"  javaType="string"  property="department2"></result>
-        <result column="project_manager"  javaType="string"  property="projectManager"></result>
-        <result column="general_situation"  javaType="string"  property="generalSituation"></result>
+        <result column="project_code"         javaType="string"  property="projectCode"></result>
+        <result column="project_name"        javaType="string"  property="projectName"></result>
+        <result column="write_date"           javaType="string"  property="writeDate"></result>
+        <result column="project_source"       javaType="string"  property="projectSource"></result>
+        <result column="project_type"         javaType="string"  property="projectType"></result>
+        <result column="in_department"        javaType="string"  property="inDepartment"></result>
+        <result column="proposer"             javaType="string"  property="proposer"></result>
+        <result column="department1"          javaType="string"  property="department1"></result>
+        <result column="business_manager"    javaType="string"  property="businessManager"></result>
+        <result column="department2"          javaType="string"  property="department2"></result>
+        <result column="project_manager"     javaType="string"  property="projectManager"></result>
+        <result column="general_situation"   javaType="string"  property="generalSituation"></result>
         <result column="department_manager"  javaType="string"  property="departmentManager"></result>
+    </resultMap>
+
+    <resultMap id="approvalList1" type="com.elex.oa.entity.project.ApprovalList">
+        <result column="F_XMBH"       javaType="string" property="projectCode"></result>
+        <result column="F_XMMC"       javaType="string" property="projectName"></result>
+        <result column="F_TXRQ"       javaType="string" property="writeDate"></result>
+        <result column="F_XMLY"       javaType="string" property="projectSource"></result>
+        <result column="F_XMLX"       javaType="string" property="projectType"></result>
+        <result column="F_SZBM_NAME" javaType="string" property="inDepartment"></result>
+        <result column="F_SQR_NAME"  javaType="string" property="proposer"></result>
+        <result column="F_SWJL_NAME" javaType="string" property="businessManager"></result>
+        <result column="F_XMJL_NAME" javaType="string" property="projectManager"></result>
+        <result column="F_XMGK"       javaType="string" property="generalSituation"></result>
+        <result column="F_BMJL1"      javaType="string" property="departmentManager"></result>
     </resultMap>
 
     <select id="listQuery" parameterType="com.elex.oa.entity.project.ProjectInforQuery" resultMap="projectInfor">
@@ -151,41 +165,41 @@
         DELETE FROM pro_pro_infor WHERE id = #{id}
     </delete>
 
-    <select id="queryProjectList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="approvalList">
-        SELECT project_code, project_name, write_date, project_source, project_type, in_department, proposer, department1, business_manager, department2 ,project_manager, general_situation, department_manager
-        FROM pro_app_list WHERE ( business_manager = #{name} OR project_manager = #{name} )
+    <select id="queryProjectList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="approvalList1">
+        SELECT F_XMBH, F_XMMC, F_TXRQ, F_XMLY, F_XMLX, F_SZBM_NAME, F_SQR_NAME, F_SWJL_NAME, F_XMJL_NAME, F_XMGK, F_BMJL1
+        FROM w_lxsqb WHERE ( F_XMJL_NAME = #{name} OR F_SWJL_NAME = #{name} )
         <if test="select1 == 1 and input1 != ''">
-            AND project_code LIKE CONCAT('%',#{input1},'%')
+            AND F_XMBH LIKE CONCAT('%',#{input1},'%')
         </if>
         <if test="select1 == 2 and input1 != ''">
-            AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+            AND F_XMBH NOT LIKE CONCAT('%',#{input1},'%')
         </if>
         <if test="select2 == 1 and input2 != ''">
-            AND project_name LIKE CONCAT('%',#{input2},'%')
+            AND F_XMMC LIKE CONCAT('%',#{input2},'%')
         </if>
         <if test="select2 == 2 and input2 != ''">
-            AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+            AND F_XMMC NOT LIKE CONCAT('%',#{input2},'%')
         </if>
         <if test="select3 == 1 and input3 != ''">
-            AND in_department LIKE CONCAT('%',#{input3},'%')
+            AND F_SWBM_NAME LIKE CONCAT('%',#{input3},'%')
         </if>
         <if test="select3 == 2 and input3 != ''">
-            AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            AND F_SWBM_NAME NOT LIKE CONCAT('%',#{input3},'%')
         </if>
         <if test="list4 != null">
-            AND project_code NOT IN
+            AND F_XMBH NOT IN
             <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
         <if test="list6 != null">
-            AND project_source IN
+            AND F_XMLY IN
             <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
         <if test="list8 != null">
-            AND project_type IN
+            AND F_XMLX IN
             <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
                 #{item}
             </foreach>

@@ -105,4 +105,8 @@ public interface OperationDao {
     List<String> queryExpenseCodes();
     //查询费用成本相关可新建的项目
     List<ProjectInfor> queryInforExpense(OperationQuery operationQuery);
+    //查询已添加物品消耗的项目编号
+    List<String> queryMaterialCodes();
+    //列表查询物品消耗
+    List<ProjectInfor> queryMaterialList(OperationQuery operationQuery);
 }

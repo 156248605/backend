@@ -21,16 +21,11 @@ public class ApprovalList {
     private String reviewSign; //评审会签
     private String generalManager; //总经理
     private String distribution; //申请人分发
-    private String mileStone; //里程碑计划存在标志（y或n）
-    private String income; // 收入合同标志（'y'或'n'）
-    private String materials; // 物品消耗标志（'y'或'n'）
-    private String human; //人力成本标志（'y'或'n'）
-    private String expense; //费用报销标志（'y'或'n'）
 
     public ApprovalList() {
     }
 
-    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String passDate, String projectSource, String projectType, String inDepartment, String proposer, String department1, String businessManager, String department2, String projectManager, String generalSituation, String departmentManager, String leaderShip, String reviewSign, String generalManager, String distribution, String mileStone, String income, String materials, String human, String expense) {
+    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String passDate, String projectSource, String projectType, String inDepartment, String proposer, String department1, String businessManager, String department2, String projectManager, String generalSituation, String departmentManager, String leaderShip, String reviewSign, String generalManager, String distribution) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -50,11 +45,6 @@ public class ApprovalList {
         this.reviewSign = reviewSign;
         this.generalManager = generalManager;
         this.distribution = distribution;
-        this.mileStone = mileStone;
-        this.income = income;
-        this.materials = materials;
-        this.human = human;
-        this.expense = expense;
     }
 
     public int getId() {
@@ -209,46 +199,6 @@ public class ApprovalList {
         this.distribution = distribution;
     }
 
-    public String getMileStone() {
-        return mileStone;
-    }
-
-    public void setMileStone(String mileStone) {
-        this.mileStone = mileStone;
-    }
-
-    public String getIncome() {
-        return income;
-    }
-
-    public void setIncome(String income) {
-        this.income = income;
-    }
-
-    public String getMaterials() {
-        return materials;
-    }
-
-    public void setMaterials(String materials) {
-        this.materials = materials;
-    }
-
-    public String getHuman() {
-        return human;
-    }
-
-    public void setHuman(String human) {
-        this.human = human;
-    }
-
-    public String getExpense() {
-        return expense;
-    }
-
-    public void setExpense(String expense) {
-        this.expense = expense;
-    }
-
     @Override
     public String toString() {
         return "ApprovalList{" +
@@ -271,11 +221,6 @@ public class ApprovalList {
                 ", reviewSign='" + reviewSign + '\'' +
                 ", generalManager='" + generalManager + '\'' +
                 ", distribution='" + distribution + '\'' +
-                ", mileStone='" + mileStone + '\'' +
-                ", income='" + income + '\'' +
-                ", materials='" + materials + '\'' +
-                ", human='" + human + '\'' +
-                ", expense='" + expense + '\'' +
                 '}';
     }
 }

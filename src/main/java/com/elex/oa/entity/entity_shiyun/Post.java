@@ -22,8 +22,17 @@ public class Post implements Serializable{
     private String jobdescription; //岗位描述
     private String dutyfile; //岗位详细描述，文件
     private Integer state;//状态
+    private Integer ordercode;//顺序码
 
     public Post() {
+    }
+
+    public Integer getOrdercode() {
+        return ordercode;
+    }
+
+    public void setOrdercode(Integer ordercode) {
+        this.ordercode = ordercode;
     }
 
     public Integer getId() {

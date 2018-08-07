@@ -37,4 +37,5 @@ public class DeptLogServiceImplTest implements IDeptLogServiceTest {
     public PageInfo<DeptLog> queryByConditions(HashMap paramMap) {
         return null;
     }
+
 }

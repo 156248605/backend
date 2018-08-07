@@ -1,7 +1,5 @@
 package com.elex.oa.mongo.project;
 
-import com.elex.oa.entity.permission.Employee;
-import com.elex.oa.entity.permission.Job;
 import com.elex.oa.entity.project.ProjectCode;
 import com.elex.oa.util.project.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +8,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class NewProjectMongo {
@@ -30,15 +26,7 @@ public class NewProjectMongo {
         return ProjectUtils.projectCode(projectCode.getProjectCode());
     }
 
-    //获取所有岗位信息
-    public List<Job> getJobs() {
-        return mongoTemplate.findAll(Job.class);
-    }
 
-    // 获取所有员工信息
-    public List<Employee> getEmployees() {
-        return mongoTemplate.findAll(Employee.class);
-    }
     //修改数据库中的项目编码
     public void modifyProjectCode(String projectCode) {
         String current = ProjectUtils.projectCode(projectCode);

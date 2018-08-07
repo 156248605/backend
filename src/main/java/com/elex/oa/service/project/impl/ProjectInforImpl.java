@@ -98,8 +98,8 @@ public class ProjectInforImpl implements ProjectInforService {
     public Map<String, String> constructionDetails(ProjectInfor projectInfor) {
         Map<String,String> map = new HashMap<>();
         int result1 = projectInforDao.constructionDetails(projectInfor); //添加新的项目详情
-        int result2 = listingDao.modifyAppListContent(projectInfor); //修改已审批清单中的信息
-        if(result1 == 1 && result2 == 1) {
+        //int result2 = listingDao.modifyAppListContent(projectInfor); //修改已审批清单中的信息
+        if(result1 == 1) {
             map.put("result","success");
             map.put("message","新建成功！");
         } else{
@@ -115,8 +115,8 @@ public class ProjectInforImpl implements ProjectInforService {
     public Map<String, String> modifyDetails(ProjectInfor projectInfor) {
         Map<String,String> map = new HashMap<>();
         int result1 = projectInforDao.modifyDetails(projectInfor); //修改项目详情
-        int result2 = listingDao.modifyAppListContent(projectInfor); //修改已审批清单中的信息
-        if(result1 == 1 && result2 == 1) {
+        //int result2 = listingDao.modifyAppListContent(projectInfor); //修改已审批清单中的信息
+        if(result1 == 1) {
             map.put("result","success");
             map.put("message","修改成功！");
         } else{

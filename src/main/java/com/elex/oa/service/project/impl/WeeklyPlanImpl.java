@@ -113,7 +113,6 @@ public class WeeklyPlanImpl implements WeeklyPlanService {
 
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         List<ApprovalList> list = weeklyPlanDao.queryProjectName(operationQuery);
-        System.out.println(list);
         return new PageInfo<>(list);
     }
 

@@ -18,6 +18,13 @@ public interface IDeptService {
     //根据部门名称查询部门对象
     Dept queryOneDepByDepname(String depname);
 
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门code查询部门信息
+     *@Date: 10:19 2018\7\16 0016
+     */
+    Dept queryOneByDepcode(String depcode);
+
     //更具部门ID查询部门对象
     Dept queryOneDepByDepid(Integer id);
 

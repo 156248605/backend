@@ -94,10 +94,6 @@
         <result  column="total_amount_c"  javaType="string"  property="totalAmountC"></result>
     </resultMap>
 
-    <select id="queryApprovalList"  resultMap="approvalList">
-        SELECT project_code, project_name ,project_type, in_department FROM pro_app_list
-    </select>
-
     <select id="queryProjectInfor" resultMap="projectInfor">
         SELECT project_code, project_name, project_status, project_type, in_department FROM pro_pro_infor
     </select>
@@ -106,9 +102,6 @@
         SELECT project_code,project_name,in_department,project_status,project_manager,project_source,business_manager,project_type,write_date,general_situation FROM pro_pro_infor WHERE project_code = #{projectCode}
     </select>
 
-    <select id="queryIncome" parameterType="string" resultType="string">
-        SELECT contract_amount FROM pro_income_detail WHERE project_code = #{projectCode}
-    </select>
 
     <select id="queryMaterials" parameterType="string" resultType="string">
         SELECT total_amount_l FROM pro_material WHERE project_code = #{projectCode}
@@ -129,48 +122,6 @@
     <select id="queryWeeklyPlan" parameterType="java.util.Map" resultMap="weeklyPlan">
         SELECT id, start_date, end_date, time_schedule, fulfillment, punctuality, project_phase, completion, next_plan, risk
         FROM pro_week WHERE project_code = #{code} AND start_date BETWEEN #{start} AND #{end}
-    </select>
-
-    <select id="queryWeeklyPlanDetail" parameterType="int" resultType="weeklyPlanDetail">
-        SELECT issues, involving, work_hours, deliver_result, note FROM pro_week_plan_detail WHERE related_id = #{id}
-    </select>
-
-    <select id="queryProInforP" resultMap="projectInfor">
-        SELECT project_code, project_name, in_department, project_status, write_date, business_manager, project_source, project_manager, project_type, general_situation FROM pro_pro_infor
-        WHERE project_status = '1'
-    </select>
-
-    <select id="queryProjectType" resultMap="projectVarious">
-        SELECT code, name FROM pro_type
-    </select>
-
-    <select id="queryProjectSource"  resultMap="projectVarious">
-        SELECT code, name FROM pro_source
-    </select>
-
-    <select id="queryIncomeContent" parameterType="string" resultMap="projectIncome">
-        SELECT pay_amount, pay_date, invoice_amount, invoice_proportion, receivable_amount, receivable_proportion, acceptance_amount, acceptance_proportion FROM pro_income
-        WHERE project_code = #{projectCode}
-    </select>
-
-    <select id="queryIncomeDetail" parameterType="string" resultType="string">
-        SELECT contract_amount FROM pro_income_detail WHERE project_code = #{project_code}
-    </select>
-
-    <select id="queryProjectMaterial" parameterType="string" resultMap="projectMaterial">
-        SELECT total_amount_l, total_amount_c FROM pro_material WHERE project_code = #{projectCode}
-    </select>
-
-    <select id="queryProjectHuman"  parameterType="string"  resultMap="projectHuman">
-        SELECT total_amount_l, total_amount_c FROM pro_human WHERE project_code = #{projectCode}
-    </select>
-
-    <select id="queryProjectExpense" parameterType="string" resultMap="projectExpense">
-         SELECT total_amount_l, total_amount_c FROM pro_expense WHERE project_code = #{projectCode}
-    </select>
-
-    <select id="queryApprovalByDepartment" parameterType="string" resultMap="approvalList">
-         SELECT project_code, project_name ,project_type FROM pro_app_list WHERE in_department = #{department}
     </select>
 
     <select id="queryProjectInforByDepartment" parameterType="string" resultMap="projectInfor">
@@ -224,20 +175,6 @@
                  #{item}
              </foreach>
          </where>
-    </select>
-
-    <select id="queryApprovalByType" parameterType="string" resultMap="approvalList">
-        SELECT project_code, project_name, in_department,  project_manager  FROM pro_app_list WHERE project_type = #{type}
-    </select>
-
-    <select id="queryInforByType" parameterType="java.util.Map" resultMap="projectInfor">
-        SELECT project_code, project_name, in_department, write_date, project_manager, project_status FROM pro_pro_infor WHERE project_type = #{type}
-        <if test="status == '进行'">
-            AND project_status = '1'
-        </if>
-        <if test="status == '其他'">
-            AND project_status != '1'
-        </if>
     </select>
 
     <select id="queryInforMain" resultMap="projectInfor">

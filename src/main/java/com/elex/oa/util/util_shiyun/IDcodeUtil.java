@@ -3,10 +3,7 @@ package com.elex.oa.util.util_shiyun;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author:ShiYun;
@@ -282,5 +279,94 @@ public class IDcodeUtil {
             return null;
         }
         return year;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据时间获得当月的头尾日期
+     *@Date: 15:50 2018\8\2 0002
+     */
+    public static Map getFirstAndLastDate(Date date) throws ParseException{
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String format = simpleDateFormat.format(date);
+        String[] split = format.split("/");
+        Map map = new HashMap<String,Object>();
+        Calendar cal = Calendar.getInstance();
+        cal.set(1990,6,23,0,0,0);
+        // 不加下面2行，就是取当前时间前一个月的第一天及最后一天
+        cal.set(Calendar.YEAR,Integer.parseInt(split[0]));
+        cal.set(Calendar.MONTH, Integer.parseInt(split[1]));
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+        Date lastDate = cal.getTime();
+        lastDate = getMaxDate(lastDate);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date firstDate = cal.getTime();
+        map.put("firstDate", firstDate);
+        map.put("lastDate", lastDate);
+        return map;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据日期获得其最大时间
+     *@Date: 9:29 2018\8\3 0003
+     */
+    public static Date getMaxDate(Date date) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String format = simpleDateFormat.format(date);
+        String[] split = format.split("/");
+        String str = split[0] + "/" + split[1] + "/" + split[2].substring(0, 2) + " 23:59:59";
+        Date parse = simpleDateFormat.parse(str);
+        return parse;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据日期获得某月的天数
+     *@Date: 11:24 2018\8\3 0003
+     */
+    public static Integer getDaysByDate(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String format = simpleDateFormat.format(date);
+        String[] split = format.split("/");
+        Integer year = Integer.parseInt(split[0]);
+        Integer month = Integer.parseInt(split[1]);
+        if(year==null || month==null){
+            return 0;
+        }else{
+            if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                return 31;
+            }
+            if(month==4||month==6||month==9||month==11){
+                return 30;
+            }
+            if(month==2){
+                int i = year%4;
+                int i2 = year%100;
+                int i3 = year%400;
+                if(i!=0){
+                    return 28;
+                }else if(i2!=0){
+                    return 29;
+                }else if(i3!=0){
+                    return 28;
+                }else if(i3==0){
+                    return 29;
+                }
+            }
+        }
+        return 0;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据时间获得天
+     *@Date: 11:43 2018\8\3 0003
+     */
+    public static Integer getMonthByDate(String str){
+        String[] split = str.split("/|-");
+        Integer day = Integer.parseInt(split[2].substring(0,2));
+        return day;
     }
 }

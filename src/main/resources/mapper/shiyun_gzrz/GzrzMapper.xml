@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.dao_shiyun.IGzrzDao">
+
+	<resultMap id="gzrzMapper" type="Gzrz">
+		<id property="id" column="ID_" />
+		<result property="starttime" column="F_TBRQ" />
+		<result property="truename" column="F_TBR_NAME" />
+		<result property="depname" column="F_TBBM_NAME" />
+		<result property="status" column="INST_STATUS_" />
+	</resultMap>
+
+	<select id="selectNamesByDateAndState" resultType="java.lang.String">
+		select distinct F_TBR_NAME from w_gzrz
+		where F_TBRQ BETWEEN #{date1} and #{date2}
+	</select>
+
+	<select id="selectDepnameByTruename" resultType="java.lang.String">
+		select distinct F_TBBM_NAME from w_gzrz
+		where F_TBR_NAME =#{truename}
+	</select>
+
+	<select id="selectGzrzWriteByDateAndStateAndTruename" resultMap="gzrzMapper">
+		select ID_, F_TBRQ,F_TBR_NAME,F_TBBM_NAME,INST_STATUS_ from w_gzrz
+		<where>
+			F_TBRQ BETWEEN #{date1} and #{date2}
+			<if test="status!=null">
+				AND INST_STATUS_ = #{status}
+			</if>
+			AND F_TBR_NAME = #{truename}
+		</where>
+	</select>
+
+</mapper>
