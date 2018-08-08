@@ -35,4 +35,7 @@ public interface PartnerMapper {
     List<Linkman> authorizeInfo(Linkman linkman);
 
     List<Linkman> otherName(Linkman linkman);
+
+    List<Partner> getPart();
+
 }

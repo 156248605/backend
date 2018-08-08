@@ -68,8 +68,6 @@ public class MaterialImpl implements MaterialService {
         String MAXLIMITC = request.getParameter("maxlimitC");
         String MINLIMIT = request.getParameter("minlimit");
         String MINLIMITC = request.getParameter("minlimitC");
-        /*String POSITION = request.getParameter("position");
-        String POSITIONC = request.getParameter("positionC");*/
         String NUM = request.getParameter("num");
         String NUMC = request.getParameter("numC");
         String UNIT = request.getParameter("unit");
@@ -94,8 +92,6 @@ public class MaterialImpl implements MaterialService {
             material.setIdC(IDC);
             material.setName(NAME);
             material.setNameC(NAMEC);
-            /*material.setsDate(SDATE);
-            material.seteDate(EDATE);*/
             material.setSpec(SPEC);
             material.setSpecC(SPECC);
             material.setMaterial(MAT);
@@ -112,8 +108,6 @@ public class MaterialImpl implements MaterialService {
             material.setPrice(PRICE);
             material.setPriceC(PRICEC);
             material.setRemark(REMARK);
-            /*material.setPosition(POSITION);
-            material.setPositionC(POSITIONC);*/
             material.setUnit(UNIT);
             material.setUnitC(UNITC);
             material.setNum(NUM);
@@ -153,39 +147,18 @@ public class MaterialImpl implements MaterialService {
         material.setSpec(request.getParameter("spec"));
         material.setCategory(request.getParameter("category"));
         material.setMaterial(request.getParameter("material"));
-        /*material.setPosition(request.getParameter("position"));*/
         material.setBrand(request.getParameter("brand"));
         material.setBSManage(request.getParameter("BSManage"));
         material.setNeedCheck(request.getParameter("needCheck"));
         material.setMaterialState(request.getParameter("materialState"));
         material.setSingleManage(request.getParameter("singleManage"));
         material.setNotSingle(request.getParameter("notSingle"));
-        /*String date = "";
-        String sDate = "";
-        if (request.getParameter("date") == null ){
-            System.out.println("...");
-        } else {
-            date = request.getParameter("date");
-            date = date.replace("Z", " UTC");//注意是空格+UTC
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-            Date d = format.parse(date);
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-            sDate = sdf.format(d);
-        }
-        material.setDate(sDate);*/
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
         material.setPrice(request.getParameter("price"));
-        /*material.setNum(request.getParameter("num"));*/
         material.setUnit(request.getParameter("unit"));
+        material.setRemark(request.getParameter("remark"));
         material.setOnlyId(onlyId);
-        /*String State = "";
-        if (request.getParameter("materialState") == null){
-            State = "启用";
-        }else {
-            State = request.getParameter("materialState");
-        }
-        material.setMaterialState(State);*/
         materialMapper.saveMaterial(material);
         Material material1 = new Material();
         material1.setId(request.getParameter("id"));
@@ -212,18 +185,10 @@ public class MaterialImpl implements MaterialService {
         material.setSpec(request.getParameter("spec"));
         material.setCategory(request.getParameter("category"));
         material.setMaterial(request.getParameter("material"));
-        /*material.setPosition(request.getParameter("position"));*/
         material.setBrand(request.getParameter("brand"));
         material.setPrice(request.getParameter("price"));
         material.setNum("0");
         material.setUnit(request.getParameter("unit"));
-        /*String date = request.getParameter("date");
-        date = date.replace("Z", " UTC");//注意是空格+UTC
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-        Date d = format.parse(date);
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        String sDate = sdf.format(d);
-        material.setDate(sDate);*/
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
         material.setBSManage(request.getParameter("BSManage"));

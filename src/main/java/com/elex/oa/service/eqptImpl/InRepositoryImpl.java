@@ -267,7 +267,7 @@ public class InRepositoryImpl implements InRepositoryService {
             }
             /*int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
             repository.setOnlyIdR(onlyIdR);
-            repositoryMapper.updRepository(repository);*/
+            repositor  yMapper.updRepository(repository);*/
             int onlyIdP = repositoryMapper.lockOnlyIdP(repository);
             repository.setOnlyIdP(onlyIdP);
             repositoryMapper.updPosition(repository);

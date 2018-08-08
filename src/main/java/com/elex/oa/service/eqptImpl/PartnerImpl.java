@@ -30,6 +30,12 @@ public class PartnerImpl implements PartnerService {
     }
 
     @Override
+    public List<Partner> getPart() {
+        List<Partner> listP = partnerMapper.getPart();
+        return listP;
+    }
+
+    @Override
     public PageInfo<Partner> searchPartner(Page page, HttpServletRequest request) {
         String pnCategory = request.getParameter("pnCategory");
         String pnCategoryC = request.getParameter("pnCateC");

@@ -165,6 +165,51 @@
             <if test="BSManage != null and BSManage != '' and BSManageC == 2">
                 AND BSManage NOT LIKE CONCAT(CONCAT('%', #{BSManage}), '%')
             </if>
+            <if test="unit != null and unit != '' and unitC == ''">
+                AND unit LIKE CONCAT(CONCAT('%', #{unit}), '%')
+            </if>
+            <if test="unit != null and unit != '' and unitC == 1">
+                AND unit LIKE CONCAT(CONCAT('%', #{unit}), '%')
+            </if>
+            <if test="unit != null and unit != '' and unitC == 2">
+                AND unit NOT LIKE CONCAT(CONCAT('%', #{unit}), '%')
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == ''">
+                AND maxlimit LIKE CONCAT(CONCAT('%', #{maxlimit}), '%')
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 1">
+                AND maxlimit &lt; #{maxlimit}
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 2">
+                AND maxlimit > #{maxlimit}
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 3">
+                AND maxlimit = #{maxlimit}
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 4">
+                AND maxlimit &lt;= #{maxlimit}
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 5">
+                AND maxlimit >= #{maxlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == ''">
+                AND minlimit LIKE CONCAT(CONCAT('%', #{minlimit}), '%')
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 1">
+                AND minlimit &lt; #{minlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 2">
+                AND minlimit > #{minlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 3">
+                AND minlimit = #{minlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 4">
+                AND minlimit &lt;= #{minlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 5">
+                AND minlimit >= #{minlimit}
+            </if>
         </where>
     </select>
 

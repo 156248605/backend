@@ -40,23 +40,6 @@ public class MaterialMtImpl implements MaterialMtService {
         String REPTIDC = request.getParameter("reptIdC");
         String POSTID = request.getParameter("postId");
         String POSTIDC = request.getParameter("postIdC");
-        /*String PRICE = request.getParameter("price");
-        String PRICEC = request.getParameter("priceC");
-        String PARTNER = request.getParameter("partner");
-        String MAXLIMIT = request.getParameter("maxlimit");
-        String MAXLIMITC = request.getParameter("maxlimitC");
-        String MINLIMIT = request.getParameter("minlimit");
-        String MINLIMITC = request.getParameter("minlimitC");
-        String BSMANAGE = request.getParameter("BSManage");
-        String BSMANAGEC = request.getParameter("BSManageC");
-        String NEEDCHECK = request.getParameter("needCheck");
-        String NEEDCHECKC = request.getParameter("needCheckC");
-        String MATERIALSTATE = request.getParameter("materialState");
-        String MATERIALSTATEC = request.getParameter("materialStateC");
-        String SINGLEMANAGE = request.getParameter("singleManage");
-        String SINGLEMANAGEC = request.getParameter("singleManageC");
-        String NOTSINGLE = request.getParameter("notSingle");
-        String NOTSINGLEC = request.getParameter("notSingleC");*/
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         if (ID.equals("") && NAME.equals("") && CATEGORY.equals("") && REPTID.equals("") ){
             List<Material> listM = materialMtMapper.detailList();
