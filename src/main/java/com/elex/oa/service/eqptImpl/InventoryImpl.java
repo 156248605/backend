@@ -9,7 +9,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InventoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.xml.internal.bind.v2.model.core.ID;
+/*import com.sun.xml.internal.bind.v2.model.core.ID;*/
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
