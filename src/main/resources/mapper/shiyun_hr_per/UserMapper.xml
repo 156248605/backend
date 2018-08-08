@@ -85,6 +85,7 @@
 			</if>
 			and u.state=1
 		</where>
+		ORDER BY u.id DESC
 	</select>
 
 </mapper>

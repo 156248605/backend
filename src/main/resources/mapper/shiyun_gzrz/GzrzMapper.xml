@@ -13,6 +13,7 @@
 	<select id="selectNamesByDateAndState" resultType="java.lang.String">
 		select distinct F_TBR_NAME from w_gzrz
 		where F_TBRQ BETWEEN #{date1} and #{date2}
+		ORDER BY ID_ DESC
 	</select>
 
 	<select id="selectDepnameByTruename" resultType="java.lang.String">
@@ -29,6 +30,7 @@
 			</if>
 			AND F_TBR_NAME = #{truename}
 		</where>
+		ORDER BY ID_ DESC
 	</select>
 
 </mapper>

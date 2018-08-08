@@ -111,7 +111,7 @@
 			</if>
 			AND c.enddate <![CDATA[>]]> #{curdate}
 		</where>
-		GROUP BY c.id
+		GROUP BY c.id DESC
 	</select>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">
@@ -159,6 +159,7 @@
 
 	<select id="selectAll" resultMap="ContractInformationResultMap">
 		SELECT * FROM tb_hr_contractinformation
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByUserid" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">

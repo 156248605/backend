@@ -18,6 +18,7 @@
 
 	<select id="selectAll" resultMap="SbjndMapper">
 		SELECT * FROM tb_hr_set_sbjnd
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByConditions" parameterType="HRsetSbjnd" resultMap="SbjndMapper">
