@@ -170,6 +170,12 @@ public class DepartmentInformationController {
             Dept dept,
             @RequestParam("transactorusername") String transactorusername
     ){
+        //先校验部门名称是否存在
+        Dept queryOneDepByDepname = iDeptService.queryOneDepByDepname(dept.getDepname());
+        if(queryOneDepByDepname!=null){
+            return "部门名称已存在，请重新输入部门名称！";
+        }
+
         /**1.添加新部门
          * 2.正职、副职、秘书的原部门信息修改、并添加相应的部门信息修改日志
          * 3.人事信息的修改、并添加相应的人事信息修改日志

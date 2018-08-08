@@ -138,6 +138,12 @@ public class PostInformationController {
             Post post,
             HttpServletRequest request
     ){
+        //校验岗位是否存在
+        Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
+        if(queryOneByPostname!=null){
+            return "岗位名称已存在，请重新输入!";
+        }
+
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         List<MultipartFile> dfs= multipartRequest.getFiles("df");
         if(dfs.size()!=0){
@@ -154,7 +160,9 @@ public class PostInformationController {
             }
         }
         HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryByFuctionaltype(post.getFunctionaltype());
-        post.setFunctionaltypeid(hRsetFunctionalType.getId());
+        if (hRsetFunctionalType!=null) {
+            post.setFunctionaltypeid(hRsetFunctionalType.getId());
+        }
         HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryByPostlevel(post.getPostlevel());
         post.setPostlevelid(hRsetPostlevel.getId());
         Integer postid = iPostService.addOne(post);
