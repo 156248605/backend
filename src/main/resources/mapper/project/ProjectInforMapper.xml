@@ -129,7 +129,7 @@
                 </foreach>
             </if>
             <if test="type == 2">
-                AND (project_manager = #{name} AND )
+                AND (project_manager = #{name} OR business_manager = #{name} )
             </if>
             <if test="type == 3">
                 AND project_members LIKE CONCAT('%',#{name},'%')
