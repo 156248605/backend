@@ -76,66 +76,69 @@
     </select>
 
     <select id="queryList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
-        SELECT project_code, project_name, in_department, project_status, dept_manager, proposer, write_date, business_manager, project_source, project_manager, project_type,
-        general_situation, amount, copies, project_members, project_member_id, related_members, related_member_id, party_name, party_address, party_phone, party_fax, head_name,
-        head_position, head_mobile, head_email, contact_name, contact_position, contact_mobile, contact_email FROM pro_pro_infor
+        SELECT infor.project_code, infor.project_name, infor.in_department, infor.project_status, infor.dept_manager, infor.proposer, infor.write_date, infor.business_manager,
+        infor.project_source, infor.project_manager, infor.project_type,
+        infor.general_situation, income.amount, income.copies, infor.project_members, infor.project_member_id, infor.related_members, infor.related_member_id, infor.party_name,
+        infor.party_address, infor.party_phone, infor.party_fax, infor.head_name,
+        infor.head_position, infor.head_mobile, infor.head_email, infor.contact_name, infor.contact_position, infor.contact_mobile, infor.contact_email
+        FROM pro_pro_infor infor LEFT JOIN pro_income income ON infor.project_code = income.project_code
         <where>
             <if test="select1 == 1 and input1 != ''">
-                AND project_code LIKE CONCAT('%',#{input1},'%')
+                AND infor.project_code LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="select1 == 2 and input1 != ''">
-                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+                AND infor.project_code NOT LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="select2 == 1 and input2 != ''">
-                AND project_name LIKE CONCAT('%',#{input2},'%')
+                AND infor.project_name LIKE CONCAT('%',#{input2},'%')
             </if>
             <if test="select2 == 2 and input2 != ''">
-                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+                AND infor.project_name NOT LIKE CONCAT('%',#{input2},'%')
             </if>
             <if test="select3 == 1 and input3 != ''">
-                AND in_department LIKE CONCAT('%',#{input3},'%')
+                AND infor.in_department LIKE CONCAT('%',#{input3},'%')
             </if>
             <if test="select3 == 2 and input3 != ''">
-                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+                AND infor.in_department NOT LIKE CONCAT('%',#{input3},'%')
             </if>
             <if test="list4 != null">
-                AND project_source IN
+                AND infor.project_source IN
                 <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="type != 2 and select5 == 1 and input5 != ''">
-                AND business_manager LIKE CONCAT('%',#{input5},'%')
+                AND infor.business_manager LIKE CONCAT('%',#{input5},'%')
             </if>
             <if test="type != 2 and select5 == 2 and input5 != ''">
-                AND business_manager NOT LIKE CONCAT('%',#{input5},'%')
+                AND infor.business_manager NOT LIKE CONCAT('%',#{input5},'%')
             </if>
             <if test="list6 != null">
-                AND project_type IN
+                AND infor.project_type IN
                 <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="type != 2 and select7 == 1 and input7 != ''">
-                AND project_manager LIKE CONCAT('%',#{input7},'%')
+                AND infor.project_manager LIKE CONCAT('%',#{input7},'%')
             </if>
             <if test="type != 2 and select7 == 2 and input7 != ''">
-                AND project_manager NOT LIKE CONCAT('%',#{input7},'%')
+                AND infor.project_manager NOT LIKE CONCAT('%',#{input7},'%')
             </if>
             <if test="list8 != null">
-                AND project_status IN
+                AND infor.project_status IN
                 <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="type == 2">
-                AND (project_manager = #{name} AND )
+                AND (infor.project_manager = #{name} OR infor.business_manager = #{name})
             </if>
             <if test="type == 3">
-                AND project_members LIKE CONCAT('%',#{name},'%')
+                AND infor.project_members LIKE CONCAT('%',#{name},'%')
             </if>
             <if test="type == 4">
-                AND related_members LIKE CONCAT('%',#{name},'%')
+                AND infor.related_members LIKE CONCAT('%',#{name},'%')
             </if>
         </where>
     </select>
