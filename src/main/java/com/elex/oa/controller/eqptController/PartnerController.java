@@ -45,8 +45,8 @@ public class PartnerController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void InsertPartner (Partner partner,HttpServletRequest request){
-        partnerImpl.insertPartner(partner,request);
+    public String InsertPartner (Partner partner,HttpServletRequest request){
+        return partnerImpl.insertPartner(partner,request);
     }
 
     @RequestMapping("/name")

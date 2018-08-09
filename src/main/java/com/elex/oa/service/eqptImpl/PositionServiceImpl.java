@@ -130,11 +130,13 @@ public class PositionServiceImpl implements PositionService {
         repository.setOnlyIdP( Integer.parseInt(request.getParameter("onlyIdP")) );
         positionMapper.changePosition(repository);
         Repository repository1 = positionMapper.locationPosition(repository);
-        Material material = new Material();
+        /*Material material = new Material();
         material.setReptId(repository1.getReptId());
-        material.setPostId(repository1.getPostId());
+        material.setPostId(repository1.getPostId());*/
+        String reptId = repository1.getReptId();
+        String postId = repository1.getPostId();
         String position = request.getParameter("postId");
-        materialMapper.updateDetail(material,position);
+        materialMapper.updateDetail(reptId,postId,position);
     }
 
 

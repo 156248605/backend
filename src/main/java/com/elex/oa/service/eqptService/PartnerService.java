@@ -17,7 +17,7 @@ public interface PartnerService {
 
     PageInfo<Partner> searchPartner(Page page, HttpServletRequest request);
 
-    void insertPartner(Partner partner,HttpServletRequest request);
+    String insertPartner(Partner partner,HttpServletRequest request);
 
     Partner name(HttpServletRequest request);
 

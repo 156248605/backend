@@ -401,6 +401,6 @@
     </select>
 
     <update id="updateDetail" parameterType="com.elex.oa.entity.eqpt.Material">
-        UPDATE eqpt_detail SET postId = #{position} WHERE reptId = #{reptId} AND postId = #{postId}
+        UPDATE eqpt_detail SET postId = #{arg2} WHERE reptId = #{arg0} AND postId = #{arg1}
     </update>
 </mapper>
