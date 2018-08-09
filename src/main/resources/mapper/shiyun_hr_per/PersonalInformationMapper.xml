@@ -228,6 +228,15 @@
 			per.id=#{id} and u.state = 1
 	</select>
 
+	<select id="selectByEmployeenumber" parameterType="java.lang.String" resultMap="PersonalInformationResultMap">
+		SELECT
+			*
+		FROM
+			tb_id_personalinformation
+		WHERE
+			employeenumber=#{employeenumber}
+	</select>
+
 	<select id="selectByUserid" parameterType="java.lang.Integer" resultMap="PersonalInformationResultMap">
 		SELECT
 			per.id,

@@ -175,7 +175,20 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     public List<PersonalInformation> queryByDepid(Integer depid){
         List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(depid);
         return personalInformationList;
-    };
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据员工号查询员工
+     *@Date: 10:02 2018\8\9 0009
+     */
+    @Override
+    public List<PersonalInformation> queryByEmployeenumber(String employeenumber) {
+        List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByEmployeenumber(employeenumber);
+        return personalInformationList;
+    }
+
+    ;
 
     /**
      *@Author:ShiYun;

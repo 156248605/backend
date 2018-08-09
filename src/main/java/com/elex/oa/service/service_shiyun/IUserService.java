@@ -4,6 +4,8 @@ package com.elex.oa.service.service_shiyun;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.BaseService;
 
+import java.util.List;
+
 /**
  * @Author:ShiYun;
  * @Description:用户（接口）
@@ -31,4 +33,11 @@ public interface IUserService extends BaseService<User> {
      *@Date: 11:16 2018\5\25 0025
      */
     public User queryByTruename(String truename);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据登录ID查询用户信息
+     *@Date: 10:15 2018\8\9 0009
+     */
+    public List<User> queryByUsername(String username);
 }

@@ -65,8 +65,11 @@ public class MileStoneImpl implements MileStoneService {
         if(codes.size() > 0) {
             operationQuery.setCodes(codes);
         }
+        System.out.println(operationQuery);
         PageHelper.startPage(currentPage,5);
+
         List<ProjectInfor> list = mileStoneDao.queryProjectList(operationQuery);
+        System.out.println(list);
         return new PageInfo(list);
     }
 

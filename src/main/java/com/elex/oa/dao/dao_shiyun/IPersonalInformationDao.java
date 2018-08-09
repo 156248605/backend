@@ -70,4 +70,11 @@ public interface IPersonalInformationDao{
      *@Date: 17:03 2018\6\20 0020
      */
     public void updateDeptinformation(PersonalInformation personalInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据员工号查询员工
+     *@Date: 9:59 2018\8\9 0009
+     */
+    public List<PersonalInformation> selectByEmployeenumber(String employeenumber);
 }

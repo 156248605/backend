@@ -56,6 +56,14 @@ public class ProjectBoardController {
         return projectBoardService.projectVarious(pageNum, status, type, department);
     }
 
+    //跟新人员信息
+    @RequestMapping("/update_staff")
+    @ResponseBody
+    public String updateStaff() {
+        projectBoardService.informationUpdate();
+        return "1";
+    }
+
     //查询所有人员
     @RequestMapping("/query_staff")
     @ResponseBody

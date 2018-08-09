@@ -145,7 +145,7 @@ public class ContractInformationController {
             ContractInformation contractInformation,
             @RequestParam("transactorusername") String transactorusername,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException, ParseException {
         //获得办理人ID
         User user = new User();
         user.setUsername(transactorusername);

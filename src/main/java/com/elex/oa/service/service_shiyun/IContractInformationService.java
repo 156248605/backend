@@ -4,6 +4,7 @@ import com.elex.oa.entity.entity_shiyun.ContractInformation;
 import com.elex.oa.util.util_shiyun.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public interface IContractInformationService {
      *@Description:添加合同信息并返回主键
      *@Date: 14:27 2018\4\20 0020
      */
-    public Integer addOne(ContractInformation contractInformation);
+    public Integer addOne(ContractInformation contractInformation) throws ParseException;
 
     /**
      *@Author:ShiYun;

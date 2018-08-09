@@ -20,56 +20,62 @@
         <result column="project_type" javaType="string" property="projectType"></result>
         <result column="general_situation" javaType="string" property="generalSituation"></result>
     </resultMap>
-    <select id="listQuery" parameterType="com.elex.oa.entity.project.NProjectQuery" resultMap="newProject">
-        SELECT id,project_code,project_name,in_department,write_date,project_manager,project_source,business_manager,project_type,general_situation FROM pro_new_project
+
+    <resultMap id="newProject1" type="com.elex.oa.entity.project.NewProject">
+        <result column="F_XMBH" javaType="string" property="projectCode"></result>
+        <result column="F_XMMC" javaType="string" property="projectName"></result>
+        <result column="F_SZBM_NAME" javaType="string" property="inDepartment"></result>
+        <result column="F_TXRQ" javaType="string" property="writeDate"></result>
+        <result column="F_XMJL_NAME" javaType="string" property="projectManager"></result>
+        <result column="F_XMLY" javaType="string" property="projectSource"></result>
+        <result column="F_SWJL_NAME" javaType="string" property="businessManager"></result>
+        <result column="F_XMLX" javaType="string" property="projectType"></result>
+    </resultMap>
+
+    <select id="listQuery" parameterType="com.elex.oa.entity.project.NProjectQuery" resultMap="newProject1">
+        SELECT F_XMBH, F_XMMC, F_TXRQ, F_XMLY, F_XMLX, F_SZBM_NAME, F_SWJL_NAME, F_XMJL_NAME FROM w_lxsqb
         <where>
             <if test="name != ''">
-                AND proposer = #{name}
-            </if>
-            <if test="select1 == '' and input1 != ''">
-                AND project_code = #{input1}
+                AND F_SQR_NAME = #{name}
             </if>
             <if test="select1 == 1 and input1 != ''">
-                AND project_code LIKE CONCAT('%',#{input1},'%')
+                AND F_XMBH LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="select1 == 2 and input1 != ''">
-                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
-            </if>
-            <if test="select2 == '' and input2 != ''">
-                AND project_name = #{input2}
+                AND F_XMBH NOT LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="select2 == 1 and input2 != ''">
-                AND project_name LIKE CONCAT('%',#{input2},'%')
+                AND F_XMMC LIKE CONCAT('%',#{input2},'%')
             </if>
             <if test="select2 == 2 and input2 != ''">
-                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+                AND F_XMMC NOT LIKE CONCAT('%',#{input2},'%')
             </if>
             <if test="date31 != null and date32 != null">
-                AND write_date BETWEEN #{date31} AND #{date32}
+                AND F_TXRQ BETWEEN #{date31} AND #{date32}
             </if>
             <if test="list4 != null ">
-                AND project_source IN
+                AND F_XMLY IN
                 <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="list5 != null">
-                AND project_type IN
+                AND F_XMLX IN
                 <foreach collection="list5" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="select7 == 1 and input7 != ''">
-                AND business_manager LIKE CONCAT('%',#{input7},'%')
+                AND F_SWJL_NAME LIKE CONCAT('%',#{input7},'%')
             </if>
             <if test="select7 == 2 and input7 != ''">
-                AND business_manager LIKE CONCAT('%',#{input7},'%')
+                AND F_SWJL_NAME LIKE CONCAT('%',#{input7},'%')
             </if>
             <if test="select8 == 1 and input8 != ''">
-                AND project_manager LIKE CONCAT('%',#{input8},'%')
+                AND F_XMJL_NAME LIKE CONCAT('%',#{input8},'%')
             </if>
             <if test="select8 == 2 and input8 != ''">
-                AND project_manager LIKE CONCAT('%',#{input8},'%')
+                AND F_XMJL_NAME LIKE CONCAT('%',#{input8},'%')
             </if>
         </where>
     </select>

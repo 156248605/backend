@@ -136,6 +136,9 @@ public class IDcodeUtil {
      *@Date: 19:15 2018\5\16 0016
      */
     public static String getAge(String birthday) throws ParseException {
+        if(birthday==null){
+            return null;
+        }
         SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
         java.util.Date date=new Date();
         java.util.Date mydate= myFormatter.parse(birthday);

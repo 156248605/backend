@@ -57,6 +57,8 @@ public class ContractInformation implements Serializable{
         this.curdate = sdf.format(new Date());
     }
 
+
+
     public List<String> getContractcodes() {
         return contractcodes;
     }
