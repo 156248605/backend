@@ -36,6 +36,11 @@
 		WHERE truename=#{truename}
 	</select>
 
+	<select id="selectByUsername" resultType="java.lang.String" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE username=#{username}
+	</select>
+
 	<update id="deleteById" parameterType="java.lang.Integer" >
 		UPDATE tb_id_user
 		SET state=0
