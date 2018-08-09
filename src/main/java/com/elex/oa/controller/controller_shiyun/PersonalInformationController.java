@@ -680,7 +680,7 @@ public class PersonalInformationController {
         personalInformation.setBaseinformationid(baseInformationId);
         Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
         projectBoardService.informationUpdate();
-        return userid;
+        return "提交成功！";
     }
 
     /**
