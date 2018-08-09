@@ -79,7 +79,9 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         //获得工号
         contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
         //获得合同类型
-        contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+        if (ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid())!=null) {
+            contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+        }
         //获得办理人姓名
         contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
         //获得合同期限
