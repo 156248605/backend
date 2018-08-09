@@ -10,11 +10,14 @@ public class ApprovalList {
     private String projectSource; //项目来源
     private String projectType; //项目类型
     private String inDepartment; //立项部门
+    private String deptManager; //申请人的部门经理
     private String proposer; //申请人
     private String department1;
     private String businessManager; //商务经理
+    private String businessManagerId; //商务经理编码
     private String department2;
     private String projectManager; //项目经理
+    private String projectManagerId; //项目经理编码
     private String generalSituation; //项目概况
     private String departmentManager; //部门经理
     private String leaderShip; //分管领导
@@ -25,7 +28,7 @@ public class ApprovalList {
     public ApprovalList() {
     }
 
-    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String passDate, String projectSource, String projectType, String inDepartment, String proposer, String department1, String businessManager, String department2, String projectManager, String generalSituation, String departmentManager, String leaderShip, String reviewSign, String generalManager, String distribution) {
+    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String passDate, String projectSource, String projectType, String inDepartment, String deptManager, String proposer, String department1, String businessManager, String businessManagerId, String department2, String projectManager, String projectManagerId, String generalSituation, String departmentManager, String leaderShip, String reviewSign, String generalManager, String distribution) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -34,11 +37,14 @@ public class ApprovalList {
         this.projectSource = projectSource;
         this.projectType = projectType;
         this.inDepartment = inDepartment;
+        this.deptManager = deptManager;
         this.proposer = proposer;
         this.department1 = department1;
         this.businessManager = businessManager;
+        this.businessManagerId = businessManagerId;
         this.department2 = department2;
         this.projectManager = projectManager;
+        this.projectManagerId = projectManagerId;
         this.generalSituation = generalSituation;
         this.departmentManager = departmentManager;
         this.leaderShip = leaderShip;
@@ -111,6 +117,14 @@ public class ApprovalList {
         this.inDepartment = inDepartment;
     }
 
+    public String getDeptManager() {
+        return deptManager;
+    }
+
+    public void setDeptManager(String deptManager) {
+        this.deptManager = deptManager;
+    }
+
     public String getProposer() {
         return proposer;
     }
@@ -135,6 +149,14 @@ public class ApprovalList {
         this.businessManager = businessManager;
     }
 
+    public String getBusinessManagerId() {
+        return businessManagerId;
+    }
+
+    public void setBusinessManagerId(String businessManagerId) {
+        this.businessManagerId = businessManagerId;
+    }
+
     public String getDepartment2() {
         return department2;
     }
@@ -149,6 +171,14 @@ public class ApprovalList {
 
     public void setProjectManager(String projectManager) {
         this.projectManager = projectManager;
+    }
+
+    public String getProjectManagerId() {
+        return projectManagerId;
+    }
+
+    public void setProjectManagerId(String projectManagerId) {
+        this.projectManagerId = projectManagerId;
     }
 
     public String getGeneralSituation() {
@@ -210,11 +240,14 @@ public class ApprovalList {
                 ", projectSource='" + projectSource + '\'' +
                 ", projectType='" + projectType + '\'' +
                 ", inDepartment='" + inDepartment + '\'' +
+                ", deptManager='" + deptManager + '\'' +
                 ", proposer='" + proposer + '\'' +
                 ", department1='" + department1 + '\'' +
                 ", businessManager='" + businessManager + '\'' +
+                ", businessManagerId='" + businessManagerId + '\'' +
                 ", department2='" + department2 + '\'' +
                 ", projectManager='" + projectManager + '\'' +
+                ", projectManagerId='" + projectManagerId + '\'' +
                 ", generalSituation='" + generalSituation + '\'' +
                 ", departmentManager='" + departmentManager + '\'' +
                 ", leaderShip='" + leaderShip + '\'' +

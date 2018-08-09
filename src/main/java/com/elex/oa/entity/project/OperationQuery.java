@@ -9,15 +9,15 @@ public class OperationQuery {
     private String input2;
     private String select3; //立项部门
     private String input3;
-    private String select4; //项目状态
+    private String select4;
     private List<String> list4;
-    private String select5; //项目经理
+    private String select5;
     private String input5;
-    private String select6; //项目来源
+    private String select6;
     private List<String> list6;
-    private String select7; //商务经理
+    private String select7;
     private String input7;
-    private String select8; //项目类型
+    private String select8;
     private List<String> list8;
     private String type;
     private String name;
