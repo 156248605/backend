@@ -79,7 +79,9 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         //获得工号
         contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
         //获得合同类型
-        contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+        if (ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid())!=null) {
+            contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+        }
         //获得办理人姓名
         contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
         //获得合同期限
@@ -160,7 +162,11 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     @Override
     public Integer addOne(ContractInformation contractInformation) throws ParseException {
         String contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
-        contractInformation.setContractage(contractage);
+        if (contractage!=null && !contractage.equals("")) {
+            contractInformation.setContractage(contractage);
+        }else {
+            contractInformation.setContractage("0");
+        }
         Integer integer = iContractInformationDao.insertOne(contractInformation);
         return contractInformation.getId();
     }

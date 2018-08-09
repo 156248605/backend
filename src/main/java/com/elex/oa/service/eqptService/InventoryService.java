@@ -6,6 +6,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
 public interface InventoryService {
@@ -48,4 +49,9 @@ public interface InventoryService {
     // 打开草稿
     List<Repository> openDraft(HttpServletRequest request);
 
+
+    // 定时流程
+    void insertInv();
+
+    List<HashMap<String, Object>> testInv();
 }

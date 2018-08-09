@@ -251,7 +251,11 @@ public class IDcodeUtil {
         if(month>=1){
             str = str + month + "月";
         }
-        return str;
+        if (str!=null && !str.trim().equals("")) {
+            return str;
+        } else {
+            return "0";
+        }
     }
 
     /**

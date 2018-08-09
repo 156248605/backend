@@ -378,7 +378,9 @@ public class PersonalInformationController {
                 personalInformation.setZyzsname(ihRsetZyzsnameService.queryById(baseInformation.getZyzsnameid()).getZyzsname());
             }
             personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
-            personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+            if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
+                personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+            }
             if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
                 personalInformation.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
             }
@@ -680,7 +682,7 @@ public class PersonalInformationController {
         personalInformation.setBaseinformationid(baseInformationId);
         Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
         projectBoardService.informationUpdate();
-        return userid;
+        return "提交成功！";
     }
 
     /**

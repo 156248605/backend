@@ -10,6 +10,7 @@ import com.elex.oa.service.eqptService.InventoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 /*import com.sun.xml.internal.bind.v2.model.core.ID;*/
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +28,12 @@ public class InventoryImpl implements InventoryService {
 
     @Resource
     private InventoryMapper inventoryMapper;
+
+    @Override
+    public List<HashMap<String, Object>> testInv(){
+        List<HashMap<String, Object>> list = inventoryMapper.test();
+        return list;
+    }
 
     // 显示所有信息
     @Override
@@ -92,6 +99,39 @@ public class InventoryImpl implements InventoryService {
         }
 
     }
+
+    // 定时流程
+    @Override
+    public void insertInv(){
+        String INST_STATUS_ = "SUCCESS_END";
+        List<Repository> list = inventoryMapper.invInfo(INST_STATUS_);
+        for (int i = 0; i < list.size(); i++){
+            /*Repository repository = new Repository();
+            repository.setInvId(request.getParameter("invId"));
+            String date = request.getParameter("invTime");
+            date = date.replace("Z", " UTC");// 注意是空格+UTC
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
+            Date d = format.parse(date);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String sDate = sdf.format(d);
+            repository.setInvTime(sDate);
+            repository.setMaterialId(list.get(i).get("theMatId").toString());
+            repository.setMaterialName(list.get(i).get("theMatName").toString());
+            repository.setReptId(list.get(i).get("theMatRept").toString());
+            repository.setPosition(list.get(i).get("theMatPost").toString());
+            repository.setPrice(list.get(i).get("theMatPrice").toString());
+            repository.setNum(list.get(i).get("theMatNum").toString());
+            repository.setNumInv(list.get(i).get("theMatNumInv").toString());
+            repository.setPal(request.getParameter("pal"));
+            repository.setPalCal(request.getParameter("palCal"));
+            repository.setSpec(list.get(i).get("theMatSpec").toString());
+            repository.setCategory(list.get(i).get("theMatCate").toString());
+            repository.setRemark("");
+            repository.setReptState("1");
+            inventoryMapper.insert(repository);*/
+        }
+    }
+
 
     // 插入数据
     @Override
@@ -283,4 +323,6 @@ public class InventoryImpl implements InventoryService {
         List<Repository> list = inventoryMapper.openDraft(repository);
         return list;
     }
+
+
 }

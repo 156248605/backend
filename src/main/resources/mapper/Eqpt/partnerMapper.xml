@@ -257,67 +257,67 @@
     <update id="changePartner" parameterType="com.elex.oa.entity.eqpt.Partner">
         UPDATE eqpt_partner
         <set>
-            <if test="pnCategory != null and pnCategory != ''">
+            <if test="pnCategory != null">
                 pnCategory = #{pnCategory},
             </if>
-            <if test="pnId != null and pnId != ''">
+            <if test="pnId != null">
                 pnId = #{pnId},
             </if>
-            <if test="company != null and company != ''">
+            <if test="company != null">
                 company = #{company},
             </if>
-            <if test="corp != null and corp != ''">
+            <if test="corp != null">
                 corp = #{corp},
             </if>
-            <if test="comAddr != null and comAddr != ''">
+            <if test="comAddr != null">
                 comAddr = #{comAddr},
             </if>
-            <if test="comTel != null and comTel != ''">
+            <if test="comTel != null">
                 comTel = #{comTel},
             </if>
-            <if test="capital != null and capital != ''">
+            <if test="capital != null">
                 capital = #{capital},
             </if>
-            <if test="staffNum != null and staffNum != ''">
+            <if test="staffNum != null">
                 staffNum = #{staffNum},
             </if>
-            <if test="sales != null and sales != ''">
+            <if test="sales != null">
                 sales = #{sales},
             </if>
-            <if test="brief != null and brief != ''">
+            <if test="brief != null">
                 brief = #{brief},
             </if>
-            <if test="industry != null and industry != ''">
+            <if test="industry != null">
                 industry = #{industry},
             </if>
-            <if test="area != null and area != ''">
+            <if test="area != null">
                 area = #{area},
             </if>
-            <if test="authorize != null and authorize != ''">
+            <if test="authorize != null">
                 authorize = #{authorize},
             </if>
-            <if test="auId != null and auId != ''">
+            <if test="auId != null">
                 auId = #{auId},
             </if>
-            <if test="auJob != null and auJob != ''">
+            <if test="auJob != null">
                 auJob = #{auJob},
             </if>
-            <if test="auTel != null and auTel != ''">
+            <if test="auTel != null">
                 auTel = #{auTel},
             </if>
-            <if test="auMail != null and auMail != ''">
+            <if test="auMail != null">
                 auMail = #{auMail},
             </if>
-            <if test="auQq != null and auQq != ''">
+            <if test="auQq != null">
                 auQq = #{auQq},
             </if>
-            <if test="auWechat != null and auWechat != ''">
+            <if test="auWechat != null">
                 auWechat = #{auWechat},
             </if>
-            <if test="auAddr != null and auAddr != ''">
+            <if test="auAddr != null">
                 auAddr = #{auAddr},
             </if>
-            <if test="otherLink != null and otherLink != ''">
+            <if test="otherLink != null">
                 otherLink = #{otherLink}
             </if>
         </set>

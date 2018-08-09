@@ -28,14 +28,11 @@ public class RepositoryController {
     @Resource
     private RepositoryImpl repositoryImpl;
 
-    @Autowired
-    private ProjectBoardService projectBoardService;
 
     @RequestMapping("/list")
     @ResponseBody
     public PageInfo<Repository> repositoryList(Page page){
         PageInfo<Repository> list = repositoryImpl.showRepository(page);
-        projectBoardService.informationUpdate();
         return list;
     }
 
