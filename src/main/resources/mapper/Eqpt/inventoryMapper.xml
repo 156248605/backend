@@ -51,7 +51,7 @@
     </select>
 
     <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT reptId FROM eqpt_repository
+        SELECT DISTINCT eqpt_detail.reptId,eqpt_repository.reptId FROM eqpt_repository,eqpt_detail WHERE eqpt_detail.reptId = eqpt_repository.reptId
     </select>
 
     <select id="search" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
