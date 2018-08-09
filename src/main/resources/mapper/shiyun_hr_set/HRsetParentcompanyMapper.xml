@@ -18,6 +18,7 @@
 
 	<select id="selectAll" resultMap="ParentcompanyMapper">
 		SELECT * FROM tb_hr_set_parentcompanyname
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByConditions" parameterType="HRsetParentcompany" resultMap="ParentcompanyMapper">

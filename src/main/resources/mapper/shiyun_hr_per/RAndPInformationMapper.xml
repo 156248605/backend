@@ -39,6 +39,7 @@
 
 	<select id="selectAll" resultMap="rAndPInformationMapper">
 		select * from tb_hr_randpinformation
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByCondition" parameterType="RAndPInformation" resultMap="rAndPInformationMapper">
@@ -69,6 +70,7 @@
 				and transactoruserid=#{transactoruserid}
 			</if>
 		</where>
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectOneById" parameterType="java.lang.Integer" resultMap="rAndPInformationMapper">

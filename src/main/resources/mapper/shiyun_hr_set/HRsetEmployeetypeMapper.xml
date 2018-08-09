@@ -18,6 +18,7 @@
 
 	<select id="selectAll" resultMap="EmployeetypeMapper">
 		SELECT * FROM tb_hr_set_employeetype
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByConditions" parameterType="HRsetEmployeetype" resultMap="EmployeetypeMapper">

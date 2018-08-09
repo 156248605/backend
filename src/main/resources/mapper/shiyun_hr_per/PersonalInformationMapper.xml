@@ -144,7 +144,7 @@
 			</if>
 			and u.state = 1
 		</where>
-		GROUP BY per.id
+		GROUP BY per.id DESC
 	</select>
 
 	<select id="selectByConditions2" parameterType="DimissionInformation" resultMap="PersonalInformationResultMap">
@@ -205,7 +205,7 @@
 				</foreach>
 			</if>
 		</where>
-		GROUP BY per.id
+		GROUP BY per.id DESC
 	</select>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="PersonalInformationResultMap">
@@ -344,6 +344,7 @@
 			 JOIN tb_id_user u ON per.userid = u.id
 		WHERE
 			u.state = 1 or u.state=0
+		ORDER BY per.id DESC
 	</select>
 
 	<update id="updateDeptinformation" parameterType="PersonalInformation">

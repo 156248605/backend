@@ -54,15 +54,17 @@ public class GzrzServiceImpl implements IGzrzService {
                 gzrzVO.setDepname(s1);
                 //添加工作日志数量
                 List<Gzrz> gzrzs = iGzrzDao.selectGzrzWriteByDateAndStateAndTruename(firstDate, lastDate, null, s);
-                gzrzVO.setWorkday(gzrzs.size());
+                int[] arr = new int[31];
+                /*gzrzVO.setWorkday(gzrzs.size());*/
                 //添加休息日
                 Integer daysByDate = IDcodeUtil.getDaysByDate(date);
-                gzrzVO.setWeekday(daysByDate-gzrzs.size());
+                /*gzrzVO.setWeekday(daysByDate-gzrzs.size());*/
                 //判断哪天填写了日志
                 for (Gzrz gzrz:gzrzs
                      ) {
                     String starttime = gzrz.getStarttime();
                     Integer month = IDcodeUtil.getMonthByDate(starttime);//方法名写错，获得是哪一天
+                    arr[month] = 1;
                     if(month==1){
                         gzrzVO.setD1("√");
                     }
@@ -157,7 +159,14 @@ public class GzrzServiceImpl implements IGzrzService {
                         gzrzVO.setD31("√");
                     }
                 }
-                if (gzrzs.size()!=0) {
+                int count = 0;
+                for (int i:arr
+                     ) {
+                    count = count + i;
+                }
+                gzrzVO.setWorkday(count);
+                gzrzVO.setWeekday(daysByDate-count);
+                if (count!=0) {
                     gzrzVOList.add(gzrzVO);
                 }
             }

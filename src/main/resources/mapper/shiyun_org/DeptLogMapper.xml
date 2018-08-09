@@ -141,7 +141,7 @@
 				</if>
 			</if>
 		</where>
-		GROUP BY dlog.id
+		GROUP BY dlog.id DESC
 	</select>
 
 	<delete id="deleteOne" parameterType="java.lang.Integer" >

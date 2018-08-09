@@ -136,11 +136,12 @@
 				</if>
 			</if>
 		</where>
-		GROUP BY c.id
+		GROUP BY c.id DESC
 	</select>
 
 	<select id="selectAll" resultMap="changeInformationResultMap">
 		SELECT * FROM tb_hr_changeinformation
+		ORDER BY id DESC
 	</select>
 
 	<delete id="deleteOne" parameterType="java.lang.Integer" >
