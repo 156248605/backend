@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -106,5 +107,11 @@ public class InventoryController {
     @ResponseBody
     public void changeDraft(HttpServletRequest request) throws ParseException{
         inventoryImpl.changeInfo(request);
+    }
+
+    @RequestMapping("/testInv")
+    @ResponseBody
+    public List<HashMap<String, Object>> testInv(){
+        return inventoryImpl.testInv();
     }
 }

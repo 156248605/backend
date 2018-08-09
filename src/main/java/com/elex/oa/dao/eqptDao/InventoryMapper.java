@@ -4,6 +4,7 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -47,4 +48,9 @@ public interface InventoryMapper {
 
     // 更新
     void changeInvD(Repository repository);
+
+    // 获取流程信息
+    List<Repository> invInfo(String INST_STATUS_);
+
+    List<HashMap<String, Object>> test();
 }
