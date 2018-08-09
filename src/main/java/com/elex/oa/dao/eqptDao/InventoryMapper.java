@@ -17,18 +17,34 @@ public interface InventoryMapper {
 
     // 删除盘点信息
     void delete(Repository repository);
+    void deleteD(Repository repository);
 
     // 插入盘点信息
     void insert(Repository repository);
 
     // 确定盘点单号
     List showINVID(Repository repository);
+    List showINVIDd(Repository repository);
 
     // 仓库里需要盘点的物料
     List<Material> matinrept(Material material);
+
+    // 打开草稿内容
+    List<Repository> openDraft(Repository repository);
 
     List<Material> chooseMat(Material material);
 
     List<Repository> reptlist();
 
+    // 暂存草稿
+    void insertDraft(Repository repository);
+
+    // 判断是否为草稿
+    List<Repository> checkDraft(Repository repository);
+
+    // 删除草稿
+    void deleteDraft(Repository repository);
+
+    // 更新
+    void changeInvD(Repository repository);
 }

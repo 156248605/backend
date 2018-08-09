@@ -69,4 +69,11 @@ public interface IPersonalInformationService{
      *@Date: 16:23 2018\5\28 0028
      */
     public List<PersonalInformation> queryByDepid(Integer depid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据员工号查询员工
+     *@Date: 10:01 2018\8\9 0009
+     */
+    public List<PersonalInformation> queryByEmployeenumber(String employeenumber);
 }

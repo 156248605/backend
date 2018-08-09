@@ -18,6 +18,7 @@
 
 	<select id="selectAll" resultMap="CustomwelfareleaveMapper">
 		SELECT * FROM tb_hr_set_customwelfareleave
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByConditions" parameterType="HRsetCustomwelfareleave" resultMap="CustomwelfareleaveMapper">

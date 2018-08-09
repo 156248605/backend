@@ -158,7 +158,9 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      *@Date: 14:28 2018\4\20 0020
      */
     @Override
-    public Integer addOne(ContractInformation contractInformation) {
+    public Integer addOne(ContractInformation contractInformation) throws ParseException {
+        String contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+        contractInformation.setContractage(contractage);
         Integer integer = iContractInformationDao.insertOne(contractInformation);
         return contractInformation.getId();
     }

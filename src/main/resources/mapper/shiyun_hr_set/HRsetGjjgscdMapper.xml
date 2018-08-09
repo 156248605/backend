@@ -18,6 +18,7 @@
 
 	<select id="selectAll" resultMap="GjjgscdMapper">
 		SELECT * FROM tb_hr_set_gjjgscd
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByConditions" parameterType="HRsetGjjgscd" resultMap="GjjgscdMapper">

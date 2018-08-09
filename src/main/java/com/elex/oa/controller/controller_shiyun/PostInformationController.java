@@ -138,6 +138,12 @@ public class PostInformationController {
             Post post,
             HttpServletRequest request
     ){
+        //校验岗位是否存在
+        Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
+        if(queryOneByPostname!=null){
+            return "岗位名称已存在，请重新输入!";
+        }
+
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         List<MultipartFile> dfs= multipartRequest.getFiles("df");
         if(dfs.size()!=0){
@@ -154,7 +160,9 @@ public class PostInformationController {
             }
         }
         HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryByFuctionaltype(post.getFunctionaltype());
-        post.setFunctionaltypeid(hRsetFunctionalType.getId());
+        if (hRsetFunctionalType!=null) {
+            post.setFunctionaltypeid(hRsetFunctionalType.getId());
+        }
         HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryByPostlevel(post.getPostlevel());
         post.setPostlevelid(hRsetPostlevel.getId());
         Integer postid = iPostService.addOne(post);
@@ -482,7 +490,7 @@ public class PostInformationController {
         for(int i = 0;i<posts.size();i++){
             TitleAndCode titleAndCode = new TitleAndCode();
             titleAndCode.setTitle(posts.get(i).getPostname());
-            titleAndCode.setCode((i+1)*10);
+            titleAndCode.setCode(posts.get(i).getOrdercode());
             list.add(titleAndCode);
         }
         return list;
@@ -512,6 +520,14 @@ public class PostInformationController {
                     return o1.getCode().compareTo(o2.getCode());
                 }
             });
+        }
+        for (TitleAndCode t:list
+             ) {
+            Post post = iPostService.queryOneByPostname(t.getTitle());
+            Post post1 = new Post();
+            post1.setId(post.getId());
+            post1.setOrdercode(t.getCode());
+            iPostService.modifyOne(post1);
         }
         //再换节点
         //首先将父节点是定点的情况去除

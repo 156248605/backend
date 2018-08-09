@@ -9,6 +9,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InventoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+/*import com.sun.xml.internal.bind.v2.model.core.ID;*/
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 @Service
 public class InventoryImpl implements InventoryService {
@@ -114,31 +117,107 @@ public class InventoryImpl implements InventoryService {
             repository.setNumInv(listINV.get(i).get("theMatNumInv").toString());
             repository.setPal(request.getParameter("pal"));
             repository.setPalCal(request.getParameter("palCal"));
+            repository.setSpec(listINV.get(i).get("theMatSpec").toString());
+            repository.setCategory(listINV.get(i).get("theMatCate").toString());
             repository.setRemark("");
+            repository.setReptState("1");
             inventoryMapper.insert(repository);
+        }
+    }
+
+    // 暂存数据
+    @Override
+    public void saveInfo(HttpServletRequest request) throws ParseException{
+        String INVLIST = request.getParameter("invList");
+        List<HashMap> listINV =JSON.parseArray(INVLIST, HashMap.class);
+        for (int i = 0; i < listINV.size(); i++){
+            Repository repository = new Repository();
+            repository.setInvId(request.getParameter("invId"));
+            String date = request.getParameter("invTime");
+            date = date.replace("Z", " UTC");// 注意是空格+UTC
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
+            Date d = format.parse(date);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String sDate = sdf.format(d);
+            repository.setInvTime(sDate);
+            repository.setMaterialId(listINV.get(i).get("theMatId").toString());
+            repository.setMaterialName(listINV.get(i).get("theMatName").toString());
+            repository.setReptId(listINV.get(i).get("theMatRept").toString());
+            repository.setPosition(listINV.get(i).get("theMatPost").toString());
+            repository.setPrice(listINV.get(i).get("theMatPrice").toString());
+            repository.setNum(listINV.get(i).get("theMatNum").toString());
+            repository.setNumInv(listINV.get(i).get("theMatNumInv").toString());
+            repository.setSpec(listINV.get(i).get("theMatSpec").toString());
+            repository.setCategory(listINV.get(i).get("theMatCate").toString());
+            repository.setPal(request.getParameter("pal"));
+            repository.setPalCal(request.getParameter("palCal"));
+            repository.setRemark("");
+            inventoryMapper.insertDraft(repository);
         }
     }
 
     // 删除数据
     @Override
-    public void deleteInfo(HttpServletRequest request) {
+    public void deleteInfo(HttpServletRequest request){
         String onlyIdInv = request.getParameter("onlyIdInv");
+        String invId = request.getParameter("invId");
         Repository repository = new Repository();
-        repository.setOnlyIdInv( Integer.parseInt(onlyIdInv) );
+        repository.setOnlyIdInv( parseInt(onlyIdInv) );
+        repository.setInvId(invId);
         inventoryMapper.delete(repository);
+        inventoryMapper.deleteD(repository);
     }
 
     @Override
-    public void changeInfo(HttpServletRequest request) {
+    public void changeInfo(HttpServletRequest request) throws ParseException{
+        String INVLIST = request.getParameter("invList");
+        List<HashMap> listINV =JSON.parseArray(INVLIST, HashMap.class);
+        for (int i = 0; i < listINV.size(); i++){
+            Repository repository = new Repository();
+            repository.setInvId(request.getParameter("invId"));
+            String date = request.getParameter("invTime");
+            date = date.replace("Z", " UTC");// 注意是空格+UTC
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
+            Date d = format.parse(date);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String sDate = sdf.format(d);
+            repository.setInvTime(sDate);
+            repository.setMaterialId(listINV.get(i).get("theMatId").toString());
+            repository.setMaterialName(listINV.get(i).get("theMatName").toString());
+            repository.setReptId(listINV.get(i).get("theMatRept").toString());
+            repository.setPosition(listINV.get(i).get("theMatPost").toString());
+            repository.setPrice(listINV.get(i).get("theMatPrice").toString());
+            repository.setNum(listINV.get(i).get("theMatNum").toString());
+            repository.setNumInv(listINV.get(i).get("theMatNumInv").toString());
+            repository.setSpec(listINV.get(i).get("theMatSpec").toString());
+            repository.setCategory(listINV.get(i).get("theMatCate").toString());
+            repository.setPal(request.getParameter("pal"));
+            repository.setPalCal(request.getParameter("palCal"));
+            repository.setRemark(listINV.get(i).get("theMatRemark").toString());
+            inventoryMapper.changeInvD(repository);
+        }
     }
 
     @Override
-    public List showInvId(HttpServletRequest request) {
+    public List showInvId(HttpServletRequest request){
         String dateToId = request.getParameter("date");
         Repository repository = new Repository();
         repository.setInvId(dateToId);
         List showInvId = inventoryMapper.showINVID(repository);
-        return showInvId;
+        List showInvIdD = inventoryMapper.showINVIDd(repository);
+        String result1 = "0";
+        String result2 = "0";
+        if (showInvId.size() > 0){
+            result1 = showInvId.get(showInvId.size()-1).toString();
+        }
+        if (showInvIdD.size() > 0) {
+            result2 = showInvIdD.get(showInvIdD.size()-1).toString();
+        }
+        if (parseInt(result2) > parseInt(result1)) {
+            return showInvIdD;
+        } else {
+            return showInvId;
+        }
     }
 
     @Override
@@ -170,5 +249,38 @@ public class InventoryImpl implements InventoryService {
     public List<Repository> ReptList() {
         List<Repository> reptlist = inventoryMapper.reptlist();
         return reptlist;
+    }
+
+    @Override
+    public String checkDraft(HttpServletRequest request){
+        String id = request.getParameter("id");
+        List<HashMap> ID =JSON.parseArray(id, HashMap.class);
+        Repository repository = new Repository();
+        repository.setInvId(ID.get(0).get("invId").toString());
+        List<Repository> result = inventoryMapper.checkDraft(repository);
+        if (result.size() > 0){
+            return "1";
+        }else {
+            return "0";
+        }
+    }
+
+    @Override
+    public void deleteDraft(HttpServletRequest request){
+        String id = request.getParameter("id");
+        /*List<HashMap> ID =JSON.parseArray(id, HashMap.class);*/
+        Repository repository = new Repository();
+        repository.setInvId(id);
+        inventoryMapper.deleteDraft(repository);
+    }
+
+    @Override
+    public List<Repository> openDraft(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        List<HashMap> ID =JSON.parseArray(id, HashMap.class);
+        Repository repository = new Repository();
+        repository.setInvId(ID.get(0).get("invId").toString());
+        List<Repository> list = inventoryMapper.openDraft(repository);
+        return list;
     }
 }

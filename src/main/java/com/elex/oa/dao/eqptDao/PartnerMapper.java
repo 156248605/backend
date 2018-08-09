@@ -15,6 +15,8 @@ public interface PartnerMapper {
 
     List<Partner> searchPartner(Partner partner);
 
+    List<Partner> check(Partner partner);
+
     void insertPartner(Partner partner);
 
     void changePartner(Partner partner);
@@ -35,4 +37,7 @@ public interface PartnerMapper {
     List<Linkman> authorizeInfo(Linkman linkman);
 
     List<Linkman> otherName(Linkman linkman);
+
+    List<Partner> getPart();
+
 }

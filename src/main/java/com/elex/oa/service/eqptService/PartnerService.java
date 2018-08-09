@@ -13,9 +13,11 @@ public interface PartnerService {
 
     PageInfo<Partner> showPartner(Page page);
 
-    PageInfo<Partner> searchPartner(Page page,HttpServletRequest request);
+    List<Partner> getPart();
 
-    void insertPartner(Partner partner,HttpServletRequest request);
+    PageInfo<Partner> searchPartner(Page page, HttpServletRequest request);
+
+    String insertPartner(Partner partner,HttpServletRequest request);
 
     Partner name(HttpServletRequest request);
 

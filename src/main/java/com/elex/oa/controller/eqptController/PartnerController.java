@@ -29,6 +29,13 @@ public class PartnerController {
         return list;
     }
 
+    @RequestMapping("/getPart")
+    @ResponseBody
+    public List<Partner> getPart(){
+        List<Partner> list = partnerImpl.getPart();
+        return list;
+    }
+
     @RequestMapping("/search")
     @ResponseBody
     public PageInfo<Partner> searchPartner(Page page, HttpServletRequest request){
@@ -38,8 +45,8 @@ public class PartnerController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void InsertPartner (Partner partner,HttpServletRequest request){
-        partnerImpl.insertPartner(partner,request);
+    public String InsertPartner (Partner partner,HttpServletRequest request){
+        return partnerImpl.insertPartner(partner,request);
     }
 
     @RequestMapping("/name")

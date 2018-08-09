@@ -8,6 +8,7 @@ import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -476,14 +477,53 @@ public class PersonalInformationController {
      */
     @RequestMapping(value = "/addBaseInformation", consumes = "multipart/form-data")
     @ResponseBody
-    public Integer addBaseInformation(
+    public Object addBaseInformation(
             PersonalInformation personalInformation,
             @RequestParam("byyxvalue") String byyxvalue,
             @RequestParam("sxzyvalue") String sxzyvalue,
             @RequestParam("zyzsnamevalue") String zyzsnamevalue,
             @RequestParam("parentcompanyvalue") String parentcompanyvalue,
             HttpServletRequest request
-    ) {
+    ) throws ParseException {
+        //工号校验
+        List<PersonalInformation> personalInformationList = iPersonalInformationService.queryByEmployeenumber(personalInformation.getEmployeenumber());
+        if(personalInformationList.size()>0){
+            return "工号已存在，请重新输入！";
+        }
+        //username校验
+        List<User> users;
+        if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("")) {
+            users = iUserService.queryByUsername(personalInformation.getUsername());
+        } else {
+            users = iUserService.queryByUsername(SpellUtils.phoneticize(personalInformation.getTruename()));
+        }
+        if(users.size()>0){
+            return "登录ID已存在，请重新输入（不输入则默认为姓名的汉语拼音）！";
+        }
+        //校验省份证号码
+        if(personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode())){
+            String birthday = IDcodeUtil.getBirthday(personalInformation.getIdcode());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = new Date();
+            String format = simpleDateFormat.format(date);
+            String[] split1 = format.split("/");
+            String[] split = birthday.split("/");
+            Integer year = Integer.parseInt(split[0]);
+            Integer year2 = Integer.parseInt(split1[0]) - 18;
+            Integer month = Integer.parseInt(split[1]);
+            Integer day = Integer.parseInt(split[2]);
+            Boolean b = false;
+            if(year>1953 && year<year2 && month>0 && month<13){
+                Integer daysByDate = IDcodeUtil.getDaysByDate(simpleDateFormat.parse(birthday));
+                if(day>1 && day<=daysByDate){
+                    b = true;
+                }
+            }
+            if(b==false){
+                return "身份证号码输入有误请重新输入";
+            }
+        }
+
         User user = new User();
         BaseInformation baseInformation = new BaseInformation();
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -2198,7 +2238,7 @@ public class PersonalInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:根据日期查询工作日志
+     *@Description:根据日期查询工作日志（填写）
      *@Date: 9:40 2018\8\3 0003
      */
     @RequestMapping("/queryWriteGzrz")
@@ -2216,5 +2256,27 @@ public class PersonalInformationController {
             System.out.println("格式转换出错！");
         }
        return RespUtil.successResp("205","相应成功！",o);
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据日期查询工作日志（审查）
+     *@Date: 14:52 2018\8\3 0003
+     */
+    @RequestMapping("/queryApproveGzrz")
+    @ResponseBody
+    public Object queryApproveGzrz(
+            @RequestParam("year") Integer year,
+            @RequestParam("month") Integer month
+    ){
+        Object o = false;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            Date date = simpleDateFormat.parse(year + "/" + month + "/01 00:00:00");
+            o = iGzrzService.queryGzrzByTime2(date);
+        } catch (ParseException e) {
+            System.out.println("格式转换出错！");
+        }
+        return RespUtil.successResp("205","相应成功！",o);
     }
 }

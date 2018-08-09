@@ -13,6 +13,7 @@
 		<result column="remark" property="remark" />
 		<result column="transactoruserid" property="transactoruserid" />
 		<result column="transdate" property="transdate" />
+		<result column="contractage" property="contractage" />
 	</resultMap>
 
 	<select id="selectByConditions" parameterType="ContractInformation" resultMap="ContractInformationResultMap">
@@ -68,7 +69,7 @@
 			</if>
 			<if test="contractage!=null and contractage!='' or contractages!=null">
 				<if test="contractagevalue=='' and contractages.size!=0">
-					AND (c.enddate - c.startdate) IN
+					AND c.contractage IN
 					<foreach collection="contractages" item="param" open="(" close=")" separator=",">
 						#{param}
 					</foreach>
@@ -111,7 +112,7 @@
 			</if>
 			AND c.enddate <![CDATA[>]]> #{curdate}
 		</where>
-		GROUP BY c.id
+		GROUP BY c.id DESC
 	</select>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">
@@ -143,7 +144,8 @@
 			attachment,
 			remark,
 			transactoruserid,
-			transdate)
+			transdate,
+			contractage)
 		  VALUES
 		  (NULL ,
 		  #{contractcode},
@@ -154,11 +156,13 @@
 		  #{attachment},
 		  #{remark},
 		  #{transactoruserid},
-		  #{transdate})
+		  #{transdate},
+		  #{contractage})
 	</insert>
 
 	<select id="selectAll" resultMap="ContractInformationResultMap">
 		SELECT * FROM tb_hr_contractinformation
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByUserid" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">

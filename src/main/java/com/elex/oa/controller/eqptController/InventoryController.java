@@ -45,10 +45,28 @@ public class InventoryController {
         inventoryImpl.deleteInfo(request);
     }
 
+    @RequestMapping("/deleteDraft")
+    @ResponseBody
+    public void deleteDraft(HttpServletRequest request) {
+        inventoryImpl.deleteDraft(request);
+    }
+
     @RequestMapping("/insert")
     @ResponseBody
     public void insertInfo(HttpServletRequest request) throws ParseException {
         inventoryImpl.insertInfo(request);
+    }
+
+    @RequestMapping("/save")
+    @ResponseBody
+    public void saveInfo(HttpServletRequest request) throws ParseException {
+        inventoryImpl.saveInfo(request);
+    }
+
+    @RequestMapping("/checkDraft")
+    @ResponseBody
+    public String checkDraft(HttpServletRequest request) {
+        return inventoryImpl.checkDraft(request);
     }
 
     @RequestMapping("/showinvid")
@@ -76,5 +94,17 @@ public class InventoryController {
     @ResponseBody
     public List<Repository> ReptList(){
         return inventoryImpl.ReptList();
+    }
+
+    @RequestMapping("/openDraft")
+    @ResponseBody
+    public List<Repository> openDraft(HttpServletRequest request){
+        return inventoryImpl.openDraft(request);
+    }
+
+    @RequestMapping("/changeDraft")
+    @ResponseBody
+    public void changeDraft(HttpServletRequest request) throws ParseException{
+        inventoryImpl.changeInfo(request);
     }
 }

@@ -37,14 +37,6 @@ public class RepositoryImpl implements RepositoryService {
     // 查询仓库
     @Override
     public PageInfo<Repository> searchRepository(Page page,HttpServletRequest request){
-        /*String reptId = request.getParameter("reptId");
-        String reptIdC = request.getParameter("reptIdC");
-        String position = request.getParameter("position");
-        String positionC = request.getParameter("positionC");
-        String materialId = request.getParameter("materialId");
-        String materialIdC = request.getParameter("materialIdC");
-        String num = request.getParameter("num");
-        String numC = request.getParameter("numC");*/
         String REPTCATEGORY = request.getParameter("reptCategory");
         String REPTCATEGORYC = request.getParameter("reptCategoryC");
         String REPTID = request.getParameter("reptId");
@@ -57,33 +49,15 @@ public class RepositoryImpl implements RepositoryService {
         String REPTSTATEC = request.getParameter("reptStateC");
         String POSTMANAGE = request.getParameter("postManage");
         String POSTMANAGEC = request.getParameter("postManageC");
-        /*String POSTID = request.getParameter("postId");
-        String POSTIDC = request.getParameter("postIdC");
-        String POSTNAME = request.getParameter("postName");
-        String POSTNAMEC = request.getParameter("postNameC");
-        String POSTCATE = request.getParameter("postCate");
-        String POSTCATEC = request.getParameter("postCateC");
-        String FIXPOSTMAT = request.getParameter("fixPostMat");
-        String FIXPOSTMATC = request.getParameter("fixPostMatC");
-        String POSTCAP = request.getParameter("postCap");
-        String POSTCAPC = request.getParameter("postCapC");*/
         String REPTADDR = request.getParameter("reptAddr");
         String REPTADDRC = request.getParameter("reptAddrC");
         String REMARK = request.getParameter("remark");
-        if (  REPTID.equals("") && REPTNAME.equals("") && REPTADMIN.equals("") && REPTSTATE.equals("") && REMARK.equals("") && POSTMANAGE.equals("") &&/* POSTID.equals("") && POSTNAME.equals("") && POSTCATE.equals("") && FIXPOSTMAT.equals("") && POSTCAP.equals("") &&*/ REPTADDR.equals("") && REPTCATEGORY.equals("")  ){
+        if (  REPTID.equals("") && REPTNAME.equals("") && REPTADMIN.equals("") && REPTSTATE.equals("") && REMARK.equals("") && POSTMANAGE.equals("") && REPTADDR.equals("") && REPTCATEGORY.equals("")  ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Repository> listR = repositoryMapper.RepositoryList();
             return new PageInfo<>(listR);
         } else {
             Repository repository = new Repository();
-            /*repository.setNum(num);
-            repository.setNumC(numC);
-            repository.setReptId(reptId);
-            repository.setReptIdC(reptIdC);
-            repository.setPosition(position);
-            repository.setPositionC(positionC);
-            repository.setMaterialId(materialId);
-            repository.setMatIdC(materialIdC);*/
             repository.setReptCategory(REPTCATEGORY);
             repository.setReptCateC(REPTCATEGORYC);
             repository.setReptId(REPTID);
@@ -96,16 +70,6 @@ public class RepositoryImpl implements RepositoryService {
             repository.setReptStateC(REPTSTATEC);
             repository.setPostManage(POSTMANAGE);
             repository.setPostManageC(POSTMANAGEC);
-            /*repository.setPostId(POSTID);
-            repository.setPostIdC(POSTIDC);
-            repository.setPostName(POSTNAME);
-            repository.setPostNameC(POSTNAMEC);
-            repository.setPostCate(POSTCATE);
-            repository.setPostCateC(POSTCATEC);
-            repository.setFixPostMat(FIXPOSTMAT);
-            repository.setFixPostMatC(FIXPOSTMATC);
-            repository.setPostCap(POSTCAP);
-            repository.setPostCapC(POSTCAPC);*/
             repository.setReptAddr(REPTADDR);
             repository.setReptAddrC(REPTADDRC);
             repository.setRemark(REMARK);

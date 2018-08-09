@@ -143,6 +143,7 @@
 				AND dm.transactiondate BETWEEN #{transactiondatevalue1} AND #{transactiondatevalue2}
 			</if>
 		</where>
+		ORDER BY dm.id DESC
 	</select>
 
 	<select id="selectOneById" parameterType="java.lang.Integer" resultMap="dimissionInformaionMapper">

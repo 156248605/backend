@@ -1,5 +1,6 @@
 package com.elex.oa.entity.entity_shiyun;
 
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -8,6 +9,7 @@ import java.io.Serializable;
  * @Date:Created in  15:09 2018\8\2 0002
  * @Modify By:
  */
+@Table(name = "w_gzrz")
 public class Gzrz implements Serializable{
     private static final long serialVersionUID = -9169223954403473324L;
     private String id;//

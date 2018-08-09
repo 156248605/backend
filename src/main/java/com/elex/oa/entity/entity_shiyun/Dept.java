@@ -25,8 +25,35 @@ public class Dept implements Serializable{
     private String dutydescription;// 部门职责
     private String depdescription;//部门概述
     private Integer state;//状态
+    private Integer ordercode;//顺序码
+    private Integer deptypeid;//部门类型ID
+    private String deptype;//部门类型
 
     public Dept() {
+    }
+
+    public String getDeptype() {
+        return deptype;
+    }
+
+    public void setDeptype(String deptype) {
+        this.deptype = deptype;
+    }
+
+    public Integer getDeptypeid() {
+        return deptypeid;
+    }
+
+    public void setDeptypeid(Integer deptypeid) {
+        this.deptypeid = deptypeid;
+    }
+
+    public Integer getOrdercode() {
+        return ordercode;
+    }
+
+    public void setOrdercode(Integer ordercode) {
+        this.ordercode = ordercode;
     }
 
     public Integer getId() {
