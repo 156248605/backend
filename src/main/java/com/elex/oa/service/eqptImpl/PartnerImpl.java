@@ -133,7 +133,7 @@ public class PartnerImpl implements PartnerService {
     }
 
     @Override
-    public void insertPartner(Partner partner, HttpServletRequest request) {
+    public String insertPartner(Partner partner, HttpServletRequest request) {
         partner.setPnCategory(request.getParameter("pnCategory"));
         partner.setCompany(request.getParameter("company"));
         partner.setAuthorize(request.getParameter("authorize"));
@@ -155,7 +155,14 @@ public class PartnerImpl implements PartnerService {
         partner.setBrief(request.getParameter("brief"));
         partner.setIndustry(request.getParameter("industry"));
         partner.setArea(request.getParameter("area"));
-        partnerMapper.insertPartner(partner);
+        // 判断是否重复
+        List<Partner> list = partnerMapper.check(partner);
+        if (list.isEmpty()){
+            partnerMapper.insertPartner(partner);
+            return "1";
+        }else {
+            return "0";
+        }
     }
 
     @Override

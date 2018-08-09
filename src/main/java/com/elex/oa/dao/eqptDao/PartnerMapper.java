@@ -15,6 +15,8 @@ public interface PartnerMapper {
 
     List<Partner> searchPartner(Partner partner);
 
+    List<Partner> check(Partner partner);
+
     void insertPartner(Partner partner);
 
     void changePartner(Partner partner);

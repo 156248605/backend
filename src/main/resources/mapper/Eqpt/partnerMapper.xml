@@ -233,6 +233,15 @@
         </where>
     </select>
 
+    <select id="check" resultType="com.elex.oa.entity.eqpt.Partner" parameterType="com.elex.oa.entity.eqpt.Partner">
+        SELECT * FROM eqpt_partner
+        <where>
+            <if test="pnId != null and pnId != '' ">
+                AND pnId = #{pnId}
+            </if>
+        </where>
+    </select>
+
     <insert id="importPartner" parameterType="com.elex.oa.entity.eqpt.Partner">
         INSERT INTO eqpt_partner VALUES (NULL,#{pnCategory},#{company},#{pnId},#{authorize},#{auId},#{auJob},#{auTel},#{auMail},#{auWechat},#{auQq},#{auAddr},#{otherLink},#{corp},#{comAddr},#{comTel},#{capital},#{staffNum},#{sales},#{brief},#{industry},#{area})
     </insert>

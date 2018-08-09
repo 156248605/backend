@@ -129,6 +129,7 @@ public class LinkmanImpl implements LinkmanService{
         String email = request.getParameter("email");
         String qqNum = request.getParameter("qqNum");
         String wechatNum = request.getParameter("wechatNum");
+        String workPlace = request.getParameter("workPlace");
         String onlyIdL = request.getParameter("onlyIdL");
         Linkman linkman = new Linkman();
         linkman.setLinkId(linkId);
@@ -139,6 +140,7 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setEmail(email);
         linkman.setQqNum(qqNum);
         linkman.setWechatNum(wechatNum);
+        linkman.setWorkPlace(workPlace);
         linkman.setOnlyIdL(parseInt(onlyIdL));
         linkmanMapper.changeLinkman(linkman);
     }
