@@ -136,7 +136,6 @@
                 </foreach>
             </if>
             AND project_manager = #{name}
-            AND department_manager IS NOT NULL
         </where>
     </select>
 

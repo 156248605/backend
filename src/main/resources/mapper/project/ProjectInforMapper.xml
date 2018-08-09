@@ -1,214 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.project.ProjectInforDao">
-    <resultMap id="projectInfor" type="com.elex.oa.entity.project.ProjectInfor">
-        <id column="id"                         javaType="int" property="id"></id>
-        <result column="project_code"         javaType="string"  property="projectCode"></result>
-        <result column="project_name"         javaType="string"  property="projectName"></result>
-        <result column="in_department"        javaType="string"  property="inDepartment"></result>
-        <result column="project_status"       javaType="string"  property="projectStatus"></result>
-        <result column="proposer"              javaType="string" property="proposer"></result>
-        <result column="dept_manager"          javaType="string" property="deptManager"></result>
-        <result column="write_date"            javaType="string" property="writeDate"></result>
-        <result column="business_manager"     javaType="string" property="businessManager"></result>
-        <result column="project_source"       javaType="string" property="projectSource"></result>
-        <result column="project_manager"      javaType="string" property="projectManager"></result>
-        <result column="project_type"         javaType="string" property="projectType"></result>
-        <result column="general_situation"   javaType="string" property="generalSituation"></result>
-        <result column="project_members"      javaType="string" property="projectMembers"></result>
-        <result column="related_members"      javaType="string" property="relatedMembers"></result>
-        <result column="start_date"            javaType="string" property="startDate"></result>
-        <result column="end_date"              javaType="string" property="endDate"></result>
-        <result column="party_name"           javaType="string" property="partyName"></result>
-        <result column="party_address"        javaType="string" property="partyAddress"></result>
-        <result column="party_phone"          javaType="string" property="partyPhone"></result>
-        <result column="party_fax"             javaType="string" property="partyFax"></result>
-        <result column="head_name"             javaType="string" property="headName"></result>
-        <result column="head_position"        javaType="string" property="headPosition"></result>
-        <result column="head_mobile"          javaType="string" property="headMobile"></result>
-        <result column="head_email"           javaType="string" property="headEmail"></result>
-        <result column="contact_name"         javaType="string" property="contactName"></result>
-        <result column="contact_position"     javaType="string" property="contactPosition"></result>
-        <result column="contact_mobile"       javaType="string" property="contactMobile"></result>
-        <result column="contact_email"        javaType="string" property="contactEmail"></result>
-        <result column="department_manager"  javaType="string" property="departmentManager"></result>
-    </resultMap>
 
     <resultMap id="approvalList" type="com.elex.oa.entity.project.ApprovalList">
-        <result column="project_code"         javaType="string"  property="projectCode"></result>
-        <result column="project_name"        javaType="string"  property="projectName"></result>
-        <result column="write_date"           javaType="string"  property="writeDate"></result>
-        <result column="project_source"       javaType="string"  property="projectSource"></result>
-        <result column="project_type"         javaType="string"  property="projectType"></result>
-        <result column="in_department"        javaType="string"  property="inDepartment"></result>
-        <result column="proposer"             javaType="string"  property="proposer"></result>
-        <result column="department1"          javaType="string"  property="department1"></result>
-        <result column="business_manager"    javaType="string"  property="businessManager"></result>
-        <result column="department2"          javaType="string"  property="department2"></result>
-        <result column="project_manager"     javaType="string"  property="projectManager"></result>
-        <result column="general_situation"   javaType="string"  property="generalSituation"></result>
-        <result column="department_manager"  javaType="string"  property="departmentManager"></result>
-    </resultMap>
-
-    <resultMap id="approvalList1" type="com.elex.oa.entity.project.ApprovalList">
-        <result column="F_XMBH"       javaType="string" property="projectCode"></result>
-        <result column="F_XMMC"       javaType="string" property="projectName"></result>
-        <result column="F_TXRQ"       javaType="string" property="writeDate"></result>
-        <result column="F_XMLY"       javaType="string" property="projectSource"></result>
-        <result column="F_XMLX"       javaType="string" property="projectType"></result>
+        <result column="F_XMBH" javaType="string" property="projectCode"></result>
+        <result column="F_XMMC" javaType="string" property="projectName"></result>
+        <result column="F_TXRQ" javaType="string" property="writeDate"></result>
+        <result column="F_BMJL_NAME" javaType="string" property="deptManager"></result>
         <result column="F_SZBM_NAME" javaType="string" property="inDepartment"></result>
-        <result column="F_SQR_NAME"  javaType="string" property="proposer"></result>
-        <result column="F_SWJL_NAME" javaType="string" property="businessManager"></result>
+        <result column="F_XMJL" javaType="string" property="projectManager"></result>
         <result column="F_XMJL_NAME" javaType="string" property="projectManager"></result>
-        <result column="F_XMGK"       javaType="string" property="generalSituation"></result>
-        <result column="F_BMJL1"      javaType="string" property="departmentManager"></result>
+        <result column="F_XMLY" javaType="string" property="projectSource"></result>
+        <result column="F_SWJL" javaType="string" property="businessManagerId"></result>
+        <result column="F_SWJL_NAME" javaType="string" property="businessManager"></result>
+        <result column="F_XMLX" javaType="string" property="projectType"></result>
+        <result column="F_XMGK" javaType="string" property="generalSituation"></result>
+        <result column="F_SQR_NAME" javaType="string" property="proposer"></result>
     </resultMap>
 
-    <select id="listQuery" parameterType="com.elex.oa.entity.project.ProjectInforQuery" resultMap="projectInfor">
-        SELECT id,project_code,project_name,in_department,project_status,dept_manager,proposer,write_date,department1,business_manager,project_source,department2,project_manager,
-        project_type,general_situation,project_members,related_members,start_date,end_date,party_name,party_address,party_phone,party_fax,head_name,head_position,head_mobile,
-        head_email,contact_name,contact_position,contact_mobile,contact_email,department_manager FROM pro_pro_infor
+    <resultMap id="projectInfor" type="com.elex.oa.entity.project.ProjectInfor">
+        <result column="project_code" javaType="string" property="projectCode"></result>
+        <result column="project_name" javaType="string" property="projectName"></result>
+        <result column="in_department" javaType="string" property="inDepartment"></result>
+        <result column="project_status" javaType="string" property="projectStatus"></result>
+        <result column="dept_manager" javaType="string" property="deptManager"></result>
+        <result column="proposer" javaType="string" property="proposer"></result>
+        <result column="write_date" javaType="string" property="writeDate"></result>
+        <result column="business_manager" javaType="string" property="businessManager"></result>
+        <result column="project_source" javaType="string" property="projectSource"></result>
+        <result column="project_manager" javaType="string" property="projectManager"></result>
+        <result column="project_type" javaType="string" property="projectType"></result>
+        <result column="general_situation" javaType="string" property="generalSituation"></result>
+        <result column="amount" javaType="string" property="amount"></result>
+        <result column="copies" javaType="string" property="copies"></result>
+        <result column="project_members" javaType="string" property="projectMembers"></result>
+        <result column="project_member_id" javaType="string" property="projectMemberId"></result>
+        <result column="related_members" javaType="string" property="relatedMembers"></result>
+        <result column="related_member_id" javaType="string" property="relatedMemberId"></result>
+        <result column="party_name" javaType="string" property="partyName"></result>
+        <result column="party_address" javaType="string" property="partyAddress"></result>
+        <result column="party_phone" javaType="string" property="partyPhone"></result>
+        <result column="party_fax" javaType="string" property="partyFax"></result>
+        <result column="head_name" javaType="string" property="headName"></result>
+        <result column="head_position" javaType="string" property="headPosition"></result>
+        <result column="head_mobile" javaType="string" property="headMobile"></result>
+        <result column="head_email" javaType="string" property="headEmail"></result>
+        <result column="contact_name" javaType="string" property="contactName"></result>
+        <result column="contact_position" javaType="string" property="contactPosition"></result>
+        <result column="contact_mobile" javaType="string" property="contactMobile"></result>
+        <result column="contact_email" javaType="string" property="contactEmail"></result>
+    </resultMap>
+
+    <select id="queryCodes" resultType="string">
+        SELECT project_code FROM pro_pro_infor
+    </select>
+
+    <select id="queryApproval" parameterType="java.util.Map" resultMap="approvalList">
+        SELECT F_XMBH, F_XMMC, F_TXRQ, F_BMJL_NAME, F_SZBM_NAME, F_XMJL, F_XMJL_NAME, F_XMLY, F_SWJL, F_SWJL_NAME, F_XMLX, F_XMGK, F_SQR_NAME FROM w_lxsqb
+        WHERE INST_STATUS_ = 'SUCCESS_END'
+        <if test="marker == 1">
+            AND F_XMBH NOT IN
+            <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="addInfor" parameterType="java.util.List">
+        INSERT INTO pro_pro_infor(id, project_code, project_name, in_department, dept_manager, proposer, write_date, business_manager, business_manager_id, project_source, project_manager, project_manager_id, project_type, general_situation)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (NULL, #{item.projectCode}, #{item.projectName}, #{item.inDepartment}, #{item.deptManager}, #{item.proposer}, #{item.writeDate}, #{item.businessManager}, #{item.businessManagerId},
+              #{item.projectSource}, #{item.projectManager}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation})
+        </foreach>
+    </select>
+
+    <select id="queryList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT project_code, project_name, in_department, project_status, dept_manager, proposer, write_date, business_manager, project_source, project_manager, project_type,
+        general_situation, amount, copies, project_members, project_member_id, related_members, related_member_id, party_name, party_address, party_phone, party_fax, head_name,
+        head_position, head_mobile, head_email, contact_name, contact_position, contact_mobile, contact_email FROM pro_pro_infor
         <where>
             <if test="select1 == 1 and input1 != ''">
-                AND project_code like CONCAT('%',#{input1},'%')
+                AND project_code LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="select1 == 2 and input1 != ''">
-                AND project_code NOT like CONCAT('%',#{input1},'%')
+                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="select2 == 1 and input2 != ''">
-                AND project_name like CONCAT('%',#{input2},'%')
+                AND project_name LIKE CONCAT('%',#{input2},'%')
             </if>
             <if test="select2 == 2 and input2 != ''">
-                AND project_name NOT like CONCAT('%',#{input2},'%')
+                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
             </if>
-            <if test="date3a != null and date3b != null">
-                AND write_date BETWEEN #{date3a} AND #{date3b}
+            <if test="select3 == 1 and input3 != ''">
+                AND in_department LIKE CONCAT('%',#{input3},'%')
             </if>
-            <if test="list4 != null ">
+            <if test="select3 == 2 and input3 != ''">
+                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
                 AND project_source IN
                 <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
-            <if test="list5 != null">
+            <if test="type != 2 and select5 == 1 and input5 != ''">
+                AND business_manager LIKE CONCAT('%',#{input5},'%')
+            </if>
+            <if test="type != 2 and select5 == 2 and input5 != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{input5},'%')
+            </if>
+            <if test="list6 != null">
                 AND project_type IN
-                <foreach collection="list5" item="item" index="index" separator="," open="(" close=")">
+                <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
-            <if test="select6 == 1 and input6 != ''">
-                AND in_department like CONCAT('%',#{input6},'%')
-            </if>
-            <if test="select6 == 2 and input6 != ''">
-                AND in_department NOT like CONCAT('%',#{input6},'%')
-            </if>
-            <if test=" type != 2 and select7 == 1 and input7 != ''">
-                AND business_manager LIKE CONCAT('%',#{input7},'%')
+            <if test="type != 2 and select7 == 1 and input7 != ''">
+                AND project_manager LIKE CONCAT('%',#{input7},'%')
             </if>
             <if test="type != 2 and select7 == 2 and input7 != ''">
-                AND business_manager LIKE CONCAT('%',#{input7},'%')
+                AND project_manager NOT LIKE CONCAT('%',#{input7},'%')
             </if>
-            <if test=" type != 2 and select8 == 1 and input8 != ''">
-                AND project_manager LIKE CONCAT('%',#{input8},'%')
-            </if>
-            <if test=" type != 2 and select8 == 2 and input8 != ''">
-                AND project_manager LIKE CONCAT('%',#{input8},'%')
-            </if>
-            <if test=" type == 2 ">
-                AND (business_manager = #{input7} OR project_manager = #{input8})
-            </if>
-            <if test="list9 != null ">
+            <if test="list8 != null">
                 AND project_status IN
-                <foreach collection="list9" item="item" index="index" separator="," open="(" close=")">
+                <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
-            <if test="date10a != null and date10b != null">
-                AND start_date BETWEEN #{date10a} AND #{date10b}
-            </if>
-            <if test="date11a != null and date11b != null">
-                AND end_date BETWEEN #{date11a} AND #{date11b}
-            </if>
-            <if test="select13 == 1 and input13 != ''">
-                AND project_manager LIKE CONCAT('%',#{input13},'%')
-            </if>
-            <if test="select13 == 2 and input13 != ''">
-                AND project_manager LIKE CONCAT('%',#{input13},'%')
+            <if test="type == 2">
+                AND (project_manager = #{name} AND )
             </if>
             <if test="type == 3">
-                AND project_members LIKE CONCAT('%',#{user},'%')
+                AND project_members LIKE CONCAT('%',#{name},'%')
             </if>
             <if test="type == 4">
-                AND related_members LIKE CONCAT('%',#{user},'%')
+                AND related_members LIKE CONCAT('%',#{name},'%')
             </if>
         </where>
     </select>
 
-    <select id="queryCodeByName" parameterType="string" resultType="string">
-        SELECT project_code FROM pro_pro_infor WHERE business_manager = #{name} OR project_manager = #{name}
-    </select>
-
-    <insert id="constructionDetails" parameterType="com.elex.oa.entity.project.ProjectInfor" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO pro_pro_infor (id,project_code,project_name,in_department,project_status,dept_manager,proposer,write_date,department1,business_manager,project_source,department2,project_manager,project_type,general_situation,project_members,related_members,
-        start_date,end_date,party_name,party_address,party_phone,party_fax,head_name,head_position,head_mobile,head_email,contact_name,contact_position,contact_mobile,contact_email,department_manager) VALUES(NULL,#{projectCode},
-        #{projectName},#{inDepartment},#{projectStatus},#{deptManager},#{proposer},#{writeDate},#{department1},#{businessManager},#{projectSource},#{department2},#{projectManager},#{projectType},#{generalSituation},#{projectMembers},#{relatedMembers},#{startDate},
-        #{endDate},#{partyName},#{partyAddress},#{partyPhone},#{partyFax},#{headName},#{headPosition},#{headMobile},#{headEmail},#{contactName},#{contactPosition},#{contactMobile},#{contactEmail},#{departmentManager})
-    </insert>
-
-    <update id="modifyDetails" useGeneratedKeys="true" keyProperty="id">
-        UPDATE pro_pro_infor SET project_name = #{projectName},project_status = #{projectStatus},department1 = #{department1},business_manager = #{businessManager},project_source = #{projectSource},department2 = #{department2},project_manager = #{projectManager},project_type = #{projectType},
-        general_situation = #{generalSituation},project_members = #{projectMembers},related_members = #{relatedMembers},start_date = #{startDate},end_date = #{endDate},party_name = #{partyName},party_address = #{partyAddress},party_phone = #{partyPhone},party_fax = #{partyFax},head_name = #{headName},
-        head_position = #{headPosition},head_mobile = #{headMobile},head_email = #{headEmail},contact_name = #{contactName},contact_position = #{contactPosition},contact_mobile = #{contactMobile},contact_email = #{contactEmail} WHERE project_code = #{projectCode}
+    <update id="amendInfor" parameterType="com.elex.oa.entity.project.ProjectInfor">
+        UPDATE pro_pro_infor SET project_name = #{projectName}, project_status = #{projectStatus} ,business_manager = #{businessManager}, business_manager_id = #{businessManagerId}, project_source = #{projectSource},
+        project_manager = #{projectManager}, project_manager_id = #{projectManagerId}, project_type = #{projectType}, general_situation = #{generalSituation}, project_members = #{projectMembers},
+        project_member_id = #{projectMemberId}, related_members = #{relatedMembers}, related_member_id = #{relatedMemberId}, party_name = #{partyName},party_address = #{partyAddress},
+        party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position = #{headPosition},  head_mobile = #{headMobile}, head_email = #{headEmail},
+        contact_name = #{contactName}, contact_position = #{contactPosition}, contact_mobile = #{contactMobile}, contact_email = #{contactEmail} WHERE project_code = #{projectCode}
     </update>
-
-    <delete id="deleteDetails" parameterType="int">
-        DELETE FROM pro_pro_infor WHERE id = #{id}
-    </delete>
-
-    <select id="queryProjectList" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="approvalList1">
-        SELECT F_XMBH, F_XMMC, F_TXRQ, F_XMLY, F_XMLX, F_SZBM_NAME, F_SQR_NAME, F_SWJL_NAME, F_XMJL_NAME, F_XMGK, F_BMJL1
-        FROM w_lxsqb WHERE ( F_XMJL_NAME = #{name} OR F_SWJL_NAME = #{name} )
-        <if test="select1 == 1 and input1 != ''">
-            AND F_XMBH LIKE CONCAT('%',#{input1},'%')
-        </if>
-        <if test="select1 == 2 and input1 != ''">
-            AND F_XMBH NOT LIKE CONCAT('%',#{input1},'%')
-        </if>
-        <if test="select2 == 1 and input2 != ''">
-            AND F_XMMC LIKE CONCAT('%',#{input2},'%')
-        </if>
-        <if test="select2 == 2 and input2 != ''">
-            AND F_XMMC NOT LIKE CONCAT('%',#{input2},'%')
-        </if>
-        <if test="select3 == 1 and input3 != ''">
-            AND F_SWBM_NAME LIKE CONCAT('%',#{input3},'%')
-        </if>
-        <if test="select3 == 2 and input3 != ''">
-            AND F_SWBM_NAME NOT LIKE CONCAT('%',#{input3},'%')
-        </if>
-        <if test="list4 != null">
-            AND F_XMBH NOT IN
-            <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
-                #{item}
-            </foreach>
-        </if>
-        <if test="list6 != null">
-            AND F_XMLY IN
-            <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
-                #{item}
-            </foreach>
-        </if>
-        <if test="list8 != null">
-            AND F_XMLX IN
-            <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
-                #{item}
-            </foreach>
-        </if>
-    </select>
-
-    <select id="queryProName" parameterType="java.util.Map" resultMap="projectInfor">
-        SELECT project_code, project_name, project_status, write_date, project_source, project_type, in_department, business_manager ,project_manager, start_date, end_date
-        FROM pro_pro_infor WHERE (project_manager = #{name} OR business_manager = #{name} OR project_members LIKE CONCAT('%',#{name},'%'))
-         AND (project_status = #{status1} OR project_status = #{status2})
-    </select>
 </mapper>

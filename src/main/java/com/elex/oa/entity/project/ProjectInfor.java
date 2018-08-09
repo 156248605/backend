@@ -11,15 +11,19 @@ public class ProjectInfor {
     private String writeDate; //立项日期
     private String department1;
     private String businessManager; //商务经理
+    private String businessManagerId; //商务经理编号
     private String projectSource; //项目来源
     private String department2;
     private String projectManager; //项目经理
+    private String projectManagerId; //项目经理编号
     private String projectType; //项目类型
     private String generalSituation;// 项目概况
     private String projectMembers; //项目成员
+    private String projectMemberId; //项目成员id
     private String relatedMembers; //相关人员
-    private String startDate; //实施启动日期
-    private String endDate; //预计结束日期
+    private String relatedMemberId; //相关人员id
+    private String projectAmount; //项目金额
+    private String copies; //合同份数
     private String partyName; //甲方名称
     private String partyAddress; //甲方地址
     private String partyPhone; //甲方电话
@@ -37,7 +41,7 @@ public class ProjectInfor {
     public ProjectInfor() {
     }
 
-    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String department1, String businessManager, String projectSource, String department2, String projectManager, String projectType, String generalSituation, String projectMembers, String relatedMembers, String startDate, String endDate, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
+    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String department1, String businessManager, String businessManagerId, String projectSource, String department2, String projectManager, String projectManagerId, String projectType, String generalSituation, String projectMembers, String projectMemberId, String relatedMembers, String relatedMemberId, String projectAmount, String copies, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -48,15 +52,19 @@ public class ProjectInfor {
         this.writeDate = writeDate;
         this.department1 = department1;
         this.businessManager = businessManager;
+        this.businessManagerId = businessManagerId;
         this.projectSource = projectSource;
         this.department2 = department2;
         this.projectManager = projectManager;
+        this.projectManagerId = projectManagerId;
         this.projectType = projectType;
         this.generalSituation = generalSituation;
         this.projectMembers = projectMembers;
+        this.projectMemberId = projectMemberId;
         this.relatedMembers = relatedMembers;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.relatedMemberId = relatedMemberId;
+        this.projectAmount = projectAmount;
+        this.copies = copies;
         this.partyName = partyName;
         this.partyAddress = partyAddress;
         this.partyPhone = partyPhone;
@@ -152,6 +160,14 @@ public class ProjectInfor {
         this.businessManager = businessManager;
     }
 
+    public String getBusinessManagerId() {
+        return businessManagerId;
+    }
+
+    public void setBusinessManagerId(String businessManagerId) {
+        this.businessManagerId = businessManagerId;
+    }
+
     public String getProjectSource() {
         return projectSource;
     }
@@ -174,6 +190,14 @@ public class ProjectInfor {
 
     public void setProjectManager(String projectManager) {
         this.projectManager = projectManager;
+    }
+
+    public String getProjectManagerId() {
+        return projectManagerId;
+    }
+
+    public void setProjectManagerId(String projectManagerId) {
+        this.projectManagerId = projectManagerId;
     }
 
     public String getProjectType() {
@@ -200,6 +224,14 @@ public class ProjectInfor {
         this.projectMembers = projectMembers;
     }
 
+    public String getProjectMemberId() {
+        return projectMemberId;
+    }
+
+    public void setProjectMemberId(String projectMemberId) {
+        this.projectMemberId = projectMemberId;
+    }
+
     public String getRelatedMembers() {
         return relatedMembers;
     }
@@ -208,20 +240,28 @@ public class ProjectInfor {
         this.relatedMembers = relatedMembers;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getRelatedMemberId() {
+        return relatedMemberId;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setRelatedMemberId(String relatedMemberId) {
+        this.relatedMemberId = relatedMemberId;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public String getProjectAmount() {
+        return projectAmount;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setProjectAmount(String projectAmount) {
+        this.projectAmount = projectAmount;
+    }
+
+    public String getCopies() {
+        return copies;
+    }
+
+    public void setCopies(String copies) {
+        this.copies = copies;
     }
 
     public String getPartyName() {
@@ -341,15 +381,19 @@ public class ProjectInfor {
                 ", writeDate='" + writeDate + '\'' +
                 ", department1='" + department1 + '\'' +
                 ", businessManager='" + businessManager + '\'' +
+                ", businessManagerId='" + businessManagerId + '\'' +
                 ", projectSource='" + projectSource + '\'' +
                 ", department2='" + department2 + '\'' +
                 ", projectManager='" + projectManager + '\'' +
+                ", projectManagerId='" + projectManagerId + '\'' +
                 ", projectType='" + projectType + '\'' +
                 ", generalSituation='" + generalSituation + '\'' +
                 ", projectMembers='" + projectMembers + '\'' +
+                ", projectMemberId='" + projectMemberId + '\'' +
                 ", relatedMembers='" + relatedMembers + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
+                ", relatedMemberId='" + relatedMemberId + '\'' +
+                ", projectAmount='" + projectAmount + '\'' +
+                ", copies='" + copies + '\'' +
                 ", partyName='" + partyName + '\'' +
                 ", partyAddress='" + partyAddress + '\'' +
                 ", partyPhone='" + partyPhone + '\'' +
