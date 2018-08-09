@@ -96,6 +96,9 @@ public class ProjectBoardImpl implements ProjectBoardService {
             for(int k = 0; k< typeList.size(); k++) {
                 if(infor.getProjectType().equals(typeList.get(k).getCode()+"")) {
                     number1[k][size2 - 1] ++;
+                    if(infor.getProjectStatus().equals("") || infor.getProjectStatus() == null) {
+                        break;
+                    }
                     for(int j = 0; j < statusList.size(); j ++) {
                         if(infor.getProjectStatus().equals(statusList.get(j).getCode()+"")) {
                             number1[k][j] ++;

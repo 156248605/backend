@@ -378,7 +378,9 @@ public class PersonalInformationController {
                 personalInformation.setZyzsname(ihRsetZyzsnameService.queryById(baseInformation.getZyzsnameid()).getZyzsname());
             }
             personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
-            personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+            if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
+                personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+            }
             if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
                 personalInformation.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
             }
