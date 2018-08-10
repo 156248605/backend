@@ -1256,7 +1256,7 @@ public class PersonalInformationController {
         for(int i=0;i<postids.size();i++){
             strs.add(iPostService.queryOneByPostid(postids.get(i)).getPostname());
         }
-        if(!personalInformation2.getPostnames().equals(IDcodeUtil.getArrayToString(strs,";"))){
+        if(personalInformation2.getPostnames()!=null && !personalInformation2.getPostnames().equals(IDcodeUtil.getArrayToString(strs,";"))){
             changeInformation.setChangeinformation("岗位");
             changeInformation.setBeforeinformation(personalInformation2.getPostnames());
             changeInformation.setAfterinformation(IDcodeUtil.getArrayToString(strs,";"));
@@ -1298,7 +1298,7 @@ public class PersonalInformationController {
             }
         }
 
-        if (!personalInformation2.getEntrydate().equals(personalInformation.getEntrydate())) {
+        if (personalInformation2.getEntrydate()!=null && !personalInformation2.getEntrydate().equals(personalInformation.getEntrydate())) {
             changeInformation.setChangeinformation("入职时间");
             changeInformation.setBeforeinformation(personalInformation2.getEntrydate());
             changeInformation.setAfterinformation(personalInformation.getEntrydate());

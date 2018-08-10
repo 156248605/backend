@@ -97,7 +97,7 @@
                   AND `week`.project_manager = #{name}
               </if>
               <if test="type == 3">
-                  AND department_manager = #{name}
+                  AND `week`.department_manager = #{name}
               </if>
           </where>
           ORDER BY week.start_date DESC
