@@ -4,7 +4,7 @@ import java.util.List;
 
 public class WeeklyPlanQuery {
     //周计划查询条件封装类
-    private int type;
+    private String type;
     private String name;
     private String approval; //审批判断
     private String select1; //项目编号
@@ -34,7 +34,7 @@ public class WeeklyPlanQuery {
     public WeeklyPlanQuery() {
     }
 
-    public WeeklyPlanQuery(int type, String name, String approval, String select1, String input1, String select2, String input2, String select3, String input3, String date4, String date4a, String date4b, String select5, String input5, String select6, List<String> list6, String select7, String input7, String select8, List<String> list8, String date9, String date9a, String date9b, String date10, String date10a, String date10b) {
+    public WeeklyPlanQuery(String type, String name, String approval, String select1, String input1, String select2, String input2, String select3, String input3, String date4, String date4a, String date4b, String select5, String input5, String select6, List<String> list6, String select7, String input7, String select8, List<String> list8, String date9, String date9a, String date9b, String date10, String date10a, String date10b) {
         this.type = type;
         this.name = name;
         this.approval = approval;
@@ -63,11 +63,11 @@ public class WeeklyPlanQuery {
         this.date10b = date10b;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -274,7 +274,7 @@ public class WeeklyPlanQuery {
     @Override
     public String toString() {
         return "WeeklyPlanQuery{" +
-                "type=" + type +
+                "type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 ", approval='" + approval + '\'' +
                 ", select1='" + select1 + '\'' +

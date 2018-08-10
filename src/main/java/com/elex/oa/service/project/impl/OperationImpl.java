@@ -89,7 +89,7 @@ public class OperationImpl implements OperationService {
     @Override
     @Transactional
     public String addHuman(ProjectHuman projectHuman, String detail) {
-        operationDao.modifyAppHuman(projectHuman.getProjectCode()); //修改审批清单中human的值
+        //operationDao.modifyAppHuman(projectHuman.getProjectCode()); //修改审批清单中human的值
         operationDao.insertHuman(projectHuman); //添加人力成本信息
         List<ProjectHumanDetail> projectHumanDetails = JSONArray.parseArray(detail,ProjectHumanDetail.class);
         for(ProjectHumanDetail projectHumanDetail: projectHumanDetails) {
@@ -144,7 +144,7 @@ public class OperationImpl implements OperationService {
     @Override
     @Transactional
     public String addExpense(ProjectExpense projectExpense, String detail) {
-        operationDao.modifyAppExpense(projectExpense.getProjectCode()); //修改审批清单中的expense值
+        //operationDao.modifyAppExpense(projectExpense.getProjectCode()); //修改审批清单中的expense值
         operationDao.insertExpense(projectExpense); //添加费用报销信息
         List<ProjectExpenseDetail> projectExpenseDetails = JSONArray.parseArray(detail,ProjectExpenseDetail.class);
         for(ProjectExpenseDetail projectExpenseDetail:projectExpenseDetails) {
@@ -215,8 +215,10 @@ public class OperationImpl implements OperationService {
         if(incomeCodes.size() > 0) {
             operationQuery.setCodes(incomeCodes);
         }
+        System.out.println(operationQuery);
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         List<ProjectInfor> projectInfors = operationDao.queryInforIncome(operationQuery);
+        System.out.println(projectInfors);
         return new PageInfo<>(projectInfors);
     }
 
@@ -338,8 +340,10 @@ public class OperationImpl implements OperationService {
         if(list8.size() > 0) {
             operationQuery.setList8(list8);
         }
+        System.out.println(operationQuery);
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         List<ProjectInfor> list = operationDao.queryHumanList(operationQuery);
+        System.out.println(list);
         return new PageInfo<>(list);
     }
 

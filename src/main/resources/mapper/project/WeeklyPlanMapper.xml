@@ -41,7 +41,7 @@
         week.end_date AS endDate, week.time_schedule AS timeSchedule, week.fulfillment AS fulfillment, week.punctuality AS punctuality, week.project_phase AS projectPhase,
         week.completion AS completion, week.next_plan AS nextPlan, week.risk AS risk,  week.department_manager AS departmentManager FROM pro_week week LEFT JOIN pro_pro_infor infor
         ON week.project_code = infor.project_code
-          <where>
+        <where>
               <if test="select1 == 1 and input1 != ''">
                   AND `week`.project_code LIKE CONCAT('%',#{input1},'%')
               </if>
@@ -93,23 +93,11 @@
               <if test="date10a != null and date10b != null">
                   AND `week`.end_date BETWEEN #{date10a} AND #{date10b}
               </if>
-              <if test="type != 3 and approval == 1">
-                  AND `week`.department_manager IS NOT NULL
-              </if>
-              <if test="type !=3 and approval == 2">
-                  AND `week`.department_manager IS NULL
-              </if>
               <if test="type == 2">
                   AND `week`.project_manager = #{name}
               </if>
-              <if test="type == 3 and approval == 1">
-                  AND `week`.department_manager = #{name}
-              </if>
-              <if test="type == 3 and approval == 2">
-                  AND infor.department_manager = #{name} AND `week`.department_manager IS NULL
-              </if>
-
           </where>
+          ORDER BY week.start_date DESC
     </select>
 
     <select id="queryPlansById" parameterType="int" resultMap="weekPlanDetail">

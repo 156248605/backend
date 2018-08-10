@@ -162,7 +162,11 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     @Override
     public Integer addOne(ContractInformation contractInformation) throws ParseException {
         String contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
-        contractInformation.setContractage(contractage);
+        if (contractage!=null && !contractage.equals("")) {
+            contractInformation.setContractage(contractage);
+        }else {
+            contractInformation.setContractage("0");
+        }
         Integer integer = iContractInformationDao.insertOne(contractInformation);
         return contractInformation.getId();
     }

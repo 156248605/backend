@@ -487,7 +487,6 @@
                     #{code}
                 </foreach>
             </if>
-            AND department_manager IS NOT NULL
         </where>
     </select>
 
@@ -651,7 +650,6 @@
                     #{code}
                 </foreach>
             </if>
-            AND department_manager IS NOT NULL
         </where>
     </select>
 
@@ -826,7 +824,6 @@
                     #{code}
                 </foreach>
             </if>
-            AND department_manager IS NOT NULL
         </where>
     </select>
 
