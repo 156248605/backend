@@ -1221,6 +1221,7 @@ public class PersonalInformationController {
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
     ) throws ParseException {
+
         //修改信息痕迹的总标识
         Boolean listBL = false;
         //原来的信息
