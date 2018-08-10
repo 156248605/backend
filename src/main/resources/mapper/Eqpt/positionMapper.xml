@@ -141,6 +141,10 @@
         DELETE FROM eqpt_position WHERE onlyIdP = #{onlyIdP}
     </delete>
 
+    <delete id="deletePostManage" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_position WHERE reptId = #{reptId}
+    </delete>
+
     <select id="showPosition" resultType="string">
         SELECT reptState FROM eqpt_repository WHERE reptId = #{reptId}
     </select>

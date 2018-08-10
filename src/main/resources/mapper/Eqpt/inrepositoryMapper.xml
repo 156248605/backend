@@ -30,10 +30,14 @@
     </select>
 
     <select id="wdbh" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT wdbh AS inId FROM w_rccgddhtpsd
+        SELECT DISTINCT ID_ AS inId FROM w_ywcgddhtpsd
     </select>
 
     <select id="showmat" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_rccgddhtpsd.wlbh AS materialId,w_rccgddhtpsd.wlmc AS materialName,w_rccgddhtpsd.ggxh AS spec,w_rccgddhtpsd.cgsl AS inNum,w_rccgddhtpsd.jydh AS 'check',w_rccgddhtpsd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_rccgddhtpsd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_rccgddhtpsd.wlbh
+        SELECT w_cgmx1.F_WLBH AS materialId,w_cgmx1.F_WLMC AS materialName,w_cgmx1.F_GGXH AS spec,w_cgmx1.F_CGSL AS inNum,w_cgmx1.F_WLMC AS 'check',w_cgmx1.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx1 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_cgmx1.F_WLBH
+    </select>
+
+    <select id="showproj" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_ywcgddhtpsd.F_XMBH AS projId,w_ywcgddhtpsd.F_XMMC AS projName FROM w_ywcgddhtpsd WHERE ID_ = #{wdbh}
     </select>
 </mapper>

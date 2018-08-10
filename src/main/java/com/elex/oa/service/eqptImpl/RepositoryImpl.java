@@ -3,10 +3,12 @@ package com.elex.oa.service.eqptImpl;
 
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.dao.dao_shiyun.IUserDao;
+import com.elex.oa.dao.eqptDao.PositionMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.entity.eqpt.Material;
+import com.elex.oa.entity.eqpt.Position;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.RepositoryService;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +22,9 @@ import java.util.List;
 
 @Service
 public class RepositoryImpl implements RepositoryService {
+
+    @Resource
+    private PositionMapper positionMapper;
 
     @Resource
     private RepositoryMapper repositoryMapper;
@@ -127,34 +132,17 @@ public class RepositoryImpl implements RepositoryService {
         repository.setReptAdmin(request.getParameter("reptAdmin"));
         repository.setReptState(request.getParameter("reptState"));
         repository.setPostManage(request.getParameter("postManage"));
-        /*repository.setPostId(request.getParameter("postId"));
-        repository.setPostName(request.getParameter("postName"));
-        repository.setPostCate(request.getParameter("postCate"));
-        repository.setFixPostMat(request.getParameter("fixPostMat"));
-        repository.setPostCap(request.getParameter("postCap"));*/
         repository.setReptAddr(request.getParameter("reptAddr"));
-        /*String position;
-        String result = repositoryMapper.managePost(repository);
-        if (result.equals("否")) {
-            position = "无";
-        }else {
-            position = request.getParameter("position");
-        }
-        repository.setPosition(position);
-        repository.setMaterialId(request.getParameter("materialId"));
-        repository.setNum(request.getParameter("num"));*/
         repository.setOnlyIdR( Integer.parseInt(request.getParameter("onlyIdR")) );
         repositoryMapper.changeRepository(repository);
         Repository repository1 = new Repository();
         repository1.setReptState(request.getParameter("reptState"));
         repository1.setReptId(request.getParameter("reptId"));
         repositoryMapper.updPostState(repository);
-        if (request.getParameter("postManage").equals("")) {
+        if (request.getParameter("postManage").equals("否")) {
             Repository repository2 = new Repository();
-            String postId = "";
-            repository2.setPostId(postId);
             repository2.setReptId(request.getParameter("reptId"));
-            repositoryMapper.changeManagePost(repository2);
+            positionMapper.deletePostManage(repository2);
             repositoryMapper.changeDetail(repository2);
         }
     }

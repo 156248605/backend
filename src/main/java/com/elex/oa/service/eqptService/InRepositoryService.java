@@ -42,4 +42,5 @@ public interface InRepositoryService {
     List wdbh();
 
     List<Repository> showmat(HttpServletRequest request);
+    List<Repository> showproj(HttpServletRequest request);
 }

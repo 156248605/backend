@@ -90,4 +90,10 @@ public class InRepositoryController {
     public List<Repository> showmat (HttpServletRequest request) {
         return inRepositoryImpl.showmat(request);
     }
+
+    @RequestMapping("/showproj")
+    @ResponseBody
+    public List<Repository> showproj (HttpServletRequest request) {
+        return inRepositoryImpl.showproj(request);
+    }
 }
