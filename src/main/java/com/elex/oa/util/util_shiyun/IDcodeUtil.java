@@ -209,7 +209,12 @@ public class IDcodeUtil {
     public static String getCompanyAge(String entrydate) throws ParseException {
         SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
         java.util.Date date=new Date();
-        java.util.Date mydate= myFormatter.parse(entrydate);
+        Date mydate;
+        if (entrydate!=null) {
+            mydate = myFormatter.parse(entrydate);
+        } else {
+            return "";
+        }
         long day=(date.getTime()-mydate.getTime())/(24*60*60*1000) + 1;
         String year = day/365 + "";
         String month = (day - Long.parseLong(year) * 365) / 30 + "";
