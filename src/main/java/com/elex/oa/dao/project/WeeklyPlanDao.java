@@ -25,7 +25,7 @@ public interface WeeklyPlanDao {
     //更新周计划
     void updateWeeklyPlan(WeeklyPlan weeklyPlan);
     //查询项目信息
-    List<ApprovalList> queryProjectName(OperationQuery operationQuery);
+    List<ProjectInfor> queryProjectName(OperationQuery operationQuery);
     //修改周计划
     void amendPlans(WeeklyPlan weeklyPlan);
     //删除周计划
@@ -34,4 +34,6 @@ public interface WeeklyPlanDao {
     String queryPlanByCon(Map<String,String> content);
     //查询某个阶段的项目编号
     List<String> queryCodeByPhase(String phase);
+    //查询本周是否已有周报
+    int queryCountByCode(Map<String,String> content);
 }
