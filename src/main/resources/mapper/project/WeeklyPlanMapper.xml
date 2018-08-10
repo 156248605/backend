@@ -96,6 +96,9 @@
               <if test="type == 2">
                   AND `week`.project_manager = #{name}
               </if>
+              <if test="type == 3">
+                  AND department_manager = #{name}
+              </if>
           </where>
           ORDER BY week.start_date DESC
     </select>
@@ -115,8 +118,8 @@
     </select>
 
     <insert id="addWeeklyPlan" parameterType="com.elex.oa.entity.project.WeeklyPlan">
-        INSERT INTO pro_week (id,project_code,start_date,end_date,time_schedule,fulfillment,punctuality,project_phase,completion,next_plan,risk,project_manager)
-        VALUES (NULL,#{projectCode},#{startDate},#{endDate},#{timeSchedule},#{fulfillment},#{punctuality},#{projectPhase},#{completion},#{nextPlan},#{risk},#{projectManager})
+        INSERT INTO pro_week (id,project_code,start_date,end_date,time_schedule,fulfillment,punctuality,project_phase,completion,next_plan,risk,project_manager,department_manager)
+        VALUES (NULL,#{projectCode},#{startDate},#{endDate},#{timeSchedule},#{fulfillment},#{punctuality},#{projectPhase},#{completion},#{nextPlan},#{risk},#{projectManager},#{departmentManager})
     </insert>
 
     <select id="queryMaxId" resultType="int">
@@ -136,7 +139,7 @@
 
     <select id="queryProjectName" resultType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
         SELECT project_code,project_name,in_department,write_date,dept_manager,project_manager,project_source,business_manager,project_type
-        FROM pro_pro_infor WHERE project_manager = #{name} AND department_manager IS NOT NULL
+        FROM pro_pro_infor WHERE project_manager = #{name}
         <if test="select1 == 1 and input1 != ''">
             AND project_code LIKE CONCAT('%',#{input1},'%')
         </if>
@@ -190,5 +193,9 @@
 
     <select id="queryCodeByPhase" parameterType="string" resultType="string">
         SELECT project_code FROM pro_week WHERE project_phase = #{phase}
+    </select>
+
+    <select id="queryCountByCode" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(project_code) FROM pro_week WHERE project_code = #{projectCode} AND start_date BETWEEN #{start} AND #{end}
     </select>
 </mapper>

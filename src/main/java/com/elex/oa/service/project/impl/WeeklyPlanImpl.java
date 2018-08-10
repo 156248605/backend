@@ -3,10 +3,7 @@ package com.elex.oa.service.project.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.elex.oa.dao.project.WeeklyPlanDao;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.OperationQuery;
-import com.elex.oa.entity.project.WeeklyPlan;
-import com.elex.oa.entity.project.WeeklyPlanQuery;
+import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.WeeklyPlanService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -14,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +86,23 @@ public class WeeklyPlanImpl implements WeeklyPlanService {
     @Override
     @Transactional
     public String addPlans(WeeklyPlan weeklyPlan) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+        String start = simpleDateFormat.format(calendar.getTime());
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        String end = simpleDateFormat.format(calendar1.getTime());
+        Map<String,String> content = new HashMap<>();
+        content.put("start",start);
+        content.put("end",end);
+        content.put("projectCode",weeklyPlan.getProjectCode());
+        int count = weeklyPlanDao.queryCountByCode(content); //查询本周是否已有周报
+        if(count == 0) {
+
+        } else {
+            return "0";
+        }
         weeklyPlanDao.addWeeklyPlan(weeklyPlan); //添加周计划
         return "1";
     }
@@ -101,7 +117,7 @@ public class WeeklyPlanImpl implements WeeklyPlanService {
 
     //查询项目信息
     @Override
-    public PageInfo<ApprovalList> queryProjectName(OperationQuery operationQuery, Page page) {
+    public PageInfo<ProjectInfor> queryProjectName(OperationQuery operationQuery, Page page) {
         List<String> list6 = JSONArray.parseArray(operationQuery.getSelect6(),String.class);
         List<String> list8 = JSONArray.parseArray(operationQuery.getSelect8(),String.class);
         if(list6.size() > 0) {
@@ -110,9 +126,9 @@ public class WeeklyPlanImpl implements WeeklyPlanService {
         if(list8.size() > 0) {
             operationQuery.setList8(list8);
         }
-
-        PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<ApprovalList> list = weeklyPlanDao.queryProjectName(operationQuery);
+        System.out.println(operationQuery);
+        PageHelper.startPage(page.getCurrentPage(),5);
+        List<ProjectInfor> list = weeklyPlanDao.queryProjectName(operationQuery);
         return new PageInfo<>(list);
     }
 
