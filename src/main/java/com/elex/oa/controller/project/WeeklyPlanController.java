@@ -1,10 +1,7 @@
 package com.elex.oa.controller.project;
 
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.OperationQuery;
-import com.elex.oa.entity.project.WeeklyPlan;
-import com.elex.oa.entity.project.WeeklyPlanQuery;
+import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.WeeklyPlanService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +65,7 @@ public class WeeklyPlanController {
     //查询项目信息
     @RequestMapping("/query_project_name")
     @ResponseBody
-    public PageInfo<ApprovalList> queryProjectName(OperationQuery operationQuery, Page page) {
+    public PageInfo<ProjectInfor> queryProjectName(OperationQuery operationQuery, Page page) {
         return weeklyPlanService.queryProjectName(operationQuery, page);
     }
 

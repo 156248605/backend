@@ -1,10 +1,7 @@
 package com.elex.oa.service.project;
 
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.OperationQuery;
-import com.elex.oa.entity.project.WeeklyPlan;
-import com.elex.oa.entity.project.WeeklyPlanQuery;
+import com.elex.oa.entity.project.*;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -24,7 +21,7 @@ public interface WeeklyPlanService {
     //审批周计划
     String approvalPlans(WeeklyPlan weeklyPlan);
     //查询项目信息
-    PageInfo<ApprovalList> queryProjectName(OperationQuery operationQuery, Page page);
+    PageInfo<ProjectInfor> queryProjectName(OperationQuery operationQuery, Page page);
     //修改周计划
     String amendPlans(WeeklyPlan weeklyPlan);
     //删除周计划
