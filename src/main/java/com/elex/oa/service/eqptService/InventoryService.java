@@ -51,7 +51,7 @@ public interface InventoryService {
 
 
     // 定时流程
-    void insertInv();
+    List<HashMap<String, Object>> insertInv();
 
     List<HashMap<String, Object>> testInv();
 }
