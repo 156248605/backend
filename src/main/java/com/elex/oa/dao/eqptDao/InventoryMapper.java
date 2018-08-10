@@ -50,7 +50,7 @@ public interface InventoryMapper {
     void changeInvD(Repository repository);
 
     // 获取流程信息
-    List<Repository> invInfo(String INST_STATUS_);
+    List<HashMap<String, Object>> invInfo(String INST_STATUS_);
 
     List<HashMap<String, Object>> test();
 }

@@ -369,7 +369,7 @@
     </select>
 
     <insert id="newDetail" parameterType="com.elex.oa.entity.eqpt.Material">
-        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},'','0','',#{price},#{materialState})
+        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},'','','0',#{price},#{materialState})
     </insert>
 
     <insert id="insertDetail" parameterType="com.elex.oa.entity.eqpt.Material">

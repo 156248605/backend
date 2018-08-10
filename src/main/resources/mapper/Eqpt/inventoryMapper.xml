@@ -254,8 +254,8 @@
         WHERE invId = #{invId} AND reptId = #{reptId} AND position = #{position} AND materialId = #{materialId}
     </update>
 
-    <select id="invInfo" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM w_kcpad WHERE INST_STATUS_ = #{arg0}
+    <select id="invInfo" resultType="HashMap">
+        SELECT * FROM w_gzrz WHERE INST_STATUS_ = #{arg0}
     </select>
 
     <select id="test" resultType="HashMap">

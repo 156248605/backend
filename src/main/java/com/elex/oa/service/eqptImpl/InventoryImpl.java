@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -102,10 +103,16 @@ public class InventoryImpl implements InventoryService {
 
     // 定时流程
     @Override
-    public void insertInv(){
+    public List<HashMap<String, Object>> insertInv(){
         String INST_STATUS_ = "SUCCESS_END";
-        List<Repository> list = inventoryMapper.invInfo(INST_STATUS_);
+        List<HashMap<String, Object>> list = inventoryMapper.invInfo(INST_STATUS_);
         for (int i = 0; i < list.size(); i++){
+            System.out.println(list.get(i).get("F_TBRQ").toString().substring(0,list.get(i).get("F_TBRQ").toString().length()-2));
+            Calendar cal= Calendar.getInstance();
+            String y,m;
+            y = String.valueOf(cal.get(Calendar.YEAR));
+            m = String.valueOf((cal.get(Calendar.MONTH)+1 > 10)?cal.get(Calendar.MONTH)+1:"0"+String.valueOf(cal.get(Calendar.MONTH)+1) );
+            System.out.println(y+m);
             /*Repository repository = new Repository();
             repository.setInvId(request.getParameter("invId"));
             String date = request.getParameter("invTime");
@@ -115,21 +122,22 @@ public class InventoryImpl implements InventoryService {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String sDate = sdf.format(d);
             repository.setInvTime(sDate);
-            repository.setMaterialId(list.get(i).get("theMatId").toString());
-            repository.setMaterialName(list.get(i).get("theMatName").toString());
-            repository.setReptId(list.get(i).get("theMatRept").toString());
-            repository.setPosition(list.get(i).get("theMatPost").toString());
-            repository.setPrice(list.get(i).get("theMatPrice").toString());
-            repository.setNum(list.get(i).get("theMatNum").toString());
-            repository.setNumInv(list.get(i).get("theMatNumInv").toString());
+            repository.setMaterialId(listINV.get(i).get("theMatId").toString());
+            repository.setMaterialName(listINV.get(i).get("theMatName").toString());
+            repository.setReptId(listINV.get(i).get("theMatRept").toString());
+            repository.setPosition(listINV.get(i).get("theMatPost").toString());
+            repository.setPrice(listINV.get(i).get("theMatPrice").toString());
+            repository.setNum(listINV.get(i).get("theMatNum").toString());
+            repository.setNumInv(listINV.get(i).get("theMatNumInv").toString());
             repository.setPal(request.getParameter("pal"));
             repository.setPalCal(request.getParameter("palCal"));
-            repository.setSpec(list.get(i).get("theMatSpec").toString());
-            repository.setCategory(list.get(i).get("theMatCate").toString());
+            repository.setSpec(listINV.get(i).get("theMatSpec").toString());
+            repository.setCategory(listINV.get(i).get("theMatCate").toString());
             repository.setRemark("");
             repository.setReptState("1");
             inventoryMapper.insert(repository);*/
         }
+        return null;
     }
 
 
