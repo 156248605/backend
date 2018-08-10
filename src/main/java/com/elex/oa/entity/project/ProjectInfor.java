@@ -22,7 +22,7 @@ public class ProjectInfor {
     private String projectMemberId; //项目成员id
     private String relatedMembers; //相关人员
     private String relatedMemberId; //相关人员id
-    private String projectAmount; //项目金额
+    private String amount; //项目金额
     private String copies; //合同份数
     private String partyName; //甲方名称
     private String partyAddress; //甲方地址
@@ -41,7 +41,7 @@ public class ProjectInfor {
     public ProjectInfor() {
     }
 
-    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String department1, String businessManager, String businessManagerId, String projectSource, String department2, String projectManager, String projectManagerId, String projectType, String generalSituation, String projectMembers, String projectMemberId, String relatedMembers, String relatedMemberId, String projectAmount, String copies, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
+    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String department1, String businessManager, String businessManagerId, String projectSource, String department2, String projectManager, String projectManagerId, String projectType, String generalSituation, String projectMembers, String projectMemberId, String relatedMembers, String relatedMemberId, String amount, String copies, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -63,7 +63,7 @@ public class ProjectInfor {
         this.projectMemberId = projectMemberId;
         this.relatedMembers = relatedMembers;
         this.relatedMemberId = relatedMemberId;
-        this.projectAmount = projectAmount;
+        this.amount = amount;
         this.copies = copies;
         this.partyName = partyName;
         this.partyAddress = partyAddress;
@@ -248,12 +248,12 @@ public class ProjectInfor {
         this.relatedMemberId = relatedMemberId;
     }
 
-    public String getProjectAmount() {
-        return projectAmount;
+    public String getAmount() {
+        return amount;
     }
 
-    public void setProjectAmount(String projectAmount) {
-        this.projectAmount = projectAmount;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public String getCopies() {
@@ -392,7 +392,7 @@ public class ProjectInfor {
                 ", projectMemberId='" + projectMemberId + '\'' +
                 ", relatedMembers='" + relatedMembers + '\'' +
                 ", relatedMemberId='" + relatedMemberId + '\'' +
-                ", projectAmount='" + projectAmount + '\'' +
+                ", amount='" + amount + '\'' +
                 ", copies='" + copies + '\'' +
                 ", partyName='" + partyName + '\'' +
                 ", partyAddress='" + partyAddress + '\'' +

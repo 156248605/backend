@@ -10,6 +10,7 @@ import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -2210,6 +2211,33 @@ public class PersonalInformationController {
             list.add(postMap);
         }
         return list;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门ID查询部门信息
+     *@Date: 11:34 2018\8\10 0010
+     */
+    @RequestMapping("/queryGXF004")
+    @ResponseBody
+    public String queryGXF004(
+            @RequestParam("depid")Integer depid
+    ){
+        Dept dept = iDeptService.queryOneDepByDepid(depid);
+        if (dept!=null) {
+            if (dept.getPrincipaluserid()!=null) {
+                return iUserService.getById(dept.getPrincipaluserid()).getTruename();
+            } else {
+                return "此部门没有部门正职！";
+            }
+        } else {
+            return "此部门不存在！";
+        }
+        /*if(dept!=null){
+            return RespUtil.successResp("205","查询信息成功！",dept);
+        }else{
+            return RespUtil.successResp("503","部门信息不存在！",null);
+        }*/
     }
 
     /**
