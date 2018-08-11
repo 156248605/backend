@@ -1298,17 +1298,19 @@ public class PersonalInformationController {
             }
         }
 
-        if (personalInformation2.getEntrydate()!=null && !personalInformation2.getEntrydate().equals(personalInformation.getEntrydate())) {
+        if (personalInformation2!=null && personalInformation2.getEntrydate()!=null && !personalInformation2.getEntrydate().equals(personalInformation.getEntrydate())) {
             changeInformation.setChangeinformation("入职时间");
             changeInformation.setBeforeinformation(personalInformation2.getEntrydate());
             changeInformation.setAfterinformation(personalInformation.getEntrydate());
             manageInformation.setEntrydate(personalInformation.getEntrydate());
             iChangeInformationService.addOne(changeInformation);
             manBl = true;
+        }else if(personalInformation2==null){
+            manageInformation.setEntrydate(personalInformation.getEntrydate());
         }
 
         //入职时间存在的情况再设置转正时间
-        if(personalInformation.getEmployeetype()!=null && !"".equals(personalInformation.getEntrydate())){
+        if(personalInformation.getEntrydate()!=null && !"".equals(personalInformation.getEntrydate())){
             //转正时间不存在则自动向后两个月
             if(personalInformation.getZhuanzhengdate()!=null && !"".equals(personalInformation.getZhuanzhengdate())){
                 if (!personalInformation.getZhuanzhengdate().equals(personalInformation2.getZhuanzhengdate())) {
