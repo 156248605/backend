@@ -682,7 +682,6 @@ public class PersonalInformationController {
         personalInformation.setUserid(userid);
         personalInformation.setBaseinformationid(baseInformationId);
         Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
-        projectBoardService.informationUpdate();
         return "提交成功！";
     }
 
@@ -1206,7 +1205,6 @@ public class PersonalInformationController {
             iChangeInformationService.addOne(changeInformation);
         }
         iPersonalInformationService.modifyOne(personalInformation);
-        projectBoardService.informationUpdate();
         return "信息提交成功！";
     }
 
@@ -1305,14 +1303,16 @@ public class PersonalInformationController {
             manageInformation.setEntrydate(personalInformation.getEntrydate());
             iChangeInformationService.addOne(changeInformation);
             manBl = true;
-        }else if(personalInformation2==null){
+        }else if(personalInformation2!=null && personalInformation2.getEntrydate()==null){
             manageInformation.setEntrydate(personalInformation.getEntrydate());
+            manBl = true;
         }
 
         //入职时间存在的情况再设置转正时间
         if(personalInformation.getEntrydate()!=null && !"".equals(personalInformation.getEntrydate())){
             //转正时间不存在则自动向后两个月
-            if(personalInformation.getZhuanzhengdate()!=null && !"".equals(personalInformation.getZhuanzhengdate())){
+            if(personalInformation.getZhuanzhengdate() != null && !personalInformation.getZhuanzhengdate().equals("null") && !personalInformation.getZhuanzhengdate().equals(" ")){
+           /* if(personalInformation.getZhuanzhengdate()!=null  && !"".equals(personalInformation.getZhuanzhengdate())){*/
                 if (!personalInformation.getZhuanzhengdate().equals(personalInformation2.getZhuanzhengdate())) {
                     changeInformation.setChangeinformation("转正日期");
                     changeInformation.setBeforeinformation(personalInformation2.getZhuanzhengdate());
@@ -1323,6 +1323,7 @@ public class PersonalInformationController {
                 }
             }else {
                 if (!IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()).equals(personalInformation2.getZhuanzhengdate())) {
+                    System.out.println("----------->2"+IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
                     changeInformation.setChangeinformation("转正日期");
                     changeInformation.setBeforeinformation(personalInformation2.getZhuanzhengdate());
                     changeInformation.setAfterinformation(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
@@ -1343,7 +1344,7 @@ public class PersonalInformationController {
         }
 
         iPersonalInformationService.modifyOne(personalInformation2);
-        projectBoardService.informationUpdate();
+
         return "提交信息成功！";
     }
 
@@ -1410,7 +1411,9 @@ public class PersonalInformationController {
                     costInformation.setKhhid(hrsetkhhid);
                 }
             }else {
-                costInformation.setKhhid(ihRsetKhhService.queryByKhh(personalInformation.getKhh()).getId());
+                if (ihRsetKhhService.queryByKhh(personalInformation.getKhh())!=null) {
+                    costInformation.setKhhid(ihRsetKhhService.queryByKhh(personalInformation.getKhh()).getId());
+                }
             }
             changeInformation.setChangeinformation("开户行");
             changeInformation.setBeforeinformation(personalInformation2.getKhh());
@@ -2115,7 +2118,6 @@ public class PersonalInformationController {
                 }
             }
         }
-        projectBoardService.informationUpdate();
         return "数据导入成功！";
     }
 
@@ -2138,7 +2140,6 @@ public class PersonalInformationController {
             //注：如果将要删除的员工是某部门的正职、副职、秘书则需要修改该字段
             iDeptService.modifyOne(personalInformation.getUserid());
         }
-        projectBoardService.informationUpdate();
         return "删除成功！";
     }
 
