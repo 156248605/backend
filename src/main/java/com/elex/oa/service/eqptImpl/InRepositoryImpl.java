@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
 @Service
@@ -145,7 +146,8 @@ public class InRepositoryImpl implements InRepositoryService {
         for (int i = 0; i < listIN.size(); i++){
             String INREPTC = request.getParameter("inReptC");
             String INID = request.getParameter("inId");
-            String INNUM = listIN.get(i).get("theMatNum").toString();
+            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
             // 格林尼治时间转格式
             String date = request.getParameter("inTime");
             date = date.replace("Z", " UTC");// 注意是空格+UTC
@@ -219,9 +221,11 @@ public class InRepositoryImpl implements InRepositoryService {
         String INLIST = request.getParameter("inList");
         List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
         for (int i = 0; i < listIN.size(); i++) {
+            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
             Material material = new Material();
             material.setId(listIN.get(i).get("theMatId").toString());
-            material.setNum(listIN.get(i).get("theMatNum").toString());
+            material.setNum(INNUM);
             String postId = "";
             if (listIN.get(i).get("postId") != null) {
                 postId = listIN.get(i).get("postId").toString();
@@ -267,7 +271,7 @@ public class InRepositoryImpl implements InRepositoryService {
             }
             /*int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
             repository.setOnlyIdR(onlyIdR);
-            repositor  yMapper.updRepository(repository);*/
+            repositoryMapper.updRepository(repository);*/
             int onlyIdP = repositoryMapper.lockOnlyIdP(repository);
             repository.setOnlyIdP(onlyIdP);
             repositoryMapper.updPosition(repository);
@@ -291,7 +295,8 @@ public class InRepositoryImpl implements InRepositoryService {
         for (int i = 0; i < listIN.size(); i++) {
             Material material = new Material();
             material.setId(listIN.get(i).get("theMatId").toString());
-            String INNUM = listIN.get(i).get("theMatNum").toString();
+            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
             String MAX = materialMapper.MaxLimit(material);
             String NUM = materialMapper.getNum(material);
             if (parseInt(NUM) + parseInt(INNUM) > parseInt(MAX)) {
@@ -313,7 +318,8 @@ public class InRepositoryImpl implements InRepositoryService {
             String reptId = listIN.get(i).get("reptId").toString();
             String postId = "";
             String NUM = "0";
-            String INNUM = listIN.get(i).get("theMatNum").toString();
+            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
             String postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
             Repository repository = new Repository();
             repository.setReptId(reptId);
@@ -372,6 +378,13 @@ public class InRepositoryImpl implements InRepositoryService {
     public List<Repository> showmat(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = inRepositoryMapper.showmat(wdbh);
+        return list;
+    }
+
+    @Override
+    public List<Repository> showproj(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = inRepositoryMapper.showproj(wdbh);
         return list;
     }
 }

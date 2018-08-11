@@ -26,4 +26,6 @@ public interface PositionMapper {
     List<Repository> reptname(Repository repository);
 
     String checkPostId(Repository repository);
+
+    void deletePostManage(Repository repository);
 }

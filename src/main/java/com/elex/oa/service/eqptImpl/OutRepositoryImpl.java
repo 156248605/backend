@@ -103,7 +103,8 @@ public class OutRepositoryImpl implements OutRepositoryService {
         for (int i = 0; i < listOUT.size(); i++) {
             String OUTREPTC = request.getParameter("outReptC");
             String OUTID = request.getParameter("outId");
-            String OUTNUM = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUMGET = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
             String date = request.getParameter("outTime");
             date = date.replace("Z", " UTC");//注意是空格+UTC
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
@@ -242,7 +243,8 @@ public class OutRepositoryImpl implements OutRepositoryService {
         for (int i = 0; i < listOUT.size(); i++) {
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
-            String OUTNUM = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUMGET = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
             String MIN = materialMapper.MinLimit(material);
             String NUM = materialMapper.getNum(material);
             if (parseInt(NUM) - parseInt(OUTNUM) < parseInt(MIN)) {

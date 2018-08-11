@@ -24,4 +24,5 @@ public interface InRepositoryMapper {
 
     List<Repository> showmat(String wdbh);
 
+    List<Repository> showproj(String wdbh);
 }
