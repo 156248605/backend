@@ -184,6 +184,18 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         if (iUserDao.selectById(dimissionInformation.getTransactoruserid())!=null) {
             dimissionInformation.setTransactortruename(iUserDao.selectById(dimissionInformation.getTransactoruserid()).getTruename());
         }
+        //获得离职类型
+        if(ihRsetDimissiontypeDao.selectById(dimissionInformation.getDimissiontypeid())!=null){
+           dimissionInformation.setDimissiontype(ihRsetDimissiontypeDao.selectById(dimissionInformation.getDimissiontypeid()).getDimissiontype());
+        }
+        //获得离职去向
+        if (ihRsetDimissiondirectionDao.selectById(dimissionInformation.getDimissiondirectionid())!=null) {
+            dimissionInformation.setDimissiondirection(ihRsetDimissiondirectionDao.selectById(dimissionInformation.getDimissiondirectionid()).getDimissiondirection());
+        }
+        //获得离职原因
+        if (ihRsetDimissionreasonDao.selectById(dimissionInformation.getDimissionreasonid())!=null) {
+            dimissionInformation.setDimissionreason(ihRsetDimissionreasonDao.selectById(dimissionInformation.getDimissionreasonid()).getDimissionreason());
+        }
         return dimissionInformation;
     }
 

@@ -862,6 +862,7 @@ public class PersonalInformationController {
         Boolean listBL = false;
         //原来的信息
         PersonalInformation personalInformation2 = getOnePersonalinformation(iPersonalInformationService.queryOneByUserid(personalInformation.getUserid()).getId());
+        personalInformation.setId(personalInformation2.getId());
         //添加修改信息
         ChangeInformation changeInformation = new ChangeInformation();
         //1.姓名
@@ -1200,8 +1201,7 @@ public class PersonalInformationController {
         if (!personalInformation.getEmployeenumber().equals(personalInformation2.getEmployeenumber())) {
             changeInformation.setChangeinformation("工号");
             changeInformation.setBeforeinformation(personalInformation2.getEmployeenumber());
-            personalInformation2.setEmployeenumber(personalInformation.getEmployeenumber());
-            changeInformation.setAfterinformation(personalInformation2.getEmployeenumber());
+            changeInformation.setAfterinformation(personalInformation.getEmployeenumber());
             iChangeInformationService.addOne(changeInformation);
         }
         iPersonalInformationService.modifyOne(personalInformation);
