@@ -120,7 +120,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
         for (int i = 0; i < listSHIFT.size(); i++) {
             String shiftId = request.getParameter("shiftId");
-            String shiftNum = listSHIFT.get(i).get("theMatNum").toString();
+            String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
+            String shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
             if (listSHIFT.get(0).containsKey("number")){
                 shiftNum = listSHIFT.get(i).get("number").toString();
             }
@@ -175,7 +176,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
         for (int i = 0; i < listSHIFT.size(); i++){
             String materialName = listSHIFT.get(i).get("theMatName").toString();
-            String shiftNum = listSHIFT.get(i).get("theMatNum").toString();
+            String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
+            String shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
             if (listSHIFT.get(0).containsKey("number")){
                 shiftNum = listSHIFT.get(i).get("number").toString();
             }

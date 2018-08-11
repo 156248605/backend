@@ -233,19 +233,19 @@
             <!--<if test="date != null and date != ''">
                 date = #{date},
             </if>-->
-            <if test="category != null and category != ''">
+            <if test="category != null">
                 category = #{category},
             </if>
-            <if test="spec != null and spec != ''">
+            <if test="spec != null">
                 spec = #{spec},
             </if>
-            <if test="material != null and material != ''">
+            <if test="material != null">
                 material = #{material},
             </if>
-            <if test="brand != null and brand != ''">
+            <if test="brand != null">
                 brand = #{brand},
             </if>
-            <if test="remark != null and remark != ''">
+            <if test="remark != null">
                 remark = #{remark},
             </if>
             <if test="maxlimit != null and maxlimit != ''">

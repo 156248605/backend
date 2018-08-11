@@ -144,25 +144,25 @@
             <if test="name != null and name != '' ">
                 name = #{name},
             </if>
-            <if test="tel != null and tel != '' ">
+            <if test="tel != null">
                 tel = #{tel},
             </if>
-            <if test="job != null and job != '' ">
+            <if test="job != null">
                 job = #{job},
             </if>
-            <if test="address != null and address != '' ">
+            <if test="address != null">
                 address = #{address},
             </if>
-            <if test="email != null and email != '' ">
+            <if test="email != null">
                 email = #{email},
             </if>
-            <if test="qqNum != null and qqNum != '' ">
+            <if test="qqNum != null">
                 qqNum = #{qqNum},
             </if>
-            <if test="wechatNum != null and wechatNum != '' ">
+            <if test="wechatNum != null">
                 wechatNum = #{wechatNum},
             </if>
-            <if test="workPlace != null and workPlace != '' ">
+            <if test="workPlace != null">
                 workPlace = #{workPlace}
             </if>
         </set>
