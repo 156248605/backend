@@ -30,6 +30,12 @@
 		ORDER BY ordercode
 	</select>
 
+	<select id="selectPostByPostcode" parameterType="java.lang.String" resultMap="postMapper">
+		select * from tb_id_post
+		where postcode = #{postcode} and state=1
+		ORDER BY ordercode
+	</select>
+
 	<select id="selectAllPosts" resultMap="postMapper">
 		select * from tb_id_post WHERE state=1
 		ORDER BY ordercode

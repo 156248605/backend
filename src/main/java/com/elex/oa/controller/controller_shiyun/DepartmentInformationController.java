@@ -51,49 +51,117 @@ public class DepartmentInformationController {
     @RequestMapping("/queryOneDepByDepname")
     @ResponseBody
     public Dept queryOneDepByDepname(@RequestParam("title") String depname){
-        Dept dept = new Dept();
-        dept = iDeptService.queryOneDepByDepname(depname);
-        Dept parentdep = new Dept();
-        User principaluser = new User();
-        User deputyuser = new User();
-        User secretaryuser = new User();
-        if(dept.getParentdepid()!=null){
-            parentdep = iDeptService.queryOneDepByDepid(dept.getParentdepid());
-        }else{
-            parentdep.setDepname("");
-        }
-        if(dept.getPrincipaluserid()!=null){
-            principaluser = iUserService.getById(dept.getPrincipaluserid());
-        }else {
-            principaluser.setTruename("");
-        }
-        if(dept.getDeputyuserid()!=null){
-            deputyuser = iUserService.getById(dept.getDeputyuserid());
-        }else {
-            deputyuser.setTruename("");
-        }
-        if(dept.getSecretaryuserid()!=null){
-            secretaryuser = iUserService.getById(dept.getSecretaryuserid());
-        }else {
-            secretaryuser.setTruename("");
-        }
-        dept.setParentdep(parentdep);
-        dept.setPrincipaluser(principaluser);
-        dept.setDeputyuser(deputyuser);
-        dept.setSecretaryuser(secretaryuser);
+        Dept dept = null;
+        try {
+            dept = new Dept();
+            dept = iDeptService.queryOneDepByDepname(depname);
+            Dept parentdep = new Dept();
+            User principaluser = new User();
+            User deputyuser = new User();
+            User secretaryuser = new User();
+            if(dept.getParentdepid()!=null){
+                parentdep = iDeptService.queryOneDepByDepid(dept.getParentdepid());
+            }else{
+                parentdep.setDepname("");
+            }
+            if(dept.getPrincipaluserid()!=null){
+                principaluser = iUserService.getById(dept.getPrincipaluserid());
+            }else {
+                principaluser.setTruename("");
+            }
+            if(dept.getDeputyuserid()!=null){
+                deputyuser = iUserService.getById(dept.getDeputyuserid());
+            }else {
+                deputyuser.setTruename("");
+            }
+            if(dept.getSecretaryuserid()!=null){
+                secretaryuser = iUserService.getById(dept.getSecretaryuserid());
+            }else {
+                secretaryuser.setTruename("");
+            }
+            dept.setParentdep(parentdep);
+            dept.setPrincipaluser(principaluser);
+            dept.setDeputyuser(deputyuser);
+            dept.setSecretaryuser(secretaryuser);
 
-        PersonalInformation personalInformation = new PersonalInformation();
-        personalInformation.setDepid(dept.getId());
-        List<PersonalInformation> personalInformations = iPersonalInformationService.queryPIs(personalInformation);
-        dept.setNumbers(personalInformations.size());
+            PersonalInformation personalInformation = new PersonalInformation();
+            personalInformation.setDepid(dept.getId());
+            List<PersonalInformation> personalInformations = iPersonalInformationService.queryPIs(personalInformation);
+            dept.setNumbers(personalInformations.size());
 
-        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid());
-        if (hRsetFunctionalType!=null) {
-            dept.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid());
+            if (hRsetFunctionalType!=null) {
+                dept.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            }
+            HRsetDeptype hRsetDeptype = ihRsetDeptypeService.queryById(dept.getDeptypeid());
+            if(hRsetDeptype!=null){
+                dept.setDeptype(hRsetDeptype.getDeptype());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        HRsetDeptype hRsetDeptype = ihRsetDeptypeService.queryById(dept.getDeptypeid());
-        if(hRsetDeptype!=null){
-            dept.setDeptype(hRsetDeptype.getDeptype());
+
+        return dept;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门编号获取部门对象
+     *@Date: 19:37 2018\8\11 0011
+     */
+    @RequestMapping("/queryOneDepByDepcode")
+    @ResponseBody
+    public Dept queryOneDepByDepcode(
+            @RequestParam("code")String code
+    ){
+        Dept dept = null;
+        try {
+            dept = new Dept();
+            dept = iDeptService.queryOneByDepcode(code);
+            Dept parentdep = new Dept();
+            User principaluser = new User();
+            User deputyuser = new User();
+            User secretaryuser = new User();
+            if(dept.getParentdepid()!=null){
+                parentdep = iDeptService.queryOneDepByDepid(dept.getParentdepid());
+            }else{
+                parentdep.setDepname("");
+            }
+            if(dept.getPrincipaluserid()!=null){
+                principaluser = iUserService.getById(dept.getPrincipaluserid());
+            }else {
+                principaluser.setTruename("");
+            }
+            if(dept.getDeputyuserid()!=null){
+                deputyuser = iUserService.getById(dept.getDeputyuserid());
+            }else {
+                deputyuser.setTruename("");
+            }
+            if(dept.getSecretaryuserid()!=null){
+                secretaryuser = iUserService.getById(dept.getSecretaryuserid());
+            }else {
+                secretaryuser.setTruename("");
+            }
+            dept.setParentdep(parentdep);
+            dept.setPrincipaluser(principaluser);
+            dept.setDeputyuser(deputyuser);
+            dept.setSecretaryuser(secretaryuser);
+
+            PersonalInformation personalInformation = new PersonalInformation();
+            personalInformation.setDepid(dept.getId());
+            List<PersonalInformation> personalInformations = iPersonalInformationService.queryPIs(personalInformation);
+            dept.setNumbers(personalInformations.size());
+
+            HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid());
+            if (hRsetFunctionalType!=null) {
+                dept.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            }
+            HRsetDeptype hRsetDeptype = ihRsetDeptypeService.queryById(dept.getDeptypeid());
+            if(hRsetDeptype!=null){
+                dept.setDeptype(hRsetDeptype.getDeptype());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return dept;
@@ -134,6 +202,7 @@ public class DepartmentInformationController {
         DeptTree deptTree = new DeptTree();
         deptTree.setTitle(dept.getDepname());
         deptTree.setName(dept.getDepname());
+        deptTree.setCode(dept.getDepcode());
         deptTree.setExpand(true);
         DeptTree deptTree1 = getDeptTree(deptTree, dept.getId());
         return deptTree1;
@@ -171,9 +240,9 @@ public class DepartmentInformationController {
             @RequestParam("transactorusername") String transactorusername
     ){
         //先校验部门名称是否存在
-        Dept queryOneDepByDepname = iDeptService.queryOneDepByDepname(dept.getDepname());
-        if(queryOneDepByDepname!=null){
-            return "部门名称已存在，请重新输入部门名称！";
+        Dept queryOneByDepcode = iDeptService.queryOneByDepcode(dept.getDepcode());
+        if(queryOneByDepcode!=null){
+            return "部门编号已存在，请重新输入部门名称！";
         }
 
         /**1.添加新部门
@@ -395,6 +464,11 @@ public class DepartmentInformationController {
             Dept dept,
             @RequestParam("transactorusername") String transactorusername
     ) {
+        //先校验部门名称是否存在
+        Dept queryOneByDepcode = iDeptService.queryOneByDepcode(dept.getDepcode());
+        if(queryOneByDepcode!=null){
+            return "部门编号已存在，请重新输入部门名称！";
+        }
         try {
             Boolean b = false;
 

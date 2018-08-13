@@ -27,6 +27,13 @@ public interface IPostService  {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据岗位编号查询岗位信息
+     *@Date: 15:30 2018\8\11 0011
+     */
+    Post queryOneByPostcode(String postcode);
+
+    /**
+     *@Author:ShiYun;
      *@Description:查询所有岗位信息
      *@Date: 11:17 2018\4\11 0011
      */

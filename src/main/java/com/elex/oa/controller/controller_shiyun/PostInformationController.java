@@ -74,6 +74,35 @@ public class PostInformationController {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据岗位编号查询岗位信息
+     *@Date: 19:48 2018\8\11 0011
+     */
+    @RequestMapping("/queryOnePostByPostcode")
+    @ResponseBody
+    public Post queryOnePostByPostcode(
+            @RequestParam("code")String code
+    ){
+        Post post = iPostService.queryOneByPostcode(code);
+        Post parentpost = iPostService.queryOneByPostid(post.getParentpostid());
+        post.setParentpost(parentpost);
+        if(parentpost == null){
+            parentpost = new Post();
+            parentpost.setPostname("无上级岗位");
+        }
+        post.setParentpost(parentpost);
+        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post.getFunctionaltypeid());
+        if (hRsetFunctionalType!=null) {
+            post.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+        }
+        HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryById(post.getPostlevelid());
+        if (hRsetPostlevel!=null) {
+            post.setPostlevel(hRsetPostlevel.getPostlevel());
+        }
+        return post;
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:查询所有岗位
      *@Date: 11:14 2018\4\11 0011
      */
@@ -105,6 +134,7 @@ public class PostInformationController {
         List<Post> posts = iPostService.queryByParentpostid(null);
         DeptTree deptTree = new DeptTree();
         deptTree.setTitle(posts.get(0).getPostname());
+        deptTree.setCode(posts.get(0).getPostcode());
         DeptTree deptTree1 = getDeptTree(deptTree, posts.get(0).getId());
         return deptTree1;
     }
@@ -117,6 +147,7 @@ public class PostInformationController {
                 DeptTree deptTree1 = new DeptTree();
                 String depname = posts.get(i).getPostname();
                 deptTree1.setTitle(depname);
+                deptTree1.setCode(posts.get(i).getPostcode());
                 DeptTree deptTree2 = getDeptTree(deptTree1, posts.get(i).getId());
                 children.add(deptTree2);
             }
@@ -139,10 +170,10 @@ public class PostInformationController {
             HttpServletRequest request
     ){
         //校验岗位是否存在
-        Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
+        /*Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
         if(queryOneByPostname!=null){
             return "岗位名称已存在，请重新输入!";
-        }
+        }*/
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         List<MultipartFile> dfs= multipartRequest.getFiles("df");
@@ -221,7 +252,8 @@ public class PostInformationController {
                 MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
                 dfs = multipartRequest.getFiles("df");
             } catch (Exception e) {
-                return "提交失败！";
+                e.printStackTrace();
+                return "提交文件失败！";
             }
             // 添加岗位日志
             PostLog postLog = new PostLog();
@@ -316,6 +348,7 @@ public class PostInformationController {
                     iPostLogService.addOne(postLog);
                     b = true;
                 } catch (IOException e) {
+                    e.printStackTrace();
                     return "提交失败！";
                 }
             }
@@ -334,6 +367,7 @@ public class PostInformationController {
                 return "没有需要修改的岗位信息！";
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return "提交失败!";
         }
         return "提交成功！";

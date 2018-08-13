@@ -23,9 +23,11 @@ public class IDcodeUtil {
     public static String getZhuanzhengdate(String entrydate){
         String[] split = entrydate.split("/");
         if (Integer.parseInt(split[1]) + 2<10) {
-            split[1] = Integer.parseInt(split[1]) + 2 + "";
+            int i = Integer.parseInt(split[1]) + 2;
+            split[1] = "0" + i + "";
         }else if (Integer.parseInt(split[1]) + 2>=10){
-            split[1] = "0" + Integer.parseInt(split[1]) + 2 + "";
+            int i = Integer.parseInt(split[1]) + 2;
+            split[1] =i + "";
         }
         return split[0] + "/" + split[1] + "/" + split[2];
     }
