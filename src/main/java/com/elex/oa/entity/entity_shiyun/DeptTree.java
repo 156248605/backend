@@ -12,10 +12,19 @@ import java.util.List;
 public class DeptTree {
     private String title;
     private String name = this.title;
+    private String code;
     private Boolean expand = true;
     private List<DeptTree> children = new ArrayList<DeptTree>();
 
     public DeptTree() {
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
