@@ -30,7 +30,7 @@
     </select>
 
     <select id="wdbh" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT ID_ AS inId FROM w_ywcgddhtpsd
+        SELECT DISTINCT ID_ AS inId FROM w_ywcgddhtpsd WHERE ID_ NOT IN (SELECT inInfo FROM eqpt_inrepository)
     </select>
 
     <select id="showmat" resultType="com.elex.oa.entity.eqpt.Repository">

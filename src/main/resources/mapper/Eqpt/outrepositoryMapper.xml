@@ -24,11 +24,11 @@
     </delete>
 
     <select id="wdbhR" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT wdbh AS outId FROM w_lysqd
+        SELECT DISTINCT ID_ AS outId FROM w_lysqq WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository)
     </select>
 
     <select id="wdbhX" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT wdbh AS outId FROM w_zdsqd
+        SELECT DISTINCT ID_ AS outId FROM w_xsfh WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository)
     </select>
 
     <select id="wdbhC" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -36,11 +36,11 @@
     </select>
 
     <select id="showmatR" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_lysqd.wlbh AS materialId,w_lysqd.wlmc AS materialName,w_lysqd.ggxh AS spec,w_lysqd.lysl AS outNum,w_lysqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_lysqd.wlbh
+        SELECT w_lysqq.F_WLBH AS materialId,w_lysqq.F_WLMC AS materialName,w_lysqq.F_GGXH AS spec,w_lysqq.F_XQSL AS outNum,w_lysqq.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lysqq WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_lysqq.F_WLBH
     </select>
 
     <select id="showmatX" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_zdsqd.wlbh AS materialId,w_zdsqd.wlmc AS materialName,w_zdsqd.ggxh AS spec,w_zdsqd.lysl AS outNum,w_zdsqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_zdsqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_zdsqd.wlbh
+        SELECT w_cpmx20.F_WLBH AS materialId,w_cpmx20.F_WLMC AS materialName,w_cpmx20.F_GGXH AS spec,w_cpmx20.F_XQSL AS outNum,w_cpmx20.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cpmx20 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_cpmx20.F_WLBH
     </select>
 
     <select id="showmatC" resultType="com.elex.oa.entity.eqpt.Repository">
