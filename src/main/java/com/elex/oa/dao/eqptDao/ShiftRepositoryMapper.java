@@ -17,8 +17,6 @@ public interface ShiftRepositoryMapper {
 
     List showSHIFTID(Repository repository);
 
-    Material lockMat(Material material);
-
     List<Repository> wdbhJ();
 
     List<Repository> wdbhL();
@@ -38,4 +36,8 @@ public interface ShiftRepositoryMapper {
     String theNumberOut(Repository repository);
 
     String theNumberIn(Repository repository);
+
+    List<Repository> showprojL(String wdbh);
+
+    List<Repository> showprojJ(String wdbh);
 }

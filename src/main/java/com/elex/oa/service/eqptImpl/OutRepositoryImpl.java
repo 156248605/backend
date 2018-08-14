@@ -279,18 +279,45 @@ public class OutRepositoryImpl implements OutRepositoryService {
     public List<Repository> showmatR(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = outRepositoryMapper.showmatR(wdbh);
+        for (int i = 0; i < list.size(); i++) {
+            Repository repository = new Repository();
+            repository.setMaterialId(list.get(i).getMaterialId());
+            String materialId = outRepositoryMapper.showmatSN(repository);
+            list.get(i).setSn(materialId);
+        }
         return list;
     }
 
     public List<Repository> showmatX(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = outRepositoryMapper.showmatX(wdbh);
+        for (int i = 0; i < list.size(); i++) {
+            Repository repository = new Repository();
+            repository.setMaterialId(list.get(i).getMaterialId());
+            String materialId = outRepositoryMapper.showmatSN(repository);
+            list.get(i).setSn(materialId);
+        }
         return list;
     }
 
+    @Override
     public List<Repository> showmatC(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = outRepositoryMapper.showmatC(wdbh);
+        return list;
+    }
+
+    @Override
+    public List<Repository> showprojX(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = outRepositoryMapper.showprojX(wdbh);
+        return list;
+    }
+
+    @Override
+    public List<Repository> showprojR(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = outRepositoryMapper.showprojR(wdbh);
         return list;
     }
 }

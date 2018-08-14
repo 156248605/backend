@@ -25,6 +25,8 @@
 
     <select id="wdbhR" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT DISTINCT ID_ AS outId FROM w_lysqq WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository)
+        UNION
+        SELECT DISTINCT ID_ AS outId FROM w_zdsqq WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository)
     </select>
 
     <select id="wdbhX" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -36,14 +38,28 @@
     </select>
 
     <select id="showmatR" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_lysqq.F_WLBH AS materialId,w_lysqq.F_WLMC AS materialName,w_lysqq.F_GGXH AS spec,w_lysqq.F_XQSL AS outNum,w_lysqq.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lysqq WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_lysqq.F_WLBH
+        SELECT w_lymx21.F_WLBM AS materialId,w_lymx21.F_WLMC AS materialName,w_lymx21.F_GGXH AS spec,w_lymx21.F_XQSL AS outNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx21 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_lymx21.F_WLBM
+        UNION
+        SELECT w_cgmx11.F_WLBM AS materialId,w_cgmx11.F_WLMC AS materialName,w_cgmx11.F_GGXH AS spec,w_cgmx11.F_CGSL AS outNum,w_cgmx11.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx11 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_cgmx11.F_WLBM
     </select>
 
     <select id="showmatX" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_cpmx20.F_WLBH AS materialId,w_cpmx20.F_WLMC AS materialName,w_cpmx20.F_GGXH AS spec,w_cpmx20.F_XQSL AS outNum,w_cpmx20.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cpmx20 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_cpmx20.F_WLBH
+        SELECT w_cpmx20.F_WLBM AS materialId,w_cpmx20.F_WLMC AS materialName,w_cpmx20.F_GGXH AS spec,w_cpmx20.F_XQSL AS outNum,w_cpmx20.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cpmx20 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_cpmx20.F_WLBM
     </select>
 
     <select id="showmatC" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT w_xsfhtzd.wlbh AS materialId,w_xsfhtzd.wlmc AS materialName,w_xsfhtzd.ggxh AS spec,w_xsfhtzd.xqsl AS outNum,w_xsfhtzd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_xsfhtzd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_xsfhtzd.wlbh
+    </select>
+
+    <select id="showmatSN" resultType="string">
+        SELECT DISTINCT F_XLH FROM w_jyd WHERE F_WLBM = #{materialId}
+    </select>
+
+    <select id="showprojX" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_xsfh.F_XMBH AS projId,w_xsfh.F_XMMC AS projName FROM w_xsfh WHERE ID_ = #{wdbh}
+    </select>
+
+    <select id="showprojR" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_lysqq.F_XMBH AS projId,w_lysqq.F_XMMC AS projName FROM w_lysqq WHERE ID_ = #{wdbh}
     </select>
 </mapper>
