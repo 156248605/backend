@@ -41,7 +41,9 @@ public interface IPersonalInformationDao{
      *@Description:根据部门ID查询人事信息
      *@Date: 16:18 2018\5\28 0028
      */
-    public List<PersonalInformation> selectByDepid(Integer depid);
+    public List<PersonalInformation> selectByDepid(Integer depid);//查当前时间节点的部门在职人数
+    public List<PersonalInformation> selectByDepid2(Integer depid,String sdate,String edate);//查在时间节点edate前入职的部门人数(在职+离职)
+    public List<PersonalInformation> selectByDepid3(Integer depid,String sdate,String edate);//查在时间节点edate前离职的部门人数(离职)
 
     /**
      *@Author:ShiYun;
@@ -62,7 +64,9 @@ public interface IPersonalInformationDao{
      *@Description:查询所有人事信息（不分页）
      *@Date: 17:24 2018\4\18 0018
      */
-    public List<PersonalInformation> selectAll();
+    public List<PersonalInformation> selectAll();//查在当前时间节点的所有人(在职+离职)
+    public List<PersonalInformation> selectAll2(String sdate,String edate);//查在时间点edate前入职的人员(在职+离职)
+    public List<PersonalInformation> selectAll3(String sdate,String edate);//查在时间点edate前离职的人员(离职)
 
     /**
      *@Author:ShiYun;

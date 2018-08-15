@@ -30,6 +30,11 @@
 		ORDER BY ordercode
 	</select>
 
+	<select id="selectDeptByDeptcode2" parameterType="java.lang.String" resultMap="deptMapper">
+		select * from tb_id_department
+		where depcode LIKE #{depcode} and state=1
+	</select>
+
 	<select id="selectDeptByDepid" parameterType="java.lang.Integer" resultMap="deptMapper">
 		select * from tb_id_department
 		where id = #{id} and state=1

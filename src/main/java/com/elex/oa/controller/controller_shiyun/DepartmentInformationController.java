@@ -217,6 +217,7 @@ public class DepartmentInformationController {
                 String depname = depts.get(i).getDepname();
                 deptTree1.setTitle(depname);
                 deptTree1.setName(depname);
+                deptTree1.setCode(depts.get(i).getDepcode());
                 deptTree1.setExpand(true);
                 DeptTree deptTree2 = getDeptTree(deptTree1, depts.get(i).getId());
                 children.add(deptTree2);
@@ -242,7 +243,7 @@ public class DepartmentInformationController {
         //先校验部门名称是否存在
         Dept queryOneByDepcode = iDeptService.queryOneByDepcode(dept.getDepcode());
         if(queryOneByDepcode!=null){
-            return "部门编号已存在，请重新输入部门名称！";
+            return "部门编号已存在，请重新输入部门编号！";
         }
 
         /**1.添加新部门
@@ -261,6 +262,25 @@ public class DepartmentInformationController {
         }
         if(ihRsetDeptypeService.queryByDeptype(dept.getDeptype())!=null){
             dept.setDeptypeid(ihRsetDeptypeService.queryByDeptype(dept.getDeptype()).getId());
+        }
+
+        //添加公司名称
+        //首先根据"ELEX"模糊查询出所有的公司
+        //根据公司编号的后两位数字判断是哪个公司
+        //最后添加公司名称
+        List<Dept> elex = iDeptService.queryDeptsByDepcode("ELEX");
+        Boolean validateCP = true;
+        for (Dept d:elex
+             ) {
+            int l = d.getDepcode().length();
+            if(dept.getDepcode().substring(0,2).equals(d.getDepcode().substring(l-2,l))){
+                dept.setCompanyname(d.getDepname());
+                validateCP = false;
+                break;
+            }
+        }
+        if(validateCP){
+            dept.setCompanyname(dept.getDepname());
         }
         Integer depid = iDeptService.addOne(dept);
         //正职、副职、秘书的原部门信息修改、并添加相应的部门信息修改日志
@@ -808,6 +828,25 @@ public class DepartmentInformationController {
                 if (ihRsetDeptypeService.queryByDeptype(dept.getDeptype())!=null) {
                     dept.setDeptypeid(ihRsetDeptypeService.queryByDeptype(dept.getDeptype()).getId());
                 }
+
+                //添加公司名称
+                //首先根据"ELEX"模糊查询出所有的公司
+                //根据公司编号的后两位数字判断是哪个公司
+                //最后添加公司名称
+                List<Dept> elex = iDeptService.queryDeptsByDepcode("ELEX");
+                Boolean validateCP = true;
+                for (Dept d:elex
+                        ) {
+                    int l = d.getDepcode().length();
+                    if(dept.getDepcode().substring(0,2).equals(d.getDepcode().substring(l-2,l))){
+                        dept.setCompanyname(d.getDepname());
+                        validateCP = false;
+                        break;
+                    }
+                }
+                if(validateCP){
+                    dept.setCompanyname(dept.getDepname());
+                }
                 iDeptService.modifyOne(dept);
             } else {
                 return "没有需要修改的部门信息！";
@@ -1088,8 +1127,11 @@ public class DepartmentInformationController {
      */
     @RequestMapping("/queryHRManageCard")
     @ResponseBody
-    public Map<String,Object> queryHRManageCard(){
-        HashMap<String, Object> hrManageCard = iDeptService.getHRManageCard();
+    public Object queryHRManageCard(
+            @RequestParam("sdate")String sdate,
+            @RequestParam("edate")String edate
+    ){
+        Object hrManageCard = iDeptService.getHRManageCard(sdate,edate);
         return hrManageCard;
     }
 

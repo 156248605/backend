@@ -25,6 +25,13 @@ public interface IDeptService {
      */
     Dept queryOneByDepcode(String depcode);
 
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门code模糊查询部门信息
+     *@Date: 17:06 2018\8\14 0014
+     */
+    List<Dept> queryDeptsByDepcode(String depcode);
+
     //更具部门ID查询部门对象
     Dept queryOneDepByDepid(Integer id);
 
@@ -86,8 +93,50 @@ public interface IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:在职的人事看板信息
+     *@Description:人事看板信息
      *@Date: 13:39 2018\6\28 0028
      */
-    public HashMap<String,Object> getHRManageCard();
+    public Object getHRManageCard(String sdate,String edate);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得总人数(edate时间点的在职总人数)
+     *@Date: 9:13 2018\8\15 0015
+     */
+    public Object getHRManageCard2(Integer rows,Integer page,String sdate,String edate);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得入职总人数(edate时间点的入职总人数)
+     *@Date: 9:15 2018\8\15 0015
+     */
+    public Object getHRManageCard3(Integer rows,Integer page,String sdate,String edate);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得离职总人数(edate时间点的离职总人数)
+     *@Date: 9:17 2018\8\15 0015
+     */
+    public Object getHRManageCard4(Integer rows,Integer page,String sdate,String edate);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响)
+     *@Date: 9:17 2018\8\15 0015
+     */
+    public Object getHRManageCard5(Integer rows,Integer page,Integer depid,String sdate,String edate);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响)
+     *@Date: 9:17 2018\8\15 0015
+     */
+    public Object getHRManageCard6(Integer rows,Integer page,Integer depid,String sdate,String edate);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:forGXF（根据姓名查询相应的公司名称）
+     *@Date: 17:23 2018\8\14 0014
+     */
+    public String queryByTruename(String truename);
 }
