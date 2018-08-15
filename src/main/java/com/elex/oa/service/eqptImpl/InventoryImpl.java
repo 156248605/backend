@@ -112,7 +112,29 @@ public class InventoryImpl implements InventoryService {
             String y,m;
             y = String.valueOf(cal.get(Calendar.YEAR));
             m = String.valueOf((cal.get(Calendar.MONTH)+1 > 10)?cal.get(Calendar.MONTH)+1:"0"+String.valueOf(cal.get(Calendar.MONTH)+1) );
-            System.out.println(y+m);
+            Repository repository = new Repository();
+            repository.setInvId(y+m);
+            List showInvId = inventoryMapper.showINVID(repository);
+            String result = "";// 1.确定盘点单号
+            if (showInvId.size() > 0){
+                result = String.valueOf(parseInt(showInvId.get(showInvId.size()-1).toString())+1);
+            }else {
+                result = y+m+"0001";
+            }
+            String invTime = list.get(i).get("F_TBRQ").toString();// 2.获取盘点时间(需要修改)
+            String materialId = list.get(i).get("F_TBRQ").toString();// 3.获取物料Id(需要修改)
+            String reptId = list.get(i).get("F_TBRQ").toString();// 4.获取盘点仓库(需要修改)
+            String postId = list.get(i).get("F_TBRQ").toString();// 5.获取盘点库位(需要修改)
+            String num = list.get(i).get("F_TBRQ").toString();// 6.获取账上数量(需要修改)
+            String numInv = list.get(i).get("F_TBRQ").toString();// 7.获取盘点(实际)数量(需要修改)
+            repository.setInvTime(invTime);
+            repository.setMaterialId(materialId);
+            repository.setReptId(reptId);
+            repository.setPostId(postId);
+            repository.setNum(String.valueOf(parseInt(numInv) - parseInt(num)));
+            repository.setNumInv(numInv);
+            inventoryMapper.changeNum(repository);
+            inventoryMapper.changeNumMat(repository);
             /*Repository repository = new Repository();
             repository.setInvId(request.getParameter("invId"));
             String date = request.getParameter("invTime");

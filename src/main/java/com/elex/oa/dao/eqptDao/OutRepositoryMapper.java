@@ -37,4 +37,10 @@ public interface OutRepositoryMapper {
     List<Repository> showmatR(String wdbh);
 
     List<Repository> showmatC(String wdbh);
+
+    String showmatSN(Repository repository);
+
+    List<Repository> showprojX(String wdbh);
+
+    List<Repository> showprojR(String wdbh);
 }

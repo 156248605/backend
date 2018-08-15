@@ -38,4 +38,10 @@ public interface OutRepositoryService {
     List<Repository> wdbhX();
 
     List<Repository> wdbhC();
+
+    List<Repository> showmatC(HttpServletRequest request);
+
+    List<Repository> showprojX(HttpServletRequest request);
+
+    List<Repository> showprojR(HttpServletRequest request);
 }

@@ -34,6 +34,9 @@ public class InRepositoryImpl implements InRepositoryService {
     private RepositoryMapper repositoryMapper;
 
     @Resource
+    private OutRepositoryMapper outRepositoryMapper;
+
+    @Resource
     private RepositoryMtMapper repositoryMtMapper;
 
     @Resource
@@ -378,6 +381,12 @@ public class InRepositoryImpl implements InRepositoryService {
     public List<Repository> showmat(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = inRepositoryMapper.showmat(wdbh);
+        for (int i = 0; i < list.size(); i++) {
+            Repository repository = new Repository();
+            repository.setMaterialId(list.get(i).getMaterialId());
+            String materialId = outRepositoryMapper.showmatSN(repository);
+            list.get(i).setSn(materialId);
+        }
         return list;
     }
 

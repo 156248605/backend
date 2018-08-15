@@ -109,4 +109,16 @@ public class OutRepositoryController {
     public List<Repository> showmatC (HttpServletRequest request) {
         return outRepositoryImpl.showmatC(request);
     }
+
+    @RequestMapping("/showprojX")
+    @ResponseBody
+    public List<Repository> showprojX (HttpServletRequest request) {
+        return outRepositoryImpl.showprojX(request);
+    }
+
+    @RequestMapping("/showprojR")
+    @ResponseBody
+    public List<Repository> showprojR (HttpServletRequest request) {
+        return outRepositoryImpl.showprojR(request);
+    }
 }

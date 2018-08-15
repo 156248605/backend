@@ -49,4 +49,8 @@ public interface ShiftRepositoryService {
     List<Repository> showmatG(HttpServletRequest request);
 
     List<Repository> showmatT(HttpServletRequest request);
+
+    List<Repository> showprojL(HttpServletRequest request);
+
+    List<Repository> showprojJ(HttpServletRequest request);
 }
