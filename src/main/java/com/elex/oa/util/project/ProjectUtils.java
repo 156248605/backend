@@ -1,22 +1,27 @@
 package com.elex.oa.util.project;
 
+import com.elex.oa.entity.project.ProjectCode;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProjectUtils {
 
-    public static boolean codeValidate(String original) {
+    public static String codeValidate(String original) { //验证编码是否为当前月的
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = simpleDateFormat.format(new Date()).substring(0,7);
+        String date = simpleDateFormat.format(new Date()).substring(0,8);
         if(original.contains(date)) {
-            return  true;
+            return  "1";
         }
-        return false;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(date);
+        stringBuilder.append("0002");
+        return stringBuilder.toString();
     }
 
-    public static String projectCode(String original) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static String projectCode(ProjectCode projectCode) {
+        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String[] date = simpleDateFormat.format(new Date()).split("-");
         String[] oDate = original.split("-");
         StringBuilder stringBuilder = new StringBuilder();
@@ -40,8 +45,10 @@ public class ProjectUtils {
         stringBuilder.append(date[0]);
         stringBuilder.append("-");
         stringBuilder.append(date[1]);
-        stringBuilder.append("0001");
-        return stringBuilder.toString();
+        stringBuilder.append("0001");*/
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = simpleDateFormat.format(new Date());
+        return "";
     }
 
     public static String lowerToCaptial(double money) {

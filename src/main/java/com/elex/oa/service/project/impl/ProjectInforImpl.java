@@ -6,6 +6,7 @@ import com.elex.oa.dao.project.ProjectSetDao;
 import com.elex.oa.entity.project.ApprovalList;
 import com.elex.oa.entity.project.OperationQuery;
 import com.elex.oa.entity.project.ProjectInfor;
+import com.elex.oa.entity.project.ProjectVarious;
 import com.elex.oa.service.project.ProjectInforService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -41,8 +42,17 @@ public class ProjectInforImpl implements ProjectInforService {
         if(approvalLists.size() == 0) {
             return;
         }
+        List<ProjectVarious> statusList = projectSetDao.queryStatus();
+        String code = "";
+        for(ProjectVarious status:statusList) {
+            if(status.getName().equals("进行")) {
+                code = status.getCode()+"";
+                break;
+            }
+        }
         for(ApprovalList approvalList: approvalLists) {
             approvalList.setWriteDate(approvalList.getWriteDate().substring(0,10));
+            approvalList.setProjectStatus(code);
         }
         projectInforDao.addInfor(approvalLists); //添加项目详情信息
     }

@@ -6,7 +6,7 @@ public class ApprovalList {
     private String projectCode; //项目编号
     private String projectName; //项目名称
     private String writeDate; //申请日期
-    private String passDate; //审批通过日期
+    private String projectStatus; //项目状态
     private String projectSource; //项目来源
     private String projectType; //项目类型
     private String inDepartment; //立项部门
@@ -28,12 +28,12 @@ public class ApprovalList {
     public ApprovalList() {
     }
 
-    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String passDate, String projectSource, String projectType, String inDepartment, String deptManager, String proposer, String department1, String businessManager, String businessManagerId, String department2, String projectManager, String projectManagerId, String generalSituation, String departmentManager, String leaderShip, String reviewSign, String generalManager, String distribution) {
+    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String projectStatus, String projectSource, String projectType, String inDepartment, String deptManager, String proposer, String department1, String businessManager, String businessManagerId, String department2, String projectManager, String projectManagerId, String generalSituation, String departmentManager, String leaderShip, String reviewSign, String generalManager, String distribution) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
         this.writeDate = writeDate;
-        this.passDate = passDate;
+        this.projectStatus = projectStatus;
         this.projectSource = projectSource;
         this.projectType = projectType;
         this.inDepartment = inDepartment;
@@ -85,12 +85,12 @@ public class ApprovalList {
         this.writeDate = writeDate;
     }
 
-    public String getPassDate() {
-        return passDate;
+    public String getProjectStatus() {
+        return projectStatus;
     }
 
-    public void setPassDate(String passDate) {
-        this.passDate = passDate;
+    public void setProjectStatus(String projectStatus) {
+        this.projectStatus = projectStatus;
     }
 
     public String getProjectSource() {
@@ -236,7 +236,7 @@ public class ApprovalList {
                 ", projectCode='" + projectCode + '\'' +
                 ", projectName='" + projectName + '\'' +
                 ", writeDate='" + writeDate + '\'' +
-                ", passDate='" + passDate + '\'' +
+                ", projectStatus='" + projectStatus + '\'' +
                 ", projectSource='" + projectSource + '\'' +
                 ", projectType='" + projectType + '\'' +
                 ", inDepartment='" + inDepartment + '\'' +

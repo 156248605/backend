@@ -67,10 +67,10 @@
     </select>
 
     <select id="addInfor" parameterType="java.util.List">
-        INSERT INTO pro_pro_infor(id, project_code, project_name, in_department, dept_manager, proposer, write_date, business_manager, business_manager_id, project_source, project_manager, project_manager_id, project_type, general_situation)
+        INSERT INTO pro_pro_infor(id, project_code, project_name, project_status, in_department, dept_manager, proposer, write_date, business_manager, business_manager_id, project_source, project_manager, project_manager_id, project_type, general_situation)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (NULL, #{item.projectCode}, #{item.projectName}, #{item.inDepartment}, #{item.deptManager}, #{item.proposer}, #{item.writeDate}, #{item.businessManager}, #{item.businessManagerId},
+            (NULL, #{item.projectCode}, #{item.projectName}, #{projectStatus}, #{item.inDepartment}, #{item.deptManager}, #{item.proposer}, #{item.writeDate}, #{item.businessManager}, #{item.businessManagerId},
               #{item.projectSource}, #{item.projectManager}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation})
         </foreach>
     </select>

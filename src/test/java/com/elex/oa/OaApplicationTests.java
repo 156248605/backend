@@ -7,6 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,6 +29,13 @@ public class OaApplicationTests {
 		String end = simpleDateFormat.format(calendar1.getTime());
 		System.out.println(start);
 		System.out.println(end);
+	}
+
+	@Test
+	public void simplateValidate() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = simpleDateFormat.format(new Date()).substring(0,7);
+		System.out.println(date);
 	}
 
 }
