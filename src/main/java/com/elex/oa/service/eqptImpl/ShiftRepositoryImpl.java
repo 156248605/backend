@@ -39,6 +39,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     private ShiftRepositoryMapper shiftRepositoryMapper;
 
     @Resource
+    private OutRepositoryMapper outRepositoryMapper;
+
+    @Resource
     private RepositoryMtMapper repositoryMtMapper;
 
     // 显示全部数据
@@ -447,6 +450,12 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     public List<Repository> showmatJ(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = shiftRepositoryMapper.showmatJ(wdbh);
+        for (int i = 0; i < list.size(); i++) {
+            Repository repository = new Repository();
+            repository.setMaterialId(list.get(i).getMaterialId());
+            String materialId = outRepositoryMapper.showmatSN(repository);
+            list.get(i).setSn(materialId);
+        }
         return list;
     }
 
@@ -454,6 +463,12 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     public List<Repository> showmatL(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = shiftRepositoryMapper.showmatL(wdbh);
+        for (int i = 0; i < list.size(); i++) {
+            Repository repository = new Repository();
+            repository.setMaterialId(list.get(i).getMaterialId());
+            String materialId = outRepositoryMapper.showmatSN(repository);
+            list.get(i).setSn(materialId);
+        }
         return list;
     }
 
@@ -461,6 +476,12 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     public List<Repository> showmatG(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = shiftRepositoryMapper.showmatG(wdbh);
+        for (int i = 0; i < list.size(); i++) {
+            Repository repository = new Repository();
+            repository.setMaterialId(list.get(i).getMaterialId());
+            String materialId = outRepositoryMapper.showmatSN(repository);
+            list.get(i).setSn(materialId);
+        }
         return list;
     }
 
@@ -468,6 +489,26 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     public List<Repository> showmatT(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = shiftRepositoryMapper.showmatT(wdbh);
+        for (int i = 0; i < list.size(); i++) {
+            Repository repository = new Repository();
+            repository.setMaterialId(list.get(i).getMaterialId());
+            String materialId = outRepositoryMapper.showmatSN(repository);
+            list.get(i).setSn(materialId);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Repository> showprojL(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = shiftRepositoryMapper.showprojL(wdbh);
+        return list;
+    }
+
+    @Override
+    public List<Repository> showprojJ(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<Repository> list = shiftRepositoryMapper.showprojJ(wdbh);
         return list;
     }
 }

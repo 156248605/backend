@@ -150,7 +150,7 @@
     </select>
 
     <select id="wdbhJ" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT wdbh AS shiftId FROM w_jysqd
+        SELECT DISTINCT ID_ AS shiftId FROM w_jysqd1 WHERE ID_ NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository)
     </select>
 
     <select id="wdbhL" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -158,7 +158,7 @@
     </select>
 
     <select id="wdbhG" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT wdbh AS shiftId FROM w_jysqd
+        SELECT DISTINCT ID_ AS shiftId FROM w_jysqd1 WHERE ID_ NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository)
     </select>
 
     <select id="wdbhT" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -166,7 +166,7 @@
     </select>
 
     <select id="showmatJ" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_jysqd.wlbh AS materialId,w_jysqd.wlmc AS materialName,w_jysqd.ggxh AS spec,w_jysqd.lysl AS shiftNum,w_jysqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_jysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_jysqd.wlbh
+        SELECT w_lymx123.F_WLBM AS materialId,w_lymx123.F_WLMC AS materialName,w_lymx123.F_GGXH AS spec,w_lymx123.F_LYSL AS shiftNum,w_lymx123.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_jysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_jysqd.wlbh
     </select>
 
     <select id="showmatL" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -174,10 +174,18 @@
     </select>
 
     <select id="showmatG" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_jysqd.wlbh AS materialId,w_jysqd.wlmc AS materialName,w_jysqd.ggxh AS spec,w_jysqd.xqsl AS shiftNum,w_jysqd.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_jysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_jysqd.wlbh
+        SELECT w_lymx123.F_WLBM AS materialId,w_lymx123.F_WLMC AS materialName,w_lymx123.F_GGXH AS spec,w_lymx123.F_LYSL AS shiftNum,w_lymx123.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_jysqd WHERE wdbh = #{wdbh} AND eqpt_material.id = w_jysqd.wlbh
     </select>
 
     <select id="showmatT" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT w_sclld.wlbh AS materialId,w_sclld.wlmc AS materialName,w_sclld.ggxh AS spec,w_sclld.lysl AS shiftNum,w_sclld.pch_xlh AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_sclld WHERE wdbh = #{wdbh} AND eqpt_material.id = w_sclld.wlbh
+    </select>
+
+    <select id="showprojJ" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_jysqd1.F_XMBH AS projId,w_jysqd1.F_XMMC AS projName FROM w_jysqd1 WHERE ID_ = #{wdbh}
+    </select>
+
+    <select id="showprojL" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_lysqq.F_XMBH AS projId,w_lysqq.F_XMMC AS projName FROM w_lysqq WHERE ID_ = #{wdbh}
     </select>
 </mapper>

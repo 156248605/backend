@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Author:ShiYun;
@@ -51,14 +49,19 @@ public class DeptServiceImpl implements IDeptService {
      */
     @Override
     public Dept queryOneByDepcode(String depcode) {
-        Dept dept = new Dept();
-        dept.setDepcode(depcode);
-        List<Dept> depts = iDeptDao.selectDeptsByDept(dept);
-        if(depts.isEmpty()){
-            return null;
-        }else {
-            return depts.get(0);
-        }
+        Dept dept = iDeptDao.selectDeptByDeptcode(depcode);
+        return dept;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门code模糊查询部门信息
+     *@Date: 17:08 2018\8\14 0014
+     */
+    @Override
+    public List<Dept> queryDeptsByDepcode(String depcode) {
+        List<Dept> depts = iDeptDao.selectDeptByDeptcode2(depcode);
+        return depts;
     }
 
     /**
@@ -224,28 +227,73 @@ public class DeptServiceImpl implements IDeptService {
      *@Date: 11:53 2018\6\28 0028
      */
     @Override
-    public HashMap<String, Object> getHRManageCard() {
+    public Object getHRManageCard(String sdate,String edate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = new Date();
+        String curDate = sdf.format(date);
+        Boolean d1 = sdate==null || sdate.equals("");
+        Boolean d2 = edate==null || edate.equals("");
+        //1.sdate=null,  edate=null=>作为当前时间
+        if(d1 && d2){
+            sdate = edate =curDate;
+        }
+        //2.sdate!=null, edate=null=>限：sdate<=当前时间
+        //                           结：edate=sdate
+        if(!d1 && d2){
+            if(sdate.compareTo(curDate)<=0){
+                edate=sdate;
+            }else {
+                return "所选时间必须<=当前时间！";
+            }
+        }
+        //3.sdate=null, edate!=null=>限：edate<=当前时间
+        //                           结：sdate=edate
+        if(d1 && !d2){
+            if(edate.compareTo(curDate)<=0){
+                sdate = edate;
+            }else {
+                return "所选时间必须<=当前时间！";
+            }
+        }
+        //4.sdate!=null,edate!=null=>限：sdate<=edate<=当前时间
+        //                           结：sdate,edate
+        if(!d1 && !d2){
+            if(sdate.compareTo(edate)>0 || edate.compareTo(curDate)>0){
+                return "所选时间必须满足期初数<=期末数<=当前时间！";
+            }
+        }
         HashMap<String, Object> paramMap = new HashMap<>();
         List<HRManageCard> hrManageCardList = new ArrayList<>();
         List<Dept> depts = iDeptDao.selectAllDept();
-        //获得总人数
-        List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll();
+
+        //获得总人数(edate时间点的在职总人数)
+        List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(sdate,edate);
+        List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(sdate,edate);
         Integer num = personalInformationList1.size();
+        if(personalInformationList2.size()>0){
+            num = num - personalInformationList2.size();
+        }
         paramMap.put("allNum",num);
+
         for (Dept dept:depts
              ) {
             HRManageCard hrManageCard = new HRManageCard();
             //获得部门名称
+            hrManageCard.setDeptid(dept.getId());
             hrManageCard.setDepname(dept.getDepname());
-            //获得部门的在职人数
-            List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(dept.getId());
+            //获得部门的在职人数(edate时间点的在职人数)
+            List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid2(dept.getId(),sdate,edate);
+            List<PersonalInformation> personalList2 = iPersonalInformationDao.selectByDepid2(dept.getId(),sdate,edate);
             Integer ratio = personalInformationList.size();
-            hrManageCard.setNum(personalInformationList.size());
+            if(personalList2.size()>0){
+                ratio = ratio - personalList2.size();
+            }
+            hrManageCard.setNum(ratio);
             //人数占比
             Double db = ratio.doubleValue()/num.doubleValue()*100;
             BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
             hrManageCard.setRatio(bg.doubleValue() + "%");
-            //获得部门相应的人员
+            //获得部门相应的人员(edate时间点的在职人员)
             List<Map> users = new ArrayList<>();
             for (PersonalInformation per:personalInformationList
                  ) {
@@ -261,5 +309,33 @@ public class DeptServiceImpl implements IDeptService {
         }
         paramMap.put("HRManageCards",hrManageCardList);
         return paramMap;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:forGXF（根据姓名查询相应的公司名称）
+     *@Date: 17:25 2018\8\14 0014
+     */
+    @Override
+    public String queryByTruename(String truename) {
+        User user;
+        if (truename!=null || !"".equals(truename)) {
+            user = iUserDao.selectByTruename(truename);
+        }else {
+            return null;
+        }
+        PersonalInformation personalInformation;
+        if (user!=null) {
+            personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
+        } else {
+            return null;
+        }
+        Dept dept = null;
+        if (personalInformation!=null && personalInformation.getDepid()!=null) {
+            dept = iDeptDao.selectDeptByDepid(personalInformation.getDepid());
+        }else {
+            return null;
+        }
+        return dept.getCompanyname();
     }
 }

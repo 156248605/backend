@@ -8,9 +8,7 @@ import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -108,11 +106,6 @@ public class PersonalInformationController {
     IHRsetEmergencyrpService ihRsetEmergencyrpService;//应急联系人关系
     @Autowired
     private IGzrzService iGzrzService;//工作日志
-
-    @Autowired
-    private ProjectBoardService projectBoardService;//高晓飞
-
-
     /**
      * @Author:ShiYun;
      * @Description:人事信息的查询
@@ -494,17 +487,17 @@ public class PersonalInformationController {
             return "工号已存在，请重新输入！";
         }
         //username校验
-        List<User> users;
+        User u;
         if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("")) {
-            users = iUserService.queryByUsername(personalInformation.getUsername());
-            if(users.size()>0){
+            u = iUserService.queryByUsername(personalInformation.getUsername());
+            if(u!=null){
                 return "登录ID已存在，请重新输入（不输入则默认为姓名）！";
             }
         } else {
-            users = iUserService.queryByUsername(personalInformation.getTruename());
+            u = iUserService.queryByUsername(personalInformation.getTruename());
             int i = 2;
-            while (users.size()>0){
-                users = iUserService.queryByUsername(personalInformation.getTruename() + i);
+            while (u!=null){
+                u = iUserService.queryByUsername(personalInformation.getTruename() + i);
                 i++;
             }
             if (i==2) {
@@ -956,17 +949,17 @@ public class PersonalInformationController {
         }
         if (!personalInformation.getUsername().equals(personalInformation2.getUsername())) {
             //username校验
-            List<User> users;
+            User u;
             if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("")) {
-                users = iUserService.queryByUsername(personalInformation.getUsername());
-                if(users.size()>0){
+                u = iUserService.queryByUsername(personalInformation.getUsername());
+                if(u!=null){
                     return "登录ID已存在，请重新输入（不输入则默认为姓名）！";
                 }
             } else {
-                users = iUserService.queryByUsername(personalInformation.getTruename());
+                u = iUserService.queryByUsername(personalInformation.getTruename());
                 int i = 2;
-                while (users.size()>0){
-                    users = iUserService.queryByUsername(personalInformation.getTruename() + i);
+                while (u!=null){
+                    u = iUserService.queryByUsername(personalInformation.getTruename() + i);
                     i++;
                 }
                 if (i==2) {
@@ -1909,25 +1902,25 @@ public class PersonalInformationController {
                 User user = new User();
                 user.setIsactive(personalInformation.getIsactive());
                 //username校验
-                List<User> users;
+                User u;
                 if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("")) {
-                    users = iUserService.queryByUsername(personalInformation.getUsername());
+                    u = iUserService.queryByUsername(personalInformation.getUsername());
                     int j = 2;
-                    while (users.size()>0){
-                        users = iUserService.queryByUsername(personalInformation.getTruename() + j);
+                    while (u!=null){
+                        u = iUserService.queryByUsername(personalInformation.getTruename() + j);
                         j++;
                     }
                     if (j==2) {
-                        personalInformation.setUsername(personalInformation.getTruename());
+                        personalInformation.setUsername(personalInformation.getUsername());
                     } else {
                         j--;
                         personalInformation.setUsername(personalInformation.getTruename()+j);
                     }
                 } else {
-                    users = iUserService.queryByUsername(personalInformation.getTruename());
+                    u = iUserService.queryByUsername(personalInformation.getTruename());
                     int j = 2;
-                    while (users.size()>0){
-                        users = iUserService.queryByUsername(personalInformation.getTruename() + j);
+                    while (u!=null){
+                        u = iUserService.queryByUsername(personalInformation.getTruename() + j);
                         j++;
                     }
                     if (j==2) {
@@ -2118,7 +2111,7 @@ public class PersonalInformationController {
                 if (personalinformationid!=null) {
                     PerAndPostRs perAndPostRs = new PerAndPostRs();
                     perAndPostRs.setPerid(personalinformationid);
-                    String[] split = personalInformation.getPostnames().split(";");
+                    String[] split = personalInformation.getPostnames().split("[兼;]");
                     for(String postname:split){
                         if (iPostService.queryOneByPostname(postname)!=null) {
                             Integer postid = iPostService.queryOneByPostname(postname).getId();
@@ -2265,16 +2258,19 @@ public class PersonalInformationController {
     public Object queryZHG001(
             @RequestParam("username")String username
     ){
-        User user = new User();
-        user.setUsername(username);
-        User user1 = iUserService.selectOne(user);
-        if(user1==null){
+        User user = iUserService.queryByUsername(username);
+        if(user==null){
             return RespUtil.successResp("205","没有查到此用户信息",null);
         }else{
-            PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(user1.getId());
+            PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(user.getId());
             try {
-               // return this.getOnePersonalinformation(personalInformation.getId());
-                return RespUtil.successResp("205","没有查到此用户信息",this.getOnePersonalinformation(personalInformation.getId()));
+                PersonalInformation onePersonalinformation;
+                if (personalInformation!=null) {
+                    onePersonalinformation = this.getOnePersonalinformation(personalInformation.getId());
+                } else {
+                    return RespUtil.successResp("205","没有查到此用户信息",null);
+                }
+                return RespUtil.successResp("205","查询成功！",onePersonalinformation);
             } catch (ParseException e) {
                 return RespUtil.successResp("205","没有查到此用户信息",null);
             }

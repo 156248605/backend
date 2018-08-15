@@ -124,4 +124,16 @@ public class ShiftRepositoryController {
     public List<Repository> showmatT (HttpServletRequest request) {
         return shiftRepositoryImpl.showmatT(request);
     }
+
+    @RequestMapping("/showprojJ")
+    @ResponseBody
+    public List<Repository> showprojJ (HttpServletRequest request) {
+        return shiftRepositoryImpl.showprojJ(request);
+    }
+
+    @RequestMapping("/showprojL")
+    @ResponseBody
+    public List<Repository> showprojL (HttpServletRequest request) {
+        return shiftRepositoryImpl.showprojL(request);
+    }
 }

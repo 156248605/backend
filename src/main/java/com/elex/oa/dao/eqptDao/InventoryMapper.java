@@ -53,4 +53,9 @@ public interface InventoryMapper {
     List<HashMap<String, Object>> invInfo(String INST_STATUS_);
 
     List<HashMap<String, Object>> test();
+
+    // 定时修改
+    void changeNum (Repository repository);
+
+    void changeNumMat (Repository repository);
 }

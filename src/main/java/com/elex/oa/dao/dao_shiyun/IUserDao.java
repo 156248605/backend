@@ -34,7 +34,7 @@ public interface IUserDao extends BaseDao<User> {
      *@Description:根据username查询用户数据
      *@Date: 11:47 2018\6\1 0001
      */
-    public List<User> selectByUsername(String username);
+    public User selectByUsername(String username);
 
     /**
      *@Author:ShiYun;

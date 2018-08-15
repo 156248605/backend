@@ -30,14 +30,26 @@
     </select>
 
     <select id="wdbh" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT ID_ AS inId FROM w_ywcgddhtpsd
+        SELECT DISTINCT ID_ AS inId FROM w_ywcgddhtpsd WHERE ID_ NOT IN (SELECT inInfo FROM eqpt_inrepository)
+        UNION
+        SELECT DISTINCT ID_ AS inId FROM w_fwcgxqsq WHERE ID_ NOT IN (SELECT inInfo FROM eqpt_inrepository)
+        UNION
+        SELECT DISTINCT ID_ AS inId FROM w_rccgddhtps WHERE ID_ NOT IN (SELECT inInfo FROM eqpt_inrepository)
     </select>
 
     <select id="showmat" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT w_cgmx1.F_WLBH AS materialId,w_cgmx1.F_WLMC AS materialName,w_cgmx1.F_GGXH AS spec,w_cgmx1.F_CGSL AS inNum,w_cgmx1.F_WLMC AS 'check',w_cgmx1.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx1 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_cgmx1.F_WLBH
+        UNION
+        SELECT w_cgmx4.F_WLBH AS materialId,w_cgmx4.F_WLMC AS materialName,w_cgmx4.F_GGXH AS spec,w_cgmx4.F_CGSL AS inNum,w_cgmx4.F_WLMC AS 'check',w_cgmx4.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx4 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_cgmx4.F_WLBH
+        UNION
+        SELECT w_cgmx2.F_WLBH AS materialId,w_cgmx2.F_WLMC AS materialName,w_cgmx2.F_GGXH AS spec,w_cgmx2.F_CGSL AS inNum,w_cgmx2.F_WLMC AS 'check',w_cgmx2.F_WLMC AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx2 WHERE REF_ID_ = #{wdbh} AND eqpt_material.id = w_cgmx2.F_WLBH
     </select>
 
     <select id="showproj" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT w_ywcgddhtpsd.F_XMBH AS projId,w_ywcgddhtpsd.F_XMMC AS projName FROM w_ywcgddhtpsd WHERE ID_ = #{wdbh}
+        UNION
+        SELECT w_fwcgxqsq.F_XMBH AS projId,w_fwcgxqsq.F_XMMC AS projName FROM w_fwcgxqsq WHERE ID_ = #{wdbh}
+        UNION
+        SELECT w_rccgddhtps.F_XMBH AS projId,w_rccgddhtps.F_XMMC AS projName FROM w_rccgddhtps WHERE ID_ = #{wdbh}
     </select>
 </mapper>
