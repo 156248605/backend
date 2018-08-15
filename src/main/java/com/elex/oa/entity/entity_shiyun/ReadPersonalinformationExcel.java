@@ -204,9 +204,19 @@ public class ReadPersonalinformationExcel {
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setZyzsname(str);
                     }else if ("首次参加工作时间".equals(columnname.replace(" ",""))) {
-                        if(HSSFDateUtil.isCellDateFormatted(cell)){
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                            String str = sdf.format(HSSFDateUtil.getJavaDate(cell.getNumericCellValue()));
+                        if(cell.getCellType()==0){
+                            if(HSSFDateUtil.isCellDateFormatted(cell)){
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                                String str = sdf.format(cell.getDateCellValue());
+                                personalInformation.setFirstworkingtime(str);
+                            }
+                        }
+                        if(cell.getCellType()==1){
+                            String str = cell.getStringCellValue().replace("\\", "/");
+                            str = str.replace("年", "/");
+                            str = str.replace("月", "/");
+                            str = str.replace("日", "/");
+                            str = str.replace("-", "/");
                             personalInformation.setFirstworkingtime(str);
                         }
                     }else if ("上家雇主".equals(columnname.replace(" ",""))) {
@@ -228,13 +238,18 @@ public class ReadPersonalinformationExcel {
                         }
                         personalInformation.setZj(zj);
                     }else if ("入职时间".equals(columnname.replace(" ",""))) {
-                        if(HSSFDateUtil.isCellDateFormatted(cell)){
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                            String str = sdf.format(HSSFDateUtil.getJavaDate(cell.getNumericCellValue()));
+                        if(cell.getCellType()==0){
+                            if(HSSFDateUtil.isCellDateFormatted(cell)){
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                                String str = sdf.format(cell.getDateCellValue());
+                                personalInformation.setEntrydate(str);
+                            }
+                        }
+                        if(cell.getCellType()==1){
+                            String str = cell.getStringCellValue().replace("\\", "/");
                             personalInformation.setEntrydate(str);
                         }
                     }else if ("转正时间".equals(columnname.replace(" ",""))) {
-                        System.out.println(cell.getCellType()+":celltype;");
                         if(cell.getCellType()==0){
                             if(HSSFDateUtil.isCellDateFormatted(cell)){
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");

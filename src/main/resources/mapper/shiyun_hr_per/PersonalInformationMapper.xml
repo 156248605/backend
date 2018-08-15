@@ -274,7 +274,48 @@
 			tb_id_personalinformation per
 			JOIN tb_id_user u ON per.userid = u.id
 		WHERE
-			depid=#{depid} and u.state=1
+			per.depid=#{depid} and u.state=1
+	</select>
+
+	<select id="selectByDepid2" resultMap="PersonalInformationResultMap">
+		SELECT
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		FROM
+			tb_id_personalinformation per
+			JOIN tb_id_user u ON per.userid = u.id
+			JOIN tb_id_manageinformation m ON per.manageinforamtionid = m.id
+		WHERE
+			per.depid=#{depid} and m.entrydate <![CDATA[<=]]> #{edate}
+	</select>
+
+	<select id="selectByDepid3" resultMap="PersonalInformationResultMap">
+		SELECT
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		FROM
+			tb_id_personalinformation per
+			JOIN tb_hr_dimission d ON per.userid = d.dimissionuserid
+		WHERE
+			per.depid=#{depid} and d.lastworkingdate <![CDATA[<=]]> #{edate}
 	</select>
 
 	<insert id="insertOne" parameterType="PersonalInformation" useGeneratedKeys="true" keyProperty="id">
@@ -353,6 +394,49 @@
 			 JOIN tb_id_user u ON per.userid = u.id
 		WHERE
 			u.state = 1 or u.state=0
+		ORDER BY per.id DESC
+	</select>
+
+	<select id="selectAll2" resultMap="PersonalInformationResultMap">
+		select
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		from
+			 tb_id_personalinformation per
+			 JOIN tb_id_user u ON per.userid = u.id
+			 JOIN tb_id_manageinformation m ON per.manageinformationid = m.id
+		WHERE
+			 m.entrydate <![CDATA[<=]]> #{edate}
+		ORDER BY per.id DESC
+	</select>
+
+	<select id="selectAll3" resultMap="PersonalInformationResultMap">
+		select
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		from
+			 tb_id_personalinformation per
+			 JOIN tb_hr_dimission d ON per.userid = d.dimissionuserid
+		WHERE
+			 d.lastworkingdate <![CDATA[<=]]> #{edate}
 		ORDER BY per.id DESC
 	</select>
 

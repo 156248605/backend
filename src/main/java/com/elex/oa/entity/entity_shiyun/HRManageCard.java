@@ -17,10 +17,28 @@ public class HRManageCard implements Serializable{
     private Integer parentid;//上级部门ID
     private Integer num;//部门人数
     private String ratio;//部门占比
+    private Integer intoNum;//入职人数
+    private Integer outNum;//离职人数
     private List<Map> users;//相应的人员
     private List<Dept> childDepts;//子部门
 
     public HRManageCard() {
+    }
+
+    public Integer getIntoNum() {
+        return intoNum;
+    }
+
+    public void setIntoNum(Integer intoNum) {
+        this.intoNum = intoNum;
+    }
+
+    public Integer getOutNum() {
+        return outNum;
+    }
+
+    public void setOutNum(Integer outNum) {
+        this.outNum = outNum;
     }
 
     public Integer getParentid() {

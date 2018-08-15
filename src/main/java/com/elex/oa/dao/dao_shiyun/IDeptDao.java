@@ -69,4 +69,18 @@ public interface IDeptDao{
      *@Date: 15:30 2018\5\10 0010
      */
     public List<Dept> selectDeptsByDept(Dept dept);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门编号查询部门信息
+     *@Date: 17:04 2018\8\14 0014
+     */
+    public Dept selectDeptByDeptcode(String depcode);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门编号模糊查询部门信息
+     *@Date: 17:05 2018\8\14 0014
+     */
+    public List<Dept> selectDeptByDeptcode2(String depcode);
 }

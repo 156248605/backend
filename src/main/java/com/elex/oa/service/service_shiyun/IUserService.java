@@ -39,5 +39,5 @@ public interface IUserService extends BaseService<User> {
      *@Description:根据登录ID查询用户信息
      *@Date: 10:15 2018\8\9 0009
      */
-    public List<User> queryByUsername(String username);
+    public User queryByUsername(String username);
 }

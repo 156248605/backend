@@ -63,8 +63,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
      *@Date: 10:16 2018\8\9 0009
      */
     @Override
-    public List<User> queryByUsername(String username) {
-        List<User> users = iUserDao.selectByUsername(username);
-        return users;
+    public User queryByUsername(String username) {
+        User user = iUserDao.selectByUsername(username);
+        return user;
     }
 }
