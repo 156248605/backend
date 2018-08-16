@@ -316,7 +316,6 @@ public class PersonalInformationController {
         }
         //1.获得User信息
         User user = iUserService.getById(personalInformation.getUserid());
-        System.out.println(456);
         if (user!=null) {
             personalInformation.setIsactive(user.getIsactive());
             personalInformation.setUsername(user.getUsername());
@@ -1009,7 +1008,7 @@ public class PersonalInformationController {
             baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));//出生日期
             baseInformation.setConstellation(IDcodeUtil.getConstellation(personalInformation.getIdcode()));//星座
             baseInformation.setChinesecs(IDcodeUtil.getChinesecs(personalInformation.getIdcode()));//属相
-            personalInformation2.setSex(IDcodeUtil.getSex(personalInformation.getIdcode()));//性别
+            personalInformation.setSex(IDcodeUtil.getSex(personalInformation.getIdcode()));//性别
         }
         if (ihRsetRaceService.queryByRace(personalInformation.getRace())!=null) {
             if (!personalInformation.getRace().equals(personalInformation2.getRace())) {
@@ -1283,7 +1282,9 @@ public class PersonalInformationController {
             changeInformation.setChangeinformation("岗位");
             changeInformation.setBeforeinformation(personalInformation2.getPostnames());
             changeInformation.setAfterinformation(IDcodeUtil.getArrayToString(strs,";"));
-            iPerandpostrsService.removeByPerid(personalInformation2.getId());//先删除在添加（岗位）
+            if (personalInformation2.getId()!=null) {
+                iPerandpostrsService.removeByPerid(personalInformation2.getId());//先删除在添加（岗位）
+            }
             for(int i=0;i<postids.size();i++){
                 PerAndPostRs perAndPostRs = new PerAndPostRs();
                 perAndPostRs.setPostid(postids.get(i));
@@ -1348,7 +1349,6 @@ public class PersonalInformationController {
                 }
             }else {
                 if (!IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()).equals(personalInformation2.getZhuanzhengdate())) {
-                    System.out.println("----------->2"+IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
                     changeInformation.setChangeinformation("转正日期");
                     changeInformation.setBeforeinformation(personalInformation2.getZhuanzhengdate());
                     changeInformation.setAfterinformation(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
