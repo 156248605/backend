@@ -27,6 +27,7 @@ public interface IPersonalInformationService{
      *@Date: 18:06 2018\4\8 0008
      */
     public PersonalInformation queryOneById(Integer id);
+    public PersonalInformation queryOneById2(Integer id);
 
     /**
      *@Author:ShiYun;

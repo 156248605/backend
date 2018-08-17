@@ -115,12 +115,18 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
 
     /**
      *@Author:ShiYun;
-     *@Description:根据ID查询人事信息
+     *@Description:根据ID查询人事信息（不包括离职的）
      *@Date: 18:48 2018\4\10 0010
      */
     @Override
     public PersonalInformation queryOneById(Integer id) {
         PersonalInformation personalInformation = iPersonalInformationDao.selectById(id);
+        return personalInformation;
+    }
+    //包括离职的
+    @Override
+    public PersonalInformation queryOneById2(Integer id) {
+        PersonalInformation personalInformation = iPersonalInformationDao.selectById2(id);
         return personalInformation;
     }
 

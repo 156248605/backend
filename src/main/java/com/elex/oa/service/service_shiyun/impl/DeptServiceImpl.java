@@ -8,6 +8,9 @@ import com.elex.oa.entity.entity_shiyun.HRManageCard;
 import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IDeptService;
+import com.elex.oa.util.resp.Resp;
+import com.elex.oa.util.resp.RespUtil;
+import com.elex.oa.util.util_shiyun.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -228,6 +231,115 @@ public class DeptServiceImpl implements IDeptService {
      */
     @Override
     public Object getHRManageCard(String sdate,String edate) {
+        try {
+            Map<String, String> twoDate = this.getTwoDate(sdate, edate);
+            if(twoDate==null){
+                return RespUtil.successResp("505","时间选择错误！",null);
+            }
+            sdate = twoDate.get("sdate");
+            edate = twoDate.get("edate");
+            HashMap<String, Object> paramMap = new HashMap<>();
+            List<HRManageCard> hrManageCardList = new ArrayList<>();
+            List<Dept> depts = iDeptDao.selectAllDept();
+
+            //获得总人数(edate时间点的在职总人数)
+            Integer num;
+            Resp resp2 = (Resp) this.getHRManageCard2(5, 1, sdate, edate);
+            if(resp2.getBody()!=null){
+                PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp2.getBody();
+                num = pageHelper2.getTotal();
+                paramMap.put("allNum",num);
+            }else {
+                return resp2;
+            }
+
+            //获得入职总人数(edate时间点的入职总人数)
+            Resp resp3 = (Resp) this.getHRManageCard3(5, 1, sdate, edate);
+            if(resp3.getBody()!=null){
+                PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp3.getBody();
+                paramMap.put("intoNum",pageHelper2.getTotal());
+            }else {
+                return resp3;
+            }
+
+            //获得离职总人数(edate时间点的离职总人数)
+            Resp resp4 = (Resp) this.getHRManageCard4(5, 1, sdate, edate);
+            if(resp4.getBody()!=null){
+                PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp4.getBody();
+                paramMap.put("outNum",pageHelper2.getTotal());
+            }else {
+                return resp4;
+            }
+
+            for (Dept dept:depts
+                 ) {
+                HRManageCard hrManageCard = new HRManageCard();
+
+                //获得部门名称
+                hrManageCard.setDeptid(dept.getId());
+                hrManageCard.setDepname(dept.getDepname());
+
+                //获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+                Integer ratio;
+                Resp resp5 = (Resp) this.getHRManageCard5(5, 1, dept.getId(), sdate, edate);
+                if(resp5.getBody()!=null){
+                    PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp5.getBody();
+                    ratio = pageHelper2.getTotal();
+                    hrManageCard.setNum(ratio);
+                }else {
+                    return resp5;
+                }
+
+                //人数占比
+                System.out.println("ratio:"+ratio);
+                System.out.println("num:"+num);
+                Double db = ratio.doubleValue()/num.doubleValue()*100;
+                System.out.println("db:"+db);
+                BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
+                hrManageCard.setRatio(bg.doubleValue() + "%");
+
+                //获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+                Resp resp6 = (Resp) this.getHRManageCard6(5, 1, dept.getId(), sdate, edate);
+                if(resp6.getBody()!=null){
+                    PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp6.getBody();
+                    hrManageCard.setIntoNum(pageHelper2.getTotal());
+                }else {
+                    return resp6;
+                }
+
+                //获得所在部门离职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+                Resp resp7 = (Resp) this.getHRManageCard7(5, 1, dept.getId(), sdate, edate);
+                if(resp7.getBody()!=null){
+                    PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp7.getBody();
+                    hrManageCard.setOutNum(pageHelper2.getTotal());
+                }else {
+                    return resp7;
+                }
+
+                //获得部门相应的人员(edate时间点的在职人员)
+                /*List<Map> users = new ArrayList<>();
+                for (PersonalInformation per:((PageHelper<PersonalInformation>) resp2.getBody()).getAllList()
+                     ) {
+                    HashMap<String, Object> map = new HashMap<>();
+                    User user = iUserDao.selectById(per.getUserid());
+                    map.put("id",user.getId());
+                    map.put("truename",user.getTruename());
+                    map.put("deptname",iDeptDao.selectDeptByDepid(per.getDepid()).getDepname());
+                    users.add(map);
+                }
+                hrManageCard.setUsers(users);*/
+                hrManageCardList.add(hrManageCard);
+            }
+            paramMap.put("HRManageCards",hrManageCardList);
+            return RespUtil.successResp("205","返回成功！",paramMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+        }
+    }
+    //计算时间初期数和时间末期数的工具
+    private Map<String,String> getTwoDate(String sdate,String edate){
+        HashMap<String, String> map = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         String curDate = sdf.format(date);
@@ -243,7 +355,7 @@ public class DeptServiceImpl implements IDeptService {
             if(sdate.compareTo(curDate)<=0){
                 edate=sdate;
             }else {
-                return "所选时间必须<=当前时间！";
+                return null;
             }
         }
         //3.sdate=null, edate!=null=>限：edate<=当前时间
@@ -252,63 +364,182 @@ public class DeptServiceImpl implements IDeptService {
             if(edate.compareTo(curDate)<=0){
                 sdate = edate;
             }else {
-                return "所选时间必须<=当前时间！";
+                return null;
             }
         }
         //4.sdate!=null,edate!=null=>限：sdate<=edate<=当前时间
         //                           结：sdate,edate
         if(!d1 && !d2){
             if(sdate.compareTo(edate)>0 || edate.compareTo(curDate)>0){
-                return "所选时间必须满足期初数<=期末数<=当前时间！";
+                return null;
             }
         }
-        HashMap<String, Object> paramMap = new HashMap<>();
-        List<HRManageCard> hrManageCardList = new ArrayList<>();
-        List<Dept> depts = iDeptDao.selectAllDept();
+        map.put("sdate",sdate);
+        map.put("edate",edate);
+        return map;
+    };
 
-        //获得总人数(edate时间点的在职总人数)
-        List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(sdate,edate);
-        List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(sdate,edate);
-        Integer num = personalInformationList1.size();
-        if(personalInformationList2.size()>0){
-            num = num - personalInformationList2.size();
+    /**
+     *@Author:ShiYun;
+     *@Description:获得总人数(edate时间点的在职总人数)
+     *@Date: 10:13 2018\8\15 0015
+     */
+    @Override
+    public Object getHRManageCard2(Integer rows, Integer page, String sdate, String edate) {
+        try {
+            Map<String, String> twoDate = this.getTwoDate(sdate, edate);
+            if(twoDate==null){
+                return RespUtil.successResp("505","时间选择错误！",null);
+            }
+            sdate = twoDate.get("sdate");
+            edate = twoDate.get("edate");
+            List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(null,edate);//时间节点edate前的入职人员
+            System.out.println("personalInformationList1.size():"+personalInformationList1.size());
+            List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(null,edate);//时间节点edate前的离职人员
+            List<PersonalInformation> personalInformationList = new ArrayList<>();
+            if (personalInformationList2.size()>0) {
+                for (PersonalInformation per:personalInformationList1
+                     ) {
+                    if(!personalInformationList2.contains(per)){
+                        personalInformationList.add(per);
+                    }
+                }
+            }else {
+                personalInformationList = personalInformationList1;
+            }
+            PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
+            return RespUtil.successResp("205","提交成功！",pageHelper);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
         }
-        paramMap.put("allNum",num);
+    }
 
-        for (Dept dept:depts
-             ) {
-            HRManageCard hrManageCard = new HRManageCard();
-            //获得部门名称
-            hrManageCard.setDeptid(dept.getId());
-            hrManageCard.setDepname(dept.getDepname());
-            //获得部门的在职人数(edate时间点的在职人数)
-            List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid2(dept.getId(),sdate,edate);
-            List<PersonalInformation> personalList2 = iPersonalInformationDao.selectByDepid2(dept.getId(),sdate,edate);
-            Integer ratio = personalInformationList.size();
-            if(personalList2.size()>0){
-                ratio = ratio - personalList2.size();
+    /**
+     *@Author:ShiYun;
+     *@Description:获得入职总人数(edate时间点的入职总人数)
+     *@Date: 10:13 2018\8\15 0015
+     */
+    @Override
+    public Object getHRManageCard3(Integer rows, Integer page, String sdate, String edate) {
+        try {
+            Map<String, String> twoDate = this.getTwoDate(sdate, edate);
+            if(twoDate==null){
+                return RespUtil.successResp("505","时间选择错误！",null);
             }
-            hrManageCard.setNum(ratio);
-            //人数占比
-            Double db = ratio.doubleValue()/num.doubleValue()*100;
-            BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
-            hrManageCard.setRatio(bg.doubleValue() + "%");
-            //获得部门相应的人员(edate时间点的在职人员)
-            List<Map> users = new ArrayList<>();
-            for (PersonalInformation per:personalInformationList
-                 ) {
-                HashMap<String, Object> map = new HashMap<>();
-                User user = iUserDao.selectById(per.getUserid());
-                map.put("id",user.getId());
-                map.put("truename",user.getTruename());
-                map.put("deptname",iDeptDao.selectDeptByDepid(per.getDepid()).getDepname());
-                users.add(map);
-            }
-            hrManageCard.setUsers(users);
-            hrManageCardList.add(hrManageCard);
+            sdate = twoDate.get("sdate");
+            edate = twoDate.get("edate");
+            List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectAll2(sdate, edate);
+            PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
+            return RespUtil.successResp("205","提交成功！",pageHelper);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
         }
-        paramMap.put("HRManageCards",hrManageCardList);
-        return paramMap;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得离职总人数(edate时间点的离职总人数)
+     *@Date: 10:14 2018\8\15 0015
+     */
+    @Override
+    public Object getHRManageCard4(Integer rows, Integer page, String sdate, String edate) {
+        try {
+            Map<String, String> twoDate = this.getTwoDate(sdate, edate);
+            if(twoDate==null){
+                return RespUtil.successResp("505","时间选择错误！",null);
+            }
+            sdate = twoDate.get("sdate");
+            edate = twoDate.get("edate");
+            List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectAll3(sdate, edate);
+            PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
+            return RespUtil.successResp("205","提交成功！",pageHelper);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+        }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+     *@Date: 10:14 2018\8\15 0015
+     */
+    @Override
+    public Object getHRManageCard5(Integer rows, Integer page, Integer depid, String sdate, String edate) {
+        try {
+            Map<String, String> twoDate = this.getTwoDate(sdate, edate);
+            if(twoDate==null){
+                return RespUtil.successResp("505","时间选择错误！",null);
+            }
+            sdate = twoDate.get("sdate");
+            edate = twoDate.get("edate");
+            List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectByDepid2(depid,null,edate);
+            List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectByDepid3(depid,null,edate);
+            List<PersonalInformation> personalInformationList = new ArrayList<>();
+            if (personalInformationList2.size()>0) {
+                for (PersonalInformation per:personalInformationList1
+                        ) {
+                    if(!personalInformationList2.contains(per)){
+                        personalInformationList.add(per);
+                    }
+                }
+            } else {
+                personalInformationList = personalInformationList1;
+            }
+            PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
+            return RespUtil.successResp("205","提交成功！",pageHelper);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+        }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+     *@Date: 10:15 2018\8\15 0015
+     */
+    @Override
+    public Object getHRManageCard6(Integer rows, Integer page, Integer depid, String sdate, String edate) {
+        try {
+            Map<String, String> twoDate = this.getTwoDate(sdate, edate);
+            if(twoDate==null){
+                return RespUtil.successResp("505","时间选择错误！",null);
+            }
+            sdate = twoDate.get("sdate");
+            edate = twoDate.get("edate");
+            List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid2(depid, sdate, edate);
+            PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
+            return RespUtil.successResp("205","提交成功！",pageHelper);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+        }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门离职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+     *@Date: 10:15 2018\8\15 0015
+     */
+    @Override
+    public Object getHRManageCard7(Integer rows, Integer page, Integer depid, String sdate, String edate) {
+        try {
+            Map<String, String> twoDate = this.getTwoDate(sdate, edate);
+            if(twoDate==null){
+                return RespUtil.successResp("505","时间选择错误！",null);
+            }
+            sdate = twoDate.get("sdate");
+            edate = twoDate.get("edate");
+            List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid3(depid, sdate, edate);
+            PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
+            return RespUtil.successResp("205","提交成功！",pageHelper);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+        }
     }
 
     @Override
@@ -361,6 +592,7 @@ public class DeptServiceImpl implements IDeptService {
         }else {
             return null;
         }
-        return dept.getCompanyname();
+        /*return dept.getCompanyname();*/
+        return dept.getDepcode().substring(0,2);
     }
 }

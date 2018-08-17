@@ -6,6 +6,7 @@ import com.elex.oa.dao.project.ProjectSetDao;
 import com.elex.oa.entity.project.ApprovalList;
 import com.elex.oa.entity.project.OperationQuery;
 import com.elex.oa.entity.project.ProjectInfor;
+import com.elex.oa.entity.project.ProjectVarious;
 import com.elex.oa.service.project.ProjectInforService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -30,6 +31,7 @@ public class ProjectInforImpl implements ProjectInforService {
     @Override
     public void addInfor() {
         List<String> codes = projectInforDao.queryCodes(); //查询已建立项目详情信息的编号
+
         Map<String,Object> content = new HashMap<>();
         if(codes.size() > 0) {
             content.put("marker","1");
