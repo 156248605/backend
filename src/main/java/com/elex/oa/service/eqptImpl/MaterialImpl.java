@@ -160,10 +160,16 @@ public class MaterialImpl implements MaterialService {
         material.setRemark(request.getParameter("remark"));
         material.setOnlyId(onlyId);
         materialMapper.saveMaterial(material);
+        String id = materialMapper.getId(material);
         Material material1 = new Material();
         material1.setId(request.getParameter("id"));
         material1.setMaterialState(request.getParameter("materialState"));
-        materialMapper.saveDetail(material1);
+        material1.setName(request.getParameter("name"));
+        material1.setSpec(request.getParameter("spec"));
+        material1.setCategory(request.getParameter("category"));
+        material1.setBrand(request.getParameter("brand"));
+        material1.setPrice(request.getParameter("price"));
+        materialMapper.saveDetail(material1,id);
     }
 
     // 删除物料
@@ -211,4 +217,5 @@ public class MaterialImpl implements MaterialService {
             return "0";
         }
     }
+
 }

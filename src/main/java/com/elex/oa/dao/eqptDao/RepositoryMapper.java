@@ -86,4 +86,8 @@ public interface RepositoryMapper {
 
     void changeDetail(Repository repository);
 
+    // 确定是否为空仓库
+    List<Repository> emptyReptD(Material material);
+    List<Repository> emptyReptP();
+
 }

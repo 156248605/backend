@@ -542,6 +542,31 @@ public class DeptServiceImpl implements IDeptService {
         }
     }
 
+    @Override
+    public Object getHRManageCard2(Integer rows, Integer page, String sdate, String edate) {
+        return null;
+    }
+
+    @Override
+    public Object getHRManageCard3(Integer rows, Integer page, String sdate, String edate) {
+        return null;
+    }
+
+    @Override
+    public Object getHRManageCard4(Integer rows, Integer page, String sdate, String edate) {
+        return null;
+    }
+
+    @Override
+    public Object getHRManageCard5(Integer rows, Integer page, Integer depid, String sdate, String edate) {
+        return null;
+    }
+
+    @Override
+    public Object getHRManageCard6(Integer rows, Integer page, Integer depid, String sdate, String edate) {
+        return null;
+    }
+
     /**
      *@Author:ShiYun;
      *@Description:forGXF（根据姓名查询相应的公司名称）
