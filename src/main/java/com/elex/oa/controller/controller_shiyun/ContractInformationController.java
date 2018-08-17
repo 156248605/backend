@@ -98,7 +98,12 @@ public class ContractInformationController {
     public List<ContractInformation> queryContractsByUserid(
             @RequestParam("personalInformationId")Integer personalInformationId
     ){
-        List<ContractInformation> contractInformationList = iContractInformationService.queryByUserid(iPersonalInformationService.queryOneById(personalInformationId).getUserid());
+        List<ContractInformation> contractInformationList = null;
+        if (iPersonalInformationService.queryOneById(personalInformationId)!=null) {
+            contractInformationList = iContractInformationService.queryByUserid(iPersonalInformationService.queryOneById(personalInformationId).getUserid());
+        }else {
+            return null;
+        }
         return contractInformationList;
     }
 
