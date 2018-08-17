@@ -90,4 +90,9 @@ public interface RepositoryMapper {
     List<Repository> emptyReptD(Material material);
     List<Repository> emptyReptP();
 
+    String recordin(Repository repository);
+
+    String recordout(Repository repository);
+
+    String recordshift(Repository repository);
 }

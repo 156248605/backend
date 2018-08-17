@@ -261,7 +261,21 @@ public class RepositoryImpl implements RepositoryService {
     }
 
 
-
+    // 是否有记录
+    @Override
+    public String record(HttpServletRequest request){
+        Repository repository = new Repository();
+        repository.setReptId(request.getParameter("reptId"));
+        String resultin = repositoryMapper.recordin(repository);
+        String resultout = repositoryMapper.recordout(repository);
+        String resultshift = repositoryMapper.recordshift(repository);
+        // 有记录返回1
+        if ( resultin == null && resultout == null && resultshift == null){
+            return "0";
+        } else{
+            return "1";
+        }
+    }
 
 
    /* @Override

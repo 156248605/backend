@@ -18,14 +18,12 @@ public interface InventoryMapper {
 
     // 删除盘点信息
     void delete(Repository repository);
-    void deleteD(Repository repository);
 
     // 插入盘点信息
     void insert(Repository repository);
 
     // 确定盘点单号
     List showINVID(Repository repository);
-    List showINVIDd(Repository repository);
 
     // 仓库里需要盘点的物料
     List<Material> matinrept(Material material);

@@ -646,4 +646,14 @@
     <update id="changeDetail" parameterType="com.elex.oa.entity.eqpt.Repository">
         UPDATE eqpt_detail SET postId = #{postId} WHERE reptId = #{reptId}
     </update>
+
+    <select id="recordin" resultType="string">
+        SELECT * FROM eqpt_inrepository WHERE reptId = #{reptId} LIMIT 1
+    </select>
+    <select id="recordout" resultType="string">
+        SELECT * FROM eqpt_outrepository WHERE reptId = #{reptId} LIMIT 1
+    </select>
+    <select id="recordshift" resultType="string">
+        SELECT * FROM eqpt_shiftrepository WHERE reptId = #{reptId} LIMIT 1
+    </select>
 </mapper>

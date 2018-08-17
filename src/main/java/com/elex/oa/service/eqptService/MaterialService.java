@@ -15,6 +15,9 @@ public interface MaterialService {
     // 查找物料
     PageInfo<Material> searchMaterial(Page page, HttpServletRequest request);
 
+    // 是否有记录
+    String record(HttpServletRequest request);
+
     Material changeMaterial(HttpServletRequest request);
 
     void saveMaterial(HttpServletRequest request);

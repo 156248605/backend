@@ -127,6 +127,12 @@ public class RepositoryController {
         return list;
     }
 
+    @RequestMapping("/record")
+    @ResponseBody
+    public String record (HttpServletRequest request) {
+        return repositoryImpl.record(request);
+    }
+
     /*@RequestMapping("/matInRept")
     @ResponseBody
     public List<Repository> matInRept(HttpServletRequest request){

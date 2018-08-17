@@ -1,6 +1,7 @@
 package com.elex.oa.service.eqptImpl;
 
 import com.elex.oa.dao.eqptDao.MaterialMapper;
+import com.elex.oa.dao.eqptDao.MaterialMtMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.service.eqptService.MaterialService;
@@ -8,9 +9,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpServletRequest;;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
@@ -20,6 +19,9 @@ public class MaterialImpl implements MaterialService {
 
     @Resource
     private MaterialMapper materialMapper;
+
+    @Resource
+    private MaterialMtMapper materialMtMapper;
 
     // 物料信息
     @Override
@@ -124,6 +126,22 @@ public class MaterialImpl implements MaterialService {
             material.setNotSingleC(NOTSINGLEC);
             List<Material> listM = materialMapper.SearchMaterial(material);
             return new PageInfo<>(listM);
+        }
+    }
+
+    // 是否有记录
+    @Override
+    public String record(HttpServletRequest request){
+        Material material = new Material();
+        material.setId(request.getParameter("materialId"));
+        String resultin = materialMtMapper.recordin(material);
+        String resultout = materialMtMapper.recordout(material);
+        String resultshift = materialMtMapper.recordshift(material);
+        // 有记录返回1
+        if ( resultin == null && resultout == null && resultshift == null){
+            return "0";
+        } else{
+            return "1";
         }
     }
 

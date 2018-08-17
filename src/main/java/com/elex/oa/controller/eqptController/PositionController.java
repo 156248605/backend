@@ -65,4 +65,10 @@ public class PositionController {
     public List<Repository> ReptName(HttpServletRequest request){
         return positionServiceimpl.ReptName(request);
     }
+
+    @RequestMapping("/record")
+    @ResponseBody
+    public String record (HttpServletRequest request) {
+        return positionServiceimpl.record(request);
+    }
 }
