@@ -24,4 +24,5 @@ public interface MaterialService {
     void insertMaterial(Material material, HttpServletRequest request);
 
     String checkId(HttpServletRequest request);
+
 }

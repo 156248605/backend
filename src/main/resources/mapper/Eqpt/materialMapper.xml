@@ -300,6 +300,10 @@
         INSERT INTO eqpt_material VALUES (#{category},#{name},#{id},#{brand},#{spec},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{maxlimit},#{minlimit},#{remark},#{partner},#{num},#{unit},#{price},NULL,'否')
     </insert>
 
+    <select id="getId" resultType="string">
+        SELECT id FROM eqpt_material WHERE onlyId = #{onlyId}
+    </select>
+
     <select id="getNum" resultType="string">
         SELECT num FROM eqpt_material WHERE id = #{id}
     </select>
@@ -390,14 +394,32 @@
         UPDATE eqpt_detail
         <set>
             <if test="materialState != null">
-                materialState = #{materialState}
+                materialState = #{materialState},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="brand != null">
+                brand = #{brand},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="id != null">
+                id = #{id},
             </if>
         </set>
-        WHERE id = #{id}
+        WHERE id = #{theId}
     </update>
 
     <select id="matInDetail" resultType="string">
-        SELECT DISTINCT id FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
+        SELECT DISTINCT id FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId} AND id = #{id}
     </select>
 
     <update id="updateDetail" parameterType="com.elex.oa.entity.eqpt.Material">

@@ -28,6 +28,7 @@ public interface MaterialMapper {
     String MaxLimit(Material material);
     String MinLimit(Material material);
     String getNum(Material material);
+    String getId(Material material);
 
     // 导入Excel
     int importMaterial(Material material);
@@ -57,7 +58,7 @@ public interface MaterialMapper {
 
     void deleteDetail(Material material);
 
-    void saveDetail(Material material1);
+    void saveDetail(Material material,String theId);
 
     //查询是否有库存记录
     String matInDetail(Material material);
