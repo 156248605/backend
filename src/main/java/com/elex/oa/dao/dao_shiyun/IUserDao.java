@@ -41,8 +41,9 @@ public interface IUserDao extends BaseDao<User> {
      *@Description:删除信息
      *@Date: 14:47 2018\5\10 0010
      */
-    public void deleteById(Integer id);//删除人事信息(state=0)
-    public void deleteById2(Integer id);//删除离职信息(state=1)
+    public void deleteById(Integer id);//直接删除信息
+    public void deleteDimissionById(Integer id);//删除离职信息(state=1)
+    public void addDimissionById(Integer id);//删除离职信息(state=0)
 
     /**
      *@Author:ShiYun;

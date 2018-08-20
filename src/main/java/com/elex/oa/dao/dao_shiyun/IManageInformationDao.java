@@ -31,4 +31,11 @@ public interface IManageInformationDao {
      *@Date: 16:05 2018\4\12 0012
      */
     public void updateOne(ManageInformation manageInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除管理信息
+     *@Date: 15:10 2018\8\20 0020
+     */
+    public void deleteById(Integer id);
 }

@@ -52,4 +52,14 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
     public void modifyOne(BaseInformation baseInformation) {
         iBaseInformationDao.updateOne(baseInformation);
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除基本信息表
+     *@Date: 15:02 2018\8\20 0020
+     */
+    @Override
+    public void removeOne(Integer baseinformationid) {
+        iBaseInformationDao.deleteById(baseinformationid);
+    }
 }

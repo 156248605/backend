@@ -25,7 +25,8 @@ public interface IUserService extends BaseService<User> {
      *@Description:删除用户
      *@Date: 14:52 2018\5\10 0010
      */
-    public void removeOne(Integer id);
+    public void removeOne(Integer id);//离职信息的添加
+    /*public void removeOne2(Integer id);//人事信息的删除*/
 
     /**
      *@Author:ShiYun;

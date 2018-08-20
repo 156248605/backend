@@ -13,6 +13,6 @@ public class ProjectSchedule {
 
     @Scheduled(cron = "0 0/3 * * * ?")
     public void addInfor() {
-        projectInforService.addInfor();
+        //projectInforService.addInfor();
     }
 }

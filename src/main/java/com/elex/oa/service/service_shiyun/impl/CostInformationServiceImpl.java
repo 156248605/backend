@@ -49,4 +49,14 @@ public class CostInformationServiceImpl implements ICostInformationService {
     public void modifyOne(CostInformation costInformation) {
         iCostInformationDao.updateOne(costInformation);
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除成本信息
+     *@Date: 15:25 2018\8\20 0020
+     */
+    @Override
+    public void remvoeOne(Integer costinformationid) {
+        iCostInformationDao.deleteById(costinformationid);
+    }
 }

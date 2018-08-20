@@ -2,7 +2,6 @@ package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
-import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
@@ -105,7 +104,10 @@ public class PersonalInformationController {
     @Autowired
     IHRsetEmergencyrpService ihRsetEmergencyrpService;//应急联系人关系
     @Autowired
-    private IGzrzService iGzrzService;//工作日志
+    IGzrzService iGzrzService;//工作日志
+    @Autowired
+    IContractInformationService iContractInformationService;
+
     /**
      * @Author:ShiYun;
      * @Description:人事信息的查询
@@ -113,8 +115,8 @@ public class PersonalInformationController {
      */
     @RequestMapping("/queryPersonalInformations")
     @ResponseBody
-    public PageInfo<PersonalInformation> queryPersonalInformation(@RequestParam("page") int page,
-                                                                  @RequestParam("rows") int rows,
+    public PageInfo<PersonalInformation> queryPersonalInformation(@RequestParam("page") Integer page,
+                                                                  @RequestParam("rows") Integer rows,
                                                                   PersonalInformation personalInformation
     ) throws ParseException {
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -2127,7 +2129,7 @@ public class PersonalInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:人事信息的删除
+     *@Description:人事信息的删除（无用的信息，直接在数据库中删除）
      *@Date: 13:56 2018\5\10 0010
      */
     @RequestMapping("/deleteInformationsByIds")
@@ -2138,9 +2140,41 @@ public class PersonalInformationController {
 
         for(int i = 0;i<personalInformationIds.size();i++){
             PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationIds.get(i));
-            //1.先删除用户表（本质上是修改状态）
+            //1.先删除用户表（直接删除）
             iUserService.removeOne(personalInformation.getUserid());
-            //2.再修改部门表
+            //2.再删除相应的基本信息表（直接删除）
+            if (personalInformation.getBaseinformationid()!=null) {
+                iBaseInformationService.removeOne(personalInformation.getBaseinformationid());
+            }
+            //3.再删除相应的管理信息表（直接删除）
+            if (personalInformation.getManageinformationid()!=null) {
+                iManageInformationService.removeOne(personalInformation.getManageinformationid());
+            }
+            //4.再删除相应的成本信息表（直接删除）
+            if(personalInformation.getCostinformationid()!=null){
+                iCostInformationService.remvoeOne(personalInformation.getCostinformationid());
+            }
+            //5.再删除相应的人事岗位关系表（直接删除）
+            iPerandpostrsService.removeByPerid(personalInformationIds.get(i));
+            //6.再删除相应的其他信息表（直接删除）
+            if (personalInformation.getOtherinformationid()!=null) {
+                iOtherInformationService.removeOne(personalInformation.getOtherinformationid());
+            }
+            //7.再删除相应的合同信息表（直接删除）
+            List<ContractInformation> contractInformationList = iContractInformationService.queryByUserid(personalInformation.getUserid());
+            for (ContractInformation c:contractInformationList
+                 ) {
+                iContractInformationService.removeOne(c.getId());
+            }
+            //8.再删除相应的人事变更表（直接删除）
+            List<ChangeInformation> changeInformationList = iChangeInformationService.queryByUserid(personalInformation.getUserid());
+            for (ChangeInformation c:changeInformationList
+                 ) {
+                iChangeInformationService.removeOne(c.getId());
+            }
+            //9.再删除人事信息主表（直接删除）
+            iPersonalInformationService.removeOne(personalInformation.getId());
+            //10.最后再修改部门表
             //注：如果将要删除的员工是某部门的正职、副职、秘书则需要修改该字段
             iDeptService.modifyOne(personalInformation.getUserid());
         }

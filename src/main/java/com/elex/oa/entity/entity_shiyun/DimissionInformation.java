@@ -41,6 +41,8 @@ public class DimissionInformation  implements Serializable {
     private Integer dimissionreasonid;//离职原因ID
     @Transient
     private String dimissionreasonvalue;//判断条件
+    @Transient
+    private String transactorusername;//办理人的登录ID
     private Integer transactoruserid;// 办理人的ID
     private String transactiondate;// 办理日期
     @Transient
@@ -99,6 +101,14 @@ public class DimissionInformation  implements Serializable {
     private Integer officesupplystatue;// 办公用品领用是否确认处理
 
     public DimissionInformation() {
+    }
+
+    public String getTransactorusername() {
+        return transactorusername;
+    }
+
+    public void setTransactorusername(String transactorusername) {
+        this.transactorusername = transactorusername;
     }
 
     public List<String> getDimissiontypes() {
