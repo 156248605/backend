@@ -578,7 +578,8 @@ public class DepartmentInformationController {
     ) {
         //先校验部门名称是否存在
         Dept queryOneByDepcode = iDeptService.queryOneByDepcode(dept.getDepcode());
-        if(queryOneByDepcode!=null){
+        iDeptService.queryOneDepByDepid(dept.getId()).getDepcode();
+        if(!iDeptService.queryOneDepByDepid(dept.getId()).getDepcode().equals(dept.getDepcode()) && queryOneByDepcode!=null){
             return "部门编号已存在，请重新输入部门名称！";
         }
         try {
