@@ -81,7 +81,7 @@ public class ContractInformationController {
                 list.get(i).setContracttype(ihRsetContracttypeService.queryById(list.get(i).getContracttypeid()).getContracttype());
             }
             // 获得合同年限
-            list.get(i).setContractage(IDcodeUtil.getContractage(list.get(i).getStartdate(),list.get(i).getEnddate()));
+            /*list.get(i).setContractage(IDcodeUtil.getContractage(list.get(i).getStartdate(),list.get(i).getEnddate()));*/
         }
         contractInformationPageInfo.setList(list);
 

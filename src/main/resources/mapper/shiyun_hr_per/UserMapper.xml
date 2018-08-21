@@ -98,4 +98,9 @@
 		ORDER BY u.id DESC
 	</select>
 
+	<select id="selectAllServings" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE state=1
+	</select>
+
 </mapper>

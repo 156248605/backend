@@ -41,4 +41,11 @@ public interface IUserService extends BaseService<User> {
      *@Date: 10:15 2018\8\9 0009
      */
     public User queryByUsername(String username);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的在职人员
+     *@Date: 10:00 2018\8\21 0021
+     */
+    public List<User> queryAllServings();
 }

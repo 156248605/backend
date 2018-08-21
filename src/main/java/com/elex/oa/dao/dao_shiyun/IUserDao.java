@@ -58,4 +58,11 @@ public interface IUserDao extends BaseDao<User> {
      *@Date: 16:49 2018\5\25 0025
      */
     public List<User> selectByConditions(ContractInformation contractInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的在职人员
+     *@Date: 9:59 2018\8\21 0021
+     */
+    public List<User> selectAllServings();
 }

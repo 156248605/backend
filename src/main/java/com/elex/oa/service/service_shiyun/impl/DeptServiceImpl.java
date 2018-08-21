@@ -1,12 +1,10 @@
 package com.elex.oa.service.service_shiyun.impl;
 
 import com.elex.oa.dao.dao_shiyun.IDeptDao;
+import com.elex.oa.dao.dao_shiyun.IHRsetDeptypeDao;
 import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
 import com.elex.oa.dao.dao_shiyun.IUserDao;
-import com.elex.oa.entity.entity_shiyun.Dept;
-import com.elex.oa.entity.entity_shiyun.HRManageCard;
-import com.elex.oa.entity.entity_shiyun.PersonalInformation;
-import com.elex.oa.entity.entity_shiyun.User;
+import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.service_shiyun.IDeptService;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
@@ -34,6 +32,8 @@ public class DeptServiceImpl implements IDeptService {
     IPersonalInformationDao iPersonalInformationDao;
     @Autowired
     IUserDao iUserDao;
+    @Autowired
+    IHRsetDeptypeDao ihRsetDeptypeDao;
 
     /**
      *@Author:ShiYun;
@@ -568,5 +568,48 @@ public class DeptServiceImpl implements IDeptService {
             return null;
         }
         return dept.getDepcode().substring(0,2);
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的一级公司和二级公司
+     *@Date: 10:59 2018\8\21 0021
+     */
+    @Override
+    public List<Dept> queryAllCompany1and2() {
+        //先获得一级公司和二级公司的类型ID
+        HRsetDeptype hRsetDeptype = new HRsetDeptype();
+        hRsetDeptype.setDeptype("一级公司");
+        List<HRsetDeptype> hRsetDeptypeList = ihRsetDeptypeDao.selectByConditions(hRsetDeptype);
+        Integer id1 = hRsetDeptypeList.get(0).getId();
+        hRsetDeptype.setDeptype("二级公司");
+        List<HRsetDeptype> hRsetDeptypeList2 = ihRsetDeptypeDao.selectByConditions(hRsetDeptype);
+        Integer id2 = hRsetDeptypeList2.get(0).getId();
+        //获得相应的公司
+        List<Dept> deptList = iDeptDao.selectDeptByDeptypeid(id1);
+        List<Dept> deptList2 = iDeptDao.selectDeptByDeptypeid(id2);
+        for (Dept d:deptList
+             ) {
+            deptList2.add(d);
+        }
+        return deptList2;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据公司名称查询公司的部门（不包括公司）
+     *@Date: 11:24 2018\8\21 0021
+     */
+    @Override
+    public List<Dept> queryByCompanyname(String companyname) {
+        List<Dept> depts = iDeptDao.selectDeptByCompanyname(companyname);
+        for (Dept d:depts
+             ) {
+            if(d.getDepname().equals(companyname)){
+                depts.remove(d);
+                break;
+            }
+        }
+        return depts;
     }
 }

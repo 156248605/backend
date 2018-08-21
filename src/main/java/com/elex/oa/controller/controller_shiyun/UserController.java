@@ -1,6 +1,10 @@
 package com.elex.oa.controller.controller_shiyun;
 
+import com.elex.oa.entity.entity_shiyun.Dept;
+import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.User;
+import com.elex.oa.service.service_shiyun.IDeptService;
+import com.elex.oa.service.service_shiyun.IPersonalInformationService;
 import com.elex.oa.service.service_shiyun.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +27,10 @@ import java.util.List;
 public class UserController {
     @Autowired
     IUserService iUserService;
+    @Autowired
+    IPersonalInformationService iPersonalInformationService;
+    @Autowired
+    IDeptService iDeptService;
 
     /**
      *@Author:ShiYun;
@@ -48,4 +57,37 @@ public class UserController {
         List<User> users = iUserService.selectAll();
         return users;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的在职用户
+     *@Date: 10:03 2018\8\21 0021
+     */
+    @RequestMapping("/queryAllServings")
+    @ResponseBody
+    public List<PersonalInformation> queryAllServings(){
+        List<User> users = iUserService.queryAllServings();
+        List<PersonalInformation> personalInformationList = new ArrayList<>();
+        for (User user:users
+             ) {
+            PersonalInformation per = iPersonalInformationService.queryOneByUserid(user.getId());
+            if (per!=null) {
+                Dept dept;
+                if (per.getDepid()!=null) {
+                    dept = iDeptService.queryOneDepByDepid(per.getDepid());
+                    if (dept!=null) {
+                        per.setDepname(dept.getDepname());
+                    } else {
+                        per.setDepname("此员工没有员工！");
+                    }
+                }
+                per.setTruename(user.getTruename());
+                personalInformationList.add(per);
+            }else {
+                continue;
+            }
+        }
+        return personalInformationList;
+    }
+
 }
