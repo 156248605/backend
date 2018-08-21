@@ -30,11 +30,11 @@
     </select>
 
     <select id="wdbh" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT F_WDBH AS inId FROM w_ywcgddhtpsb WHERE ID_ NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS inId FROM w_ywcgddhtpsb WHERE NOT EXISTS (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
         UNION
-        SELECT DISTINCT F_WDBH AS inId FROM w_fwcgxqsqd WHERE ID_ NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS inId FROM w_fwcgxqsqd WHERE NOT EXISTS (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
         UNION
-        SELECT DISTINCT F_WDBH AS inId FROM w_rccgddhtps WHERE ID_ NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS inId FROM w_rccgddhtps WHERE NOT EXISTS (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="showmat" resultType="com.elex.oa.entity.eqpt.Repository">

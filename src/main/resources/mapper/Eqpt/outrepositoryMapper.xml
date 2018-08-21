@@ -24,13 +24,13 @@
     </delete>
 
     <select id="wdbhR" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT F_WDBH AS outId FROM w_lysqd WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS outId FROM w_lysqd WHERE NOT EXISTS (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
         UNION
-        SELECT DISTINCT F_WDBH AS outId FROM w_zdsqd WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS outId FROM w_zdsqd WHERE NOT EXISTS (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="wdbhX" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT F_WDBH AS outId FROM w_xsfhtzd WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS outId FROM w_xsfhtzd WHERE NOT EXISTS (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="wdbhC" resultType="com.elex.oa.entity.eqpt.Repository">
