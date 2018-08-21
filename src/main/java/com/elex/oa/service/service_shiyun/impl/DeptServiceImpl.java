@@ -69,7 +69,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:���ݲ���ID��ò���
+     *@Description:根据部门ID查询部门对象
      *@Date: 15:30 2018\6\1 0001
      */
     @Override
@@ -79,7 +79,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:������в���
+     *@Description:查询所有部门信息
      *@Date: 15:30 2018\6\1 0001
      */
     @Override
@@ -90,7 +90,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:�����ϼ�����ID��ѯ������Ϣ
+     *@Description:根据上级部门ID查询部门的信息
      *@Date: 10:52 2018\4\16 0016
      */
     @Override
@@ -101,7 +101,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:��Ӳ�����Ϣ����������
+     *@Description:添加部门信息并返回主键
      *@Date: 11:00 2018\4\23 0023
      */
     @Override
@@ -112,7 +112,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:�޸Ĳ�����Ϣ
+     *@Description:修改部门信息
      *@Date: 9:58 2018\5\2 0002
      */
     @Override
@@ -122,27 +122,27 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:��Ҫ���ò����µ�����Ա���Ĳ�����Ϣ��Ϊ�޲��ţ��ٸ��ݲ���IDɾ��������Ϣ
+     *@Description:根据部门id删除部门信息
      *@Date: 14:07 2018\5\2 0002
      */
     @Override
     public void removeOne(Integer id) {
         List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(id);
         PersonalInformation personalInformation = new PersonalInformation();
-        //�������Ա����Ӧ������Ϣ
+        //先将相应的depid设置为NULL
         for (PersonalInformation personalinformation:personalInformationList
              ) {
             personalInformation.setId(personalinformation.getId());
             personalInformation.setDepid(personalinformation.getDepid());
             iPersonalInformationDao.updateDeptinformation(personalInformation);
         }
-        //��ɾ����Ӧ�Ĳ���
+        //最后删除部门信息
         iDeptDao.deleteOne(id);
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:ɾ���û�ʱ�޸Ĳ�����Ϣ
+     *@Description:删除用户时修改部门信息
      *@Date: 15:25 2018\5\10 0010
      */
     @Override
@@ -176,7 +176,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:�޸Ĳ���ʱ�����������ŵ���Ϣ��Ϣ��
+     *@Description:修改部门信息时，将在其他部门信息的相应职位修改掉
      *@Date: 10:33 2018\6\20 0020
      */
     @Override
@@ -186,25 +186,25 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:���ݲ���ID��ò������ơ�������������
+     *@Description:根据部门ID获得部门名称、部门人数、总人数
      *@Date: 15:31 2018\6\1 0001
      */
     @Override
     public HRManageCard getParamMap1(Integer depid) {
         HRManageCard hrManageCard = new HRManageCard();
-        //��ò�������
+        //获得部门名称
         Dept dept;
         if (depid!=null) {
             dept = iDeptDao.selectDeptByDepid(depid);
         } else {
-            dept = iDeptDao.selectDeptByDeptname("���ղ�������Ƽ��ɷ����޹�˾");
+            dept = iDeptDao.selectDeptByDeptname("部门不存在！");
         }
         hrManageCard.setDepname(dept.getDepname());
-        //��ò���ID
+        //设置部门ID
         hrManageCard.setDeptid(dept.getId());
-        //����ϼ�����ID
+        //设置上级部门ID
         hrManageCard.setParentid(dept.getParentdepid());
-        //��ò��ŵ���Ա
+        //设置人员信息
         List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(dept.getId());
         List<Map> users = new ArrayList<>();
         for (PersonalInformation per:personalInformationList
@@ -218,7 +218,7 @@ public class DeptServiceImpl implements IDeptService {
             users.add(map);
         }
         hrManageCard.setUsers(users);
-        //����Ӳ���
+        //设置子部门
         List<Dept> depts = iDeptDao.selectByParentId(dept.getId());
         hrManageCard.setChildDepts(depts);
         return hrManageCard;
@@ -226,7 +226,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:��ְ�����¹�����
+     *@Description:人事看板信息
      *@Date: 11:53 2018\6\28 0028
      */
     @Override
@@ -234,7 +234,7 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","ʱ��ѡ�����",null);
+                return RespUtil.successResp("505","时间设置有误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
@@ -242,7 +242,7 @@ public class DeptServiceImpl implements IDeptService {
             List<HRManageCard> hrManageCardList = new ArrayList<>();
             List<Dept> depts = iDeptDao.selectAllDept();
 
-            //���������(edateʱ������ְ������)
+            //获得总人数(edate时间点的在职总人数)
             Integer num;
             Resp resp2 = (Resp) this.getHRManageCard2(5, 1, sdate, edate);
             if(resp2.getBody()!=null){
@@ -253,7 +253,7 @@ public class DeptServiceImpl implements IDeptService {
                 return resp2;
             }
 
-            //�����ְ������(edateʱ������ְ������)
+            //获得入职总人数(edate时间点的入职总人数)
             Resp resp3 = (Resp) this.getHRManageCard3(5, 1, sdate, edate);
             if(resp3.getBody()!=null){
                 PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp3.getBody();
@@ -262,7 +262,7 @@ public class DeptServiceImpl implements IDeptService {
                 return resp3;
             }
 
-            //�����ְ������(edateʱ������ְ������)
+            //获得离职总人数(edate时间点的离职总人数)
             Resp resp4 = (Resp) this.getHRManageCard4(5, 1, sdate, edate);
             if(resp4.getBody()!=null){
                 PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp4.getBody();
@@ -275,11 +275,11 @@ public class DeptServiceImpl implements IDeptService {
                  ) {
                 HRManageCard hrManageCard = new HRManageCard();
 
-                //��ò�������
+                //获得部门名称
                 hrManageCard.setDeptid(dept.getId());
                 hrManageCard.setDepname(dept.getDepname());
 
-                //������ڲ�����ְ����(edateʱ������ְ������)(ע��ת����Ա����Ӱ�죬ע���������ǰ�ڰ汾�ݲ�����)
+                //获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
                 Integer ratio;
                 Resp resp5 = (Resp) this.getHRManageCard5(5, 1, dept.getId(), sdate, edate);
                 if(resp5.getBody()!=null){
@@ -290,15 +290,12 @@ public class DeptServiceImpl implements IDeptService {
                     return resp5;
                 }
 
-                //����ռ��
-                System.out.println("ratio:"+ratio);
-                System.out.println("num:"+num);
+                //获得占比
                 Double db = ratio.doubleValue()/num.doubleValue()*100;
-                System.out.println("db:"+db);
                 BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
                 hrManageCard.setRatio(bg.doubleValue() + "%");
 
-                //������ڲ�����ְ����(edateʱ������ְ������)(ע��ת����Ա����Ӱ�죬ע���������ǰ�ڰ汾�ݲ�����)
+                //获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
                 Resp resp6 = (Resp) this.getHRManageCard6(5, 1, dept.getId(), sdate, edate);
                 if(resp6.getBody()!=null){
                     PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp6.getBody();
@@ -307,7 +304,7 @@ public class DeptServiceImpl implements IDeptService {
                     return resp6;
                 }
 
-                //������ڲ�����ְ����(edateʱ������ְ������)(ע��ת����Ա����Ӱ�죬ע���������ǰ�ڰ汾�ݲ�����)
+                //获得所在部门离职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
                 Resp resp7 = (Resp) this.getHRManageCard7(5, 1, dept.getId(), sdate, edate);
                 if(resp7.getBody()!=null){
                     PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp7.getBody();
@@ -315,29 +312,16 @@ public class DeptServiceImpl implements IDeptService {
                 }else {
                     return resp7;
                 }
-
-                //��ò�����Ӧ����Ա(edateʱ������ְ��Ա)
-                /*List<Map> users = new ArrayList<>();
-                for (PersonalInformation per:((PageHelper<PersonalInformation>) resp2.getBody()).getAllList()
-                     ) {
-                    HashMap<String, Object> map = new HashMap<>();
-                    User user = iUserDao.selectById(per.getUserid());
-                    map.put("id",user.getId());
-                    map.put("truename",user.getTruename());
-                    map.put("deptname",iDeptDao.selectDeptByDepid(per.getDepid()).getDepname());
-                    users.add(map);
-                }
-                hrManageCard.setUsers(users);*/
                 hrManageCardList.add(hrManageCard);
             }
             paramMap.put("HRManageCards",hrManageCardList);
-            return RespUtil.successResp("205","���سɹ���",paramMap);
+            return RespUtil.successResp("205","请求成功！",paramMap);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ϵͳ����æ�����Ժ����ԣ�",null);
+            return RespUtil.successResp("405","系统忙请稍后！",null);
         }
     }
-    //����ʱ���������ʱ��ĩ�����Ĺ���
+    //获得首尾日期
     private Map<String,String> getTwoDate(String sdate,String edate){
         HashMap<String, String> map = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -345,12 +329,12 @@ public class DeptServiceImpl implements IDeptService {
         String curDate = sdf.format(date);
         Boolean d1 = sdate==null || sdate.equals("");
         Boolean d2 = edate==null || edate.equals("");
-        //1.sdate=null,  edate=null=>��Ϊ��ǰʱ��
+        //1.sdate=null,  edate=null=>用当前时间
         if(d1 && d2){
             sdate = edate =curDate;
         }
-        //2.sdate!=null, edate=null=>�ޣ�sdate<=��ǰʱ��
-        //                           �᣺edate=sdate
+        //2.sdate!=null, edate=null=>sdate<=curdate
+        //                           edate=sdate
         if(!d1 && d2){
             if(sdate.compareTo(curDate)<=0){
                 edate=sdate;
@@ -358,8 +342,8 @@ public class DeptServiceImpl implements IDeptService {
                 return null;
             }
         }
-        //3.sdate=null, edate!=null=>�ޣ�edate<=��ǰʱ��
-        //                           �᣺sdate=edate
+        //3.sdate=null, edate!=null=>edate<=curdate
+        //                           sdate=edate
         if(d1 && !d2){
             if(edate.compareTo(curDate)<=0){
                 sdate = edate;
@@ -367,8 +351,8 @@ public class DeptServiceImpl implements IDeptService {
                 return null;
             }
         }
-        //4.sdate!=null,edate!=null=>�ޣ�sdate<=edate<=��ǰʱ��
-        //                           �᣺sdate,edate
+        //4.sdate!=null,edate!=null=>sdate<=edate<=curdate
+        //                           sdate,edate
         if(!d1 && !d2){
             if(sdate.compareTo(edate)>0 || edate.compareTo(curDate)>0){
                 return null;
@@ -381,7 +365,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:���������(edateʱ������ְ������)
+     *@Description:获得总人数(edate时间点的在职总人数)
      *@Date: 10:13 2018\8\15 0015
      */
     @Override
@@ -389,13 +373,12 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","ʱ��ѡ�����",null);
+                return RespUtil.successResp("505","时间设置有误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
-            List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(null,edate);//ʱ��ڵ�edateǰ����ְ��Ա
-            System.out.println("personalInformationList1.size():"+personalInformationList1.size());
-            List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(null,edate);//ʱ��ڵ�edateǰ����ְ��Ա
+            List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(null,edate);//查在时间点edate前入职的人员(在职+离职)
+            List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(null,edate);//查在时间点edate前离职的人员(离职)
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             if (personalInformationList2.size()>0) {
                 for (PersonalInformation per:personalInformationList1
@@ -408,16 +391,16 @@ public class DeptServiceImpl implements IDeptService {
                 personalInformationList = personalInformationList1;
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
-            return RespUtil.successResp("205","�ύ�ɹ���",pageHelper);
+            return RespUtil.successResp("205","请求成功！",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ϵͳ����æ�����Ժ����ԣ�",null);
+            return RespUtil.successResp("405","系统忙，请稍后再试！",null);
         }
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:�����ְ������(edateʱ������ְ������)
+     *@Description:获得入职总人数(edate时间点的入职总人数)
      *@Date: 10:13 2018\8\15 0015
      */
     @Override
