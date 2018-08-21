@@ -348,7 +348,7 @@ public class InRepositoryImpl implements InRepositoryService {
             repository.setReptId(reptId);
             repository.setPostId(postId);
             repository.setPosition(postId);
-            if (listIN.get(i).get("postId") != null){
+            if (listIN.get(i).containsKey("postId")){
                 postId = listIN.get(i).get("postId").toString();
                 Material material = new Material();
                 material.setId(listIN.get(i).get("theMatId").toString());
