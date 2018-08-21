@@ -5,11 +5,13 @@ import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
-import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
@@ -1131,8 +1133,9 @@ public class DepartmentInformationController {
             @RequestParam("sdate")String sdate,
             @RequestParam("edate")String edate
     ){
-        Object hrManageCard = iDeptService.getHRManageCard(sdate,edate);
-        return hrManageCard;
+       // Object hrManageCard = iDeptService.getHRManageCard(sdate,edate);
+       // return hrManageCard;
+        return null;
     }
 
     /**

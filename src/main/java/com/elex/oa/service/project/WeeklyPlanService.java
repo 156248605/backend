@@ -26,4 +26,6 @@ public interface WeeklyPlanService {
     String amendPlans(WeeklyPlan weeklyPlan);
     //删除周计划
     String deleteWeek(int id);
+    //查询某项目的里程碑计划
+    List<String> queryMileStone(String code);
 }

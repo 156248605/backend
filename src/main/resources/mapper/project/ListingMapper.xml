@@ -81,54 +81,55 @@
     </select>-->
 
     <select id="listQuery" parameterType="com.elex.oa.entity.project.AListQuery" resultMap="approvalList1">
-        SELECT F_XMBH, F_XMMC, F_TXRQ, F_XMLY, F_XMLX, F_SZBM_NAME, F_SWJL_NAME, F_XMJL_NAME FROM w_lxsqb
+        SELECT w.F_XMBH, w.F_XMMC, w.F_TXRQ, w.F_XMLY, w.F_XMLX, w.F_SZBM_NAME, w.F_SWJL_NAME, w.F_XMJL_NAME FROM w_lxsqb w
         <where>
             <if test="select1 == 1 and input1 != ''">
-                AND F_XMBH LIKE CONCAT('%',#{input1},'%')
+                AND w.F_XMBH LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="select1 == 2 and input1 != ''">
-                AND F_XMBH NOT LIKE CONCAT('%',#{input1},'%')
+                AND w.F_XMBH NOT LIKE CONCAT('%',#{input1},'%')
             </if>
             <if test="select2 == 1 and input2 != ''">
-                AND F_XMBH LIKE CONCAT('%',#{input2},'%')
+                AND w.F_XMBH LIKE CONCAT('%',#{input2},'%')
             </if>
             <if test="select2 == 2 and input2 != ''">
-                AND F_XMBH NOT LIKE CONCAT('%',#{input2},'%')
+                AND w.F_XMBH NOT LIKE CONCAT('%',#{input2},'%')
             </if>
             <if test="date31 != null">
-                AND F_TXRQ BETWEEN #{date31} AND #{date32}
+                AND w.F_TXRQ BETWEEN #{date31} AND #{date32}
             </if>
             <if test="list4 != null">
-                AND F_XMLY IN
+                AND w.F_XMLY IN
                 <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="list5 != null">
-                AND project_type IN
+                AND w.project_type IN
                 <foreach collection="list5" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
             <if test="select6 == 1 and input6 != ''">
-                AND F_SZBM_NAME LIKE CONCAT('%',#{input6},'%')
+                AND w.F_SZBM_NAME LIKE CONCAT('%',#{input6},'%')
             </if>
             <if test="select6 == 2 and input6 != ''">
-                AND F_SZBM_NAME LIKE CONCAT('%',#{input6},'%')
+                AND w.F_SZBM_NAME LIKE CONCAT('%',#{input6},'%')
             </if>
             <if test="select7 == 1 and input7 != ''">
-                AND F_SWJL_NAME LIKE CONCAT('%',#{input7},'%')
+                AND w.F_SWJL_NAME LIKE CONCAT('%',#{input7},'%')
             </if>
             <if test="select7 == 2 and input7 != ''">
-                AND F_SWJL_NAME LIKE CONCAT('%',#{input7},'%')
+                AND w.F_SWJL_NAME LIKE CONCAT('%',#{input7},'%')
             </if>
             <if test="select8 == 1 and input8 != ''">
-                AND F_XMJL_NAME LIKE CONCAT('%',#{input8},'%')
+                AND w.F_XMJL_NAME LIKE CONCAT('%',#{input8},'%')
             </if>
             <if test="select8 == 2 and input8 != ''">
-                AND F_XMJL_NAME LIKE CONCAT('%',#{input8},'%')
+                AND w.F_XMJL_NAME LIKE CONCAT('%',#{input8},'%')
             </if>
-            AND INST_STATUS_ = 'SUCCESS_END'
+            AND w.INST_STATUS_ = 'SUCCESS_END'
+            AND NOT EXISTS (SELECT 1 FROM w_lxsqb WHERE w.F_XMBH = F_XMBH AND UPDATE_TIME_  > w.UPDATE_TIME_  )
         </where>
     </select>
 

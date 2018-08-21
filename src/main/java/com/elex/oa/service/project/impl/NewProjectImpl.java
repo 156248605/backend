@@ -8,6 +8,7 @@ import com.elex.oa.entity.project.NewProject;
 import com.elex.oa.entity.project.ProjectCode;
 import com.elex.oa.mongo.project.NewProjectMongo;
 import com.elex.oa.service.project.NewProjcetService;
+import com.elex.oa.service.service_shiyun.IDeptService;
 import com.elex.oa.util.project.ProjectUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,6 +25,8 @@ public class NewProjectImpl implements NewProjcetService {
     @Resource
     private NewProjectDao newProjectDao;
 
+    @Resource
+    private IDeptService iDeptService;
 
 
     //对某人已建项目进行列表查询
@@ -59,8 +62,8 @@ public class NewProjectImpl implements NewProjcetService {
     //根据人名获取项目编号
     @Override
     public String obtainCodeName(String name) {
+        String departmentMark = iDeptService.queryByTruename(name);
 
-        String departmentMark = "13";
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("ELEX-PRJ-");

@@ -2,7 +2,6 @@ package com.elex.oa.controller.controller_shiyun;
 
 import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
-import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
@@ -2223,7 +2222,7 @@ public class PersonalInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:根据部门ID查询部门信息
+     *@Description:根据部门ID查询部门信息(部门经理)
      *@Date: 11:34 2018\8\10 0010
      */
     @RequestMapping("/queryGXF004")
@@ -2234,6 +2233,11 @@ public class PersonalInformationController {
         Dept dept = iDeptService.queryOneDepByDepid(depid);
         if (dept!=null) {
             if (dept.getPrincipaluserid()!=null) {
+                if (iUserService.getById(dept.getPrincipaluserid())!=null) {
+                    iUserService.getById(dept.getPrincipaluserid()).getTruename();
+                } else {
+                    return null;
+                }
                 return iUserService.getById(dept.getPrincipaluserid()).getTruename();
             } else {
                 return "此部门没有部门正职！";

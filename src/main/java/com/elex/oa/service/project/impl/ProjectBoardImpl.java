@@ -79,7 +79,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
         int size3 = phaseList.size();
         int[][] number1 = new int[size1][size2];
         int[][] number2 = new int[size1][size3];
-
+        int[][] number3 = new int[size1][4];
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
@@ -92,7 +92,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
         content.put("start",start);
         content.put("end",end);
 
-        for(ProjectInfor infor: projectInfors) {
+ /*       for(ProjectInfor infor: projectInfors) {
             for(int k = 0; k< typeList.size(); k++) {
                 if(infor.getProjectType().equals(typeList.get(k).getCode()+"")) {
                     number1[k][size2 - 1] ++;
@@ -114,6 +114,50 @@ public class ProjectBoardImpl implements ProjectBoardService {
                                             number2[k][l] ++;
                                             number2[size1 - 1][l] ++;
                                         }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }*/
+        for(ProjectInfor infor: projectInfors) {
+            for(int k = 0; k< typeList.size(); k++) {
+                if(infor.getProjectType().equals(typeList.get(k).getCode()+"")) {
+                    number1[k][size2 - 1] ++;
+                    if(infor.getProjectStatus().equals("") || infor.getProjectStatus() == null) {
+                        break;
+                    }
+                    for(int j = 0; j < statusList.size(); j ++) {
+                        if(infor.getProjectStatus().equals(statusList.get(j).getCode()+"")) {
+                            number1[k][j] ++;
+                            number1[size1 - 1][j] ++;
+                            if(statusList.get(j).getName().equals("进行")) {
+                                content.put("code",infor.getProjectCode());
+                                //String phase = weeklyPlanDao.queryPlanByCon(content); //条件查询当前周报中的阶段信息
+                                WeeklyPlan weeklyPlan = weeklyPlanDao.queryPlanContent(content); //条件查询当前周报信息
+                                if(weeklyPlan == null) {
+
+                                } else {
+                                    for(int l = 0; l < phaseList.size(); l ++) {
+                                        if(weeklyPlan.getProjectPhase().equals(phaseList.get(l).getCode()+"")) {
+                                            number2[k][l] ++;
+                                            number2[size1 - 1][l] ++;
+                                        }
+                                    }
+                                    if(weeklyPlan.getPunctuality().equals("t")) {
+                                        number3[k][0] ++;
+                                        number3[size1 - 1][0] ++;
+                                    } else if(weeklyPlan.getPunctuality().equals("a")) {
+                                        number3[k][1] ++;
+                                        number3[size1 - 1][1] ++;
+                                    } else if(weeklyPlan.getPunctuality().equals("y")) {
+                                        number3[k][2] ++;
+                                        number3[size1 - 1][2] ++;
+                                    } else {
+                                        number3[k][3] ++;
+                                        number3[size1 - 1][3] ++;
                                     }
                                 }
                             }
@@ -177,6 +221,45 @@ public class ProjectBoardImpl implements ProjectBoardService {
         }
         left.add(listL);
         result.put("left",left);
+
+        List<Object> week = new ArrayList<>();
+        for(int r = 0; r < typeList.size(); r ++) {
+            List<Map<String,String>> list = new ArrayList<>();
+            for(int t = 0; t < 4; t ++) {
+                Map<String,String> map = new HashMap<>();
+                map.put("type",typeList.get(r).getCode()+"");
+                if(t == 0) {
+                    map.put("punctuality","t");
+                } else if(t == 1) {
+                    map.put("punctuality","a");
+                } else if(t == 2) {
+                    map.put("punctuality","y");
+                } else if(t == 3) {
+                    map.put("punctuality","w");
+                }
+                map.put("num",number3[r][t]+"");
+                list.add(map);
+            }
+            week.add(list);
+        }
+        List<Map<String,String>> listW = new ArrayList<>();
+        for(int h = 0; h < 4; h ++) {
+            Map<String,String> mapY = new HashMap<>();
+            mapY.put("type","Total");
+            if(h == 0) {
+                mapY.put("punctuality","t");
+            } else if(h == 1) {
+                mapY.put("punctuality","a");
+            } else if(h == 2) {
+                mapY.put("punctuality","y");
+            } else if(h == 3) {
+                mapY.put("punctuality","w");
+            }
+            mapY.put("num",number3[size1-1][h]+"");
+            listW.add(mapY);
+        }
+        week.add(listW);
+        result.put("week",week);
         return result;
     }
 
@@ -217,9 +300,42 @@ public class ProjectBoardImpl implements ProjectBoardService {
         content.put("codes",codes);
         content.put("type",type);
         content.put("department",department);
-        System.out.println(content);
         PageHelper.startPage(pageNum,5);
         List<ProjectInfor> infors = projectBoardDao.queryInforPhase(content); //条件查询项目信息
+        return new PageInfo(infors);
+    }
+
+    //查看是否延期的项目
+    @Override
+    public PageInfo projectWeek(Integer pageNum, String punctuality, String type, String department) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+        String start = simpleDateFormat.format(calendar.getTime());
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        String end = simpleDateFormat.format(calendar1.getTime());
+        Map<String,String> content = new HashMap<>();
+        content.put("start",start);
+        content.put("end",end);
+        if(punctuality.equals("t")) {
+            content.put("punctuality","ti");
+        } else if(punctuality.equals("a")) {
+            content.put("punctuality","an");
+        } else if(punctuality.equals("y")) {
+            content.put("punctuality","yan");
+        } else if(punctuality.equals("w")) {
+            content.put("punctuality","wu");
+        }
+        List<String> codes = projectBoardDao.queryWeekByContent(content); //查询本周周报相关的项目编号
+        Map<String,Object> content1 =  new HashMap<>();
+        content1.put("codes",codes);
+        content1.put("type",type);
+        content1.put("department",department);
+        System.out.println(content1);
+        PageHelper.startPage(pageNum,5);
+        List<ProjectInfor> infors = projectBoardDao.queryInforPhase(content1);
+        System.out.println(infors);
         return new PageInfo(infors);
     }
 
@@ -302,8 +418,9 @@ public class ProjectBoardImpl implements ProjectBoardService {
         content.put("code",projectCode);
         content.put("start",start);
         content.put("end",end);
+        System.out.println(content);
         WeeklyPlan weeklyPlan = projectBoardDao.queryWeeklyPlan(content);
-
+        System.out.println(weeklyPlan);
         if(weeklyPlan ==  null) {
             result.put("startDate","");
             result.put("endDate","");

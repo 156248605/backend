@@ -82,4 +82,11 @@ public class WeeklyPlanController {
     public String deleteWeek(int id) {
         return weeklyPlanService.deleteWeek(id);
     }
+
+    //查询某项目的里程碑计划
+    @RequestMapping("/query_mileStone")
+    @ResponseBody
+    public List<String> queryMileStone(String code) {
+        return weeklyPlanService.queryMileStone(code);
+    }
 }

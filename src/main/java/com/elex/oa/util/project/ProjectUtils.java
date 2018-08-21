@@ -10,7 +10,7 @@ public class ProjectUtils {
 
     public static String codeValidate(String original) { //验证编码是否为当前月的
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = simpleDateFormat.format(new Date()).substring(0,8);
+        String date = simpleDateFormat.format(new Date()).substring(0,7);
         if(original.contains(date)) {
             return  "1";
         }

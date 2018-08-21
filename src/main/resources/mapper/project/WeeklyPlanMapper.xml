@@ -35,11 +35,27 @@
         <result column="project_type"  javaType="string"  property="projectType"></result>
     </resultMap>
 
+    <resultMap id="weeklyPlan" type="com.elex.oa.entity.project.WeeklyPlan">
+        <id column="id" javaType="int" property="id"></id>
+        <result column="project_code" javaType="string" property="projectCode"></result>
+        <result column="start_date" javaType="string" property="startDate"></result>
+        <result column="end_date" javaType="string" property="endDate"></result>
+        <result column="time_schedule" javaType="string" property="timeSchedule"></result>
+        <result column="fulfillment" javaType="string" property="fulfillment"></result>
+        <result column="punctuality" javaType="string" property="punctuality"></result>
+        <result column="project_phase" javaType="string" property="projectPhase"></result>
+        <result column="completion" javaType="string" property="completion"></result>
+        <result column="next_plan" javaType="string" property="nextPlan"></result>
+        <result column="risk" javaType="string" property="risk"></result>
+        <result column="fill_date" javaType="string" property="fillDate"></result>
+    </resultMap>
+
     <select id="queryList" parameterType="com.elex.oa.entity.project.WeeklyPlanQuery" resultType="java.util.Map">
-        SELECT week.id AS id, week.project_code AS projectCode, infor.project_name AS projectName, infor.dept_manager AS deptManager, infor.in_department AS inDepartment, infor.write_date AS writeDate,
-        infor.business_manager AS businessManager, infor.project_source AS projectSource, week.project_manager AS projectManager, infor.project_type AS projectType, week.start_date AS startDate,
-        week.end_date AS endDate, week.time_schedule AS timeSchedule, week.fulfillment AS fulfillment, week.punctuality AS punctuality, week.project_phase AS projectPhase,
-        week.completion AS completion, week.next_plan AS nextPlan, week.risk AS risk,  week.department_manager AS departmentManager FROM pro_week week LEFT JOIN pro_pro_infor infor
+        SELECT week.id AS id, week.project_code AS projectCode, infor.project_name AS projectName, infor.dept_manager AS deptManager, infor.in_department AS inDepartment,
+        infor.write_date AS writeDate, infor.business_manager AS businessManager, infor.project_source AS projectSource, week.project_manager AS projectManager,
+        infor.project_type AS projectType, week.start_date AS startDate, week.end_date AS endDate, week.time_schedule AS timeSchedule, week.fulfillment AS fulfillment,
+        week.punctuality AS punctuality, week.project_phase AS projectPhase, week.completion AS completion, week.next_plan AS nextPlan, week.risk AS risk,
+        week.fill_date AS fillDate, week.department_manager AS departmentManager FROM pro_week week LEFT JOIN pro_pro_infor infor
         ON week.project_code = infor.project_code
         <where>
               <if test="select1 == 1 and input1 != ''">
@@ -100,7 +116,7 @@
                   AND `week`.department_manager = #{name}
               </if>
           </where>
-          ORDER BY week.start_date DESC
+          ORDER BY week.fill_date DESC
     </select>
 
     <select id="queryPlansById" parameterType="int" resultMap="weekPlanDetail">
@@ -118,8 +134,8 @@
     </select>
 
     <insert id="addWeeklyPlan" parameterType="com.elex.oa.entity.project.WeeklyPlan">
-        INSERT INTO pro_week (id,project_code,start_date,end_date,time_schedule,fulfillment,punctuality,project_phase,completion,next_plan,risk,project_manager,department_manager)
-        VALUES (NULL,#{projectCode},#{startDate},#{endDate},#{timeSchedule},#{fulfillment},#{punctuality},#{projectPhase},#{completion},#{nextPlan},#{risk},#{projectManager},#{departmentManager})
+        INSERT INTO pro_week (id,project_code,start_date,end_date,time_schedule,fulfillment,punctuality,project_phase,completion,next_plan,risk,fill_date,project_manager,department_manager)
+        VALUES (NULL,#{projectCode},#{startDate},#{endDate},#{timeSchedule},#{fulfillment},#{punctuality},#{projectPhase},#{completion},#{nextPlan},#{risk},#{fillDate},#{projectManager},#{departmentManager})
     </insert>
 
     <select id="queryMaxId" resultType="int">
@@ -179,8 +195,8 @@
     </select>
 
     <update id="amendPlans" parameterType="com.elex.oa.entity.project.WeeklyPlan">
-        UPDATE pro_week SET start_date = #{startDate}, end_date = #{endDate}, time_schedule = #{timeSchedule}, fulfillment = #{fulfillment}, punctuality = #{punctuality},
-        project_phase = #{projectPhase}, completion = #{completion}, next_plan = #{nextPlan}, risk = #{risk} WHERE id = #{id}
+        UPDATE pro_week SET  fulfillment = #{fulfillment}, punctuality = #{punctuality},project_phase = #{projectPhase},
+        completion = #{completion}, next_plan = #{nextPlan}, risk = #{risk} WHERE id = #{id}
     </update>
 
     <delete id="deleteWeek" parameterType="int">
@@ -196,6 +212,11 @@
     </select>
 
     <select id="queryCountByCode" parameterType="java.util.Map" resultType="int">
-        SELECT COUNT(project_code) FROM pro_week WHERE project_code = #{projectCode} AND start_date BETWEEN #{start} AND #{end}
+        SELECT COUNT(project_code) FROM pro_week WHERE project_code = #{projectCode} AND fill_date BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="queryPlanContent" parameterType="java.util.Map" resultMap="weeklyPlan">
+        SELECT id, project_code, start_date, end_date, time_schedule, fulfillment, punctuality, project_phase, completion, next_plan, risk, fill_date
+        FROM pro_week WHERE project_code = #{code} AND fill_date BETWEEN #{start} AND #{end}
     </select>
 </mapper>

@@ -8,13 +8,13 @@ import com.elex.oa.entity.entity_shiyun.HRManageCard;
 import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IDeptService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -25,12 +25,12 @@ import java.util.*;
 @Service
 public class DeptServiceImpl implements IDeptService {
 
-    @Autowired
-    IDeptDao iDeptDao;
-    @Autowired
-    IPersonalInformationDao iPersonalInformationDao;
-    @Autowired
-    IUserDao iUserDao;
+    @Resource
+    private IDeptDao iDeptDao;
+    @Resource
+    private IPersonalInformationDao iPersonalInformationDao;
+    @Resource
+    private IUserDao iUserDao;
 
     /**
      *@Author:ShiYun;
@@ -226,7 +226,7 @@ public class DeptServiceImpl implements IDeptService {
      *@Description:在职的人事管理看板
      *@Date: 11:53 2018\6\28 0028
      */
-    @Override
+   /* @Override
     public Object getHRManageCard(String sdate,String edate) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
@@ -309,7 +309,7 @@ public class DeptServiceImpl implements IDeptService {
         }
         paramMap.put("HRManageCards",hrManageCardList);
         return paramMap;
-    }
+    }*/
 
     /**
      *@Author:ShiYun;
@@ -331,11 +331,19 @@ public class DeptServiceImpl implements IDeptService {
             return null;
         }
         Dept dept = null;
+        Dept dept1 = null;
         if (personalInformation!=null && personalInformation.getDepid()!=null) {
             dept = iDeptDao.selectDeptByDepid(personalInformation.getDepid());
+            dept1 = iDeptDao.selectDeptByDeptname(dept.getCompanyname());
         }else {
             return null;
         }
-        return dept.getCompanyname();
+        /*if (dept1!=null) {
+            return dept1.getDepcode();
+        } else {
+            return null;
+        }*/
+        int l = dept1.getDepcode().length();
+        return dept1.getDepcode().substring(l-2,l);
     }
 }

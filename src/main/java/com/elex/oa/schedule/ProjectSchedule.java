@@ -22,6 +22,6 @@ public class ProjectSchedule {
 
     @Scheduled(cron = "0 0 0/1 * * ?")
     public void updateStaff() {
-        projectBoardService.informationUpdate();
+        //projectBoardService.informationUpdate();
     }
 }

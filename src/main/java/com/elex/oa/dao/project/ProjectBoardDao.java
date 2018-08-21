@@ -39,5 +39,7 @@ public interface ProjectBoardDao {
     List<ProjectInfor> queryInforCon(Map<String,String> condition);
     //条件查询项目信息
     List<ProjectInfor> queryInforPhase(Map<String,Object> content);
+    //查询本周周报相关的项目编号
+    List<String> queryWeekByContent(Map<String,String> content);
 
 }

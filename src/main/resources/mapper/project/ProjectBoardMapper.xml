@@ -121,7 +121,7 @@
 
     <select id="queryWeeklyPlan" parameterType="java.util.Map" resultMap="weeklyPlan">
         SELECT id, start_date, end_date, time_schedule, fulfillment, punctuality, project_phase, completion, next_plan, risk
-        FROM pro_week WHERE project_code = #{code} AND start_date BETWEEN #{start} AND #{end}
+        FROM pro_week WHERE project_code = #{code} AND fill_date BETWEEN #{start} AND #{end}
     </select>
 
     <select id="queryProjectInforByDepartment" parameterType="string" resultMap="projectInfor">
@@ -180,4 +180,21 @@
     <select id="queryInforMain" resultMap="projectInfor">
         SELECT project_code, project_name, project_status, project_type FROM pro_pro_infor WHERE in_department != "上海臻相" AND in_department != "贵州中科"
     </select>
+
+    <select id="queryWeekByContent" parameterType="java.util.Map" resultType="string">
+        SELECT project_code FROM pro_week WHERE fill_date BETWEEN #{start} AND #{end}
+        <if test="punctuality == 'wu'">
+            AND punctuality = ''
+        </if>
+        <if test="punctuality == 'ti'">
+            AND punctuality = 't'
+        </if>
+        <if test="punctuality == 'an'">
+            AND punctuality = 'a'
+        </if>
+        <if test="punctuality == 'yan'">
+            AND punctuality = 'y'
+        </if>
+    </select>
+
 </mapper>
