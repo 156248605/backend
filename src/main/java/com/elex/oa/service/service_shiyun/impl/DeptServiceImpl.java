@@ -21,7 +21,7 @@ import java.util.*;
 
 /**
  * @Author:ShiYun;
- * @Description:
+ * @Description:部门信息（业务层）
  * @Date:Created in  13:33 2018\3\16 0016
  * @Modify By:
  */
@@ -37,7 +37,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:���ݲ������ƻ�ò���
+     *@Description:根据部门名称查询部门对象
      *@Date: 15:29 2018\6\1 0001
      */
     @Override
@@ -47,7 +47,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:���ݲ���code��ѯ������Ϣ
+     *@Description:根据部门code查询部门信息
      *@Date: 10:20 2018\7\16 0016
      */
     @Override
@@ -58,7 +58,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:���ݲ���codeģ����ѯ������Ϣ
+     *@Description:根据部门code模糊查询部门信息
      *@Date: 17:08 2018\8\14 0014
      */
     @Override
