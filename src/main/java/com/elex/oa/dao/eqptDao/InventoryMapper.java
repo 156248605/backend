@@ -47,7 +47,7 @@ public interface InventoryMapper {
     // 更新
     void changeInvD(Repository repository);
 
-    // 获取流程的表的数据
+    // 获取流程的表的id
     List getInvId();
 
     // 获取流程信息

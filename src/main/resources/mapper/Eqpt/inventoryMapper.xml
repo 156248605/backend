@@ -270,6 +270,7 @@
         SELECT * FROM w_gzrz
     </select>
 
+
     <update id="changeNum" parameterType="com.elex.oa.entity.eqpt.Repository">
         UPDATE eqpt_detail SET num = #{numInv} WHERE id = #{materialId} AND reptId = #{reptId} AND postId = #{postId}
     </update>

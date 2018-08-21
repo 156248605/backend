@@ -542,31 +542,6 @@ public class DeptServiceImpl implements IDeptService {
         }
     }
 
-    @Override
-    public Object getHRManageCard2(Integer rows, Integer page, String sdate, String edate) {
-        return null;
-    }
-
-    @Override
-    public Object getHRManageCard3(Integer rows, Integer page, String sdate, String edate) {
-        return null;
-    }
-
-    @Override
-    public Object getHRManageCard4(Integer rows, Integer page, String sdate, String edate) {
-        return null;
-    }
-
-    @Override
-    public Object getHRManageCard5(Integer rows, Integer page, Integer depid, String sdate, String edate) {
-        return null;
-    }
-
-    @Override
-    public Object getHRManageCard6(Integer rows, Integer page, Integer depid, String sdate, String edate) {
-        return null;
-    }
-
     /**
      *@Author:ShiYun;
      *@Description:forGXF������������ѯ��Ӧ�Ĺ�˾���ƣ�
@@ -594,5 +569,15 @@ public class DeptServiceImpl implements IDeptService {
         }
         /*return dept.getCompanyname();*/
         return dept.getDepcode().substring(0,2);
+    }
+
+    @Override
+    public List<Dept> queryAllCompany1and2() {
+        return null;
+    }
+
+    @Override
+    public List<Dept> queryByCompanyname(String companyname) {
+        return null;
     }
 }
