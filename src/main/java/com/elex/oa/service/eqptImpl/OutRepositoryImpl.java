@@ -190,22 +190,8 @@ public class OutRepositoryImpl implements OutRepositoryService {
         String OUTLIST = request.getParameter("outList");
         List<HashMap> listOUT =JSON.parseArray(OUTLIST, HashMap.class);
         for (int i = 0; i < listOUT.size(); i++) {
-            /*Material material = new Material();
-            material.setId(listOUT.get(i).get("theMatId").toString());
-            material.setNum(listOUT.get(i).get("theMatNum").toString());
-            material.setUnit(listOUT.get(i).get("theMatUnit").toString());
-            material.setPostId(listOUT.get(i).get("postId").toString());
-            String date = request.getParameter("outTime");
-            date = date.replace("Z", " UTC");// 注意是空格+UTC
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
-            Date d = format.parse(date);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String sDate = sdf.format(d);
-            material.setDate(sDate);
-            materialMapper.updMatM(material);*/
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
-            material.setNum(listOUT.get(i).get("theMatNum").toString());
             String postId = "";
             if (listOUT.get(i).containsKey("postId")){
                 postId = listOUT.get(i).get("postId").toString();
@@ -213,7 +199,13 @@ public class OutRepositoryImpl implements OutRepositoryService {
             material.setPostId(postId);
             material.setReptId(listOUT.get(i).get("reptId").toString());
             String number = repositoryMapper.numInPost(material);
-            if (parseInt(number) == parseInt(listOUT.get(i).get("theMatNum").toString())) {
+            String outNum = "";
+            String outNumA = listOUT.get(i).get("theMatNum").toString();
+            if (outNumA.contains(".")){
+                outNum = outNumA.substring(0,outNumA.indexOf("."));
+            }
+            material.setNum(outNum);
+            if (parseInt(number) == parseInt(outNum)) {
                 materialMapper.deleteDetail(material);
             } else {
                 materialMapper.updDetailM(material);

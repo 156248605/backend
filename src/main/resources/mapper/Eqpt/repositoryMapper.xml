@@ -555,7 +555,7 @@
             <if test="reptId != null">
                 AND reptId = #{reptId}
             </if>
-            <if test="postId != null">
+            <if test="postId != null and postId != ''">
                 AND postId = #{postId}
             </if>
             <if test="id != null">
