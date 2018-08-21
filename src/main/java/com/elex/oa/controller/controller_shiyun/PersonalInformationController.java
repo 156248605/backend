@@ -700,6 +700,9 @@ public class PersonalInformationController {
     public String addManageInformation(
             PersonalInformation personalInformation
     ){
+        if(personalInformation.getUserid()==null || iPersonalInformationService.queryOneByUserid(personalInformation.getUserid())==null){
+            return "系统正在忙，请稍后";
+        }
         // 保存人事信息的管理信息
         ManageInformation manageInformation = new ManageInformation();
         if (ihRsetRankService.queryByRank(personalInformation.getZj())!=null) {
