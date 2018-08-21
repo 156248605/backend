@@ -27,7 +27,8 @@
 			c.attachment,
 			c.remark,
 			c.transactoruserid,
-			c.transdate
+			c.transdate,
+		    c.contractage
 		FROM
 			tb_hr_contractinformation c
 		LEFT JOIN tb_id_user u ON c.userid = u.id
@@ -126,7 +127,8 @@
 			attachment,
 			remark,
 			transactoruserid,
-			transdate
+			transdate,
+			contractage
 		FROM
 			tb_hr_contractinformation
 		WHERE

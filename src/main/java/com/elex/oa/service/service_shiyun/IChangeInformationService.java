@@ -41,4 +41,11 @@ public interface IChangeInformationService extends BaseService<ChangeInformation
      *@Date: 10:42 2018\5\25 0025
      */
     public void removeOne(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据userid查询变更信息
+     *@Date: 15:47 2018\8\20 0020
+     */
+    public List<ChangeInformation> queryByUserid(Integer changeduserid);
 }

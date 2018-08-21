@@ -86,8 +86,8 @@ public interface IPersonalInformationDao{
 
     /**
      *@Author:ShiYun;
-     *@Description:根据时间区间查询入职员工
-     *@Date: 14:43 2018\8\15 0015
+     *@Description:根据ID删除人事主体信息
+     *@Date: 16:08 2018\8\20 0020
      */
-    /*public List<PersonalInformation> selectEntrystaffByPeriodtime();*/
+    public void deleteById(Integer id);
 }

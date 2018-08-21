@@ -109,7 +109,9 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         com.github.pagehelper.PageHelper.startPage(pageNum,pageSize);
+        System.out.println(personalInformation.getUsername()+"===============================================>");
         List<PersonalInformation> list = iPersonalInformationDao.selectByConditions(personalInformation);
+        System.out.println(list.size()+"========================================================>");
         return new PageInfo<PersonalInformation>(list);
     }
 
@@ -194,7 +196,15 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return personalInformationList;
     }
 
-    ;
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除人事主体信息
+     *@Date: 16:10 2018\8\20 0020
+     */
+    @Override
+    public void removeOne(Integer perid) {
+        iPersonalInformationDao.deleteById(perid);
+    }
 
     /**
      *@Author:ShiYun;

@@ -41,4 +41,11 @@ public interface IChangeInformaionDao extends BaseDao<ChangeInformation> {
      *@Date: 10:40 2018\5\25 0025
      */
     public void deleteOne(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据userid查询变更信息
+     *@Date: 15:45 2018\8\20 0020
+     */
+    public List<ChangeInformation> selectByUserid(Integer changeduserid);
 }

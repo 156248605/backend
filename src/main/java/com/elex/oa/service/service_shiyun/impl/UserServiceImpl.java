@@ -67,4 +67,15 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         User user = iUserDao.selectByUsername(username);
         return user;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的在职人员
+     *@Date: 10:01 2018\8\21 0021
+     */
+    @Override
+    public List<User> queryAllServings() {
+        List<User> users = iUserDao.selectAllServings();
+        return users;
+    }
 }

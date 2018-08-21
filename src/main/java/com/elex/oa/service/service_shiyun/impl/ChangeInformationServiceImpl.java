@@ -99,4 +99,10 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
     public void removeOne(Integer id) {
         iChangeInformaionDao.deleteOne(id);
     }
+
+    @Override
+    public List<ChangeInformation> queryByUserid(Integer changeduserid) {
+        List<ChangeInformation> changeInformationList = iChangeInformaionDao.selectByUserid(changeduserid);
+        return changeInformationList;
+    }
 }

@@ -542,7 +542,7 @@ public class DeptServiceImpl implements IDeptService {
         }
     }
 
-    /*@Override
+    @Override
     public Object getHRManageCard2(Integer rows, Integer page, String sdate, String edate) {
         return null;
     }
@@ -565,7 +565,7 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public Object getHRManageCard6(Integer rows, Integer page, Integer depid, String sdate, String edate) {
         return null;
-    }*/
+    }
 
     /**
      *@Author:ShiYun;

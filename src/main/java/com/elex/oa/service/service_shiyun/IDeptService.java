@@ -146,4 +146,18 @@ public interface IDeptService {
      *@Date: 17:23 2018\8\14 0014
      */
     public String queryByTruename(String truename);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的一级公司和二级公司
+     *@Date: 10:57 2018\8\21 0021
+     */
+    public List<Dept> queryAllCompany1and2();
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据公司名称查询公司的部门(不包括公司)
+     *@Date: 11:21 2018\8\21 0021
+     */
+    public List<Dept> queryByCompanyname(String companyname);
 }

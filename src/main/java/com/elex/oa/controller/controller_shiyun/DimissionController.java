@@ -105,23 +105,11 @@ public class DimissionController {
      */
     @RequestMapping("/modifyDimissionInformationById")
     @ResponseBody
-    public String modifyDimissionInformationById(
+    public Object modifyDimissionInformationById(
            DimissionInformation dimissionInformation
     ){
-        Boolean b = false;
-        DimissionInformation dimissionInformation1 = iDimissionInformationService.queryOneById(dimissionInformation.getId());
-        if(dimissionInformation1.getApprovalstatue()!=dimissionInformation.getApprovalstatue() ||
-           dimissionInformation1.getWorkingstatue()!=dimissionInformation.getWorkingstatue() ||
-           dimissionInformation1.getFilestatue()!=dimissionInformation.getFilestatue() ||
-           dimissionInformation1.getOfficesupplystatue()!=dimissionInformation.getOfficesupplystatue()){
-            b = true;
-        }
-        if (b) {
-            iDimissionInformationService.modifyOne(dimissionInformation);
-        } else {
-            return "没有修改项！";
-        }
-        return "确认成功！";
+        Object o = iDimissionInformationService.modifyOne(dimissionInformation);
+        return o;
     }
 
     /**

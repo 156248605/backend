@@ -31,4 +31,11 @@ public interface ICostInformationDao {
      *@Date: 16:31 2018\4\12 0012
      */
     public void updateOne(CostInformation costInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除成本信息
+     *@Date: 15:23 2018\8\20 0020
+     */
+    public void deleteById(Integer id);
 }
