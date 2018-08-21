@@ -345,7 +345,11 @@
                 num = num - #{num}
             </if>
         </set>
-        WHERE id = #{id} AND postId = #{postId} AND reptId = #{reptId}
+        WHERE id = #{id}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
+        AND reptId = #{reptId}
     </update>
 
     <select id="MinLimit" resultType="string">
