@@ -3,17 +3,17 @@ package com.elex.oa.controller.controller_shiyun;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.entity.entity_shiyun.*;
-import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.service_shiyun.*;
+import com.elex.oa.util.resp.Resp;
+import com.elex.oa.util.util_shiyun.IDcodeUtil;
+import com.elex.oa.util.util_shiyun.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -40,10 +40,100 @@ public class DepartmentInformationController {
     IChangeInformationService iChangeInformationService;
 
     @Autowired
-    private ProjectBoardService projectBoardService;
+    IHRsetDeptypeService ihRsetDeptypeService;
 
     @Autowired
-    IHRsetDeptypeService ihRsetDeptypeService;
+    IBaseInformationService iBaseInformationService;
+
+    @Autowired
+    IHRsetRaceService ihRsetRaceService;
+
+    @Autowired
+    IHRsetChildrenService ihRsetChildrenService;
+
+    @Autowired
+    IPostService iPostService;
+
+    @Autowired
+    IManageInformationService iManageInformationService;
+
+    @Autowired
+    ICostInformationService iCostInformationService;
+
+    @Autowired
+    IOtherInformationService iOtherInformationService;
+
+    @Autowired
+    IPerandpostrsService iPerandpostrsService;
+
+    @Autowired
+    IHRsetZzmmService ihRsetZzmmService;//政治面貌
+
+    @Autowired
+    IHRsetZgxlService ihRsetZgxlService;//最高学历
+
+    @Autowired
+    IHRsetByyxService ihRsetByyxService;//毕业院校
+
+    @Autowired
+    IHRsetSxzyService ihRsetSxzyService;//所学专业
+
+    @Autowired
+    IHRsetPyfsService ihRsetPyfsService;//培养方式
+
+    @Autowired
+    IHRsetFlaService ihRsetFlaService;//外语
+
+    @Autowired
+    IHRsetPosttitleService ihRsetPosttitleService;//职称
+
+    @Autowired
+    IHRsetZyzstypeService ihRsetZyzstypeService;//职业证书类型
+
+    @Autowired
+    IHRsetZyzsnameService ihRsetZyzsnameService;//职业证书名称
+
+    @Autowired
+    IHRsetParentcompanyService ihRsetParentcompanyService;//上家公司
+
+    @Autowired
+    IHRsetRankService ihRsetRankService;//职级
+
+    @Autowired
+    IHRsetEmployeetypeService ihRsetEmployeetypeService;//员工类型
+
+    @Autowired
+    IHRsetSalarystandardService ihRsetSalarystandardService;//薪资标准
+
+    @Autowired
+    IHRsetSsbService ihRsetSsbService;//社保基数
+
+    @Autowired
+    IHRsetSsbgscdService ihRsetSsbgscdService;//社保公司缴费比例
+
+    @Autowired
+    IHRsetSsbgrcdService ihRsetSsbgrcdService;//社保个人缴费比例
+
+    @Autowired
+    IHRsetGjjService ihRsetGjjService;//公积金基数
+
+    @Autowired
+    IHRsetGjjgscdService ihRsetGjjgscdService;//公积金公司缴费比例
+
+    @Autowired
+    IHRsetGjjgrcdService ihRsetGjjgrcdService;//公积金个人缴费比例
+
+    @Autowired
+    IHRsetKhhService ihRsetKhhService;//开户行
+
+    @Autowired
+    IHRsetSbjndService ihRsetSbjndService;//社保缴纳地
+
+    @Autowired
+    IHRsetTelphoneService ihRsetTelphoneService;//办公电话
+
+    @Autowired
+    IHRsetEmergencyrpService ihRsetEmergencyrpService;//应急联系人关系
 
     /**
      *@Author:ShiYun;
@@ -488,7 +578,8 @@ public class DepartmentInformationController {
     ) {
         //先校验部门名称是否存在
         Dept queryOneByDepcode = iDeptService.queryOneByDepcode(dept.getDepcode());
-        if(queryOneByDepcode!=null){
+        iDeptService.queryOneDepByDepid(dept.getId()).getDepcode();
+        if(!iDeptService.queryOneDepByDepid(dept.getId()).getDepcode().equals(dept.getDepcode()) && queryOneByDepcode!=null){
             return "部门编号已存在，请重新输入部门名称！";
         }
         try {
@@ -550,37 +641,39 @@ public class DepartmentInformationController {
                 if(depid!=dept2.getId()){
                     //说明此员工非本部门，需要先将该员工的部门信息改为该部门信息,并添加人事信息修改日志,
                     // 如果还在其他部门信息担任正职、副职、秘书等职位，则需要先将相应的部门相应信息修改一下,并添加相应部门的部门信息修改日志
-                    if(dept.getPrincipaluserid()==dept1.getPrincipaluserid() || dept.getPrincipaluserid()==dept1.getDeputyuserid() || dept.getPrincipaluserid()==dept1.getSecretaryuserid()){
-                        String str = "";
-                        /*修改相应的部门信息*/
-                        Dept dept3 = new Dept();//需要修改的部门
-                        dept3.setId(depid);
-                        //如果是正职
-                        if (dept.getPrincipaluserid()==dept1.getPrincipaluserid()) {
-                            dept3.setPrincipaluserid(dept.getPrincipaluserid());
-                            str = "部门正职";
+                    if (dept1!=null) {
+                        if(dept.getPrincipaluserid()==dept1.getPrincipaluserid() || dept.getPrincipaluserid()==dept1.getDeputyuserid() || dept.getPrincipaluserid()==dept1.getSecretaryuserid()){
+                            String str = "";
+                            /*修改相应的部门信息*/
+                            Dept dept3 = new Dept();//需要修改的部门
+                            dept3.setId(depid);
+                            //如果是正职
+                            if (dept.getPrincipaluserid()==dept1.getPrincipaluserid()) {
+                                dept3.setPrincipaluserid(dept.getPrincipaluserid());
+                                str = "部门正职";
+                            }
+                            //如果是副职
+                            if (dept.getPrincipaluserid()==dept1.getDeputyuserid()) {
+                                dept3.setDeputyuserid(dept.getPrincipaluserid());
+                                str = "部门副职";
+                            }
+                            //如果是秘书
+                            if (dept.getPrincipaluserid()==dept1.getSecretaryuserid()) {
+                                dept3.setSecretaryuserid(dept.getPrincipaluserid());
+                                str = "部门秘书";
+                            }
+                            iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                            /*添加相应部门的部门信息修改日志*/
+                            DeptLog deptLog1 = new DeptLog();
+                            deptLog1.setChangeinformation(str);
+                            deptLog1.setDeptid(depid);
+                            deptLog1.setBeforeinformation(iUserService.getById(dept.getPrincipaluserid()).getTruename());
+                            deptLog1.setAfterinformation(null);
+                            deptLog1.setChangereason("系统需要");
+                            deptLog1.setChangedate(changedate);
+                            deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                            iDeptLogService.addOne(deptLog1);
                         }
-                        //如果是副职
-                        if (dept.getPrincipaluserid()==dept1.getDeputyuserid()) {
-                            dept3.setDeputyuserid(dept.getPrincipaluserid());
-                            str = "部门副职";
-                        }
-                        //如果是秘书
-                        if (dept.getPrincipaluserid()==dept1.getSecretaryuserid()) {
-                            dept3.setSecretaryuserid(dept.getPrincipaluserid());
-                            str = "部门秘书";
-                        }
-                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
-                        /*添加相应部门的部门信息修改日志*/
-                        DeptLog deptLog1 = new DeptLog();
-                        deptLog1.setChangeinformation(str);
-                        deptLog1.setDeptid(depid);
-                        deptLog1.setBeforeinformation(iUserService.getById(dept.getPrincipaluserid()).getTruename());
-                        deptLog1.setAfterinformation(null);
-                        deptLog1.setChangereason("系统需要");
-                        deptLog1.setChangedate(changedate);
-                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
-                        iDeptLogService.addOne(deptLog1);
                     }
                     //根据ID修改员工信息,此时该员工是该部门的普通员工
                     PersonalInformation per = new PersonalInformation();
@@ -591,7 +684,11 @@ public class DepartmentInformationController {
                     ChangeInformation changeInformation = new ChangeInformation();
                     changeInformation.setChangeinformation("部门");//变更项目
                     changeInformation.setChangeduserid(dept.getPrincipaluserid());//变更姓名
-                    changeInformation.setBeforeinformation(iDeptService.queryOneDepByDepid(depid).getDepname());//变更前内容
+                    if (iDeptService.queryOneDepByDepid(depid)!=null) {
+                        changeInformation.setBeforeinformation(iDeptService.queryOneDepByDepid(depid).getDepname());//变更前内容
+                    } else {
+                        changeInformation.setBeforeinformation("此部门已经不存在！");//变更前内容
+                    }
                     changeInformation.setAfterinformation(dept.getDepname());//变更后内容
                     changeInformation.setChangereason("系统需要");//变更原因
                     changeInformation.setChangedate(changedate);//变更日期
@@ -727,37 +824,39 @@ public class DepartmentInformationController {
                 if(depid!=dept2.getId()){
                     //说明此员工非本部门，需要先将该员工的部门信息改为该部门信息,并添加人事信息修改日志,
                     // 如果还在其他部门信息担任正职、副职、秘书等职位，则需要先将相应的部门相应信息修改一下,并添加相应部门的部门信息修改日志
-                    if(dept.getSecretaryuserid()==dept1.getPrincipaluserid() || dept.getSecretaryuserid()==dept1.getDeputyuserid() || dept.getSecretaryuserid()==dept1.getSecretaryuserid()){
-                        String str = "";
-                        /*修改相应的部门信息*/
-                        Dept dept3 = new Dept();//需要修改的部门
-                        dept3.setId(depid);
-                        //如果是正职
-                        if (dept.getSecretaryuserid()==dept1.getPrincipaluserid()) {
-                            dept3.setPrincipaluserid(dept.getSecretaryuserid());
-                            str = "部门正职";
+                    if (dept1!=null) {
+                        if(dept.getSecretaryuserid()==dept1.getPrincipaluserid() || dept.getSecretaryuserid()==dept1.getDeputyuserid() || dept.getSecretaryuserid()==dept1.getSecretaryuserid()){
+                            String str = "";
+                            /*修改相应的部门信息*/
+                            Dept dept3 = new Dept();//需要修改的部门
+                            dept3.setId(depid);
+                            //如果是正职
+                            if (dept.getSecretaryuserid()==dept1.getPrincipaluserid()) {
+                                dept3.setPrincipaluserid(dept.getSecretaryuserid());
+                                str = "部门正职";
+                            }
+                            //如果是副职
+                            if (dept.getSecretaryuserid()==dept1.getDeputyuserid()) {
+                                dept3.setDeputyuserid(dept.getSecretaryuserid());
+                                str = "部门副职";
+                            }
+                            //如果是秘书
+                            if (dept.getSecretaryuserid()==dept1.getSecretaryuserid()) {
+                                dept3.setSecretaryuserid(dept.getSecretaryuserid());
+                                str = "部门秘书";
+                            }
+                            iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                            /*添加相应部门的部门信息修改日志*/
+                            DeptLog deptLog1 = new DeptLog();
+                            deptLog1.setChangeinformation(str);
+                            deptLog1.setDeptid(depid);
+                            deptLog1.setBeforeinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
+                            deptLog1.setAfterinformation(null);
+                            deptLog1.setChangereason("系统需要");
+                            deptLog1.setChangedate(changedate);
+                            deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                            iDeptLogService.addOne(deptLog1);
                         }
-                        //如果是副职
-                        if (dept.getSecretaryuserid()==dept1.getDeputyuserid()) {
-                            dept3.setDeputyuserid(dept.getSecretaryuserid());
-                            str = "部门副职";
-                        }
-                        //如果是秘书
-                        if (dept.getSecretaryuserid()==dept1.getSecretaryuserid()) {
-                            dept3.setSecretaryuserid(dept.getSecretaryuserid());
-                            str = "部门秘书";
-                        }
-                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
-                        /*添加相应部门的部门信息修改日志*/
-                        DeptLog deptLog1 = new DeptLog();
-                        deptLog1.setChangeinformation(str);
-                        deptLog1.setDeptid(depid);
-                        deptLog1.setBeforeinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
-                        deptLog1.setAfterinformation(null);
-                        deptLog1.setChangereason("系统需要");
-                        deptLog1.setChangedate(changedate);
-                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
-                        iDeptLogService.addOne(deptLog1);
                     }
                     //根据ID修改员工信息,此时该员工是该部门的普通员工
                     PersonalInformation per = new PersonalInformation();
@@ -768,39 +867,45 @@ public class DepartmentInformationController {
                     ChangeInformation changeInformation = new ChangeInformation();
                     changeInformation.setChangeinformation("部门");//变更项目
                     changeInformation.setChangeduserid(dept.getPrincipaluserid());//变更姓名
-                    changeInformation.setBeforeinformation(iDeptService.queryOneDepByDepid(depid).getDepname());//变更前内容
+                    if (iDeptService.queryOneDepByDepid(depid)!=null) {
+                        changeInformation.setBeforeinformation(iDeptService.queryOneDepByDepid(depid).getDepname());//变更前内容
+                    } else {
+                        changeInformation.setBeforeinformation("此部门已经不存在！");//变更前内容
+                    }
                     changeInformation.setAfterinformation(dept.getDepname());//变更后内容
                     changeInformation.setChangereason("系统需要");//变更原因
                     changeInformation.setChangedate(changedate);//变更日期
                     changeInformation.setTransactoruserid(deptLog.getTransactoruserid());//变更人
                     iChangeInformationService.addOne(changeInformation);
                 }else {
-                    if(dept.getSecretaryuserid()==dept1.getPrincipaluserid() || dept.getSecretaryuserid()==dept1.getDeputyuserid()){
-                        String str = "";
-                        /*修改相应的部门信息*/
-                        Dept dept3 = new Dept();//需要修改的部门
-                        dept3.setId(depid);
-                        //如果是正职
-                        if (dept.getSecretaryuserid()==dept1.getPrincipaluserid()) {
-                            dept3.setPrincipaluserid(dept.getSecretaryuserid());
-                            str = "部门正职";
+                    if (dept1!=null) {
+                        if(dept.getSecretaryuserid()==dept1.getPrincipaluserid() || dept.getSecretaryuserid()==dept1.getDeputyuserid()){
+                            String str = "";
+                            /*修改相应的部门信息*/
+                            Dept dept3 = new Dept();//需要修改的部门
+                            dept3.setId(depid);
+                            //如果是正职
+                            if (dept.getSecretaryuserid()==dept1.getPrincipaluserid()) {
+                                dept3.setPrincipaluserid(dept.getSecretaryuserid());
+                                str = "部门正职";
+                            }
+                            //如果是副职
+                            if (dept.getSecretaryuserid()==dept1.getDeputyuserid()) {
+                                dept3.setDeputyuserid(dept.getSecretaryuserid());
+                                str = "部门副职";
+                            }
+                            iDeptService.modifyByDeptidAndOtherinformation(dept3);
+                            /*添加相应部门的部门信息修改日志*/
+                            DeptLog deptLog1 = new DeptLog();
+                            deptLog1.setChangeinformation(str);
+                            deptLog1.setDeptid(depid);
+                            deptLog1.setBeforeinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
+                            deptLog1.setAfterinformation(null);
+                            deptLog1.setChangereason("系统需要");
+                            deptLog1.setChangedate(changedate);
+                            deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
+                            iDeptLogService.addOne(deptLog1);
                         }
-                        //如果是副职
-                        if (dept.getSecretaryuserid()==dept1.getDeputyuserid()) {
-                            dept3.setDeputyuserid(dept.getSecretaryuserid());
-                            str = "部门副职";
-                        }
-                        iDeptService.modifyByDeptidAndOtherinformation(dept3);
-                        /*添加相应部门的部门信息修改日志*/
-                        DeptLog deptLog1 = new DeptLog();
-                        deptLog1.setChangeinformation(str);
-                        deptLog1.setDeptid(depid);
-                        deptLog1.setBeforeinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
-                        deptLog1.setAfterinformation(null);
-                        deptLog1.setChangereason("系统需要");
-                        deptLog1.setChangedate(changedate);
-                        deptLog1.setTransactoruserid(deptLog.getTransactoruserid());
-                        iDeptLogService.addOne(deptLog1);
                     }
                 }
                 b = true;
@@ -1133,9 +1238,197 @@ public class DepartmentInformationController {
             @RequestParam("sdate")String sdate,
             @RequestParam("edate")String edate
     ){
-       // Object hrManageCard = iDeptService.getHRManageCard(sdate,edate);
-       // return hrManageCard;
-        return null;
+        Object hrManageCard = iDeptService.getHRManageCard(sdate,edate);
+        return hrManageCard;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得总人数(edate时间点的在职总人数)
+     *@Date: 15:53 2018\8\15 0015
+     */
+    @RequestMapping("/queryHRManageCard2")
+    @ResponseBody
+    public Object queryHRManageCard2(
+            @RequestParam("sdate")String sdate,
+            @RequestParam("edate")String edate,
+            @RequestParam("rows")Integer rows,
+            @RequestParam("page")Integer page
+    ) throws ParseException {
+        Object hrManageCard = iDeptService.getHRManageCard2(rows,page,sdate,edate);
+        Resp resp = (Resp) hrManageCard;
+        if(resp.getBody()!=null){
+            PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();
+            List<PersonalInformation> personalInformationList = new ArrayList<>();
+            for (PersonalInformation per:pageHelper.getList()
+                    ) {
+                per = this.getOnePersonalinformation(per.getId());
+                personalInformationList.add(per);
+            }
+            pageHelper.setList(personalInformationList);
+            resp.setBody(pageHelper);
+        }else {
+            return resp;
+        }
+        return resp;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得入职总人数(edate时间点的入职总人数)
+     *@Date: 15:55 2018\8\15 0015
+     */
+    @RequestMapping("/queryHRManageCard3")
+    @ResponseBody
+    public Object queryHRManageCard3(
+            @RequestParam("sdate")String sdate,
+            @RequestParam("edate")String edate,
+            @RequestParam("rows")Integer rows,
+            @RequestParam("page")Integer page
+    ) throws ParseException {
+        Object hrManageCard = iDeptService.getHRManageCard3(rows,page,sdate,edate);
+        Resp resp = (Resp) hrManageCard;
+        if(resp.getBody()!=null){
+            PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();
+            List<PersonalInformation> personalInformationList = new ArrayList<>();
+            for (PersonalInformation per:pageHelper.getList()
+                    ) {
+                per = this.getOnePersonalinformation(per.getId());
+                personalInformationList.add(per);
+            }
+            pageHelper.setList(personalInformationList);
+            resp.setBody(pageHelper);
+        }else {
+            return resp;
+        }
+        return resp;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得离职总人数(edate时间点的离职总人数)
+     *@Date: 15:56 2018\8\15 0015
+     */
+    @RequestMapping("/queryHRManageCard4")
+    @ResponseBody
+    public Object queryHRManageCard4(
+            @RequestParam("sdate")String sdate,
+            @RequestParam("edate")String edate,
+            @RequestParam("rows")Integer rows,
+            @RequestParam("page")Integer page
+    ) throws ParseException {
+        Object hrManageCard = iDeptService.getHRManageCard4(rows,page,sdate,edate);
+        Resp resp = (Resp) hrManageCard;
+        if(resp.getBody()!=null){
+            PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();
+            List<PersonalInformation> personalInformationList = new ArrayList<>();
+            for (PersonalInformation per:pageHelper.getList()
+                    ) {
+                per = this.getOnePersonalinformation(per.getId());
+                personalInformationList.add(per);
+            }
+            pageHelper.setList(personalInformationList);
+            resp.setBody(pageHelper);
+        }else {
+            return resp;
+        }
+        return resp;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+     *@Date: 15:57 2018\8\15 0015
+     */
+    @RequestMapping("/queryHRManageCard5")
+    @ResponseBody
+    public Object queryHRManageCard5(
+            @RequestParam("sdate")String sdate,
+            @RequestParam("edate")String edate,
+            @RequestParam("rows")Integer rows,
+            @RequestParam("page")Integer page,
+            @RequestParam("depid")Integer depid
+    ) throws ParseException {
+        Object hrManageCard = iDeptService.getHRManageCard5(rows,page,depid,sdate,edate);
+        Resp resp = (Resp) hrManageCard;
+        if(resp.getBody()!=null){
+            PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();
+            List<PersonalInformation> personalInformationList = new ArrayList<>();
+            for (PersonalInformation per:pageHelper.getList()
+                    ) {
+                per = this.getOnePersonalinformation(per.getId());
+                personalInformationList.add(per);
+            }
+            pageHelper.setList(personalInformationList);
+            resp.setBody(pageHelper);
+        }else {
+            return resp;
+        }
+        return resp;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+     *@Date: 15:58 2018\8\15 0015
+     */
+    @RequestMapping("/queryHRManageCard6")
+    @ResponseBody
+    public Object queryHRManageCard6(
+            @RequestParam("sdate")String sdate,
+            @RequestParam("edate")String edate,
+            @RequestParam("rows")Integer rows,
+            @RequestParam("page")Integer page,
+            @RequestParam("depid")Integer depid
+    ) throws ParseException {
+        Object hrManageCard = iDeptService.getHRManageCard6(rows,page,depid,sdate,edate);
+        Resp resp = (Resp) hrManageCard;
+        if(resp.getBody()!=null){
+            PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();
+            List<PersonalInformation> personalInformationList = new ArrayList<>();
+            for (PersonalInformation per:pageHelper.getList()
+                    ) {
+                per = this.getOnePersonalinformation(per.getId());
+                personalInformationList.add(per);
+            }
+            pageHelper.setList(personalInformationList);
+            resp.setBody(pageHelper);
+        }else {
+            return resp;
+        }
+        return resp;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门离职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+     *@Date: 15:59 2018\8\15 0015
+     */
+    @RequestMapping("/queryHRManageCard7")
+    @ResponseBody
+    public Object queryHRManageCard7(
+            @RequestParam("sdate")String sdate,
+            @RequestParam("edate")String edate,
+            @RequestParam("rows")Integer rows,
+            @RequestParam("page")Integer page,
+            @RequestParam("depid")Integer depid
+    ) throws ParseException {
+        Object hrManageCard = iDeptService.getHRManageCard7(rows,page,depid,sdate,edate);
+        Resp resp = (Resp) hrManageCard;
+        if(resp.getBody()!=null){
+            PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();
+            List<PersonalInformation> personalInformationList = new ArrayList<>();
+            for (PersonalInformation per:pageHelper.getList()
+                    ) {
+                per = this.getOnePersonalinformation(per.getId());
+                personalInformationList.add(per);
+            }
+            pageHelper.setList(personalInformationList);
+            resp.setBody(pageHelper);
+        }else {
+            return resp;
+        }
+        return resp;
     }
 
     /**
@@ -1186,5 +1479,166 @@ public class DepartmentInformationController {
         }else {
             return false;
         }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据perid查询信息
+     *@Date: 17:36 2018\5\17 0017
+     */
+    public  PersonalInformation getOnePersonalinformation(Integer personalInformationId) throws ParseException {
+        PersonalInformation personalInformation = iPersonalInformationService.queryOneById2(personalInformationId);
+        if(personalInformation==null){
+            return null;
+        }
+        //1.获得User信息
+        User user = iUserService.getById(personalInformation.getUserid());
+        if (user!=null) {
+            personalInformation.setIsactive(user.getIsactive());
+            personalInformation.setUsername(user.getUsername());
+            personalInformation.setTruename(user.getTruename());
+        }
+        //2.获得基本信息
+        BaseInformation baseInformation = iBaseInformationService.queryOneById(personalInformation.getBaseinformationid());
+        if (baseInformation!=null) {
+            personalInformation.setUserphoto(baseInformation.getUserphoto());
+            personalInformation.setIdphoto1(baseInformation.getIdphoto1());
+            personalInformation.setIdphoto2(baseInformation.getIdphoto2());
+            personalInformation.setEnglishname(baseInformation.getEnglishname());
+            personalInformation.setIdcode(baseInformation.getIdcode());
+            personalInformation.setBirthday(baseInformation.getBirthday());
+            personalInformation.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
+            personalInformation.setConstellation(baseInformation.getConstellation());
+            personalInformation.setChinesecs(baseInformation.getChinesecs());
+            if (ihRsetRaceService.queryById(baseInformation.getRaceid())!=null) {
+                personalInformation.setRace(ihRsetRaceService.queryById(baseInformation.getRaceid()).getRace());
+            }
+            personalInformation.setMarriage(baseInformation.getMarriage());
+            if (ihRsetChildrenService.queryById(baseInformation.getChildrenid())!=null) {
+                personalInformation.setChildren(ihRsetChildrenService.queryById(baseInformation.getChildrenid()).getChildren());
+            }
+            if (ihRsetZzmmService.queryById(baseInformation.getZzmmid())!=null) {
+                personalInformation.setZzmm(ihRsetZzmmService.queryById(baseInformation.getZzmmid()).getZzmm());
+            }
+            if (ihRsetZgxlService.queryById(baseInformation.getZgxlid())!=null) {
+                personalInformation.setZgxl(ihRsetZgxlService.queryById(baseInformation.getZgxlid()).getZgxl());
+            }
+            if (ihRsetByyxService.queryById(baseInformation.getByyxid())!=null) {
+                personalInformation.setByyx(ihRsetByyxService.queryById(baseInformation.getByyxid()).getByyx());
+            }
+            if (ihRsetSxzyService.queryById(baseInformation.getSxzyid())!=null) {
+                personalInformation.setSxzy(ihRsetSxzyService.queryById(baseInformation.getSxzyid()).getSxzy());
+            }
+            if (ihRsetPyfsService.queryById(baseInformation.getPyfsid())!=null) {
+                personalInformation.setPyfs(ihRsetPyfsService.queryById(baseInformation.getPyfsid()).getPyfs());
+            }
+            if (ihRsetFlaService.queryById(baseInformation.getFirstlaid())!=null) {
+                personalInformation.setFirstla(ihRsetFlaService.queryById(baseInformation.getFirstlaid()).getFla());
+            }
+            if (ihRsetFlaService.queryById(baseInformation.getElselaid())!=null) {
+                personalInformation.setElsela(ihRsetFlaService.queryById(baseInformation.getElselaid()).getFla());
+            }
+            if (ihRsetPosttitleService.queryById(baseInformation.getPosttitleid())!=null) {
+                personalInformation.setPosttitle(ihRsetPosttitleService.queryById(baseInformation.getPosttitleid()).getPosttitle());
+            }
+            if (ihRsetZyzstypeService.queryById(baseInformation.getZyzstypeid())!=null) {
+                personalInformation.setZyzstype(ihRsetZyzstypeService.queryById(baseInformation.getZyzstypeid()).getZyzstype());
+            }
+            if (ihRsetZyzsnameService.queryById(baseInformation.getZyzsnameid())!=null) {
+                personalInformation.setZyzsname(ihRsetZyzsnameService.queryById(baseInformation.getZyzsnameid()).getZyzsname());
+            }
+            personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
+            if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
+                personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+            }
+            if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
+                personalInformation.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
+            }
+        }
+        //3.获得管理信息
+        ManageInformation manageInformation = iManageInformationService.queryOneById(personalInformation.getManageinformationid());
+        if (manageInformation!=null) {
+            if (iDeptService.queryOneDepByDepid(personalInformation.getDepid())!=null) {
+                personalInformation.setCompany(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getCompanyname());
+                personalInformation.setDepname(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getDepname());
+                if (iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid())!=null) {
+                    personalInformation.setPrincipaltruename(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getTruename());
+                    if (iPersonalInformationService.queryOneByUserid(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getId())!=null) {
+                        personalInformation.setPrincipalemployeenumber(iPersonalInformationService.queryOneByUserid(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getId()).getEmployeenumber());
+                    }
+                }
+            }
+            List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformationId);
+            List<String> strs = new ArrayList<>();
+            List<Integer> postids = new ArrayList<>();
+            if (perAndPostRs.size()!=0) {
+                for(PerAndPostRs perAndPost:perAndPostRs){
+                    strs.add(iPostService.queryOneByPostid(perAndPost.getPostid()).getPostname());
+                    postids.add(perAndPost.getPostid());
+                }
+            }
+            personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs,";"));
+            personalInformation.setPostids(postids);
+            if (ihRsetRankService.queryById(manageInformation.getRankid())!=null) {
+                personalInformation.setZj(ihRsetRankService.queryById(manageInformation.getRankid()).getRank());
+            }
+            personalInformation.setEntrydate(manageInformation.getEntrydate());
+            personalInformation.setSn(IDcodeUtil.getCompanyAge(manageInformation.getEntrydate()));
+            personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
+            if (ihRsetEmployeetypeService.queryById(manageInformation.getEmployeetypeid())!=null) {
+                personalInformation.setEmployeetype(ihRsetEmployeetypeService.queryById(manageInformation.getEmployeetypeid()).getEmployeetype());
+            }
+        }
+        //获得成本信息
+        CostInformation costInformation = iCostInformationService.queryOneById(personalInformation.getCostinformationid());
+        if (costInformation!=null) {
+            if (ihRsetSalarystandardService.queryById(costInformation.getSalarystandardid())!=null) {
+                personalInformation.setSalary(ihRsetSalarystandardService.queryById(costInformation.getSalarystandardid()).getSalarystandard());
+            }
+            if (ihRsetSsbService.queryById(costInformation.getSsbid())!=null) {
+                personalInformation.setSsb(ihRsetSsbService.queryById(costInformation.getSsbid()).getSsb());
+            }
+            if (ihRsetSsbgscdService.queryById(costInformation.getSsbgscdid())!=null) {
+                personalInformation.setSsbgscd(ihRsetSsbgscdService.queryById(costInformation.getSsbgscdid()).getSsbgscd());
+            }
+            if (ihRsetSsbgrcdService.queryById(costInformation.getSsbgrcdid())!=null) {
+                personalInformation.setSsbgrcd(ihRsetSsbgrcdService.queryById(costInformation.getSsbgrcdid()).getSsbgrcd());
+            }
+            if (ihRsetGjjService.queryById(costInformation.getGjjid())!=null) {
+                personalInformation.setGjj(ihRsetGjjService.queryById(costInformation.getGjjid()).getGjj());
+            }
+            if (ihRsetGjjgscdService.queryById(costInformation.getGjjgscdid())!=null) {
+                personalInformation.setGjjgscd(ihRsetGjjgscdService.queryById(costInformation.getGjjgscdid()).getGjjgscd());
+            }
+            if (ihRsetGjjgrcdService.queryById(costInformation.getGjjgrcdid())!=null) {
+                personalInformation.setGjjgrcd(ihRsetGjjgrcdService.queryById(costInformation.getGjjgrcdid()).getGjjgrcd());
+            }
+            if (ihRsetKhhService.queryById(costInformation.getKhhid())!=null) {
+                personalInformation.setKhh(ihRsetKhhService.queryById(costInformation.getKhhid()).getKhh());
+            }
+            personalInformation.setSalaryaccount(costInformation.getSalaryaccount());
+            if (ihRsetSbjndService.queryById(costInformation.getSbjndid())!=null) {
+                personalInformation.setSbjnd(ihRsetSbjndService.queryById(costInformation.getSbjndid()).getSbjnd());
+            }
+            personalInformation.setSbcode(costInformation.getSbcode());
+            personalInformation.setGjjcode(costInformation.getGjjcode());
+        }
+        //获得其他信息
+        OtherInformation otherInformation = iOtherInformationService.queryOneById(personalInformation.getOtherinformationid());
+        if (otherInformation!=null) {
+            if (ihRsetTelphoneService.queryById(personalInformation.getTelphoneid())!=null) {
+                personalInformation.setTelphone(ihRsetTelphoneService.queryById(personalInformation.getTelphoneid()).getTelphone());
+            }
+            personalInformation.setPrivateemail(otherInformation.getPrivateemail());
+            personalInformation.setCompanyemail(otherInformation.getCompanyemail());
+            personalInformation.setEmergencycontract(otherInformation.getEmergencycontract());
+            if (ihRsetEmergencyrpService.queryById(otherInformation.getEmergencyrpid())!=null) {
+                personalInformation.setEmergencyrp(ihRsetEmergencyrpService.queryById(otherInformation.getEmergencyrpid()).getEmergencyrp());
+            }
+            personalInformation.setEmergencyphone(otherInformation.getEmergencyphone());
+            personalInformation.setAddress(otherInformation.getAddress());
+            personalInformation.setRemark(otherInformation.getRemark());
+        }
+        return personalInformation;
     }
 }

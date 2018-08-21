@@ -5,6 +5,7 @@ import com.elex.oa.dao.dao_shiyun.*;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.service_shiyun.IDimissionInformationService;
+import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -68,7 +69,7 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         iDimissionInformationDao.insertOne(dimissionInformation);
         Integer dimissionInformationId = dimissionInformation.getId();
         //将离职的人员从user表中移除(其实是修改状态)
-        iUserDao.deleteById(dimissionInformation.getDimissionuserid());
+        iUserDao.addDimissionById(dimissionInformation.getDimissionuserid());
         return dimissionInformationId;
     }
 
@@ -205,8 +206,77 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
      *@Date: 13:49 2018\4\17 0017
      */
     @Override
-    public void modifyOne(DimissionInformation dimissionInformation) {
-        iDimissionInformationDao.updateOne(dimissionInformation);
+    public Object modifyOne(DimissionInformation dimissionInformation) {
+        if(dimissionInformation==null){
+            return RespUtil.successResp("501","请求的参数类型错误，参数不能为空！",null);
+        }
+        Boolean b = false;//判断是否需要进数据库修改数据
+        //先根据ID获取原数据
+        if(dimissionInformation.getId()==null || iDimissionInformationDao.selectOneById(dimissionInformation.getId())==null){
+            return RespUtil.successResp("502","数据请求有误！",null);
+        }
+        DimissionInformation selectOneById = iDimissionInformationDao.selectOneById(dimissionInformation.getId());
+        //判断处理人是否有变
+            //先根据username获得处理人的userid
+            if(dimissionInformation.getTransactorusername()==null || dimissionInformation.getTransactorusername().equals("")){
+                return RespUtil.successResp("503","数据请求有误！",null);
+            }
+            User user = iUserDao.selectByUsername(dimissionInformation.getTransactorusername());
+            if(user==null){
+                return RespUtil.successResp("504","数据请求有误！",null);
+            }
+            //处理办理人的信息
+            if(user.getId()!=selectOneById.getTransactoruserid()){
+                /*//更新办理日期
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                String transactiondate = sdf.format(new Date());
+                dimissionInformation.setTransactiondate(transactiondate);*/
+                b = true;
+            }else {
+                dimissionInformation.setTransactoruserid(null);
+            }
+        //判断最后工作日期是否有变
+        if(dimissionInformation.getLastworkingdate()==null || dimissionInformation.getLastworkingdate().equals("") || dimissionInformation.getLastworkingdate().equals(selectOneById.getLastworkingdate())){
+              dimissionInformation.setLastworkingdate(null);
+        }else {
+                b = true;
+        }
+        //判断离职类型ID是否有变
+        Integer dimissiontypeid = dimissionInformation.getDimissiontypeid();
+        if(dimissiontypeid==null || dimissiontypeid.equals("") || dimissiontypeid==selectOneById.getDimissiontypeid()){
+            dimissionInformation.setDimissiontypeid(null);
+        }else if(ihRsetDimissiontypeDao.selectById(dimissiontypeid)==null) {
+            return RespUtil.successResp("505","数据请求有误！",null);
+        }else {
+            b = true;
+        }
+        //判断离职原因ID是否有变
+        Integer dimissionreasonid = dimissionInformation.getDimissionreasonid();
+        if(dimissionreasonid==null || dimissionreasonid.equals("") || dimissionreasonid==selectOneById.getDimissionreasonid()){
+            dimissionInformation.setDimissionreasonid(null);
+        }else if(ihRsetDimissionreasonDao.selectById(dimissionreasonid)==null){
+            return RespUtil.successResp("506","数据请求有误！",null);
+        }else {
+            b = true;
+        }
+        //判断离职方向ID是否有变
+        Integer dimissiondirectionid = dimissionInformation.getDimissiondirectionid();
+        if(dimissiondirectionid==null || dimissiondirectionid.equals("") || dimissiondirectionid==selectOneById.getDimissiondirectionid()){
+            dimissionInformation.setDimissiondirectionid(null);
+        }else if(ihRsetDimissiondirectionDao.selectById(dimissiondirectionid)==null){
+            return RespUtil.successResp("507","数据请求有误！",null);
+        }else {
+            b = true;
+        }
+        if (b) {
+            //更新办理日期
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String transactiondate = sdf.format(new Date());
+            dimissionInformation.setTransactiondate(transactiondate);
+            iDimissionInformationDao.updateOne(dimissionInformation);
+            return RespUtil.successResp("205","请求成功！",null);
+        }
+        return RespUtil.successResp("508","没有需要修改的数据！",null);
     }
 
     /**
@@ -270,7 +340,7 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
     public void removeOne(Integer id) {
         //先将误删的员工删除
         DimissionInformation dimissionInformation = iDimissionInformationDao.selectOneById(id);
-        iUserDao.deleteById2(dimissionInformation.getDimissionuserid());
+        iUserDao.deleteDimissionById(dimissionInformation.getDimissionuserid());
         //再讲离职信息删除
         iDimissionInformationDao.deleteOne(id);
     }

@@ -388,4 +388,9 @@
 		</where>
 		GROUP BY b.id DESC
 	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_baseinformation
+		WHERE id=#{id}
+	</delete>
 </mapper>

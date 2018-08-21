@@ -140,6 +140,22 @@ public class PositionServiceImpl implements PositionService {
     }
 
 
+    // 是否有记录
+    @Override
+    public String record(HttpServletRequest request){
+        Repository repository = new Repository();
+        repository.setPostId(request.getParameter("postId"));
+        String resultin = positionMapper.recordin(repository);
+        String resultout = positionMapper.recordout(repository);
+        String resultshift = positionMapper.recordshift(repository);
+        // 有记录返回1
+        if ( resultin == null && resultout == null && resultshift == null){
+            return "0";
+        } else{
+            return "1";
+        }
+    }
+
     // 删除库位
     @Override
     public void deleteRepository(Repository repository, HttpServletRequest request) {

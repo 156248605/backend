@@ -160,4 +160,14 @@
     <select id="checkPostId" resultType="string">
         SELECT postId FROM eqpt_position WHERE postId = #{postId}
     </select>
+
+    <select id="recordin" resultType="string">
+        SELECT * FROM eqpt_inrepository WHERE postId = #{postId} LIMIT 1
+    </select>
+    <select id="recordout" resultType="string">
+        SELECT * FROM eqpt_outrepository WHERE postId = #{postId} LIMIT 1
+    </select>
+    <select id="recordshift" resultType="string">
+        SELECT * FROM eqpt_shiftrepository WHERE postId = #{postId} LIMIT 1
+    </select>
 </mapper>

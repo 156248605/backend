@@ -495,12 +495,26 @@
         SELECT DISTINCT postId FROM eqpt_position WHERE reptId = #{reptId}
     </select>
 
+    <select id="emptyReptD" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptId,postId FROM eqpt_detail WHERE id != #{id}
+    </select>
+
+    <select id="emptyReptP" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptId,postId FROM eqpt_position
+    </select>
+
     <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT reptId FROM eqpt_repository WHERE reptId NOT IN (SELECT reptId FROM eqpt_detail WHERE id != #{id}) OR reptId IN (SELECT reptId FROM eqpt_detail WHERE id = #{id})
+        SELECT reptId FROM eqpt_position WHERE postId NOT IN (SELECT postId FROM eqpt_detail)
+        UNION
+        SELECT reptId FROM eqpt_repository WHERE postManage = '否'
+        UNION
+        SELECT reptId FROM eqpt_detail WHERE id = #{id}
+        ORDER BY reptId
     </select>
 
     <select id="matInPost" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT eqpt_position.postId FROM eqpt_detail,eqpt_position WHERE eqpt_detail.postId = eqpt_position.postId AND eqpt_detail.id = #{id} AND eqpt_position.reptId = #{reptId}
+        SELECT postId FROM eqpt_position WHERE reptId = #{reptId} AND postId NOT IN (SELECT postId FROM eqpt_detail WHERE id != #{id})
+        ORDER BY postId
     </select>
 
     <select id="matInPostReplace" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -532,7 +546,7 @@
     </select>
 
     <select id="getNumber" resultType="string">
-        SELECT num FROM eqpt_position WHERE reptId = #{reptId} AND postId = #{postId}
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
     </select>
 
     <select id="numInPost" resultType="string">
@@ -632,4 +646,14 @@
     <update id="changeDetail" parameterType="com.elex.oa.entity.eqpt.Repository">
         UPDATE eqpt_detail SET postId = #{postId} WHERE reptId = #{reptId}
     </update>
+
+    <select id="recordin" resultType="string">
+        SELECT * FROM eqpt_inrepository WHERE reptId = #{reptId} LIMIT 1
+    </select>
+    <select id="recordout" resultType="string">
+        SELECT * FROM eqpt_outrepository WHERE reptId = #{reptId} LIMIT 1
+    </select>
+    <select id="recordshift" resultType="string">
+        SELECT * FROM eqpt_shiftrepository WHERE reptId = #{reptId} LIMIT 1
+    </select>
 </mapper>

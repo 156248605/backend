@@ -13,6 +13,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.RepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.hibernate.usertype.LoggableUserType;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -177,6 +178,15 @@ public class RepositoryImpl implements RepositoryService {
         List<HashMap> list = JSON.parseArray(LIST, HashMap.class);
         Material material = new Material();
         material.setId(list.get(0).get("theMatId").toString());
+        /*List<Repository> emptyReptD = repositoryMapper.emptyReptD(material);
+        List<Repository> emptyReptP = repositoryMapper.emptyReptP();
+        for (int i = 0,j = 0; i < emptyReptD.size() && j < emptyReptP.size(); i++,j++){
+            System.out.println(emptyReptD.get(i));
+            System.out.println(emptyReptP.get(j));
+            if (emptyReptD.get(i).getReptId() == emptyReptP.get(j).getReptId() && emptyReptD.get(i).getPostId() == emptyReptP.get(j).getPostId()){
+
+            }
+        }*/
         reptList = repositoryMapper.matInRept(material);
         return reptList;
     }
@@ -251,7 +261,21 @@ public class RepositoryImpl implements RepositoryService {
     }
 
 
-
+    // 是否有记录
+    @Override
+    public String record(HttpServletRequest request){
+        Repository repository = new Repository();
+        repository.setReptId(request.getParameter("reptId"));
+        String resultin = repositoryMapper.recordin(repository);
+        String resultout = repositoryMapper.recordout(repository);
+        String resultshift = repositoryMapper.recordshift(repository);
+        // 有记录返回1
+        if ( resultin == null && resultout == null && resultshift == null){
+            return "0";
+        } else{
+            return "1";
+        }
+    }
 
 
    /* @Override

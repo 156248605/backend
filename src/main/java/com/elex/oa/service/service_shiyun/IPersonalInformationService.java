@@ -27,6 +27,7 @@ public interface IPersonalInformationService{
      *@Date: 18:06 2018\4\8 0008
      */
     public PersonalInformation queryOneById(Integer id);
+    public PersonalInformation queryOneById2(Integer id);
 
     /**
      *@Author:ShiYun;
@@ -76,4 +77,11 @@ public interface IPersonalInformationService{
      *@Date: 10:01 2018\8\9 0009
      */
     public List<PersonalInformation> queryByEmployeenumber(String employeenumber);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除人事主体信息
+     *@Date: 16:10 2018\8\20 0020
+     */
+    public void removeOne(Integer perid);
 }

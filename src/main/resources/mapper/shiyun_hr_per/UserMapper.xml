@@ -41,15 +41,20 @@
 		WHERE username=#{username}
 	</select>
 
-	<update id="deleteById" parameterType="java.lang.Integer" >
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_user
+		WHERE id=#{id}
+	</delete>
+
+	<update id="deleteDimissionById" parameterType="java.lang.Integer" >
 		UPDATE tb_id_user
-		SET state=0
+		SET state=1
 		WHERE id=#{id}
 	</update>
 
-	<update id="deleteById2" parameterType="java.lang.Integer" >
+	<update id="addDimissionById" parameterType="java.lang.Integer" >
 		UPDATE tb_id_user
-		SET state=1
+		SET state=0
 		WHERE id=#{id}
 	</update>
 
@@ -91,6 +96,11 @@
 			and u.state=1
 		</where>
 		ORDER BY u.id DESC
+	</select>
+
+	<select id="selectAllServings" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE state=1
 	</select>
 
 </mapper>

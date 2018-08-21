@@ -28,4 +28,10 @@ public interface PositionMapper {
     String checkPostId(Repository repository);
 
     void deletePostManage(Repository repository);
+
+    String recordin(Repository repository);
+
+    String recordout(Repository repository);
+
+    String recordshift(Repository repository);
 }

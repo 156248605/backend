@@ -12,6 +12,7 @@ import java.util.List;
 public class PageHelper<T> {
     private Integer total;
     private List<T> list = new ArrayList<T>();
+    private List<T> allList = new ArrayList<T>();
 
     public PageHelper() {
     }
@@ -30,6 +31,15 @@ public class PageHelper<T> {
         }
         this.list = objs;
         this.total = list.size();
+        this.allList = list;
+    }
+
+    public List<T> getAllList() {
+        return allList;
+    }
+
+    public void setAllList(List<T> allList) {
+        this.allList = allList;
     }
 
     public Integer getTotal() {

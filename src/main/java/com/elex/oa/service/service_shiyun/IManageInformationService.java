@@ -30,4 +30,11 @@ public interface IManageInformationService {
      *@Date: 16:11 2018\4\12 0012
      */
     public void modifyOne(ManageInformation manageInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除管理信息
+     *@Date: 15:11 2018\8\20 0020
+     */
+    public void removeOne(Integer manageinformationid);
 }

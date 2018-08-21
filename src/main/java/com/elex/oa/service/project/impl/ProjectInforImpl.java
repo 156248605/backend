@@ -31,6 +31,7 @@ public class ProjectInforImpl implements ProjectInforService {
     @Override
     public void addInfor() {
         List<String> codes = projectInforDao.queryCodes(); //查询已建立项目详情信息的编号
+
         Map<String,Object> content = new HashMap<>();
         if(codes.size() > 0) {
             content.put("marker","1");

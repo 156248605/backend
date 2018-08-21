@@ -150,7 +150,12 @@ public class InRepositoryImpl implements InRepositoryService {
             String INREPTC = request.getParameter("inReptC");
             String INID = request.getParameter("inId");
             String INNUMGET = listIN.get(i).get("theMatNum").toString();
-            String INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            String INNUM = "";
+            if (INNUMGET.contains(".")) {
+                INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            }else {
+                INNUM = INNUMGET;
+            }
             // 格林尼治时间转格式
             String date = request.getParameter("inTime");
             date = date.replace("Z", " UTC");// 注意是空格+UTC
@@ -225,7 +230,12 @@ public class InRepositoryImpl implements InRepositoryService {
         List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
         for (int i = 0; i < listIN.size(); i++) {
             String INNUMGET = listIN.get(i).get("theMatNum").toString();
-            String INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            String INNUM = "";
+            if (INNUMGET.contains(".")) {
+                INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            }else {
+                INNUM = INNUMGET;
+            }
             Material material = new Material();
             material.setId(listIN.get(i).get("theMatId").toString());
             material.setNum(INNUM);
@@ -299,7 +309,12 @@ public class InRepositoryImpl implements InRepositoryService {
             Material material = new Material();
             material.setId(listIN.get(i).get("theMatId").toString());
             String INNUMGET = listIN.get(i).get("theMatNum").toString();
-            String INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            String INNUM = "";
+            if (INNUMGET.contains(".")) {
+                INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            }else {
+                INNUM = INNUMGET;
+            }
             String MAX = materialMapper.MaxLimit(material);
             String NUM = materialMapper.getNum(material);
             if (parseInt(NUM) + parseInt(INNUM) > parseInt(MAX)) {
@@ -322,7 +337,12 @@ public class InRepositoryImpl implements InRepositoryService {
             String postId = "";
             String NUM = "0";
             String INNUMGET = listIN.get(i).get("theMatNum").toString();
-            String INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            String INNUM = "";
+            if (INNUMGET.contains(".")) {
+                INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            }else {
+                INNUM = INNUMGET;
+            }
             String postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
             Repository repository = new Repository();
             repository.setReptId(reptId);
@@ -333,9 +353,10 @@ public class InRepositoryImpl implements InRepositoryService {
                 Material material = new Material();
                 material.setId(listIN.get(i).get("theMatId").toString());
                 INNUM = listIN.get(i).get("theMatNum").toString();
-                if (!postId.equals("无")){
+                repository.setPostId(postId);
+                if (repositoryMapper.getNumber(repository) != null){
                     NUM = repositoryMapper.getNumber(repository);
-                }else {
+                }else{
                     NUM = "0";
                 }
                 Repository repository1 = repositoryMtMapper.searchPostCap(repository);

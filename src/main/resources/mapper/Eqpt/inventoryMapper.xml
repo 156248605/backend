@@ -255,7 +255,7 @@
     </update>
 
     <select id="invInfo" resultType="HashMap">
-        SELECT * FROM w_gzrz WHERE INST_STATUS_ = #{arg0}
+        SELECT * FROM w_kcpdd WHERE INST_STATUS_ = #{arg0} ORDER BY ID_ DESC LIMIT 1
     </select>
 
     <select id="test" resultType="HashMap">

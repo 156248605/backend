@@ -228,6 +228,26 @@
 			per.id=#{id} and u.state = 1
 	</select>
 
+	<select id="selectById2" parameterType="java.lang.Integer" resultMap="PersonalInformationResultMap">
+		SELECT
+			per.id,
+			per.userid,
+			per.employeenumber,
+			per.depid,
+			per.sex,
+			per.telphoneid,
+			per.mobilephone,
+		    per.baseinformationid,
+		    per.manageinformationid,
+			per.costinformationid,
+			per.otherinformationid
+		FROM
+			tb_id_personalinformation per
+			JOIN tb_id_user u ON per.userid = u.id
+		WHERE
+			per.id=#{id}
+	</select>
+
 	<select id="selectByEmployeenumber" parameterType="java.lang.String" resultMap="PersonalInformationResultMap">
 		SELECT
 			*
@@ -293,9 +313,12 @@
 		FROM
 			tb_id_personalinformation per
 			JOIN tb_id_user u ON per.userid = u.id
-			JOIN tb_id_manageinformation m ON per.manageinforamtionid = m.id
-		WHERE
-			per.depid=#{depid} and m.entrydate <![CDATA[<=]]> #{edate}
+			JOIN tb_id_manageinformation m ON per.manageinformationid = m.id
+		<where>
+			per.depid=#{depid}
+			<if test="sdate!=null and sdate!=''"> AND m.entrydate BETWEEN #{sdate} AND #{edate}</if>
+			<if test="sdate==null or sdate==''">AND m.entrydate <![CDATA[<=]]> #{edate}</if>
+		</where>
 	</select>
 
 	<select id="selectByDepid3" resultMap="PersonalInformationResultMap">
@@ -314,8 +337,11 @@
 		FROM
 			tb_id_personalinformation per
 			JOIN tb_hr_dimission d ON per.userid = d.dimissionuserid
-		WHERE
-			per.depid=#{depid} and d.lastworkingdate <![CDATA[<=]]> #{edate}
+		<where>
+			per.depid=#{depid}
+			<if test="sdate!=null and sdate!=''"> AND d.lastworkingdate <![CDATA[>]]> #{sdate} AND d.lastworkingdate <![CDATA[<]]> #{edate}</if>
+			<if test="sdate==null or sdate==''">AND d.lastworkingdate <![CDATA[<]]> #{edate}</if>
+		</where>
 	</select>
 
 	<insert id="insertOne" parameterType="PersonalInformation" useGeneratedKeys="true" keyProperty="id">
@@ -414,8 +440,10 @@
 			 tb_id_personalinformation per
 			 JOIN tb_id_user u ON per.userid = u.id
 			 JOIN tb_id_manageinformation m ON per.manageinformationid = m.id
-		WHERE
-			 m.entrydate <![CDATA[<=]]> #{edate}
+		<where>
+			<if test="sdate!=null and sdate!=''">m.entrydate BETWEEN #{sdate} AND #{edate}</if>
+			<if test="sdate==null or sdate==''">m.entrydate <![CDATA[<=]]> #{edate}</if>
+		</where>
 		ORDER BY per.id DESC
 	</select>
 
@@ -435,8 +463,10 @@
 		from
 			 tb_id_personalinformation per
 			 JOIN tb_hr_dimission d ON per.userid = d.dimissionuserid
-		WHERE
-			 d.lastworkingdate <![CDATA[<=]]> #{edate}
+		<where>
+			<if test="sdate!=null and sdate!=''">AND d.lastworkingdate <![CDATA[>]]> #{sdate} AND d.lastworkingdate <![CDATA[<]]> #{edate}</if>
+			<if test="sdate==null or sdate==''">AND d.lastworkingdate <![CDATA[<]]> #{edate}</if>
+		</where>
 		ORDER BY per.id DESC
 	</select>
 
@@ -449,4 +479,10 @@
 		</set>
 		WHERE id=#{id}
 	</update>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_personalinformation
+		WHERE id=#{id}
+	</delete>
+
 </mapper>

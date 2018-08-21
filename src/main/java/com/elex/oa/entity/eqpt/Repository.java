@@ -72,6 +72,8 @@ public class Repository {
     private String category;
     // 检验单号
     private String check;
+    // 盘点盈亏(每个物料)
+    private String palPer;
     // 盘盈盘亏
     private String pal;
     // 盘盈盘亏(大写)
@@ -168,7 +170,7 @@ public class Repository {
     public Repository() {
     }
 
-    public Repository(String reptCategory, String outReptC, String inReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String inInfo, String outInfo, String shiftInfo, String num, String numInv, String price, String spec, String unit, String category, String check, String pal, String palCal, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String materialName, String reptState, String postManage, String reptAddr, String reptName, String reptAdmin, String postId, String postName, String postCate, String fixPostMat, String postCap, String remark, String projId, String projName, int onlyIdR, int onlyIdP, int onlyIdIn, int onlyIdOut, int onlyIdInv, String bnC, String snC, String matIdC, String matNameC, String reptIdC, String reptCateC, String positionC, String inNumC, String inIdC, String inTimeC, String outNumC, String outIdC, String outTimeC, String numC, String numInvC, String invIdC, String invTimeC, String palC, String priceC, String reptNameC, String reptAdminC, String reptStateC, String postManageC, String postIdC, String postNameC, String postCateC, String fixPostMatC, String postCapC, String reptAddrC, String shiftIdC, String shiftTimeC, String shiftNumC, String inPostC, String outPostC, String projIdC, String projNameC) {
+    public Repository(String reptCategory, String outReptC, String inReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String inInfo, String outInfo, String shiftInfo, String num, String numInv, String price, String spec, String unit, String category, String check, String palPer, String pal, String palCal, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String materialName, String reptState, String postManage, String reptAddr, String reptName, String reptAdmin, String postId, String postName, String postCate, String fixPostMat, String postCap, String remark, String projId, String projName, int onlyIdR, int onlyIdP, int onlyIdIn, int onlyIdOut, int onlyIdInv, String bnC, String snC, String matIdC, String matNameC, String reptIdC, String reptCateC, String positionC, String inNumC, String inIdC, String inTimeC, String outNumC, String outIdC, String outTimeC, String numC, String numInvC, String invIdC, String invTimeC, String palC, String priceC, String reptNameC, String reptAdminC, String reptStateC, String postManageC, String postIdC, String postNameC, String postCateC, String fixPostMatC, String postCapC, String reptAddrC, String shiftIdC, String shiftTimeC, String shiftNumC, String inPostC, String outPostC, String projIdC, String projNameC) {
         this.reptCategory = reptCategory;
         this.outReptC = outReptC;
         this.inReptC = inReptC;
@@ -204,6 +206,7 @@ public class Repository {
         this.unit = unit;
         this.category = category;
         this.check = check;
+        this.palPer = palPer;
         this.pal = pal;
         this.palCal = palCal;
         this.purchaseIn = purchaseIn;
@@ -1081,6 +1084,14 @@ public class Repository {
         this.outPostC = outPostC;
     }
 
+    public String getPalPer() {
+        return palPer;
+    }
+
+    public void setPalPer(String palPer) {
+        this.palPer = palPer;
+    }
+
     @Override
     public String toString() {
         return "Repository{" +
@@ -1119,6 +1130,7 @@ public class Repository {
                 ", unit='" + unit + '\'' +
                 ", category='" + category + '\'' +
                 ", check='" + check + '\'' +
+                ", palPer='" + palPer + '\'' +
                 ", pal='" + pal + '\'' +
                 ", palCal='" + palCal + '\'' +
                 ", purchaseIn='" + purchaseIn + '\'' +

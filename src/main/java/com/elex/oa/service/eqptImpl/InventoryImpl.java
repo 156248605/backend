@@ -9,8 +9,6 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InventoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-/*import com.sun.xml.internal.bind.v2.model.core.ID;*/
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -123,18 +121,35 @@ public class InventoryImpl implements InventoryService {
             }
             String invTime = list.get(i).get("F_TBRQ").toString();// 2.获取盘点时间(需要修改)
             String materialId = list.get(i).get("F_TBRQ").toString();// 3.获取物料Id(需要修改)
-            String reptId = list.get(i).get("F_TBRQ").toString();// 4.获取盘点仓库(需要修改)
-            String postId = list.get(i).get("F_TBRQ").toString();// 5.获取盘点库位(需要修改)
-            String num = list.get(i).get("F_TBRQ").toString();// 6.获取账上数量(需要修改)
-            String numInv = list.get(i).get("F_TBRQ").toString();// 7.获取盘点(实际)数量(需要修改)
+            String materialName = list.get(i).get("F_TBRQ").toString();// 4.获取物料名称(需要修改)
+            String spec = list.get(i).get("F_TBRQ").toString();// 5.获取规格型号(需要修改)
+            String category = list.get(i).get("F_TBRQ").toString();// 6.获取物料类别(需要修改)
+            String price = list.get(i).get("F_TBRQ").toString();// 7.获取物料单价(需要修改)
+            String reptId = list.get(i).get("F_TBRQ").toString();// 8.获取盘点仓库(需要修改)
+            String postId = list.get(i).get("F_TBRQ").toString();// 9.获取盘点库位(需要修改)
+            String num = list.get(i).get("F_TBRQ").toString();// 10.获取账上数量(需要修改)
+            String numInv = list.get(i).get("F_TBRQ").toString();// 11.获取盘点(实际)数量(需要修改)
+            String remark = list.get(i).get("F_TBRQ").toString();// 12.获取备注(需要修改)
+            String palPer = list.get(i).get("F_TBRQ").toString();// 13.获取物品盈亏(需要修改)
+            String pal = list.get(i).get("F_TBRQ").toString();// 14.获取总盈亏(小写)(需要修改)
+            String palCal = list.get(i).get("F_TBRQ").toString();// 15.获取总盈亏(大写)(需要修改)
             repository.setInvTime(invTime);
             repository.setMaterialId(materialId);
+            repository.setMaterialName(materialName);
+            repository.setCategory(category);
+            repository.setSpec(spec);
+            repository.setPrice(price);
             repository.setReptId(reptId);
             repository.setPostId(postId);
             repository.setNum(String.valueOf(parseInt(numInv) - parseInt(num)));
             repository.setNumInv(numInv);
-            inventoryMapper.changeNum(repository);
-            inventoryMapper.changeNumMat(repository);
+            repository.setRemark(remark);
+            repository.setPalPer(palPer);
+            repository.setPal(pal);
+            repository.setPalCal(palCal);
+            inventoryMapper.changeNum(repository);// 修改数据(detail)
+            inventoryMapper.changeNumMat(repository);// 修改数据(material)
+            inventoryMapper.insert(repository);
             /*Repository repository = new Repository();
             repository.setInvId(request.getParameter("invId"));
             String date = request.getParameter("invTime");
@@ -235,7 +250,6 @@ public class InventoryImpl implements InventoryService {
         repository.setOnlyIdInv( parseInt(onlyIdInv) );
         repository.setInvId(invId);
         inventoryMapper.delete(repository);
-        inventoryMapper.deleteD(repository);
     }
 
     @Override
@@ -274,7 +288,7 @@ public class InventoryImpl implements InventoryService {
         Repository repository = new Repository();
         repository.setInvId(dateToId);
         List showInvId = inventoryMapper.showINVID(repository);
-        List showInvIdD = inventoryMapper.showINVIDd(repository);
+        List showInvIdD = inventoryMapper.showINVID(repository);
         String result1 = "0";
         String result2 = "0";
         if (showInvId.size() > 0){

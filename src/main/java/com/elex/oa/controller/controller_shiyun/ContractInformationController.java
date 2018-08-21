@@ -81,7 +81,7 @@ public class ContractInformationController {
                 list.get(i).setContracttype(ihRsetContracttypeService.queryById(list.get(i).getContracttypeid()).getContracttype());
             }
             // 获得合同年限
-            list.get(i).setContractage(IDcodeUtil.getContractage(list.get(i).getStartdate(),list.get(i).getEnddate()));
+            /*list.get(i).setContractage(IDcodeUtil.getContractage(list.get(i).getStartdate(),list.get(i).getEnddate()));*/
         }
         contractInformationPageInfo.setList(list);
 
@@ -98,7 +98,12 @@ public class ContractInformationController {
     public List<ContractInformation> queryContractsByUserid(
             @RequestParam("personalInformationId")Integer personalInformationId
     ){
-        List<ContractInformation> contractInformationList = iContractInformationService.queryByUserid(iPersonalInformationService.queryOneById(personalInformationId).getUserid());
+        List<ContractInformation> contractInformationList = null;
+        if (iPersonalInformationService.queryOneById(personalInformationId)!=null) {
+            contractInformationList = iContractInformationService.queryByUserid(iPersonalInformationService.queryOneById(personalInformationId).getUserid());
+        }else {
+            return null;
+        }
         return contractInformationList;
     }
 

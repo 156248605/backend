@@ -64,4 +64,10 @@ public class MaterialController {
     public String checkId (HttpServletRequest request){
         return materialImpl.checkId(request);
     }
+
+    @RequestMapping("/record")
+    @ResponseBody
+    public String record (HttpServletRequest request) {
+        return materialImpl.record(request);
+    }
 }

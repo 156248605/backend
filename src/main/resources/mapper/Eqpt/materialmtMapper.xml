@@ -164,13 +164,13 @@
     </select>
 
     <select id="recordin" resultType="string">
-        SELECT * FROM eqpt_inrepository WHERE materialId = #{id}
+        SELECT * FROM eqpt_inrepository WHERE materialId = #{id} LIMIT 1
     </select>
     <select id="recordout" resultType="string">
-        SELECT * FROM eqpt_outrepository WHERE materialId = #{id}
+        SELECT * FROM eqpt_outrepository WHERE materialId = #{id} LIMIT 1
     </select>
     <select id="recordshift" resultType="string">
-        SELECT * FROM eqpt_shiftrepository WHERE materialId = #{id}
+        SELECT * FROM eqpt_shiftrepository WHERE materialId = #{id} LIMIT 1
     </select>
 
     <select id="manageBS" resultType="string">

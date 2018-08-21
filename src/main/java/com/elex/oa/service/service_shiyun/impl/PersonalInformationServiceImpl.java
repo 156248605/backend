@@ -109,18 +109,26 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         com.github.pagehelper.PageHelper.startPage(pageNum,pageSize);
+        System.out.println(personalInformation.getUsername()+"===============================================>");
         List<PersonalInformation> list = iPersonalInformationDao.selectByConditions(personalInformation);
+        System.out.println(list.size()+"========================================================>");
         return new PageInfo<PersonalInformation>(list);
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:根据ID查询人事信息
+     *@Description:根据ID查询人事信息（不包括离职的）
      *@Date: 18:48 2018\4\10 0010
      */
     @Override
     public PersonalInformation queryOneById(Integer id) {
         PersonalInformation personalInformation = iPersonalInformationDao.selectById(id);
+        return personalInformation;
+    }
+    //包括离职的
+    @Override
+    public PersonalInformation queryOneById2(Integer id) {
+        PersonalInformation personalInformation = iPersonalInformationDao.selectById2(id);
         return personalInformation;
     }
 
@@ -188,7 +196,15 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return personalInformationList;
     }
 
-    ;
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除人事主体信息
+     *@Date: 16:10 2018\8\20 0020
+     */
+    @Override
+    public void removeOne(Integer perid) {
+        iPersonalInformationDao.deleteById(perid);
+    }
 
     /**
      *@Author:ShiYun;

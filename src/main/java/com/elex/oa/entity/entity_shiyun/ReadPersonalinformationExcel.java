@@ -145,8 +145,7 @@ public class ReadPersonalinformationExcel {
                         personalInformation.setIdphoto2(str);
                     }else if ("工号".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            String employeenumber = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            String employeenumber = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setEmployeenumber(employeenumber);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -231,8 +230,7 @@ public class ReadPersonalinformationExcel {
                     }else if ("职级".equals(columnname.replace(" ",""))) {
                         String zj = "";
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            zj = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            zj = new DecimalFormat("0").format(cell.getNumericCellValue());
                         }else{
                             zj = String.valueOf(cell.getStringCellValue());
                         }
@@ -266,8 +264,7 @@ public class ReadPersonalinformationExcel {
                         personalInformation.setEmployeetype(str);
                     }else if ("薪资标准".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            str = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setSalary(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -275,8 +272,7 @@ public class ReadPersonalinformationExcel {
                         }
                     }else if ("社保基数".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            str = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setSsb(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -284,8 +280,7 @@ public class ReadPersonalinformationExcel {
                         }
                     }else if ("社保公司缴费比例".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            str = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setSsbgscd(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -293,8 +288,7 @@ public class ReadPersonalinformationExcel {
                         }
                     }else if ("社保个人缴费比例".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            str = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setSsbgrcd(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -302,8 +296,7 @@ public class ReadPersonalinformationExcel {
                         }
                     }else if ("公积金基数".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            str = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setGjj(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -311,8 +304,7 @@ public class ReadPersonalinformationExcel {
                         }
                     }else if ("公积金公司缴费比例".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            str = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setGjjgscd(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -320,8 +312,7 @@ public class ReadPersonalinformationExcel {
                         }
                     }else if ("公积金个人缴费比例".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            str = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setGjjgrcd(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -333,7 +324,7 @@ public class ReadPersonalinformationExcel {
                     }else if ("工资账号".equals(columnname.replace(" ",""))) {
                         String str = "";
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            str = new DecimalFormat("#.##").format(cell.getNumericCellValue());
+                            str = new DecimalFormat("0").format(cell.getNumericCellValue());
                         }else{
                             str = String.valueOf(cell.getStringCellValue());
                         }
@@ -344,8 +335,7 @@ public class ReadPersonalinformationExcel {
                     }else if ("社保账号".equals(columnname.replace(" ",""))) {
                         String sbcode = "";
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = String.valueOf(cell.getNumericCellValue());
-                            sbcode = str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1);
+                            sbcode = new DecimalFormat("0").format(cell.getNumericCellValue());
                         }else{
                             sbcode = String.valueOf(cell.getStringCellValue());
                         }
@@ -353,14 +343,14 @@ public class ReadPersonalinformationExcel {
                     }else if ("公积金账号".equals(columnname.replace(" ",""))) {
                         String str = "";
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            str = new DecimalFormat("#.##").format(cell.getNumericCellValue());
+                            str = new DecimalFormat("0").format(cell.getNumericCellValue());
                         }else{
                             str = String.valueOf(cell.getStringCellValue());
                         }
                         personalInformation.setGjjcode(str);
                     }else if ("移动电话".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = new DecimalFormat("#.##").format(cell.getNumericCellValue());
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setMobilephone(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -368,7 +358,7 @@ public class ReadPersonalinformationExcel {
                         }
                     }else if ("办公电话".equals(columnname.replace(" ",""))) {
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            String str = new DecimalFormat("#.##").format(cell.getNumericCellValue());
+                            String str = new DecimalFormat("0").format(cell.getNumericCellValue());
                             personalInformation.setTelphone(str);
                         }else{
                             String str = String.valueOf(cell.getStringCellValue());
@@ -389,7 +379,7 @@ public class ReadPersonalinformationExcel {
                     }else if ("应急联系电话".equals(columnname.replace(" ",""))) {
                         String str = "";
                         if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                            str = new DecimalFormat("#.##").format(cell.getNumericCellValue());
+                            str = new DecimalFormat("0").format(cell.getNumericCellValue());
                         }else{
                             str = String.valueOf(cell.getStringCellValue());
                         }

@@ -30,4 +30,11 @@ public interface IOtherInformationService {
      *@Date: 16:54 2018\4\12 0012
      */
     public void modifyOne(OtherInformation otherInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除其它信息
+     *@Date: 15:32 2018\8\20 0020
+     */
+    public void removeOne(Integer otherinformationid);
 }

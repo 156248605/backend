@@ -124,7 +124,12 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         for (int i = 0; i < listSHIFT.size(); i++) {
             String shiftId = request.getParameter("shiftId");
             String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
-            String shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
+            String shiftNum = "";
+            if (shiftNumGet.contains(".")) {
+                shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
+            }else {
+                shiftNum = shiftNumGet;
+            }
             if (listSHIFT.get(0).containsKey("number")){
                 shiftNum = listSHIFT.get(i).get("number").toString();
             }
@@ -180,7 +185,12 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         for (int i = 0; i < listSHIFT.size(); i++){
             String materialName = listSHIFT.get(i).get("theMatName").toString();
             String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
-            String shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
+            String shiftNum = "";
+            if (shiftNumGet.contains(".")) {
+                shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
+            }else {
+                shiftNum = shiftNumGet;
+            }
             if (listSHIFT.get(0).containsKey("number")){
                 shiftNum = listSHIFT.get(i).get("number").toString();
             }

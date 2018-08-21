@@ -20,6 +20,9 @@ public interface PositionService {
     // 更新库位信息
     void changePosition(Repository repository, HttpServletRequest request);
 
+    // 是否有记录
+    String record(HttpServletRequest request);
+
     // 删除库位
     void deleteRepository(Repository repository, HttpServletRequest request);
 

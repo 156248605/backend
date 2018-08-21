@@ -158,10 +158,8 @@
 			<if test="dimissiontypeid!=null and dimissiontypeid!=''">dimissiontypeid=#{dimissiontypeid},</if>
 			<if test="dimissionreasonid!=null and dimissionreasonid!=''">dimissionreasonid=#{dimissionreasonid},</if>
 			<if test="dimissiondirectionid!=null and dimissiondirectionid!=''">dimissiondirectionid=#{dimissiondirectionid},</if>
-			<if test="approvalstatue!=null and approvalstatue!=''">approvalstatue=#{approvalstatue},</if>
-			<if test="workingstatue!=null and workingstatue!=''">workingstatue=#{workingstatue},</if>
-			<if test="filestatue!=null and filestatue!=''">filestatue=#{filestatue},</if>
-			<if test="officesupplystatue!=null and officesupplystatue!=''">officesupplystatue=#{officesupplystatue}</if>
+			<if test="transactoruserid!=null and transactoruserid!=''">transactoruserid=#{transactoruserid},</if>
+			<if test="transactiondate!=null and transactiondate!=''">transactiondate=#{transactiondate},</if>
 		</set>
 		WHERE id=#{id}
 	</update>

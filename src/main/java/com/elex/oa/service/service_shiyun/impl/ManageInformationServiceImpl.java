@@ -49,4 +49,14 @@ public class ManageInformationServiceImpl implements IManageInformationService {
     public void modifyOne(ManageInformation manageInformation) {
         iManageInformationDao.updateOne(manageInformation);
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除管理信息
+     *@Date: 15:12 2018\8\20 0020
+     */
+    @Override
+    public void removeOne(Integer manageinformationid) {
+        iManageInformationDao.deleteById(manageinformationid);
+    }
 }

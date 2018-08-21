@@ -5,6 +5,7 @@ import com.elex.oa.dao.dao_shiyun.IHRsetContracttypeDao;
 import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
 import com.elex.oa.dao.dao_shiyun.IUserDao;
 import com.elex.oa.entity.entity_shiyun.ContractInformation;
+import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IContractInformationService;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
@@ -77,6 +78,11 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
             contractInformation.setTruename(iUserDao.selectById(contractInformation.getUserid()).getTruename());
         }
         //获得工号
+        Integer uid = contractInformation.getUserid();
+        System.out.println(uid);
+        PersonalInformation per = iPersonalInformationDao.selectByUserid(uid);
+        System.out.println(per);
+        System.out.println(per.getEmployeenumber());
         contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
         //获得合同类型
         if (ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid())!=null) {

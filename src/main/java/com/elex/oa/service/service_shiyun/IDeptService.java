@@ -120,17 +120,24 @@ public interface IDeptService {
 
     *//**
      *@Author:ShiYun;
-     *@Description:获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响)
+     *@Description:获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
      *@Date: 9:17 2018\8\15 0015
      *//*
     public Object getHRManageCard5(Integer rows,Integer page,Integer depid,String sdate,String edate);
 
     *//**
      *@Author:ShiYun;
-     *@Description:获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响)
+     *@Description:获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
      *@Date: 9:17 2018\8\15 0015
      *//*
     public Object getHRManageCard6(Integer rows,Integer page,Integer depid,String sdate,String edate);*/
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得所在部门离职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
+     *@Date: 9:17 2018\8\15 0015
+     */
+    public Object getHRManageCard7(Integer rows,Integer page,Integer depid,String sdate,String edate);
 
     /**
      *@Author:ShiYun;
@@ -138,4 +145,18 @@ public interface IDeptService {
      *@Date: 17:23 2018\8\14 0014
      */
     public String queryByTruename(String truename);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的一级公司和二级公司
+     *@Date: 10:57 2018\8\21 0021
+     */
+    public List<Dept> queryAllCompany1and2();
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据公司名称查询公司的部门(不包括公司)
+     *@Date: 11:21 2018\8\21 0021
+     */
+    public List<Dept> queryByCompanyname(String companyname);
 }

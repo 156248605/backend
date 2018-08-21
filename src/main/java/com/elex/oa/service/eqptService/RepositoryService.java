@@ -41,4 +41,7 @@ public interface RepositoryService {
     List<Repository> matOutPost(HttpServletRequest request);
     List<Repository> matInRept(HttpServletRequest request);
     List<Repository> matInPost(HttpServletRequest request);
+
+    // 是否有记录
+    String record(HttpServletRequest request);
 }
