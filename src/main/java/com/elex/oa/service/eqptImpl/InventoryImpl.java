@@ -106,14 +106,15 @@ public class InventoryImpl implements InventoryService {
     public List<HashMap<String, Object>> insertInv(){
         String INST_STATUS_ = "SUCCESS_END";
         List<HashMap<String, Object>> list = inventoryMapper.invInfo(INST_STATUS_);
+        String wdbh = list.get(0).get("").toString();// 两张表同样部分
+        List<HashMap<String, Object>> list1 = inventoryMapper.invDetail(wdbh);
         for (int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i).get("F_TBRQ").toString().substring(0,list.get(i).get("F_TBRQ").toString().length()-2));
+            /*System.out.println(list.get(i).get("F_TBRQ").toString().substring(0,list.get(i).get("F_TBRQ").toString().length()-2));*/
             Calendar cal= Calendar.getInstance();
             String y,m;
             y = String.valueOf(cal.get(Calendar.YEAR));
             m = String.valueOf((cal.get(Calendar.MONTH)+1 > 10)?cal.get(Calendar.MONTH)+1:"0"+String.valueOf(cal.get(Calendar.MONTH)+1) );
             Repository repository = new Repository();
-            repository.setInvId(y+m);
             List showInvId = inventoryMapper.showINVID(repository);
             String result = "";// 1.确定盘点单号
             if (showInvId.size() > 0){
@@ -121,12 +122,19 @@ public class InventoryImpl implements InventoryService {
             }else {
                 result = y+m+"0001";
             }
-            String invTime = list.get(i).get("F_TBRQ").toString();// 2.获取盘点时间(需要修改)
-            String materialId = list.get(i).get("F_TBRQ").toString();// 3.获取物料Id(需要修改)
-            String materialName = list.get(i).get("F_TBRQ").toString();// 4.获取物料名称(需要修改)
-            String spec = list.get(i).get("F_TBRQ").toString();// 5.获取规格型号(需要修改)
-            String category = list.get(i).get("F_TBRQ").toString();// 6.获取物料类别(需要修改)
-            String price = list.get(i).get("F_TBRQ").toString();// 7.获取物料单价(需要修改)
+            repository.setInvId(result);
+            /*String invTime = list.get(i).get("F_TBRQ").toString();// 2.获取盘点时间(需要修改)*/
+            String invTime = list.get(i).get("UPDATE_TIME_").toString();// 2.获取盘点时间(需要修改)
+            /*String materialId = list.get(i).get("F_TBRQ").toString();// 3.获取物料Id(需要修改)*/
+            String materialId = list1.get(i).get("F_WLBM").toString();// 3.获取物料Id(需要修改)
+            /*String materialName = list.get(i).get("F_TBRQ").toString();// 4.获取物料名称(需要修改)*/
+            String materialName = list1.get(i).get("F_WLMC").toString();// 4.获取物料名称(需要修改)
+            /*String spec = list.get(i).get("F_TBRQ").toString();// 5.获取规格型号(需要修改)*/
+            String spec = list1.get(i).get("F_GGXH").toString();// 5.获取规格型号(需要修改)
+            /*String category = list.get(i).get("F_TBRQ").toString();// 6.获取物料类别(需要修改)*/
+            String category = list1.get(i).get("F_WPLB").toString();// 6.获取物料类别(需要修改)
+            /*String price = list.get(i).get("F_TBRQ").toString();// 7.获取物料单价(需要修改)*/
+            String price = list1.get(i).get("F_TBRQ").toString();// 7.获取物料单价(需要修改)
             String reptId = list.get(i).get("F_TBRQ").toString();// 8.获取盘点仓库(需要修改)
             String postId = list.get(i).get("F_TBRQ").toString();// 9.获取盘点库位(需要修改)
             String num = list.get(i).get("F_TBRQ").toString();// 10.获取账上数量(需要修改)
@@ -151,7 +159,7 @@ public class InventoryImpl implements InventoryService {
             repository.setPalCal(palCal);
             inventoryMapper.changeNum(repository);// 修改数据(detail)
             inventoryMapper.changeNumMat(repository);// 修改数据(material)
-            inventoryMapper.insert(repository);
+            /*inventoryMapper.insert(repository);*/
             /*Repository repository = new Repository();
             repository.setInvId(request.getParameter("invId"));
             String date = request.getParameter("invTime");
@@ -371,4 +379,9 @@ public class InventoryImpl implements InventoryService {
     }
 
 
+    @Override
+    public List getInvId() {
+        List list = inventoryMapper.getInvId();
+        return list;
+    }
 }

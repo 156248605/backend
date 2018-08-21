@@ -54,4 +54,6 @@ public interface InventoryService {
     List<HashMap<String, Object>> insertInv();
 
     List<HashMap<String, Object>> testInv();
+
+    List getInvId();
 }

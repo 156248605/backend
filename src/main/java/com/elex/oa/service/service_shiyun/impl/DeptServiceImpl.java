@@ -37,7 +37,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:¸ù¾Ý²¿ÃÅÃû³Æ»ñµÃ²¿ÃÅ
+     *@Description:ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ»ï¿½Ã²ï¿½ï¿½ï¿½
      *@Date: 15:29 2018\6\1 0001
      */
     @Override
@@ -47,7 +47,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:¸ù¾Ý²¿ÃÅcode²éÑ¯²¿ÃÅÐÅÏ¢
+     *@Description:ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½codeï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
      *@Date: 10:20 2018\7\16 0016
      */
     @Override
@@ -58,7 +58,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:¸ù¾Ý²¿ÃÅcodeÄ£ºý²éÑ¯²¿ÃÅÐÅÏ¢
+     *@Description:ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½codeÄ£ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
      *@Date: 17:08 2018\8\14 0014
      */
     @Override
@@ -69,7 +69,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:¸ù¾Ý²¿ÃÅID»ñµÃ²¿ÃÅ
+     *@Description:ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½IDï¿½ï¿½Ã²ï¿½ï¿½ï¿½
      *@Date: 15:30 2018\6\1 0001
      */
     @Override
@@ -79,7 +79,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:»ñµÃËùÓÐ²¿ÃÅ
+     *@Description:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½
      *@Date: 15:30 2018\6\1 0001
      */
     @Override
@@ -90,7 +90,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:¸ù¾ÝÉÏ¼¶²¿ÃÅID²éÑ¯²¿ÃÅÐÅÏ¢
+     *@Description:ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
      *@Date: 10:52 2018\4\16 0016
      */
     @Override
@@ -101,7 +101,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:Ìí¼Ó²¿ÃÅÐÅÏ¢²¢·µ»ØÖ÷¼ü
+     *@Description:ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      *@Date: 11:00 2018\4\23 0023
      */
     @Override
@@ -112,7 +112,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:ÐÞ¸Ä²¿ÃÅÐÅÏ¢
+     *@Description:ï¿½Þ¸Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
      *@Date: 9:58 2018\5\2 0002
      */
     @Override
@@ -122,27 +122,27 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:ÏÈÒª½«¸Ã²¿ÃÅÏÂµÄËùÓÐÔ±¹¤µÄ²¿ÃÅÐÅÏ¢¸ÄÎªÎÞ²¿ÃÅ£¬ÔÙ¸ù¾Ý²¿ÃÅIDÉ¾³ý²¿ÃÅÐÅÏ¢
+     *@Description:ï¿½ï¿½Òªï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Îªï¿½Þ²ï¿½ï¿½Å£ï¿½ï¿½Ù¸ï¿½ï¿½Ý²ï¿½ï¿½ï¿½IDÉ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
      *@Date: 14:07 2018\5\2 0002
      */
     @Override
     public void removeOne(Integer id) {
         List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(id);
         PersonalInformation personalInformation = new PersonalInformation();
-        //ÏÈÇå¿ÕÈËÔ±µÄÏàÓ¦²¿ÃÅÐÅÏ¢
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
         for (PersonalInformation personalinformation:personalInformationList
              ) {
             personalInformation.setId(personalinformation.getId());
             personalInformation.setDepid(personalinformation.getDepid());
             iPersonalInformationDao.updateDeptinformation(personalInformation);
         }
-        //ÔÙÉ¾³ýÏàÓ¦µÄ²¿ÃÅ
+        //ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ä²ï¿½ï¿½ï¿½
         iDeptDao.deleteOne(id);
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:É¾³ýÓÃ»§Ê±ÐÞ¸Ä²¿ÃÅÐÅÏ¢
+     *@Description:É¾ï¿½ï¿½ï¿½Ã»ï¿½Ê±ï¿½Þ¸Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
      *@Date: 15:25 2018\5\10 0010
      */
     @Override
@@ -176,7 +176,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:ÐÞ¸Ä²¿ÃÅÊ±½«ÔÚÆäËû²¿ÃÅµÄÐÅÏ¢ÐÝÏ¢µô
+     *@Description:ï¿½Þ¸Ä²ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ï¢ï¿½ï¿½
      *@Date: 10:33 2018\6\20 0020
      */
     @Override
@@ -186,25 +186,25 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:¸ù¾Ý²¿ÃÅID»ñµÃ²¿ÃÅÃû³Æ¡¢ÈËÊý¡¢×ÜÈËÊý
+     *@Description:ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½IDï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      *@Date: 15:31 2018\6\1 0001
      */
     @Override
     public HRManageCard getParamMap1(Integer depid) {
         HRManageCard hrManageCard = new HRManageCard();
-        //»ñµÃ²¿ÃÅÃû³Æ
+        //ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Dept dept;
         if (depid!=null) {
             dept = iDeptDao.selectDeptByDepid(depid);
         } else {
-            dept = iDeptDao.selectDeptByDeptname("½­ËÕ²©ÖÇÈí¼þ¿Æ¼¼¹É·ÝÓÐÏÞ¹«Ë¾");
+            dept = iDeptDao.selectDeptByDeptname("ï¿½ï¿½ï¿½Õ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½É·ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾");
         }
         hrManageCard.setDepname(dept.getDepname());
-        //»ñµÃ²¿ÃÅID
+        //ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ID
         hrManageCard.setDeptid(dept.getId());
-        //»ñµÃÉÏ¼¶²¿ÃÅID
+        //ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½ï¿½ï¿½ID
         hrManageCard.setParentid(dept.getParentdepid());
-        //»ñµÃ²¿ÃÅµÄÈËÔ±
+        //ï¿½ï¿½Ã²ï¿½ï¿½Åµï¿½ï¿½ï¿½Ô±
         List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(dept.getId());
         List<Map> users = new ArrayList<>();
         for (PersonalInformation per:personalInformationList
@@ -218,7 +218,7 @@ public class DeptServiceImpl implements IDeptService {
             users.add(map);
         }
         hrManageCard.setUsers(users);
-        //»ñµÃ×Ó²¿ÃÅ
+        //ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
         List<Dept> depts = iDeptDao.selectByParentId(dept.getId());
         hrManageCard.setChildDepts(depts);
         return hrManageCard;
@@ -226,7 +226,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:ÔÚÖ°µÄÈËÊÂ¹ÜÀí¿´°å
+     *@Description:ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ï¿½ï¿½
      *@Date: 11:53 2018\6\28 0028
      */
     @Override
@@ -234,7 +234,7 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","Ê±¼äÑ¡Ôñ´íÎó£¡",null);
+                return RespUtil.successResp("505","Ê±ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
@@ -242,7 +242,7 @@ public class DeptServiceImpl implements IDeptService {
             List<HRManageCard> hrManageCardList = new ArrayList<>();
             List<Dept> depts = iDeptDao.selectAllDept();
 
-            //»ñµÃ×ÜÈËÊý(edateÊ±¼äµãµÄÔÚÖ°×ÜÈËÊý)
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             Integer num;
             Resp resp2 = (Resp) this.getHRManageCard2(5, 1, sdate, edate);
             if(resp2.getBody()!=null){
@@ -253,7 +253,7 @@ public class DeptServiceImpl implements IDeptService {
                 return resp2;
             }
 
-            //»ñµÃÈëÖ°×ÜÈËÊý(edateÊ±¼äµãµÄÈëÖ°×ÜÈËÊý)
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             Resp resp3 = (Resp) this.getHRManageCard3(5, 1, sdate, edate);
             if(resp3.getBody()!=null){
                 PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp3.getBody();
@@ -262,7 +262,7 @@ public class DeptServiceImpl implements IDeptService {
                 return resp3;
             }
 
-            //»ñµÃÀëÖ°×ÜÈËÊý(edateÊ±¼äµãµÄÀëÖ°×ÜÈËÊý)
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             Resp resp4 = (Resp) this.getHRManageCard4(5, 1, sdate, edate);
             if(resp4.getBody()!=null){
                 PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp4.getBody();
@@ -275,11 +275,11 @@ public class DeptServiceImpl implements IDeptService {
                  ) {
                 HRManageCard hrManageCard = new HRManageCard();
 
-                //»ñµÃ²¿ÃÅÃû³Æ
+                //ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 hrManageCard.setDeptid(dept.getId());
                 hrManageCard.setDepname(dept.getDepname());
 
-                //»ñµÃËùÔÚ²¿ÃÅÔÚÖ°ÈËÊý(edateÊ±¼äµãµÄÔÚÖ°×ÜÈËÊý)(×¢Òâ×ª²¿ÃÅÔ±¹¤µÄÓ°Ïì£¬×¢£º´ËÖÖÇé¿öÇ°ÆÚ°æ±¾ÔÝ²»¿¼ÂÇ)
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)(×¢ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ì£¬×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ú°æ±¾ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½)
                 Integer ratio;
                 Resp resp5 = (Resp) this.getHRManageCard5(5, 1, dept.getId(), sdate, edate);
                 if(resp5.getBody()!=null){
@@ -290,7 +290,7 @@ public class DeptServiceImpl implements IDeptService {
                     return resp5;
                 }
 
-                //ÈËÊýÕ¼±È
+                //ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½
                 System.out.println("ratio:"+ratio);
                 System.out.println("num:"+num);
                 Double db = ratio.doubleValue()/num.doubleValue()*100;
@@ -298,7 +298,7 @@ public class DeptServiceImpl implements IDeptService {
                 BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
                 hrManageCard.setRatio(bg.doubleValue() + "%");
 
-                //»ñµÃËùÔÚ²¿ÃÅÈëÖ°ÈËÊý(edateÊ±¼äµãµÄÈëÖ°×ÜÈËÊý)(×¢Òâ×ª²¿ÃÅÔ±¹¤µÄÓ°Ïì£¬×¢£º´ËÖÖÇé¿öÇ°ÆÚ°æ±¾ÔÝ²»¿¼ÂÇ)
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)(×¢ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ì£¬×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ú°æ±¾ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½)
                 Resp resp6 = (Resp) this.getHRManageCard6(5, 1, dept.getId(), sdate, edate);
                 if(resp6.getBody()!=null){
                     PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp6.getBody();
@@ -307,7 +307,7 @@ public class DeptServiceImpl implements IDeptService {
                     return resp6;
                 }
 
-                //»ñµÃËùÔÚ²¿ÃÅÀëÖ°ÈËÊý(edateÊ±¼äµãµÄÈëÖ°×ÜÈËÊý)(×¢Òâ×ª²¿ÃÅÔ±¹¤µÄÓ°Ïì£¬×¢£º´ËÖÖÇé¿öÇ°ÆÚ°æ±¾ÔÝ²»¿¼ÂÇ)
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)(×¢ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ì£¬×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ú°æ±¾ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½)
                 Resp resp7 = (Resp) this.getHRManageCard7(5, 1, dept.getId(), sdate, edate);
                 if(resp7.getBody()!=null){
                     PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp7.getBody();
@@ -316,7 +316,7 @@ public class DeptServiceImpl implements IDeptService {
                     return resp7;
                 }
 
-                //»ñµÃ²¿ÃÅÏàÓ¦µÄÈËÔ±(edateÊ±¼äµãµÄÔÚÖ°ÈËÔ±)
+                //ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ô±(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½Ô±)
                 /*List<Map> users = new ArrayList<>();
                 for (PersonalInformation per:((PageHelper<PersonalInformation>) resp2.getBody()).getAllList()
                      ) {
@@ -331,13 +331,13 @@ public class DeptServiceImpl implements IDeptService {
                 hrManageCardList.add(hrManageCard);
             }
             paramMap.put("HRManageCards",hrManageCardList);
-            return RespUtil.successResp("205","·µ»Ø³É¹¦£¡",paramMap);
+            return RespUtil.successResp("205","ï¿½ï¿½ï¿½Ø³É¹ï¿½ï¿½ï¿½",paramMap);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ÏµÍ³ÕýÔÚÃ¦£¬ÇëÉÔºóÔÙÊÔ£¡",null);
+            return RespUtil.successResp("405","ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ô£ï¿½",null);
         }
     }
-    //¼ÆËãÊ±¼ä³õÆÚÊýºÍÊ±¼äÄ©ÆÚÊýµÄ¹¤¾ß
+    //ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ä©ï¿½ï¿½ï¿½ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½
     private Map<String,String> getTwoDate(String sdate,String edate){
         HashMap<String, String> map = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -345,12 +345,12 @@ public class DeptServiceImpl implements IDeptService {
         String curDate = sdf.format(date);
         Boolean d1 = sdate==null || sdate.equals("");
         Boolean d2 = edate==null || edate.equals("");
-        //1.sdate=null,  edate=null=>×÷Îªµ±Ç°Ê±¼ä
+        //1.sdate=null,  edate=null=>ï¿½ï¿½Îªï¿½ï¿½Ç°Ê±ï¿½ï¿½
         if(d1 && d2){
             sdate = edate =curDate;
         }
-        //2.sdate!=null, edate=null=>ÏÞ£ºsdate<=µ±Ç°Ê±¼ä
-        //                           ½á£ºedate=sdate
+        //2.sdate!=null, edate=null=>ï¿½Þ£ï¿½sdate<=ï¿½ï¿½Ç°Ê±ï¿½ï¿½
+        //                           ï¿½á£ºedate=sdate
         if(!d1 && d2){
             if(sdate.compareTo(curDate)<=0){
                 edate=sdate;
@@ -358,8 +358,8 @@ public class DeptServiceImpl implements IDeptService {
                 return null;
             }
         }
-        //3.sdate=null, edate!=null=>ÏÞ£ºedate<=µ±Ç°Ê±¼ä
-        //                           ½á£ºsdate=edate
+        //3.sdate=null, edate!=null=>ï¿½Þ£ï¿½edate<=ï¿½ï¿½Ç°Ê±ï¿½ï¿½
+        //                           ï¿½á£ºsdate=edate
         if(d1 && !d2){
             if(edate.compareTo(curDate)<=0){
                 sdate = edate;
@@ -367,8 +367,8 @@ public class DeptServiceImpl implements IDeptService {
                 return null;
             }
         }
-        //4.sdate!=null,edate!=null=>ÏÞ£ºsdate<=edate<=µ±Ç°Ê±¼ä
-        //                           ½á£ºsdate,edate
+        //4.sdate!=null,edate!=null=>ï¿½Þ£ï¿½sdate<=edate<=ï¿½ï¿½Ç°Ê±ï¿½ï¿½
+        //                           ï¿½á£ºsdate,edate
         if(!d1 && !d2){
             if(sdate.compareTo(edate)>0 || edate.compareTo(curDate)>0){
                 return null;
@@ -381,7 +381,7 @@ public class DeptServiceImpl implements IDeptService {
 
     /**
      *@Author:ShiYun;
-     *@Description:»ñµÃ×ÜÈËÊý(edateÊ±¼äµãµÄÔÚÖ°×ÜÈËÊý)
+     *@Description:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
      *@Date: 10:13 2018\8\15 0015
      */
     @Override
@@ -389,13 +389,13 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","Ê±¼äÑ¡Ôñ´íÎó£¡",null);
+                return RespUtil.successResp("505","Ê±ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
-            List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(null,edate);//Ê±¼ä½ÚµãedateÇ°µÄÈëÖ°ÈËÔ±
+            List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(null,edate);//Ê±ï¿½ï¿½Úµï¿½edateÇ°ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½Ô±
             System.out.println("personalInformationList1.size():"+personalInformationList1.size());
-            List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(null,edate);//Ê±¼ä½ÚµãedateÇ°µÄÀëÖ°ÈËÔ±
+            List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(null,edate);//Ê±ï¿½ï¿½Úµï¿½edateÇ°ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½Ô±
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             if (personalInformationList2.size()>0) {
                 for (PersonalInformation per:personalInformationList1
@@ -408,16 +408,16 @@ public class DeptServiceImpl implements IDeptService {
                 personalInformationList = personalInformationList1;
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
-            return RespUtil.successResp("205","Ìá½»³É¹¦£¡",pageHelper);
+            return RespUtil.successResp("205","ï¿½á½»ï¿½É¹ï¿½ï¿½ï¿½",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ÏµÍ³ÕýÔÚÃ¦£¬ÇëÉÔºóÔÙÊÔ£¡",null);
+            return RespUtil.successResp("405","ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ô£ï¿½",null);
         }
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:»ñµÃÈëÖ°×ÜÈËÊý(edateÊ±¼äµãµÄÈëÖ°×ÜÈËÊý)
+     *@Description:ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
      *@Date: 10:13 2018\8\15 0015
      */
     @Override
@@ -425,22 +425,22 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","Ê±¼äÑ¡Ôñ´íÎó£¡",null);
+                return RespUtil.successResp("505","Ê±ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
             List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectAll2(sdate, edate);
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.successResp("205","Ìá½»³É¹¦£¡",pageHelper);
+            return RespUtil.successResp("205","ï¿½á½»ï¿½É¹ï¿½ï¿½ï¿½",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ÏµÍ³ÕýÔÚÃ¦£¬ÇëÉÔºóÔÙÊÔ£¡",null);
+            return RespUtil.successResp("405","ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ô£ï¿½",null);
         }
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:»ñµÃÀëÖ°×ÜÈËÊý(edateÊ±¼äµãµÄÀëÖ°×ÜÈËÊý)
+     *@Description:ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
      *@Date: 10:14 2018\8\15 0015
      */
     @Override
@@ -448,22 +448,22 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","Ê±¼äÑ¡Ôñ´íÎó£¡",null);
+                return RespUtil.successResp("505","Ê±ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
             List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectAll3(sdate, edate);
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.successResp("205","Ìá½»³É¹¦£¡",pageHelper);
+            return RespUtil.successResp("205","ï¿½á½»ï¿½É¹ï¿½ï¿½ï¿½",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ÏµÍ³ÕýÔÚÃ¦£¬ÇëÉÔºóÔÙÊÔ£¡",null);
+            return RespUtil.successResp("405","ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ô£ï¿½",null);
         }
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:»ñµÃËùÔÚ²¿ÃÅÔÚÖ°ÈËÊý(edateÊ±¼äµãµÄÔÚÖ°×ÜÈËÊý)(×¢Òâ×ª²¿ÃÅÔ±¹¤µÄÓ°Ïì£¬×¢£º´ËÖÖÇé¿öÇ°ÆÚ°æ±¾ÔÝ²»¿¼ÂÇ)
+     *@Description:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)(×¢ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ì£¬×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ú°æ±¾ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½)
      *@Date: 10:14 2018\8\15 0015
      */
     @Override
@@ -471,7 +471,7 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","Ê±¼äÑ¡Ôñ´íÎó£¡",null);
+                return RespUtil.successResp("505","Ê±ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
@@ -489,16 +489,16 @@ public class DeptServiceImpl implements IDeptService {
                 personalInformationList = personalInformationList1;
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
-            return RespUtil.successResp("205","Ìá½»³É¹¦£¡",pageHelper);
+            return RespUtil.successResp("205","ï¿½á½»ï¿½É¹ï¿½ï¿½ï¿½",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ÏµÍ³ÕýÔÚÃ¦£¬ÇëÉÔºóÔÙÊÔ£¡",null);
+            return RespUtil.successResp("405","ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ô£ï¿½",null);
         }
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:»ñµÃËùÔÚ²¿ÃÅÈëÖ°ÈËÊý(edateÊ±¼äµãµÄÈëÖ°×ÜÈËÊý)(×¢Òâ×ª²¿ÃÅÔ±¹¤µÄÓ°Ïì£¬×¢£º´ËÖÖÇé¿öÇ°ÆÚ°æ±¾ÔÝ²»¿¼ÂÇ)
+     *@Description:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)(×¢ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ì£¬×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ú°æ±¾ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½)
      *@Date: 10:15 2018\8\15 0015
      */
     @Override
@@ -506,22 +506,22 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","Ê±¼äÑ¡Ôñ´íÎó£¡",null);
+                return RespUtil.successResp("505","Ê±ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
             List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid2(depid, sdate, edate);
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.successResp("205","Ìá½»³É¹¦£¡",pageHelper);
+            return RespUtil.successResp("205","ï¿½á½»ï¿½É¹ï¿½ï¿½ï¿½",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ÏµÍ³ÕýÔÚÃ¦£¬ÇëÉÔºóÔÙÊÔ£¡",null);
+            return RespUtil.successResp("405","ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ô£ï¿½",null);
         }
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:»ñµÃËùÔÚ²¿ÃÅÀëÖ°ÈËÊý(edateÊ±¼äµãµÄÈëÖ°×ÜÈËÊý)(×¢Òâ×ª²¿ÃÅÔ±¹¤µÄÓ°Ïì£¬×¢£º´ËÖÖÇé¿öÇ°ÆÚ°æ±¾ÔÝ²»¿¼ÂÇ)
+     *@Description:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½(edateÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)(×¢ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ì£¬×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ú°æ±¾ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½)
      *@Date: 10:15 2018\8\15 0015
      */
     @Override
@@ -529,20 +529,20 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","Ê±¼äÑ¡Ôñ´íÎó£¡",null);
+                return RespUtil.successResp("505","Ê±ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
             List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid3(depid, sdate, edate);
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.successResp("205","Ìá½»³É¹¦£¡",pageHelper);
+            return RespUtil.successResp("205","ï¿½á½»ï¿½É¹ï¿½ï¿½ï¿½",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","ÏµÍ³ÕýÔÚÃ¦£¬ÇëÉÔºóÔÙÊÔ£¡",null);
+            return RespUtil.successResp("405","ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Ô£ï¿½",null);
         }
     }
 
-    @Override
+    /*@Override
     public Object getHRManageCard2(Integer rows, Integer page, String sdate, String edate) {
         return null;
     }
@@ -565,11 +565,11 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public Object getHRManageCard6(Integer rows, Integer page, Integer depid, String sdate, String edate) {
         return null;
-    }
+    }*/
 
     /**
      *@Author:ShiYun;
-     *@Description:forGXF£¨¸ù¾ÝÐÕÃû²éÑ¯ÏàÓ¦µÄ¹«Ë¾Ãû³Æ£©
+     *@Description:forGXFï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½Ó¦ï¿½Ä¹ï¿½Ë¾ï¿½ï¿½ï¿½Æ£ï¿½
      *@Date: 17:25 2018\8\14 0014
      */
     @Override
