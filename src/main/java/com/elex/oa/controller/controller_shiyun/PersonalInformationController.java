@@ -2314,7 +2314,7 @@ public class PersonalInformationController {
                 ) {
             strs.add(d.getDepname());
         }
-        return null;
+        return strs;
     }
 
 
