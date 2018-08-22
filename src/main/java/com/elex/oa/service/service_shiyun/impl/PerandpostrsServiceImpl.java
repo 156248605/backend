@@ -42,6 +42,17 @@ public class PerandpostrsServiceImpl implements IPerandpostrsService {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据postid查询人员集合
+     *@Date: 16:00 2018\8\21 0021
+     */
+    @Override
+    public List<PerAndPostRs> queryPerAndPostRsByPostid(Integer postid) {
+        List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectPeridsByPostid(postid);
+        return perAndPostRs;
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:根据perid删除信息
      *@Date: 9:11 2018\5\18 0018
      */

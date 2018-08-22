@@ -15,19 +15,26 @@ public interface IPerandpostrsService {
      *@Description:添加一条关系信息
      *@Date: 20:30 2018\5\12 0012
      */
-    public void addOne(PerAndPostRs perAndPostRs);
+    void addOne(PerAndPostRs perAndPostRs);
 
     /**
      *@Author:ShiYun;
      *@Description:根据人事ID查询岗位集合
      *@Date: 20:31 2018\5\12 0012
      */
-    public List<PerAndPostRs> queryPerAndPostRsByPerid(Integer perid);
+    List<PerAndPostRs> queryPerAndPostRsByPerid(Integer perid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据postid查询人员集合
+     *@Date: 15:58 2018\8\21 0021
+     */
+    List<PerAndPostRs> queryPerAndPostRsByPostid(Integer postid);
 
     /**
      *@Author:ShiYun;
      *@Description:根据perid删除信息
      *@Date: 9:10 2018\5\18 0018
      */
-    public void removeByPerid(Integer perid);
+    void removeByPerid(Integer perid);
 }

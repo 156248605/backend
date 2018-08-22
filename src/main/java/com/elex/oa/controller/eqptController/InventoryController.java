@@ -109,9 +109,9 @@ public class InventoryController {
         inventoryImpl.changeInfo(request);
     }
 
-    @RequestMapping("/testInv")
+    @RequestMapping("/getInvId")
     @ResponseBody
-    public List<HashMap<String, Object>> testInv(){
-        return inventoryImpl.testInv();
+    public List getInvId(){
+        return inventoryImpl.getInvId();
     }
 }

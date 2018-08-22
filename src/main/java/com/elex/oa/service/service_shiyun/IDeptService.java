@@ -31,7 +31,7 @@ public interface IDeptService {
      */
     List<Dept> queryDeptsByDepcode(String depcode);
 
-    //更具部门ID查询部门对象
+    //根据部门ID查询部门对象
     Dept queryOneDepByDepid(Integer id);
 
     /**

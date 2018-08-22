@@ -254,13 +254,22 @@
         WHERE invId = #{invId} AND reptId = #{reptId} AND position = #{position} AND materialId = #{materialId}
     </update>
 
+    <select id="getInvId" resultType="java.lang.String">
+        SELECT * FROM w_kcpdd1 WHERE F_PDBH NOT IN (SELECT invId FROM eqpt_inventory)
+    </select>
+
     <select id="invInfo" resultType="HashMap">
-        SELECT * FROM w_kcpdd WHERE INST_STATUS_ = #{arg0} ORDER BY ID_ DESC LIMIT 1
+        SELECT * FROM w_kcpdd1 WHERE INST_STATUS_ = #{arg0} ORDER BY ID_ DESC LIMIT 1
+    </select>
+
+    <select id="invDetail" resultType="HashMap">
+        SELECT * FROM w_ykmx1 WHERE REF_ID_ = #{arg0}
     </select>
 
     <select id="test" resultType="HashMap">
         SELECT * FROM w_gzrz
     </select>
+
 
     <update id="changeNum" parameterType="com.elex.oa.entity.eqpt.Repository">
         UPDATE eqpt_detail SET num = #{numInv} WHERE id = #{materialId} AND reptId = #{reptId} AND postId = #{postId}

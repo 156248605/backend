@@ -55,4 +55,11 @@ public interface IPerandpostrsDao {
      *@Date: 15:04 2018\5\22 0022
      */
     public List<PerAndPostRs> selectByConditions2(PersonalInformation personalInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据postid查询perids
+     *@Date: 15:56 2018\8\21 0021
+     */
+    public List<PerAndPostRs> selectPeridsByPostid(Integer postid);
 }

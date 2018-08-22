@@ -687,7 +687,7 @@ public class PersonalInformationController {
         personalInformation.setUserid(userid);
         personalInformation.setBaseinformationid(baseInformationId);
         Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
-        return "提交成功！";
+        return RespUtil.successResp("205","提交成功！",userid);
     }
 
     /**
@@ -700,6 +700,9 @@ public class PersonalInformationController {
     public String addManageInformation(
             PersonalInformation personalInformation
     ){
+        if(personalInformation.getUserid()==null || iPersonalInformationService.queryOneByUserid(personalInformation.getUserid())==null){
+            return "系统正在忙，请稍后";
+        }
         // 保存人事信息的管理信息
         ManageInformation manageInformation = new ManageInformation();
         if (ihRsetRankService.queryByRank(personalInformation.getZj())!=null) {
@@ -1414,7 +1417,6 @@ public class PersonalInformationController {
         if(changeInformation==null){
             costInformation = new CostInformation();//不存在则新建
         }
-
         if (ihRsetSalarystandardService.queryBySalarystandard(personalInformation.getSalary())!=null) {
             if (!personalInformation.getSalary().equals(personalInformation2.getSalary())) {
                 changeInformation.setChangeinformation("薪资标准");
@@ -1598,106 +1600,104 @@ public class PersonalInformationController {
         // 添加标识
         Boolean otherBL = false;
         OtherInformation otherInformation = iOtherInformationService.queryOneById(personalInformation2.getOtherinformationid());
-        /*if(otherInformation==null){
+        if(otherInformation==null){
             otherInformation = new OtherInformation();//不存在则新建
-        }*/
+        }
 
-        System.out.println(personalInformation.toString());
-
-        /*if (otherInformation!=null) {
-            if (ihRsetTelphoneService.queryByTelphone(personalInformation.getTelphone())!=null && !personalInformation.getTelphone().equals(personalInformation2.getTelphone())) {
-                changeInformation.setChangeinformation("办公电话");
-                changeInformation.setBeforeinformation(personalInformation2.getTelphone());
-                changeInformation.setAfterinformation(personalInformation.getTelphone());
-                personalInformation2.setTelphoneid(ihRsetTelphoneService.queryByTelphone(personalInformation.getTelphone()).getId());
-                iChangeInformationService.addOne(changeInformation);
-                listBL = true;
-            }
-
-            if (personalInformation.getMobilephone()!=null && !"".equals(personalInformation.getTelphone()) && !personalInformation.getMobilephone().equals(personalInformation2.getTelphone())) {
-                changeInformation.setChangeinformation("移动电话");
-                changeInformation.setBeforeinformation(personalInformation2.getMobilephone());
-                changeInformation.setAfterinformation(personalInformation.getMobilephone());
-                personalInformation2.setMobilephone(personalInformation.getMobilephone());
-                iChangeInformationService.addOne(changeInformation);
-                listBL = true;
-            }
-
-            if (personalInformation.getCompanyemail()!=null && !"".equals(personalInformation.getCompanyemail()) && !personalInformation.getCompanyemail().equals(personalInformation2.getCompanyemail())) {
-                changeInformation.setChangeinformation("公司邮件");
-                changeInformation.setBeforeinformation(personalInformation2.getCompanyemail());
-                changeInformation.setAfterinformation(personalInformation.getCompanyemail());
-                otherInformation.setCompanyemail(personalInformation.getCompanyemail());
-                iChangeInformationService.addOne(changeInformation);
-                otherBL = true;
-            }
-
-            if (personalInformation.getPrivateemail()!=null && !"".equals(personalInformation.getPrivateemail()) && !personalInformation.getPrivateemail().equals(personalInformation2.getPrivateemail())) {
-                changeInformation.setChangeinformation("私人邮件");
-                changeInformation.setBeforeinformation(personalInformation2.getPrivateemail());
-                changeInformation.setAfterinformation(personalInformation.getPrivateemail());
-                otherInformation.setPrivateemail(personalInformation.getPrivateemail());
-                iChangeInformationService.addOne(changeInformation);
-                otherBL = true;
-            }
-
-            if (personalInformation.getEmergencycontract()!=null && !"".equals(personalInformation.getEmergencycontract()) && !personalInformation.getEmergencycontract().equals(personalInformation2.getEmergencycontract())) {
-                changeInformation.setChangeinformation("应急联系人");
-                changeInformation.setBeforeinformation(personalInformation2.getEmergencycontract());
-                changeInformation.setAfterinformation(personalInformation.getEmergencycontract());
-                otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
-                iChangeInformationService.addOne(changeInformation);
-                otherBL = true;
-            }
-
-            if (personalInformation.getEmergencyphone()!=null && !"".equals(personalInformation.getEmergencyphone()) && !personalInformation.getEmergencyphone().equals(personalInformation2.getEmergencyphone())) {
-                changeInformation.setChangeinformation("应急联系电话");
-                changeInformation.setBeforeinformation(personalInformation2.getEmergencyphone());
-                changeInformation.setAfterinformation(personalInformation.getEmergencyphone());
-                otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
-                iChangeInformationService.addOne(changeInformation);
-                otherBL = true;
-            }
-
-            if (personalInformation.getAddress()!=null && !"".equals(personalInformation.getAddress()) && !personalInformation.getAddress().equals(personalInformation2.getAddress())) {
-                changeInformation.setChangeinformation("应急联系地址");
-                changeInformation.setBeforeinformation(personalInformation2.getAddress());
-                changeInformation.setAfterinformation(personalInformation2.getAddress());
-                otherInformation.setAddress(personalInformation.getAddress());
-                iChangeInformationService.addOne(changeInformation);
-                otherBL = true;
-            }
-
-            if (personalInformation.getRemark()!=null && !"".equals(personalInformation.getRemark()) && !personalInformation.getRemark().equals(personalInformation2.getRemark())) {
-                changeInformation.setChangeinformation("备注");
-                changeInformation.setBeforeinformation(personalInformation2.getRemark());
-                changeInformation.setAfterinformation(personalInformation.getRemark());
-                otherInformation.setRemark(personalInformation.getRemark());
-                iChangeInformationService.addOne(changeInformation);
-                otherBL = true;
-            }
-
-            if (ihRsetEmergencyrpService.queryByEmergencyrp(personalInformation.getEmergencyrp())!=null && !personalInformation.getEmergencyrp().equals(personalInformation2.getEmergencyrp())) {
-                changeInformation.setChangeinformation("应急联系人关系");
-                changeInformation.setBeforeinformation(personalInformation2.getEmergencyrp());
-                changeInformation.setAfterinformation(personalInformation.getEmergencyrp());
-                otherInformation.setEmergencyrpid(ihRsetEmergencyrpService.queryByEmergencyrp(personalInformation.getEmergencyrp()).getId());
-                iChangeInformationService.addOne(changeInformation);
-                otherBL = true;
-            }
-        }else {
-            Integer otherinformationid = iOtherInformationService.saveOne(otherInformation);
-            personalInformation2.setOtherinformationid(otherinformationid);
+        if (ihRsetTelphoneService.queryByTelphone(personalInformation.getTelphone())!=null && !personalInformation.getTelphone().equals(personalInformation2.getTelphone())) {
+            changeInformation.setChangeinformation("办公电话");
+            changeInformation.setBeforeinformation(personalInformation2.getTelphone());
+            changeInformation.setAfterinformation(personalInformation.getTelphone());
+            personalInformation2.setTelphoneid(ihRsetTelphoneService.queryByTelphone(personalInformation.getTelphone()).getId());
+            iChangeInformationService.addOne(changeInformation);
             listBL = true;
         }
 
+        if (personalInformation.getMobilephone()!=null && !"".equals(personalInformation.getMobilephone()) && !personalInformation.getMobilephone().equals(personalInformation2.getMobilephone())) {
+            changeInformation.setChangeinformation("移动电话");
+            changeInformation.setBeforeinformation(personalInformation2.getMobilephone());
+            changeInformation.setAfterinformation(personalInformation.getMobilephone());
+            personalInformation2.setMobilephone(personalInformation.getMobilephone());
+            iChangeInformationService.addOne(changeInformation);
+            listBL = true;
+        }
+
+        if (personalInformation.getCompanyemail()!=null && !"".equals(personalInformation.getCompanyemail()) && !personalInformation.getCompanyemail().equals(personalInformation2.getCompanyemail())) {
+            changeInformation.setChangeinformation("公司邮件");
+            changeInformation.setBeforeinformation(personalInformation2.getCompanyemail());
+            changeInformation.setAfterinformation(personalInformation.getCompanyemail());
+            otherInformation.setCompanyemail(personalInformation.getCompanyemail());
+            iChangeInformationService.addOne(changeInformation);
+            otherBL = true;
+        }
+
+        if (personalInformation.getPrivateemail()!=null && !"".equals(personalInformation.getPrivateemail()) && !personalInformation.getPrivateemail().equals(personalInformation2.getPrivateemail())) {
+            changeInformation.setChangeinformation("私人邮件");
+            changeInformation.setBeforeinformation(personalInformation2.getPrivateemail());
+            changeInformation.setAfterinformation(personalInformation.getPrivateemail());
+            otherInformation.setPrivateemail(personalInformation.getPrivateemail());
+            iChangeInformationService.addOne(changeInformation);
+            otherBL = true;
+        }
+
+        if (personalInformation.getEmergencycontract()!=null && !"".equals(personalInformation.getEmergencycontract()) && !personalInformation.getEmergencycontract().equals(personalInformation2.getEmergencycontract())) {
+            changeInformation.setChangeinformation("应急联系人");
+            changeInformation.setBeforeinformation(personalInformation2.getEmergencycontract());
+            changeInformation.setAfterinformation(personalInformation.getEmergencycontract());
+            otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
+            iChangeInformationService.addOne(changeInformation);
+            otherBL = true;
+        }
+
+        if (personalInformation.getEmergencyphone()!=null && !"".equals(personalInformation.getEmergencyphone()) && !personalInformation.getEmergencyphone().equals(personalInformation2.getEmergencyphone())) {
+            changeInformation.setChangeinformation("应急联系电话");
+            changeInformation.setBeforeinformation(personalInformation2.getEmergencyphone());
+            changeInformation.setAfterinformation(personalInformation.getEmergencyphone());
+            otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
+            iChangeInformationService.addOne(changeInformation);
+            otherBL = true;
+        }
+
+        if (personalInformation.getAddress()!=null && !"".equals(personalInformation.getAddress()) && !personalInformation.getAddress().equals(personalInformation2.getAddress())) {
+            changeInformation.setChangeinformation("应急联系地址");
+            changeInformation.setBeforeinformation(personalInformation2.getAddress());
+            changeInformation.setAfterinformation(personalInformation2.getAddress());
+            otherInformation.setAddress(personalInformation.getAddress());
+            iChangeInformationService.addOne(changeInformation);
+            otherBL = true;
+        }
+
+        if (personalInformation.getRemark()!=null && !"".equals(personalInformation.getRemark()) && !personalInformation.getRemark().equals(personalInformation2.getRemark())) {
+            changeInformation.setChangeinformation("备注");
+            changeInformation.setBeforeinformation(personalInformation2.getRemark());
+            changeInformation.setAfterinformation(personalInformation.getRemark());
+            otherInformation.setRemark(personalInformation.getRemark());
+            iChangeInformationService.addOne(changeInformation);
+            otherBL = true;
+        }
+
+        if (ihRsetEmergencyrpService.queryByEmergencyrp(personalInformation.getEmergencyrp())!=null && !personalInformation.getEmergencyrp().equals(personalInformation2.getEmergencyrp())) {
+            changeInformation.setChangeinformation("应急联系人关系");
+            changeInformation.setBeforeinformation(personalInformation2.getEmergencyrp());
+            changeInformation.setAfterinformation(personalInformation.getEmergencyrp());
+            otherInformation.setEmergencyrpid(ihRsetEmergencyrpService.queryByEmergencyrp(personalInformation.getEmergencyrp()).getId());
+            iChangeInformationService.addOne(changeInformation);
+            otherBL = true;
+        }
+
         if(otherBL){
-            iOtherInformationService.modifyOne(otherInformation);
+            if(otherInformation.getId()!=null){
+                iOtherInformationService.modifyOne(otherInformation);
+            }else {
+                Integer otherinformationid = iOtherInformationService.saveOne(otherInformation);
+                personalInformation2.setOtherinformationid(otherinformationid);
+                listBL = true;
+            }
         }
 
         if(listBL){
             iPersonalInformationService.modifyOne(personalInformation2);
-        }*/
+        }
         return "提交成功！";
     }
 
@@ -2325,6 +2325,27 @@ public class PersonalInformationController {
         return strs;
     }
 
+    /**
+     *@Author:ShiYun;
+     *@Description:所有部门的ID、名称(公司级的提出)
+     *@Date: 14:33 2018\7\9 0009
+     */
+    @RequestMapping("/queryGXF007")
+    @ResponseBody
+    public List<Object> queryGXF007(){
+        List<Object> list = new ArrayList<>();
+        List<Dept> depts = iDeptService.queryAllDepts();
+        for(Dept dept:depts){
+            if (dept.getDeptypeid()!=1 && dept.getDeptypeid()!=3) {
+                Map<String, Object> deptMap = new HashMap<>();
+                deptMap.put("deptId",dept.getId());
+                deptMap.put("deptName",dept.getDepname());
+                list.add(deptMap);
+            }
+        }
+        return list;
+    }
+
 
     /**
      *@Author:ShiYun;
@@ -2353,6 +2374,28 @@ public class PersonalInformationController {
                 return RespUtil.successResp("205","没有查到此用户信息",null);
             }
         }
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据岗位名称查询人员
+     *@Date: 15:51 2018\8\21 0021
+     */
+    @RequestMapping("/queryZHG002")
+    @ResponseBody
+    public Object queryZHG002(
+            @RequestParam("postname")String postname
+    ){
+        Post post = iPostService.queryOneByPostname(postname);
+        List<PerAndPostRs> perAndPostRsList = iPerandpostrsService.queryPerAndPostRsByPostid(post.getId());
+        List<User> list = new ArrayList<>();
+        for (PerAndPostRs p:perAndPostRsList
+             ) {
+            PersonalInformation personalInformation = iPersonalInformationService.queryOneById(p.getPerid());
+            User byId = iUserService.getById(personalInformation.getUserid());
+            list.add(byId);
+        }
+        return RespUtil.successResp("205","请求成功！",list);
     }
 
     /**

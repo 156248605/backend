@@ -24,13 +24,13 @@
     </delete>
 
     <select id="wdbhR" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT F_WDBH AS outId FROM w_lysqd WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS outId FROM w_lysqd WHERE NOT EXISTS (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
         UNION
-        SELECT DISTINCT F_WDBH AS outId FROM w_zdsqd WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS outId FROM w_zdsqd WHERE NOT EXISTS (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="wdbhX" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT F_WDBH AS outId FROM w_xsfhtzd WHERE ID_ NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS outId FROM w_xsfhtzd WHERE NOT EXISTS (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="wdbhC" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -38,9 +38,13 @@
     </select>
 
     <select id="showmatR" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_XQSL AS outNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx WHERE REF_ID_ = (SELECT DISTINCT ID_ FROM w_lysqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS outNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_lysqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
         UNION
-        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_CGSL AS outNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx WHERE REF_ID_ = (SELECT DISTINCT ID_ FROM w_zdsqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS outNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_lysqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND eqpt_material.id = (SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        UNION
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS outNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_zdsqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        UNION
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS outNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_zdsqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND eqpt_material.id = (SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
     </select>
 
     <select id="showmatX" resultType="com.elex.oa.entity.eqpt.Repository">

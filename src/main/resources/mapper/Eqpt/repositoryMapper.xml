@@ -546,7 +546,10 @@
     </select>
 
     <select id="getNumber" resultType="string">
-        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
     </select>
 
     <select id="numInPost" resultType="string">
@@ -555,7 +558,7 @@
             <if test="reptId != null">
                 AND reptId = #{reptId}
             </if>
-            <if test="postId != null">
+            <if test="postId != null and postId != ''">
                 AND postId = #{postId}
             </if>
             <if test="id != null">

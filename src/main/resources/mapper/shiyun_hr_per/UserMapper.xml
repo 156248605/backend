@@ -31,6 +31,11 @@
 		where id=#{id}
 	</select>
 
+	<select id="selectServingUserByUserid" parameterType="java.lang.Integer" resultMap="UserMapper">
+		select * from tb_id_user
+		where id=#{id} AND state=1
+	</select>
+
 	<select id="selectByTruename" resultType="java.lang.String" resultMap="UserMapper">
 		SELECT * FROM tb_id_user
 		WHERE truename=#{truename}
