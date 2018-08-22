@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.objectives.PatentDao">
+    <resultMap id="goal" type="com.elex.oa.entity.objectives.Goal">
+        <result column="company" javaType="string" property="company"></result>
+        <result column="annual_target" javaType="int" property="annualTarget"></result>
+        <result column="the_total" javaType="string" property="theTotal"></result>
+        <result column="completion" javaType="string" property="completion"></result>
+        <result column="january" javaType="int" property="january"></result>
+        <result column="february" javaType="int" property="february"></result>
+        <result column="march" javaType="int" property="march"></result>
+        <result column="april" javaType="int" property="april"></result>
+        <result column="may" javaType="int" property="may"></result>
+        <result column="june" javaType="int" property="june"></result>
+        <result column="july" javaType="int" property="july"></result>
+        <result column="august" javaType="int" property="august"></result>
+        <result column="september" javaType="int" property="september"></result>
+        <result column="october" javaType="int" property="october"></result>
+        <result column="november" javaType="int" property="november"></result>
+        <result column="december" javaType="int" property="december"></result>
+    </resultMap>
+
+    <select id="queryData" parameterType="com.elex.oa.entity.objectives.Goal" resultMap="goal">
+        SELECT company, annual_target, the_total, completion, january, february, march, april, may, june, july, august, september, october, november, december
+        FROM tar_pat_in WHERE annual = #{annual} AND company = #{company}
+    </select>
+
+    <delete id="deleteData" parameterType="com.elex.oa.entity.objectives.Goal">
+        DELETE FROM tar_pat_in WHERE annual = #{annual} AND company = #{company}
+    </delete>
+
+    <insert id="saveData" parameterType="com.elex.oa.entity.objectives.Goal">
+        INSERT INTO tar_pat_in (id, annual, company, annual_target, the_total, completion, january, february, march, april, may, june, july, august, september, october, november, december)
+        VALUES(NULL, #{annual}, #{company}, #{annualTarget}, #{theTotal}, #{completion}, #{january}, #{february}, #{march}, #{april}, #{may}, #{june}, #{july}, #{august}, #{september}, #{october}, #{november}, #{december})
+    </insert>
+</mapper>
