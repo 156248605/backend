@@ -19,7 +19,7 @@ import java.util.*;
 
 /**
  * @Author:ShiYun;
- * @Description:
+ * @Description:部门信息（业务层）
  * @Date:Created in  13:33 2018\3\16 0016
  * @Modify By:
  */

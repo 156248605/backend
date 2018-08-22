@@ -18,14 +18,14 @@ public interface IUserService extends BaseService<User> {
      *@Description:添加用户
      *@Date: 9:03 2018\4\11 0011
      */
-    public Integer saveOne(User user);
+    Integer saveOne(User user);
 
     /**
      *@Author:ShiYun;
      *@Description:删除用户
      *@Date: 14:52 2018\5\10 0010
      */
-    public void removeOne(Integer id);//离职信息的添加
+    void removeOne(Integer id);//离职信息的添加
     /*public void removeOne2(Integer id);//人事信息的删除*/
 
     /**
@@ -33,19 +33,26 @@ public interface IUserService extends BaseService<User> {
      *@Description:根据用户姓名查询用户
      *@Date: 11:16 2018\5\25 0025
      */
-    public User queryByTruename(String truename);
+    User queryByTruename(String truename);
 
     /**
      *@Author:ShiYun;
      *@Description:根据登录ID查询用户信息
      *@Date: 10:15 2018\8\9 0009
      */
-    public User queryByUsername(String username);
+    User queryByUsername(String username);
 
     /**
      *@Author:ShiYun;
      *@Description:查询所有的在职人员
      *@Date: 10:00 2018\8\21 0021
      */
-    public List<User> queryAllServings();
+    List<User> queryAllServings();
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据yong用户ID查询在职用户
+     *@Date: 18:31 2018\8\21 0021
+     */
+    User queryServingUserByUserid(Integer userid);
 }

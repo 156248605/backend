@@ -157,17 +157,17 @@ public class DepartmentInformationController {
                 parentdep.setDepname("");
             }
             if(dept.getPrincipaluserid()!=null){
-                principaluser = iUserService.getById(dept.getPrincipaluserid());
+                principaluser = iUserService.queryServingUserByUserid(dept.getPrincipaluserid());
             }else {
                 principaluser.setTruename("");
             }
             if(dept.getDeputyuserid()!=null){
-                deputyuser = iUserService.getById(dept.getDeputyuserid());
+                deputyuser = iUserService.queryServingUserByUserid(dept.getDeputyuserid());
             }else {
                 deputyuser.setTruename("");
             }
             if(dept.getSecretaryuserid()!=null){
-                secretaryuser = iUserService.getById(dept.getSecretaryuserid());
+                secretaryuser = iUserService.queryServingUserByUserid(dept.getSecretaryuserid());
             }else {
                 secretaryuser.setTruename("");
             }
@@ -220,17 +220,17 @@ public class DepartmentInformationController {
                 parentdep.setDepname("");
             }
             if(dept.getPrincipaluserid()!=null){
-                principaluser = iUserService.getById(dept.getPrincipaluserid());
+                principaluser = iUserService.queryServingUserByUserid(dept.getPrincipaluserid());
             }else {
                 principaluser.setTruename("");
             }
             if(dept.getDeputyuserid()!=null){
-                deputyuser = iUserService.getById(dept.getDeputyuserid());
+                deputyuser = iUserService.queryServingUserByUserid(dept.getDeputyuserid());
             }else {
                 deputyuser.setTruename("");
             }
             if(dept.getSecretaryuserid()!=null){
-                secretaryuser = iUserService.getById(dept.getSecretaryuserid());
+                secretaryuser = iUserService.queryServingUserByUserid(dept.getSecretaryuserid());
             }else {
                 secretaryuser.setTruename("");
             }
