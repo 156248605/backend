@@ -2320,6 +2320,27 @@ public class PersonalInformationController {
         return strs;
     }
 
+    /**
+     *@Author:ShiYun;
+     *@Description:所有部门的ID、名称(公司级的提出)
+     *@Date: 14:33 2018\7\9 0009
+     */
+    @RequestMapping("/queryGXF007")
+    @ResponseBody
+    public List<Object> queryGXF007(){
+        List<Object> list = new ArrayList<>();
+        List<Dept> depts = iDeptService.queryAllDepts();
+        for(Dept dept:depts){
+            if (dept.getDeptypeid()!=1 && dept.getDeptypeid()!=3) {
+                Map<String, Object> deptMap = new HashMap<>();
+                deptMap.put("deptId",dept.getId());
+                deptMap.put("deptName",dept.getDepname());
+                list.add(deptMap);
+            }
+        }
+        return list;
+    }
+
 
     /**
      *@Author:ShiYun;
