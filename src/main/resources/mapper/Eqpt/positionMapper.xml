@@ -168,6 +168,6 @@
         SELECT * FROM eqpt_outrepository WHERE postId = #{postId} LIMIT 1
     </select>
     <select id="recordshift" resultType="string">
-        SELECT * FROM eqpt_shiftrepository WHERE postId = #{postId} LIMIT 1
+        SELECT * FROM eqpt_shiftrepository WHERE inPost = #{postId} OR outPost = #{postId} LIMIT 1
     </select>
 </mapper>

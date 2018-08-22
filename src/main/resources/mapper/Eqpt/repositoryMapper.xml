@@ -657,6 +657,6 @@
         SELECT * FROM eqpt_outrepository WHERE reptId = #{reptId} LIMIT 1
     </select>
     <select id="recordshift" resultType="string">
-        SELECT * FROM eqpt_shiftrepository WHERE reptId = #{reptId} LIMIT 1
+        SELECT * FROM eqpt_shiftrepository WHERE inRept = #{reptId} OR outRept = #{reptId} LIMIT 1
     </select>
 </mapper>
