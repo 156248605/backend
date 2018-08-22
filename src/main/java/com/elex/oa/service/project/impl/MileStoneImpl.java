@@ -94,6 +94,9 @@ public class MileStoneImpl implements MileStoneService {
     @Transactional
     public String modifyPlansCode(String dataS, MileStone mileStone) {
         List<MileStonePlan> mileStonePlans = JSONArray.parseArray(dataS,MileStonePlan.class);
+        for(MileStonePlan mileStonePlan: mileStonePlans) {
+            mileStonePlan.setProjectCode(mileStone.getProjectCode());
+        }
         mileStoneDao.deleteMileStone(mileStone.getProjectCode()); //删除里程碑信息
         mileStoneDao.addMileStone(mileStone); //添加里程碑信息
         mileStoneDao.deleteMileStonePlans(mileStone.getProjectCode()); //删除里程碑信息详情
