@@ -3,7 +3,7 @@
 <mapper namespace="com.elex.oa.dao.eqptDao.InventoryMapper">
 
     <select id="find" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_inventory UNION SELECT * FROM eqpt_inventory_draft ORDER BY invId
+        SELECT * FROM eqpt_inventory ORDER BY invId
     </select>
 
     <select id="checkDraft" resultType="com.elex.oa.entity.eqpt.Repository">
