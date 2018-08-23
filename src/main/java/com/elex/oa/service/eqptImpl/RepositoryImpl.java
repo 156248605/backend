@@ -277,6 +277,26 @@ public class RepositoryImpl implements RepositoryService {
         }
     }
 
+    // 是否批次号序列号管理
+    @Override
+    public String manageResult(HttpServletRequest request){
+        String LIST = request.getParameter("list");
+        List<HashMap> list =JSON.parseArray(LIST, HashMap.class);
+        String result = "";
+        for (int i = 0; i < list.size(); i++) {
+            Material material = new Material();
+            material.setId(list.get(i).get("theMatId").toString());
+            result = repositoryMapper.checkBS(material);
+            if (!result.equals("否") && (list.get(i).get("theMatBnSn").toString().equals("") || list.get(i).containsKey(""))){
+                result = "1";
+                break;
+            }else {
+                result = "0";
+            }
+        }
+        return result;
+    }
+
 
    /* @Override
     public List<Repository> matInPost(HttpServletRequest request) {

@@ -44,4 +44,7 @@ public interface RepositoryService {
 
     // 是否有记录
     String record(HttpServletRequest request);
+
+    // 是否批次号序列号管理
+    String manageResult(HttpServletRequest request);
 }

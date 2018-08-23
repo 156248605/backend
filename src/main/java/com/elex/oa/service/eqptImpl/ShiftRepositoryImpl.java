@@ -118,7 +118,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
 
     // 记录数据
     @Override
-    public void NewRepository(HttpServletRequest request) throws ParseException {
+    public String NewRepository(HttpServletRequest request) throws ParseException {
+        String a = "";
         String SHIFTLIST = request.getParameter("shiftList");
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
         for (int i = 0; i < listSHIFT.size(); i++) {
@@ -160,21 +161,28 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             String PROJNAME = request.getParameter("projName");
             Material material = new Material();
             material.setId(materialId);
-            String bn = null;
-            String sn = null;
-            String number = materialMtMapper.manageBS(material);
-            if (number.equals("否")) {
-                sn = "无";
-                bn = "无";
-            } else if (number.equals("序列号")) {
-                sn = listSHIFT.get(i).get("theMatBnSn").toString();
-                bn = "无";
-            } else if (number.equals("批次号")) {
-                bn = listSHIFT.get(i).get("theMatBnSn").toString();
-                sn = "无";
+            if ( !materialMtMapper.manageBS(material).equals("否") && (listSHIFT.get(i).get("theMatBnSn").toString().equals("") || !listSHIFT.get(i).containsKey("theMatBnSn")) ) {
+                a = "2";
+                break;
+            }else {
+                String bn = null;
+                String sn = null;
+                String number = materialMtMapper.manageBS(material);
+                if (number.equals("否")) {
+                    sn = "无";
+                    bn = "无";
+                } else if (number.equals("序列号")) {
+                    sn = listSHIFT.get(i).get("theMatBnSn").toString();
+                    bn = "无";
+                } else if (number.equals("批次号")) {
+                    bn = listSHIFT.get(i).get("theMatBnSn").toString();
+                    sn = "无";
+                }
+                shiftRepositoryMapper.insertNew(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME);
+                a = "0";
             }
-            shiftRepositoryMapper.insertNew(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME);
         }
+        return a;
     }
 
     /*同步仓库*/

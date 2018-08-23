@@ -133,6 +133,11 @@ public class RepositoryController {
         return repositoryImpl.record(request);
     }
 
+    @RequestMapping("/checkBS")
+    @ResponseBody
+    public String checkBS(HttpServletRequest request){
+        return repositoryImpl.manageResult(request);
+    }
     /*@RequestMapping("/matInRept")
     @ResponseBody
     public List<Repository> matInRept(HttpServletRequest request){

@@ -97,7 +97,8 @@ public class OutRepositoryImpl implements OutRepositoryService {
 
     /*新建出库单*/
     @Override
-    public void InsertRepository (HttpServletRequest request)throws ParseException{
+    public String InsertRepository (HttpServletRequest request)throws ParseException{
+        String a = "";
         String OUTLIST = request.getParameter("outList");
         List<HashMap> listOUT =JSON.parseArray(OUTLIST, HashMap.class);
         for (int i = 0; i < listOUT.size(); i++) {
@@ -120,19 +121,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String OUTINFO = request.getParameter("outInfo");
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
-            String bn = null;
-            String sn = null;
             String number = materialMtMapper.manageBS(material);
-            if (number.equals("否")) {
-                sn = "无";
-                bn = "无";
-            } else if (number.equals("序列号")) {
-                sn = listOUT.get(i).get("theMatBnSn").toString();
-                bn = "无";
-            } else if (number.equals("批次号")) {
-                bn = listOUT.get(i).get("theMatBnSn").toString();
-                sn = "无";
-            }
             String POSTID = "无";
             if (listOUT.get(i).get("postId") != null){
                 POSTID = listOUT.get(i).get("postId").toString();
@@ -145,18 +134,37 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String REMARK = listOUT.get(i).get("theMatRemark").toString();
             String PROJID = request.getParameter("projId");
             String PROJNAME = request.getParameter("projName");
-            Repository repository = new Repository();
-            repository.setMaterialId(MATERIALID);
-            repository.setPostId(POSTID);
-            repository.setReptId(REPTID);
-            repository.setOutId(OUTID);
-            repository.setBn(bn);
-            repository.setSn(sn);
-            repository.setProjId(PROJID);
-            repository.setProjName(PROJNAME);
-            String REPTcategory = repositoryMapper.searchCategory(repository);
-            outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME);
+            if ( !materialMtMapper.manageBS(material).equals("否") && (listOUT.get(i).get("theMatBnSn").toString().equals("") || !listOUT.get(i).containsKey("theMatBnSn")) ) {
+                a = "2";
+                break;
+            } else{
+                String bn = null;
+                String sn = null;
+                if (number.equals("否")) {
+                    sn = "无";
+                    bn = "无";
+                } else if (number.equals("序列号")) {
+                    sn = listOUT.get(i).get("theMatBnSn").toString();
+                    bn = "无";
+                } else if (number.equals("批次号")) {
+                    bn = listOUT.get(i).get("theMatBnSn").toString();
+                    sn = "无";
+                }
+                Repository repository = new Repository();
+                repository.setMaterialId(MATERIALID);
+                repository.setPostId(POSTID);
+                repository.setReptId(REPTID);
+                repository.setOutId(OUTID);
+                repository.setBn(bn);
+                repository.setSn(sn);
+                repository.setProjId(PROJID);
+                repository.setProjName(PROJNAME);
+                String REPTcategory = repositoryMapper.searchCategory(repository);
+                outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME);
+                a = "0";
+            }
         }
+        return a;
     }
 
     /*更新仓库*/

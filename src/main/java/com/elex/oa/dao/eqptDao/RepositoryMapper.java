@@ -95,4 +95,6 @@ public interface RepositoryMapper {
     String recordout(Repository repository);
 
     String recordshift(Repository repository);
+
+    String checkBS(Material material);
 }

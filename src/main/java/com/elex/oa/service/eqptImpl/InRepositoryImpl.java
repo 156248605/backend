@@ -183,7 +183,7 @@ public class InRepositoryImpl implements InRepositoryService {
             if ( materialMtMapper.needCheck(material).equals("是") && CHECK == null){
                 a = "1";
                 break;
-            } else if ( !materialMtMapper.manageBS(material).equals("否") && listIN.get(i).get("theMatBnSn").toString() == null) {
+            } else if ( !materialMtMapper.manageBS(material).equals("否") && (listIN.get(i).get("theMatBnSn").toString().equals("") || !listIN.get(i).containsKey("theMatBnSn")) ) {
                 a = "2";
                 break;
             } else {

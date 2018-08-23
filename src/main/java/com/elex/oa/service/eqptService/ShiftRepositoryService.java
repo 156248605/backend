@@ -17,7 +17,7 @@ public interface ShiftRepositoryService {
     PageInfo<Repository> searchRepository(Page page, HttpServletRequest request);
 
     /*新建移库单*/
-    void NewRepository(HttpServletRequest request) throws ParseException;
+    String NewRepository(HttpServletRequest request) throws ParseException;
 
     /*同步仓库*/
     void changeRepository(HttpServletRequest request);

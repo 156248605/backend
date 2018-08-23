@@ -659,4 +659,8 @@
     <select id="recordshift" resultType="string">
         SELECT * FROM eqpt_shiftrepository WHERE inRept = #{reptId} OR outRept = #{reptId} LIMIT 1
     </select>
+
+    <select id="checkBS" resultType="string">
+        SELECT BSManage FROM eqpt_material WHERE id = #{id}
+    </select>
 </mapper>
