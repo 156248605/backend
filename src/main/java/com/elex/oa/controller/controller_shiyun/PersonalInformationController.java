@@ -312,7 +312,7 @@ public class PersonalInformationController {
      *@Date: 17:36 2018\5\17 0017
      */
     public  PersonalInformation getOnePersonalinformation(Integer personalInformationId) throws ParseException {
-        PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationId);
+        PersonalInformation personalInformation = iPersonalInformationService.queryOneById2(personalInformationId);
         if(personalInformation==null){
             return null;
         }

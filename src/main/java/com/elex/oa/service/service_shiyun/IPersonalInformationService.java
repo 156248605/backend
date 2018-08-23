@@ -19,69 +19,69 @@ public interface IPersonalInformationService{
      *@Description:根据条件查询人事信息
      *@Date: 10:03 2018\4\8 0008
      */
-    public PageInfo<PersonalInformation> queryPIs(Map<String,Object> paramMap) throws ParseException;
+    PageInfo<PersonalInformation> queryPIs(Map<String,Object> paramMap) throws ParseException;
 
     /**
      *@Author:ShiYun;
      *@Description:根据ID查询人事信息
      *@Date: 18:06 2018\4\8 0008
      */
-    public PersonalInformation queryOneById(Integer id);
-    public PersonalInformation queryOneById2(Integer id);
+    PersonalInformation queryOneById(Integer id);
+    PersonalInformation queryOneById2(Integer id);
 
     /**
      *@Author:ShiYun;
      *@Description:根据员工ID查询人事信息
      *@Date: 10:59 2018\4\9 0009
      */
-    public PersonalInformation queryOneByUserid(Integer userid);
+    PersonalInformation queryOneByUserid(Integer userid);
 
     /**
      *@Author:ShiYun;
      *@Description:添加人事信息的主要信息并返回主键
      *@Date: 18:47 2018\4\10 0010
      */
-    public Integer saveOne(PersonalInformation personalInformation);
+    Integer saveOne(PersonalInformation personalInformation);
 
     /**
      *@Author:ShiYun;
      *@Description:修改人事信息
      *@Date: 16:30 2018\4\11 0011
      */
-    public void modifyOne(PersonalInformation personalInformation);
+    void modifyOne(PersonalInformation personalInformation);
 
     /**
      *@Author:ShiYun;
      *@Description:根据条件查询人事信息（不分页）
      *@Date: 16:28 2018\4\13 0013
      */
-    public List<PersonalInformation> queryPIs(PersonalInformation personalInformation);
+    List<PersonalInformation> queryPIs(PersonalInformation personalInformation);
 
     /**
      *@Author:ShiYun;
      *@Description:查询所有人事信息（不分页）
      *@Date: 17:27 2018\4\18 0018
      */
-    public List<PersonalInformation> queryAllByNull();
+    List<PersonalInformation> queryAllByNull();
 
     /**
      *@Author:ShiYun;
      *@Description:根据部门ID查询人事信息
      *@Date: 16:23 2018\5\28 0028
      */
-    public List<PersonalInformation> queryByDepid(Integer depid);
+    List<PersonalInformation> queryByDepid(Integer depid);
 
     /**
      *@Author:ShiYun;
      *@Description:根据员工号查询员工
      *@Date: 10:01 2018\8\9 0009
      */
-    public List<PersonalInformation> queryByEmployeenumber(String employeenumber);
+    List<PersonalInformation> queryByEmployeenumber(String employeenumber);
 
     /**
      *@Author:ShiYun;
      *@Description:根据ID删除人事主体信息
      *@Date: 16:10 2018\8\20 0020
      */
-    public void removeOne(Integer perid);
+    void removeOne(Integer perid);
 }
