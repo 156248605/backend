@@ -7,6 +7,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 public interface RepositoryService {
@@ -47,4 +48,16 @@ public interface RepositoryService {
 
     // 是否批次号序列号管理
     String manageResult(HttpServletRequest request);
+
+    // 设置仓库类型(类似数据字典)
+    List<HashMap<String, Object>> reptCate();
+
+    // 判断仓库类型是否重复
+    List<HashMap<String, Object>> checkCate(HttpServletRequest request);
+
+    // 新建仓库类型
+    void insertCate(HttpServletRequest request);
+
+    // 删除仓库类型
+    void deleteCate(HttpServletRequest request);
 }

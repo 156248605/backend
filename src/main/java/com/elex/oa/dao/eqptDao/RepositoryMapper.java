@@ -6,6 +6,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -97,4 +98,12 @@ public interface RepositoryMapper {
     String recordshift(Repository repository);
 
     String checkBS(Material material);
+
+    List<HashMap<String, Object>> getCate();
+
+    List<HashMap<String, Object>> checkCate(String cateName);
+
+    void insertCate(String cateName);
+
+    void deleteCate(String onlyId);
 }

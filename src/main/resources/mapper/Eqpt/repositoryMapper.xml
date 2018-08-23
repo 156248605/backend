@@ -663,4 +663,20 @@
     <select id="checkBS" resultType="string">
         SELECT BSManage FROM eqpt_material WHERE id = #{id}
     </select>
+
+    <select id="getCate" resultType="HashMap">
+        SELECT * FROM eqpt_reptcate
+    </select>
+
+    <select id="checkCate" resultType="HashMap">
+        SELECT * FROM eqpt_reptcate WHERE cateName = #{cateName}
+    </select>
+
+    <insert id="insertCate" parameterType="string">
+        INSERT INTO eqpt_reptcate VALUES (NULL,#{cateName})
+    </insert>
+
+    <delete id="deleteCate" parameterType="string">
+        DELETE FROM eqpt_reptcate WHERE onlyId = #{onlyId}
+    </delete>
 </mapper>

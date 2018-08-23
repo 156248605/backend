@@ -9,6 +9,7 @@ import com.elex.oa.service.eqptImpl.RepositoryImpl;
 import com.elex.oa.service.project.ProjectBoardService;
 import com.github.pagehelper.PageInfo;
 import org.apache.regexp.RE;
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -138,6 +140,31 @@ public class RepositoryController {
     public String checkBS(HttpServletRequest request){
         return repositoryImpl.manageResult(request);
     }
+
+    @RequestMapping("/getCate")
+    @ResponseBody
+    public List<HashMap<String, Object>> getCate(){
+        return repositoryImpl.reptCate();
+    }
+
+    @RequestMapping("/checkCate")
+    @ResponseBody
+    public List<HashMap<String, Object>> checkCate(HttpServletRequest request){
+        return repositoryImpl.checkCate(request);
+    }
+
+    @RequestMapping("/insertCate")
+    @ResponseBody
+    public void insertCate(HttpServletRequest request){
+        repositoryImpl.insertCate(request);
+    }
+
+    @RequestMapping("/deleteCate")
+    @ResponseBody
+    public void deleteCate(HttpServletRequest request){
+        repositoryImpl.deleteCate(request);
+    }
+
     /*@RequestMapping("/matInRept")
     @ResponseBody
     public List<Repository> matInRept(HttpServletRequest request){

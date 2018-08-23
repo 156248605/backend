@@ -297,6 +297,35 @@ public class RepositoryImpl implements RepositoryService {
         return result;
     }
 
+    // 设置仓库类型(类似数据字典)
+    @Override
+    public List<HashMap<String, Object>> reptCate() {
+        List<HashMap<String, Object>> list = repositoryMapper.getCate();
+        return list;
+    }
+
+    // 判断仓库类型是否重复
+    @Override
+    public List<HashMap<String, Object>> checkCate(HttpServletRequest request) {
+        String cateName = request.getParameter("cateName");
+        List<HashMap<String, Object>> list = repositoryMapper.checkCate(cateName);
+        return list;
+    }
+
+    // 新建仓库类型
+    @Override
+    public void insertCate(HttpServletRequest request) {
+        String cateName = request.getParameter("cateName");
+        repositoryMapper.insertCate(cateName);
+    }
+
+    // 删除仓库类型
+    @Override
+    public void deleteCate(HttpServletRequest request) {
+        String onlyId = request.getParameter("onlyId");
+        repositoryMapper.deleteCate(onlyId);
+    }
+
 
    /* @Override
     public List<Repository> matInPost(HttpServletRequest request) {

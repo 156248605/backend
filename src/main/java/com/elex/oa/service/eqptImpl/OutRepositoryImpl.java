@@ -211,6 +211,8 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String outNumA = listOUT.get(i).get("theMatNum").toString();
             if (outNumA.contains(".")){
                 outNum = outNumA.substring(0,outNumA.indexOf("."));
+            }else{
+                outNum = outNumA;
             }
             material.setNum(outNum);
             if (parseInt(number) == parseInt(outNum)) {
