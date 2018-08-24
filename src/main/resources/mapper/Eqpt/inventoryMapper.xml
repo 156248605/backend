@@ -23,7 +23,7 @@
     </delete>
 
     <insert id="insert" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_inventory VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{spec},#{category},#{reptId},#{position},#{price},#{num},#{numInv},#{pal},#{palCal},#{remark})
+        INSERT INTO eqpt_inventory VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{spec},#{category},#{reptId},#{position},#{price},#{num},#{numInv},#{palPer},#{pal},#{palCal},#{remark})
     </insert>
 
     <insert id="insertDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -38,8 +38,8 @@
         SELECT invId FROM eqpt_inventory_draft WHERE invId LIKE CONCAT(CONCAT('%',#{invId},'%'))
     </select>
 
-    <select id="chooseMat" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_material WHERE id IN (SELECT DISTINCT id FROM eqpt_detail WHERE reptId = #{reptId})
+    <select id="chooseMat" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT w_ykmx1.F_WLBM AS materialId,w_ykmx1.F_WLMC AS materialName,w_ykmx1.F_GGXH AS spec,w_ykmx1.F_WPLB AS category,w_ykmx1.F_CK AS reptId,w_ykmx1.F_KW AS postId,w_ykmx1.F_CKCK AS price,w_ykmx1.F_CKKW AS num,w_ykmx1.F_RKCK AS numInv,w_ykmx1.F_RKKW AS palPer,w_ykmx1.F_BZ AS remark FROM w_ykmx1,w_kcpdd1 WHERE w_ykmx1.REF_ID_ = (SELECT ID_ FROM w_kcpdd1 WHERE F_PDBH = #{id} ORDER BY ID_ DESC LIMIT 1)
     </select>
 
     <select id="matinrept" resultType="com.elex.oa.entity.eqpt.Material">
@@ -255,7 +255,7 @@
     </update>
 
     <select id="getInvId" resultType="java.lang.String">
-        SELECT * FROM w_kcpdd1 WHERE F_PDBH NOT IN (SELECT invId FROM eqpt_inventory)
+        SELECT DISTINCT F_PDBH FROM w_kcpdd1 WHERE F_PDBH NOT IN (SELECT invId FROM eqpt_inventory) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="invInfo" resultType="HashMap">
@@ -272,10 +272,13 @@
 
 
     <update id="changeNum" parameterType="com.elex.oa.entity.eqpt.Repository">
-        UPDATE eqpt_detail SET num = #{numInv} WHERE id = #{materialId} AND reptId = #{reptId} AND postId = #{postId}
+        UPDATE eqpt_detail SET num = #{numInv} WHERE id = #{materialId} AND reptId = #{reptId}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
     </update>
 
     <update id="changeNumMat" parameterType="com.elex.oa.entity.eqpt.Repository">
-        UPDATE eqpt_material SET num -= #{num} WHERE id = #{materialId}
+        UPDATE eqpt_material SET num = num + #{unit} WHERE id = #{materialId}
     </update>
 </mapper>
