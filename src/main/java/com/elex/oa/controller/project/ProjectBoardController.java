@@ -84,4 +84,18 @@ public class ProjectBoardController {
     public PageInfo peojectPhase(Integer pageNum, String phase, String type, String department) {
         return projectBoardService.projectPhase(pageNum, phase, type, department);
     }
+
+    //查看是否延期的项目
+    @RequestMapping("/project_week")
+    @ResponseBody
+    public PageInfo projectWeek(Integer pageNum, String punctuality, String type, String department) {
+        return projectBoardService.projectWeek(pageNum, punctuality, type, department);
+    }
+
+    //查看进行中项目的类型及数量
+    @RequestMapping("/query_proceed")
+    @ResponseBody
+    public List<Object> queryProceed(String department) {
+        return projectBoardService.queryProceed(department);
+    }
 }

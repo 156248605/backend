@@ -2271,7 +2271,7 @@ public class PersonalInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:根据部门ID查询部门信息
+     *@Description:根据部门ID查询部门信息(部门经理)
      *@Date: 11:34 2018\8\10 0010
      */
     @RequestMapping("/queryGXF004")
@@ -2282,6 +2282,11 @@ public class PersonalInformationController {
         Dept dept = iDeptService.queryOneDepByDepid(depid);
         if (dept!=null) {
             if (dept.getPrincipaluserid()!=null) {
+                if (iUserService.getById(dept.getPrincipaluserid())!=null) {
+                    iUserService.getById(dept.getPrincipaluserid()).getTruename();
+                } else {
+                    return null;
+                }
                 return iUserService.getById(dept.getPrincipaluserid()).getTruename();
             } else {
                 return "此部门没有部门正职！";

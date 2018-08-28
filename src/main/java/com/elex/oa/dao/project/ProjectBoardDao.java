@@ -1,9 +1,6 @@
 package com.elex.oa.dao.project;
 
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.MileStonePlan;
-import com.elex.oa.entity.project.ProjectInfor;
-import com.elex.oa.entity.project.WeeklyPlan;
+import com.elex.oa.entity.project.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -26,18 +23,19 @@ public interface ProjectBoardDao {
     //查询当前周计划
     WeeklyPlan queryWeeklyPlan(Map<String, String> content);;
     //根据部门信息查询项目详情
-    List<ProjectInfor> queryProjectInforByDepartment(String department);
+    List<ProjectInfor> queryProjectInforByDepartment(List<String> deptList);
     //条件查询已立项项目
     List<ApprovalList> queryApprovalByCon(Map<String,String> conditions);
     //条件查询项目信息
     List<ProjectInfor> queryInforByCon(Map<String,String> conditions);
-    //查询南京总部的项目详情信息
-    List<ProjectInfor> queryInforMain();
-    //查询南京总部的项目信息
-    List<ProjectInfor> queryInforExclusive();
     //条件查询项目信息
-    List<ProjectInfor> queryInforCon(Map<String,String> condition);
+    List<ProjectInfor> queryInforCon(Map<String,Object> condition);
     //条件查询项目信息
     List<ProjectInfor> queryInforPhase(Map<String,Object> content);
-
+    //查询本周周报相关的项目编号
+    List<String> queryWeekByContent(Map<String,String> content);
+    //根据部门查询正在进行中的项目信息
+    List<ProjectInfor> queryProjectInforByDepartment1(Map<String,Object> deptList);
+    //查询项目金额以及回款率
+    ProjectIncome queryProjectIncome(String projectCode);
 }

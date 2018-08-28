@@ -3,10 +3,7 @@ package com.elex.oa.service.project.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.dao.project.ProjectSetDao;
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.OperationQuery;
-import com.elex.oa.entity.project.ProjectInfor;
-import com.elex.oa.entity.project.ProjectVarious;
+import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -43,8 +40,17 @@ public class ProjectInforImpl implements ProjectInforService {
         if(approvalLists.size() == 0) {
             return;
         }
+        List<ProjectVarious> statusList = projectSetDao.queryStatus();
+        String code = "";
+        for(ProjectVarious status:statusList) {
+            if(status.getName().equals("进行")) {
+                code = status.getCode()+"";
+                break;
+            }
+        }
         for(ApprovalList approvalList: approvalLists) {
             approvalList.setWriteDate(approvalList.getWriteDate().substring(0,10));
+            approvalList.setProjectStatus(code);
         }
         projectInforDao.addInfor(approvalLists); //添加项目详情信息
     }
@@ -64,7 +70,6 @@ public class ProjectInforImpl implements ProjectInforService {
         if(list8.size() > 0) {
             operationQuery.setList8(list8);
         }
-        System.out.println(operationQuery);
         PageHelper.startPage(pageNum,10);
         List<ProjectInfor> list = projectInforDao.queryList(operationQuery);
         return new PageInfo(list);
@@ -73,6 +78,26 @@ public class ProjectInforImpl implements ProjectInforService {
     //修改项目信息
     @Override
     public String amendInfor(ProjectInfor projectInfor) {
+        List<OsUser> osUsers = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
+        StringBuilder stringBuilder1 = new StringBuilder(), stringBuilder2 = new StringBuilder();
+        for(OsUser osUser:osUsers) {
+            if(projectInfor.getBusinessManager().equals(osUser.getFullName())) {
+                projectInfor.setBusinessManagerCode(osUser.getUserId());
+            }
+            if(projectInfor.getProjectManager().equals(osUser.getFullName())) {
+                projectInfor.setProjectManagerCode(osUser.getUserId());
+            }
+            if(projectInfor.getProjectMembers().contains(osUser.getFullName())) {
+                stringBuilder1.append(osUser.getUserId());
+                stringBuilder1.append(";");
+            }
+            if(projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
+                stringBuilder2.append(osUser.getUserId());
+                stringBuilder2.append(";");
+            }
+        }
+        projectInfor.setProjectMemberCode(stringBuilder1.toString());
+        projectInfor.setRelatedMemberCode(stringBuilder2.toString());
         projectInforDao.amendInfor(projectInfor);
         return "1";
     }

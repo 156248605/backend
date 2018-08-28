@@ -9,9 +9,9 @@ import com.elex.oa.service.service_shiyun.IDeptService;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_shiyun.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
@@ -26,14 +26,14 @@ import java.util.*;
 @Service
 public class DeptServiceImpl implements IDeptService {
 
-    @Autowired
-    IDeptDao iDeptDao;
-    @Autowired
-    IPersonalInformationDao iPersonalInformationDao;
-    @Autowired
-    IUserDao iUserDao;
-    @Autowired
-    IHRsetDeptypeDao ihRsetDeptypeDao;
+    @Resource
+    private IDeptDao iDeptDao;
+    @Resource
+    private IPersonalInformationDao iPersonalInformationDao;
+    @Resource
+    private IUserDao iUserDao;
+    @Resource
+    private IHRsetDeptypeDao ihRsetDeptypeDao;
 
     /**
      *@Author:ShiYun;
@@ -580,9 +580,9 @@ public class DeptServiceImpl implements IDeptService {
         if (personalInformation!=null && personalInformation.getDepid()!=null) {
             dept = iDeptDao.selectDeptByDepid(personalInformation.getDepid());
         }else {
-            return null;
+            return "99";
         }
-        return dept.getDepcode().substring(0,2);
+        return dept.getFunctionaltypeid()==7?dept.getDepcode().substring(4,6):dept.getDepcode().substring(0,2);
     }
 
     /**
