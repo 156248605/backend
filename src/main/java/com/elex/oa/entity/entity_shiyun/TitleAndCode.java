@@ -12,8 +12,17 @@ public class TitleAndCode implements Serializable{
     private static final long serialVersionUID = 49954826452669337L;
     private String title;
     private Integer code;
+    private Integer id;
 
     public TitleAndCode() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitle() {

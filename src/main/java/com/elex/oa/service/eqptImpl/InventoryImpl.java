@@ -155,8 +155,8 @@ public class InventoryImpl implements InventoryService {
             repository.setPalPer(palPer);
             repository.setPal(pal);
             repository.setPalCal(palCal);
-            inventoryMapper.changeNum(repository);// 修改数据(detail)
-            inventoryMapper.changeNumMat(repository);// 修改数据(material)
+            /*inventoryMapper.changeNum(repository);// 修改数据(detail)
+            inventoryMapper.changeNumMat(repository);// 修改数据(material)*/
             /*inventoryMapper.insert(repository);*/
             /*Repository repository = new Repository();
             repository.setInvId(request.getParameter("invId"));
@@ -205,16 +205,29 @@ public class InventoryImpl implements InventoryService {
             repository.setMaterialName(listINV.get(i).get("theMatName").toString());
             repository.setReptId(listINV.get(i).get("theMatRept").toString());
             repository.setPosition(listINV.get(i).get("theMatPost").toString());
-            repository.setPrice(listINV.get(i).get("theMatPrice").toString());
+            String price = listINV.get(i).get("theMatPrice").toString();
+            if (price.contains(".")){
+                if (Double.parseDouble(price)%1 == 0){
+                    price = price.substring(0,price.indexOf("."));
+                }
+            }
+            repository.setPrice(price);
             repository.setNum(listINV.get(i).get("theMatNum").toString());
+            repository.setUnit(String.valueOf(parseInt(listINV.get(i).get("theMatNumInv").toString()) - parseInt(listINV.get(i).get("theMatNum").toString())));
             repository.setNumInv(listINV.get(i).get("theMatNumInv").toString());
+            String palPer = listINV.get(i).get("theMatPal").toString();
+            if (palPer.contains(".")){
+                palPer = palPer.substring(0,palPer.indexOf("."));
+            }
+            repository.setPalPer(palPer);
             repository.setPal(request.getParameter("pal"));
             repository.setPalCal(request.getParameter("palCal"));
             repository.setSpec(listINV.get(i).get("theMatSpec").toString());
             repository.setCategory(listINV.get(i).get("theMatCate").toString());
-            repository.setRemark("");
-            repository.setReptState("1");
+            repository.setRemark(listINV.get(i).get("theMatRemark").toString());
             inventoryMapper.insert(repository);
+            inventoryMapper.changeNum(repository);// 修改数据(detail)
+            inventoryMapper.changeNumMat(repository);// 修改数据(material)
         }
     }
 
@@ -314,9 +327,9 @@ public class InventoryImpl implements InventoryService {
 
     @Override
     public List<Material> chooseMat(HttpServletRequest request) {
-        String reptId = request.getParameter("reptId");
+        String id = request.getParameter("pdbh");
         Material material = new Material();
-        material.setReptId(reptId);
+        material.setId(id);
         List<Material> listMIR = inventoryMapper.chooseMat(material);
         return listMIR;
     }
@@ -375,7 +388,6 @@ public class InventoryImpl implements InventoryService {
         List<Repository> list = inventoryMapper.openDraft(repository);
         return list;
     }
-
 
     @Override
     public List getInvId() {

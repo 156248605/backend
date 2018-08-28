@@ -39,8 +39,8 @@ public class ShiftRepositoryController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void newRepository(HttpServletRequest request) throws ParseException{
-        shiftRepositoryImpl.NewRepository(request);
+    public String newRepository(HttpServletRequest request) throws ParseException{
+        return shiftRepositoryImpl.NewRepository(request);
     }
 
     @RequestMapping("/repository")

@@ -301,7 +301,12 @@ public class PersonalInformationController {
         if (user.getId()!=null) {
             onePersonalinformation = iPersonalInformationService.queryOneByUserid(user.getId());
         }
-        PersonalInformation personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
+        PersonalInformation personalInformation;
+        if (onePersonalinformation!=null) {
+            personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
+        } else {
+            return null;
+        }
 
         return personalInformation;
     }
@@ -312,7 +317,7 @@ public class PersonalInformationController {
      *@Date: 17:36 2018\5\17 0017
      */
     public  PersonalInformation getOnePersonalinformation(Integer personalInformationId) throws ParseException {
-        PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationId);
+        PersonalInformation personalInformation = iPersonalInformationService.queryOneById2(personalInformationId);
         if(personalInformation==null){
             return null;
         }
@@ -697,11 +702,11 @@ public class PersonalInformationController {
      */
     @RequestMapping("/addManageInformation")
     @ResponseBody
-    public String addManageInformation(
+    public Object addManageInformation(
             PersonalInformation personalInformation
     ){
         if(personalInformation.getUserid()==null || iPersonalInformationService.queryOneByUserid(personalInformation.getUserid())==null){
-            return "系统正在忙，请稍后";
+            return RespUtil.successResp("500","系统正在忙，请稍后",null) ;
         }
         // 保存人事信息的管理信息
         ManageInformation manageInformation = new ManageInformation();
@@ -729,7 +734,7 @@ public class PersonalInformationController {
             PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
             iPerandpostrsService.addOne(perAndPostRs);
         }
-        return "管理信息添加成功！";
+        return RespUtil.successResp("200","管理信息添加成功！",iUserService.getById(personalInformation.getUserid()).getUsername()) ;
     }
 
     /**
@@ -1244,11 +1249,10 @@ public class PersonalInformationController {
      */
     @RequestMapping("/updateManageInformation")
     @ResponseBody
-    public String updateManageInformation(
+    public Object updateManageInformation(
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
     ) throws ParseException {
-
         //修改信息痕迹的总标识
         Boolean listBL = false;
         //原来的信息
@@ -1279,11 +1283,14 @@ public class PersonalInformationController {
         }
 
         List<Integer> postids = personalInformation.getPostids();
+        //返回值
+        Boolean re = false;
         List<String>  strs = new ArrayList<>();
         for(int i=0;i<postids.size();i++){
             strs.add(iPostService.queryOneByPostid(postids.get(i)).getPostname());
         }
         if(personalInformation2.getPostnames()!=null && !personalInformation2.getPostnames().equals(IDcodeUtil.getArrayToString(strs,";"))){
+            re = true;
             changeInformation.setChangeinformation("岗位");
             changeInformation.setBeforeinformation(personalInformation2.getPostnames());
             changeInformation.setAfterinformation(IDcodeUtil.getArrayToString(strs,";"));
@@ -1375,7 +1382,7 @@ public class PersonalInformationController {
 
         iPersonalInformationService.modifyOne(personalInformation2);
 
-        return "提交信息成功！";
+        return RespUtil.successResp("200","提交信息成功！",re?personalInformation2.getUsername():null);
     }
 
     /**
@@ -2136,12 +2143,15 @@ public class PersonalInformationController {
      */
     @RequestMapping("/deleteInformationsByIds")
     @ResponseBody
-    public String deleteInformationsByIds(
+    public Object deleteInformationsByIds(
             @RequestParam("personalInformationIds") List<Integer> personalInformationIds
     ){
-
+        List<String> usernames = new ArrayList<>();
         for(int i = 0;i<personalInformationIds.size();i++){
             PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationIds.get(i));
+            usernames.add(iUserService.getById(personalInformation.getUserid()).getUsername());
+
+
             //1.先删除用户表（直接删除）
             iUserService.removeOne(personalInformation.getUserid());
             //2.再删除相应的基本信息表（直接删除）
@@ -2179,8 +2189,10 @@ public class PersonalInformationController {
             //10.最后再修改部门表
             //注：如果将要删除的员工是某部门的正职、副职、秘书则需要修改该字段
             iDeptService.modifyOne(personalInformation.getUserid());
+
+
         }
-        return "删除成功！";
+        return RespUtil.successResp("200","删除成功！",usernames) ;
     }
 
     /**

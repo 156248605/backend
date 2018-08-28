@@ -13,10 +13,19 @@ public class DeptTree {
     private String title;
     private String name = this.title;
     private String code;
+    private Integer id;
     private Boolean expand = true;
     private List<DeptTree> children = new ArrayList<DeptTree>();
 
     public DeptTree() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCode() {

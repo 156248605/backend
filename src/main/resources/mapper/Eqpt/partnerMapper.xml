@@ -213,7 +213,7 @@
                 AND auWechat NOT LIKE CONCAT(CONCAT('%', #{auWechat}), '%')
             </if>
             <if test="auAddr != null and auAddr != '' and auAddrC == ''">
-                AND auAddrC LIKE CONCAT(CONCAT('%', #{auAddrC}), '%')
+                AND auAddr LIKE CONCAT(CONCAT('%', #{auAddr}), '%')
             </if>
             <if test="auAddr != null and auAddr != '' and auAddrC == 1">
                 AND auAddr LIKE CONCAT(CONCAT('%', #{auAddr}), '%')

@@ -277,6 +277,55 @@ public class RepositoryImpl implements RepositoryService {
         }
     }
 
+    // 是否批次号序列号管理
+    @Override
+    public String manageResult(HttpServletRequest request){
+        String LIST = request.getParameter("list");
+        List<HashMap> list =JSON.parseArray(LIST, HashMap.class);
+        String result = "";
+        for (int i = 0; i < list.size(); i++) {
+            Material material = new Material();
+            material.setId(list.get(i).get("theMatId").toString());
+            result = repositoryMapper.checkBS(material);
+            if (!result.equals("否") && (list.get(i).get("theMatBnSn").toString().equals("") || list.get(i).containsKey(""))){
+                result = "1";
+                break;
+            }else {
+                result = "0";
+            }
+        }
+        return result;
+    }
+
+    // 设置仓库类型(类似数据字典)
+    @Override
+    public List<HashMap<String, Object>> reptCate() {
+        List<HashMap<String, Object>> list = repositoryMapper.getCate();
+        return list;
+    }
+
+    // 判断仓库类型是否重复
+    @Override
+    public List<HashMap<String, Object>> checkCate(HttpServletRequest request) {
+        String cateName = request.getParameter("cateName");
+        List<HashMap<String, Object>> list = repositoryMapper.checkCate(cateName);
+        return list;
+    }
+
+    // 新建仓库类型
+    @Override
+    public void insertCate(HttpServletRequest request) {
+        String cateName = request.getParameter("cateName");
+        repositoryMapper.insertCate(cateName);
+    }
+
+    // 删除仓库类型
+    @Override
+    public void deleteCate(HttpServletRequest request) {
+        String onlyId = request.getParameter("onlyId");
+        repositoryMapper.deleteCate(onlyId);
+    }
+
 
    /* @Override
     public List<Repository> matInPost(HttpServletRequest request) {

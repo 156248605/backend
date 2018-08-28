@@ -291,8 +291,6 @@ public class DeptServiceImpl implements IDeptService {
                 }
 
                 //人数占比
-                System.out.println("ratio:"+ratio);
-                System.out.println("num:"+num);
                 Double db = ratio.doubleValue()/num.doubleValue()*100;
                 System.out.println("db:"+db);
                 BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
