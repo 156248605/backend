@@ -63,7 +63,6 @@ public class NewProjectImpl implements NewProjcetService {
     @Override
     public String obtainCodeName(String name) {
         String departmentMark = iDeptService.queryByTruename(name);
-
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("ELEX-PRJ-");

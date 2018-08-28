@@ -3,7 +3,7 @@ package com.elex.oa.entity.objectives;
 public class Goal2 {
     private int id;
     private String annual; //年份
-    private String company; //公司
+    private String unit; //单位
     private double annualTarget; //年度目标
     private String theTotal; //累计完成
     private String completion; //完成率
@@ -23,10 +23,10 @@ public class Goal2 {
     public Goal2() {
     }
 
-    public Goal2(int id, String annual, String company, double annualTarget, String theTotal, String completion, double january, double february, double march, double april, double may, double june, double july, double august, double september, double october, double november, double december) {
+    public Goal2(int id, String annual, String unit, double annualTarget, String theTotal, String completion, double january, double february, double march, double april, double may, double june, double july, double august, double september, double october, double november, double december) {
         this.id = id;
         this.annual = annual;
-        this.company = company;
+        this.unit = unit;
         this.annualTarget = annualTarget;
         this.theTotal = theTotal;
         this.completion = completion;
@@ -60,12 +60,12 @@ public class Goal2 {
         this.annual = annual;
     }
 
-    public String getCompany() {
-        return company;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public double getAnnualTarget() {
@@ -193,7 +193,7 @@ public class Goal2 {
         return "Goal2{" +
                 "id=" + id +
                 ", annual='" + annual + '\'' +
-                ", company='" + company + '\'' +
+                ", unit='" + unit + '\'' +
                 ", annualTarget=" + annualTarget +
                 ", theTotal='" + theTotal + '\'' +
                 ", completion='" + completion + '\'' +

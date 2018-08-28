@@ -64,15 +64,22 @@ public class ProjectBoardImpl implements ProjectBoardService {
     //项目数量
     @Override
     public Map<String, Object> overview(String department) {
+
         Map<String,Object> result = new HashMap<>();
         List<ProjectVarious> typeList = projectSetDao.queryType();
         List<ProjectVarious> statusList = projectSetDao.queryStatus();
         List<ProjectVarious> phaseList = projectSetDao.queryPhase();
         List<ProjectInfor> projectInfors = new ArrayList<>();
-        if(department.equals("博智")) {
+        if(department.contains("股份")) {
             projectInfors = projectBoardDao.queryProjectInfor(); //查询项目详情信息
         } else {
-            projectInfors = projectBoardDao.queryProjectInforByDepartment(department); //根据部门信息查询项目详情
+            List<Dept> depts = iDeptService.queryByCompanyname(department);
+            List<String> deptList = new ArrayList<>();
+            deptList.add(department);
+            for(Dept dept:depts) {
+                deptList.add(dept.getDepname());
+            }
+            projectInfors = projectBoardDao.queryProjectInforByDepartment(deptList); //根据部门信息查询项目详情
         }
         int size1 = typeList.size() + 1;
         int size2 = statusList.size() + 1;
@@ -92,36 +99,6 @@ public class ProjectBoardImpl implements ProjectBoardService {
         content.put("start",start);
         content.put("end",end);
 
- /*       for(ProjectInfor infor: projectInfors) {
-            for(int k = 0; k< typeList.size(); k++) {
-                if(infor.getProjectType().equals(typeList.get(k).getCode()+"")) {
-                    number1[k][size2 - 1] ++;
-                    if(infor.getProjectStatus().equals("") || infor.getProjectStatus() == null) {
-                        break;
-                    }
-                    for(int j = 0; j < statusList.size(); j ++) {
-                        if(infor.getProjectStatus().equals(statusList.get(j).getCode()+"")) {
-                            number1[k][j] ++;
-                            number1[size1 - 1][j] ++;
-                            if(statusList.get(j).getName().equals("进行")) {
-                                content.put("code",infor.getProjectCode());
-                                String phase = weeklyPlanDao.queryPlanByCon(content); //条件查询当前周报中的阶段信息
-                                if(phase == null || phase.equals("")) {
-
-                                } else {
-                                    for(int l = 0; l < phaseList.size(); l ++) {
-                                        if(phase.equals(phaseList.get(l).getCode()+"")) {
-                                            number2[k][l] ++;
-                                            number2[size1 - 1][l] ++;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
         for(ProjectInfor infor: projectInfors) {
             for(int k = 0; k< typeList.size(); k++) {
                 if(infor.getProjectType().equals(typeList.get(k).getCode()+"")) {
@@ -283,10 +260,21 @@ public class ProjectBoardImpl implements ProjectBoardService {
     //查看某类型的项目
     @Override
     public PageInfo projectStatus(Integer pageNum, String status, String type, String department) {
-        Map<String,String> condition = new HashMap<>();
+        Map<String,Object> condition = new HashMap<>();
         condition.put("status",status);
         condition.put("type",type);
-        condition.put("department",department);
+        if(department.contains("股份")) {
+            condition.put("department","all");
+        } else {
+            List<Dept> depts = iDeptService.queryByCompanyname(department);
+            List<String> deptList = new ArrayList<>();
+            deptList.add(department);
+            for(Dept dept:depts) {
+                deptList.add(dept.getDepname());
+            }
+            condition.put("department","part");
+            condition.put("list",deptList);
+        }
         PageHelper.startPage(pageNum, 5);
         List<ProjectInfor> infors = projectBoardDao.queryInforCon(condition); //条件查询项目信息
         return new PageInfo(infors);
@@ -299,7 +287,18 @@ public class ProjectBoardImpl implements ProjectBoardService {
         Map<String,Object> content =  new HashMap<>();
         content.put("codes",codes);
         content.put("type",type);
-        content.put("department",department);
+        if(department.contains("股份")) {
+            content.put("department","all");
+        } else {
+            List<Dept> depts = iDeptService.queryByCompanyname(department);
+            List<String> deptList = new ArrayList<>();
+            deptList.add(department);
+            for(Dept dept:depts) {
+                deptList.add(dept.getDepname());
+            }
+            content.put("department","part");
+            content.put("list",deptList);
+        }
         PageHelper.startPage(pageNum,5);
         List<ProjectInfor> infors = projectBoardDao.queryInforPhase(content); //条件查询项目信息
         return new PageInfo(infors);
@@ -331,8 +330,19 @@ public class ProjectBoardImpl implements ProjectBoardService {
         Map<String,Object> content1 =  new HashMap<>();
         content1.put("codes",codes);
         content1.put("type",type);
-        content1.put("department",department);
-        System.out.println(content1);
+        if(department.contains("股份")) {
+            content1.put("department","all");
+        } else {
+            List<Dept> depts = iDeptService.queryByCompanyname(department);
+            List<String> deptList = new ArrayList<>();
+            deptList.add(department);
+            for(Dept dept:depts) {
+                deptList.add(dept.getDepname());
+            }
+            content1.put("department","part");
+            content1.put("list",deptList);
+        }
+
         PageHelper.startPage(pageNum,5);
         List<ProjectInfor> infors = projectBoardDao.queryInforPhase(content1);
         System.out.println(infors);
@@ -418,7 +428,6 @@ public class ProjectBoardImpl implements ProjectBoardService {
         content.put("code",projectCode);
         content.put("start",start);
         content.put("end",end);
-        System.out.println(content);
         WeeklyPlan weeklyPlan = projectBoardDao.queryWeeklyPlan(content);
         System.out.println(weeklyPlan);
         if(weeklyPlan ==  null) {
@@ -549,16 +558,29 @@ public class ProjectBoardImpl implements ProjectBoardService {
     //看板手机部门相关详情（手机）
     @Override
     public List<Map<String, String>> projectTotal(String department) {
-        if(department.equals("上海臻相") || department.equals("贵州中科") || department.equals("南京总部")) {
+        if(department.equals("全部") || department.equals("上海臻相") || department.equals("贵州中科") || department.equals("南京总部")) {
 
         } else {
             return null;
         }
         List<ProjectInfor> projectInfors;
-        if(department.equals("南京总部")) {
-            projectInfors = projectBoardDao.queryInforMain(); //查询南京总部的项目详情信息
+        if(department.equals("全部")) {
+            projectInfors = projectBoardDao.queryProjectInfor(); //查询所有项目详情信息
         } else {
-            projectInfors = projectBoardDao.queryProjectInforByDepartment(department); //根据部门查询信息
+            List<Dept> depts = iDeptService.queryAllCompany1and2();
+            String company = "";
+            for(Dept dept:depts) {
+                if(dept.getDepname().contains(department)) {
+                    company = dept.getDepname();
+                }
+            }
+            List<Dept> depts1 = iDeptService.queryByCompanyname(company);
+            List<String> deptList = new ArrayList<>();
+            deptList.add(company);
+            for(Dept dept1: depts1) {
+                deptList.add(dept1.getDepname());
+            }
+            projectInfors = projectBoardDao.queryProjectInforByDepartment(deptList); //根据部门查询信息
         }
         List<ProjectVarious> typeList = projectSetDao.queryType();
         List<ProjectVarious> statusList = projectSetDao.queryStatus();
@@ -611,17 +633,30 @@ public class ProjectBoardImpl implements ProjectBoardService {
         } else {
             return null;
         }
-        if(department.equals("南京总部") || department.equals("上海臻相") || department.equals("贵州中科")) {
+        if(department.equals("全部") || department.equals("南京总部") || department.equals("上海臻相") || department.equals("贵州中科")) {
 
         } else {
             return null;
         }
         List<Map<String,String>> list = new ArrayList<>();
         List<ProjectInfor> projectInfors;
-        if(department.equals("南京总部")) {
-            projectInfors = projectBoardDao.queryInforExclusive(); //查询南京总部的项目信息
+        if(department.equals("全部")) {
+            projectInfors = projectBoardDao.queryProjectInfor(); //查询所有项目详情信息
         } else {
-            projectInfors = projectBoardDao.queryProjectInforByDepartment(department);
+            List<Dept> depts = iDeptService.queryAllCompany1and2();
+            String company = "";
+            for(Dept dept:depts) {
+                if(dept.getDepname().contains(department)) {
+                    company = dept.getDepname();
+                }
+            }
+            List<Dept> depts1 = iDeptService.queryByCompanyname(company);
+            List<String> deptList = new ArrayList<>();
+            deptList.add(company);
+            for(Dept dept1: depts1) {
+                deptList.add(dept1.getDepname());
+            }
+            projectInfors = projectBoardDao.queryProjectInforByDepartment(deptList); //根据部门查询信息
         }
 
         List<ProjectVarious> typeList = projectSetDao.queryType();
@@ -672,42 +707,188 @@ public class ProjectBoardImpl implements ProjectBoardService {
             }
 
             Map<String,String> map = new HashMap<>();
-            map.put("projectCode",projectInfor.getProjectCode());
-            map.put("projectName",projectInfor.getProjectName());
-            map.put("inDepartment",projectInfor.getInDepartment());
-            map.put("projectManager",projectInfor.getProjectManager());
+            map.put("projectCode",projectInfor.getProjectCode()); //项目编号
+            map.put("projectName",projectInfor.getProjectName()); //项目名称
+            map.put("inDepartment",projectInfor.getInDepartment()); //立项部门
+            map.put("projectManager",projectInfor.getProjectManager()); //项目经理
             for(ProjectVarious st: statusList) {
                 if(projectInfor.getProjectStatus().equals(st.getCode()+"")) {
-                    map.put("projectStatus",st.getName());
+                    map.put("projectStatus",st.getName()); //项目状态
                 }
             }
             List<MileStonePlan> mileStonePlans = projectBoardDao.queryMileStonePlans(projectInfor.getProjectCode()); //查询该项目的所有里程碑计划,时间进度
-            boolean mileMarker = true;
-            for(MileStonePlan mileStonePlan: mileStonePlans) {
-                if(mileStonePlan.getStatus().equals("1")) {
-                    map.put("projectPhase",mileStonePlan.getPhase());
-                    map.put("progress","");
-                    mileMarker = false;
-                    try {
-                        long date1 = new SimpleDateFormat("yyyy-MM-dd").parse(mileStonePlan.getStartDate()).getTime();
-                        long date2 = new SimpleDateFormat("yyyy-MM-dd").parse(mileStonePlan.getEndDate()).getTime();
-                        long date3 = new Date().getTime();
-                        double molecular = (date3 - date1) / (1000 * 24 * 3600) + 1;
-                        double denominator = (date2 - date1) / (1000 * 24 * 3600) + 1;
-                        String schedule = new BigDecimal(molecular / denominator * 100).setScale(2,RoundingMode.UP).doubleValue() + "%";
-                        map.put("mileSchedule",schedule);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+            if(mileStonePlans.size() == 0 || mileStonePlans == null) {
+                map.put("mileSchedule","");//时间进度
+            } else {
+                try {
+                    long date1 = new SimpleDateFormat("yyyy-MM-dd").parse(mileStonePlans.get(0).getStartDate()).getTime();
+                    long date2 = new SimpleDateFormat("yyyy-MM-dd").parse(mileStonePlans.get(mileStonePlans.size() - 1).getEndDate()).getTime();
+                    long date3 = new Date().getTime();
+                    double molecular = (date3 - date1) / (1000 * 24 * 3600) + 1;
+                    double denominator = (date2 - date1) / (1000 * 24 * 3600) + 1;
+                    Double schedule = new BigDecimal(molecular / denominator * 100).setScale(2,RoundingMode.UP).doubleValue();
+                    if(schedule > 100) {
+                        map.put("mileSchedule","100.00%");
+                    } else {
+                        map.put("mileSchedule",schedule+"%");
                     }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
-            if(mileMarker) {
-                map.put("mileSchedule",""); //时间进度
-                map.put("projectPhase",""); //当前阶段
-                map.put("progress","");
+            ProjectIncome projectIncome = projectBoardDao.queryProjectIncome(projectInfor.getProjectCode()); //查询项目金额以及回款率
+            if(projectIncome == null) {
+                map.put("amount",""); //项目金额
+                map.put("receivable",""); //回款率
+            } else {
+                map.put("amount",projectIncome.getAmount());
+                map.put("receivable",projectIncome.getReceivableProportion());
+            }
+            SimpleDateFormat simpleDateFormat =  new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+            String start = simpleDateFormat.format(calendar.getTime());
+            Calendar calendar1 = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+            String end = simpleDateFormat.format(calendar.getTime());
+
+            Map<String,String> content = new HashMap<>();
+            content.put("code",projectInfor.getProjectCode());
+            content.put("start",start);
+            content.put("end",end);
+            WeeklyPlan weeklyPlan = projectBoardDao.queryWeeklyPlan(content);
+            if(weeklyPlan == null) {
+                map.put("phase",""); //项目阶段
+                map.put("fulfillment","");//实施进度
+            } else {
+                List<ProjectVarious> phaseList = projectSetDao.queryPhase();
+                for(ProjectVarious phase: phaseList) {
+                    if(weeklyPlan.getProjectPhase().equals(phase.getCode()+"")) {
+                        map.put("phase",phase.getName());
+                    }
+                }
+                map.put("fulfillment",weeklyPlan.getFulfillment());
             }
             list.add(map);
         }
         return list;
+    }
+
+    //查看进行中项目的类型及数量
+    @Override
+    public List<Object> queryProceed(String department) {
+        List<ProjectVarious> typeList = projectSetDao.queryType();
+        List<ProjectVarious> statusList = projectSetDao.queryStatus();
+        List<ProjectVarious> phaseList = projectSetDao.queryPhase();
+        int[][] number = new int[typeList.size() + 1][7];
+
+        String proceed = "";
+        for(ProjectVarious status:statusList) {
+            if(status.getName().equals("进行")) {
+                proceed = status.getCode()+"";
+            }
+        }
+
+        List<ProjectInfor> projectInfors;
+        if(department.equals("全部")) {
+            projectInfors = projectBoardDao.queryProjectInfor(); //查询所有项目详情信息
+        } else {
+            List<Dept> depts = iDeptService.queryAllCompany1and2();
+            String company = "";
+            for(Dept dept:depts) {
+                if(dept.getDepname().contains(department)) {
+                    company = dept.getDepname();
+                }
+            }
+            List<Dept> depts1 = iDeptService.queryByCompanyname(company);
+            List<String> deptList = new ArrayList<>();
+            deptList.add(company);
+            for(Dept dept1: depts1) {
+                deptList.add(dept1.getDepname());
+            }
+            Map<String,Object> content = new HashMap<>();
+            content.put("proceed",proceed);
+            content.put("list",deptList);
+            projectInfors = projectBoardDao.queryProjectInforByDepartment1(content); //根据部门查询正在进行中的项目信息
+        }
+
+        String effect = "";
+        for(ProjectVarious phase:phaseList) {
+            if(phase.getName().equals("实施")) {
+                effect = phase.getCode()+"";
+                break;
+            }
+        }
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+        String start = simpleDateFormat.format(calendar.getTime());
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        String end = simpleDateFormat.format(calendar1.getTime());
+        Map<String,String> content = new HashMap<>();
+        content.put("start",start);
+        content.put("end",end);
+
+        for(ProjectInfor projectInfor:projectInfors) {
+           for(int i = 0; i < typeList.size(); i++) {
+               if(projectInfor.getProjectType().equals(typeList.get(i).getCode()+"")) {
+                   number[i][6] ++;
+                   content.put("code",projectInfor.getProjectCode());
+                   WeeklyPlan weeklyPlan = weeklyPlanDao.queryPlanContent(content); //条件查询当前周报信息
+                   if(weeklyPlan == null) {
+
+                   } else {
+                       if(weeklyPlan.getProjectPhase().equals(effect)) {
+                           number[i][4] ++;
+                           number[typeList.size()][4] ++;
+                           if(weeklyPlan.getPunctuality().equals("t")) {
+                               number[i][0]++;
+                               number[typeList.size()][0] ++;
+                           } else if(weeklyPlan.getPunctuality().equals("a")) {
+                               number[i][1] ++;
+                               number[typeList.size()][1] ++;
+                           } else if(weeklyPlan.getPunctuality().equals("y")) {
+                               number[i][2] ++;
+                               number[typeList.size()][2] ++;
+                           } else {
+                               number[i][3] ++;
+                               number[typeList.size()][3] ++;
+                           }
+                       } else {
+                           number[i][5] ++;
+                           number[typeList.size()][5] ++;
+                       }
+                   }
+               }
+           }
+        }
+
+        List<Object> result = new ArrayList<>();
+        for(int k = 0; k < typeList.size(); k ++) {
+
+            Map<String,String> map = new HashMap<>();
+            map.put("type",typeList.get(k).getName());
+            map.put("advance",number[k][0]+"");
+            map.put("normal",number[k][1]+"");
+            map.put("delay",number[k][2]+"");
+            map.put("noMilestone",number[k][3]+"");
+            map.put("subtotal",number[k][4]+"");
+            map.put("other",number[k][5]+"");
+            map.put("combined",number[k][6]+"");
+            result.add(map);
+        }
+        Map<String,String> tail = new HashMap<>();
+        tail.put("type","合计");
+        tail.put("advance",number[typeList.size()][0]+"");
+        tail.put("normal",number[typeList.size()][1]+"");
+        tail.put("delay",number[typeList.size()][2]+"");
+        tail.put("noMilestone",number[typeList.size()][3]+"");
+        tail.put("subtotal",number[typeList.size()][4]+"");
+        tail.put("other",number[typeList.size()][5]+"");
+        tail.put("combined",projectInfors.size()+"");
+        result.add(tail);
+        return result;
     }
 }

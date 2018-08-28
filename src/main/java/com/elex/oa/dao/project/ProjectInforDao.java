@@ -2,6 +2,7 @@ package com.elex.oa.dao.project;
 
 import com.elex.oa.entity.project.ApprovalList;
 import com.elex.oa.entity.project.OperationQuery;
+import com.elex.oa.entity.project.OsUser;
 import com.elex.oa.entity.project.ProjectInfor;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,6 @@ public interface ProjectInforDao {
     List<ProjectInfor> queryList(OperationQuery operationQuery);
     //修改项目信息
     void amendInfor(ProjectInfor projectInfor);
+    //查询os_user表所有用户信息
+    List<OsUser> queryOsUser();
 }

@@ -95,7 +95,7 @@
     </resultMap>
 
     <select id="queryProjectInfor" resultMap="projectInfor">
-        SELECT project_code, project_name, project_status, project_type, in_department FROM pro_pro_infor
+        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor
     </select>
 
     <select id="queryInforDetail" parameterType="string" resultMap="projectInfor">
@@ -125,11 +125,11 @@
     </select>
 
     <select id="queryProjectInforByDepartment" parameterType="string" resultMap="projectInfor">
-        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor WHERE in_department = #{department} AND department_manager IS NOT NULL
-    </select>
-
-    <select id="queryInforExclusive" resultMap="projectInfor">
-        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor WHERE (in_department != '上海臻相' AND in_department != '贵州中科') AND department_manager IS NOT NULL
+        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor WHERE
+        in_department IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
     </select>
 
     <select id="queryApprovalByCon" parameterType="java.util.Map" resultMap="approvalList">
@@ -155,8 +155,11 @@
             <if test="status != 'Total'">
                 AND project_status = #{status}
             </if>
-            <if test="department != '博智'">
-                AND in_department = #{department}
+            <if test="department == 'part'">
+                AND in_department IN
+                <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
             </if>
         </where>
     </select>
@@ -167,8 +170,11 @@
              <if test="type != 'Total'">
                  AND project_type = #{type}
              </if>
-             <if test="department != '博智'">
-                 AND in_department = #{department}
+             <if test="department == 'all'">
+                 AND in_department IN
+                 <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                     #{item}
+                 </foreach>
              </if>
              AND project_code IN
              <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
@@ -177,9 +183,6 @@
          </where>
     </select>
 
-    <select id="queryInforMain" resultMap="projectInfor">
-        SELECT project_code, project_name, project_status, project_type FROM pro_pro_infor WHERE in_department != "上海臻相" AND in_department != "贵州中科"
-    </select>
 
     <select id="queryWeekByContent" parameterType="java.util.Map" resultType="string">
         SELECT project_code FROM pro_week WHERE fill_date BETWEEN #{start} AND #{end}
@@ -197,4 +200,15 @@
         </if>
     </select>
 
+    <select id="queryProjectInforByDepartment1" parameterType="java.util.Map" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor WHERE project_status = #{proceed} AND
+        in_department IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryProjectIncome" parameterType="string" resultMap="projectIncome">
+        SELECT amount, receivable_proportion FROM pro_income WHERE project_code = #{projectCode}
+    </select>
 </mapper>

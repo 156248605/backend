@@ -1,6 +1,5 @@
 package com.elex.oa;
 
-import com.elex.oa.entity.project.ProjectCode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,9 @@ public class OaApplicationTests {
 
 	@Test
 	public void simplateValidate() {
-		mongoTemplate.dropCollection(ProjectCode.class);
+		Calendar calendar = Calendar.getInstance();
+		String annual = String.valueOf(calendar.get(Calendar.YEAR));
+		System.out.println(annual);
 	}
 
 }

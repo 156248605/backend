@@ -51,6 +51,11 @@
         <result column="contact_email" javaType="string" property="contactEmail"></result>
     </resultMap>
 
+    <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
+        <result column="USER_ID_" javaType="string" property="userId"></result>
+        <result column="FULLNAME_" javaType="string" property="fullName"></result>
+    </resultMap>
+
     <select id="queryCodes" resultType="string">
         SELECT project_code FROM pro_pro_infor
     </select>
@@ -68,11 +73,12 @@
     </select>
 
     <select id="addInfor" parameterType="java.util.List">
-        INSERT INTO pro_pro_infor(id, project_code, project_name, project_status, in_department, dept_manager, proposer, write_date, business_manager, business_manager_id, project_source, project_manager, project_manager_id, project_type, general_situation)
+        INSERT INTO pro_pro_infor(id, project_code, project_name, project_status, in_department, dept_manager, proposer, write_date, business_manager, business_manager_id, business_manager_code, project_source,
+        project_manager, project_manager_id, project_manager_code, project_type, general_situation)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (NULL, #{item.projectCode}, #{item.projectName}, #{item.projectStatus}, #{item.inDepartment}, #{item.deptManager}, #{item.proposer}, #{item.writeDate}, #{item.businessManager}, #{item.businessManagerId},
-              #{item.projectSource}, #{item.projectManager}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation})
+            #{item.businessManagerId}, #{item.projectSource}, #{item.projectManager}, #{item.projectManagerId}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation})
         </foreach>
     </select>
 
@@ -145,10 +151,15 @@
     </select>
 
     <update id="amendInfor" parameterType="com.elex.oa.entity.project.ProjectInfor">
-        UPDATE pro_pro_infor SET project_name = #{projectName}, project_status = #{projectStatus} ,business_manager = #{businessManager}, business_manager_id = #{businessManagerId}, project_source = #{projectSource},
-        project_manager = #{projectManager}, project_manager_id = #{projectManagerId}, project_type = #{projectType}, general_situation = #{generalSituation}, project_members = #{projectMembers},
-        project_member_id = #{projectMemberId}, related_members = #{relatedMembers}, related_member_id = #{relatedMemberId}, party_name = #{partyName},party_address = #{partyAddress},
-        party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position = #{headPosition},  head_mobile = #{headMobile}, head_email = #{headEmail},
+        UPDATE pro_pro_infor SET project_name = #{projectName}, project_status = #{projectStatus} ,business_manager = #{businessManager}, business_manager_id = #{businessManagerId},
+        business_manager_code = #{businessManagerCode}, project_source = #{projectSource},project_manager = #{projectManager}, project_manager_id = #{projectManagerId}, project_manager_code = #{projectManagerCode},
+        project_type = #{projectType}, general_situation = #{generalSituation}, project_members = #{projectMembers}, project_member_id = #{projectMemberId}, project_member_code = #{projectMemberCode},
+        related_members = #{relatedMembers}, related_member_id = #{relatedMemberId}, related_member_code = #{relatedMemberCode}, party_name = #{partyName}, party_address = #{partyAddress},
+        party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position = #{headPosition},   head_mobile = #{headMobile}, head_email = #{headEmail},
         contact_name = #{contactName}, contact_position = #{contactPosition}, contact_mobile = #{contactMobile}, contact_email = #{contactEmail} WHERE project_code = #{projectCode}
     </update>
+
+    <select id="queryOsUser" resultMap="osUser">
+        SELECT USER_ID_ , FULLNAME_ FROM os_user
+    </select>
 </mapper>
