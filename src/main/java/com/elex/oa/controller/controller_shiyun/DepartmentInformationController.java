@@ -1236,9 +1236,10 @@ public class DepartmentInformationController {
     @ResponseBody
     public Object queryHRManageCard(
             @RequestParam("sdate")String sdate,
-            @RequestParam("edate")String edate
+            @RequestParam("edate")String edate,
+            @RequestParam("companyname")String companyname
     ){
-        Object hrManageCard = iDeptService.getHRManageCard(sdate,edate);
+        Object hrManageCard = iDeptService.getHRManageCard(companyname,sdate,edate);
         return hrManageCard;
     }
 
@@ -1252,10 +1253,11 @@ public class DepartmentInformationController {
     public Object queryHRManageCard2(
             @RequestParam("sdate")String sdate,
             @RequestParam("edate")String edate,
+            @RequestParam("companyname")String companyname,
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
     ) throws ParseException {
-        Object hrManageCard = iDeptService.getHRManageCard2(rows,page,sdate,edate);
+        Object hrManageCard = iDeptService.getHRManageCard2(companyname,rows,page,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){
             PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();
@@ -1283,10 +1285,11 @@ public class DepartmentInformationController {
     public Object queryHRManageCard3(
             @RequestParam("sdate")String sdate,
             @RequestParam("edate")String edate,
+            @RequestParam("companyname")String companyname,
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
     ) throws ParseException {
-        Object hrManageCard = iDeptService.getHRManageCard3(rows,page,sdate,edate);
+        Object hrManageCard = iDeptService.getHRManageCard3(companyname,rows,page,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){
             PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();
@@ -1314,10 +1317,11 @@ public class DepartmentInformationController {
     public Object queryHRManageCard4(
             @RequestParam("sdate")String sdate,
             @RequestParam("edate")String edate,
+            @RequestParam("companyname")String companyname,
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
     ) throws ParseException {
-        Object hrManageCard = iDeptService.getHRManageCard4(rows,page,sdate,edate);
+        Object hrManageCard = iDeptService.getHRManageCard4(companyname,rows,page,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){
             PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp.getBody();

@@ -4,7 +4,6 @@ package com.elex.oa.service.service_shiyun;
 import com.elex.oa.entity.entity_shiyun.Dept;
 import com.elex.oa.entity.entity_shiyun.HRManageCard;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -96,28 +95,28 @@ public interface IDeptService {
      *@Description:人事看板信息
      *@Date: 13:39 2018\6\28 0028
      */
-    public Object getHRManageCard(String sdate,String edate);
+    public Object getHRManageCard(String  companyname,String sdate,String edate);
 
     /**
      *@Author:ShiYun;
      *@Description:获得总人数(edate时间点的在职总人数)
      *@Date: 9:13 2018\8\15 0015
      */
-    public Object getHRManageCard2(Integer rows,Integer page,String sdate,String edate);
+    public Object getHRManageCard2(String companyname,Integer rows,Integer page,String sdate,String edate);
 
     /**
      *@Author:ShiYun;
      *@Description:获得入职总人数(edate时间点的入职总人数)
      *@Date: 9:15 2018\8\15 0015
      */
-    public Object getHRManageCard3(Integer rows,Integer page,String sdate,String edate);
+    public Object getHRManageCard3(String companyname,Integer rows,Integer page,String sdate,String edate);
 
     /**
      *@Author:ShiYun;
      *@Description:获得离职总人数(edate时间点的离职总人数)
      *@Date: 9:17 2018\8\15 0015
      */
-    public Object getHRManageCard4(Integer rows,Integer page,String sdate,String edate);
+    public Object getHRManageCard4(String companyname,Integer rows,Integer page,String sdate,String edate);
 
     /**
      *@Author:ShiYun;
