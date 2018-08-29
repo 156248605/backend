@@ -1752,8 +1752,10 @@ public class PersonalInformationController {
             dept = iDeptService.queryOneDepByDepid(pi.getDepid());
             if (dept != null) {
                 pi.setDepname(dept.getDepname());
+                pi.setDepcode(dept.getDepcode());
             } else {
                 pi.setDepname("部门信息还未添加");
+                pi.setDepcode("部门编号还未添加");
             }
 
             //获得岗位信息
@@ -1901,20 +1903,22 @@ public class PersonalInformationController {
      */
     @RequestMapping("/importPersonalInformations")
     @ResponseBody
-    public String importPersonalInformations(
+    public Object importPersonalInformations(
         @RequestParam("file") MultipartFile multipartFile
     ){
+        List<Object> goToPost = new ArrayList<>();
         ReadPersonalinformationExcel readExcel = new ReadPersonalinformationExcel();
         List<PersonalInformation> personalInformationList = readExcel.getExcelInfo(multipartFile);
         if (personalInformationList!=null) {
             for(int i = 0;i<personalInformationList.size();i++){
+                Map<String,Object> map = new HashMap<>();//转到ZHG的数据，岗位的同步
                 PersonalInformation personalInformation = personalInformationList.get(i);
                 //1.先保存用户表
                 User user = new User();
                 user.setIsactive(personalInformation.getIsactive());
                 //username校验
                 User u;
-                if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("")) {
+                if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("") && !personalInformation.getUsername().equals("null")) {
                     u = iUserService.queryByUsername(personalInformation.getUsername());
                     int j = 2;
                     while (u!=null){
@@ -1944,9 +1948,10 @@ public class PersonalInformationController {
                 user.setUsername(personalInformation.getUsername());
                 user.setTruename(personalInformation.getTruename());
                 Integer userid = iUserService.saveOne(user);
+                map.put("username",user.getUsername());
                 personalInformation.setUserid(userid);
                 //2.再查询部门ID
-                Dept dept = iDeptService.queryOneDepByDepname(personalInformationList.get(i).getDepname());
+                Dept dept = iDeptService.queryOneByDepcode(personalInformationList.get(i).getDepcode());
                 if (dept!=null) {
                     personalInformation.setDepid(dept.getId());
                 }
@@ -2123,17 +2128,21 @@ public class PersonalInformationController {
                     PerAndPostRs perAndPostRs = new PerAndPostRs();
                     perAndPostRs.setPerid(personalinformationid);
                     String[] split = personalInformation.getPostnames().split("[兼;]");
+                    List<Integer> postids = new ArrayList<>();
                     for(String postname:split){
                         if (iPostService.queryOneByPostname(postname)!=null) {
                             Integer postid = iPostService.queryOneByPostname(postname).getId();
                             perAndPostRs.setPostid(postid);
                             iPerandpostrsService.addOne(perAndPostRs);
+                            postids.add(postid);
                         }
                     }
+                    map.put("postids",postids);
                 }
+                goToPost.add(map);
             }
         }
-        return "数据导入成功！";
+        return RespUtil.successResp("200","数据导入成功！",goToPost) ;
     }
 
     /**

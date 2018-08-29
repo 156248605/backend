@@ -35,6 +35,7 @@ public class  PersonalInformation implements Serializable{
     private Integer otherinformationid;//其他信息ID
     private String company;//公司（源自部门信息）（只显示）
     private String depname;//部门（源自部门信息）（只显示）
+    private String depcode;//部门编号（源自部门信息）（只显示）
     private List<String> depnames;//
     private String depnamevalue;//判断条件
     private String principaltruename;//主管姓名（源于人事信息）（只显示）
@@ -153,6 +154,14 @@ public class  PersonalInformation implements Serializable{
     private String remark;//备注
 
     public PersonalInformation() {
+    }
+
+    public String getDepcode() {
+        return depcode;
+    }
+
+    public void setDepcode(String depcode) {
+        this.depcode = depcode;
     }
 
     public String getState() {

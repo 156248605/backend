@@ -1239,6 +1239,14 @@ public class DepartmentInformationController {
             @RequestParam("edate")String edate,
             @RequestParam("companyname")String companyname
     ){
+        //为了和高晓飞统一参数名称，其实这是不科学的，后期公司名称修改或添加新公司只需要将这段代码注释掉
+        switch (companyname){
+            case "全部":companyname="江苏博智软件科技股份有限公司";break;
+            case "南京总部":companyname="江苏博智软件科技南京总部";break;
+            case "上海臻相":companyname="上海臻相软件科技有限公司";break;
+            case "贵州中科":companyname="贵州中科博智科技有限公司";break;
+        }
+
         Object hrManageCard = iDeptService.getHRManageCard(companyname,sdate,edate);
         return hrManageCard;
     }
@@ -1257,6 +1265,14 @@ public class DepartmentInformationController {
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
     ) throws ParseException {
+        //为了和高晓飞统一参数名称，其实这是不科学的，后期公司名称修改或添加新公司只需要将这段代码注释掉
+        switch (companyname){
+            case "全部":companyname="江苏博智软件科技股份有限公司";break;
+            case "南京总部":companyname="江苏博智软件科技南京总部";break;
+            case "上海臻相":companyname="上海臻相软件科技有限公司";break;
+            case "贵州中科":companyname="贵州中科博智科技有限公司";break;
+        }
+
         Object hrManageCard = iDeptService.getHRManageCard2(companyname,rows,page,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){
@@ -1289,6 +1305,14 @@ public class DepartmentInformationController {
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
     ) throws ParseException {
+        //为了和高晓飞统一参数名称，其实这是不科学的，后期公司名称修改或添加新公司只需要将这段代码注释掉
+        switch (companyname){
+            case "全部":companyname="江苏博智软件科技股份有限公司";break;
+            case "南京总部":companyname="江苏博智软件科技南京总部";break;
+            case "上海臻相":companyname="上海臻相软件科技有限公司";break;
+            case "贵州中科":companyname="贵州中科博智科技有限公司";break;
+        }
+
         Object hrManageCard = iDeptService.getHRManageCard3(companyname,rows,page,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){
@@ -1321,6 +1345,14 @@ public class DepartmentInformationController {
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
     ) throws ParseException {
+        //为了和高晓飞统一参数名称，其实这是不科学的，后期公司名称修改或添加新公司只需要将这段代码注释掉
+        switch (companyname){
+            case "全部":companyname="江苏博智软件科技股份有限公司";break;
+            case "南京总部":companyname="江苏博智软件科技南京总部";break;
+            case "上海臻相":companyname="上海臻相软件科技有限公司";break;
+            case "贵州中科":companyname="贵州中科博智科技有限公司";break;
+        }
+
         Object hrManageCard = iDeptService.getHRManageCard4(companyname,rows,page,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){

@@ -240,7 +240,14 @@ public class DeptServiceImpl implements IDeptService {
             edate = twoDate.get("edate");
             HashMap<String, Object> paramMap = new HashMap<>();
             List<HRManageCard> hrManageCardList = new ArrayList<>();
-            List<Dept> depts = iDeptDao.selectAllDept();
+            List<Dept> depts1 = iDeptDao.selectAllDept();
+            List<Dept> depts = new ArrayList<>();
+            for (Dept d:depts1
+                 ) {
+                if(companyname.equals("江苏博智软件科技股份有限公司") || d.getCompanyname().equals(companyname)){
+                    depts.add(d);
+                }
+            }
 
             //获得总人数(edate时间点的在职总人数)
             Integer num;
@@ -393,20 +400,25 @@ public class DeptServiceImpl implements IDeptService {
             List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(null,edate);//时间节点edate前的入职人员
             List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(null,edate);//时间节点edate前的离职人员
             List<PersonalInformation> personalInformationList = new ArrayList<>();
-            if (personalInformationList2.size()>0) {
-                for (PersonalInformation per:personalInformationList1) {
-                    if(
-                        !personalInformationList2.contains(per)
-                        && (
-                                companyname.equals("江苏博智软件科技股份有限公司") ||
-                                iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)
-                        )
-                    ){
-                        personalInformationList.add(per);
-                    }
+            for (PersonalInformation per:personalInformationList1) {
+                if(
+                    !personalInformationList2.contains(per)
+                    && (
+                        companyname.trim().equals("江苏博智软件科技股份有限公司")
+                                ||
+                        (per.getDepid()!=null?//没有部门（depid=null）
+                                (iDeptDao.selectDeptByDepid(per.getDepid())!=null?//所在部门不存在(depid!=null但相应的部门已经被删除，实际上这种情况是绝对不存在的，私自直接操作数据库时会发生)
+                                        iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)//筛选公司
+                                        :
+                                        false
+                                )
+                                :
+                                false
+                        )//没有部门的员工(或者所在部门不存在，实际上这种情况是绝对不存在的)暂时不纳入人事看板的统计
+                    )
+                ){
+                    personalInformationList.add(per);
                 }
-            }else {
-                personalInformationList = personalInformationList1;
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
             return RespUtil.successResp("205","提交成功！",pageHelper);
@@ -434,7 +446,19 @@ public class DeptServiceImpl implements IDeptService {
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:personalInformationList1
                  ) {
-                if(companyname.equals("江苏博智软件科技股份有限公司") || iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)){
+                if(
+                    companyname.equals("江苏博智软件科技股份有限公司")
+                            ||
+                    (per.getDepid()!=null?//没有部门（depid=null）
+                            (iDeptDao.selectDeptByDepid(per.getDepid())!=null?//所在部门不存在(depid!=null但相应的部门已经被删除，实际上这种情况是绝对不存在的，私自直接操作数据库时会发生)
+                                    iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)//筛选公司
+                                    :
+                                    false
+                            )
+                            :
+                            false
+                    )//没有部门的员工(或者所在部门不存在，实际上这种情况是绝对不存在的)暂时不纳入人事看板的统计
+                ){
                     personalInformationList.add(per);
                 }
             }
@@ -464,7 +488,19 @@ public class DeptServiceImpl implements IDeptService {
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:personalInformationList1
                     ) {
-                if(companyname.equals("江苏博智软件科技股份有限公司") || iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)){
+                if(
+                    companyname.trim().equals("江苏博智软件科技股份有限公司")
+                    ||
+                    (per.getDepid()!=null?//没有部门（depid=null）
+                            (iDeptDao.selectDeptByDepid(per.getDepid())!=null?//所在部门不存在(depid!=null但相应的部门已经被删除，实际上这种情况是绝对不存在的，私自直接操作数据库时会发生)
+                                    iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)//筛选公司
+                                    :
+                                    false
+                            )
+                            :
+                            false
+                    )//没有部门的员工(或者所在部门不存在，实际上这种情况是绝对不存在的)暂时不纳入人事看板的统计
+                ){
                     personalInformationList.add(per);
                 }
             }
