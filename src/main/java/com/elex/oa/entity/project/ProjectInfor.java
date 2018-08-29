@@ -12,16 +12,20 @@ public class ProjectInfor {
     private String department1;
     private String businessManager; //商务经理
     private String businessManagerId; //商务经理编号
+    private String businessManagerCode; //商务经理编号，用于查询
     private String projectSource; //项目来源
     private String department2;
     private String projectManager; //项目经理
     private String projectManagerId; //项目经理编号
+    private String projectManagerCode; //项目经理编号，用于查询
     private String projectType; //项目类型
     private String generalSituation;// 项目概况
     private String projectMembers; //项目成员
     private String projectMemberId; //项目成员id
+    private String projectMemberCode; //项目成语id,用于查询
     private String relatedMembers; //相关人员
     private String relatedMemberId; //相关人员id
+    private String relatedMemberCode; //相关人员id,用于查询
     private String amount; //项目金额
     private String copies; //合同份数
     private String partyName; //甲方名称
@@ -41,7 +45,7 @@ public class ProjectInfor {
     public ProjectInfor() {
     }
 
-    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String department1, String businessManager, String businessManagerId, String projectSource, String department2, String projectManager, String projectManagerId, String projectType, String generalSituation, String projectMembers, String projectMemberId, String relatedMembers, String relatedMemberId, String amount, String copies, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
+    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String department1, String businessManager, String businessManagerId, String businessManagerCode, String projectSource, String department2, String projectManager, String projectManagerId, String projectManagerCode, String projectType, String generalSituation, String projectMembers, String projectMemberId, String projectMemberCode, String relatedMembers, String relatedMemberId, String relatedMemberCode, String amount, String copies, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -53,16 +57,20 @@ public class ProjectInfor {
         this.department1 = department1;
         this.businessManager = businessManager;
         this.businessManagerId = businessManagerId;
+        this.businessManagerCode = businessManagerCode;
         this.projectSource = projectSource;
         this.department2 = department2;
         this.projectManager = projectManager;
         this.projectManagerId = projectManagerId;
+        this.projectManagerCode = projectManagerCode;
         this.projectType = projectType;
         this.generalSituation = generalSituation;
         this.projectMembers = projectMembers;
         this.projectMemberId = projectMemberId;
+        this.projectMemberCode = projectMemberCode;
         this.relatedMembers = relatedMembers;
         this.relatedMemberId = relatedMemberId;
+        this.relatedMemberCode = relatedMemberCode;
         this.amount = amount;
         this.copies = copies;
         this.partyName = partyName;
@@ -168,6 +176,14 @@ public class ProjectInfor {
         this.businessManagerId = businessManagerId;
     }
 
+    public String getBusinessManagerCode() {
+        return businessManagerCode;
+    }
+
+    public void setBusinessManagerCode(String businessManagerCode) {
+        this.businessManagerCode = businessManagerCode;
+    }
+
     public String getProjectSource() {
         return projectSource;
     }
@@ -198,6 +214,14 @@ public class ProjectInfor {
 
     public void setProjectManagerId(String projectManagerId) {
         this.projectManagerId = projectManagerId;
+    }
+
+    public String getProjectManagerCode() {
+        return projectManagerCode;
+    }
+
+    public void setProjectManagerCode(String projectManagerCode) {
+        this.projectManagerCode = projectManagerCode;
     }
 
     public String getProjectType() {
@@ -232,6 +256,14 @@ public class ProjectInfor {
         this.projectMemberId = projectMemberId;
     }
 
+    public String getProjectMemberCode() {
+        return projectMemberCode;
+    }
+
+    public void setProjectMemberCode(String projectMemberCode) {
+        this.projectMemberCode = projectMemberCode;
+    }
+
     public String getRelatedMembers() {
         return relatedMembers;
     }
@@ -246,6 +278,14 @@ public class ProjectInfor {
 
     public void setRelatedMemberId(String relatedMemberId) {
         this.relatedMemberId = relatedMemberId;
+    }
+
+    public String getRelatedMemberCode() {
+        return relatedMemberCode;
+    }
+
+    public void setRelatedMemberCode(String relatedMemberCode) {
+        this.relatedMemberCode = relatedMemberCode;
     }
 
     public String getAmount() {
@@ -382,16 +422,20 @@ public class ProjectInfor {
                 ", department1='" + department1 + '\'' +
                 ", businessManager='" + businessManager + '\'' +
                 ", businessManagerId='" + businessManagerId + '\'' +
+                ", businessManagerCode='" + businessManagerCode + '\'' +
                 ", projectSource='" + projectSource + '\'' +
                 ", department2='" + department2 + '\'' +
                 ", projectManager='" + projectManager + '\'' +
                 ", projectManagerId='" + projectManagerId + '\'' +
+                ", projectManagerCode='" + projectManagerCode + '\'' +
                 ", projectType='" + projectType + '\'' +
                 ", generalSituation='" + generalSituation + '\'' +
                 ", projectMembers='" + projectMembers + '\'' +
                 ", projectMemberId='" + projectMemberId + '\'' +
+                ", projectMemberCode='" + projectMemberCode + '\'' +
                 ", relatedMembers='" + relatedMembers + '\'' +
                 ", relatedMemberId='" + relatedMemberId + '\'' +
+                ", relatedMemberCode='" + relatedMemberCode + '\'' +
                 ", amount='" + amount + '\'' +
                 ", copies='" + copies + '\'' +
                 ", partyName='" + partyName + '\'' +

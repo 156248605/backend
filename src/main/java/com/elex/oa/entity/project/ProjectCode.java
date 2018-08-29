@@ -4,15 +4,15 @@ import org.springframework.data.annotation.Id;
 
 public class ProjectCode {
     @Id
-    private String id; //编号
-    private String projectCode;
+    private String id;
+    private String code; //编号
 
     public ProjectCode() {
     }
 
-    public ProjectCode(String id, String projectCode) {
+    public ProjectCode(String id, String code) {
         this.id = id;
-        this.projectCode = projectCode;
+        this.code = code;
     }
 
     public String getId() {
@@ -23,19 +23,19 @@ public class ProjectCode {
         this.id = id;
     }
 
-    public String getProjectCode() {
-        return projectCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override
     public String toString() {
         return "ProjectCode{" +
                 "id='" + id + '\'' +
-                ", projectCode='" + projectCode + '\'' +
+                ", code='" + code + '\'' +
                 '}';
     }
 }

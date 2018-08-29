@@ -36,4 +36,6 @@ public interface WeeklyPlanDao {
     List<String> queryCodeByPhase(String phase);
     //查询本周是否已有周报
     int queryCountByCode(Map<String,String> content);
+    //条件查询当前周报信息
+    WeeklyPlan queryPlanContent(Map<String,String> content);
 }

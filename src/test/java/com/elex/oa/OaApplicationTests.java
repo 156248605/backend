@@ -2,7 +2,9 @@ package com.elex.oa;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
@@ -11,6 +13,9 @@ import java.util.Calendar;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OaApplicationTests {
+
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	@Test
 	public void contextLoads() {
@@ -28,6 +33,13 @@ public class OaApplicationTests {
 		String end = simpleDateFormat.format(calendar1.getTime());
 		System.out.println(start);
 		System.out.println(end);
+	}
+
+	@Test
+	public void simplateValidate() {
+		Calendar calendar = Calendar.getInstance();
+		String annual = String.valueOf(calendar.get(Calendar.YEAR));
+		System.out.println(annual);
 	}
 
 }

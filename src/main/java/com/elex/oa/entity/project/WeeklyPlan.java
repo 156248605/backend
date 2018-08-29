@@ -12,7 +12,7 @@ public class WeeklyPlan { //项目周报
     private String completion; //完成概况
     private String nextPlan; //下周计划
     private String risk; //风险提醒
-    //private String progress; //事项进度比例
+    private String fillDate; //填写日期
     private String projectManager; //项目经理
     private String departmentManager; //部门经理
     //private String leaderShip; //分管领导
@@ -20,7 +20,7 @@ public class WeeklyPlan { //项目周报
     public WeeklyPlan() {
     }
 
-    public WeeklyPlan(int id, String projectCode, String startDate, String endDate, String timeSchedule, String fulfillment, String punctuality, String projectPhase, String completion, String nextPlan, String risk, String projectManager, String departmentManager) {
+    public WeeklyPlan(int id, String projectCode, String startDate, String endDate, String timeSchedule, String fulfillment, String punctuality, String projectPhase, String completion, String nextPlan, String risk, String fillDate, String projectManager, String departmentManager) {
         this.id = id;
         this.projectCode = projectCode;
         this.startDate = startDate;
@@ -32,6 +32,7 @@ public class WeeklyPlan { //项目周报
         this.completion = completion;
         this.nextPlan = nextPlan;
         this.risk = risk;
+        this.fillDate = fillDate;
         this.projectManager = projectManager;
         this.departmentManager = departmentManager;
     }
@@ -124,6 +125,14 @@ public class WeeklyPlan { //项目周报
         this.risk = risk;
     }
 
+    public String getFillDate() {
+        return fillDate;
+    }
+
+    public void setFillDate(String fillDate) {
+        this.fillDate = fillDate;
+    }
+
     public String getProjectManager() {
         return projectManager;
     }
@@ -154,6 +163,7 @@ public class WeeklyPlan { //项目周报
                 ", completion='" + completion + '\'' +
                 ", nextPlan='" + nextPlan + '\'' +
                 ", risk='" + risk + '\'' +
+                ", fillDate='" + fillDate + '\'' +
                 ", projectManager='" + projectManager + '\'' +
                 ", departmentManager='" + departmentManager + '\'' +
                 '}';

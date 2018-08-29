@@ -5,6 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.service_shiyun.*;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,6 +55,34 @@ public class PostInformationController {
     @ResponseBody
     public Post queryOnePostByPostname(@RequestParam("name") String name){
         Post post = iPostService.queryOneByPostname(name);
+        Post parentpost = iPostService.queryOneByPostid(post.getParentpostid());
+        post.setParentpost(parentpost);
+        if(parentpost == null){
+            parentpost = new Post();
+            parentpost.setPostname("无上级岗位");
+        }
+        post.setParentpost(parentpost);
+        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post.getFunctionaltypeid());
+        if (hRsetFunctionalType!=null) {
+            post.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+        }
+        HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryById(post.getPostlevelid());
+        if (hRsetPostlevel!=null) {
+            post.setPostlevel(hRsetPostlevel.getPostlevel());
+        }
+        return post;
+    }
+
+
+/**
+     *@Author:ShiYun;
+     *@Description:根据岗位名称查询岗位信息
+     *@Date: 10:40 2018\3\20 0020
+     */
+    @RequestMapping("/queryOnePostByPostid")
+    @ResponseBody
+    public Post queryOnePostByPostid(@RequestParam("id") Integer id){
+        Post post = iPostService.queryOneByPostid(id);
         Post parentpost = iPostService.queryOneByPostid(post.getParentpostid());
         post.setParentpost(parentpost);
         if(parentpost == null){
@@ -135,6 +164,7 @@ public class PostInformationController {
         DeptTree deptTree = new DeptTree();
         deptTree.setTitle(posts.get(0).getPostname());
         deptTree.setCode(posts.get(0).getPostcode());
+        deptTree.setId(posts.get(0).getId());
         DeptTree deptTree1 = getDeptTree(deptTree, posts.get(0).getId());
         return deptTree1;
     }
@@ -148,6 +178,7 @@ public class PostInformationController {
                 String depname = posts.get(i).getPostname();
                 deptTree1.setTitle(depname);
                 deptTree1.setCode(posts.get(i).getPostcode());
+                deptTree1.setId(posts.get(i).getId());
                 DeptTree deptTree2 = getDeptTree(deptTree1, posts.get(i).getId());
                 children.add(deptTree2);
             }
@@ -165,15 +196,15 @@ public class PostInformationController {
      */
     @RequestMapping("/addOnePost")
     @ResponseBody
-    public String addOnePost(
+    public Object addOnePost(
             Post post,
             HttpServletRequest request
     ){
         //校验岗位是否存在
-        /*Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
+        Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
         if(queryOneByPostname!=null){
-            return "岗位名称已存在，请重新输入!";
-        }*/
+            return RespUtil.successResp("500","岗位名称已存在，请重新输入!",null) ;
+        }
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         List<MultipartFile> dfs= multipartRequest.getFiles("df");
@@ -197,6 +228,7 @@ public class PostInformationController {
         HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryByPostlevel(post.getPostlevel());
         post.setPostlevelid(hRsetPostlevel.getId());
         Integer postid = iPostService.addOne(post);
+        post.setId(postid);
 
         /*
          *Map<String,Object> result = new HashMap<>();
@@ -208,7 +240,7 @@ public class PostInformationController {
          *      result.put("message","添加失败，稍后再试");
          * }
          */
-        return "提交成功!";
+        return RespUtil.successResp("200","提交成功!",post) ;
     }
 
     /**
@@ -240,7 +272,7 @@ public class PostInformationController {
      */
     @RequestMapping("/updateOnePost")
     @ResponseBody
-    public String updateOnePost(
+    public Object updateOnePost(
             @Valid Post post,
             HttpServletRequest request,
             @RequestParam("transactorusername") String transactorusername
@@ -253,7 +285,7 @@ public class PostInformationController {
                 dfs = multipartRequest.getFiles("df");
             } catch (Exception e) {
                 e.printStackTrace();
-                return "提交文件失败！";
+                return RespUtil.successResp("400","提交文件失败！",null);
             }
             // 添加岗位日志
             PostLog postLog = new PostLog();
@@ -349,7 +381,7 @@ public class PostInformationController {
                     b = true;
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return "提交失败！";
+                    return RespUtil.successResp("400","提交文件失败！",null);
                 }
             }
 
@@ -364,13 +396,13 @@ public class PostInformationController {
                 }
                 iPostService.modifyOne(post);
             } else {
-                return "没有需要修改的岗位信息！";
+                return RespUtil.successResp("500","没有需要提交的信息！",null);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "提交失败!";
+            return RespUtil.successResp("400","提交文件失败！",null);
         }
-        return "提交成功！";
+        return RespUtil.successResp("200","提交成功！",post);
     }
 
     /**
@@ -380,7 +412,7 @@ public class PostInformationController {
      */
     @RequestMapping("/deletePostsById")
     @ResponseBody
-    public String deletePostsById(@RequestParam("id") Integer id){
+    public Object deletePostsById(@RequestParam("id") Integer id){
         try {
             List<Integer> postids = new ArrayList<Integer>();
             postids.add(id);
@@ -392,9 +424,9 @@ public class PostInformationController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "删除失败！";
+            return RespUtil.successResp("400","删除失败！",false) ;
         }
-        return "删除成功！";
+        return RespUtil.successResp("200","删除成功！",true) ;
     }
     // 通过递归获得需要删除的所有岗位ID
     public List<Integer> getPostids(Integer parentpostid,List<Integer> list){
@@ -517,14 +549,15 @@ public class PostInformationController {
     @RequestMapping("/sortPostinformation")
     @ResponseBody
     public List<TitleAndCode> sortPostinformation(
-            @RequestParam("title") String title
+            @RequestParam("id") Integer id
     ){
         List<TitleAndCode> list = new ArrayList<>();
-        List<Post> posts = iPostService.queryByParentpostid(iPostService.queryOneByPostname(title).getId());
+        List<Post> posts = iPostService.queryByParentpostid(iPostService.queryOneByPostid(id).getParentpostid());
         for(int i = 0;i<posts.size();i++){
             TitleAndCode titleAndCode = new TitleAndCode();
             titleAndCode.setTitle(posts.get(i).getPostname());
             titleAndCode.setCode(posts.get(i).getOrdercode());
+            titleAndCode.setId(posts.get(i).getId());
             list.add(titleAndCode);
         }
         return list;

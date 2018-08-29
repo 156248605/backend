@@ -1,10 +1,12 @@
 package com.elex.oa.entity.entity_shiyun;
 
-import com.elex.oa.common.common_shiyun.Commons;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -221,9 +223,9 @@ public class ReadPersonalinformationExcel {
                     }else if ("上家雇主".equals(columnname.replace(" ",""))) {
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setParentcompany(str);
-                    }else if ("部门".equals(columnname.replace(" ",""))) {
+                    }else if ("部门编号".equals(columnname.replace(" ",""))) {
                         String str = String.valueOf(cell.getStringCellValue());
-                        personalInformation.setDepname(str);
+                        personalInformation.setDepcode(str);
                     }else if ("岗位".equals(columnname.replace(" ",""))) {
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setPostnames(str);

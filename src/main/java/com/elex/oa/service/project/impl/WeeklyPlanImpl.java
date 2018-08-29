@@ -1,6 +1,7 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.elex.oa.dao.project.MileStoneDao;
 import com.elex.oa.dao.project.WeeklyPlanDao;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.project.*;
@@ -12,16 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class WeeklyPlanImpl implements WeeklyPlanService {
 
     @Resource
     private WeeklyPlanDao weeklyPlanDao;
+
+    @Resource
+    private MileStoneDao mileStoneDao;
 
     //数据列表查询
     @Override
@@ -103,6 +104,8 @@ public class WeeklyPlanImpl implements WeeklyPlanService {
         } else {
             return "0";
         }
+        String fillDate = simpleDateFormat.format(new Date());
+        weeklyPlan.setFillDate(fillDate);
         weeklyPlanDao.addWeeklyPlan(weeklyPlan); //添加周计划
         return "1";
     }
@@ -144,5 +147,17 @@ public class WeeklyPlanImpl implements WeeklyPlanService {
     public String deleteWeek(int id) {
         weeklyPlanDao.deleteWeek(id);
         return "1";
+    }
+
+    //查询某项目的里程碑计划
+    @Override
+    public List<String> queryMileStone(String code) {
+        List<String> list = new ArrayList<>();
+        List<MileStonePlan> mileStones = mileStoneDao.queryPlansCode(code);
+        if(mileStones.size() > 0) {
+            list.add(mileStones.get(0).getStartDate());
+            list.add(mileStones.get(mileStones.size() - 1).getEndDate());
+        }
+        return list;
     }
 }

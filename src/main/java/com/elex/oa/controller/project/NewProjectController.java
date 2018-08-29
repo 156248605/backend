@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @CrossOrigin
@@ -25,12 +24,6 @@ public class NewProjectController {
     private NewProjcetService newProjcetService;
 
 
-    //对新建项目进行处理
-    @RequestMapping("/new_submit")
-    @ResponseBody
-    public Map<String,Object> newSubmit(NewProject newProject) {
-        return newProjcetService.newSubmit(newProject);
-    }
 
     //对某人已建项目进行列表查询
     @RequestMapping("/list_query")
@@ -44,5 +37,12 @@ public class NewProjectController {
     @ResponseBody
     public List<NewProject> selectData(String proposer) {
         return newProjcetService.selectData(proposer);
+    }
+
+    //根据人名获取项目编号
+    @RequestMapping("/obtain_code_name")
+    @ResponseBody
+    public String obtainCodeName(String name) {
+        return newProjcetService.obtainCodeName(name);
     }
 }

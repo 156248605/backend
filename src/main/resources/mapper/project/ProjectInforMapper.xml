@@ -8,7 +8,7 @@
         <result column="F_TXRQ" javaType="string" property="writeDate"></result>
         <result column="F_BMJL_NAME" javaType="string" property="deptManager"></result>
         <result column="F_SZBM_NAME" javaType="string" property="inDepartment"></result>
-        <result column="F_XMJL" javaType="string" property="projectManager"></result>
+        <result column="F_XMJL" javaType="string" property="projectManagerId"></result>
         <result column="F_XMJL_NAME" javaType="string" property="projectManager"></result>
         <result column="F_XMLY" javaType="string" property="projectSource"></result>
         <result column="F_SWJL" javaType="string" property="businessManagerId"></result>
@@ -51,27 +51,34 @@
         <result column="contact_email" javaType="string" property="contactEmail"></result>
     </resultMap>
 
+    <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
+        <result column="USER_ID_" javaType="string" property="userId"></result>
+        <result column="FULLNAME_" javaType="string" property="fullName"></result>
+    </resultMap>
+
     <select id="queryCodes" resultType="string">
         SELECT project_code FROM pro_pro_infor
     </select>
 
     <select id="queryApproval" parameterType="java.util.Map" resultMap="approvalList">
-        SELECT F_XMBH, F_XMMC, F_TXRQ, F_BMJL_NAME, F_SZBM_NAME, F_XMJL, F_XMJL_NAME, F_XMLY, F_SWJL, F_SWJL_NAME, F_XMLX, F_XMGK, F_SQR_NAME FROM w_lxsqb
-        WHERE INST_STATUS_ = 'SUCCESS_END'
+        SELECT w.F_XMBH, w.F_XMMC, w.F_TXRQ, w.F_BMJL_NAME, w.F_SZBM_NAME, w.F_XMJL, w.F_XMJL_NAME, w.F_XMLY, w.F_SWJL, w.F_SWJL_NAME, w.F_XMLX, w.F_XMGK, w.F_SQR_NAME FROM w_lxsqb w
+        WHERE w.INST_STATUS_ = 'SUCCESS_END'
         <if test="marker == 1">
-            AND F_XMBH NOT IN
+            AND w.F_XMBH NOT IN
             <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
+        AND NOT EXISTS (SELECT 1 FROM w_lxsqb WHERE w.F_XMBH = F_XMBH AND UPDATE_TIME_  > w.UPDATE_TIME_ )
     </select>
 
     <select id="addInfor" parameterType="java.util.List">
-        INSERT INTO pro_pro_infor(id, project_code, project_name, in_department, dept_manager, proposer, write_date, business_manager, business_manager_id, project_source, project_manager, project_manager_id, project_type, general_situation)
+        INSERT INTO pro_pro_infor(id, project_code, project_name, project_status, in_department, dept_manager, proposer, write_date, business_manager, business_manager_id, business_manager_code, project_source,
+        project_manager, project_manager_id, project_manager_code, project_type, general_situation)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (NULL, #{item.projectCode}, #{item.projectName}, #{item.inDepartment}, #{item.deptManager}, #{item.proposer}, #{item.writeDate}, #{item.businessManager}, #{item.businessManagerId},
-              #{item.projectSource}, #{item.projectManager}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation})
+            (NULL, #{item.projectCode}, #{item.projectName}, #{item.projectStatus}, #{item.inDepartment}, #{item.deptManager}, #{item.proposer}, #{item.writeDate}, #{item.businessManager}, #{item.businessManagerId},
+            #{item.businessManagerId}, #{item.projectSource}, #{item.projectManager}, #{item.projectManagerId}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation})
         </foreach>
     </select>
 
@@ -144,10 +151,15 @@
     </select>
 
     <update id="amendInfor" parameterType="com.elex.oa.entity.project.ProjectInfor">
-        UPDATE pro_pro_infor SET project_name = #{projectName}, project_status = #{projectStatus} ,business_manager = #{businessManager}, business_manager_id = #{businessManagerId}, project_source = #{projectSource},
-        project_manager = #{projectManager}, project_manager_id = #{projectManagerId}, project_type = #{projectType}, general_situation = #{generalSituation}, project_members = #{projectMembers},
-        project_member_id = #{projectMemberId}, related_members = #{relatedMembers}, related_member_id = #{relatedMemberId}, party_name = #{partyName},party_address = #{partyAddress},
-        party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position = #{headPosition},  head_mobile = #{headMobile}, head_email = #{headEmail},
+        UPDATE pro_pro_infor SET project_name = #{projectName}, project_status = #{projectStatus} ,business_manager = #{businessManager}, business_manager_id = #{businessManagerId},
+        business_manager_code = #{businessManagerCode}, project_source = #{projectSource},project_manager = #{projectManager}, project_manager_id = #{projectManagerId}, project_manager_code = #{projectManagerCode},
+        project_type = #{projectType}, general_situation = #{generalSituation}, project_members = #{projectMembers}, project_member_id = #{projectMemberId}, project_member_code = #{projectMemberCode},
+        related_members = #{relatedMembers}, related_member_id = #{relatedMemberId}, related_member_code = #{relatedMemberCode}, party_name = #{partyName}, party_address = #{partyAddress},
+        party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position = #{headPosition},   head_mobile = #{headMobile}, head_email = #{headEmail},
         contact_name = #{contactName}, contact_position = #{contactPosition}, contact_mobile = #{contactMobile}, contact_email = #{contactEmail} WHERE project_code = #{projectCode}
     </update>
+
+    <select id="queryOsUser" resultMap="osUser">
+        SELECT USER_ID_ , FULLNAME_ FROM os_user
+    </select>
 </mapper>

@@ -25,4 +25,8 @@ public interface ProjectBoardService {
     PageInfo projectStatus(Integer pageNum, String status, String type, String department);
     //查看某阶段的项目
     PageInfo projectPhase(Integer pageNum, String phase, String type, String department);
+    //查看是否延期的项目
+    PageInfo projectWeek(Integer pageNum, String punctuality, String type, String department);
+    //查看进行中项目的类型及数量
+    List<Object> queryProceed(String department);
 }

@@ -301,7 +301,12 @@ public class PersonalInformationController {
         if (user.getId()!=null) {
             onePersonalinformation = iPersonalInformationService.queryOneByUserid(user.getId());
         }
-        PersonalInformation personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
+        PersonalInformation personalInformation;
+        if (onePersonalinformation!=null) {
+            personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
+        } else {
+            return null;
+        }
 
         return personalInformation;
     }
@@ -697,11 +702,11 @@ public class PersonalInformationController {
      */
     @RequestMapping("/addManageInformation")
     @ResponseBody
-    public String addManageInformation(
+    public Object addManageInformation(
             PersonalInformation personalInformation
     ){
         if(personalInformation.getUserid()==null || iPersonalInformationService.queryOneByUserid(personalInformation.getUserid())==null){
-            return "系统正在忙，请稍后";
+            return RespUtil.successResp("500","系统正在忙，请稍后",null) ;
         }
         // 保存人事信息的管理信息
         ManageInformation manageInformation = new ManageInformation();
@@ -729,7 +734,7 @@ public class PersonalInformationController {
             PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
             iPerandpostrsService.addOne(perAndPostRs);
         }
-        return "管理信息添加成功！";
+        return RespUtil.successResp("200","管理信息添加成功！",iUserService.getById(personalInformation.getUserid()).getUsername()) ;
     }
 
     /**
@@ -1244,11 +1249,10 @@ public class PersonalInformationController {
      */
     @RequestMapping("/updateManageInformation")
     @ResponseBody
-    public String updateManageInformation(
+    public Object updateManageInformation(
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
     ) throws ParseException {
-
         //修改信息痕迹的总标识
         Boolean listBL = false;
         //原来的信息
@@ -1279,11 +1283,14 @@ public class PersonalInformationController {
         }
 
         List<Integer> postids = personalInformation.getPostids();
+        //返回值
+        Boolean re = false;
         List<String>  strs = new ArrayList<>();
         for(int i=0;i<postids.size();i++){
             strs.add(iPostService.queryOneByPostid(postids.get(i)).getPostname());
         }
         if(personalInformation2.getPostnames()!=null && !personalInformation2.getPostnames().equals(IDcodeUtil.getArrayToString(strs,";"))){
+            re = true;
             changeInformation.setChangeinformation("岗位");
             changeInformation.setBeforeinformation(personalInformation2.getPostnames());
             changeInformation.setAfterinformation(IDcodeUtil.getArrayToString(strs,";"));
@@ -1375,7 +1382,7 @@ public class PersonalInformationController {
 
         iPersonalInformationService.modifyOne(personalInformation2);
 
-        return "提交信息成功！";
+        return RespUtil.successResp("200","提交信息成功！",re?personalInformation2.getUsername():null);
     }
 
     /**
@@ -1745,8 +1752,10 @@ public class PersonalInformationController {
             dept = iDeptService.queryOneDepByDepid(pi.getDepid());
             if (dept != null) {
                 pi.setDepname(dept.getDepname());
+                pi.setDepcode(dept.getDepcode());
             } else {
                 pi.setDepname("部门信息还未添加");
+                pi.setDepcode("部门编号还未添加");
             }
 
             //获得岗位信息
@@ -1894,20 +1903,22 @@ public class PersonalInformationController {
      */
     @RequestMapping("/importPersonalInformations")
     @ResponseBody
-    public String importPersonalInformations(
+    public Object importPersonalInformations(
         @RequestParam("file") MultipartFile multipartFile
     ){
+        List<Object> goToPost = new ArrayList<>();
         ReadPersonalinformationExcel readExcel = new ReadPersonalinformationExcel();
         List<PersonalInformation> personalInformationList = readExcel.getExcelInfo(multipartFile);
         if (personalInformationList!=null) {
             for(int i = 0;i<personalInformationList.size();i++){
+                Map<String,Object> map = new HashMap<>();//转到ZHG的数据，岗位的同步
                 PersonalInformation personalInformation = personalInformationList.get(i);
                 //1.先保存用户表
                 User user = new User();
                 user.setIsactive(personalInformation.getIsactive());
                 //username校验
                 User u;
-                if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("")) {
+                if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("") && !personalInformation.getUsername().equals("null")) {
                     u = iUserService.queryByUsername(personalInformation.getUsername());
                     int j = 2;
                     while (u!=null){
@@ -1937,9 +1948,10 @@ public class PersonalInformationController {
                 user.setUsername(personalInformation.getUsername());
                 user.setTruename(personalInformation.getTruename());
                 Integer userid = iUserService.saveOne(user);
+                map.put("username",user.getUsername());
                 personalInformation.setUserid(userid);
                 //2.再查询部门ID
-                Dept dept = iDeptService.queryOneDepByDepname(personalInformationList.get(i).getDepname());
+                Dept dept = iDeptService.queryOneByDepcode(personalInformationList.get(i).getDepcode());
                 if (dept!=null) {
                     personalInformation.setDepid(dept.getId());
                 }
@@ -2116,17 +2128,21 @@ public class PersonalInformationController {
                     PerAndPostRs perAndPostRs = new PerAndPostRs();
                     perAndPostRs.setPerid(personalinformationid);
                     String[] split = personalInformation.getPostnames().split("[兼;]");
+                    List<Integer> postids = new ArrayList<>();
                     for(String postname:split){
                         if (iPostService.queryOneByPostname(postname)!=null) {
                             Integer postid = iPostService.queryOneByPostname(postname).getId();
                             perAndPostRs.setPostid(postid);
                             iPerandpostrsService.addOne(perAndPostRs);
+                            postids.add(postid);
                         }
                     }
+                    map.put("postids",postids);
                 }
+                goToPost.add(map);
             }
         }
-        return "数据导入成功！";
+        return RespUtil.successResp("200","数据导入成功！",goToPost) ;
     }
 
     /**
@@ -2136,12 +2152,15 @@ public class PersonalInformationController {
      */
     @RequestMapping("/deleteInformationsByIds")
     @ResponseBody
-    public String deleteInformationsByIds(
+    public Object deleteInformationsByIds(
             @RequestParam("personalInformationIds") List<Integer> personalInformationIds
     ){
-
+        List<String> usernames = new ArrayList<>();
         for(int i = 0;i<personalInformationIds.size();i++){
             PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationIds.get(i));
+            usernames.add(iUserService.getById(personalInformation.getUserid()).getUsername());
+
+
             //1.先删除用户表（直接删除）
             iUserService.removeOne(personalInformation.getUserid());
             //2.再删除相应的基本信息表（直接删除）
@@ -2179,8 +2198,10 @@ public class PersonalInformationController {
             //10.最后再修改部门表
             //注：如果将要删除的员工是某部门的正职、副职、秘书则需要修改该字段
             iDeptService.modifyOne(personalInformation.getUserid());
+
+
         }
-        return "删除成功！";
+        return RespUtil.successResp("200","删除成功！",usernames) ;
     }
 
     /**
@@ -2259,7 +2280,7 @@ public class PersonalInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:根据部门ID查询部门信息
+     *@Description:根据部门ID查询部门信息(部门经理)
      *@Date: 11:34 2018\8\10 0010
      */
     @RequestMapping("/queryGXF004")
@@ -2270,6 +2291,11 @@ public class PersonalInformationController {
         Dept dept = iDeptService.queryOneDepByDepid(depid);
         if (dept!=null) {
             if (dept.getPrincipaluserid()!=null) {
+                if (iUserService.getById(dept.getPrincipaluserid())!=null) {
+                    iUserService.getById(dept.getPrincipaluserid()).getTruename();
+                } else {
+                    return null;
+                }
                 return iUserService.getById(dept.getPrincipaluserid()).getTruename();
             } else {
                 return "此部门没有部门正职！";
