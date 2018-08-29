@@ -1381,8 +1381,12 @@ public class PersonalInformationController {
         }
 
         iPersonalInformationService.modifyOne(personalInformation2);
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("username",personalInformation2.getUsername());
+        map.put("isactive",personalInformation2.getIsactive());
+        map.put("truename",personalInformation2.getTruename());
 
-        return RespUtil.successResp("200","提交信息成功！",re?personalInformation2.getUsername():null);
+        return RespUtil.successResp("200","提交信息成功！",map);
     }
 
     /**
