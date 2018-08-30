@@ -147,13 +147,13 @@ public class PostServiceImpl implements IPostService {
             return false;
         }
         while (pid!=null){
-            if(pid==parentpostid){//是自己的上级部门返回true
+            if(pid==parentpostid){//是自己的上级返回true
                 return true;
             }else {
                 cid = pid;
                 pid = iPostDao.selectPostByPostid(cid).getParentpostid();
             }
         }
-        return false;//上级为null时跳出循环（到顶点），说明不是自己的上级部门
+        return false;//上级为null时跳出循环（到顶点），说明不是自己的上级
     }
 }

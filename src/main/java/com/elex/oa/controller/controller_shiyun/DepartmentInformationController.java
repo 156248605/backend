@@ -283,6 +283,20 @@ public class DepartmentInformationController {
 
     /**
      *@Author:ShiYun;
+     *@Description:查询所有部门（去除下级部门和自身）
+     *@Date: 17:49 2018\8\30 0030
+     */
+    @RequestMapping("/queryDepartmentsRemoveChilren")
+    @ResponseBody
+    public List<Dept> queryDepartmentsRemoveChilren(
+            @RequestParam("depid")Integer depid
+    ){
+        List<Dept> depts = iDeptService.queryDepartmentsRemoveChilren(depid);
+        return depts;
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:将部门树列出来
      *@Date: 10:43 2018\4\16 0016
      */

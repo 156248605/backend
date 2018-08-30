@@ -76,7 +76,7 @@ public interface IPostService  {
 
     /**
      *@Author:ShiYun;
-     *@Description:
+     *@Description:判断是否是子节点
      *@param parentpostid:高级节点
      *@param childpostid:低级节点
      *@return 如果childpostid是parentpostid的子节点则返回true,否则返回false

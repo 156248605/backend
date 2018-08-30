@@ -1276,6 +1276,7 @@ public class PersonalInformationController {
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
     ) throws ParseException {
+        System.out.println(personalInformation.toString());
         //修改信息痕迹的总标识
         Boolean listBL = false;
         //原来的信息
@@ -1383,7 +1384,7 @@ public class PersonalInformationController {
                     manBl = true;
                 }
             }else {
-                if (!IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()).equals(personalInformation2.getZhuanzhengdate())) {
+                if (!IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate().equals("null")?null:personalInformation.getEntrydate()).equals(personalInformation2.getZhuanzhengdate())) {
                     changeInformation.setChangeinformation("转正日期");
                     changeInformation.setBeforeinformation(personalInformation2.getZhuanzhengdate());
                     changeInformation.setAfterinformation(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
@@ -1408,6 +1409,7 @@ public class PersonalInformationController {
         map.put("username",personalInformation2.getUsername());
         map.put("isactive",personalInformation2.getIsactive());
         map.put("truename",personalInformation2.getTruename());
+        map.put("postids",personalInformation2.getPostids());
 
         return RespUtil.successResp("200","提交信息成功！",map);
     }
@@ -1448,10 +1450,10 @@ public class PersonalInformationController {
         //添加成本修改标识
         Boolean costBL = false;
         CostInformation costInformation = iCostInformationService.queryOneById(personalInformation2.getCostinformationid());
-        if(changeInformation==null){
+        if(costInformation==null){
             costInformation = new CostInformation();//不存在则新建
         }
-        if (ihRsetSalarystandardService.queryBySalarystandard(personalInformation.getSalary())!=null) {
+        if (ihRsetSalarystandardService.queryBySalarystandard(personalInformation.getSalary())!=null && !ihRsetSalarystandardService.queryBySalarystandard(personalInformation.getSalary()).equals("null")) {
             if (!personalInformation.getSalary().equals(personalInformation2.getSalary())) {
                 changeInformation.setChangeinformation("薪资标准");
                 changeInformation.setBeforeinformation(personalInformation2.getSalary());
@@ -1607,7 +1609,7 @@ public class PersonalInformationController {
      */
     @RequestMapping("/updateOtherInformation")
     @ResponseBody
-    public String updateOtherInformation(
+    public Object updateOtherInformation(
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
     ) throws ParseException {
@@ -1732,7 +1734,12 @@ public class PersonalInformationController {
         if(listBL){
             iPersonalInformationService.modifyOne(personalInformation2);
         }
-        return "提交成功！";
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("username",personalInformation2.getUsername());
+        map.put("isactive",personalInformation2.getIsactive());
+        map.put("truename",personalInformation2.getTruename());
+        map.put("postids",personalInformation2.getPostids());
+        return RespUtil.successResp("200","提交成功！",map) ;
     }
 
     /**

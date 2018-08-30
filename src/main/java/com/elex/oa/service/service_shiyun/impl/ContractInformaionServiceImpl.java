@@ -156,6 +156,11 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         List<ContractInformation> contractInformationList = iContractInformationDao.selectAll(contractInformation);
         for (ContractInformation con:contractInformationList
              ) {
+            User user = iUserDao.selectById(con.getUserid());
+            if(user==null){//用户不存在
+                iContractInformationDao.deleteOne(con.getId());
+                continue;
+            }
             Integer state = iUserDao.selectById(con.getUserid()).getState();
             con.setState(state.toString());
         }
