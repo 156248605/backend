@@ -505,14 +505,14 @@ public class PersonalInformationController {
         //工号校验
         List<PersonalInformation> personalInformationList = iPersonalInformationService.queryByEmployeenumber(personalInformation.getEmployeenumber());
         if(personalInformationList.size()>0){
-            return "工号已存在，请重新输入！";
+            return RespUtil.successResp("500","工号已存在，请重新输入！",null) ;
         }
         //username校验
         User u;
         if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("")) {
             u = iUserService.queryByUsername(personalInformation.getUsername());
             if(u!=null){
-                return "登录ID已存在，请重新输入（不输入则默认为姓名）！";
+                return RespUtil.successResp("500","登录ID已存在，请重新输入（不输入则默认为姓名）！",null) ;
             }
         } else {
             u = iUserService.queryByUsername(personalInformation.getTruename());
@@ -548,7 +548,7 @@ public class PersonalInformationController {
                 }
             }
             if(b==false){
-                return "身份证号码输入有误请重新输入";
+                return RespUtil.successResp("500","身份证号码输入有误请重新输入",null) ;
             }
         }
 
@@ -707,7 +707,7 @@ public class PersonalInformationController {
         personalInformation.setUserid(userid);
         personalInformation.setBaseinformationid(baseInformationId);
         Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
-        return RespUtil.successResp("205","提交成功！",userid);
+        return RespUtil.successResp("200","提交成功！",userid);
     }
 
     /**

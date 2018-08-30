@@ -5,7 +5,7 @@ import com.elex.oa.entity.entity_shiyun.PerAndPostRs;
 import com.elex.oa.entity.entity_shiyun.ReadDimissioninformationExcel;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.*;
-import com.elex.oa.util.util_shiyun.IDcodeUtil;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,18 +52,31 @@ public class DimissionController {
      */
     @RequestMapping("/addDimission")
     @ResponseBody
-    public String addDimission(
+    public Object addDimission(
             DimissionInformation dimissionInformation,
             @RequestParam("transactorusername")String transactorusername
     ){
         //获得办理人的ID
-        User user = new User();
-        user.setUsername(transactorusername);
-        User user1 = iUserService.selectOne(user);
-        dimissionInformation.setTransactoruserid(user1.getId());
+        User user = iUserService.queryByUsername(transactorusername);
+        dimissionInformation.setTransactoruserid(user.getId());
+        //将岗位信息带过去
+        iPersonalInformationService.queryOneByUserid(user.getId());
+        List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(iPersonalInformationService.queryOneByUserid(user.getId()).getId());
+        List<Integer> postids = new ArrayList<>();
+        for (PerAndPostRs pp:perAndPostRs
+             ) {
+            postids.add(pp.getPostid());
+        }
         //添加到数据库中
         Integer dimissionInformationId = iDimissionInformationService.addOne(dimissionInformation);
-        return "添加成功！";
+        //创建返回值
+        HashMap<String,Object> re = new HashMap<>();
+        re.put("username",user.getUsername());
+        re.put("isactive",user.getIsactive());
+        re.put("truename",user.getTruename());
+        re.put("state",user.getState());
+        re.put("postids",postids);
+        return RespUtil.successResp("200","添加成功！",re);
     }
 
     /**
