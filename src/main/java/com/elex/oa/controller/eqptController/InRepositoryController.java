@@ -96,4 +96,10 @@ public class InRepositoryController {
     public List<Repository> showproj (HttpServletRequest request) {
         return inRepositoryImpl.showproj(request);
     }
+
+    @RequestMapping("/getInstId")
+    @ResponseBody
+    public void getInstId (String instid){
+        inRepositoryImpl.getInstId(instid);
+    }
 }

@@ -417,4 +417,9 @@ public class InRepositoryImpl implements InRepositoryService {
         List<Repository> list = inRepositoryMapper.showproj(wdbh);
         return list;
     }
+
+    @Override
+    public void getInstId(String instid){
+        System.out.println(instid);
+    }
 }
