@@ -227,6 +227,21 @@ public class PersonalInformationController {
     public PersonalInformation queryPersonalInformationById(
             @RequestParam("personalInformationId") int personalInformationId
     ) throws ParseException {
+        //清理数据per表中的数据
+        List<PersonalInformation> personalInformationList = iPersonalInformationService.queryAllByNull();
+        List<User> users = iUserService.selectAll();
+        List<Integer> userids = new ArrayList<>();
+        for (User u:users
+             ) {
+            userids.add(u.getId());
+        }
+        for (PersonalInformation per:personalInformationList
+             ) {
+            if(!userids.contains(per.getUserid())){
+                iPersonalInformationService.removeOne(per.getId());
+            }
+        }
+
         return getOnePersonalinformation(personalInformationId);
     }
 
@@ -734,7 +749,8 @@ public class PersonalInformationController {
             PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
             iPerandpostrsService.addOne(perAndPostRs);
         }
-        return RespUtil.successResp("200","管理信息添加成功！",iUserService.getById(personalInformation.getUserid()).getUsername()) ;
+        User user = iUserService.getById(personalInformation.getUserid());
+        return RespUtil.successResp("200","管理信息添加成功！",user) ;
     }
 
     /**
@@ -862,7 +878,7 @@ public class PersonalInformationController {
      */
     @RequestMapping("/updateBaseInformation")
     @ResponseBody
-    public String updateBaseInformation(
+    public Object updateBaseInformation(
             PersonalInformation personalInformation,
             @RequestParam("byyxvalue") String byyxvalue,
             @RequestParam("sxzyvalue") String sxzyvalue,
@@ -943,6 +959,7 @@ public class PersonalInformationController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return RespUtil.successResp("400","提交失败！",null);
         }
         //tb_id_user表的标识
         Boolean userBL = false;
@@ -962,7 +979,7 @@ public class PersonalInformationController {
             if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("")) {
                 u = iUserService.queryByUsername(personalInformation.getUsername());
                 if(u!=null){
-                    return "登录ID已存在，请重新输入（不输入则默认为姓名）！";
+                    return RespUtil.successResp("500","登录ID已存在，请重新输入（不输入则默认为姓名）！",null) ;
                 }
             } else {
                 u = iUserService.queryByUsername(personalInformation.getTruename());
@@ -1239,7 +1256,13 @@ public class PersonalInformationController {
             iChangeInformationService.addOne(changeInformation);
         }
         iPersonalInformationService.modifyOne(personalInformation);
-        return "信息提交成功！";
+        List<Integer> postids = new ArrayList<>();
+        List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformation2.getId());
+        for (PerAndPostRs pp:perAndPostRs
+             ) {
+            postids.add(pp.getPostid());
+        }
+        return RespUtil.successResp("200","信息提交成功！",postids) ;
     }
 
     /**
@@ -2160,9 +2183,19 @@ public class PersonalInformationController {
             @RequestParam("personalInformationIds") List<Integer> personalInformationIds
     ){
         List<String> usernames = new ArrayList<>();
+        if(personalInformationIds.size()<=0){
+            return RespUtil.successResp("500","删除失败！",null);
+        }
         for(int i = 0;i<personalInformationIds.size();i++){
             PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationIds.get(i));
-            usernames.add(iUserService.getById(personalInformation.getUserid()).getUsername());
+            if(personalInformation==null){
+                return RespUtil.successResp("500","删除失败！",null);
+            }
+            if (iUserService.getById(personalInformation.getUserid())!=null){
+                usernames.add(iUserService.getById(personalInformation.getUserid()).getUsername());
+            }else{
+                return RespUtil.successResp("500","删除失败！",null);
+            }
 
 
             //1.先删除用户表（直接删除）
