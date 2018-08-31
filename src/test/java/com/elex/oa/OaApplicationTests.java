@@ -14,32 +14,10 @@ import java.util.Calendar;
 @SpringBootTest
 public class OaApplicationTests {
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
 
 	@Test
 	public void contextLoads() {
 
-	}
-
-	@Test
-	public void weekValidate() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
-		String start = simpleDateFormat.format(calendar.getTime());
-		Calendar calendar1 = Calendar.getInstance();
-		calendar1.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
-		String end = simpleDateFormat.format(calendar1.getTime());
-		System.out.println(start);
-		System.out.println(end);
-	}
-
-	@Test
-	public void simplateValidate() {
-		Calendar calendar = Calendar.getInstance();
-		String annual = String.valueOf(calendar.get(Calendar.YEAR));
-		System.out.println(annual);
 	}
 
 }
