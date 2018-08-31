@@ -70,6 +70,7 @@ public class DimissionController {
         //添加到数据库中
         Integer dimissionInformationId = iDimissionInformationService.addOne(dimissionInformation);
         //创建返回值
+        user = iUserService.queryByUsername(transactorusername);
         HashMap<String,Object> re = new HashMap<>();
         re.put("username",user.getUsername());
         re.put("isactive",user.getIsactive());

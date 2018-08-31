@@ -843,9 +843,9 @@ public class PersonalInformationController {
      */
     @RequestMapping("/addOtherInformation")
     @ResponseBody
-    public String addOtherInformation(
+    public Object addOtherInformation(
             PersonalInformation personalInformation
-    ){
+    ) throws ParseException {
         // 添加人事信息的其它信息
         OtherInformation otherInformation = new OtherInformation();
         otherInformation.setCompanyemail(personalInformation.getCompanyemail());
@@ -860,7 +860,7 @@ public class PersonalInformationController {
         Integer otherInformationId = iOtherInformationService.saveOne(otherInformation);
 
         // 修改人事信息
-        PersonalInformation personalInformation1 = iPersonalInformationService.queryOneByUserid(personalInformation.getUserid());
+        PersonalInformation personalInformation1 = getOnePersonalinformation(iPersonalInformationService.queryOneByUserid(personalInformation.getUserid()).getId());
         personalInformation.setId(personalInformation1.getId());
         if (ihRsetTelphoneService.queryByTelphone(personalInformation.getTelphone())!=null) {
             personalInformation.setTelphoneid(ihRsetTelphoneService.queryByTelphone(personalInformation.getTelphone()).getId());
@@ -868,7 +868,13 @@ public class PersonalInformationController {
         personalInformation.setOtherinformationid(otherInformationId);
         iPersonalInformationService.modifyOne(personalInformation);
 
-        return "添加其他信息成功！";
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("username",personalInformation1.getUsername());
+        map.put("isactive",personalInformation1.getIsactive());
+        map.put("truename",personalInformation1.getTruename());
+        map.put("postids",personalInformation1.getPostids());
+
+        return RespUtil.successResp("200","添加其他信息成功！",map) ;
     }
 
     /**
