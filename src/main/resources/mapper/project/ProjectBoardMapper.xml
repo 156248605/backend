@@ -211,4 +211,36 @@
     <select id="queryProjectIncome" parameterType="string" resultMap="projectIncome">
         SELECT amount, receivable_proportion FROM pro_income WHERE project_code = #{projectCode}
     </select>
+
+    <select id="queryPhaseByContent" parameterType="java.util.Map" resultType="string">
+        SELECT project_code FROM pro_week WHERE fill_date BETWEEN #{start} AND #{end}
+        AND project_phase IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryProceed" parameterType="string" resultType="string">
+        SELECT project_code FROM pro_pro_infor WHERE project_status = #{proceed}
+    </select>
+
+    <select id="queryInforInProceed" parameterType="java.util.Map" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor WHERE project_code IN
+        <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <if test="type != '合计'">
+            AND project_type = #{type}
+        </if>
+        <if test="unit == 'subsidiary'">
+            AND in_department IN
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="queryInforProceed" parameterType="string" resultMap="projectInfor">
+        SELECT project_code, project_name, project_status, project_type, project_manager, in_department FROM pro_pro_infor WHERE project_status = #{proceed}
+    </select>
 </mapper>

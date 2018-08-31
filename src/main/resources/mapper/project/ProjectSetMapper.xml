@@ -3,24 +3,24 @@
 <mapper namespace="com.elex.oa.dao.project.ProjectSetDao">
 
     <resultMap id="projectVarious" type="com.elex.oa.entity.project.ProjectVarious">
-        <result column="code" javaType="int" property="code"></result>
-        <result column="name" javaType="string" property="name"></result>
+        <result column="KEY_" javaType="int" property="code"></result>
+        <result column="NAME_" javaType="string" property="name"></result>
     </resultMap>
 
     <select id="queryType" resultMap="projectVarious">
-        SELECT code, name FROM pro_type
+        SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目类型')
     </select>
 
     <select id="querySource" resultMap="projectVarious">
-        SELECT code, name FROM pro_source
+        SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目来源')
     </select>
 
     <select id="queryStatus" resultMap="projectVarious">
-        SELECT code, name FROM pro_status
+        SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目状态')
     </select>
 
     <select id="queryPhase" resultMap="projectVarious">
-        SELECT code, name FROM pro_phase
+        SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目阶段')
     </select>
 
     <insert id="addType" parameterType="string">

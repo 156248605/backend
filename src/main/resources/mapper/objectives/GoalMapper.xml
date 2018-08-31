@@ -40,6 +40,10 @@
         <result column="december" javaType="double" property="december"></result>
     </resultMap>
 
+
+
+
+
     <select id="obtainRevenue" parameterType="string" resultMap="goal2">
         SELECT unit, annual_target, the_total, completion FROM tar_sal_rev WHERE annual = #{annual}
     </select>
@@ -65,7 +69,10 @@
     </select>
 
     <select id="obtainGrossCon" parameterType="java.util.Map" resultMap="goal2">
-        SELECT unit, annual_target, the_total, completion FROM tar_sal_gro WHERE annual = #{annual} AND unit = #{unit}
+        SELECT unit, annual_target, the_total, completion FROM tar_sal_gro WHERE annual = #{annual} AND unit IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
     </select>
 
     <select id="obtainRevenueCon" parameterType="java.util.Map" resultMap="goal2">
