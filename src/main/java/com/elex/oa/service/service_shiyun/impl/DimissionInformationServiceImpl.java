@@ -57,14 +57,14 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         String transactiondate = simpleDateFormat.format(new Date());
         dimissionInformation.setTransactiondate(transactiondate);//办理日期
         //获得8个参数
-        dimissionInformation.setApprovalnumbers(1);//待审批单数量默认为1，实际中用userID到ACT_RU_TASK表中查询
+        /*dimissionInformation.setApprovalnumbers(1);//待审批单数量默认为1，实际中用userID到ACT_RU_TASK表中查询
         dimissionInformation.setApprovalstatue(Commons.未处理);
         dimissionInformation.setWorkingnumbers(2);//代办任务
         dimissionInformation.setWorkingstatue(Commons.未处理);
         dimissionInformation.setFilenumbers(3);//占用文件数
         dimissionInformation.setFilestatue(Commons.未处理);
         dimissionInformation.setOfficesupplynumbers(4);//办公用品领用
-        dimissionInformation.setOfficesupplystatue(Commons.未处理);
+        dimissionInformation.setOfficesupplystatue(Commons.未处理);*/
         //添加离职信息
         iDimissionInformationDao.insertOne(dimissionInformation);
         Integer dimissionInformationId = dimissionInformation.getId();

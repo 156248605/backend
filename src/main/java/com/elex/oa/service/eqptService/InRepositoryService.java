@@ -43,4 +43,6 @@ public interface InRepositoryService {
 
     List<Repository> showmat(HttpServletRequest request);
     List<Repository> showproj(HttpServletRequest request);
+
+    void getInstId(String instid);
 }

@@ -1,6 +1,5 @@
 package com.elex.oa.util.util_shiyun;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -212,7 +211,7 @@ public class IDcodeUtil {
         SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
         java.util.Date date=new Date();
         Date mydate;
-        if (entrydate!=null) {
+        if (entrydate!=null && !entrydate.trim().equals("")) {
             mydate = myFormatter.parse(entrydate);
         } else {
             return "";
