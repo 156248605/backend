@@ -154,6 +154,20 @@ public class PostInformationController {
 
     /**
      *@Author:ShiYun;
+     *@Description:选择上级岗位
+     *@Date: 13:39 2018\8\30 0030
+     */
+    @RequestMapping("/queryPostsRemoveChilren")
+    @ResponseBody
+    public List<Post> queryPostsRemoveChilren(
+            @RequestParam("postid")Integer postid
+    ){
+        List<Post> posts = iPostService.queryPostsRemoveChilren(postid);
+        return posts;
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:将岗位数列出来
      *@Date: 9:37 2018\4\23 0023
      */

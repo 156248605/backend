@@ -663,4 +663,48 @@ public class DeptServiceImpl implements IDeptService {
         }
         return depts;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有部门（去除下级部门和自身）
+     *@Date: 17:59 2018\8\30 0030
+     */
+    @Override
+    public List<Dept> queryDepartmentsRemoveChilren(Integer depid) {
+        List<Dept> depts = iDeptDao.selectAllDept();
+        List<Dept> depts1 = new ArrayList<>();
+        for (Dept p:depts
+                ) {
+            if(!this.isChildPoint(depid,p.getId()) && depid!=p.getId()){
+                depts1.add(p);
+            }
+        }
+        return depts1;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:判断是否是子节点
+     *@param parentdepid:高级节点
+     *@param childdepid:低级节点
+     *@return 如果childdepid是parentdepid的子节点则返回true,否则返回false
+     *@Date: 17:59 2018\8\30 0030
+     */
+    @Override
+    public Boolean isChildPoint(Integer parentdepid, Integer childdepid) {
+        Integer cid = childdepid;
+        Integer pid = childdepid;
+        if(childdepid==parentdepid){//自己不能作为自己的上级
+            return false;
+        }
+        while (pid!=null){
+            if(pid==parentdepid){//是自己的上级返回true
+                return true;
+            }else {
+                cid = pid;
+                pid = iDeptDao.selectDeptByDepid(pid).getParentdepid();
+            }
+        }
+        return false;//上级为null时跳出循环（到顶点），说明不是自己的上级
+    }
 }

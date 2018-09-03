@@ -1,8 +1,12 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.elex.oa.dao.dao_shiyun.IDeptDao;
+import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
+import com.elex.oa.dao.dao_shiyun.IUserDao;
 import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.dao.project.ProjectSetDao;
+import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
 import com.github.pagehelper.PageHelper;
@@ -22,6 +26,13 @@ public class ProjectInforImpl implements ProjectInforService {
 
     @Resource
     private ProjectSetDao projectSetDao;
+
+    @Resource
+    private IUserDao iUserDao;
+    @Resource
+    private IPersonalInformationDao iPersonalInformationDao;
+    @Resource
+    private IDeptDao iDeptDao;
 
 
     //查询已立项成功的项目，添加到项目信息中
@@ -51,6 +62,12 @@ public class ProjectInforImpl implements ProjectInforService {
         for(ApprovalList approvalList: approvalLists) {
             approvalList.setWriteDate(approvalList.getWriteDate().substring(0,10));
             approvalList.setProjectStatus(code);
+            User user = iUserDao.selectByTruename(approvalList.getProjectManager());
+            Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
+            Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
+            User user1 = iUserDao.selectById(principaluserid);
+            String truename = user1.getTruename();
+            approvalList.setDepartmentManager(truename);
         }
         projectInforDao.addInfor(approvalLists); //添加项目详情信息
     }
@@ -98,6 +115,14 @@ public class ProjectInforImpl implements ProjectInforService {
         }
         projectInfor.setProjectMemberCode(stringBuilder1.toString());
         projectInfor.setRelatedMemberCode(stringBuilder2.toString());
+
+        User user = iUserDao.selectByTruename(projectInfor.getProjectManager());
+        Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
+        Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
+        User user1 = iUserDao.selectById(principaluserid);
+        String truename = user1.getTruename();
+        projectInfor.setDepartmentManager(truename);
+
         projectInforDao.amendInfor(projectInfor);
         return "1";
     }

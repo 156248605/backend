@@ -7,6 +7,7 @@ import com.elex.oa.service.service_shiyun.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -110,5 +111,49 @@ public class PostServiceImpl implements IPostService {
         iPerandpostrsDao.deleteByPostid(id);
         /*再删除相应的岗位信息*/
         iPostDao.deleteOne(id);
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的岗位（去除下级岗位和本生）
+     *@Date: 13:46 2018\8\30 0030
+     */
+    @Override
+    public List<Post> queryPostsRemoveChilren(Integer postid) {
+        List<Post> posts = iPostDao.selectAllPosts();
+        List<Post> posts1 = new ArrayList<>();
+        for (Post p:posts
+             ) {
+            if(!this.isChildPoint(postid,p.getId()) && postid!=p.getId()){
+                posts1.add(p);
+            }
+        }
+        return posts1;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:
+     *@param parentpostid:高级节点
+     *@param childpostid:低级节点
+     *@return 如果childpostid是parentpostid的子节点则返回true,否则返回false
+     *@Date: 14:06 2018\8\30 0030
+     */
+    @Override
+    public Boolean isChildPoint(Integer parentpostid, Integer childpostid) {
+        Integer cid = childpostid;
+        Integer pid = childpostid;
+        if(childpostid==parentpostid){//自己不能作为自己的上级
+            return false;
+        }
+        while (pid!=null){
+            if(pid==parentpostid){//是自己的上级返回true
+                return true;
+            }else {
+                cid = pid;
+                pid = iPostDao.selectPostByPostid(cid).getParentpostid();
+            }
+        }
+        return false;//上级为null时跳出循环（到顶点），说明不是自己的上级
     }
 }
