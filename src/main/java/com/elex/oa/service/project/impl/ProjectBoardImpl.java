@@ -345,7 +345,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
 
         PageHelper.startPage(pageNum,5);
         List<ProjectInfor> infors = projectBoardDao.queryInforPhase(content1);
-        System.out.println(infors);
+
         return new PageInfo(infors);
     }
 
@@ -429,7 +429,6 @@ public class ProjectBoardImpl implements ProjectBoardService {
         content.put("start",start);
         content.put("end",end);
         WeeklyPlan weeklyPlan = projectBoardDao.queryWeeklyPlan(content);
-        System.out.println(weeklyPlan);
         if(weeklyPlan ==  null) {
             result.put("startDate","");
             result.put("endDate","");
@@ -791,7 +790,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
 
         List<ProjectInfor> projectInfors;
         if(department.equals("全部")) {
-            projectInfors = projectBoardDao.queryProjectInfor(); //查询所有项目详情信息
+            projectInfors = projectBoardDao.queryInforProceed(proceed); //查询所有进行中的项目详情信息
         } else {
             List<Dept> depts = iDeptService.queryAllCompany1and2();
             String company = "";
@@ -889,6 +888,151 @@ public class ProjectBoardImpl implements ProjectBoardService {
         tail.put("other",number[typeList.size()][5]+"");
         tail.put("combined",projectInfors.size()+"");
         result.add(tail);
+        return result;
+    }
+
+    //点击进行中项目的数量查看相关详情（手机端）
+    @Override
+    public List<Map<String, String>> queryWeek(String department, String type, String punctuality) {
+        List<ProjectVarious> typeList = projectSetDao.queryType();
+        List<ProjectVarious> phaseList = projectSetDao.queryPhase();
+        for(ProjectVarious ty:typeList) {
+            if(ty.getName().equals(type)) {
+                type = String.valueOf(ty.getCode());
+            }
+        }
+
+        SimpleDateFormat simpleDateFormat =  new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar =  Calendar.getInstance(), calendar1 = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        String start = simpleDateFormat.format(calendar.getTime());
+        String end = simpleDateFormat.format(calendar1.getTime());
+        List<String> codes;
+        if(punctuality.equals("提前") || punctuality.equals("按期") || punctuality.equals("延期") || punctuality.equals("无里程碑")) {
+            Map<String,String> content = new HashMap<>();
+            content.put("start",start);
+            content.put("end",end);
+            if(punctuality.equals("提前")) {
+                content.put("punctuality","ti");
+            } else if(punctuality.equals("按期")) {
+                content.put("punctuality","an");
+            } else if(punctuality.equals("延期")) {
+                content.put("punctuality","yan");
+            } else if(punctuality.equals("无里程碑")) {
+                content.put("punctuality","wu");
+            }
+            codes = projectBoardDao.queryWeekByContent(content); //查询本周周报相关的项目编号
+        } else if(punctuality.equals("小计") || punctuality.equals("其他")) {
+
+            List<String> phases = new ArrayList<>();
+            for(ProjectVarious phase: phaseList) {
+                if(punctuality.equals("小计")) {
+                    if(phase.getName().equals("实施")) {
+                        phases.add(phase.getCode()+"");
+                    }
+                } else {
+                    if(phase.getName().equals("实施")) {
+
+                    } else {
+                        phases.add(phase.getCode() + "");
+                    }
+                }
+            }
+            Map<String,Object> content1 = new HashMap<>();
+            content1.put("start",start);
+            content1.put("end",end);
+            content1.put("list",phases);
+            codes = projectBoardDao.queryPhaseByContent(content1); //根据本周周报阶段查询相关的项目编号
+        } else {
+            List<ProjectVarious> statusList = projectSetDao.queryStatus();
+            String proceed = "";
+            for(ProjectVarious status: statusList) {
+                if(status.getName().equals("进行")) {
+                    proceed = String.valueOf(status.getCode());
+                }
+            }
+            codes = projectBoardDao.queryProceed(proceed); //查询进行中的项目编号
+        }
+
+        List<Dept> depts = iDeptService.queryAllCompany1and2();
+        Map<String,Object> content2 = new HashMap<>();
+
+        content2.put("type",type);
+        content2.put("codes",codes);
+        if(department.equals("全部")) {
+            content2.put("unit","all");
+        } else {
+            content2.put("unit","subsidiary");
+            for(Dept dept: depts) {
+                if(dept.getDepname().contains(department)) {
+                    List<Dept> depts1 = iDeptService.queryByCompanyname(dept.getDepname());
+                    List<String> companys = new ArrayList<>();
+                    companys.add(dept.getDepname());
+                    for(Dept dept1:depts1) {
+                        companys.add(dept1.getDepname());
+                    }
+                    content2.put("list",companys);
+                }
+            }
+        }
+        List<ProjectInfor> projectInfors = projectBoardDao.queryInforInProceed(content2); //查询项目详情信息
+        List<Map<String,String>> result = new ArrayList<>();
+        for(ProjectInfor infor: projectInfors) {
+            Map<String,String> map = new HashMap<>();
+            map.put("projectCode",infor.getProjectCode()); //项目编号
+            map.put("projectName",infor.getProjectName()); //项目名称
+            map.put("inDepartment",infor.getInDepartment()); //立项部门
+            map.put("projectManager",infor.getProjectManager()); //项目经理
+            map.put("projectStatus","进行"); //项目状态
+
+            List<MileStonePlan> mileStonePlans = projectBoardDao.queryMileStonePlans(infor.getProjectCode()); //查询该项目的所有里程碑计划,时间进度
+            if(mileStonePlans.size() == 0 || mileStonePlans == null) {
+                map.put("mileSchedule","");//时间进度
+            } else {
+                try {
+                    long date1 = new SimpleDateFormat("yyyy-MM-dd").parse(mileStonePlans.get(0).getStartDate()).getTime();
+                    long date2 = new SimpleDateFormat("yyyy-MM-dd").parse(mileStonePlans.get(mileStonePlans.size() - 1).getEndDate()).getTime();
+                    long date3 = new Date().getTime();
+                    double molecular = (date3 - date1) / (1000 * 24 * 3600) + 1;
+                    double denominator = (date2 - date1) / (1000 * 24 * 3600) + 1;
+                    Double schedule = new BigDecimal(molecular / denominator * 100).setScale(2,RoundingMode.UP).doubleValue();
+                    if(schedule > 100) {
+                        map.put("mileSchedule","100.00%");
+                    } else {
+                        map.put("mileSchedule",schedule+"%");
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            ProjectIncome projectIncome = projectBoardDao.queryProjectIncome(infor.getProjectCode()); //查询项目金额以及回款率
+            if(projectIncome == null) {
+                map.put("amount",""); //项目金额
+                map.put("receivable",""); //回款率
+            } else {
+                map.put("amount",projectIncome.getAmount());
+                map.put("receivable",projectIncome.getReceivableProportion());
+            }
+
+            Map<String,String> content3 = new HashMap<>();
+            content3.put("code",infor.getProjectCode());
+            content3.put("start",start);
+            content3.put("end",end);
+            WeeklyPlan weeklyPlan = projectBoardDao.queryWeeklyPlan(content3);
+            if(weeklyPlan == null) {
+                map.put("phase",""); //项目阶段
+                map.put("fulfillment","");//实施进度
+            } else {
+                for(ProjectVarious phase: phaseList) {
+                    if(weeklyPlan.getProjectPhase().equals(phase.getCode()+"")) {
+                        map.put("phase",phase.getName());
+                    }
+                }
+                map.put("fulfillment",weeklyPlan.getFulfillment());
+            }
+            result.add(map);
+        }
         return result;
     }
 }

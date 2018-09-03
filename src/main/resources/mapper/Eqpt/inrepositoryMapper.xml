@@ -6,7 +6,7 @@
     </select>
 
     <insert id="insertNew" parameterType="string">
-        INSERT INTO eqpt_inrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17})
+        INSERT INTO eqpt_inrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22})
     </insert>
 
     <select id="ID" resultType="string">
@@ -29,12 +29,30 @@
         SELECT inId FROM eqpt_inrepository WHERE inId LIKE CONCAT(CONCAT('%',#{inId},'%'))
     </select>
 
+    <update id="updateInstId" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_inrepository SET INST_ID_ = #{instid} WHERE INST_ID_ = ''
+    </update>
+
+    <update id="updateApprove" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_inrepository SET
+        <if test="arg2 != null and arg2 != ''">
+            AND secondOne = #{arg2}
+        </if>
+        <if test="arg3 != null and arg3 != ''">
+            AND thirdOne = #{arg3}
+        </if>
+        <if test="arg4 != null and arg4 != ''">
+            AND fourthOne = #{arg4}
+        </if>
+         WHERE INST_ID_ = #{arg2}
+    </update>
+
     <select id="wdbh" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT F_WDBH AS inId FROM w_ywcgddhtps WHERE NOT EXISTS (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS inId FROM w_ywcgddhtps WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
         UNION
-        SELECT DISTINCT F_WDBH AS inId FROM w_fwcgxqsqd WHERE NOT EXISTS (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS inId FROM w_fwcgxqsqd WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
         UNION
-        SELECT DISTINCT F_WDBH AS inId FROM w_rccgddhtps WHERE NOT EXISTS (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS inId FROM w_rccgddhtps WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="showmat" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -57,4 +75,18 @@
         UNION
         SELECT w_fwcgxqsqd.F_XMBH AS projId,w_fwcgxqsqd.F_XMMC AS projName FROM w_fwcgxqsqd WHERE F_WDBH = #{wdbh}
     </select>
+
+    <select id="getInId" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository WHERE INST_ID_ = #{instId}
+    </select>
+
+    <select id="node" resultType="string">
+        SELECT TASK_DEF_KEY_ FROM act_ru_task WHERE PROC_INST_ID_ = #{taskid}
+    </select>
+
+    <select id="approveName" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository WHERE INST_ID_ = #{instId} ORDER BY inId DESC LIMIT 1
+    </select>
+
+
 </mapper>

@@ -38,4 +38,12 @@ public interface ProjectBoardDao {
     List<ProjectInfor> queryProjectInforByDepartment1(Map<String,Object> deptList);
     //查询项目金额以及回款率
     ProjectIncome queryProjectIncome(String projectCode);
+    //根据本周周报阶段查询相关的项目编号
+    List<String> queryPhaseByContent(Map<String,Object> content1);
+    //查询进行中的项目编号
+    List<String> queryProceed(String proceed);
+    //查询项目详情信息
+    List<ProjectInfor> queryInforInProceed(Map<String,Object> content2);
+    //查询所有进行中的项目详情信息
+    List<ProjectInfor> queryInforProceed(String proceed);
 }

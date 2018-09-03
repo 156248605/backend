@@ -200,4 +200,17 @@
     <select id="showprojL" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT w_lysqd.F_XMBH AS projId,w_lysqd.F_XMMC AS projName FROM w_lysqd WHERE F_WDBH = #{wdbh}
     </select>
+
+    <select id="getInId" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository WHERE INST_ID_ = #{instId}
+    </select>
+
+    <select id="node" resultType="string">
+        SELECT TASK_DEF_KEY_ FROM act_ru_task WHERE PROC_INST_ID_ = #{taskid}
+    </select>
+
+    <select id="approveName" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository WHERE INST_ID_ = #{instId} ORDER BY inId DESC LIMIT 1
+    </select>
+
 </mapper>

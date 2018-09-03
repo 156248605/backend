@@ -29,4 +29,6 @@ public interface ProjectBoardService {
     PageInfo projectWeek(Integer pageNum, String punctuality, String type, String department);
     //查看进行中项目的类型及数量
     List<Object> queryProceed(String department);
+    //点击进行中项目的数量查看相关详情（手机端）
+    List<Map<String,String>> queryWeek(String department, String type, String punctuality);
 }

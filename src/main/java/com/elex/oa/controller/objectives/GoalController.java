@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -53,5 +54,26 @@ public class GoalController {
     @ResponseBody
     public Goal obtainPatentUnit(String unit) {
         return goalService.obtainPatentUnit(unit);
+    }
+
+    //获取公司相应数据(手机端)
+    @RequestMapping("/obtain_company")
+    @ResponseBody
+    public List<Map<String,String>> obtainCompany(String unit) {
+        return goalService.obtainCompany(unit);
+    }
+
+    //获取公司销售收入或税后净利相应数据（手机端）
+    @RequestMapping("/obtain_various")
+    @ResponseBody
+    public List<Map<String,String>> obtainVarious(String unit, String various) {
+        return goalService.obtainVarious(unit, various);
+    }
+
+    //获取单位对应的销售收入或税后净利相应数据详情（手机端）
+    @RequestMapping("/obtain_details")
+    @ResponseBody
+    public Map<String,String> obtainDetails(String unit, String various) {
+        return goalService.obtainDetails(unit, various);
     }
 }

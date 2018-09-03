@@ -92,10 +92,17 @@ public class ProjectBoardController {
         return projectBoardService.projectWeek(pageNum, punctuality, type, department);
     }
 
-    //查看进行中项目的类型及数量
+    //查看进行中项目的类型及数量(手机端)
     @RequestMapping("/query_proceed")
     @ResponseBody
     public List<Object> queryProceed(String department) {
         return projectBoardService.queryProceed(department);
+    }
+
+    //点击进行中项目的数量查看相关详情（手机端）
+    @RequestMapping("/query_week")
+    @ResponseBody
+    public List<Map<String,String>> queryWeek(String department, String type, String punctuality) {
+        return projectBoardService.queryWeek(department, type, punctuality);
     }
 }

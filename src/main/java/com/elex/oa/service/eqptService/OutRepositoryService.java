@@ -44,4 +44,14 @@ public interface OutRepositoryService {
     List<Repository> showprojX(HttpServletRequest request);
 
     List<Repository> showprojR(HttpServletRequest request);
+
+    String getInstId(String instid);
+
+    void updateApprove(String instid, HttpServletRequest request);
+
+    String node(HttpServletRequest request);
+
+    List<Repository> postInfo(HttpServletRequest request);
+
+    List<Repository> approveName(HttpServletRequest request);
 }

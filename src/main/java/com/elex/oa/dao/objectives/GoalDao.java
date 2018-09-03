@@ -31,4 +31,5 @@ public interface GoalDao {
     Goal2 obtainGrossUnit(Map<String,String> content);
     //获取某单位的销售毛利详情
     Goal obtainPatentUnit(Map<String,String> content);
+
 }

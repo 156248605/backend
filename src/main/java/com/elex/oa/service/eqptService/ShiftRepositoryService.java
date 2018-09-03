@@ -53,4 +53,14 @@ public interface ShiftRepositoryService {
     List<Repository> showprojL(HttpServletRequest request);
 
     List<Repository> showprojJ(HttpServletRequest request);
+
+    String getInstId(String instid);
+
+    void updateApprove(String instid, HttpServletRequest request);
+
+    List<Repository> postInfo(HttpServletRequest request);
+
+    String node(HttpServletRequest request);
+
+    List<Repository> approveName(HttpServletRequest request);
 }
