@@ -121,4 +121,34 @@ public class OutRepositoryController {
     public List<Repository> showprojR (HttpServletRequest request) {
         return outRepositoryImpl.showprojR(request);
     }
+
+    @RequestMapping("/getInstId")
+    @ResponseBody
+    public String getInstId (String instid){
+        return outRepositoryImpl.getInstId(instid);
+    }
+
+    @RequestMapping("/updateApprove")
+    @ResponseBody
+    public void updateApprove (String instid,HttpServletRequest request){
+        outRepositoryImpl.updateApprove(instid,request);
+    }
+
+    @RequestMapping("/node")
+    @ResponseBody
+    public String node (HttpServletRequest request){
+        return outRepositoryImpl.node(request);
+    }
+
+    @RequestMapping("/postInfo")
+    @ResponseBody
+    public List<Repository> postInfo (HttpServletRequest request){
+        return outRepositoryImpl.postInfo(request);
+    }
+
+    @RequestMapping("/approveName")
+    @ResponseBody
+    public List<Repository> approveName (HttpServletRequest request){
+        return outRepositoryImpl.approveName(request);
+    }
 }

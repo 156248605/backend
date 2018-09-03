@@ -72,4 +72,16 @@
         UNION
         SELECT w_zdsqd.F_XMBH AS projId,w_zdsqd.F_XMMC AS projName FROM w_zdsqd WHERE F_WDBH = #{wdbh}
     </select>
+
+    <select id="getInId" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository WHERE INST_ID_ = #{instId}
+    </select>
+
+    <select id="node" resultType="string">
+        SELECT TASK_DEF_KEY_ FROM act_ru_task WHERE PROC_INST_ID_ = #{taskid}
+    </select>
+
+    <select id="approveName" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository WHERE INST_ID_ = #{instId} ORDER BY inId DESC LIMIT 1
+    </select>
 </mapper>

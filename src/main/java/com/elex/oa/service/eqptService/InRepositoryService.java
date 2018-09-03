@@ -44,5 +44,17 @@ public interface InRepositoryService {
     List<Repository> showmat(HttpServletRequest request);
     List<Repository> showproj(HttpServletRequest request);
 
-    void getInstId(String instid);
+    // 获取创建流程的inst id
+    String getInstId(String instid);
+
+    // 更新审批意见
+    void updateApprove(String instid,HttpServletRequest request);
+
+    // 审批时给予查询信息
+    List<Repository> postInfo(HttpServletRequest request);
+
+    String node(HttpServletRequest request);
+
+    List<Repository> approveName(HttpServletRequest request);
+
 }

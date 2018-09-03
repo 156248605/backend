@@ -43,4 +43,15 @@ public interface OutRepositoryMapper {
     List<Repository> showprojX(String wdbh);
 
     List<Repository> showprojR(String wdbh);
+
+    // 绑定流程
+    void updateInstId(String instid);
+
+    void updateApprove(String instid, String secondOne, String thirdOne, String fourthOne);
+
+    List<Repository> getInId(String instid);
+
+    String node(String taskid);
+
+    List<Repository> approveName(String instid);
 }

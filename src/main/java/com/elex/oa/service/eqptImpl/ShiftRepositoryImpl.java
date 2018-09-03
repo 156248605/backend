@@ -136,11 +136,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             }
             String shiftReptC = request.getParameter("shiftReptC");
             String shiftInfo = "";
-            if (shiftReptC.equals("归还") || shiftReptC.equals("生产退料")){
-                shiftInfo = "无";
-            } else {
-                shiftInfo = request.getParameter("shiftInfo");
-            }
+            shiftInfo = request.getParameter("shiftInfo");
             String date = request.getParameter("shiftTime");
             date = date.replace("Z", " UTC");//注意是空格+UTC
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
@@ -250,62 +246,6 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             }else {
                 materialMapper.updDetail(material1);
             }
-            /*String shiftNum = listSHIFT.get(i).get("theMatNum").toString();
-            String materialId = listSHIFT.get(i).get("theMatId").toString();
-            Material material = new Material();
-            material.setId(materialId);
-            Material material2 = shiftRepositoryMapper.lockMat(material);
-            Repository repositoryOne = new Repository();
-            repositoryOne.setPostId(request.getParameter("outPost"));
-            repositoryOne.setReptId(request.getParameter("outRept"));
-            String theNumber = repositoryMapper.getNumber(repositoryOne);
-            if (material2.getNum().equals(shiftNum) || theNumber.equals(shiftNum)) {
-                Repository repository = new Repository();
-                repository.setPostId(request.getParameter("outPost"));
-                repository.setReptId(request.getParameter("outRept"));
-                repository.setPrice("0");
-                repository.setNum("0");
-                repository.setMaterialId("无");
-                repository.setCategory("无");
-                repository.setMaterialName("无");
-                repository.setSpec("无");
-                int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
-                repository.setOnlyIdR(onlyIdR);
-                repositoryMapper.updRepository(repository);
-            } else {
-                Repository repository = new Repository();
-                repository.setPosition(request.getParameter("outPost"));
-                repository.setReptId(request.getParameter("outRept"));
-                String number = repositoryMapper.getNumber(repository);
-                String numAfterOut = String.valueOf(parseInt(number) - parseInt(listSHIFT.get(i).get("theMatNum").toString()));
-                repository.setNum(numAfterOut);
-                int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
-                repository.setOnlyIdR(onlyIdR);
-                repositoryMapper.updRepository(repository);
-            }
-            Repository repository1 = new Repository();
-            repository1.setReptId(request.getParameter("inRept"));
-            repository1.setPosition(request.getParameter("inPost"));
-            repository1.setMaterialId(materialId);
-            String number = repositoryMapper.getNumber(repository1);
-            if (parseInt(number) == 0) {
-                Material material3 = repositoryMapper.getOtherInfo(material);
-                repository1.setSpec(material3.getSpec());
-                repository1.setCategory(material3.getCategory());
-                repository1.setMaterialName(material3.getName());
-                repository1.setPrice(material3.getPrice());
-                String numAfterIn = String.valueOf(parseInt(number) + parseInt(shiftNum));
-                repository1.setNum(numAfterIn);
-                int onlyIdR = repositoryMapper.lockOnlyIdR(repository1);
-                repository1.setOnlyIdR(onlyIdR);
-                repositoryMapper.changeRepository(repository1);
-            } else {
-                String numAfterIn = String.valueOf(parseInt(number) + parseInt(shiftNum));
-                repository1.setNum(numAfterIn);
-                int onlyIdR = repositoryMapper.lockOnlyIdR(repository1);
-                repository1.setOnlyIdR(onlyIdR);
-                repositoryMapper.changeRepository(repository1);
-            }*/
         }
     }
 
@@ -527,6 +467,100 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     public List<Repository> showprojJ(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<Repository> list = shiftRepositoryMapper.showprojJ(wdbh);
+        return list;
+    }
+
+    @Override
+    public String getInstId(String instid) {
+        if (instid != null && !instid.equals("") ){
+            shiftRepositoryMapper.updateInstId(instid);
+        }
+        return instid;
+    }
+
+    @Override
+    public void updateApprove(String instid, HttpServletRequest request) {
+        if (instid != null && !instid.equals("") ){
+            String secondOne = request.getParameter("secondOne");
+            String thirdOne = request.getParameter("thirdOne");
+            String fourthOne = request.getParameter("fourthOne");
+            shiftRepositoryMapper.updateApprove(instid,secondOne,thirdOne,fourthOne);
+            // 最后一人审批通过的情况
+            if (!fourthOne.equals("")){
+                List<Repository> listSHIFT = shiftRepositoryMapper.getInId(instid);
+                for (int i = 0;i < listSHIFT.size();i++) {
+                    //更新物料
+                    String materialName = listSHIFT.get(i).getMaterialName();
+                    String shiftNumGet = listSHIFT.get(i).getShiftNum();
+                    String shiftNum = "";
+                    if (shiftNumGet.contains(".")) {
+                        shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
+                    }else {
+                        shiftNum = shiftNumGet;
+                    }
+                    String materialId = listSHIFT.get(i).getMaterialId();
+                    String outRept = "";
+                    outRept = listSHIFT.get(i).getOutRept();
+                    String outPost = "";
+                    outPost = listSHIFT.get(i).getOutPost();
+                    String inRept = "";
+                    inRept = listSHIFT.get(i).getInRept();
+                    String inPost = "";
+                    inPost = listSHIFT.get(i).getInPost();
+                    Repository repository = new Repository();
+                    repository.setReptId(outRept);
+                    repository.setPostId(outPost);
+                    String outNum = shiftRepositoryMapper.theNumberOut(repository);
+                    Material material = new Material();
+                    material.setReptId(outRept);
+                    material.setPostId(outPost);
+                    material.setId(materialId);
+                    material.setNum(shiftNum);
+                    if (parseInt(outNum) == parseInt(shiftNum)){
+                        materialMapper.deleteDetail(material);
+                    }else {
+                        materialMapper.updDetailM(material);
+                    }
+                    Material material1 = new Material();
+                    material1.setReptId(inRept);
+                    material1.setPostId(inPost);
+                    material1.setId(materialId);
+                    material1.setNum(shiftNum);
+                    material1.setName(materialName);
+                    material1.setSpec(listSHIFT.get(i).getSpec());
+                    Material material2 = materialMapper.MaterialId(material);
+                    material1.setCategory(material2.getCategory());
+                    material1.setBrand(material2.getBrand());
+                    material1.setPrice(material2.getPrice());
+                    String result = materialMapper.matInDetail(material1);
+                    if(result == null){
+                        materialMapper.insertDetail(material1);
+                    }else {
+                        materialMapper.updDetail(material1);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Repository> postInfo(HttpServletRequest request) {
+        String instId = request.getParameter("instid");
+        List<Repository> list = shiftRepositoryMapper.getInId(instId);
+        return list;
+    }
+
+    @Override
+    public String node(HttpServletRequest request) {
+        String taskid = request.getParameter("taskid");
+        String node = shiftRepositoryMapper.node(taskid);
+        return node;
+    }
+
+    @Override
+    public List<Repository> approveName(HttpServletRequest request) {
+        String instid = request.getParameter("instid");
+        List<Repository> list = shiftRepositoryMapper.approveName(instid);
         return list;
     }
 }

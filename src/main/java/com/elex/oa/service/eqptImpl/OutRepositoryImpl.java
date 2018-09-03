@@ -332,5 +332,74 @@ public class OutRepositoryImpl implements OutRepositoryService {
         List<Repository> list = outRepositoryMapper.showprojR(wdbh);
         return list;
     }
+
+    @Override
+    public String getInstId(String instid) {
+        if (instid != null && !instid.equals("") ){
+            outRepositoryMapper.updateInstId(instid);
+        }
+        return instid;
+    }
+
+    @Override
+    public void updateApprove(String instid, HttpServletRequest request) {
+        if (instid != null && !instid.equals("") ){
+            String secondOne = request.getParameter("secondOne");
+            String thirdOne = request.getParameter("thirdOne");
+            String fourthOne = request.getParameter("fourthOne");
+            outRepositoryMapper.updateApprove(instid,secondOne,thirdOne,fourthOne);
+            // 最后一人审批通过的情况
+            if (!fourthOne.equals("")){
+                List<Repository> listOUT = outRepositoryMapper.getInId(instid);
+                for (int i = 0;i < listOUT.size();i++) {
+                    //更新物料
+                    Material material = new Material();
+                    material.setId(listOUT.get(i).getMaterialId());
+                    String postId = "";
+                    if (listOUT.get(i).getPostId() != null){
+                        postId = listOUT.get(i).getPostId();
+                    }
+                    material.setPostId(postId);
+                    material.setReptId(listOUT.get(i).getReptId());
+                    String number = repositoryMapper.numInPost(material);
+                    String outNum = "";
+                    String outNumA = listOUT.get(i).getOutNum();
+                    if (outNumA.contains(".")){
+                        outNum = outNumA.substring(0,outNumA.indexOf("."));
+                    }else{
+                        outNum = outNumA;
+                    }
+                    material.setNum(outNum);
+                    if (parseInt(number) == parseInt(outNum)) {
+                        materialMapper.deleteDetail(material);
+                    } else {
+                        materialMapper.updDetailM(material);
+                    }
+                    materialMapper.updMatM(material);
+                }
+            }
+        }
+    }
+
+    @Override
+    public String node(HttpServletRequest request) {
+        String taskid = request.getParameter("taskid");
+        String node = outRepositoryMapper.node(taskid);
+        return node;
+    }
+
+    @Override
+    public List<Repository> postInfo(HttpServletRequest request) {
+        String instId = request.getParameter("instid");
+        List<Repository> list = outRepositoryMapper.getInId(instId);
+        return list;
+    }
+
+    @Override
+    public List<Repository> approveName(HttpServletRequest request) {
+        String instid = request.getParameter("instid");
+        List<Repository> list = outRepositoryMapper.approveName(instid);
+        return list;
+    }
 }
 

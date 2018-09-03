@@ -99,7 +99,33 @@ public class InRepositoryController {
 
     @RequestMapping("/getInstId")
     @ResponseBody
-    public void getInstId (String instid){
-        inRepositoryImpl.getInstId(instid);
+    public String getInstId (String instid){
+        return inRepositoryImpl.getInstId(instid);
     }
+
+    @RequestMapping("/updateApprove")
+    @ResponseBody
+    public void updateApprove (String instid,HttpServletRequest request){
+        inRepositoryImpl.updateApprove(instid,request);
+    }
+
+    @RequestMapping("/postInfo")
+    @ResponseBody
+    public List<Repository> postInfo (HttpServletRequest request){
+        return inRepositoryImpl.postInfo(request);
+    }
+
+    @RequestMapping("/node")
+    @ResponseBody
+    public String node (HttpServletRequest request){
+        return inRepositoryImpl.node(request);
+    }
+
+    @RequestMapping("/approveName")
+    @ResponseBody
+    public List<Repository> approveName (HttpServletRequest request){
+        return inRepositoryImpl.approveName(request);
+    }
+
+
 }

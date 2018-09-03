@@ -136,4 +136,34 @@ public class ShiftRepositoryController {
     public List<Repository> showprojL (HttpServletRequest request) {
         return shiftRepositoryImpl.showprojL(request);
     }
+
+    @RequestMapping("/getInstId")
+    @ResponseBody
+    public String getInstId (String instid){
+        return shiftRepositoryImpl.getInstId(instid);
+    }
+
+    @RequestMapping("/updateApprove")
+    @ResponseBody
+    public void updateApprove (String instid,HttpServletRequest request){
+        shiftRepositoryImpl.updateApprove(instid,request);
+    }
+
+    @RequestMapping("/postInfo")
+    @ResponseBody
+    public List<Repository> postInfo (HttpServletRequest request){
+        return shiftRepositoryImpl.postInfo(request);
+    }
+
+    @RequestMapping("/node")
+    @ResponseBody
+    public String node (HttpServletRequest request){
+        return shiftRepositoryImpl.node(request);
+    }
+
+    @RequestMapping("/approveName")
+    @ResponseBody
+    public List<Repository> approveName (HttpServletRequest request){
+        return shiftRepositoryImpl.approveName(request);
+    }
 }
