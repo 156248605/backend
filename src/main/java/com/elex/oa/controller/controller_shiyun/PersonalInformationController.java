@@ -1282,7 +1282,6 @@ public class PersonalInformationController {
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
     ) throws ParseException {
-        System.out.println(personalInformation.toString());
         //修改信息痕迹的总标识
         Boolean listBL = false;
         //原来的信息
@@ -1415,7 +1414,7 @@ public class PersonalInformationController {
         map.put("username",personalInformation2.getUsername());
         map.put("isactive",personalInformation2.getIsactive());
         map.put("truename",personalInformation2.getTruename());
-        map.put("postids",personalInformation2.getPostids());
+        map.put("postids",personalInformation.getPostids());
 
         return RespUtil.successResp("200","提交信息成功！",map);
     }
@@ -2416,7 +2415,6 @@ public class PersonalInformationController {
         }
         return list;
     }
-
 
     /**
      *@Author:ShiYun;
