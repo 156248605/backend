@@ -84,4 +84,10 @@ public interface IPersonalInformationService{
      *@Date: 16:10 2018\8\20 0020
      */
     void removeOne(Integer perid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据人名查询部门经理
+     *@Date: 17:10 2018\8\31 0031
+     */
 }

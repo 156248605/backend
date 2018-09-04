@@ -80,12 +80,14 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
      */
     @Override
     public PageInfo<DimissionInformation> queryByCondition(HashMap<String, Object> paramMap) {
+        System.out.println(123);
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         DimissionInformation dimissionInformation = (DimissionInformation) paramMap.get("entity");
 
         //先查询关系表，获得perids
-        if(dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname()) || dimissionInformation.getPostnameList()!=null){
+
+        if(dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname()) || (dimissionInformation.getPostnameList()==null?0:dimissionInformation.getPostnameList().size())!=0){
             PersonalInformation personalInformation = new PersonalInformation();
 
             if (dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname())) {
