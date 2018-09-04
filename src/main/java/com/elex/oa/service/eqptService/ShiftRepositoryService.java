@@ -56,11 +56,14 @@ public interface ShiftRepositoryService {
 
     String getInstId(String instid);
 
-    void updateApprove(String instid, HttpServletRequest request);
+    void updateApprove(String instid);
 
     List<Repository> postInfo(HttpServletRequest request);
 
     String node(HttpServletRequest request);
 
     List<Repository> approveName(HttpServletRequest request);
+
+    // 获取审批
+    void getApprove(HttpServletRequest request);
 }

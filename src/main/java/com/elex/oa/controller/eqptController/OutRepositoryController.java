@@ -130,8 +130,14 @@ public class OutRepositoryController {
 
     @RequestMapping("/updateApprove")
     @ResponseBody
-    public void updateApprove (String instid,HttpServletRequest request){
-        outRepositoryImpl.updateApprove(instid,request);
+    public void updateApprove (String instid){
+        outRepositoryImpl.updateApprove(instid);
+    }
+
+    @RequestMapping("/getApprove")
+    @ResponseBody
+    public void getApprove (HttpServletRequest request){
+        outRepositoryImpl.getApprove(request);
     }
 
     @RequestMapping("/node")

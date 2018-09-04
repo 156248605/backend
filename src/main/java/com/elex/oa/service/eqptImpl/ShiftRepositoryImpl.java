@@ -479,11 +479,11 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     }
 
     @Override
-    public void updateApprove(String instid, HttpServletRequest request) {
+    public void updateApprove(String instid) {
+        String secondOne = second;
+        String thirdOne = third;
+        String fourthOne = fourth;
         if (instid != null && !instid.equals("") ){
-            String secondOne = request.getParameter("secondOne");
-            String thirdOne = request.getParameter("thirdOne");
-            String fourthOne = request.getParameter("fourthOne");
             shiftRepositoryMapper.updateApprove(instid,secondOne,thirdOne,fourthOne);
             // 最后一人审批通过的情况
             if (!fourthOne.equals("")){
@@ -499,21 +499,29 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                         shiftNum = shiftNumGet;
                     }
                     String materialId = listSHIFT.get(i).getMaterialId();
-                    String outRept = "";
-                    outRept = listSHIFT.get(i).getOutRept();
-                    String outPost = "";
-                    outPost = listSHIFT.get(i).getOutPost();
-                    String inRept = "";
-                    inRept = listSHIFT.get(i).getInRept();
-                    String inPost = "";
-                    inPost = listSHIFT.get(i).getInPost();
+                    String OUTREPT = outRept;
+                    if (listSHIFT.get(i).getOutRept() != null) {
+                        OUTREPT = listSHIFT.get(i).getOutRept();
+                    }
+                    String OUTPOST = outPost;
+                    if (listSHIFT.get(i).getOutPost() != null) {
+                        OUTPOST = listSHIFT.get(i).getOutPost();
+                    }
+                    String INREPT = inRept;
+                    if (listSHIFT.get(i).getInRept() != null) {
+                        INREPT = listSHIFT.get(i).getInRept();
+                    }
+                    String INPOST = inPost;
+                    if (listSHIFT.get(i).getInPost() != null) {
+                        INPOST = listSHIFT.get(i).getInPost();
+                    }
                     Repository repository = new Repository();
-                    repository.setReptId(outRept);
-                    repository.setPostId(outPost);
+                    repository.setReptId(OUTREPT);
+                    repository.setPostId(OUTPOST);
                     String outNum = shiftRepositoryMapper.theNumberOut(repository);
                     Material material = new Material();
-                    material.setReptId(outRept);
-                    material.setPostId(outPost);
+                    material.setReptId(OUTREPT);
+                    material.setPostId(OUTPOST);
                     material.setId(materialId);
                     material.setNum(shiftNum);
                     if (parseInt(outNum) == parseInt(shiftNum)){
@@ -522,8 +530,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                         materialMapper.updDetailM(material);
                     }
                     Material material1 = new Material();
-                    material1.setReptId(inRept);
-                    material1.setPostId(inPost);
+                    material1.setReptId(INREPT);
+                    material1.setPostId(INPOST);
                     material1.setId(materialId);
                     material1.setNum(shiftNum);
                     material1.setName(materialName);
@@ -563,4 +571,29 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         List<Repository> list = shiftRepositoryMapper.approveName(instid);
         return list;
     }
+
+    // 获取审批
+    @Override
+    public void getApprove(HttpServletRequest request) {
+        String secondOne = request.getParameter("secondOne");
+        String thirdOne = request.getParameter("thirdOne");
+        String fourthOne = request.getParameter("fourthOne");
+        if (secondOne != null){
+            second = secondOne;
+        }
+        if (thirdOne != null){
+            third = thirdOne;
+        }
+        if (fourthOne != null){
+            fourth = fourthOne;
+        }
+    }
+
+    static String second = "";
+    static String third = "";
+    static String fourth = "";
+    static String outRept = "";
+    static String outPost = "";
+    static String inRept = "";
+    static String inPost = "";
 }

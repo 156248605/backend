@@ -423,7 +423,11 @@
     </update>
 
     <select id="matInDetail" resultType="string">
-        SELECT DISTINCT id FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId} AND id = #{id}
+        SELECT DISTINCT id FROM eqpt_detail WHERE reptId = #{reptId}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
+        AND id = #{id}
     </select>
 
     <update id="updateDetail" parameterType="com.elex.oa.entity.eqpt.Material">
