@@ -11,8 +11,8 @@ public class InventorySchedule {
     @Resource
     private InventoryService inventoryService;
 
-    /*@Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "* 0/1 * * * ?")
     public void insertInventory(){
         inventoryService.insertInv();
-    }*/
+    }
 }
