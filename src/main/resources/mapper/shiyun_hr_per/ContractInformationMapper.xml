@@ -189,6 +189,7 @@
 			<if	test="remark!=null and remark!=''">remark=#{remark},</if>
 			<if	test="transactoruserid!=null and transactoruserid!=''">transactoruserid=#{transactoruserid},</if>
 			<if	test="transdate!=null and transdate!=''">transdate=#{transdate},</if>
+			<if	test="contractage!=null and contractage!=''">contractage=#{contractage},</if>
 		</set>
 		WHERE id=#{id}
 	</update>
