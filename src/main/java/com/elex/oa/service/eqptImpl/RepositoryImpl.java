@@ -287,7 +287,7 @@ public class RepositoryImpl implements RepositoryService {
             Material material = new Material();
             material.setId(list.get(i).get("theMatId").toString());
             result = repositoryMapper.checkBS(material);
-            if (!result.equals("否") && (list.get(i).get("theMatBnSn").toString().equals("") || list.get(i).containsKey(""))){
+            if (!result.equals("否") && list.get(i).get("theMatBnSn") == null){
                 result = "1";
                 break;
             }else {

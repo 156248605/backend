@@ -394,6 +394,10 @@
         </if>
     </delete>
 
+    <delete id="deleteNull" parameterType="com.elex.oa.entity.eqpt.Material">
+        DELETE FROM eqpt_detail WHERE id = #{id} AND reptId = ''
+    </delete>
+
     <update id="saveDetail" parameterType="com.elex.oa.entity.eqpt.Material">
         UPDATE eqpt_detail
         <set>
@@ -419,7 +423,7 @@
                 id = #{id},
             </if>
         </set>
-        WHERE id = #{theId}
+        WHERE id = #{bn}
     </update>
 
     <select id="matInDetail" resultType="string">

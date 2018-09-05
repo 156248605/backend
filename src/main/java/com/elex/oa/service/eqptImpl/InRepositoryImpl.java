@@ -266,6 +266,7 @@ public class InRepositoryImpl implements InRepositoryService {
             String result = materialMapper.matInDetail(material);
             if(result == null){
                 materialMapper.insertDetail(material);
+                materialMapper.deleteNull(material);
             }else {
                 materialMapper.updDetail(material);
             }
@@ -368,7 +369,9 @@ public class InRepositoryImpl implements InRepositoryService {
                 }
                 Repository repository1 = repositoryMtMapper.searchPostCap(repository);
                 if (repository1.getPostCap().equals("无限制")){
-                    postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
+                    postCap = String.valueOf(999999999);
+                }else {
+                    postCap = repository1.getPostCap();
                 }
             }
             Repository repository2 = repositoryMtMapper.noPost(repository);

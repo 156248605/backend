@@ -321,6 +321,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             Repository repository1 = repositoryMtMapper.searchPostCap(repository);
             if (repository1.getPostCap().equals("无限制")){
                 postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
+            }else {
+                postCap = repository1.getPostCap();
             }
             if (parseInt(NUM) + parseInt(INNUM) > parseInt(postCap) ){
                 result = "1";
@@ -543,6 +545,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                     String result = materialMapper.matInDetail(material1);
                     if(result == null){
                         materialMapper.insertDetail(material1);
+                        materialMapper.deleteNull(material1);
                     }else {
                         materialMapper.updDetail(material1);
                     }
