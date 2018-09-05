@@ -83,7 +83,7 @@ public class CalendarUtil {
             throw(new Exception("月份有错！"));
         }
         // 0X0FFFF[0000 {1111 1111 1111} 1111]中间12位代表12个月，1为大月，0为小月
-        int bit = 1 << (16-month);
+        int bit = 1 << (16-month);//找规律
         if(((LUNAR_INFO[lunarYeay - 1900] & 0x0FFFF)&bit)==0){
             return 29;
         }else {
@@ -281,11 +281,15 @@ public class CalendarUtil {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         Date myDate = null;
         Date startDate = null;
+        if(solarDate.compareTo(START_DATE)<0 || solarDate.compareTo(END_DATE)>0){
+            throw new Exception("所传时间必须在1900/01/30和2050/01/22之间，超出范围只能等下期版本更新！");
+        }
         try {
             myDate = formatter.parse(solarDate);
             startDate = formatter.parse(START_DATE);
         } catch (ParseException e) {
             e.printStackTrace();
+            throw new Exception("日期类型错误！");
         }
 
         int offset = daysBetween(startDate,myDate);
@@ -309,7 +313,7 @@ public class CalendarUtil {
         }
 
         for (i = 1;  i<=12; i++) {
-            if(i==leapMonth+1 && isLeapYear){
+            if(isLeapYear && i==leapMonth+1){
                 temp = getLeapMonthDays(lunarYear);
                 isLeapYear = false;
                 leapMonthFlag = true;
@@ -327,7 +331,7 @@ public class CalendarUtil {
         lunarMonth = i;
         lunarDay = offset;
 
-        return "阴历:"+lunarYear+"年"+(leapMonthFlag&(lunarMonth==leapMonth)?"闰":"")+lunarMonth+"月"+lunarDay+"日";
+        return "阴历:"+lunarYear+"年"+(leapMonthFlag&&(lunarMonth==leapMonth)?"闰":"")+lunarMonth+"月"+lunarDay+"日";
     }
 
 }
