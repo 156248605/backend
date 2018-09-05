@@ -187,7 +187,8 @@ public class MaterialImpl implements MaterialService {
         material1.setCategory(request.getParameter("category"));
         material1.setBrand(request.getParameter("brand"));
         material1.setPrice(request.getParameter("price"));
-        materialMapper.saveDetail(material1,id);
+        material1.setBn(id);
+        materialMapper.saveDetail(material1);
     }
 
     // 删除物料

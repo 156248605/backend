@@ -342,11 +342,11 @@ public class OutRepositoryImpl implements OutRepositoryService {
     }
 
     @Override
-    public void updateApprove(String instid, HttpServletRequest request) {
+    public void updateApprove(String instid) {
+        String secondOne = second;
+        String thirdOne = third;
+        String fourthOne = fourth;
         if (instid != null && !instid.equals("") ){
-            String secondOne = request.getParameter("secondOne");
-            String thirdOne = request.getParameter("thirdOne");
-            String fourthOne = request.getParameter("fourthOne");
             outRepositoryMapper.updateApprove(instid,secondOne,thirdOne,fourthOne);
             // 最后一人审批通过的情况
             if (!fourthOne.equals("")){
@@ -355,11 +355,11 @@ public class OutRepositoryImpl implements OutRepositoryService {
                     //更新物料
                     Material material = new Material();
                     material.setId(listOUT.get(i).getMaterialId());
-                    String postId = "";
-                    if (listOUT.get(i).getPostId() != null){
-                        postId = listOUT.get(i).getPostId();
+                    String POSTID = postId;
+                    if (listOUT.get(i).getPostId() != null) {
+                        POSTID = listOUT.get(i).getPostId();
                     }
-                    material.setPostId(postId);
+                    material.setPostId(POSTID);
                     material.setReptId(listOUT.get(i).getReptId());
                     String number = repositoryMapper.numInPost(material);
                     String outNum = "";
@@ -401,5 +401,27 @@ public class OutRepositoryImpl implements OutRepositoryService {
         List<Repository> list = outRepositoryMapper.approveName(instid);
         return list;
     }
+
+    // 获取审批
+    @Override
+    public void getApprove(HttpServletRequest request) {
+        String secondOne = request.getParameter("secondOne");
+        String thirdOne = request.getParameter("thirdOne");
+        String fourthOne = request.getParameter("fourthOne");
+        if (secondOne != null){
+            second = secondOne;
+        }
+        if (thirdOne != null){
+            third = thirdOne;
+        }
+        if (fourthOne != null){
+            fourth = fourthOne;
+        }
+    }
+
+    static String second = "";
+    static String third = "";
+    static String fourth = "";
+    static String postId = "";
 }
 

@@ -43,6 +43,9 @@ public class InRepositoryImpl implements InRepositoryService {
     @Resource
     private MaterialMtMapper materialMtMapper;
 
+    @Resource
+    private InRepositoryImpl inRepositoryImpl;
+
 
     /*所有单号*/
     @Override
@@ -167,7 +170,7 @@ public class InRepositoryImpl implements InRepositoryService {
             String sDate = sdf.format(d);
             String INTIME = sDate;
             String ININFO = request.getParameter("inInfo");
-            String POSTID = "无";
+            String POSTID = postId;
             if (listIN.get(i).get("postId") != null){
                 POSTID = listIN.get(i).get("postId").toString();
             }
@@ -263,6 +266,7 @@ public class InRepositoryImpl implements InRepositoryService {
             String result = materialMapper.matInDetail(material);
             if(result == null){
                 materialMapper.insertDetail(material);
+                materialMapper.deleteNull(material);
             }else {
                 materialMapper.updDetail(material);
             }
@@ -365,7 +369,9 @@ public class InRepositoryImpl implements InRepositoryService {
                 }
                 Repository repository1 = repositoryMtMapper.searchPostCap(repository);
                 if (repository1.getPostCap().equals("无限制")){
-                    postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
+                    postCap = String.valueOf(999999999);
+                }else {
+                    postCap = repository1.getPostCap();
                 }
             }
             Repository repository2 = repositoryMtMapper.noPost(repository);
@@ -407,7 +413,7 @@ public class InRepositoryImpl implements InRepositoryService {
 
     // 流程id传给明细
     @Override
-    public String getInstId(String instid){
+    public String getInstId(String instid, HttpServletRequest request){
         if (instid != null && !instid.equals("") ){
             inRepositoryMapper.updateInstId(instid);
         }
@@ -416,15 +422,15 @@ public class InRepositoryImpl implements InRepositoryService {
 
     // 更新审批意见
     @Override
-    public void updateApprove(String instid, HttpServletRequest request){
-        if (instid != null && !instid.equals("") ){
-            String secondOne = request.getParameter("secondOne");
-            String thirdOne = request.getParameter("thirdOne");
-            String fourthOne = request.getParameter("fourthOne");
-            inRepositoryMapper.updateApprove(instid,secondOne,thirdOne,fourthOne);
+    public void updateApprove(String instId){
+        String secondOne = second;
+        String thirdOne = third;
+        String fourthOne = fourth;
+        if (instId != null && !instId.equals("") ){
+            inRepositoryMapper.updateApprove(instId,secondOne,thirdOne,fourthOne);
             // 最后一人审批通过的情况
             if (!fourthOne.equals("")){
-                List<Repository> listIN = inRepositoryMapper.getInId(instid);
+                List<Repository> listIN = inRepositoryMapper.getInId(instId);
                 for (int i = 0;i < listIN.size();i++) {
                     //更新物料
                     String INNUMGET = listIN.get(i).getInNum();
@@ -437,11 +443,11 @@ public class InRepositoryImpl implements InRepositoryService {
                     Material material = new Material();
                     material.setId(listIN.get(i).getMaterialId());
                     material.setNum(INNUM);
-                    String postId = "";
+                    String POSTID = postId;
                     if (listIN.get(i).getPostId() != null) {
-                        postId = listIN.get(i).getPostId();
+                        POSTID = listIN.get(i).getPostId();
                     }
-                    material.setPostId(postId);
+                    material.setPostId(POSTID);
                     material.setReptId(listIN.get(i).getReptId());
                     material.setName(listIN.get(i).getMaterialName());
                     material.setSpec(listIN.get(i).getSpec());
@@ -484,4 +490,25 @@ public class InRepositoryImpl implements InRepositoryService {
     }
 
 
+    // 获取审批
+    @Override
+    public void getApprove(HttpServletRequest request) {
+        String secondOne = request.getParameter("secondOne");
+        String thirdOne = request.getParameter("thirdOne");
+        String fourthOne = request.getParameter("fourthOne");
+        if (secondOne != null){
+            second = secondOne;
+        }
+        if (thirdOne != null){
+            third = thirdOne;
+        }
+        if (fourthOne != null){
+            fourth = fourthOne;
+        }
+    }
+
+    static String second = "";
+    static String third = "";
+    static String fourth = "";
+    static String postId = "";
 }

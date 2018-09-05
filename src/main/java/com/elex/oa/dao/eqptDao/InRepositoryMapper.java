@@ -36,6 +36,6 @@ public interface InRepositoryMapper {
 
     List<Repository> approveName(String instid);
 
-    void updateApprove(String s, String secondOne, String thirdOne, String instid);
+    void updateApprove(String instId, String secondOne, String thirdOne, String instid);
 
 }

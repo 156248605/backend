@@ -145,8 +145,14 @@ public class ShiftRepositoryController {
 
     @RequestMapping("/updateApprove")
     @ResponseBody
-    public void updateApprove (String instid,HttpServletRequest request){
-        shiftRepositoryImpl.updateApprove(instid,request);
+    public void updateApprove (String instid){
+        shiftRepositoryImpl.updateApprove(instid);
+    }
+
+    @RequestMapping("/getApprove")
+    @ResponseBody
+    public void getApprove (HttpServletRequest request){
+        shiftRepositoryImpl.getApprove(request);
     }
 
     @RequestMapping("/postInfo")

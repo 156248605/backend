@@ -58,11 +58,13 @@ public interface MaterialMapper {
 
     void deleteDetail(Material material);
 
-    void saveDetail(Material material,String theId);
+    void saveDetail(Material material);
 
     //查询是否有库存记录
     String matInDetail(Material material);
 
     // 修改库位时修改库存查询
     void updateDetail(String reptId, String postId, String position);
+
+    void deleteNull(Material material);
 }
