@@ -1,9 +1,7 @@
 package com.elex.oa.controller.controller_shiyun;
 
-import com.elex.oa.entity.entity_shiyun.DimissionInformation;
-import com.elex.oa.entity.entity_shiyun.PerAndPostRs;
-import com.elex.oa.entity.entity_shiyun.ReadDimissioninformationExcel;
-import com.elex.oa.entity.entity_shiyun.User;
+import com.elex.oa.dao.dao_shiyun.IGzrzDao;
+import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
@@ -44,6 +42,8 @@ public class DimissionController {
     IHRsetDimissiondirectionService ihRsetDimissiondirectionService;
     @Autowired
     IHRsetDimissionreasonService ihRsetDimissionreasonService;
+    @Autowired
+    IGzrzDao iGzrzDao;
 
     /**
      *@Author:ShiYun;
@@ -60,17 +60,20 @@ public class DimissionController {
         User user = iUserService.queryByUsername(transactorusername);
         dimissionInformation.setTransactoruserid(user.getId());
         //将岗位信息带过去
-        iPersonalInformationService.queryOneByUserid(user.getId());
-        List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(iPersonalInformationService.queryOneByUserid(user.getId()).getId());
-        List<Integer> postids = new ArrayList<>();
-        for (PerAndPostRs pp:perAndPostRs
-             ) {
-            postids.add(pp.getPostid());
+        PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(dimissionInformation.getDimissionuserid());
+        List<Integer> postids = null;
+        if (personalInformation!=null) {
+            List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformation.getId());
+            postids = new ArrayList<>();
+            for (PerAndPostRs pp:perAndPostRs
+                 ) {
+                postids.add(pp.getPostid());
+            }
         }
         //添加到数据库中
         Integer dimissionInformationId = iDimissionInformationService.addOne(dimissionInformation);
         //创建返回值
-        user = iUserService.queryByUsername(transactorusername);
+        user = iUserService.getById(dimissionInformation.getDimissionuserid());
         HashMap<String,Object> re = new HashMap<>();
         re.put("username",user.getUsername());
         re.put("isactive",user.getIsactive());
@@ -155,13 +158,28 @@ public class DimissionController {
      */
     @RequestMapping("/removeDimissionInformations")
     @ResponseBody
-    public String removeDimissionInformations(
+    public Object removeDimissionInformations(
             @RequestParam("dimissionids")List<Integer> dimissionids
     ){
+        //想将离职人员的账号保存
+        List<String> usernames = new ArrayList<>();
+        for (Integer did:dimissionids
+             ) {
+            Integer dimissionuserid = iDimissionInformationService.queryOneById(did).getDimissionuserid();
+            User user = iUserService.getById(dimissionuserid);
+            usernames.add(user.getUsername());
+        }
+        //将离职人员表的状态更新到user表中
         for(int i=0;i<dimissionids.size();i++){
             iDimissionInformationService.removeOne(dimissionids.get(i));
         }
-        return "提交成功！";
+        //将OS_USER表中的状态改为"DEL_JOB"
+        for (String username:usernames
+             ) {
+            iGzrzDao.updateOS_USERWenDeleteDimission(username);
+            iGzrzDao.updateOS_USERWenDeleteDimission2(username);
+        }
+        return RespUtil.successResp("200","提交成功！",null) ;
     }
 
     /**

@@ -129,8 +129,28 @@
         </where>
     </select>
 
+    <update id="updateInstId" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_shiftrepository SET INST_ID_ = #{instid} WHERE INST_ID_ = ''
+    </update>
+
+    <update id="updateApprove" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_shiftrepository
+        <set>
+            <if test="arg1 != null and arg1 != ''">
+                secondOne = #{arg1},
+            </if>
+            <if test="arg2 != null and arg2 != ''">
+                thirdOne = #{arg2},
+            </if>
+            <if test="arg3 != null and arg3 != ''">
+                fourthOne = #{arg3},
+            </if>
+        </set>
+        WHERE INST_ID_ = #{arg0}
+    </update>
+
     <insert id="insertNew" parameterType="string">
-        INSERT INTO eqpt_shiftrepository VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},NULL)
+        INSERT INTO eqpt_shiftrepository VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22},NULL)
     </insert>
 
     <select id="showSHIFTID" resultType="java.lang.String">
@@ -198,6 +218,19 @@
     </select>
 
     <select id="showprojL" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_lysqd.F_XMBH AS projId,w_lysqd.F_XMMC AS projName FROM w_lysqd WHERE F_WDBH = #{wdbh}
+        SELECT w_sclld.F_XMBH AS projId,w_sclld.F_XMMC AS projName FROM w_sclld WHERE F_WDBH = #{wdbh}
     </select>
+
+    <select id="getInId" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository WHERE INST_ID_ = #{instId}
+    </select>
+
+    <select id="node" resultType="string">
+        SELECT TASK_DEF_KEY_ FROM act_ru_task WHERE PROC_INST_ID_ = #{taskid}
+    </select>
+
+    <select id="approveName" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository WHERE INST_ID_ = #{instId} ORDER BY inId DESC LIMIT 1
+    </select>
+
 </mapper>

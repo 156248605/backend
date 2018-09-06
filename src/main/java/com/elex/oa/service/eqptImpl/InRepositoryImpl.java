@@ -8,6 +8,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -41,6 +42,10 @@ public class InRepositoryImpl implements InRepositoryService {
 
     @Resource
     private MaterialMtMapper materialMtMapper;
+
+    @Resource
+    private InRepositoryImpl inRepositoryImpl;
+
 
     /*所有单号*/
     @Override
@@ -165,7 +170,7 @@ public class InRepositoryImpl implements InRepositoryService {
             String sDate = sdf.format(d);
             String INTIME = sDate;
             String ININFO = request.getParameter("inInfo");
-            String POSTID = "无";
+            String POSTID = postId;
             if (listIN.get(i).get("postId") != null){
                 POSTID = listIN.get(i).get("postId").toString();
             }
@@ -180,6 +185,10 @@ public class InRepositoryImpl implements InRepositoryService {
             String PROJNAME = request.getParameter("projName");
             Material material = new Material();
             material.setId(MATERIALID);
+            String firstOne = request.getParameter("firstOne");
+            String secondOne = "";
+            String thirdOne = "";
+            String fourthOne = "";
             if ( materialMtMapper.needCheck(material).equals("是") && CHECK == null){
                 a = "1";
                 break;
@@ -216,7 +225,8 @@ public class InRepositoryImpl implements InRepositoryService {
                 repository.setProjId(PROJID);
                 repository.setProjName(PROJNAME);
                 String REPTcategory = repositoryMapper.searchCategory(repository);
-                inRepositoryMapper.insertNew(REPTcategory, INID, INTIME, INNUM, ININFO, REPTID, POSTID, MATERIALID, MATERIALNAME, SPEC, UNIT, sn, bn,INREPTC, CHECK, REMARK,PROJID,PROJNAME);
+                String C = "";
+                inRepositoryMapper.insertNew(REPTcategory, INID, INTIME, INNUM, ININFO, REPTID, POSTID, MATERIALID, MATERIALNAME, SPEC, UNIT, sn, bn,INREPTC, CHECK, REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
                 a = "0";
             }
         }
@@ -256,6 +266,7 @@ public class InRepositoryImpl implements InRepositoryService {
             String result = materialMapper.matInDetail(material);
             if(result == null){
                 materialMapper.insertDetail(material);
+                materialMapper.deleteNull(material);
             }else {
                 materialMapper.updDetail(material);
             }
@@ -282,9 +293,6 @@ public class InRepositoryImpl implements InRepositoryService {
                 String numAfterIn = String.valueOf(parseInt(number) + parseInt(listIN.get(i).get("theMatNum").toString()));
                 repository.setNum(numAfterIn);
             }
-            /*int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
-            repository.setOnlyIdR(onlyIdR);
-            repositoryMapper.updRepository(repository);*/
             int onlyIdP = repositoryMapper.lockOnlyIdP(repository);
             repository.setOnlyIdP(onlyIdP);
             repositoryMapper.updPosition(repository);
@@ -361,27 +369,12 @@ public class InRepositoryImpl implements InRepositoryService {
                 }
                 Repository repository1 = repositoryMtMapper.searchPostCap(repository);
                 if (repository1.getPostCap().equals("无限制")){
-                    postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
+                    postCap = String.valueOf(999999999);
+                }else {
+                    postCap = repository1.getPostCap();
                 }
             }
             Repository repository2 = repositoryMtMapper.noPost(repository);
-            /*Repository repository = new Repository();
-            repository.setReptId(reptId);
-            repository.setPostId(postId);
-            repository.setPosition(postId);
-            Material material = new Material();
-            material.setId(listIN.get(i).get("theMatId").toString());
-            String INNUM = listIN.get(i).get("theMatNum").toString();
-            if (!postId.equals("无")){
-                NUM = repositoryMapper.getNumber(repository);
-            }else {
-                NUM = "0";
-            }
-            Repository repository1 = repositoryMtMapper.searchPostCap(repository);
-            Repository repository2 = repositoryMtMapper.noPost(repository);
-            if (repository1.getPostCap().equals("无限制")){
-                postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
-            }*/
             if (parseInt(NUM) + parseInt(INNUM) <= parseInt(postCap) || repository2.getPostManage().equals("否")){
                 result = "0";
             }else {
@@ -418,8 +411,104 @@ public class InRepositoryImpl implements InRepositoryService {
         return list;
     }
 
+    // 流程id传给明细
     @Override
-    public void getInstId(String instid){
-        System.out.println(instid);
+    public String getInstId(String instid, HttpServletRequest request){
+        if (instid != null && !instid.equals("") ){
+            inRepositoryMapper.updateInstId(instid);
+        }
+        return instid;
     }
+
+    // 更新审批意见
+    @Override
+    public void updateApprove(String instId){
+        String secondOne = second;
+        String thirdOne = third;
+        String fourthOne = fourth;
+        if (instId != null && !instId.equals("") ){
+            inRepositoryMapper.updateApprove(instId,secondOne,thirdOne,fourthOne);
+            // 最后一人审批通过的情况
+            if (!fourthOne.equals("")){
+                List<Repository> listIN = inRepositoryMapper.getInId(instId);
+                for (int i = 0;i < listIN.size();i++) {
+                    //更新物料
+                    String INNUMGET = listIN.get(i).getInNum();
+                    String INNUM = "";
+                    if (INNUMGET.contains(".")) {
+                        INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+                    }else {
+                        INNUM = INNUMGET;
+                    }
+                    Material material = new Material();
+                    material.setId(listIN.get(i).getMaterialId());
+                    material.setNum(INNUM);
+                    String POSTID = postId;
+                    if (listIN.get(i).getPostId() != null) {
+                        POSTID = listIN.get(i).getPostId();
+                    }
+                    material.setPostId(POSTID);
+                    material.setReptId(listIN.get(i).getReptId());
+                    material.setName(listIN.get(i).getMaterialName());
+                    material.setSpec(listIN.get(i).getSpec());
+                    Material material1 = materialMapper.MaterialId(material);
+                    material.setCategory(material1.getCategory());
+                    material.setBrand(material1.getBrand());
+                    material.setPrice(material1.getPrice());
+                    materialMapper.updMat(material);
+                    // 查询是否库存记录
+                    String result = materialMapper.matInDetail(material);
+                    if(result == null){
+                        materialMapper.insertDetail(material);
+                    }else {
+                        materialMapper.updDetail(material);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Repository> postInfo(HttpServletRequest request){
+        String instId = request.getParameter("instid");
+        List<Repository> list = inRepositoryMapper.getInId(instId);
+        return list;
+    }
+
+    @Override
+    public String node(HttpServletRequest request) {
+        String taskid = request.getParameter("taskid");
+        String node = inRepositoryMapper.node(taskid);
+        return node;
+    }
+
+    @Override
+    public List<Repository> approveName(HttpServletRequest request){
+        String instid = request.getParameter("instid");
+        List<Repository> list = inRepositoryMapper.approveName(instid);
+        return list;
+    }
+
+
+    // 获取审批
+    @Override
+    public void getApprove(HttpServletRequest request) {
+        String secondOne = request.getParameter("secondOne");
+        String thirdOne = request.getParameter("thirdOne");
+        String fourthOne = request.getParameter("fourthOne");
+        if (secondOne != null){
+            second = secondOne;
+        }
+        if (thirdOne != null){
+            third = thirdOne;
+        }
+        if (fourthOne != null){
+            fourth = fourthOne;
+        }
+    }
+
+    static String second = "";
+    static String third = "";
+    static String fourth = "";
+    static String postId = "";
 }

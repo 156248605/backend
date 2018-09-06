@@ -5,6 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.resp.Resp;
+import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.elex.oa.util.util_shiyun.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -342,14 +343,14 @@ public class DepartmentInformationController {
      */
     @RequestMapping("/addOneDepartment")
     @ResponseBody
-    public String addOneDepartment(
+    public Object addOneDepartment(
             Dept dept,
             @RequestParam("transactorusername") String transactorusername
     ){
         //先校验部门名称是否存在
         Dept queryOneByDepcode = iDeptService.queryOneByDepcode(dept.getDepcode());
         if(queryOneByDepcode!=null){
-            return "部门编号已存在，请重新输入部门编号！";
+            return RespUtil.successResp("500","部门编号已存在，请重新输入部门编号！",null) ;
         }
 
         /**1.添加新部门
@@ -389,6 +390,8 @@ public class DepartmentInformationController {
             dept.setCompanyname(dept.getDepname());
         }
         Integer depid = iDeptService.addOne(dept);
+        dept.setId(depid);
+
         //正职、副职、秘书的原部门信息修改、并添加相应的部门信息修改日志
         Integer principaluserid = dept.getPrincipaluserid();
         if(principaluserid!=null){
@@ -558,7 +561,7 @@ public class DepartmentInformationController {
                 iChangeInformationService.addOne(changeInformation);
             }
         }
-        return "提交成功！";
+        return RespUtil.successResp("200","提交成功！",dept) ;
     }
 
     /**

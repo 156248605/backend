@@ -12,7 +12,7 @@ import java.util.List;
 public interface InRepositoryMapper {
     List<Repository> findAll();
 
-    void insertNew(String reptCategory, String inId, String inTime, String inNum, String inInfo, String reptId, String postId, String materialId, String materialName, String spec, String unit, String sn, String bn,String inReptC, String check, String remark,String projId,String projName);
+    void insertNew(String REPTcategory, String INID, String INTIME, String INNUM, String reptCategory, String inId, String inTime, String inNum, String inInfo, String reptId, String postId, String materialId, String materialName, String spec, String unit, String sn, String bn, String inReptC, String check, String remark, String projId, String projName, String c);
 
     String ID (Material material);
 
@@ -25,4 +25,17 @@ public interface InRepositoryMapper {
     List<Repository> showmat(String wdbh);
 
     List<Repository> showproj(String wdbh);
+
+
+    // 流程绑定事件
+    List<Repository> getInId(String instId);
+
+    String node(String taskid);
+
+    void updateInstId(String instid);
+
+    List<Repository> approveName(String instid);
+
+    void updateApprove(String instId, String secondOne, String thirdOne, String instid);
+
 }

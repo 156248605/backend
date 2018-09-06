@@ -40,4 +40,14 @@ public interface ShiftRepositoryMapper {
     List<Repository> showprojL(String wdbh);
 
     List<Repository> showprojJ(String wdbh);
+
+    void updateInstId(String instid);
+
+    void updateApprove(String instid, String secondOne, String thirdOne, String fourthOne);
+
+    List<Repository> getInId(String instid);
+
+    String node(String taskid);
+
+    List<Repository> approveName(String instid);
 }
