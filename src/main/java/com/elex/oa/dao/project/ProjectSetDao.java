@@ -15,28 +15,4 @@ public interface ProjectSetDao {
     List<ProjectVarious> queryStatus();
     //查询所有项目阶段
     List<ProjectVarious> queryPhase();
-    //添加项目类型
-    void addType(String name);
-    //添加项目来源
-    void addSource(String name);
-    //添加项目状态
-    void addStatus(String name);
-    //添加项目阶段
-    void addPhase(String name);
-    //查询当前项目中使用该类型的数量
-    int countType(String s);
-    //删除项目类型
-    void deleteType(int code);
-    //查询当前项目中使用该来源的数量
-    int countSource(String s);
-    //删除项目来源
-    void deleteSource(int code);
-    //查询当前项目中使用该状态的数量
-    int countStatus(String s);
-    //删除项目状态
-    void deleteStatus(int code);
-    //查询当前项目中使用该阶段的数量
-    int countPhase(String s);
-    //删除项目阶段
-    void deletePhase(int code);
 }

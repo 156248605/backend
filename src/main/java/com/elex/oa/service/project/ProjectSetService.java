@@ -13,20 +13,5 @@ public interface ProjectSetService {
     List<ProjectVarious> queryStatus();
     //查询所有项目阶段
     List<ProjectVarious> queryPhase();
-    //添加项目类型
-    String addType(String name);
-    //添加项目来源
-    String addSource(String name);
-    //添加项目状态
-    String addStatus(String name);
-    //添加项目阶段
-    String addPhase(String name);
-    //删除项目类型
-    String deleteType(int code);
-    //删除项目来源
-    String deleteSource(int code);
-    //删除项目状态
-    String deleteStatus(int code);
-    //删除项目阶段
-    String deletePhase(int code);
+
 }
