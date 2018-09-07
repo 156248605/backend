@@ -1,7 +1,6 @@
 package com.elex.oa.service.service_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.ContractInformation;
-import com.elex.oa.util.util_shiyun.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import java.text.ParseException;
@@ -69,5 +68,5 @@ public interface IContractInformationService {
      *@Description:修改合同信息
      *@Date: 10:13 2018\5\29 0029
      */
-    public void modifyOne(ContractInformation contractInformation);
+    public void modifyOne(ContractInformation contractInformation) throws ParseException;
 }

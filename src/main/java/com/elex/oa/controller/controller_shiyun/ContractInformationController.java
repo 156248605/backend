@@ -187,7 +187,7 @@ public class ContractInformationController {
             ContractInformation contractInformation,
             @RequestParam("transactorusername") String transactorusername,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException, ParseException {
         Boolean b = false;
         ContractInformation c2 = iContractInformationService.queryById(contractInformation.getId());
         //获得办理人ID

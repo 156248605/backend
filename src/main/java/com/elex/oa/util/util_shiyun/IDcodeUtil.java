@@ -106,10 +106,15 @@ public class IDcodeUtil {
      *@Description:获得属相
      *@Date: 19:08 2018\5\12 0012
      */
-    public static String getChinesecs(String idcard){
-        Integer year = Integer.parseInt(idcard.substring(6,10));
+    public static String getChinesecs(String idcard) throws Exception {
+        int checkYear = Integer.parseInt(idcard.substring(6, 10));
+        if(checkYear<=1899 || checkYear>=2050){
+            throw new Exception("输入的身份证号码错误（年龄必须在1900到2049之间）！");
+        }
+        String s = CalendarUtil.solarToLunar(idcard.substring(6, 14)).split(":")[1];
+        Integer year = Integer.parseInt(s.substring(0,4));
         String zodia[]={"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"};
-        int i=(year-4)%12;
+        int i=(year-1900)%12;//注：1900年是鼠年
         String value=zodia[i];
         return value;
     }

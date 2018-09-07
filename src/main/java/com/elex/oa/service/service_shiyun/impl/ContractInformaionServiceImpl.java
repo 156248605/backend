@@ -200,7 +200,13 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      *@Date: 10:14 2018\5\29 0029
      */
     @Override
-    public void modifyOne(ContractInformation contractInformation) {
+    public void modifyOne(ContractInformation contractInformation) throws ParseException {
+        String contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+        if (contractage!=null && !contractage.equals("")) {
+            contractInformation.setContractage(contractage);
+        }else {
+            contractInformation.setContractage("0");
+        }
         iContractInformationDao.updateOne(contractInformation);
     }
 }
