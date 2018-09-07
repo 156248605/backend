@@ -23,7 +23,7 @@
     </delete>
 
     <insert id="insert" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_inventory VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{spec},#{category},#{reptId},#{position},#{price},#{num},#{numInv},#{palPer},#{pal},#{palCal},#{remark})
+        INSERT INTO eqpt_inventory VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{spec},#{category},#{reptId},#{postId},#{price},#{num},#{numInv},#{palPer},#{pal},#{palCal},#{remark},#{instid})
     </insert>
 
     <insert id="insertDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -259,7 +259,7 @@
     </select>
 
     <select id="invInfo" resultType="HashMap">
-        SELECT * FROM w_kcpdd1 WHERE INST_STATUS_ = #{arg0} ORDER BY ID_ DESC LIMIT 1
+        SELECT * FROM w_kcpdd1 WHERE INST_STATUS_ = #{arg0} AND ID_ NOT IN (SELECT INST_ID_ FROM eqpt_inventory) ORDER BY ID_ DESC LIMIT 1
     </select>
 
     <select id="invDetail" resultType="HashMap">
@@ -279,6 +279,6 @@
     </update>
 
     <update id="changeNumMat" parameterType="com.elex.oa.entity.eqpt.Repository">
-        UPDATE eqpt_material SET num = num + #{unit} WHERE id = #{materialId}
+        UPDATE eqpt_material SET num = num + #{num} WHERE id = #{materialId}
     </update>
 </mapper>

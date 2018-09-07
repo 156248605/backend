@@ -40,8 +40,10 @@ public class MaterialMtImpl implements MaterialMtService {
         String REPTIDC = request.getParameter("reptIdC");
         String POSTID = request.getParameter("postId");
         String POSTIDC = request.getParameter("postIdC");
+        String NUM = request.getParameter("num");
+        String NUMC = request.getParameter("numC");
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        if (ID.equals("") && NAME.equals("") && CATEGORY.equals("") && REPTID.equals("") ){
+        if (ID.equals("") && NAME.equals("") && CATEGORY.equals("") && REPTID.equals("") && SPEC.equals("") && BRAND.equals("") && POSTID.equals("") && NUM.equals("")){
             List<Material> listM = materialMtMapper.detailList();
             return new PageInfo<>(listM);
         }else {
@@ -60,6 +62,8 @@ public class MaterialMtImpl implements MaterialMtService {
             material.setReptIdC(REPTIDC);
             material.setPostId(POSTID);
             material.setPostIdC(POSTIDC);
+            material.setNum(NUM);
+            material.setNumC(NUMC);
             List<Material> listM = materialMtMapper.searchDetail(material);
             return new PageInfo<>(listM);
         }
