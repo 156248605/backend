@@ -8,6 +8,8 @@ public class Repository {
     private String outReptC;
     // 移入类型
     private String inReptC;
+    // 移库类型
+    private String shiftReptC;
     // 盘点
     private String invId;
     // 盘点时间
@@ -177,10 +179,11 @@ public class Repository {
     public Repository() {
     }
 
-    public Repository(String reptCategory, String outReptC, String inReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String inInfo, String outInfo, String shiftInfo, String num, String numInv, String price, String spec, String unit, String category, String check, String palPer, String pal, String palCal, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String materialName, String reptState, String postManage, String reptAddr, String reptName, String reptAdmin, String postId, String postName, String postCate, String fixPostMat, String postCap, String remark, String projId, String projName, String instid, String firstOne, String secondOne, String thirdOne, String fourthOne, int onlyIdR, int onlyIdP, int onlyIdIn, int onlyIdOut, int onlyIdInv, String bnC, String snC, String matIdC, String matNameC, String reptIdC, String reptCateC, String positionC, String inNumC, String inIdC, String inTimeC, String outNumC, String outIdC, String outTimeC, String numC, String numInvC, String invIdC, String invTimeC, String palC, String priceC, String reptNameC, String reptAdminC, String reptStateC, String postManageC, String postIdC, String postNameC, String postCateC, String fixPostMatC, String postCapC, String reptAddrC, String shiftIdC, String shiftTimeC, String shiftNumC, String inPostC, String outPostC, String projIdC, String projNameC) {
+    public Repository(String reptCategory, String outReptC, String inReptC, String shiftReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String inInfo, String outInfo, String shiftInfo, String num, String numInv, String price, String spec, String unit, String category, String check, String palPer, String pal, String palCal, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String materialName, String reptState, String postManage, String reptAddr, String reptName, String reptAdmin, String postId, String postName, String postCate, String fixPostMat, String postCap, String remark, String projId, String projName, String instid, String firstOne, String secondOne, String thirdOne, String fourthOne, int onlyIdR, int onlyIdP, int onlyIdIn, int onlyIdOut, int onlyIdInv, String bnC, String snC, String matIdC, String matNameC, String reptIdC, String reptCateC, String positionC, String inNumC, String inIdC, String inTimeC, String outNumC, String outIdC, String outTimeC, String numC, String numInvC, String invIdC, String invTimeC, String palC, String priceC, String reptNameC, String reptAdminC, String reptStateC, String postManageC, String postIdC, String postNameC, String postCateC, String fixPostMatC, String postCapC, String reptAddrC, String shiftIdC, String shiftTimeC, String shiftNumC, String inPostC, String outPostC, String projIdC, String projNameC) {
         this.reptCategory = reptCategory;
         this.outReptC = outReptC;
         this.inReptC = inReptC;
+        this.shiftReptC = shiftReptC;
         this.invId = invId;
         this.invTime = invTime;
         this.position = position;
@@ -975,6 +978,13 @@ public class Repository {
         this.priceC = priceC;
     }
 
+    public String getShiftReptC() {
+        return shiftReptC;
+    }
+
+    public void setShiftReptC(String shiftReptC) {
+        this.shiftReptC = shiftReptC;
+    }
 
     public String getReptNameC() {
         return reptNameC;
@@ -1150,6 +1160,7 @@ public class Repository {
                 "reptCategory='" + reptCategory + '\'' +
                 ", outReptC='" + outReptC + '\'' +
                 ", inReptC='" + inReptC + '\'' +
+                ", shiftReptC='" + shiftReptC + '\'' +
                 ", invId='" + invId + '\'' +
                 ", invTime='" + invTime + '\'' +
                 ", position='" + position + '\'' +

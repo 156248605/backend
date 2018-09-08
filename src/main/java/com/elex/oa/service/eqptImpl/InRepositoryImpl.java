@@ -356,7 +356,7 @@ public class InRepositoryImpl implements InRepositoryService {
             repository.setReptId(reptId);
             repository.setPostId(postId);
             repository.setPosition(postId);
-            if (listIN.get(i).containsKey("postId")){
+            if (listIN.get(i).containsKey("postId") && !listIN.get(i).get("postId").equals("")){
                 postId = listIN.get(i).get("postId").toString();
                 Material material = new Material();
                 material.setId(listIN.get(i).get("theMatId").toString());
@@ -460,6 +460,7 @@ public class InRepositoryImpl implements InRepositoryService {
                     String result = materialMapper.matInDetail(material);
                     if(result == null){
                         materialMapper.insertDetail(material);
+                        materialMapper.deleteNull(material);
                     }else {
                         materialMapper.updDetail(material);
                     }

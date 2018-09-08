@@ -122,6 +122,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         String a = "";
         String SHIFTLIST = request.getParameter("shiftList");
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
+        System.out.println(listSHIFT);
         for (int i = 0; i < listSHIFT.size(); i++) {
             String shiftId = request.getParameter("shiftId");
             String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
@@ -144,10 +145,22 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
             String sDate = sdf.format(d);
             String shiftTime = sDate;
-            String outRept = request.getParameter("outRept");
-            String outPost = request.getParameter("outPost");
-            String inRept = request.getParameter("inRept");
-            String inPost = request.getParameter("inPost");
+            String outRept = "";
+            String outPost = "";
+            String inRept = "";
+            String inPost = "";
+            if (listSHIFT.get(i).containsKey("outRept")){
+                outRept = listSHIFT.get(i).get("outRept").toString();
+            }
+            if (listSHIFT.get(i).containsKey("outPost")){
+                outPost = listSHIFT.get(i).get("outPost").toString();
+            }
+            if (listSHIFT.get(i).containsKey("inRept")){
+                inRept = listSHIFT.get(i).get("inRept").toString();
+            }
+            if (listSHIFT.get(i).containsKey("inPost")){
+                inPost = listSHIFT.get(i).get("inPost").toString();
+            }
             String materialId = listSHIFT.get(i).get("theMatId").toString();
             String materialName = listSHIFT.get(i).get("theMatName").toString();
             String unit = listSHIFT.get(i).get("theMatUnit").toString();
@@ -155,6 +168,10 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             String remark = listSHIFT.get(i).get("theMatRemark").toString();
             String PROJID = request.getParameter("projId");
             String PROJNAME = request.getParameter("projName");
+            String firstOne = request.getParameter("firstOne");
+            String secondOne = "";
+            String thirdOne = "";
+            String fourthOne = "";
             Material material = new Material();
             material.setId(materialId);
             if ( !materialMtMapper.manageBS(material).equals("否") && (listSHIFT.get(i).get("theMatBnSn").toString().equals("") || !listSHIFT.get(i).containsKey("theMatBnSn")) ) {
@@ -174,7 +191,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                     bn = listSHIFT.get(i).get("theMatBnSn").toString();
                     sn = "无";
                 }
-                shiftRepositoryMapper.insertNew(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME);
+                String C = "";
+                shiftRepositoryMapper.insertNew(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
                 a = "0";
             }
         }
@@ -481,15 +499,15 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     }
 
     @Override
-    public void updateApprove(String instid) {
+    public void updateApprove(String instId) {
         String secondOne = second;
         String thirdOne = third;
         String fourthOne = fourth;
-        if (instid != null && !instid.equals("") ){
-            shiftRepositoryMapper.updateApprove(instid,secondOne,thirdOne,fourthOne);
+        if (instId != null && !instId.equals("") ){
+            shiftRepositoryMapper.updateApprove(instId,secondOne,thirdOne,fourthOne);
             // 最后一人审批通过的情况
             if (!fourthOne.equals("")){
-                List<Repository> listSHIFT = shiftRepositoryMapper.getInId(instid);
+                List<Repository> listSHIFT = shiftRepositoryMapper.getInId(instId);
                 for (int i = 0;i < listSHIFT.size();i++) {
                     //更新物料
                     String materialName = listSHIFT.get(i).getMaterialName();
@@ -518,6 +536,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                         INPOST = listSHIFT.get(i).getInPost();
                     }
                     Repository repository = new Repository();
+                    repository.setMaterialId(materialId);
                     repository.setReptId(OUTREPT);
                     repository.setPostId(OUTPOST);
                     String outNum = shiftRepositoryMapper.theNumberOut(repository);

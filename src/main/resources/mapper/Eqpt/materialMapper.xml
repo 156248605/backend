@@ -308,6 +308,13 @@
         SELECT num FROM eqpt_material WHERE id = #{id}
     </select>
 
+    <select id="getNumD" resultType="string">
+        SELECT num FROM eqpt_detail WHERE id = #{id} AND reptId = #{reptId}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
+    </select>
+
     <update id="updMat" parameterType="com.elex.oa.entity.eqpt.Material">
         UPDATE eqpt_material
         <set>

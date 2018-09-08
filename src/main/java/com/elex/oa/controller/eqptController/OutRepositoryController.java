@@ -74,6 +74,13 @@ public class OutRepositoryController {
         return result;
     }
 
+    @RequestMapping("/negative")
+    @ResponseBody
+    public String negative (HttpServletRequest request) {
+        String result = outRepositoryImpl.negative(request);
+        return result;
+    }
+
     @RequestMapping("/rcly")
     @ResponseBody
     public List<Repository> rcly () {
@@ -130,8 +137,8 @@ public class OutRepositoryController {
 
     @RequestMapping("/updateApprove")
     @ResponseBody
-    public void updateApprove (String instid){
-        outRepositoryImpl.updateApprove(instid);
+    public void updateApprove (String instId){
+        outRepositoryImpl.updateApprove(instId);
     }
 
     @RequestMapping("/getApprove")

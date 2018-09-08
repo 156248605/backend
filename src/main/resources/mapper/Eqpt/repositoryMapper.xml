@@ -665,7 +665,7 @@
     </select>
 
     <select id="getCate" resultType="HashMap">
-        SELECT * FROM eqpt_reptcate
+        SELECT * FROM sys_dic WHERE VALUE_ = '仓库类型'
     </select>
 
     <select id="checkCate" resultType="HashMap">

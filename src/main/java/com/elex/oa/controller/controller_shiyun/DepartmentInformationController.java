@@ -589,7 +589,7 @@ public class DepartmentInformationController {
      */
     @RequestMapping("/updateOneDepartment")
     @ResponseBody
-    public String updateOneDepartment(
+    public Object updateOneDepartment(
             Dept dept,
             @RequestParam("transactorusername") String transactorusername
     ) {
@@ -597,7 +597,7 @@ public class DepartmentInformationController {
         Dept queryOneByDepcode = iDeptService.queryOneByDepcode(dept.getDepcode());
         iDeptService.queryOneDepByDepid(dept.getId()).getDepcode();
         if(!iDeptService.queryOneDepByDepid(dept.getId()).getDepcode().equals(dept.getDepcode()) && queryOneByDepcode!=null){
-            return "部门编号已存在，请重新输入部门名称！";
+            return RespUtil.successResp("500","部门编号已存在，请重新输入部门名称！",null) ;
         }
         try {
             Boolean b = false;
@@ -651,7 +651,7 @@ public class DepartmentInformationController {
                 deptLog.setBeforeinformation(iDeptService.queryOneDepByDepid(dept2.getParentdepid()).getDepname());
                 deptLog.setAfterinformation(iDeptService.queryOneDepByDepid(dept.getParentdepid()).getDepname());
                 iDeptLogService.addOne(deptLog);
-            }if (dept2.getPrincipaluserid()!=null && !dept2.getPrincipaluserid().toString().equals(dept.getPrincipaluserid().toString())){
+            }if (dept2.getPrincipaluserid()!=null && dept.getPrincipaluserid()!=null &&  !dept2.getPrincipaluserid().toString().equals(dept.getPrincipaluserid().toString())){
                 PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(dept.getPrincipaluserid());
                 Integer depid = personalInformation.getDepid();
                 Dept dept1 = iDeptService.queryOneDepByDepid(depid);//其他部门
@@ -746,7 +746,7 @@ public class DepartmentInformationController {
                 deptLog.setBeforeinformation(iUserService.getById(dept2.getPrincipaluserid()).getTruename());
                 deptLog.setAfterinformation(iUserService.getById(dept.getPrincipaluserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
-            }if (dept2.getDeputyuserid()!=null && !dept2.getDeputyuserid().toString().equals(dept.getDeputyuserid().toString())){
+            }if (dept2.getDeputyuserid()!=null && dept.getDeputyuserid()!=null &&  !dept2.getDeputyuserid().toString().equals(dept.getDeputyuserid().toString())){
                 PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(dept.getDeputyuserid());
                 Integer depid = personalInformation.getDepid();
                 Dept dept1 = iDeptService.queryOneDepByDepid(depid);//其他部门
@@ -834,7 +834,8 @@ public class DepartmentInformationController {
                 deptLog.setBeforeinformation(iUserService.getById(dept2.getDeputyuserid()).getTruename());
                 deptLog.setAfterinformation(iUserService.getById(dept.getDeputyuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
-            }if (dept2.getSecretaryuserid()!=null && !dept2.getSecretaryuserid().toString().equals(dept.getSecretaryuserid().toString())){
+            }
+            if (dept2.getSecretaryuserid()!=null && dept.getSecretaryuserid()!=null && !dept2.getSecretaryuserid().toString().equals(dept.getSecretaryuserid().toString())){
                 PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(dept.getSecretaryuserid());
                 Integer depid = personalInformation.getDepid();
                 Dept dept1 = iDeptService.queryOneDepByDepid(depid);//其他部门
@@ -930,20 +931,21 @@ public class DepartmentInformationController {
                 deptLog.setBeforeinformation(iUserService.getById(dept2.getSecretaryuserid()).getTruename());
                 deptLog.setAfterinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
-            }if (!dept.getDutydescription().equals(dept2.getDutydescription())){
+            }
+            if (!dept.getDutydescription().equals(dept2.getDutydescription())){
                 b = true;
                 deptLog.setChangeinformation("部门职责");
                 deptLog.setBeforeinformation(dept2.getDutydescription());
                 deptLog.setAfterinformation(dept.getDutydescription());
                 iDeptLogService.addOne(deptLog);
-            }if (!dept.getDepdescription().equals(dept2.getDepdescription())){
+            }
+            if (!dept.getDepdescription().equals(dept2.getDepdescription())){
                 b = true;
                 deptLog.setChangeinformation("部门概述");
                 deptLog.setBeforeinformation(dept2.getDepdescription());
                 deptLog.setAfterinformation(dept.getDepdescription());
                 iDeptLogService.addOne(deptLog);
             }
-
 
             if (b) {
                 if (ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype())!=null) {
@@ -973,13 +975,13 @@ public class DepartmentInformationController {
                 }
                 iDeptService.modifyOne(dept);
             } else {
-                return "没有需要修改的部门信息！";
+                return RespUtil.successResp("500","没有需要修改的部门信息！",null) ;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "提交失败！";
+            return RespUtil.successResp("400","提交失败！",null) ;
         }
-        return "提交成功！";
+        return RespUtil.successResp("200","提交成功！",dept) ;
     }
 
     /**

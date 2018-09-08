@@ -88,6 +88,7 @@
 		<set>
 			<if test="postname!=null and postname!=''" >postname=#{postname},</if>
 			<if test="functionaltypeid!=null and functionaltypeid!=''" >functionaltypeid=#{functionaltypeid},</if>
+			<if test="functionaltypeid==null or functionaltypeid==''" >functionaltypeid=NULL,</if>
 			<if test="postlevelid!=null and postlevelid!=''" >postlevelid=#{postlevelid},</if>
 			<if test="postcode!=null and postcode!=''" >postcode=#{postcode},</if>
 			<if test="parentpostid!=null and parentpostid!=''" >parentpostid=#{parentpostid},</if>

@@ -33,6 +33,8 @@ public interface OutRepositoryService {
     /*判断能否出库*/
     String canOut(HttpServletRequest request);
 
+    String negative(HttpServletRequest request);
+
     List<Repository> wdbhR();
 
     List<Repository> wdbhX();

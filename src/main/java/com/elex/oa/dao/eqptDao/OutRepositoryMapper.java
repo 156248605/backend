@@ -12,7 +12,7 @@ import java.util.List;
 public interface OutRepositoryMapper {
     List<Repository> findAll();
 
-    void insertNew(String reptCategory, String outId, String outTime, String outNum, String outInfo, String reptId, String position, String materialId, String materialName, String spec, String unit, String sn, String bn, String outReptC, String remark,String projId,String projName);
+    void insertNew(String REPTcategory, String OUTID, String OUTTIME, String OUTNUM, String OUTINFO, String reptCategory, String outId, String outTime, String outNum, String outInfo, String reptId, String position, String materialId, String materialName, String spec, String unit, String sn, String bn, String outReptC, String remark, String projId, String projName);
 
     List showOUTID(Repository repository);
 

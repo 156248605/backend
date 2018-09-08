@@ -2433,6 +2433,27 @@ public class PersonalInformationController {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据人员名称查询所在公司
+     *@Date: 14:55 2018\9\8 0008
+     */
+    @RequestMapping("/queryGXF008")
+    @ResponseBody
+    public Object queryGXF008(
+            @RequestParam("truename")String truename
+    ){
+        String companyname = null;
+        try {
+            companyname = iDeptService.queryCompanynameByUseridOrTruename(null,truename);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500",e.getMessage(),companyname);
+        }
+        /*return RespUtil.successResp("200","提交成功！",companyname);*/
+        return companyname;
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:赵宏钢的接口，根据账号查询信息
      *@Date: 18:30 2018\7\17 0017
      */
