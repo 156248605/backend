@@ -707,4 +707,51 @@ public class DeptServiceImpl implements IDeptService {
         }
         return false;//上级为null时跳出循环（到顶点），说明不是自己的上级
     }
+
+    /**
+     *@Author:ShiYun;
+     *@param userid 人员ID
+     *@param truename 人员名称
+     *@return companyname 公司名称
+     *@Description:根据人名或人员ID查询所在的公司名称
+     *@Date: 14:12 2018\9\8 0008
+     */
+    @Override
+    public String queryCompanynameByUseridOrTruename(Integer userid, String truename) throws Exception {
+        String companyname = null;
+        String depname = null;
+        User user = null;
+        PersonalInformation personalInformation = null;
+        Dept dept = null;
+        if(userid==null && truename==null){
+            throw new Exception("传入的参数不能全为空！");
+        }
+        if(userid!=null && truename==null){
+            user = iUserDao.selectById(userid);
+        }
+        if(userid==null && truename!=null){
+            user = iUserDao.selectByTruename(truename);
+        }
+        if(userid!=null && truename!=null){
+            user = iUserDao.selectById(userid);
+            if(user==null){
+                user = iUserDao.selectByTruename(truename);
+            }
+        }
+
+        if(user==null){
+            throw new Exception("所查员工不存在！");
+        }
+        personalInformation = iPersonalInformationDao.selectByUserid(userid);
+        if(personalInformation==null){
+            throw new Exception("所查员工基本信息不存在！");
+        }
+        dept = iDeptDao.selectDeptByDepid(personalInformation.getDepid());
+        if(dept==null){
+            throw new Exception("所查员工所在部门不存在！");
+        }
+        companyname = dept.getCompanyname()==null?"":dept.getCompanyname();
+        depname = dept.getDepname()==null?"":dept.getDepname();
+        return companyname + "--" +depname;
+    }
 }

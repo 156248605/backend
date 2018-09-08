@@ -61,15 +61,14 @@
     </select>
 
     <select id="queryApproval" parameterType="java.util.Map" resultMap="approvalList">
-        SELECT w.F_XMBH, w.F_XMMC, w.F_TXRQ, w.F_BMJL_NAME, w.F_SZBM_NAME, w.F_XMJL, w.F_XMJL_NAME, w.F_XMLY, w.F_SWJL, w.F_SWJL_NAME, w.F_XMLX, w.F_XMGK, w.F_SQR_NAME FROM w_lxsqb w
-        WHERE w.INST_STATUS_ = 'SUCCESS_END'
+        SELECT F_XMBH, F_XMMC, F_TXRQ, F_BMJL_NAME, F_SZBM_NAME, F_XMJL, F_XMJL_NAME, F_XMLY, F_SWJL, F_SWJL_NAME, F_XMLX, F_XMGK, F_SQR_NAME FROM w_lxsqb
+        WHERE INST_STATUS_ = 'SUCCESS_END'
         <if test="marker == 1">
-            AND w.F_XMBH NOT IN
+            AND F_XMBH NOT IN
             <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
-        AND NOT EXISTS (SELECT 1 FROM w_lxsqb WHERE w.F_XMBH = F_XMBH AND UPDATE_TIME_  > w.UPDATE_TIME_ )
     </select>
 
     <select id="addInfor" parameterType="java.util.List">

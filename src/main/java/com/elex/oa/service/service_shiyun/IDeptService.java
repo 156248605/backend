@@ -176,4 +176,14 @@ public interface IDeptService {
      *@Date: 17:55 2018\8\30 0030
      */
     Boolean isChildPoint(Integer parentdepid,Integer childdepid);
+
+    /**
+     *@Author:ShiYun;
+     *@param truename 人名
+     *@param userid 人员ID
+     *@return 公司名称
+     *@Description:根据人名或UserID查询所在的公司名称
+     *@Date: 14:08 2018\9\8 0008
+     */
+    String queryCompanynameByUseridOrTruename(Integer userid,String truename) throws Exception;
 }
