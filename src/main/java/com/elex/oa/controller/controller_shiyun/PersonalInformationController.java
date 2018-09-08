@@ -2448,7 +2448,8 @@ public class PersonalInformationController {
             e.printStackTrace();
             return RespUtil.successResp("500",e.getMessage(),companyname);
         }
-        return RespUtil.successResp("500","提交成功！",companyname);
+        /*return RespUtil.successResp("200","提交成功！",companyname);*/
+        return companyname;
     }
 
     /**

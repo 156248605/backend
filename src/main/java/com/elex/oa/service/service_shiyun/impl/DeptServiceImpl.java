@@ -742,7 +742,7 @@ public class DeptServiceImpl implements IDeptService {
         if(user==null){
             throw new Exception("所查员工不存在！");
         }
-        personalInformation = iPersonalInformationDao.selectByUserid(userid);
+        personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
         if(personalInformation==null){
             throw new Exception("所查员工基本信息不存在！");
         }
