@@ -6,6 +6,7 @@ import com.elex.oa.entity.objectives.Goal;
 import com.elex.oa.entity.objectives.Goal2;
 import com.elex.oa.service.objectives.GoalService;
 import com.elex.oa.service.service_shiyun.IDeptService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,11 @@ public class GoalImpl implements GoalService {
         int annual3 = 0,total3 = 0;
         for(Goal2 revenue: revenueList) {
             annual1 += revenue.getAnnualTarget();
-            total1 += Double.parseDouble(revenue.getTheTotal());
+            if(StringUtils.isBlank(revenue.getTheTotal())) {
+
+            } else {
+                total1 += Double.parseDouble(revenue.getTheTotal());
+            }
         }
         list1.add(new BigDecimal( annual1 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
         list1.add(new BigDecimal(total1 / 10000).setScale(2,BigDecimal.ROUND_UP) + "");
@@ -47,7 +52,11 @@ public class GoalImpl implements GoalService {
         }
         for(Goal2 net: netList) {
             annual2 += net.getAnnualTarget();
-            total2 += Double.parseDouble(net.getTheTotal());
+            if(StringUtils.isBlank(net.getTheTotal())) {
+
+            } else {
+                total2 += Double.parseDouble(net.getTheTotal());
+            }
         }
         list2.add(new BigDecimal(annual2 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
         list2.add(new BigDecimal(total2 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
@@ -59,7 +68,11 @@ public class GoalImpl implements GoalService {
         }
         for(Goal patent: patentList) {
             annual3 += patent.getAnnualTarget();
-            total3 += Double.parseDouble(patent.getTheTotal());
+            if(StringUtils.isBlank(patent.getTheTotal())) {
+
+            } else {
+                total3 += Double.parseDouble(patent.getTheTotal());
+            }
         }
         list3.add(annual3+"");
         list3.add(total3+"");

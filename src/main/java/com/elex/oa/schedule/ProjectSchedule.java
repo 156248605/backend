@@ -17,9 +17,11 @@ public class ProjectSchedule {
 
     @Scheduled(cron = "0 0/4 * * * ?")
     public void addInfor() {
+        //projectInforService.addInfor();
     }
 
-    @Scheduled(cron = "0 0 23 * * ?")
+
+    @Scheduled(cron = "0 45 23 * * ?")
     public void updateStaff() {
         projectBoardService.informationUpdate();
     }
