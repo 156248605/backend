@@ -13,7 +13,7 @@ public interface ShiftRepositoryMapper {
 
     List<Repository> searchShift(Repository repository);
 
-    void insertNew(String shiftId, String shiftTime, String shiftReptC, String shiftNum, String shiftInfo, String outRept, String outPost, String inRept, String inPost, String materialId, String materialName, String spec, String unit, String sn, String bn, String remark,String projId,String projName);
+    void insertNew(String id, String time, String reptC, String num, String info, String shiftId, String shiftTime, String shiftReptC, String shiftNum, String shiftInfo, String outRept, String outPost, String inRept, String inPost, String materialId, String materialName, String spec, String unit, String sn, String bn, String remark, String projId, String projName);
 
     List showSHIFTID(Repository repository);
 

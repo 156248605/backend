@@ -145,8 +145,8 @@ public class ShiftRepositoryController {
 
     @RequestMapping("/updateApprove")
     @ResponseBody
-    public void updateApprove (String instid){
-        shiftRepositoryImpl.updateApprove(instid);
+    public void updateApprove (String instId){
+        shiftRepositoryImpl.updateApprove(instId);
     }
 
     @RequestMapping("/getApprove")

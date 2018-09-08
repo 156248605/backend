@@ -134,6 +134,10 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String REMARK = listOUT.get(i).get("theMatRemark").toString();
             String PROJID = request.getParameter("projId");
             String PROJNAME = request.getParameter("projName");
+            String firstOne = request.getParameter("firstOne");
+            String secondOne = "";
+            String thirdOne = "";
+            String fourthOne = "";
             if ( !materialMtMapper.manageBS(material).equals("否") && (listOUT.get(i).get("theMatBnSn").toString().equals("") || !listOUT.get(i).containsKey("theMatBnSn")) ) {
                 a = "2";
                 break;
@@ -160,7 +164,8 @@ public class OutRepositoryImpl implements OutRepositoryService {
                 repository.setProjId(PROJID);
                 repository.setProjName(PROJNAME);
                 String REPTcategory = repositoryMapper.searchCategory(repository);
-                outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME);
+                String C = "";
+                outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
                 a = "0";
             }
         }
@@ -270,6 +275,38 @@ public class OutRepositoryImpl implements OutRepositoryService {
     }
 
     @Override
+    public String negative(HttpServletRequest request) {
+        String result = "";
+        String OUTLIST = request.getParameter("outList");
+        List<HashMap> listOUT =JSON.parseArray(OUTLIST, HashMap.class);
+        for (int i = 0; i < listOUT.size(); i++) {
+            Material material = new Material();
+            material.setId(listOUT.get(i).get("theMatId").toString());
+            String OUTNUMGET = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUM = "";
+            if (OUTNUMGET.contains(".")) {
+                OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
+            }else {
+                OUTNUM = OUTNUMGET;
+            }
+            String postId = "";
+            if (listOUT.get(i).containsKey("postId")){
+                postId = listOUT.get(i).get("postId").toString();
+            }
+            material.setPostId(postId);
+            material.setReptId(listOUT.get(i).get("reptId").toString());
+            String NUM = materialMapper.getNumD(material);
+            if (parseInt(NUM) - parseInt(OUTNUM) < 0) {
+                result = "1";
+                break;
+            } else{
+                result = "0";
+            }
+        }
+        return result;
+    }
+
+    @Override
     public List<Repository> wdbhR() {
         List<Repository> list = outRepositoryMapper.wdbhR();
         return list;
@@ -342,15 +379,15 @@ public class OutRepositoryImpl implements OutRepositoryService {
     }
 
     @Override
-    public void updateApprove(String instid) {
+    public void updateApprove(String instId) {
         String secondOne = second;
         String thirdOne = third;
         String fourthOne = fourth;
-        if (instid != null && !instid.equals("") ){
-            outRepositoryMapper.updateApprove(instid,secondOne,thirdOne,fourthOne);
+        if (instId != null && !instId.equals("") ){
+            outRepositoryMapper.updateApprove(instId,secondOne,thirdOne,fourthOne);
             // 最后一人审批通过的情况
             if (!fourthOne.equals("")){
-                List<Repository> listOUT = outRepositoryMapper.getInId(instid);
+                List<Repository> listOUT = outRepositoryMapper.getInId(instId);
                 for (int i = 0;i < listOUT.size();i++) {
                     //更新物料
                     Material material = new Material();
@@ -423,5 +460,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
     static String third = "";
     static String fourth = "";
     static String postId = "";
+
+
 }
 

@@ -3,6 +3,7 @@ package com.elex.oa.dao.eqptDao;
 
 
 import com.elex.oa.entity.eqpt.Material;
+import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public interface MaterialMapper {
     String MinLimit(Material material);
     String getNum(Material material);
     String getId(Material material);
+    String getNumD(Material material);
 
     // 导入Excel
     int importMaterial(Material material);
