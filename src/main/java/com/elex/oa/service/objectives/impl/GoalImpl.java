@@ -117,7 +117,11 @@ public class GoalImpl implements GoalService {
         double annual1 = 0, total1 = 0;
         for(Goal2 revenue: revenueList) {
             annual1 += revenue.getAnnualTarget();
-            total1 += Double.parseDouble(revenue.getTheTotal());
+            if(StringUtils.isBlank(revenue.getTheTotal())) {
+
+            } else {
+                total1 += Double.parseDouble(revenue.getTheTotal());
+            }
         }
         list1.add(new BigDecimal(annual1 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
         list1.add(new BigDecimal(total1 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
@@ -229,7 +233,12 @@ public class GoalImpl implements GoalService {
         int annual3 = 0,total3 = 0;
         for(Goal2 revenue: revenueList) {
             annual1 += revenue.getAnnualTarget();
-            total1 += Double.parseDouble(revenue.getTheTotal());
+            if(StringUtils.isBlank(revenue.getTheTotal())) {
+
+            } else {
+                total1 += Double.parseDouble(revenue.getTheTotal());
+            }
+
         }
         map1.put("name","销售收入");
         map1.put("goal",new BigDecimal(annual1 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
@@ -246,7 +255,11 @@ public class GoalImpl implements GoalService {
         if(unit.equals("全部")) {
             for(Goal2 net: netList) {
                 annual2 += net.getAnnualTarget();
-                total2 += Double.parseDouble(net.getTheTotal());
+                if(StringUtils.isBlank(net.getTheTotal())) {
+
+                } else {
+                    total2 += Double.parseDouble(net.getTheTotal());
+                }
             }
             map2.put("goal",new BigDecimal(annual2 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
             map2.put("cumu",new BigDecimal(total2 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
@@ -263,7 +276,12 @@ public class GoalImpl implements GoalService {
                 map2.put("ratio","");
             } else {
                 map2.put("goal",new BigDecimal(netS.getAnnualTarget() / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
-                map2.put("cumu",new BigDecimal(Double.parseDouble(netS.getTheTotal()) / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
+                if(StringUtils.isBlank(netS.getTheTotal())) {
+                    map2.put("cumu","0");
+                } else {
+                    map2.put("cumu",new BigDecimal(Double.parseDouble(netS.getTheTotal()) / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
+                }
+
                 map2.put("ratio",netS.getCompletion());
             }
         }
@@ -273,7 +291,12 @@ public class GoalImpl implements GoalService {
         if(unit.equals("全部")) {
             for(Goal patent: patentList) {
                 annual3 += patent.getAnnualTarget();
-                total3 += Double.parseDouble(patent.getTheTotal());
+                if(StringUtils.isBlank(patent.getTheTotal())) {
+
+                } else {
+                    total3 += Double.parseDouble(patent.getTheTotal());
+                }
+
             }
             map3.put("goal",annual3+"");
             map3.put("cumu",total3+"");
@@ -354,7 +377,11 @@ public class GoalImpl implements GoalService {
             Map<String,String> map = new HashMap<>();
             map.put("department",goal2.getUnit());
             map.put("goal",new BigDecimal(goal2.getAnnualTarget() / 10000).setScale(2,BigDecimal.ROUND_UP) + "");
-            map.put("cumulative",new BigDecimal(Double.parseDouble(goal2.getTheTotal()) / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
+            if(StringUtils.isBlank(goal2.getTheTotal()))  {
+               map.put("cumulative","0");
+            } else {
+                map.put("cumulative",new BigDecimal(Double.parseDouble(goal2.getTheTotal()) / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
+            }
             map.put("ratio",goal2.getCompletion());
             result.add(map);
         }
@@ -378,7 +405,11 @@ public class GoalImpl implements GoalService {
         Map<String,String> result = new HashMap<>();
         result.put("unit",goal2.getUnit());
         result.put("annualTarget",new BigDecimal(goal2.getAnnualTarget()).setScale(2,BigDecimal.ROUND_UP) + "");
-        result.put("theTotal",new BigDecimal(Double.parseDouble(goal2.getTheTotal())).setScale(2,BigDecimal.ROUND_UP) + "");
+        if(StringUtils.isBlank(goal2.getTheTotal())) {
+            result.put("theTotal", "0");
+        } else {
+            result.put("theTotal",new BigDecimal(Double.parseDouble(goal2.getTheTotal())).setScale(2,BigDecimal.ROUND_UP) + "");
+        }
         result.put("completion",goal2.getCompletion());
         result.put("january",new BigDecimal(goal2.getJanuary()).setScale(2,BigDecimal.ROUND_UP) + "");
         result.put("february", new BigDecimal(goal2.getFebruary()).setScale(2,BigDecimal.ROUND_UP) + "");
