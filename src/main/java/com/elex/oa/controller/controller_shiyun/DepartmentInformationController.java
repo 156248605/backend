@@ -1562,7 +1562,11 @@ public class DepartmentInformationController {
             personalInformation.setEnglishname(baseInformation.getEnglishname());
             personalInformation.setIdcode(baseInformation.getIdcode());
             personalInformation.setBirthday(baseInformation.getBirthday());
-            personalInformation.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
+            try {
+                personalInformation.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             personalInformation.setConstellation(baseInformation.getConstellation());
             personalInformation.setChinesecs(baseInformation.getChinesecs());
             if (ihRsetRaceService.queryById(baseInformation.getRaceid())!=null) {
@@ -1604,7 +1608,11 @@ public class DepartmentInformationController {
             }
             personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
             if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
-                personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                try {
+                    personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
                 personalInformation.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
@@ -1638,7 +1646,11 @@ public class DepartmentInformationController {
                 personalInformation.setZj(ihRsetRankService.queryById(manageInformation.getRankid()).getRank());
             }
             personalInformation.setEntrydate(manageInformation.getEntrydate());
-            personalInformation.setSn(IDcodeUtil.getCompanyAge(manageInformation.getEntrydate()));
+            try {
+                personalInformation.setSn(IDcodeUtil.getCompanyAge(manageInformation.getEntrydate()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
             if (ihRsetEmployeetypeService.queryById(manageInformation.getEmployeetypeid())!=null) {
                 personalInformation.setEmployeetype(ihRsetEmployeetypeService.queryById(manageInformation.getEmployeetypeid()).getEmployeetype());

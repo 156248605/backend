@@ -1,5 +1,6 @@
 package com.elex.oa.util.util_shiyun;
 
+import org.apache.commons.lang.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -19,75 +20,36 @@ public class IDcodeUtil {
      *@Description:获得转正日期
      *@Date: 17:45 2018\5\15 0015
      */
-    public static String getZhuanzhengdate(String entrydate){
-        String[] split = entrydate.split("/");
-        if (Integer.parseInt(split[1]) + 2<10) {
-            int i = Integer.parseInt(split[1]) + 2;
-            split[1] = "0" + i + "";
-        }else if (Integer.parseInt(split[1]) + 2>=10){
-            int i = Integer.parseInt(split[1]) + 2;
-            split[1] =i + "";
-        }
-        return split[0] + "/" + split[1] + "/" + split[2];
+    public static String getZhuanzhengdate(String entrydate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Date entryDate = sdf.parse(entrydate);
+        Calendar entryCal = Calendar.getInstance();
+        entryCal.setTime(entryDate);
+        entryCal.add(Calendar.MONTH,2);
+        return sdf.format(entryCal.getTime());
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:获得星座
+     *@Description:根据身份证号码获得星座
      *@Date: 18:59 2018\5\12 0012
      */
     public static String getConstellation(String idcard){
         String ret = "";
         int month=Integer.parseInt(idcard.substring(10,12));
         int days=Integer.parseInt(idcard.substring(12,14));
-        if((month==1&&days>=20)||(month==2&&days<=18))
-        {
-            ret="水瓶座";
-        }
-        else if((month==2&&days>=19)||(month==3&&days<=20))
-        {
-            ret="双鱼座";
-        }
-        else if((month==3&&days>=21)||(month==4&&days<=19))
-        {
-            ret="白羊座";
-        }
-        else if((month==4&&days>=20)||(month==5&&days<=20))
-        {
-            ret="金牛座";
-        }
-        else if((month==5&&days>=21)||(month==6&&days<=21))
-        {
-            ret="双子座";
-        }
-        else if((month==6&&days>=22)||(month==7&&days<=22))
-        {
-            ret="巨蟹座";
-        }
-        else if((month==7&&days>=23)||(month==8&&days<=22))
-        {
-            ret="狮子座";
-        }
-        else if((month==8&&days>=23)||(month==9&&days<=22))
-        {
-            ret="处女座";
-        }
-        else if((month==9&&days>=23)||(month==10&&days<=23))
-        {
-            ret="天秤座";
-        }
-        else if((month==10&&days>=24)||(month==11&&days<=22))
-        {
-            ret="天蝎座";
-        }
-        else if((month==11&&days>=23)||(month==12&&days<=21))
-        {
-            ret="射手座";
-        }
-        else if((month==12&&days>=21)||(month==1&&days<=19))
-        {
-            ret="摩羯座";
-        }
+        if((month==1&&days>=20)||(month==2&&days<=18)){ret="水瓶座";}
+        else if((month==2&&days>=19)||(month==3&&days<=20)){ret="双鱼座";}
+        else if((month==3&&days>=21)||(month==4&&days<=19)){ret="白羊座";}
+        else if((month==4&&days>=20)||(month==5&&days<=20)){ret="金牛座";}
+        else if((month==5&&days>=21)||(month==6&&days<=21)){ret="双子座";}
+        else if((month==6&&days>=22)||(month==7&&days<=22)){ret="巨蟹座";}
+        else if((month==7&&days>=23)||(month==8&&days<=22)){ret="狮子座";}
+        else if((month==8&&days>=23)||(month==9&&days<=22)){ret="处女座";}
+        else if((month==9&&days>=23)||(month==10&&days<=23)){ret="天秤座";}
+        else if((month==10&&days>=24)||(month==11&&days<=22)){ret="天蝎座";}
+        else if((month==11&&days>=23)||(month==12&&days<=21)){ret="射手座";}
+        else if((month==12&&days>=21)||(month==1&&days<=19)){ret="摩羯座";}
         return ret;
     }
 
@@ -96,9 +58,29 @@ public class IDcodeUtil {
      *@Description:获得出生日期（"yyyy/MM/dd"）
      *@Date: 19:00 2018\5\12 0012
      */
-    public static String getBirthday(String idcard){
+    public static String getBirthday(String idcard) throws Exception {
+        Integer month = Integer.valueOf(idcard.substring(10,12));
+        if(month<=0 || month>12)throw new Exception("身份证的号码输入不符合标准，出生月必须在[1,12]之间！");
+        Integer year = Integer.valueOf(idcard.substring(6,10));
+        Integer maxDayOfMonth = IDcodeUtil.getMaxDayOfMonth(year, month);
+        Integer day_of_month = Integer.valueOf(idcard.substring(12,14));
+        if(day_of_month<=0 || day_of_month>maxDayOfMonth)throw new Exception("身份证的号码输入不符合标准，出生日必须在[1,"+maxDayOfMonth+"]之间！");
         String birthday = idcard.substring(6,10) + "/" + idcard.substring(10,12) + "/" + idcard.substring(12,14);
+        Integer age = Integer.valueOf(IDcodeUtil.getAge(birthday));
+        if(age>65 || age<18)throw new Exception("身份证的号码输入不符合标准，年龄必须18-65周岁之间");
         return birthday;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据年和月获得当前月的最大天数
+     *@Date: 15:08 2018\9\10 0010
+     */
+    public static Integer getMaxDayOfMonth(Integer year,Integer month){
+        if(",1,3,5,7,8,10,12,".indexOf(","+month+",")!=-1)return 31;
+        if(",4,6,9,11,".indexOf(","+month+",")!=-1)return 30;
+        if(year%4!=0 || (year%4==0 && year%100==0 && year%400!=0))return 28;
+        return 29;
     }
 
     /**
@@ -125,15 +107,7 @@ public class IDcodeUtil {
      *@Date: 20:01 2018\5\12 0012
      */
     public static String getSex(String idcard) {
-        Integer l = Integer.parseInt(idcard.substring(16,17));
-        int i = l % 2;
-        String sex = "";
-        if(i==0){
-            sex = "女";
-        }else if(i==1){
-            sex = "男";
-        }
-        return sex;
+        return (Integer.parseInt(idcard.substring(16,17)) % 2)==0?"女":"男";
     }
 
     /**
@@ -141,16 +115,48 @@ public class IDcodeUtil {
      *@Description:获得年龄
      *@Date: 19:15 2018\5\16 0016
      */
-    public static String getAge(String birthday) throws ParseException {
-        if(birthday==null){
-            return null;
+    public static String getAge(String birthday) throws Exception {
+        if(StringUtils.isBlank(birthday) || birthday.equals("null")){
+            throw new Exception("出生日期有误！");
         }
+        Calendar curCal = IDcodeUtil.getCalendarByDate(birthday,null);
+        //定义年龄
+        Integer ny = null;
+        //获得年龄
+        ny = curCal.get(Calendar.YEAR);
+        return ny+"";
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据时间推算出据现在是多长时间
+     *@Date: 17:17 2018\9\10 0010
+     */
+    private static Calendar getCalendarByDate(String birthday,String newday)throws Exception{
+        //设置时间格式
         SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
-        java.util.Date date=new Date();
-        java.util.Date mydate= myFormatter.parse(birthday);
-        long day=(date.getTime()-mydate.getTime())/(24*60*60*1000) + 1;
-        String year = day/365 + "";
-        return year;
+        //获得当前时间
+        Calendar curCal = Calendar.getInstance();
+        if (newday!=null) {
+            curCal.setTime(myFormatter.parse(newday));
+        }
+        curCal.set(Calendar.HOUR_OF_DAY, 0);
+        curCal.set(Calendar.MINUTE, 0);
+        curCal.set(Calendar.SECOND, 0);
+        curCal.set(Calendar.MILLISECOND, 0);
+        //获得出生日期
+        Date mydate= myFormatter.parse(birthday);
+        Calendar birCal = Calendar.getInstance();
+        birCal.setTime(mydate);
+        //获得出生日期的年月日
+        Integer by = birCal.get(Calendar.YEAR);
+        Integer bm = birCal.get(Calendar.MONTH);
+        Integer bd = birCal.get(Calendar.DAY_OF_MONTH);
+        //在当前时间的基础上减去出生日期的年、月、日
+        curCal.add(Calendar.DAY_OF_MONTH,-bd);
+        curCal.add(Calendar.MONTH,-bm);
+        curCal.add(Calendar.YEAR,-by);
+        return curCal;
     }
 
     /**
@@ -160,31 +166,25 @@ public class IDcodeUtil {
      */
     public static HashMap<String,String> getBirdayByAge(String age) throws ParseException {
         SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
-        Date date1 = new Date();
-        long l = date1.getTime() - (365*Long.parseLong(age)  + Long.parseLong(age)/4)*(24*60*60*1000);
-        long l2 = date1.getTime() - (365*(Long.parseLong(age)+1) - 1 + Long.parseLong(age)/4)*(24*60*60*1000);
-        Date sdate = new Date(l);
-        Date edate = new Date(l2);
-        String format = myFormatter.format(sdate);
-        String format2 = myFormatter.format(edate);
+        Calendar curCal = Calendar.getInstance();
+        curCal.add(Calendar.YEAR,-Integer.parseInt(age));
+        String format = myFormatter.format(curCal.getTime());
+        curCal.add(Calendar.YEAR,-1);
+        curCal.add(Calendar.DAY_OF_MONTH,1);
+        String format2 = myFormatter.format(curCal.getTime());
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("sbir",format2);
         hashMap.put("ebir",format);
         return hashMap;
-    };
+    }
 
     /**
      *@Author:ShiYun;
      *@Description:获得工龄
      *@Date: 19:20 2018\5\16 0016
      */
-    public static String getWorkingage(String firstworkingtime) throws ParseException {
-        SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
-        java.util.Date date=new Date();
-        java.util.Date mydate= myFormatter.parse(firstworkingtime);
-        long day=(date.getTime()-mydate.getTime())/(24*60*60*1000) + 1;
-        String year = day/365 + "";
-        return year;
+    public static String getWorkingage(String firstworkingtime) throws Exception {
+        return  IDcodeUtil.getAge(firstworkingtime);
     }
 
     /**
@@ -192,19 +192,8 @@ public class IDcodeUtil {
      *@Description:根据工龄获得首次工作时间
      *@Date: 16:43 2018\5\22 0022
      */
-    public static HashMap<String,String> getFwtByWorkingage(String workingage){
-        SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
-        Date date1 = new Date();
-        long l = date1.getTime() - (365*Long.parseLong(workingage)  + Long.parseLong(workingage)/4)*(24*60*60*1000);
-        long l2 = date1.getTime() - (365*(Long.parseLong(workingage)+1) - 1 + Long.parseLong(workingage)/4)*(24*60*60*1000);
-        Date sdate = new Date(l);
-        Date edate = new Date(l2);
-        String format = myFormatter.format(sdate);
-        String format2 = myFormatter.format(edate);
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("sfwt",format2);
-        hashMap.put("efwt",format);
-        return hashMap;
+    public static HashMap<String,String> getFwtByWorkingage(String workingage) throws ParseException {
+        return IDcodeUtil.getBirdayByAge(workingage);
     }
 
     /**
@@ -212,19 +201,9 @@ public class IDcodeUtil {
      *@Description:获得司龄
      *@Date: 15:11 2018\5\17 0017
      */
-    public static String getCompanyAge(String entrydate) throws ParseException {
-        SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
-        java.util.Date date=new Date();
-        Date mydate;
-        if (entrydate!=null && !entrydate.trim().equals("")) {
-            mydate = myFormatter.parse(entrydate);
-        } else {
-            return "";
-        }
-        long day=(date.getTime()-mydate.getTime())/(24*60*60*1000) + 1;
-        String year = day/365 + "";
-        String month = (day - Long.parseLong(year) * 365) / 30 + "";
-        return year + "年" + month + "月";
+    public static String getCompanyAge(String entrydate) throws Exception {
+        Calendar curCal = IDcodeUtil.getCalendarByDate(entrydate,null);
+        return curCal.get(Calendar.YEAR) + "年" + curCal.get(Calendar.MONTH) + "月";
     }
 
     /**
@@ -248,25 +227,11 @@ public class IDcodeUtil {
      *@Description:获得合同年限
      *@Date: 10:06 2018\5\28 0028
      */
-    public static String getContractage(String startdate,String enddate) throws ParseException {
-        String str = "";
-        SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
-        Date sdate = myFormatter.parse(startdate);
-        Date edate = myFormatter.parse(enddate);
-        long day = (edate.getTime() - sdate.getTime()) / (24 * 60 * 60 * 1000) + 1;
-        long year = day / 365;
-        if(year>=1){
-            str = str + year + "年";
-        }
-        long month = (day - year * 365) / 30;
-        if(month>=1){
-            str = str + month + "月";
-        }
-        if (str!=null && !str.trim().equals("")) {
-            return str;
-        } else {
-            return "0";
-        }
+    public static String getContractage(String startdate,String enddate) throws Exception {
+        Calendar cal = IDcodeUtil.getCalendarByDate(startdate, enddate);
+        Integer year = cal.get(Calendar.YEAR);
+        Integer month = cal.get(Calendar.MONTH)+1;
+        return year+(year>0?"年":"")+month+(month>0?"月":"");
     }
 
     /**
@@ -275,7 +240,7 @@ public class IDcodeUtil {
      *@Date: 13:56 2018\5\28 0028
      */
     public static String getContractage(String contractage){
-        String str1 = "";
+        /*String str1 = "";
         String year = "";
         if (contractage!=null && !"".equals(contractage)) {
             if(contractage.indexOf("年")!=-1 && contractage.indexOf("月")!=-1){
@@ -295,8 +260,8 @@ public class IDcodeUtil {
             }
         }else {
             return null;
-        }
-        return year;
+        }*/
+        return contractage;
     }
 
     /**
@@ -305,33 +270,28 @@ public class IDcodeUtil {
      *@Date: 15:50 2018\8\2 0002
      */
     public static Map getFirstAndLastDate(Date date) throws ParseException{
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String format = simpleDateFormat.format(date);
-        String[] split = format.split("/");
-        Map map = new HashMap<String,Object>();
         Calendar cal = Calendar.getInstance();
-        cal.set(1990,6,23,0,0,0);
-        // 不加下面2行，就是取当前时间前一个月的第一天及最后一天
-        cal.set(Calendar.YEAR,Integer.parseInt(split[0]));
-        cal.set(Calendar.MONTH, Integer.parseInt(split[1]));
-        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.setTime(date);
+        //获得某月的第一天
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),1,0,0,0);
+        Date firstDate = cal.getTime();
+        //获得某月的最后一天
+        cal.add(Calendar.MONTH, 1);
         cal.add(Calendar.DAY_OF_MONTH, -1);
         Date lastDate = cal.getTime();
-        lastDate = getMaxDate(lastDate);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date firstDate = cal.getTime();
+        Map map = new HashMap<String,Object>();
         map.put("firstDate", firstDate);
         map.put("lastDate", lastDate);
-        return map;
+       return map;
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:根据日期获得其最大时间
+     *@Description:根据日期获得其最大时间(有问题已经不用这个方法了)
      *@Date: 9:29 2018\8\3 0003
      */
     public static Date getMaxDate(Date date) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         String format = simpleDateFormat.format(date);
         String[] split = format.split("/");
         String str = split[0] + "/" + split[1] + "/" + split[2].substring(0, 2) + " 23:59:59";
@@ -345,36 +305,9 @@ public class IDcodeUtil {
      *@Date: 11:24 2018\8\3 0003
      */
     public static Integer getDaysByDate(Date date){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String format = simpleDateFormat.format(date);
-        String[] split = format.split("/");
-        Integer year = Integer.parseInt(split[0]);
-        Integer month = Integer.parseInt(split[1]);
-        if(year==null || month==null){
-            return 0;
-        }else{
-            if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
-                return 31;
-            }
-            if(month==4||month==6||month==9||month==11){
-                return 30;
-            }
-            if(month==2){
-                int i = year%4;
-                int i2 = year%100;
-                int i3 = year%400;
-                if(i!=0){
-                    return 28;
-                }else if(i2!=0){
-                    return 29;
-                }else if(i3!=0){
-                    return 28;
-                }else if(i3==0){
-                    return 29;
-                }
-            }
-        }
-        return 0;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return IDcodeUtil.getMaxDayOfMonth(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH));
     }
 
     /**

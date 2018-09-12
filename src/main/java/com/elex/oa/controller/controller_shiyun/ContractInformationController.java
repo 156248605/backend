@@ -255,7 +255,11 @@ public class ContractInformationController {
             if (ihRsetContracttypeService.queryById(contractInformation1.getContracttypeid())!=null) {
                 contractInformation1.setContracttype(ihRsetContracttypeService.queryById(contractInformation1.getContracttypeid()).getContracttype());
             }
-            contractInformation1.setContractage(IDcodeUtil.getContractage(contractInformation1.getStartdate(),contractInformation1.getEnddate()));
+            try {
+                contractInformation1.setContractage(IDcodeUtil.getContractage(contractInformation1.getStartdate(),contractInformation1.getEnddate()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (iUserService.getById(contractInformation1.getTransactoruserid())!=null) {
                 contractInformation1.setTransactortruename(iUserService.getById(contractInformation1.getTransactoruserid()).getTruename());
             }

@@ -2,12 +2,10 @@ package com.elex.oa.service.service_shiyun.impl;
 
 import com.elex.oa.dao.dao_shiyun.IBaseInformationDao;
 import com.elex.oa.entity.entity_shiyun.BaseInformation;
-import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IBaseInformationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * @Author:ShiYun;
@@ -18,7 +16,7 @@ import java.util.List;
 @Service
 public class BaseInformationServiceImpl implements IBaseInformationService {
 
-    @Autowired
+    @Resource
     IBaseInformationDao iBaseInformationDao;
 
     /**
