@@ -158,7 +158,11 @@ public class PersonalInformationController {
                 pi.setIdcode(baseInformation.getIdcode());
                 pi.setUserphoto(baseInformation.getUserphoto());
                 pi.setBirthday(baseInformation.getBirthday());
-                pi.setAge(IDcodeUtil.getAge(pi.getBirthday()));
+                try {
+                    pi.setAge(IDcodeUtil.getAge(pi.getBirthday()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 pi.setConstellation(baseInformation.getConstellation());
                 pi.setChinesecs(baseInformation.getChinesecs());
                 if (ihRsetRaceService.queryById(baseInformation.getRaceid())!=null) {
@@ -200,7 +204,11 @@ public class PersonalInformationController {
                 }
                 pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
                 if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
-                    pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                    try {
+                        pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
                     pi.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
@@ -352,7 +360,11 @@ public class PersonalInformationController {
             personalInformation.setEnglishname(baseInformation.getEnglishname());
             personalInformation.setIdcode(baseInformation.getIdcode());
             personalInformation.setBirthday(baseInformation.getBirthday());
-            personalInformation.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
+            try {
+                personalInformation.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             personalInformation.setConstellation(baseInformation.getConstellation());
             personalInformation.setChinesecs(baseInformation.getChinesecs());
             if (ihRsetRaceService.queryById(baseInformation.getRaceid())!=null) {
@@ -394,7 +406,11 @@ public class PersonalInformationController {
             }
             personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
             if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
-                personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                try {
+                    personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
                 personalInformation.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
@@ -428,7 +444,11 @@ public class PersonalInformationController {
                 personalInformation.setZj(ihRsetRankService.queryById(manageInformation.getRankid()).getRank());
             }
             personalInformation.setEntrydate(manageInformation.getEntrydate());
-            personalInformation.setSn(IDcodeUtil.getCompanyAge(manageInformation.getEntrydate()));
+            try {
+                personalInformation.setSn(IDcodeUtil.getCompanyAge(manageInformation.getEntrydate()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
             if (ihRsetEmployeetypeService.queryById(manageInformation.getEmployeetypeid())!=null) {
                 personalInformation.setEmployeetype(ihRsetEmployeetypeService.queryById(manageInformation.getEmployeetypeid()).getEmployeetype());
@@ -530,7 +550,12 @@ public class PersonalInformationController {
         }
         //校验省份证号码
         if(personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode())){
-            String birthday = IDcodeUtil.getBirthday(personalInformation.getIdcode());
+            String birthday = null;
+            try {
+                birthday = IDcodeUtil.getBirthday(personalInformation.getIdcode());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
             Date date = new Date();
             String format = simpleDateFormat.format(date);
@@ -599,7 +624,11 @@ public class PersonalInformationController {
         baseInformation.setEnglishname(personalInformation.getEnglishname());
         baseInformation.setIdcode(personalInformation.getIdcode());
         if(personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode())){
-            baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));//出生日期
+            try {
+                baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));//出生日期
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             baseInformation.setConstellation(IDcodeUtil.getConstellation(personalInformation.getIdcode()));//星座
             try {
                 baseInformation.setChinesecs(IDcodeUtil.getChinesecs(personalInformation.getIdcode()));//属相
@@ -738,7 +767,11 @@ public class PersonalInformationController {
         }
         manageInformation.setEntrydate(personalInformation.getEntrydate());
         if (null!=personalInformation.getEntrydate() && !"".equals(personalInformation.getEntrydate())) {
-            manageInformation.setZhuanzhengdate(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
+            try {
+                manageInformation.setZhuanzhengdate(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         Integer manageInformationId = iManageInformationService.saveOne(manageInformation);
 
@@ -1043,7 +1076,11 @@ public class PersonalInformationController {
             baseBL = true;
         }
         if(personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode())){
-            baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));//出生日期
+            try {
+                baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));//出生日期
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             baseInformation.setConstellation(IDcodeUtil.getConstellation(personalInformation.getIdcode()));//星座
             try {
                 baseInformation.setChinesecs(IDcodeUtil.getChinesecs(personalInformation.getIdcode()));//属相
@@ -1833,7 +1870,11 @@ public class PersonalInformationController {
                 pi.setIdphoto2(baseInformation.getIdphoto2());
                 pi.setEnglishname(baseInformation.getEnglishname());
                 pi.setIdcode("\t" + baseInformation.getIdcode());
-                pi.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
+                try {
+                    pi.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (ihRsetRaceService.queryById(baseInformation.getRaceid())!=null) {
                     pi.setRace(ihRsetRaceService.queryById(baseInformation.getRaceid()).getRace());
                 }
@@ -1873,7 +1914,11 @@ public class PersonalInformationController {
                 }
                 pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
                 if (baseInformation.getFirstworkingtime()!=null && !baseInformation.getFirstworkingtime().equals("")) {
-                    pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                    try {
+                        pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
                     pi.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
@@ -2012,7 +2057,11 @@ public class PersonalInformationController {
                 baseInformation.setEnglishname(personalInformation.getEnglishname());
                 if (personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode())) {
                     baseInformation.setIdcode(personalInformation.getIdcode());
-                    baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));
+                    try {
+                        baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     personalInformation.setSex(IDcodeUtil.getSex(personalInformation.getIdcode()));
                     baseInformation.setConstellation(IDcodeUtil.getConstellation(personalInformation.getIdcode()));
                     try {
@@ -2103,7 +2152,11 @@ public class PersonalInformationController {
                     if(personalInformation.getZhuanzhengdate()!=null && !"".equals(personalInformation.getZhuanzhengdate().trim())){
                         manageInformation.setZhuanzhengdate(personalInformation.getZhuanzhengdate());
                     }else {
-                        manageInformation.setZhuanzhengdate(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
+                        try {
+                            manageInformation.setZhuanzhengdate(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 if (ihRsetEmployeetypeService.queryByEmployeetype(personalInformation.getEmployeetype())!=null) {
@@ -2429,6 +2482,27 @@ public class PersonalInformationController {
             }
         }
         return list;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据人员名称查询所在公司
+     *@Date: 14:55 2018\9\8 0008
+     */
+    @RequestMapping("/queryGXF008")
+    @ResponseBody
+    public Object queryGXF008(
+            @RequestParam("truename")String truename
+    ){
+        String companyname = null;
+        try {
+            companyname = iDeptService.queryCompanynameByUseridOrTruename(null,truename);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500",e.getMessage(),companyname);
+        }
+        /*return RespUtil.successResp("200","提交成功！",companyname);*/
+        return companyname;
     }
 
     /**

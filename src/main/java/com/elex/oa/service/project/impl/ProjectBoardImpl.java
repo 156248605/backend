@@ -14,6 +14,7 @@ import com.elex.oa.service.service_shiyun.IDeptService;
 import com.elex.oa.service.service_shiyun.IPerandpostrsService;
 import com.elex.oa.service.service_shiyun.IPersonalInformationService;
 import com.elex.oa.service.service_shiyun.IPostService;
+import com.elex.oa.util.util_per.SpellUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -521,7 +522,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
             }
             Staff staff = new Staff();
             staff.setId(onePersonalInformation.getId());
-            staff.setPhoneticize(onePersonalInformation.getUsername());
+            staff.setPhoneticize(SpellUtils.phoneticize(onePersonalInformation.getUsername()));
             staff.setEmployeeName(onePersonalInformation.getTruename());
             staff.setDeptId(onePersonalInformation.getDepid()+"");
             if(onePersonalInformation.getDepid() == null) {

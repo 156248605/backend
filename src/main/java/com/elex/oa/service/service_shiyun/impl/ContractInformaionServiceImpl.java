@@ -93,8 +93,8 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         //获得合同期限
         try {
             contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
-        } catch (ParseException e) {
-            System.out.println("获得合同期限失败！");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         //获得续签合同集合
         List<ContractInformation> contractInformationList = iContractInformationDao.selectByUserid(contractInformation.getUserid());
@@ -129,7 +129,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
             //获得合同期限
             try {
                 contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 System.out.println("获得合同期限失败！");
             }
         }
@@ -174,7 +174,12 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      */
     @Override
     public Integer addOne(ContractInformation contractInformation) throws ParseException {
-        String contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+        String contractage = null;
+        try {
+            contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (contractage!=null && !contractage.equals("")) {
             contractInformation.setContractage(contractage);
         }else {
@@ -201,7 +206,12 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      */
     @Override
     public void modifyOne(ContractInformation contractInformation) throws ParseException {
-        String contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+        String contractage = null;
+        try {
+            contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (contractage!=null && !contractage.equals("")) {
             contractInformation.setContractage(contractage);
         }else {
