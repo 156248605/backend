@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.eqptDao.OutRepositoryMapper">
     <select id="findAll" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_outrepository
+        SELECT * FROM eqpt_outrepository ORDER BY outId DESC
     </select>
 
     <insert id="insertNew" parameterType="string">
@@ -120,4 +120,16 @@
     <select id="approveName" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT * FROM eqpt_outrepository WHERE INST_ID_ = #{instId} ORDER BY outId DESC LIMIT 1
     </select>
+
+    <select id="checkDraft" resultType="string">
+        SELECT outId FROM eqpt_outrepository_draft WHERE materialId = #{materialId} AND outId = #{outId}
+    </select>
+
+    <select id="getDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository_draft WHERE outId = #{outId}
+    </select>
+
+    <delete id="deleteDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_outrepository_draft WHERE outId = #{outId}
+    </delete>
 </mapper>

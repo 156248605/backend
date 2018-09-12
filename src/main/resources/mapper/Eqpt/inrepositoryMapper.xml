@@ -2,11 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.eqptDao.InRepositoryMapper">
     <select id="findAll" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_inrepository
+        SELECT * FROM eqpt_inrepository ORDER BY inId DESC
+    </select>
+
+    <select id="findDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository_draft ORDER BY inId DESC
     </select>
 
     <insert id="insertNew" parameterType="string">
         INSERT INTO eqpt_inrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22})
+    </insert>
+
+    <insert id="insertDraft" parameterType="string">
+        INSERT INTO eqpt_inrepository_draft VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22})
     </insert>
 
     <select id="ID" resultType="string">
@@ -27,6 +35,9 @@
 
     <select id="showINID" resultType="java.lang.String">
         SELECT inId FROM eqpt_inrepository WHERE inId LIKE CONCAT(CONCAT('%',#{inId},'%'))
+        UNION
+        SELECT inId FROM eqpt_inrepository_draft WHERE inId LIKE CONCAT(CONCAT('%',#{inId},'%'))
+        ORDER BY inId
     </select>
 
     <update id="updateInstId" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -90,5 +101,15 @@
         SELECT * FROM eqpt_inrepository WHERE INST_ID_ = #{instId} ORDER BY inId DESC LIMIT 1
     </select>
 
+    <select id="checkDraft" resultType="string">
+        SELECT inId FROM eqpt_inrepository_draft WHERE materialId = #{materialId} AND inId = #{inId}
+    </select>
 
+    <select id="getDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository_draft WHERE inId = #{inId}
+    </select>
+
+    <delete id="deleteDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inrepository_draft WHERE inId = #{inId}
+    </delete>
 </mapper>

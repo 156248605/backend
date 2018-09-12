@@ -178,16 +178,12 @@ public class RepositoryImpl implements RepositoryService {
         List<HashMap> list = JSON.parseArray(LIST, HashMap.class);
         Material material = new Material();
         material.setId(list.get(0).get("theMatId").toString());
-        /*List<Repository> emptyReptD = repositoryMapper.emptyReptD(material);
-        List<Repository> emptyReptP = repositoryMapper.emptyReptP();
-        for (int i = 0,j = 0; i < emptyReptD.size() && j < emptyReptP.size(); i++,j++){
-            System.out.println(emptyReptD.get(i));
-            System.out.println(emptyReptP.get(j));
-            if (emptyReptD.get(i).getReptId() == emptyReptP.get(j).getReptId() && emptyReptD.get(i).getPostId() == emptyReptP.get(j).getPostId()){
-
-            }
-        }*/
-        reptList = repositoryMapper.matInRept(material);
+        String result = repositoryMapper.fixPostMatInfo(material);
+        if (result != null) {
+            reptList = repositoryMapper.fixRept(material);
+        }else {
+            reptList = repositoryMapper.matInRept(material);
+        }
         return reptList;
     }
 
@@ -325,7 +321,6 @@ public class RepositoryImpl implements RepositoryService {
         String onlyId = request.getParameter("onlyId");
         repositoryMapper.deleteCate(onlyId);
     }
-
 
    /* @Override
     public List<Repository> matInPost(HttpServletRequest request) {

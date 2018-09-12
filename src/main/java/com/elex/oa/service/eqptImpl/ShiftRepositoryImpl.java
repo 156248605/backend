@@ -119,10 +119,13 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     // 记录数据
     @Override
     public String NewRepository(HttpServletRequest request) throws ParseException {
+        String shiftIdA = request.getParameter("shiftId");
+        Repository repository1 = new Repository();
+        repository1.setShiftId(shiftIdA);
+        shiftRepositoryMapper.deleteDraft(repository1);
         String a = "";
         String SHIFTLIST = request.getParameter("shiftList");
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
-        System.out.println(listSHIFT);
         for (int i = 0; i < listSHIFT.size(); i++) {
             String shiftId = request.getParameter("shiftId");
             String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
@@ -132,7 +135,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             }else {
                 shiftNum = shiftNumGet;
             }
-            if (listSHIFT.get(0).containsKey("number")){
+            if (listSHIFT.get(i).containsKey("number")){
                 shiftNum = listSHIFT.get(i).get("number").toString();
             }
             String shiftReptC = request.getParameter("shiftReptC");
@@ -323,7 +326,6 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             }
             /*String NUM = repositoryMapper.getNumber(repository);*/
             String NUM = "";
-            System.out.println(postId);
             if (!postId.equals("")){
                 NUM = repositoryMapper.numInPost(material);
                 if (NUM == null){
@@ -332,7 +334,6 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             }else {
                 NUM = "0";
             }
-            System.out.println(NUM);
             int a = parseInt(NUM);
             int b = parseInt(INNUM);
             String postCap = "";
@@ -618,4 +619,126 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     static String outPost = "";
     static String inRept = "";
     static String inPost = "";
+
+    // 查询草稿
+    @Override
+    public PageInfo<Repository> showDraft(Page page){
+        PageHelper.startPage(page.getCurrentPage(),page.getRows());
+        List<Repository> list = shiftRepositoryMapper.findDraft();
+        return new PageInfo<>(list);
+    }
+
+    // 保存草稿
+    @Override
+    public void insertDraft(HttpServletRequest request) throws ParseException {
+        String shiftIdA = request.getParameter("shiftId");
+        Repository repository1 = new Repository();
+        repository1.setShiftId(shiftIdA);
+        shiftRepositoryMapper.deleteDraft(repository1);
+        String SHIFTLIST = request.getParameter("shiftList");
+        List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
+        for (int i = 0; i < listSHIFT.size(); i++) {
+            String shiftId = request.getParameter("shiftId");
+            String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
+            String shiftNum = "";
+            if (shiftNumGet.contains(".")) {
+                shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
+            }else {
+                shiftNum = shiftNumGet;
+            }
+            if (listSHIFT.get(i).containsKey("number")){
+                shiftNum = listSHIFT.get(i).get("number").toString();
+            }
+            String shiftReptC = request.getParameter("shiftReptC");
+            String shiftInfo = "";
+            shiftInfo = request.getParameter("shiftInfo");
+            String date = request.getParameter("shiftTime");
+            String shiftTime = "";
+            if(!date.equals("") && !date.equals(null)) {
+                date = date.replace("Z", " UTC");//注意是空格+UTC
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
+                Date d = format.parse(date);
+                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                String sDate = sdf.format(d);
+                shiftTime = sDate;
+            }
+            String outRept = "";
+            String outPost = "";
+            String inRept = "";
+            String inPost = "";
+            if (listSHIFT.get(i).containsKey("outRept")){
+                outRept = listSHIFT.get(i).get("outRept").toString();
+            }
+            if (listSHIFT.get(i).containsKey("outPost")){
+                outPost = listSHIFT.get(i).get("outPost").toString();
+            }
+            if (listSHIFT.get(i).containsKey("inRept")){
+                inRept = listSHIFT.get(i).get("inRept").toString();
+            }
+            if (listSHIFT.get(i).containsKey("inPost")){
+                inPost = listSHIFT.get(i).get("inPost").toString();
+            }
+            String materialId = listSHIFT.get(i).get("theMatId").toString();
+            String materialName = listSHIFT.get(i).get("theMatName").toString();
+            String unit = listSHIFT.get(i).get("theMatUnit").toString();
+            String spec = listSHIFT.get(i).get("theMatSpec").toString();
+            String remark = listSHIFT.get(i).get("theMatRemark").toString();
+            String PROJID = request.getParameter("projId");
+            String PROJNAME = request.getParameter("projName");
+            String firstOne = request.getParameter("firstOne");
+            String secondOne = "";
+            String thirdOne = "";
+            String fourthOne = "";
+            Material material = new Material();
+            material.setId(materialId);
+            String bn = null;
+            String sn = null;
+            String number = "";
+            if (!materialId.equals("") && !materialId.equals(null)) {
+                number = materialMtMapper.manageBS(material);
+            }
+            if (number.equals("序列号")) {
+                sn = listSHIFT.get(i).get("theMatBnSn").toString();
+                bn = "无";
+            } else if (number.equals("批次号")) {
+                bn = listSHIFT.get(i).get("theMatBnSn").toString();
+                sn = "无";
+            } else if (number.equals("否")) {
+                sn = "无";
+                bn = "无";
+            } else {
+                sn = " ";
+                bn = " ";
+            }
+            String C = "";
+            shiftRepositoryMapper.insertNew(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
+        }
+    }
+
+
+    // 确认是否是草稿
+    @Override
+    public String checkDraft(HttpServletRequest request) {
+        String a = "";
+        String shiftId = request.getParameter("shiftId");
+        String materialId = request.getParameter("materialId");
+        Repository repository = new Repository();
+        repository.setShiftId(shiftId);
+        repository.setMaterialId(materialId);
+        String result = shiftRepositoryMapper.checkDraft(repository);
+        if (result != null) {
+            a = "1";
+        }else {
+            a = "0";
+        }
+        return a;
+    }
+
+    // 返回草稿信息
+    @Override
+    public List<Repository> postDraft(HttpServletRequest request) {
+        String shiftId = request.getParameter("shiftId");
+        List<Repository> list = shiftRepositoryMapper.getDraft(shiftId);
+        return list;
+    }
 }

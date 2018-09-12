@@ -72,55 +72,55 @@
                 AND capital LIKE CONCAT(CONCAT('%', #{capital}), '%')
             </if>
             <if test="capital != null and capital != '' and capitalC == 1">
-                AND capital &lt; #{capital}
+                AND capital &lt; ${capital}
             </if>
             <if test="capital != null and capital != '' and capitalC == 2">
-                AND capital > #{capital}
+                AND capital > ${capital}
             </if>
             <if test="capital != null and capital != '' and capitalC == 3">
-                AND capital = #{capital}
+                AND capital = ${capital}
             </if>
             <if test="capital != null and capital != '' and capitalC == 4">
-                AND capital &lt;= #{capital}
+                AND capital &lt;= ${capital}
             </if>
             <if test="capital != null and capital != '' and capitalC == 5">
-                AND capital >= #{capital}
+                AND capital >= ${capital}
             </if>
             <if test="staffNum != null and staffNum != '' and staffNumC == ''">
                 AND staffNum LIKE CONCAT(CONCAT('%', #{staffNum}), '%')
             </if>
             <if test="staffNum != null and staffNum != '' and staffNumC == 1">
-                AND staffNum &lt; #{staffNum}
+                AND staffNum &lt; ${staffNum}
             </if>
             <if test="staffNum != null and staffNum != '' and staffNumC == 2">
-                AND staffNum > #{staffNum}
+                AND staffNum > ${staffNum}
             </if>
             <if test="staffNum != null and staffNum != '' and staffNumC == 3">
-                AND staffNum = #{staffNum}
+                AND staffNum = ${staffNum}
             </if>
             <if test="staffNum != null and staffNum != '' and staffNumC == 4">
-                AND staffNum &lt;= #{staffNum}
+                AND staffNum &lt;= ${staffNum}
             </if>
             <if test="staffNum != null and staffNum != '' and staffNumC == 5">
-                AND staffNum >= #{staffNum}
+                AND staffNum >= ${staffNum}
             </if>
             <if test="sales != null and sales != '' and salesC == ''">
                 AND sales LIKE CONCAT(CONCAT('%', #{sales}), '%')
             </if>
             <if test="sales != null and sales != '' and salesC == 1">
-                AND sales &lt; #{sales}
+                AND sales &lt; ${sales}
             </if>
             <if test="sales != null and sales != '' and salesC == 2">
-                AND sales > #{sales}
+                AND sales > ${sales}
             </if>
             <if test="sales != null and sales != '' and salesC == 3">
-                AND sales = #{sales}
+                AND sales = ${sales}
             </if>
             <if test="sales != null and sales != '' and salesC == 4">
-                AND sales &lt;= #{sales}
+                AND sales &lt;= ${sales}
             </if>
             <if test="sales != null and sales != '' and salesC == 5">
-                AND sales >= #{sales}
+                AND sales >= ${sales}
             </if>
             <if test="brief != null and brief != '' and briefC == ''">
                 AND brief LIKE CONCAT(CONCAT('%', #{brief}), '%')
