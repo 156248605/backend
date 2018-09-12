@@ -505,12 +505,14 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String OUTINFO = request.getParameter("outInfo");
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
-            String number = materialMtMapper.manageBS(material);
             String POSTID = "无";
+            String REPTID = "";
             if (listOUT.get(i).get("postId") != null){
                 POSTID = listOUT.get(i).get("postId").toString();
             }
-            String REPTID = listOUT.get(i).get("reptId").toString();
+            if (listOUT.get(i).get("reptId") != null){
+                REPTID = listOUT.get(i).get("reptId").toString();
+            }
             String MATERIALID = listOUT.get(i).get("theMatId").toString();
             String MATERIALNAME = listOUT.get(i).get("theMatName").toString();
             String UNIT = listOUT.get(i).get("theMatUnit").toString();
@@ -524,6 +526,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String fourthOne = "";
             String bn = null;
             String sn = null;
+            String number = "";
             if (!MATERIALID.equals("") && !MATERIALID.equals(null)) {
                 number = materialMtMapper.manageBS(material);
             }
@@ -549,9 +552,12 @@ public class OutRepositoryImpl implements OutRepositoryService {
             repository.setSn(sn);
             repository.setProjId(PROJID);
             repository.setProjName(PROJNAME);
-            String REPTcategory = repositoryMapper.searchCategory(repository);
+            String REPTcategory = "";
+            if (!REPTID.equals("")) {
+                REPTcategory = repositoryMapper.searchCategory(repository);
+            }
             String C = "";
-            outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
+            outRepositoryMapper.insertDraft(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
         }
     }
 

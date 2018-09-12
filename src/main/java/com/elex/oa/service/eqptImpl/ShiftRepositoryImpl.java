@@ -711,7 +711,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                 bn = " ";
             }
             String C = "";
-            shiftRepositoryMapper.insertNew(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
+            shiftRepositoryMapper.insertDraft(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
         }
     }
 
