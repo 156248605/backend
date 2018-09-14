@@ -133,5 +133,28 @@ public class InRepositoryController {
         return inRepositoryImpl.approveName(request);
     }
 
+    @RequestMapping("/findDraft")
+    @ResponseBody
+    public PageInfo<Repository> showDraft (Page page) {
+        PageInfo<Repository> list = inRepositoryImpl.showDraft(page);
+        return list;
+    }
 
+    @RequestMapping("/insertDraft")
+    @ResponseBody
+    public void insertDraft (HttpServletRequest request) throws ParseException{
+        inRepositoryImpl.insertDraft(request);
+    }
+
+    @RequestMapping("/checkDraft")
+    @ResponseBody
+    public String checkDraft (HttpServletRequest request) {
+        return inRepositoryImpl.checkDraft(request);
+    }
+
+    @RequestMapping("/postDraft")
+    @ResponseBody
+    public List<Repository> postDraft (HttpServletRequest request){
+        return inRepositoryImpl.postDraft(request);
+    }
 }

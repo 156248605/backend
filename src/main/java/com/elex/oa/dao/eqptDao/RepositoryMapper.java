@@ -83,8 +83,6 @@ public interface RepositoryMapper {
 
     List<Repository> getPost(Repository repository);
 
-    void changeManagePost(Repository repository);
-
     void changeDetail(Repository repository);
 
     // 确定是否为空仓库
@@ -106,4 +104,8 @@ public interface RepositoryMapper {
     void insertCate(String cateName);
 
     void deleteCate(String onlyId);
+
+    String fixPostMatInfo(Material material);
+
+    List<Repository> fixRept(Material material);
 }

@@ -149,19 +149,19 @@
                 AND inNum LIKE CONCAT(CONCAT('%', #{inNum}), '%')
             </if>
             <if test="inNum != null and inNum != '' and inNumC == 1">
-                AND inNum &lt; #{inNum}
+                AND inNum &lt; ${inNum}
             </if>
             <if test="inNum != null and inNum != '' and inNumC == 2">
-                AND inNum > #{inNum}
+                AND inNum > ${inNum}
             </if>
             <if test="inNum != null and inNum != '' and inNumC == 3">
-                AND inNum = #{inNum}
+                AND inNum = ${inNum}
             </if>
             <if test="inNum != null and inNum != '' and inNumC == 4">
-                AND inNum &lt;= #{inNum}
+                AND inNum &lt;= ${inNum}
             </if>
             <if test="inNum != null and inNum != '' and inNumC == 5">
-                AND inNum >= #{inNum}
+                AND inNum >= ${inNum}
             </if>
             <if test="inTime != null and inTime != '' and inTimeC == ''">
                 AND inTime LIKE CONCAT(CONCAT('%', #{inTime}), '%')
@@ -263,19 +263,19 @@
                 AND outNum LIKE CONCAT(CONCAT('%', #{outNum}), '%')
             </if>
             <if test="outNum != null and outNum != '' and outNumC == 1">
-                AND outNum &lt; #{outNum}
+                AND outNum &lt; ${outNum}
             </if>
             <if test="outNum != null and outNum != '' and outNumC == 2">
-                AND outNum > #{outNum}
+                AND outNum > ${outNum}
             </if>
             <if test="outNum != null and outNum != '' and outNumC == 3">
-                AND outNum = #{outNum}
+                AND outNum = ${outNum}
             </if>
             <if test="outNum != null and outNum != '' and outNumC == 4">
-                AND outNum &lt;= #{outNum}
+                AND outNum &lt;= ${outNum}
             </if>
             <if test="outNum != null and outNum != '' and outNumC == 5">
-                AND outNum >= #{outNum}
+                AND outNum >= ${outNum}
             </if>
             <if test="outTime != null and outTime != '' and outTimeC == ''">
                 AND outTime LIKE CONCAT(CONCAT('%', #{outTime}), '%')
@@ -503,6 +503,14 @@
         SELECT reptId,postId FROM eqpt_position
     </select>
 
+    <select id="fixPostMatInfo" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT fixPostMat FROM eqpt_position WHERE fixPostMat = #{id}
+    </select>
+
+    <select id="fixRept" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptId FROM eqpt_position WHERE fixPostMat = #{id}
+    </select>
+
     <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT reptId FROM eqpt_position WHERE postId NOT IN (SELECT postId FROM eqpt_detail)
         UNION
@@ -553,19 +561,15 @@
     </select>
 
     <select id="numInPost" resultType="string">
-        SELECT num FROM eqpt_detail
-        <where>
-            <if test="reptId != null">
-                AND reptId = #{reptId}
-            </if>
-            <if test="postId != null and postId != ''">
-                AND postId = #{postId}
-            </if>
-            <if test="id != null">
-                AND id = #{id}
-            </if>
-        </where>
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND id = #{id}
+        <if test="postId != null and postId != '' and postId != '无'">
+            AND postId = #{postId}
+        </if>
     </select>
+
+    <!--<if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>-->
 
     <select id="getOtherInfo" resultType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_material WHERE id = #{id}

@@ -97,19 +97,19 @@
                 AND price LIKE CONCAT(CONCAT('%', #{price}), '%')
             </if>
             <if test="price != null and price != '' and priceC == 1">
-                AND price &lt; #{price}
+                AND price &lt; ${price}
             </if>
             <if test="price != null and price != '' and priceC == 2">
-                AND price > #{price}
+                AND price > ${price}
             </if>
             <if test="price != null and price != '' and priceC == 3">
-                AND price = #{price}
+                AND price = ${price}
             </if>
             <if test="price != null and price != '' and priceC == 4">
-                AND price &lt;= #{price}
+                AND price &lt;= ${price}
             </if>
             <if test="price != null and price != '' and priceC == 5">
-                AND price >= #{price}
+                AND price >= ${price}
             </if>
             <!--<if test="sDate != null and sDate != '' and eDate != null and eDate != ''">
                 AND date BETWEEN #{sDate} AND #{eDate}
@@ -178,37 +178,37 @@
                 AND maxlimit LIKE CONCAT(CONCAT('%', #{maxlimit}), '%')
             </if>
             <if test="maxlimit != null and maxlimit != '' and maxlimitC == 1">
-                AND maxlimit &lt; #{maxlimit}
+                AND maxlimit &lt; ${maxlimit}
             </if>
             <if test="maxlimit != null and maxlimit != '' and maxlimitC == 2">
-                AND maxlimit > #{maxlimit}
+                AND maxlimit > ${maxlimit}
             </if>
             <if test="maxlimit != null and maxlimit != '' and maxlimitC == 3">
-                AND maxlimit = #{maxlimit}
+                AND maxlimit = ${maxlimit}
             </if>
             <if test="maxlimit != null and maxlimit != '' and maxlimitC == 4">
-                AND maxlimit &lt;= #{maxlimit}
+                AND maxlimit &lt;= ${maxlimit}
             </if>
             <if test="maxlimit != null and maxlimit != '' and maxlimitC == 5">
-                AND maxlimit >= #{maxlimit}
+                AND maxlimit >= ${maxlimit}
             </if>
             <if test="minlimit != null and minlimit != '' and minlimitC == ''">
                 AND minlimit LIKE CONCAT(CONCAT('%', #{minlimit}), '%')
             </if>
             <if test="minlimit != null and minlimit != '' and minlimitC == 1">
-                AND minlimit &lt; #{minlimit}
+                AND minlimit &lt; ${minlimit}
             </if>
             <if test="minlimit != null and minlimit != '' and minlimitC == 2">
-                AND minlimit > #{minlimit}
+                AND minlimit > ${minlimit}
             </if>
             <if test="minlimit != null and minlimit != '' and minlimitC == 3">
-                AND minlimit = #{minlimit}
+                AND minlimit = ${minlimit}
             </if>
             <if test="minlimit != null and minlimit != '' and minlimitC == 4">
-                AND minlimit &lt;= #{minlimit}
+                AND minlimit &lt;= ${minlimit}
             </if>
             <if test="minlimit != null and minlimit != '' and minlimitC == 5">
-                AND minlimit >= #{minlimit}
+                AND minlimit >= ${minlimit}
             </if>
         </where>
     </select>

@@ -8,7 +8,7 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.http.HttpRequest;
+import org.apache.regexp.RE;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
 @Service
@@ -148,6 +147,10 @@ public class InRepositoryImpl implements InRepositoryService {
     /*新建入库单*/
     @Override
     public String NewRepository(HttpServletRequest request) throws ParseException {
+        String inId = request.getParameter("inId");
+        Repository repository1 = new Repository();
+        repository1.setInId(inId);
+        inRepositoryMapper.deleteDraft(repository1);
         String a = "";
         String INLIST = request.getParameter("inList");
         List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
@@ -512,4 +515,135 @@ public class InRepositoryImpl implements InRepositoryService {
     static String third = "";
     static String fourth = "";
     static String postId = "";
+
+    // 查询草稿
+    @Override
+    public PageInfo<Repository> showDraft(Page page){
+        PageHelper.startPage(page.getCurrentPage(),page.getRows());
+        List<Repository> list = inRepositoryMapper.findDraft();
+        return new PageInfo<>(list);
+    }
+
+    // 保存草稿
+    @Override
+    public void insertDraft(HttpServletRequest request) throws ParseException {
+        String inId = request.getParameter("inId");
+        Repository repository1 = new Repository();
+        repository1.setInId(inId);
+        inRepositoryMapper.deleteDraft(repository1);
+        String INLIST = request.getParameter("inList");
+        List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
+        for (int i = 0; i < listIN.size(); i++){
+            String INREPTC = request.getParameter("inReptC");
+            String INID = request.getParameter("inId");
+            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUM = "";
+            if (INNUMGET.contains(".")) {
+                INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
+            }else {
+                INNUM = INNUMGET;
+            }
+            // 格林尼治时间转格式
+            String date = request.getParameter("inTime");
+            String INTIME = "";
+            if(!date.equals("") && !date.equals(null)) {
+                date = date.replace("Z", " UTC");// 注意是空格+UTC
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
+                Date d = format.parse(date);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String sDate = sdf.format(d);
+                INTIME = sDate;
+            }
+            String ININFO = request.getParameter("inInfo");
+            String POSTID = postId;
+            String REPTID = "";
+            if (listIN.get(i).get("postId") != null){
+                POSTID = listIN.get(i).get("postId").toString();
+            }
+            if (listIN.get(i).get("reptId") != null){
+                REPTID = listIN.get(i).get("reptId").toString();
+            }
+            String MATERIALID = listIN.get(i).get("theMatId").toString();
+            String MATERIALNAME = listIN.get(i).get("theMatName").toString();
+            String UNIT = listIN.get(i).get("theMatUnit").toString();
+            String SPEC = listIN.get(i).get("theMatSpec").toString();
+            String CHECK = listIN.get(i).get("theMatCheck").toString();
+            String REMARK = listIN.get(i).get("theMatRemark").toString();
+            String PROJID = request.getParameter("projId");
+            String PROJNAME = request.getParameter("projName");
+            Material material = new Material();
+            material.setId(MATERIALID);
+            String firstOne = request.getParameter("firstOne");
+            String secondOne = "";
+            String thirdOne = "";
+            String fourthOne = "";
+            String bn = null;
+            String sn = null;
+            String number = "";
+            if (!MATERIALID.equals("") && !MATERIALID.equals(null)) {
+                number = materialMtMapper.manageBS(material);
+            }
+            if (number.equals("序列号")) {
+                sn = listIN.get(i).get("theMatBnSn").toString();
+                bn = "无";
+            } else if (number.equals("批次号")) {
+                bn = listIN.get(i).get("theMatBnSn").toString();
+                sn = "无";
+            } else if (number.equals("否")) {
+                sn = "无";
+                bn = "无";
+            } else {
+                sn = " ";
+                bn = " ";
+            }
+            Repository repository = new Repository();
+            repository.setInId(INID);
+            repository.setMaterialId(MATERIALID);
+            repository.setMaterialName(MATERIALNAME);
+            repository.setUnit(UNIT);
+            repository.setSpec(SPEC);
+            repository.setReptId(REPTID);
+            repository.setPostId(POSTID);
+            repository.setBn(bn);
+            repository.setSn(sn);
+            repository.setCheck(CHECK);
+            repository.setRemark(REMARK);
+            repository.setInInfo(ININFO);
+            repository.setProjId(PROJID);
+            repository.setProjName(PROJNAME);
+            String REPTcategory = "";
+            if (!REPTID.equals("")) {
+                REPTcategory = repositoryMapper.searchCategory(repository);
+            }
+            String C = "";
+            inRepositoryMapper.insertDraft(REPTcategory, INID, INTIME, INNUM, ININFO, REPTID, POSTID, MATERIALID, MATERIALNAME, SPEC, UNIT, sn, bn,INREPTC, CHECK, REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
+        }
+    }
+
+
+    // 确认是否是草稿
+    @Override
+    public String checkDraft(HttpServletRequest request) {
+        String a = "";
+        String inId = request.getParameter("inId");
+        String materialId = request.getParameter("materialId");
+        Repository repository = new Repository();
+        repository.setInId(inId);
+        repository.setMaterialId(materialId);
+        String result = inRepositoryMapper.checkDraft(repository);
+        if (result != null) {
+            a = "1";
+        }else {
+            a = "0";
+        }
+        return a;
+    }
+
+    // 返回草稿信息
+    @Override
+    public List<Repository> postDraft(HttpServletRequest request) {
+        String inId = request.getParameter("inId");
+        List<Repository> list = inRepositoryMapper.getDraft(inId);
+        return list;
+    }
 }

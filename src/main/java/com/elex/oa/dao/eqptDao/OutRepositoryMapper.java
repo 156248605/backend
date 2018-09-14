@@ -54,4 +54,20 @@ public interface OutRepositoryMapper {
     String node(String taskid);
 
     List<Repository> approveName(String instid);
+
+    // 查找草稿
+    List<Repository> findDraft();
+
+    // 添加草稿
+    void insertDraft(String repTcategory, String outid, String outtime, String outnum, String outinfo, String reptid, String postid, String materialid, String materialname, String spec, String unit, String sn, String bn, String outreptc, String remark, String projid, String projname, String c, String firstOne, String secondOne, String thirdOne, String fourthOne);
+
+    // 确认草稿
+    String checkDraft(Repository repository);
+
+    // 读取草稿
+    List<Repository> getDraft(String inId);
+
+    // 删除草稿
+    void deleteDraft(Repository repository);
+
 }

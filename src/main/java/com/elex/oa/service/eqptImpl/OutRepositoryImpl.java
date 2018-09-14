@@ -98,6 +98,10 @@ public class OutRepositoryImpl implements OutRepositoryService {
     /*新建出库单*/
     @Override
     public String InsertRepository (HttpServletRequest request)throws ParseException{
+        String outId = request.getParameter("outId");
+        Repository repository1 = new Repository();
+        repository1.setOutId(outId);
+        outRepositoryMapper.deleteDraft(repository1);
         String a = "";
         String OUTLIST = request.getParameter("outList");
         List<HashMap> listOUT =JSON.parseArray(OUTLIST, HashMap.class);
@@ -456,11 +460,132 @@ public class OutRepositoryImpl implements OutRepositoryService {
         }
     }
 
-    static String second = "";
-    static String third = "";
-    static String fourth = "";
-    static String postId = "";
+    static String second = " ";
+    static String third = " ";
+    static String fourth = " ";
+    static String postId = " ";
+
+    // 查询草稿
+    @Override
+    public PageInfo<Repository> showDraft(Page page){
+        PageHelper.startPage(page.getCurrentPage(),page.getRows());
+        List<Repository> list = outRepositoryMapper.findDraft();
+        return new PageInfo<>(list);
+    }
+
+    // 保存草稿
+    @Override
+    public void insertDraft(HttpServletRequest request) throws ParseException {
+        String outId = request.getParameter("outId");
+        Repository repository1 = new Repository();
+        repository1.setOutId(outId);
+        outRepositoryMapper.deleteDraft(repository1);
+        String OUTLIST = request.getParameter("outList");
+        List<HashMap> listOUT =JSON.parseArray(OUTLIST, HashMap.class);
+        for (int i = 0; i < listOUT.size(); i++) {
+            String OUTREPTC = request.getParameter("outReptC");
+            String OUTID = request.getParameter("outId");
+            String OUTNUMGET = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUM = "";
+            if (OUTNUMGET.contains(".")) {
+                OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
+            }else {
+                OUTNUM = OUTNUMGET;
+            }
+            String date = request.getParameter("outTime");
+            String OUTTIME = "";
+            if(!date.equals("") && !date.equals(null)) {
+                date = date.replace("Z", " UTC");// 注意是空格+UTC
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
+                Date d = format.parse(date);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String sDate = sdf.format(d);
+                OUTTIME = sDate;
+            }
+            String OUTINFO = request.getParameter("outInfo");
+            Material material = new Material();
+            material.setId(listOUT.get(i).get("theMatId").toString());
+            String POSTID = "无";
+            String REPTID = "";
+            if (listOUT.get(i).get("postId") != null){
+                POSTID = listOUT.get(i).get("postId").toString();
+            }
+            if (listOUT.get(i).get("reptId") != null){
+                REPTID = listOUT.get(i).get("reptId").toString();
+            }
+            String MATERIALID = listOUT.get(i).get("theMatId").toString();
+            String MATERIALNAME = listOUT.get(i).get("theMatName").toString();
+            String UNIT = listOUT.get(i).get("theMatUnit").toString();
+            String SPEC = listOUT.get(i).get("theMatSpec").toString();
+            String REMARK = listOUT.get(i).get("theMatRemark").toString();
+            String PROJID = request.getParameter("projId");
+            String PROJNAME = request.getParameter("projName");
+            String firstOne = request.getParameter("firstOne");
+            String secondOne = "";
+            String thirdOne = "";
+            String fourthOne = "";
+            String bn = null;
+            String sn = null;
+            String number = "";
+            if (!MATERIALID.equals("") && !MATERIALID.equals(null)) {
+                number = materialMtMapper.manageBS(material);
+            }
+            if (number.equals("序列号")) {
+                sn = listOUT.get(i).get("theMatBnSn").toString();
+                bn = "无";
+            } else if (number.equals("批次号")) {
+                bn = listOUT.get(i).get("theMatBnSn").toString();
+                sn = "无";
+            } else if (number.equals("否")) {
+                sn = "无";
+                bn = "无";
+            } else {
+                sn = " ";
+                bn = " ";
+            }
+            Repository repository = new Repository();
+            repository.setMaterialId(MATERIALID);
+            repository.setPostId(POSTID);
+            repository.setReptId(REPTID);
+            repository.setOutId(OUTID);
+            repository.setBn(bn);
+            repository.setSn(sn);
+            repository.setProjId(PROJID);
+            repository.setProjName(PROJNAME);
+            String REPTcategory = "";
+            if (!REPTID.equals("")) {
+                REPTcategory = repositoryMapper.searchCategory(repository);
+            }
+            String C = "";
+            outRepositoryMapper.insertDraft(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
+        }
+    }
 
 
+    // 确认是否是草稿
+    @Override
+    public String checkDraft(HttpServletRequest request) {
+        String a = "";
+        String outId = request.getParameter("outId");
+        String materialId = request.getParameter("materialId");
+        Repository repository = new Repository();
+        repository.setInId(outId);
+        repository.setMaterialId(materialId);
+        String result = outRepositoryMapper.checkDraft(repository);
+        if (result != null) {
+            a = "1";
+        }else {
+            a = "0";
+        }
+        return a;
+    }
+
+    // 返回草稿信息
+    @Override
+    public List<Repository> postDraft(HttpServletRequest request) {
+        String outId = request.getParameter("outId");
+        List<Repository> list = outRepositoryMapper.getDraft(outId);
+        return list;
+    }
 }
 

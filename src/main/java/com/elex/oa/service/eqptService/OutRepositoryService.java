@@ -59,4 +59,16 @@ public interface OutRepositoryService {
 
     // 获取审批
     void getApprove(HttpServletRequest request);
+
+    // 查询草稿
+    PageInfo<Repository> showDraft(Page page);
+
+    // 保存草稿
+    void insertDraft(HttpServletRequest request) throws ParseException;
+
+    // 确认是否是草稿
+    String checkDraft(HttpServletRequest request);
+
+    // 返回草稿信息
+    List<Repository> postDraft(HttpServletRequest request);
 }

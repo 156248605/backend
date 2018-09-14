@@ -57,19 +57,19 @@
                 AND num LIKE CONCAT(CONCAT('%', #{num}), '%')
             </if>
             <if test="num != null and num != '' and numC == 1">
-                AND num &lt; #{num}
+                AND num &lt; ${num}
             </if>
             <if test="num != null and num != '' and numC == 2">
-                AND num > #{num}
+                AND num > ${num}
             </if>
             <if test="num != null and num != '' and numC == 3">
-                AND num = #{num}
+                AND num = ${num}
             </if>
             <if test="num != null and num != '' and numC == 4">
-                AND num &lt;= #{num}
+                AND num &lt;= ${num}
             </if>
             <if test="num != null and num != '' and numC == 5">
-                AND num >= #{num}
+                AND num >= ${num}
             </if>
             <if test="reptId != null and reptId != '' and reptIdC == ''">
                 AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')

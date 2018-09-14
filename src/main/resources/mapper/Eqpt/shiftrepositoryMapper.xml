@@ -3,7 +3,7 @@
 <mapper namespace="com.elex.oa.dao.eqptDao.ShiftRepositoryMapper">
 
     <select id="showRepository" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_shiftrepository
+        SELECT * FROM eqpt_shiftrepository ORDER BY shiftId DESC
     </select>
 
     <select id="searchShift" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -31,19 +31,19 @@
                 AND shiftNum LIKE CONCAT(CONCAT('%', #{shiftNum}), '%')
             </if>
             <if test="shiftNum != null and shiftNum != '' and shiftNumC == 1">
-                AND shiftNum &lt; #{shiftNum}
+                AND shiftNum &lt; ${shiftNum}
             </if>
             <if test="shiftNum != null and shiftNum != '' and shiftNumC == 2">
-                AND shiftNum > #{shiftNum}
+                AND shiftNum > ${shiftNum}
             </if>
             <if test="shiftNum != null and shiftNum != '' and shiftNumC == 3">
-                AND shiftNum = #{shiftNum}
+                AND shiftNum = ${shiftNum}
             </if>
             <if test="shiftNum != null and shiftNum != '' and shiftNumC == 4">
-                AND shiftNum &lt;= #{shiftNum}
+                AND shiftNum &lt;= ${shiftNum}
             </if>
             <if test="shiftNum != null and shiftNum != '' and shiftNumC == 5">
-                AND shiftNum >= #{shiftNum}
+                AND shiftNum >= ${shiftNum}
             </if>
             <if test="outRept != null and outRept != '' and outReptC == ''">
                 AND outRept LIKE CONCAT(CONCAT('%', #{outRept}), '%')
@@ -233,4 +233,23 @@
         SELECT * FROM eqpt_shiftrepository WHERE INST_ID_ = #{instId} ORDER BY shiftId DESC LIMIT 1
     </select>
 
+    <select id="checkDraft" resultType="string">
+        SELECT shiftId FROM eqpt_shiftrepository_draft WHERE materialId = #{materialId} AND shiftId = #{shiftId}
+    </select>
+
+    <select id="getDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository_draft WHERE shiftId = #{shiftId}
+    </select>
+
+    <delete id="deleteDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_shiftrepository_draft WHERE shiftId = #{shiftId}
+    </delete>
+
+    <select id="findDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository_draft ORDER BY shiftId DESC
+    </select>
+
+    <insert id="insertDraft" parameterType="string">
+        INSERT INTO eqpt_shiftrepository_draft VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22},NULL)
+    </insert>
 </mapper>

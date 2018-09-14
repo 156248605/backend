@@ -172,4 +172,29 @@ public class ShiftRepositoryController {
     public List<Repository> approveName (HttpServletRequest request){
         return shiftRepositoryImpl.approveName(request);
     }
+
+    @RequestMapping("/findDraft")
+    @ResponseBody
+    public PageInfo<Repository> showDraft (Page page) {
+        PageInfo<Repository> list = shiftRepositoryImpl.showDraft(page);
+        return list;
+    }
+
+    @RequestMapping("/insertDraft")
+    @ResponseBody
+    public void insertDraft (HttpServletRequest request) throws ParseException{
+        shiftRepositoryImpl.insertDraft(request);
+    }
+
+    @RequestMapping("/checkDraft")
+    @ResponseBody
+    public String checkDraft (HttpServletRequest request) {
+        return shiftRepositoryImpl.checkDraft(request);
+    }
+
+    @RequestMapping("/postDraft")
+    @ResponseBody
+    public List<Repository> postDraft (HttpServletRequest request){
+        return shiftRepositoryImpl.postDraft(request);
+    }
 }
