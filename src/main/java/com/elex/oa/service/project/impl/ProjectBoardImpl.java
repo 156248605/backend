@@ -906,7 +906,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
         SimpleDateFormat simpleDateFormat =  new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar =  Calendar.getInstance(), calendar1 = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        calendar1.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
         String start = simpleDateFormat.format(calendar.getTime());
         String end = simpleDateFormat.format(calendar1.getTime());
         List<String> codes;

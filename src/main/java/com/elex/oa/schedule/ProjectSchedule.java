@@ -15,13 +15,13 @@ public class ProjectSchedule {
     @Resource
     private ProjectBoardService projectBoardService;
 
-    @Scheduled(cron = "0 0/4 * * * ?")
+    @Scheduled(cron = "0 0/3 * * * ?")
     public void addInfor() {
-        //projectInforService.addInfor();
+        projectInforService.addInfor();
     }
 
     @Scheduled(cron = "0 45 23 * * ?")
     public void updateStaff() {
-        //projectBoardService.informationUpdate();
+        projectBoardService.informationUpdate();
     }
 }
