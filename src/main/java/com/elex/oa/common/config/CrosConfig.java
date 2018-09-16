@@ -11,6 +11,7 @@ import org.springframework.web.filter.CorsFilter;
  * @author Guoqing
  *
  */
+/*
 @Configuration
 public class CrosConfig {
 	
@@ -25,8 +26,10 @@ public class CrosConfig {
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", buildConfig()); // 4
+        source.registerCorsConfiguration("*/
+/**", buildConfig()); // 4
         return new CorsFilter(source);
     }
 
 }
+*/

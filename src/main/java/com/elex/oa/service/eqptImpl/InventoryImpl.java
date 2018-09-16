@@ -106,8 +106,8 @@ public class InventoryImpl implements InventoryService {
         List<HashMap<String, Object>> list1 = inventoryMapper.invInfo(INST_STATUS_);
         if (list1.size() > 0) {
             String wdbh = list1.get(0).get("ID_").toString();// 两张表同样部分
-            String PAL = list1.get(0).get("F_YKJEXX").toString();// 盈亏金额小写
-            String PALCAL = list1.get(0).get("F_YKJEDX").toString();// 盈亏金额大写
+            String PAL = list1.get(0).get("F_JEYKXX").toString();// 盈亏金额小写
+            String PALCAL = "";// 盈亏金额大写
             List<HashMap<String, Object>> list = inventoryMapper.invDetail(wdbh);
             for (int i = 0; i < list.size(); i++){
                 Calendar cal= Calendar.getInstance();
@@ -125,17 +125,17 @@ public class InventoryImpl implements InventoryService {
                 }
                 repository.setInvId(result);
                 String invTime = list.get(i).get("UPDATE_TIME_").toString();// 2.获取盘点时间(需要修改)
-                String materialId = list.get(i).get("F_WLBM").toString();// 3.获取物料Id(需要修改)
-                String materialName = list.get(i).get("F_WLMC").toString();// 4.获取物料名称(需要修改)
+                String materialId = list.get(i).get("F_WPBM").toString();// 3.获取物料Id(需要修改)
+                String materialName = list.get(i).get("F_WPMC").toString();// 4.获取物料名称(需要修改)
                 String spec = list.get(i).get("F_GGXH").toString();// 5.获取规格型号(需要修改)
                 String category = list.get(i).get("F_WPLB").toString();// 6.获取物料类别(需要修改)
-                String price = list.get(i).get("F_CKCK").toString();// 7.获取物料单价(需要修改)
+                String price = list.get(i).get("F_DJ").toString();// 7.获取物料单价(需要修改)
                 String reptId = list.get(i).get("F_CK").toString();// 8.获取盘点仓库(需要修改)
                 String postId = list.get(i).get("F_KW").toString();// 9.获取盘点库位(需要修改)
-                String num = list.get(i).get("F_CKKW").toString();// 10.获取账上数量(需要修改)
-                String numInv = list.get(i).get("F_RKCK").toString();// 11.获取盘点(实际)数量(需要修改)
+                String num = list.get(i).get("F_KCSL").toString();// 10.获取账上数量(需要修改)
+                String numInv = list.get(i).get("F_PDSL").toString();// 11.获取盘点(实际)数量(需要修改)
                 String remark = list.get(i).get("F_BZ").toString();// 12.获取备注(需要修改)
-                String palPer = list.get(i).get("F_RKKW").toString();// 13.获取物品盈亏(需要修改)
+                String palPer = list.get(i).get("F_PDYK").toString();// 13.获取物品盈亏(需要修改)
                 String instId = list.get(i).get("REF_ID_").toString();// 14.INSTID
                 // 这两个值在主表
                 String pal = PAL;// 14.获取总盈亏(小写)(需要修改)
