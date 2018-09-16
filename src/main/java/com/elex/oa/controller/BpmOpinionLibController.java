@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -41,6 +42,8 @@ public class BpmOpinionLibController {
     public JsonResult saveOpinion(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String opText = request.getParameter("opText");
         String userId = ContextUtil.getCurrentUserId();
+        String userName = ContextUtil.getCurrentUser().getFullname();
+        Cookie[] cookies = request.getCookies();
         System.out.println(ContextUtil.getCurrentUserId());
         System.out.println(userId);
         if(this.bpmOpinionLibManager.isOpinionSaved(userId, opText)) {

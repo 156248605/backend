@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.apache.commons.lang.StringUtils;
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +84,7 @@ public class BpmInstController {
         String solId = request.getParameter("solId");
         String instId = request.getParameter("instId");
         String from = request.getParameter("from");
+        Cookie[] cookies = request.getCookies();
         String userName = ContextUtil.getCurrentUser().getFullname();
         BpmSolution bpmSolution = null;
         String opinion = "";
