@@ -783,9 +783,11 @@ public class PersonalInformationController {
 
         //添加人事与岗位关系表的信息
         List<Integer> postids = personalInformation.getPostids();
-        for(Integer postid:postids){
-            PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
-            iPerandpostrsService.addOne(perAndPostRs);
+        if(postids!=null&&postids.size()!=0){
+            for(Integer postid:postids){
+                PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
+                iPerandpostrsService.addOne(perAndPostRs);
+            }
         }
         User user = iUserService.getById(personalInformation.getUserid());
         return RespUtil.successResp("200","管理信息添加成功！",user) ;
