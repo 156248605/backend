@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.objectives.GoalDao">
+
+    <resultMap id="goal" type="com.elex.oa.entity.objectives.Goal">
+        <result column="unit" javaType="string" property="unit"></result>
+        <result column="annual_target" javaType="int" property="annualTarget"></result>
+        <result column="the_total" javaType="string" property="theTotal"></result>
+        <result column="completion" javaType="string" property="completion"></result>
+        <result column="january" javaType="int" property="january"></result>
+        <result column="february" javaType="int" property="february"></result>
+        <result column="march" javaType="int" property="march"></result>
+        <result column="april" javaType="int" property="april"></result>
+        <result column="may" javaType="int" property="may"></result>
+        <result column="june" javaType="int" property="june"></result>
+        <result column="july" javaType="int" property="july"></result>
+        <result column="august" javaType="int" property="august"></result>
+        <result column="september" javaType="int" property="september"></result>
+        <result column="october" javaType="int" property="october"></result>
+        <result column="november" javaType="int" property="november"></result>
+        <result column="december" javaType="int" property="december"></result>
+    </resultMap>
+
+    <resultMap id="goal2" type="com.elex.oa.entity.objectives.Goal2">
+        <result column="unit" javaType="string" property="unit"></result>
+        <result column="annual_target" javaType="double" property="annualTarget"></result>
+        <result column="the_total" javaType="string" property="theTotal"></result>
+        <result column="completion" javaType="string" property="completion"></result>
+        <result column="january" javaType="double" property="january"></result>
+        <result column="february" javaType="double" property="february"></result>
+        <result column="march" javaType="double" property="march"></result>
+        <result column="april" javaType="double" property="april"></result>
+        <result column="may" javaType="double" property="may"></result>
+        <result column="june" javaType="double" property="june"></result>
+        <result column="july" javaType="double" property="july"></result>
+        <result column="august" javaType="double" property="august"></result>
+        <result column="september" javaType="double" property="september"></result>
+        <result column="october" javaType="double" property="october"></result>
+        <result column="november" javaType="double" property="november"></result>
+        <result column="december" javaType="double" property="december"></result>
+    </resultMap>
+
+
+
+
+
+    <select id="obtainRevenue" parameterType="string" resultMap="goal2">
+        SELECT unit, annual_target, the_total, completion FROM tar_sal_rev WHERE annual = #{annual}
+    </select>
+
+    <select id="obtainNet" parameterType="string" resultMap="goal2">
+        SELECT unit, annual_target, the_total, completion FROM tar_sal_net WHERE annual = #{annual}
+    </select>
+
+    <select id="obtainGross" parameterType="string" resultMap="goal2">
+        SELECT unit, annual_target, the_total, completion FROM tar_sal_gro WHERE annual = #{annual}
+    </select>
+
+    <select id="obtainPatent" parameterType="string" resultMap="goal">
+        SELECT unit, annual_target, the_total, completion FROM tar_pat_in WHERE annual = #{annual}
+    </select>
+
+    <select id="obtainPatentCon" parameterType="java.util.Map" resultMap="goal">
+        SELECT annual_target, the_total, completion FROM tar_pat_in WHERE annual = #{annual} AND unit = #{unit}
+    </select>
+
+    <select id="obtainNetCon" parameterType="java.util.Map" resultMap="goal2">
+        SELECT annual_target, the_total, completion FROM tar_sal_net WHERE annual = #{annual} AND unit = #{unit}
+    </select>
+
+    <select id="obtainGrossCon" parameterType="java.util.Map" resultMap="goal2">
+        SELECT unit, annual_target, the_total, completion FROM tar_sal_gro WHERE annual = #{annual} AND unit IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="obtainRevenueCon" parameterType="java.util.Map" resultMap="goal2">
+        SELECT unit, annual_target, the_total, completion FROM tar_sal_rev WHERE annual = #{annual} AND unit IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="obtainRevenueUnit" parameterType="java.util.Map" resultMap="goal2">
+        SELECT unit, annual_target, the_total, completion, january, february, march, april, may, june, july, august, september, october, november, december
+        FROM tar_sal_rev WHERE annual = #{annual} AND unit = #{unit}
+    </select>
+
+    <select id="obtainGrossUnit" parameterType="java.util.Map" resultMap="goal2">
+        SELECT unit, annual_target, the_total, completion, january, february, march, april, may, june, july, august, september, october, november, december
+        FROM tar_sal_gro WHERE annual = #{annual} AND unit = #{unit}
+    </select>
+
+    <select id="obtainPatentUnit" parameterType="java.util.Map" resultMap="goal">
+        SELECT unit, annual_target, the_total, completion, january, february, march, april, may, june, july, august, september, october, november, december
+        FROM tar_pat_in WHERE annual = #{annual} AND unit = #{unit}
+    </select>
+</mapper>

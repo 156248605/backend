@@ -31,20 +31,35 @@
 		where id=#{id}
 	</select>
 
+	<select id="selectServingUserByUserid" parameterType="java.lang.Integer" resultMap="UserMapper">
+		select * from tb_id_user
+		where id=#{id} AND state=1
+	</select>
+
 	<select id="selectByTruename" resultType="java.lang.String" resultMap="UserMapper">
 		SELECT * FROM tb_id_user
 		WHERE truename=#{truename}
 	</select>
 
-	<update id="deleteById" parameterType="java.lang.Integer" >
+	<select id="selectByUsername" resultType="java.lang.String" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE username=#{username}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_user
+		WHERE id=#{id}
+	</delete>
+
+	<update id="deleteDimissionById" parameterType="java.lang.Integer" >
 		UPDATE tb_id_user
-		SET state=0
+		SET state=1
 		WHERE id=#{id}
 	</update>
 
-	<update id="deleteById2" parameterType="java.lang.Integer" >
+	<update id="addDimissionById" parameterType="java.lang.Integer" >
 		UPDATE tb_id_user
-		SET state=1
+		SET state=0
 		WHERE id=#{id}
 	</update>
 
@@ -55,9 +70,12 @@
 		tb_id_user u
 		JOIN tb_id_personalinformation p ON u.id = p.userid
 		<where>
-			<if test="truename!=null and truename!=''">
-				<if test="truenamevalue==''">
-					AND u.truename = #{truename}
+			<if test="truename!=null and truename!='' or truenames!=null">
+				<if test="truenamevalue=='' and truenames.size!=0">
+					AND u.truename IN
+					<foreach collection="truenames" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="truenamevalue=='包含'">
 					AND u.truename LIKE CONCAT(CONCAT('%',#{truename}),'%')
@@ -66,9 +84,12 @@
 					AND u.truename NOT LIKE CONCAT(CONCAT('%',#{truename}),'%')
 				</if>
 			</if>
-			<if test="employeenumber!=null and employeenumber!=''">
-				<if test="employeenumbervalue==''">
-					AND p.employeenumber = #{employeenumber}
+			<if test="employeenumber!=null and employeenumber!='' or employeenumbers!=null">
+				<if test="employeenumbervalue=='' and employeenumbers.size!=0">
+					AND p.employeenumber IN
+					<foreach collection="employeenumbers" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="employeenumbervalue=='包含'">
 					AND p.employeenumber LIKE CONCAT(CONCAT('%',#{employeenumber}),'%')
@@ -79,6 +100,12 @@
 			</if>
 			and u.state=1
 		</where>
+		ORDER BY u.id DESC
+	</select>
+
+	<select id="selectAllServings" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE state=1
 	</select>
 
 </mapper>

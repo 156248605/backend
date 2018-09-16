@@ -37,6 +37,13 @@ public interface IPerandpostrsDao {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据postid删除信息
+     *@Date: 9:56 2018\6\21 0021
+     */
+    public void deleteByPostid(Integer postid);
+
+    /**
+     *@Author:ShiYun;
      *@Description:根据条件查询信息
      *@Date: 15:04 2018\5\22 0022
      */
@@ -48,4 +55,11 @@ public interface IPerandpostrsDao {
      *@Date: 15:04 2018\5\22 0022
      */
     public List<PerAndPostRs> selectByConditions2(PersonalInformation personalInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据postid查询perids
+     *@Date: 15:56 2018\8\21 0021
+     */
+    public List<PerAndPostRs> selectPeridsByPostid(Integer postid);
 }

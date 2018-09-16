@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.objectives.TargetDao">
+    <resultMap id="target" type="com.elex.oa.entity.objectives.Target">
+        <id  column="id"  javaType="int"  property="id"></id>
+        <result  column="annual"  javaType="string"  property="annual"></result>
+        <result  column="department"  javaType="string"  property="department"></result>
+        <result  column="goal"  javaType="string"  property="goal"></result>
+        <result  column="cumulative"  javaType="string"  property="cumulative"></result>
+        <result  column="ratio"  javaType="string"  property="ratio"></result>
+    </resultMap>
+
+    <select id="querySalesAnnual" parameterType="string" resultType="target">
+        SELECT id, annual, department, goal, cumulative, ratio FROM tar_sales WHERE annual = #{year}
+    </select>
+
+    <select id="queryNetAnnual" parameterType="string" resultType="target">
+        SELECT id, annual, department, goal, cumulative, ratio FROM tar_net WHERE annual = #{year}
+    </select>
+
+    <select id="queryInventionAnnual" parameterType="string" resultType="target">
+        SELECT id, annual, goal, cumulative, ratio FROM tar_in WHERE annual = #{year}
+    </select>
+
+    <select id="querySalesList" resultType="target">
+        SELECT id, annual, department, goal, cumulative, ratio FROM tar_sales
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND annual LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND annual NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="list2 != null">
+                AND department IN
+                <foreach collection="list2" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND goal LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND goal NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select4 == 1 and input4 != ''">
+                AND cumulative LIKE CONCAT('%',#{input4},'%')
+            </if>
+            <if test="select4 == 2 and input4 != ''">
+                AND cumulative NOT LIKE CONCAT('%',#{input4},'%')
+            </if>
+            <if test="select5 == 1 and input2 != ''">
+                AND ratio LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select5 == 2 and input2 != ''">
+                AND ratio NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryNetList" resultType="target">
+        SELECT id, annual, department, goal, cumulative, ratio FROM tar_net
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND annual LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND annual NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="list2 != null">
+                AND department IN
+                <foreach collection="list2" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND goal LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND goal NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select4 == 1 and input4 != ''">
+                AND cumulative LIKE CONCAT('%',#{input4},'%')
+            </if>
+            <if test="select4 == 2 and input4 != ''">
+                AND cumulative NOT LIKE CONCAT('%',#{input4},'%')
+            </if>
+            <if test="select5 == 1 and input2 != ''">
+                AND ratio LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select5 == 2 and input2 != ''">
+                AND ratio NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryInventionList" resultType="target">
+        SELECT id, annual, goal, cumulative, ratio FROM tar_in
+        <where>
+            <if test="select1 == 1 and input1 != ''">
+                AND annual LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND annual NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND goal LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND goal NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select4 == 1 and input4 != ''">
+                AND cumulative LIKE CONCAT('%',#{input4},'%')
+            </if>
+            <if test="select4 == 2 and input4 != ''">
+                AND cumulative NOT LIKE CONCAT('%',#{input4},'%')
+            </if>
+            <if test="select5 == 1 and input2 != ''">
+                AND ratio LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select5 == 2 and input2 != ''">
+                AND ratio NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addSales" parameterType="com.elex.oa.entity.objectives.Target">
+        INSERT INTO tar_sales (id, annual, department, goal, cumulative, ratio) VALUES(NULL, #{annual}, #{department}, #{goal}, #{cumulative}, #{ratio})
+    </insert>
+
+    <insert id="addNet" parameterType="com.elex.oa.entity.objectives.Target">
+        INSERT INTO tar_net (id, annual, department, goal, cumulative, ratio) VALUES(NULL, #{annual}, #{department}, #{goal}, #{cumulative}, #{ratio})
+    </insert>
+
+    <insert id="addInvention" parameterType="com.elex.oa.entity.objectives.Target">
+        INSERT INTO tar_in (id, annual, goal, cumulative, ratio) VALUES(NULL, #{annual}, #{goal}, #{cumulative}, #{ratio})
+    </insert>
+
+    <update id="amendSales" parameterType="com.elex.oa.entity.objectives.Target">
+        UPDATE tar_sales SET goal = #{goal}, cumulative = #{cumulative}, ratio = #{ratio} WHERE id = #{id}
+    </update>
+
+    <update id="amendNet" parameterType="com.elex.oa.entity.objectives.Target">
+        UPDATE tar_net SET goal = #{goal}, cumulative = #{cumulative}, ratio = #{ratio} WHERE id = #{id}
+    </update>
+
+    <update id="amendInvention" parameterType="com.elex.oa.entity.objectives.Target">
+        UPDATE tar_in SET goal = #{goal}, cumulative = #{cumulative}, ratio = #{ratio} WHERE id = #{id}
+    </update>
+
+    <select id="querySalesDepartment" parameterType="java.util.Map" resultMap="target">
+        SELECT  goal, cumulative, ratio FROM tar_sales WHERE department = #{department} AND annual = #{annual}
+    </select>
+
+    <select id="queryNetDepartment" parameterType="java.util.Map" resultMap="target">
+        SELECT  goal, cumulative, ratio FROM tar_net WHERE department = #{department} AND annual = #{annual}
+    </select>
+</mapper>

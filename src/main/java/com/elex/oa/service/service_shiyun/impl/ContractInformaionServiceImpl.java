@@ -5,6 +5,7 @@ import com.elex.oa.dao.dao_shiyun.IHRsetContracttypeDao;
 import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
 import com.elex.oa.dao.dao_shiyun.IUserDao;
 import com.elex.oa.entity.entity_shiyun.ContractInformation;
+import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IContractInformationService;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
@@ -77,16 +78,23 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
             contractInformation.setTruename(iUserDao.selectById(contractInformation.getUserid()).getTruename());
         }
         //获得工号
+        Integer uid = contractInformation.getUserid();
+        System.out.println(uid);
+        PersonalInformation per = iPersonalInformationDao.selectByUserid(uid);
+        System.out.println(per);
+        System.out.println(per.getEmployeenumber());
         contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
         //获得合同类型
-        contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+        if (ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid())!=null) {
+            contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+        }
         //获得办理人姓名
         contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
         //获得合同期限
         try {
             contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
-        } catch (ParseException e) {
-            System.out.println("获得合同期限失败！");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         //获得续签合同集合
         List<ContractInformation> contractInformationList = iContractInformationDao.selectByUserid(contractInformation.getUserid());
@@ -111,7 +119,9 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
                 contractInformation.setTruename(iUserDao.selectById(contractInformation.getUserid()).getTruename());
             }
             //获得工号
-            contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
+            if (iPersonalInformationDao.selectByUserid(contractInformation.getUserid())!=null) {
+                contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
+            }
             //获得合同类型
             contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
             //获得办理人姓名
@@ -119,7 +129,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
             //获得合同期限
             try {
                 contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 System.out.println("获得合同期限失败！");
             }
         }
@@ -144,6 +154,16 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      */
     public List<ContractInformation> queryAll(ContractInformation contractInformation){
         List<ContractInformation> contractInformationList = iContractInformationDao.selectAll(contractInformation);
+        for (ContractInformation con:contractInformationList
+             ) {
+            User user = iUserDao.selectById(con.getUserid());
+            if(user==null){//用户不存在
+                iContractInformationDao.deleteOne(con.getId());
+                continue;
+            }
+            Integer state = iUserDao.selectById(con.getUserid()).getState();
+            con.setState(state.toString());
+        }
         return contractInformationList;
     }
 
@@ -153,7 +173,18 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      *@Date: 14:28 2018\4\20 0020
      */
     @Override
-    public Integer addOne(ContractInformation contractInformation) {
+    public Integer addOne(ContractInformation contractInformation) throws ParseException {
+        String contractage = null;
+        try {
+            contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (contractage!=null && !contractage.equals("")) {
+            contractInformation.setContractage(contractage);
+        }else {
+            contractInformation.setContractage("0");
+        }
         Integer integer = iContractInformationDao.insertOne(contractInformation);
         return contractInformation.getId();
     }
@@ -174,7 +205,18 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      *@Date: 10:14 2018\5\29 0029
      */
     @Override
-    public void modifyOne(ContractInformation contractInformation) {
+    public void modifyOne(ContractInformation contractInformation) throws ParseException {
+        String contractage = null;
+        try {
+            contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (contractage!=null && !contractage.equals("")) {
+            contractInformation.setContractage(contractage);
+        }else {
+            contractInformation.setContractage("0");
+        }
         iContractInformationDao.updateOne(contractInformation);
     }
 }

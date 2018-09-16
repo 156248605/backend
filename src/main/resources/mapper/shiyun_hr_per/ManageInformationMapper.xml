@@ -54,4 +54,8 @@
 		where id=#{id}
 	</update>
 
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_manageinformation
+		WHERE id=#{id}
+	</delete>
 </mapper>

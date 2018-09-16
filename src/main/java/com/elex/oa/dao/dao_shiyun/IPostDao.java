@@ -22,6 +22,13 @@ public interface IPostDao  {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据岗位编号查询岗位信息
+     *@Date: 15:27 2018\8\11 0011
+     */
+    Post selectPostByPostcode(String postcode);
+
+    /**
+     *@Author:ShiYun;
      *@Description:查询所有岗位信息
      *@Date: 11:15 2018\4\11 0011
      */

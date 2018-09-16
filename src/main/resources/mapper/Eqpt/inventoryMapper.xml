@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.InventoryMapper">
+
+    <select id="find" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inventory ORDER BY invId
+    </select>
+
+    <select id="checkDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inventory_draft WHERE invId = #{invId}
+    </select>
+
+    <delete id="delete" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inventory WHERE onlyIdInv = #{onlyIdInv} AND invId = #{invId}
+    </delete>
+
+    <delete id="deleteD" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inventory_draft WHERE onlyIdInv = #{onlyIdInv} AND invId = #{invId}
+    </delete>
+
+    <delete id="deleteDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inventory_draft WHERE invId = #{invId}
+    </delete>
+
+    <insert id="insert" parameterType="com.elex.oa.entity.eqpt.Repository">
+        INSERT INTO eqpt_inventory VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{spec},#{category},#{reptId},#{postId},#{price},#{num},#{numInv},#{palPer},#{pal},#{palCal},#{remark},#{instid})
+    </insert>
+
+    <insert id="insertDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        INSERT INTO eqpt_inventory_draft VALUES (NULL,#{invId},#{invTime},#{materialId},#{materialName},#{spec},#{category},#{reptId},#{position},#{price},#{num},#{numInv},#{pal},#{palCal},#{remark})
+    </insert>
+
+    <select id="showINVID" resultType="java.lang.String">
+        SELECT invId FROM eqpt_inventory WHERE invId LIKE CONCAT(CONCAT('%',#{invId},'%'))
+    </select>
+
+    <select id="showINVIDd" resultType="java.lang.String">
+        SELECT invId FROM eqpt_inventory_draft WHERE invId LIKE CONCAT(CONCAT('%',#{invId},'%'))
+    </select>
+
+    <select id="chooseMat" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT w_ykmx1.F_WPBM AS materialId,w_ykmx1.F_WPMC AS materialName,w_ykmx1.F_GGXH AS spec,w_ykmx1.F_WPLB AS category,w_ykmx1.F_CK AS reptId,w_ykmx1.F_KW AS postId,w_ykmx1.F_DJ AS price,w_ykmx1.F_KCSL AS num,w_ykmx1.F_PDSL AS numInv,w_ykmx1.F_PDYK AS palPer,w_ykmx1.F_BZ AS remark FROM w_ykmx1,w_kcpdd2 WHERE w_ykmx1.REF_ID_ = (SELECT ID_ FROM w_kcpdd2 WHERE F_PDBH = #{id} ORDER BY ID_ DESC LIMIT 1)
+    </select>
+
+    <select id="matinrept" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_detail WHERE reptId = #{reptId} AND id IN (${id})
+    </select>
+
+    <select id="openDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inventory_draft WHERE invId = #{invId}
+    </select>
+
+    <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT eqpt_detail.reptId,eqpt_repository.reptId FROM eqpt_repository,eqpt_detail WHERE eqpt_detail.reptId = eqpt_repository.reptId
+    </select>
+
+    <select id="search" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inventory
+        <where>
+            <if test="invId != null and invId != '' and invIdC == ''">
+                AND invId LIKE CONCAT(CONCAT('%', #{invId}), '%')
+            </if>
+            <if test="invId != null and invId != '' and invIdC == 1">
+                AND invId LIKE CONCAT(CONCAT('%', #{invId}), '%')
+            </if>
+            <if test="invId != null and invId != '' and invIdC == 2">
+                AND invId NOT LIKE CONCAT(CONCAT('%', #{invId}), '%')
+            </if>
+            <if test="invTime != null and invTime != '' and invTimeC == ''">
+                AND invTime LIKE CONCAT(CONCAT('%', #{invTime}), '%')
+            </if>
+            <if test="invTime != null and invTime != '' and invTimeC == ''">
+                AND invTime LIKE CONCAT(CONCAT('%', #{invTime}), '%')
+            </if>
+            <if test="invTime != null and invTime != '' and invTimeC == ''">
+                AND invTime NOT LIKE CONCAT(CONCAT('%', #{invTime}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == ''">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 1">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 2">
+                AND materialId NOT LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialName != null and materialName != '' and matNameC == ''">
+                AND bn LIKE CONCAT(CONCAT('%', #{materialName}), '%')
+            </if>
+            <if test="materialName != null and materialName != '' and matNameC == 1">
+                AND materialName LIKE CONCAT(CONCAT('%', #{materialName}), '%')
+            </if>
+            <if test="materialName != null and materialName != '' and matNameC == 2">
+                AND materialName NOT LIKE CONCAT(CONCAT('%', #{materialName}), '%')
+            </if>
+            <if test="position != null and position != '' and positionC == ''">
+                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>
+            <if test="position != null and position != '' and positionC == 1">
+                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>
+            <if test="position != null and position != '' and positionC == 2">
+                AND position NOT LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == ''">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 1">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 2">
+                AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="price != null and price != '' and priceC == ''">
+                AND price LIKE CONCAT(CONCAT('%', #{price}), '%')
+            </if>
+            <if test="price != null and price != '' and priceC == 1">
+                AND price &lt; ${price}
+            </if>
+            <if test="price != null and price != '' and priceC == 2">
+                AND price > ${price}
+            </if>
+            <if test="price != null and price != '' and priceC == 3">
+                AND price = ${price}
+            </if>
+            <if test="price != null and price != '' and priceC == 4">
+                AND price &lt;= ${price}
+            </if>
+            <if test="price != null and price != '' and priceC == 5">
+                AND price >= ${price}
+            </if>
+            <if test="num != null and num != '' and numC == ''">
+                AND num LIKE CONCAT(CONCAT('%', #{num}), '%')
+            </if>
+            <if test="num != null and num != '' and numC == 1">
+                AND num &lt; ${num}
+            </if>
+            <if test="num != null and num != '' and numC == 2">
+                AND num > ${num}
+            </if>
+            <if test="num != null and num != '' and numC == 3">
+                AND num = ${num}
+            </if>
+            <if test="num != null and num != '' and numC == 4">
+                AND num &lt;= ${num}
+            </if>
+            <if test="num != null and num != '' and numC == 5">
+                AND num >= ${num}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == ''">
+                AND numInv LIKE CONCAT(CONCAT('%', #{numInv}), '%')
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 1">
+                AND numInv &lt; ${numInv}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 2">
+                AND numInv > ${numInv}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 3">
+                AND numInv = ${numInv}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 4">
+                AND numInv &lt;= ${numInv}
+            </if>
+            <if test="numInv != null and numInv != '' and numInvC == 5">
+                AND numInv >= ${numInv}
+            </if>
+            <if test="pal != null and pal != '' and palC == ''">
+                AND pal LIKE CONCAT(CONCAT('%', #{pal}), '%')
+            </if>
+            <if test="pal != null and pal != '' and palC == 1">
+                AND pal &lt; ${pal}
+            </if>
+            <if test="pal != null and pal != '' and palC == 2">
+                AND pal > ${pal}
+            </if>
+            <if test="pal != null and pal != '' and palC == 3">
+                AND pal = ${pal}
+            </if>
+            <if test="pal != null and pal != '' and palC == 4">
+                AND pal &lt;= ${pal}
+            </if>
+            <if test="pal != null and pal != '' and palC == 5">
+                AND pal >= ${pal}
+            </if>
+        </where>
+    </select>
+
+    <update id="changeInv" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_inventory
+        <set>
+            <if test="invId != null and invId != ''">
+                invId = #{invId},
+            </if>
+            <if test="invTime != null and invTime != ''">
+                invTime = #{invTime},
+            </if>
+            <if test="materialId != null and materialId != ''">
+                materialId = #{materialId},
+            </if>
+            <if test="materialName != null and materialName != ''">
+                materialName = #{materialName},
+            </if>
+            <if test="reptId != null and reptId != ''">
+                reptId = #{reptId},
+            </if>
+            <if test="position != null and position != ''">
+                position = #{position},
+            </if>
+            <if test="price != null and price != ''">
+                price = #{price},
+            </if>
+            <if test="num != null and num != ''">
+                num = #{num},
+            </if>
+            <if test="numInv != null and numInv != ''">
+                numInv = #{numInv},
+            </if>
+            <if test="pal != null and pal != ''">
+                pal = #{pal},
+            </if>
+            <if test="palCal != null and palCal != ''">
+                palCal = #{palCal},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="spec != null and spec != ''">
+                spec = #{spec},
+            </if>
+            <if test="category != null and category != ''">
+                category = #{category},
+            </if>
+        </set>
+        WHERE onlyIdInv = #{onlyIdInv} AND invId = #{invId}
+    </update>
+
+    <update id="changeInvD" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_inventory_draft
+        <set>
+            <if test="invTime != null and invTime != ''">
+                invTime = #{invTime},
+            </if>
+            <if test="numInv != null and numInv != ''">
+                numInv = #{numInv},
+            </if>
+            <if test="pal != null and pal != ''">
+                pal = #{pal},
+            </if>
+            <if test="palCal != null and palCal != ''">
+                palCal = #{palCal},
+            </if>
+        </set>
+        WHERE invId = #{invId} AND reptId = #{reptId} AND position = #{position} AND materialId = #{materialId}
+    </update>
+
+    <select id="getInvId" resultType="java.lang.String">
+        SELECT DISTINCT F_PDBH FROM w_kcpdd2 WHERE F_PDBH NOT IN (SELECT invId FROM eqpt_inventory) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="invInfo" resultType="HashMap">
+        SELECT * FROM w_kcpdd2 WHERE INST_STATUS_ = #{arg0} AND ID_ NOT IN (SELECT INST_ID_ FROM eqpt_inventory) ORDER BY ID_ DESC LIMIT 1
+    </select>
+
+    <select id="invDetail" resultType="HashMap">
+        SELECT * FROM w_ykmx1 WHERE REF_ID_ = #{arg0}
+    </select>
+
+    <select id="test" resultType="HashMap">
+        SELECT * FROM w_gzrz
+    </select>
+
+
+    <update id="changeNum" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_detail SET num = #{numInv} WHERE id = #{materialId} AND reptId = #{reptId}
+        <if test="postId != null and postId != '' and postId != '无'">
+            AND postId = #{postId}
+        </if>
+    </update>
+
+    <update id="changeNumMat" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_material SET num = num + #{unit} WHERE id = #{materialId}
+    </update>
+</mapper>

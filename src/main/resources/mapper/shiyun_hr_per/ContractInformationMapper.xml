@@ -13,6 +13,7 @@
 		<result column="remark" property="remark" />
 		<result column="transactoruserid" property="transactoruserid" />
 		<result column="transdate" property="transdate" />
+		<result column="contractage" property="contractage" />
 	</resultMap>
 
 	<select id="selectByConditions" parameterType="ContractInformation" resultMap="ContractInformationResultMap">
@@ -26,7 +27,8 @@
 			c.attachment,
 			c.remark,
 			c.transactoruserid,
-			c.transdate
+			c.transdate,
+		    c.contractage
 		FROM
 			tb_hr_contractinformation c
 		LEFT JOIN tb_id_user u ON c.userid = u.id
@@ -38,9 +40,12 @@
 					#{param}
 				</foreach>
 			</if>
-			<if test="contractcode!=null and contractcode!=''">
-				<if test="contractcodevalue==''">
-					AND c.contractcode = #{contractcode}
+			<if test="contractcode!=null and contractcode!='' or contractcodes!=null">
+				<if test="contractcodevalue=='' and contractcodes.size!=0">
+					AND c.contractcode IN
+					<foreach collection="contractcodes" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="contractcodevalue=='包含'">
 					AND c.contractcode LIKE CONCAT(CONCAT('%',#{contractcode}),'%')
@@ -49,9 +54,12 @@
 					AND c.contractcode NOT LIKE CONCAT(CONCAT('%',#{contractcode}),'%')
 				</if>
 			</if>
-			<if test="contracttype!=null and contracttype!=''">
-				<if test="contracttypevalue==''">
-					AND ct.contracttype = #{contracttype}
+			<if test="contracttype!=null and contracttype!='' or contracttypes!=null">
+				<if test="contracttypevalue=='' and contracttypes.size!=0">
+					AND ct.contracttype IN
+					<foreach collection="contracttypes" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="contracttypevalue=='包含'">
 					AND ct.contracttype LIKE CONCAT(CONCAT('%',#{contracttype}),'%')
@@ -60,9 +68,12 @@
 					AND ct.contracttype NOT LIKE CONCAT(CONCAT('%',#{contracttype}),'%')
 				</if>
 			</if>
-			<if test="contractage!=null and contractage!=''">
-				<if test="contractagevalue==''">
-					AND c.enddate - c.startdate = #{contractage}
+			<if test="contractage!=null and contractage!='' or contractages!=null">
+				<if test="contractagevalue=='' and contractages.size!=0">
+					AND c.contractage IN
+					<foreach collection="contractages" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="contractagevalue== 1">
 					<![CDATA[ AND c.enddate - c.startdate > #{contractage} ]]>
@@ -102,7 +113,7 @@
 			</if>
 			AND c.enddate <![CDATA[>]]> #{curdate}
 		</where>
-		GROUP BY c.id
+		GROUP BY c.id DESC
 	</select>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">
@@ -116,7 +127,8 @@
 			attachment,
 			remark,
 			transactoruserid,
-			transdate
+			transdate,
+			contractage
 		FROM
 			tb_hr_contractinformation
 		WHERE
@@ -134,7 +146,8 @@
 			attachment,
 			remark,
 			transactoruserid,
-			transdate)
+			transdate,
+			contractage)
 		  VALUES
 		  (NULL ,
 		  #{contractcode},
@@ -145,11 +158,13 @@
 		  #{attachment},
 		  #{remark},
 		  #{transactoruserid},
-		  #{transdate})
+		  #{transdate},
+		  #{contractage})
 	</insert>
 
 	<select id="selectAll" resultMap="ContractInformationResultMap">
 		SELECT * FROM tb_hr_contractinformation
+		ORDER BY id DESC
 	</select>
 
 	<select id="selectByUserid" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">
@@ -174,6 +189,7 @@
 			<if	test="remark!=null and remark!=''">remark=#{remark},</if>
 			<if	test="transactoruserid!=null and transactoruserid!=''">transactoruserid=#{transactoruserid},</if>
 			<if	test="transdate!=null and transdate!=''">transdate=#{transdate},</if>
+			<if	test="contractage!=null and contractage!=''">contractage=#{contractage},</if>
 		</set>
 		WHERE id=#{id}
 	</update>

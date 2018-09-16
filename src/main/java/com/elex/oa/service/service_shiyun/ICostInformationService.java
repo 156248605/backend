@@ -30,4 +30,11 @@ public interface ICostInformationService {
      *@Date: 16:41 2018\4\12 0012
      */
     public void modifyOne(CostInformation costInformation);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除成本信息
+     *@Date: 15:24 2018\8\20 0020
+     */
+    public void remvoeOne(Integer costinformationid);
 }

@@ -4,6 +4,7 @@ import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Linkman;
 import org.apache.ibatis.annotations.Mapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Mapper
@@ -12,10 +13,13 @@ public interface LinkmanMapper {
 
     List<Linkman> searchFor(Linkman linkman);
 
+    List<Linkman> search(Linkman linkman);
+
     void newLinkman(Linkman linkman);
 
     void deleteLinkman(Linkman linkman);
 
     int importLinkman(Linkman linkman);
 
+    void changeLinkman(Linkman linkman);
 }

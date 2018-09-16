@@ -42,7 +42,7 @@ public interface IDimissionInformationService extends BaseService<DimissionInfor
      *@Description:根据dimissionid修改离职信息
      *@Date: 13:48 2018\4\17 0017
      */
-    public void modifyOne(DimissionInformation dimissionInformation);
+    public Object modifyOne(DimissionInformation dimissionInformation);
 
     /**
      *@Author:ShiYun;

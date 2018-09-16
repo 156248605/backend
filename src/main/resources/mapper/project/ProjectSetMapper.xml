@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.project.ProjectSetDao">
+
+    <resultMap id="projectVarious" type="com.elex.oa.entity.project.ProjectVarious">
+        <result column="KEY_" javaType="int" property="code"></result>
+        <result column="NAME_" javaType="string" property="name"></result>
+    </resultMap>
+
+    <select id="queryType" resultMap="projectVarious">
+        SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目类型')
+    </select>
+
+    <select id="querySource" resultMap="projectVarious">
+        SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目来源')
+    </select>
+
+    <select id="queryStatus" resultMap="projectVarious">
+        SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目状态')
+    </select>
+
+    <select id="queryPhase" resultMap="projectVarious">
+        SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目阶段')
+    </select>
+
+</mapper>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.eqptDao.LinkmanMapper">
+
+    <select id="LinkmanList" resultType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT * FROM eqpt_linkman
+    </select>
+
+    <select id="searchFor" resultType="com.elex.oa.entity.eqpt.Linkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT * FROM eqpt_linkman
+        <where>
+            <if test="linkId != null and linkId != '' and linkIdC == ''">
+                AND linkId LIKE CONCAT(CONCAT('%', #{linkId}), '%')
+            </if>
+            <if test="linkId != null and linkId != '' and linkIdC == 1">
+                AND linkId LIKE CONCAT(CONCAT('%', #{linkId}), '%')
+            </if>
+            <if test="linkId != null and linkId != '' and linkIdC == 2">
+                AND linkId NOT LIKE CONCAT(CONCAT('%', #{linkId}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == ''">
+                AND name LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == 1">
+                AND name LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == 2">
+                AND name NOT LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="tel != null and tel != '' and telC == ''">
+                AND tel LIKE CONCAT(CONCAT('%', #{tel}), '%')
+            </if>
+            <if test="tel != null and tel != '' and telC == 1">
+                AND tel LIKE CONCAT(CONCAT('%', #{tel}), '%')
+            </if>
+            <if test="tel != null and tel != '' and telC == 2">
+                AND tel NOT LIKE CONCAT(CONCAT('%', #{tel}), '%')
+            </if>
+            <if test="job != null and job != '' and jobC == ''">
+                AND job LIKE CONCAT(CONCAT('%', #{job}), '%')
+            </if>
+            <if test="job != null and job != '' and jobC == 1">
+                AND job LIKE CONCAT(CONCAT('%', #{job}), '%')
+            </if>
+            <if test="job != null and job != '' and jobC == 2">
+                AND job NOT LIKE CONCAT(CONCAT('%', #{job}), '%')
+            </if>
+            <if test="address != null and address != '' and addressC == ''">
+                AND address LIKE CONCAT(CONCAT('%', #{address}), '%')
+            </if>
+            <if test="address != null and address != '' and addressC == 1">
+                AND address LIKE CONCAT(CONCAT('%', #{address}), '%')
+            </if>
+            <if test="address != null and address != '' and addressC == 2">
+                AND address NOT LIKE CONCAT(CONCAT('%', #{address}), '%')
+            </if>
+            <if test="email != null and email != '' and emailC == ''">
+                AND email LIKE CONCAT(CONCAT('%', #{email}), '%')
+            </if>
+            <if test="email != null and email != '' and emailC == 1">
+                AND email LIKE CONCAT(CONCAT('%', #{email}), '%')
+            </if>
+            <if test="email != null and email != '' and emailC == 2">
+                AND email NOT LIKE CONCAT(CONCAT('%', #{email}), '%')
+            </if>
+            <if test="qqNum != null and qqNum != '' and qqNumC == ''">
+                AND qqNum LIKE CONCAT(CONCAT('%', #{qqNum}), '%')
+            </if>
+            <if test="qqNum != null and qqNum != '' and qqNumC == 1">
+                AND qqNum LIKE CONCAT(CONCAT('%', #{qqNum}), '%')
+            </if>
+            <if test="qqNum != null and qqNum != '' and qqNumC == 2">
+                AND qqNum NOT LIKE CONCAT(CONCAT('%', #{qqNum}), '%')
+            </if>
+            <if test="wechatNum != null and wechatNum != '' and wechatNumC == ''">
+                AND wechatNum LIKE CONCAT(CONCAT('%', #{wechatNum}), '%')
+            </if>
+            <if test="wechatNum != null and wechatNum != '' and wechatNumC == 1">
+                AND wechatNum LIKE CONCAT(CONCAT('%', #{wechatNum}), '%')
+            </if>
+            <if test="wechatNum != null and wechatNum != '' and wechatNumC == 2">
+                AND wechatNum NOT LIKE CONCAT(CONCAT('%', #{wechatNum}), '%')
+            </if>
+            <if test="workPlace != null and workPlace != '' and workPlaceC == ''">
+                AND workPlace LIKE CONCAT(CONCAT('%', #{workPlace}), '%')
+            </if>
+            <if test="workPlace != null and workPlace != '' and workPlaceC == 1">
+                AND workPlace LIKE CONCAT(CONCAT('%', #{workPlace}), '%')
+            </if>
+            <if test="workPlace != null and workPlace != '' and workPlaceC == 2">
+                AND workPlace NOT LIKE CONCAT(CONCAT('%', #{workPlace}), '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="search" resultType="com.elex.oa.entity.eqpt.Linkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        SELECT * FROM eqpt_linkman
+        <where>
+            <if test="linkId != null and linkId != '' ">
+                AND linkId = #{linkId}
+            </if>
+            <!--<if test="name != null and name != '' ">
+                AND name = #{name}
+            </if>
+            <if test="tel != null and tel != '' ">
+                AND tel = #{tel}
+            </if>
+            <if test="job != null and job != '' ">
+                AND job = #{job}
+            </if>
+            <if test="address != null and address != '' ">
+                AND address = #{address}
+            </if>
+            <if test="email != null and email != '' ">
+                AND email = #{email}
+            </if>
+            <if test="qqNum != null and qqNum != '' ">
+                AND qqNum = #{qqNum}
+            </if>
+            <if test="wechatNum != null and wechatNum != '' ">
+                AND wechatNum = #{wechatNum}
+            </if>
+            <if test="workPlace != null and workPlace != '' ">
+                AND workPlace = #{workPlace}
+            </if>-->
+        </where>
+    </select>
+
+
+    <insert id="newLinkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        INSERT INTO eqpt_linkman VALUES (#{linkId},#{name},#{workPlace},#{tel},#{job},#{address},#{email},#{qqNum},#{wechatNum},NULL)
+    </insert>
+
+    <delete id="deleteLinkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        DELETE FROM eqpt_linkman WHERE onlyIdL = #{onlyIdL}
+    </delete>
+
+    <update id="changeLinkman" parameterType="com.elex.oa.entity.eqpt.Linkman">
+        UPDATE eqpt_linkman
+        <set>
+            <if test="linkId != null and linkId != '' ">
+                linkId = #{linkId},
+            </if>
+            <if test="name != null and name != '' ">
+                name = #{name},
+            </if>
+            <if test="tel != null">
+                tel = #{tel},
+            </if>
+            <if test="job != null">
+                job = #{job},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="qqNum != null">
+                qqNum = #{qqNum},
+            </if>
+            <if test="wechatNum != null">
+                wechatNum = #{wechatNum},
+            </if>
+            <if test="workPlace != null">
+                workPlace = #{workPlace}
+            </if>
+        </set>
+        WHERE onlyIdL = #{onlyIdL}
+    </update>
+</mapper>

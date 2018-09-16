@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.RepositoryMapper">
+    <select id="RepositoryList" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_repository
+    </select>
+
+    <select id="searchRepository" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_repository
+        <where>
+            <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
+                AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
+                AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
+                AND reptCategory NOT LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == ''">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 1">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 2">
+                AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptName != null and reptName != '' and reptNameC == ''">
+                AND reptName LIKE CONCAT(CONCAT('%', #{reptName}), '%')
+            </if>
+            <if test="reptName != null and reptName != '' and reptNameC == 1">
+                AND reptName LIKE CONCAT(CONCAT('%', #{reptName}), '%')
+            </if>
+            <if test="reptName != null and reptName != '' and reptNameC == 2">
+                AND reptName NOT LIKE CONCAT(CONCAT('%', #{reptName}), '%')
+            </if>
+            <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == ''">
+                AND reptAdmin LIKE CONCAT(CONCAT('%', #{reptAdmin}), '%')
+            </if>
+            <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == 1">
+                AND reptAdmin LIKE CONCAT(CONCAT('%', #{reptAdmin}), '%')
+            </if>
+            <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == 2">
+                AND reptAdmin NOT LIKE CONCAT(CONCAT('%', #{reptAdmin}), '%')
+            </if>
+            <if test="reptState != null and reptState != '' and reptStateC == ''">
+                AND reptState LIKE CONCAT(CONCAT('%', #{reptState}), '%')
+            </if>
+            <if test="reptState != null and reptState != '' and reptStateC == 1">
+                AND reptState LIKE CONCAT(CONCAT('%', #{reptState}), '%')
+            </if>
+            <if test="reptState != null and reptState != '' and reptStateC == 2">
+                AND reptState NOT LIKE CONCAT(CONCAT('%', #{reptState}), '%')
+            </if>
+            <if test="postManage != null and postManage != '' and postManageC == ''">
+                AND postManage LIKE CONCAT(CONCAT('%', #{postManage}), '%')
+            </if>
+            <if test="postManage != null and postManage != '' and postManageC == 1">
+                AND postManage LIKE CONCAT(CONCAT('%', #{postManage}), '%')
+            </if>
+            <if test="postManage != null and postManage != '' and postManageC == 2">
+                AND postManage NOT LIKE CONCAT(CONCAT('%', #{postManage}), '%')
+            </if>
+            <!--<if test="postId != null and postId != '' and postIdC == ''">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == 1">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == 2">
+                AND postId NOT LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postName != null and postName != '' and postNameC == ''">
+                AND postName LIKE CONCAT(CONCAT('%', #{postName}), '%')
+            </if>
+            <if test="postName != null and postName != '' and postNameC == 1">
+                AND postName LIKE CONCAT(CONCAT('%', #{postName}), '%')
+            </if>
+            <if test="postName != null and postName != '' and postNameC == 2">
+                AND postName NOT LIKE CONCAT(CONCAT('%', #{postName}), '%')
+            </if>
+            <if test="postCate != null and postCate != '' and postCateC == ''">
+                AND postCate LIKE CONCAT(CONCAT('%', #{postCate}), '%')
+            </if>
+            <if test="postCate != null and postCate != '' and postCateC == 1">
+                AND postCate LIKE CONCAT(CONCAT('%', #{postCate}), '%')
+            </if>
+            <if test="postCate != null and postCate != '' and postCateC == 2">
+                AND postCate NOT LIKE CONCAT(CONCAT('%', #{postCate}), '%')
+            </if>
+            <if test="fixPostMat != null and fixPostMat != '' and fixPostMatC == ''">
+                AND fixPostMat LIKE CONCAT(CONCAT('%', #{fixPostMat}), '%')
+            </if>
+            <if test="fixPostMat != null and fixPostMat != '' and fixPostMatC == 1">
+                AND fixPostMat LIKE CONCAT(CONCAT('%', #{fixPostMat}), '%')
+            </if>
+            <if test="fixPostMat != null and fixPostMat != '' and fixPostMatC == 2">
+                AND fixPostMat NOT LIKE CONCAT(CONCAT('%', #{fixPostMat}), '%')
+            </if>
+            <if test="postCap != null and postCap != '' and postCapC == ''">
+                AND postCap LIKE CONCAT(CONCAT('%', #{postCap}), '%')
+            </if>
+            <if test="postCap != null and postCap != '' and postCapC == 1">
+                AND postCap LIKE CONCAT(CONCAT('%', #{postCap}), '%')
+            </if>
+            <if test="postCap != null and postCap != '' and postCapC == 2">
+                AND postCap NOT LIKE CONCAT(CONCAT('%', #{postCap}), '%')
+            </if>-->
+            <if test="reptAddr != null and reptAddr != '' and reptAddrC == ''">
+                AND reptAddr LIKE CONCAT(CONCAT('%', #{reptAddr}), '%')
+            </if>
+            <if test="reptAddr != null and reptAddr != '' and reptAddrC == 1">
+                AND reptAddr LIKE CONCAT(CONCAT('%', #{reptAddr}), '%')
+            </if>
+            <if test="reptAddr != null and reptAddr != '' and reptAddrC == 2">
+                AND reptAddr NOT LIKE CONCAT(CONCAT('%', #{reptAddr}), '%')
+            </if>
+            <if test="remark != null and remark != ''">
+                AND remark LIKE CONCAT(CONCAT('%', #{remark}), '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="searchIn" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository
+        <where>
+            <if test="reptId != null and reptId != '' and reptIdC == ''">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 1">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 2">
+                AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptCategory != null and reptCategory != '' and reptCategoryC == ''">
+                AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="reptCategory != null and reptCategory != '' and reptCategoryC == 1">
+                AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="reptCategory != null and reptCategory != '' and reptCategoryC == 2">
+                AND reptCategory NOT LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == ''">
+                AND inNum LIKE CONCAT(CONCAT('%', #{inNum}), '%')
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 1">
+                AND inNum &lt; ${inNum}
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 2">
+                AND inNum > ${inNum}
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 3">
+                AND inNum = ${inNum}
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 4">
+                AND inNum &lt;= ${inNum}
+            </if>
+            <if test="inNum != null and inNum != '' and inNumC == 5">
+                AND inNum >= ${inNum}
+            </if>
+            <if test="inTime != null and inTime != '' and inTimeC == ''">
+                AND inTime LIKE CONCAT(CONCAT('%', #{inTime}), '%')
+            </if>
+            <if test="inTime != null and inTime != '' and inTimeC == 1">
+                AND inTime LIKE CONCAT(CONCAT('%', #{inTime}), '%')
+            </if>
+            <if test="inTime != null and inTime != '' and inTimeC == 2">
+                AND inTime NOT LIKE CONCAT(CONCAT('%', #{inTime}), '%')
+            </if>
+            <if test="inId != null and inId != '' and inIdC == ''">
+                AND inId LIKE CONCAT(CONCAT('%', #{inId}), '%')
+            </if>
+            <if test="inId != null and inId != '' and inIdC == 1">
+                AND inId LIKE CONCAT(CONCAT('%', #{inId}), '%')
+            </if>
+            <if test="inId != null and inId != '' and inIdC == 2">
+                AND inId NOT LIKE CONCAT(CONCAT('%', #{inId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == ''">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == 1">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == 2">
+                AND postId NOT LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == ''">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 1">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 2">
+                AND projId NOT LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == ''">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 1">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 2">
+                AND projName NOT LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == ''">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 1">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 2">
+                AND materialId NOT LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == ''">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 1">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 2">
+                AND sn NOT LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == ''">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 1">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 2">
+                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="searchOut" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_outrepository
+        <where>
+            <if test="reptId != null and reptId != '' and reptIdC == ''">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 1">
+                AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptId != null and reptId != '' and reptIdC == 2">
+                AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
+            </if>
+            <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
+                AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="reptCategory != null and reptCategory != '' and reptCateC == 1">
+                AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="reptCategory != null and reptCategory != '' and reptCateC == 2">
+                AND reptCategory NOT LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == ''">
+                AND outNum LIKE CONCAT(CONCAT('%', #{outNum}), '%')
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 1">
+                AND outNum &lt; ${outNum}
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 2">
+                AND outNum > ${outNum}
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 3">
+                AND outNum = ${outNum}
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 4">
+                AND outNum &lt;= ${outNum}
+            </if>
+            <if test="outNum != null and outNum != '' and outNumC == 5">
+                AND outNum >= ${outNum}
+            </if>
+            <if test="outTime != null and outTime != '' and outTimeC == ''">
+                AND outTime LIKE CONCAT(CONCAT('%', #{outTime}), '%')
+            </if>
+            <if test="outTime != null and outTime != '' and outTimeC == 1">
+                AND outTime LIKE CONCAT(CONCAT('%', #{outTime}), '%')
+            </if>
+            <if test="outTime != null and outTime != '' and outTimeC == 2">
+                AND outTime NOT LIKE CONCAT(CONCAT('%', #{outTime}), '%')
+            </if>
+            <if test="outId != null and outId != '' and outIdC == ''">
+                AND outId LIKE CONCAT(CONCAT('%', #{outId}), '%')
+            </if>
+            <if test="outId != null and outId != '' and outIdC == 1">
+                AND outId LIKE CONCAT(CONCAT('%', #{outId}), '%')
+            </if>
+            <if test="outId != null and outId != '' and outIdC == 2">
+                AND outId NOT LIKE CONCAT(CONCAT('%', #{outId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == ''">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == 1">
+                AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="postId != null and postId != '' and postIdC == 2">
+                AND postId NOT LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == ''">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 1">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 2">
+                AND projId NOT LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == ''">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 1">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 2">
+                AND projName NOT LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == ''">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 1">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 2">
+                AND materialId NOT LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == ''">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 1">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 2">
+                AND sn NOT LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == ''">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 1">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 2">
+                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{reptName},#{reptAdmin},#{reptState},#{reptAddr},#{postManage},#{price},#{spec},#{category},#{remark},NULL,#{num},#{materialId})
+    </insert>
+
+    <update id="changeRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_repository
+        <set>
+            <!--<if test="materialId != null">
+                materialId = #{materialId},
+            </if>
+            <if test="materialName != null">
+                materialName = #{materialName},
+            </if>-->
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <!--<if test="num != null">
+                num = #{num},
+            </if>-->
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <!--<if test="position != null">
+                position = #{position},
+            </if>
+            <if test="reptId != null">
+                reptId = #{reptId},
+            </if>-->
+            <if test="reptCategory != null">
+                reptCategory = #{reptCategory},
+            </if>
+            <if test="reptId != null">
+                reptId = #{reptId},
+            </if>
+            <if test="reptName != null">
+                reptName = #{reptName},
+            </if>
+            <if test="reptAdmin != null">
+                reptAdmin = #{reptAdmin},
+            </if>
+            <if test="reptState != null">
+                reptState = #{reptState},
+            </if>
+            <if test="reptAddr != null">
+                reptAddr = #{reptAddr},
+            </if>
+            <if test="postManage != null">
+                postManage = #{postManage},
+            </if>
+            <!--<if test="postId != null">
+                postId = #{postId},
+            </if>
+            <if test="postName != null">
+                postName = #{postName},
+            </if>
+            <if test="postCate != null">
+                postCate = #{postCate},
+            </if>
+            <if test="fixPostMat != null">
+                fixPostMat = #{fixPostMat},
+            </if>
+            <if test="postCap != null">
+                postCap = #{postCap},
+            </if>-->
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
+        </set>
+        WHERE onlyIdR = #{onlyIdR}
+    </update>
+
+    <delete id="deleteRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_repository WHERE onlyIdR = #{onlyIdR}
+    </delete>
+
+    <select id="matlist" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT DISTINCT id FROM eqpt_material WHERE fixPosition = '否'
+    </select>
+
+    <update id="updRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_repository
+        <set>
+            <if test="materialId != null">
+                materialId = #{materialId},
+            </if>
+            <if test="num != null">
+                num = #{num}
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <!--<if test="remark != null">
+                remark = #{remark},
+            </if>-->
+        </set>
+        WHERE onlyIdR = #{onlyIdR}
+    </update>
+
+    <select id="Position" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT postId FROM eqpt_repository WHERE postId = #{postId}
+    </select>
+
+    <update id="outRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_repository
+        <set>
+            <if test="materialId != null">
+                materialId = #{materialId},
+            </if>
+            <if test="reptId != null">
+                reptId = #{reptId},
+            </if>
+            <if test="reptCategory != null">
+                reptCategory = #{reptCategory},
+            </if>
+        </set>
+        WHERE position = #{position}
+    </update>
+
+    <select id="searchCategory" resultType="string">
+        SELECT reptCategory FROM eqpt_repository WHERE reptId = #{reptId}
+    </select>
+
+    <select id="theCategory" resultType="string">
+        SELECT reptCategory FROM eqpt_repository WHERE reptId = #{reptId}
+    </select>
+
+    <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT reptId FROM eqpt_repository WHERE reptState = '是'
+    </select>
+
+    <select id="getPost" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT postId FROM eqpt_position WHERE reptId = #{reptId}
+    </select>
+
+    <select id="emptyReptD" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptId,postId FROM eqpt_detail WHERE id != #{id}
+    </select>
+
+    <select id="emptyReptP" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptId,postId FROM eqpt_position
+    </select>
+
+    <select id="fixPostMatInfo" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT fixPostMat FROM eqpt_position WHERE fixPostMat = #{id}
+    </select>
+
+    <select id="fixRept" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptId FROM eqpt_position WHERE fixPostMat = #{id}
+    </select>
+
+    <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptId FROM eqpt_position WHERE postId NOT IN (SELECT postId FROM eqpt_detail)
+        UNION
+        SELECT reptId FROM eqpt_repository WHERE postManage = '否'
+        UNION
+        SELECT reptId FROM eqpt_detail WHERE id = #{id}
+        ORDER BY reptId
+    </select>
+
+    <select id="matInPost" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT postId FROM eqpt_position WHERE reptId = #{reptId} AND postId NOT IN (SELECT postId FROM eqpt_detail WHERE id != #{id})
+        ORDER BY postId
+    </select>
+
+    <select id="matInPostReplace" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_replace
+    </select>
+
+    <select id="matOutRept" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT reptId FROM eqpt_repository WHERE reptId IN (SELECT reptId FROM eqpt_detail WHERE id = #{id})
+    </select>
+
+    <select id="matOutPost" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT eqpt_position.postId FROM eqpt_detail,eqpt_position WHERE eqpt_detail.postId = eqpt_position.postId AND eqpt_detail.id = #{id} AND eqpt_position.reptId = #{reptId}
+    </select>
+
+    <select id="postlist" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT postId FROM eqpt_position WHERE reptState = '是'
+    </select>
+
+    <select id="otherInfo" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="invInfo" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT price,spec,category FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="getNum" resultType="string">
+        SELECT num FROM eqpt_repository WHERE materialId = #{materialId}AND reptId = #{reptId} AND position = #{position}
+    </select>
+
+    <select id="getNumber" resultType="string">
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
+    </select>
+
+    <select id="numInPost" resultType="string">
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND id = #{id}
+        <if test="postId != null and postId != '' and postId != '无'">
+            AND postId = #{postId}
+        </if>
+    </select>
+
+    <!--<if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>-->
+
+    <select id="getOtherInfo" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="lockOnlyIdR" resultType="int">
+        SELECT onlyIdR FROM eqpt_repository WHERE reptId = #{reptId} AND postId = #{postId} AND materialId = #{materialId}
+    </select>
+
+    <select id="managePost" resultType="string">
+        SELECT postManage FROM eqpt_repositorymt WHERE reptId = #{reptId}
+    </select>
+
+    <select id="lockOnlyIdP" resultType="int">
+        SELECT onlyIdP FROM eqpt_position WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
+
+    <update id="updPosition" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_position
+        <set>
+            <if test="reptId != null">
+                reptId = #{reptId},
+            </if>
+            <if test="reptName != null">
+                reptName = #{reptName},
+            </if>
+            <if test="reptState != null">
+                reptState = #{reptState},
+            </if>
+            <if test="postId != null">
+                postId = #{postId},
+            </if>
+            <if test="postName != null">
+                postName = #{postName},
+            </if>
+            <if test="postCate != null">
+                postCate = #{postCate},
+            </if>
+            <if test="fixPostMat != null">
+                fixPostMat = #{fixPostMat},
+            </if>
+            <if test="postCap != null">
+                postCap = #{postCap},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="materialId != null">
+                materialId = #{materialId},
+            </if>
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
+        </set>
+        WHERE onlyIdP = #{onlyIdP}
+    </update>
+
+    <update id="updPostState" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_position
+        <set>
+            <if test="reptState != null">
+                reptState = #{reptState}
+            </if>
+        </set>
+        WHERE reptId = #{reptId}
+    </update>
+
+    <update id="changeManagePost" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_position SET postId = #{postId} WHERE reptId = #{reptId}
+    </update>
+
+    <update id="changeDetail" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_detail SET postId = #{postId} WHERE reptId = #{reptId}
+    </update>
+
+    <select id="recordin" resultType="string">
+        SELECT * FROM eqpt_inrepository WHERE reptId = #{reptId} LIMIT 1
+    </select>
+    <select id="recordout" resultType="string">
+        SELECT * FROM eqpt_outrepository WHERE reptId = #{reptId} LIMIT 1
+    </select>
+    <select id="recordshift" resultType="string">
+        SELECT * FROM eqpt_shiftrepository WHERE inRept = #{reptId} OR outRept = #{reptId} LIMIT 1
+    </select>
+
+    <select id="checkBS" resultType="string">
+        SELECT BSManage FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="getCate" resultType="HashMap">
+        SELECT * FROM sys_dic WHERE VALUE_ = '仓库类型'
+    </select>
+
+    <select id="checkCate" resultType="HashMap">
+        SELECT * FROM eqpt_reptcate WHERE cateName = #{cateName}
+    </select>
+
+    <insert id="insertCate" parameterType="string">
+        INSERT INTO eqpt_reptcate VALUES (NULL,#{cateName})
+    </insert>
+
+    <delete id="deleteCate" parameterType="string">
+        DELETE FROM eqpt_reptcate WHERE onlyId = #{onlyId}
+    </delete>
+</mapper>

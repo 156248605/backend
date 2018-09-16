@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.InRepositoryMapper">
+    <select id="findAll" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository ORDER BY inId DESC
+    </select>
+
+    <select id="findDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository_draft ORDER BY inId DESC
+    </select>
+
+    <insert id="insertNew" parameterType="string">
+        INSERT INTO eqpt_inrepository VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22})
+    </insert>
+
+    <insert id="insertDraft" parameterType="string">
+        INSERT INTO eqpt_inrepository_draft VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22})
+    </insert>
+
+    <select id="ID" resultType="string">
+        SELECT id FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="INID" resultType="java.lang.String">
+        SELECT inId FROM eqpt_inrepository WHERE inId = #{inId}
+    </select>
+
+    <select id="OUTID" resultType="string">
+        SELECT outId FROM eqpt_outrepository WHERE outId = #{outId}
+    </select>
+
+    <delete id="delete" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inrepository WHERE onlyIdIn = #{onlyIdIn}
+    </delete>
+
+    <select id="showINID" resultType="java.lang.String">
+        SELECT inId FROM eqpt_inrepository WHERE inId LIKE CONCAT(CONCAT('%',#{inId},'%'))
+        UNION
+        SELECT inId FROM eqpt_inrepository_draft WHERE inId LIKE CONCAT(CONCAT('%',#{inId},'%'))
+        ORDER BY inId
+    </select>
+
+    <update id="updateInstId" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_inrepository SET INST_ID_ = #{instid} WHERE INST_ID_ = ''
+    </update>
+
+    <update id="updateApprove" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_inrepository
+        <set>
+            <if test="arg1 != null and arg1 != ''">
+                secondOne = #{arg1},
+            </if>
+            <if test="arg2 != null and arg2 != ''">
+                thirdOne = #{arg2},
+            </if>
+            <if test="arg3 != null and arg3 != ''">
+                fourthOne = #{arg3},
+            </if>
+        </set>
+         WHERE INST_ID_ = #{arg0}
+    </update>
+
+    <select id="wdbh" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT F_WDBH AS inId FROM w_ywcgddhtpsd7 WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT DISTINCT F_WDBH AS inId FROM w_fwcgxqsqd5 WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT DISTINCT F_WDBH AS inId FROM w_rccgddhtpsd1 WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="showmat" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT w_cgmx7.F_WLBM AS materialId,w_cgmx7.F_WLMC AS materialName,w_cgmx7.F_GGXH AS spec,w_cgmx7.F_CGSL AS inNum,w_jyd.F_WDBH AS 'check',w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx7,w_jyd WHERE w_cgmx7.REF_ID_ = (SELECT DISTINCT ID_ FROM w_ywcgddhtpsd7 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_cgmx7.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        UNION
+        SELECT DISTINCT w_cgmx7.F_WLBM AS materialId,w_cgmx7.F_WLMC AS materialName,w_cgmx7.F_GGXH AS spec,w_cgmx7.F_CGSL AS inNum,'' AS 'check','' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx7,w_jyd WHERE w_cgmx7.REF_ID_ = (SELECT DISTINCT ID_ FROM w_ywcgddhtpsd7 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_cgmx7.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        UNION
+        SELECT DISTINCT w_cgmx5.F_WLBM AS materialId,w_cgmx5.F_WLMC AS materialName,w_cgmx5.F_GGXH AS spec,w_cgmx5.F_CGSL AS inNum,w_jyd.F_WDBH AS 'check',w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx5,w_jyd WHERE w_cgmx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_fwcgxqsqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_cgmx5.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        UNION
+        SELECT DISTINCT w_cgmx5.F_WLBM AS materialId,w_cgmx5.F_WLMC AS materialName,w_cgmx5.F_GGXH AS spec,w_cgmx5.F_CGSL AS inNum,'' AS 'check','' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_cgmx5,w_jyd WHERE w_cgmx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_fwcgxqsqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_cgmx5.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        UNION
+        SELECT DISTINCT w_rccgmx1.F_WLBM AS materialId,w_rccgmx1.F_WLMC AS materialName,w_rccgmx1.F_GGXH AS spec,w_rccgmx1.F_CGSL AS inNum,w_jyd.F_WDBH AS 'check',w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_rccgmx1,w_jyd WHERE w_rccgmx1.REF_ID_ = (SELECT DISTINCT ID_ FROM w_rccgddhtpsd1 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_rccgmx1.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        UNION
+        SELECT DISTINCT w_rccgmx1.F_WLBM AS materialId,w_rccgmx1.F_WLMC AS materialName,w_rccgmx1.F_GGXH AS spec,w_rccgmx1.F_CGSL AS inNum,'' AS 'check','' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_rccgmx1,w_jyd WHERE w_rccgmx1.REF_ID_ = (SELECT DISTINCT ID_ FROM w_rccgddhtpsd1 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_rccgmx1.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        ORDER BY materialId
+    </select>
+
+    <select id="showproj" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_ywcgddhtpsd7.F_XMBH AS projId,w_ywcgddhtpsd7.F_XMMC AS projName FROM w_ywcgddhtpsd7 WHERE F_WDBH = #{wdbh}
+        UNION
+        SELECT w_fwcgxqsqd5.F_XMBH AS projId,w_fwcgxqsqd5.F_XMMC AS projName FROM w_fwcgxqsqd5 WHERE F_WDBH = #{wdbh}
+    </select>
+
+    <select id="getInId" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository WHERE INST_ID_ = #{instId}
+    </select>
+
+    <select id="node" resultType="string">
+        SELECT TASK_DEF_KEY_ FROM act_ru_task WHERE PROC_INST_ID_ = #{taskid}
+    </select>
+
+    <select id="approveName" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository WHERE INST_ID_ = #{instId} ORDER BY inId DESC LIMIT 1
+    </select>
+
+    <select id="checkDraft" resultType="string">
+        SELECT inId FROM eqpt_inrepository_draft WHERE materialId = #{materialId} AND inId = #{inId}
+    </select>
+
+    <select id="getDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_inrepository_draft WHERE inId = #{inId}
+    </select>
+
+    <delete id="deleteDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_inrepository_draft WHERE inId = #{inId}
+    </delete>
+</mapper>

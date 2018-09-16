@@ -3,8 +3,9 @@ package com.elex.oa.service.service_shiyun.impl;
 import com.elex.oa.dao.dao_shiyun.IBaseInformationDao;
 import com.elex.oa.entity.entity_shiyun.BaseInformation;
 import com.elex.oa.service.service_shiyun.IBaseInformationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @Author:ShiYun;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseInformationServiceImpl implements IBaseInformationService {
 
-    @Autowired
+    @Resource
     IBaseInformationDao iBaseInformationDao;
 
     /**
@@ -48,5 +49,15 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
     @Override
     public void modifyOne(BaseInformation baseInformation) {
         iBaseInformationDao.updateOne(baseInformation);
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除基本信息表
+     *@Date: 15:02 2018\8\20 0020
+     */
+    @Override
+    public void removeOne(Integer baseinformationid) {
+        iBaseInformationDao.deleteById(baseinformationid);
     }
 }

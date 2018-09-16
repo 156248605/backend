@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.MaterialMapper">
+
+    <select id="MaterialList" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material
+    </select>
+
+    <select id="searchList" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material
+        <where>
+            <if test="arg0 != null and arg0.size > 0">
+                AND id in
+                <foreach collection="arg0" item="item" separator="," index="index" close=")" open="(">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="arg1 != null and arg1.size > 0">
+                AND name in
+                <foreach collection="arg1" item="item" separator="," index="index" close=")" open="(">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="arg2 != null and arg2 != '' and arg3 != null and arg3 != ''">
+                AND date BETWEEN #{arg2} AND #{arg3}
+            </if>
+        </where>
+    </select>
+
+    <select id="SearchMaterial" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material
+        <where>
+            <if test="id != null and id != '' and idC == ''">
+                AND id LIKE CONCAT(CONCAT('%', #{id}), '%')
+            </if>
+            <if test="id != null and id != '' and idC == 1">
+                AND id LIKE CONCAT(CONCAT('%', #{id}), '%')
+            </if>
+            <if test="id != null and id != '' and idC == 2">
+                AND id NOT LIKE CONCAT(CONCAT('%', #{id}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == ''">
+                AND name LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == 1">
+                AND name LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="name != null and name != '' and nameC == 2">
+                AND name NOT LIKE CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="material != null and material != '' and materialC == ''">
+                AND material LIKE CONCAT(CONCAT('%', #{material}), '%')
+            </if>
+            <if test="material != null and material != '' and materialC == 1">
+                AND material LIKE CONCAT(CONCAT('%', #{material}), '%')
+            </if>
+            <if test="material != null and material != '' and materialC == 2">
+                AND material NOT LIKE CONCAT(CONCAT('%', #{material}), '%')
+            </if>
+            <if test="spec != null and spec != '' and specC == ''">
+                AND spec LIKE CONCAT(CONCAT('%', #{spec}), '%')
+            </if>
+            <if test="spec != null and spec != '' and specC == 1">
+                AND spec LIKE CONCAT(CONCAT('%', #{spec}), '%')
+            </if>
+            <if test="spec != null and spec != '' and specC == 2">
+                AND spec NOT LIKE CONCAT(CONCAT('%', #{spec}), '%')
+            </if>
+            <if test="brand != null and brand != '' and brandC == ''">
+                AND brand LIKE CONCAT(CONCAT('%', #{brand}), '%')
+            </if>
+            <if test="brand != null and brand != '' and brandC == 1">
+                AND brand LIKE CONCAT(CONCAT('%', #{brand}), '%')
+            </if>
+            <if test="brand != null and brand != '' and brandC == 2">
+                AND brand NOT LIKE CONCAT(CONCAT('%', #{brand}), '%')
+            </if>
+            <!--<if test="position != null and position != '' and positionC == ''">
+                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>
+            <if test="position != null and position != '' and positionC == 1">
+                AND position LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>
+            <if test="position != null and position != '' and positionC == 2">
+                AND position NOT LIKE CONCAT(CONCAT('%', #{position}), '%')
+            </if>-->
+            <if test="category != null and category != '' and categoryC == ''">
+                AND category LIKE CONCAT(CONCAT('%', #{category}), '%')
+            </if>
+            <if test="category != null and category != '' and categoryC == 1">
+                AND category LIKE CONCAT(CONCAT('%', #{category}), '%')
+            </if>
+            <if test="category != null and category != '' and categoryC == 2">
+                AND category NOT LIKE CONCAT(CONCAT('%', #{category}), '%')
+            </if>
+            <if test="price != null and price != '' and priceC == ''">
+                AND price LIKE CONCAT(CONCAT('%', #{price}), '%')
+            </if>
+            <if test="price != null and price != '' and priceC == 1">
+                AND price &lt; ${price}
+            </if>
+            <if test="price != null and price != '' and priceC == 2">
+                AND price > ${price}
+            </if>
+            <if test="price != null and price != '' and priceC == 3">
+                AND price = ${price}
+            </if>
+            <if test="price != null and price != '' and priceC == 4">
+                AND price &lt;= ${price}
+            </if>
+            <if test="price != null and price != '' and priceC == 5">
+                AND price >= ${price}
+            </if>
+            <!--<if test="sDate != null and sDate != '' and eDate != null and eDate != ''">
+                AND date BETWEEN #{sDate} AND #{eDate}
+            </if>-->
+            <if test="partner != null and partner != ''">
+                AND partner LIKE CONCAT(CONCAT('%', #{partner}), '%')
+            </if>
+            <if test="remark != null and remark != ''">
+                AND remark LIKE CONCAT(CONCAT('%', #{remark}), '%')
+            </if>
+            <if test="needCheck != null and needCheck != '' and needCheckC == ''">
+                AND needCheck LIKE CONCAT(CONCAT('%', #{needCheck}), '%')
+            </if>
+            <if test="needCheck != null and needCheck != '' and needCheckC == 1">
+                AND needCheck LIKE CONCAT(CONCAT('%', #{needCheck}), '%')
+            </if>
+            <if test="needCheck != null and needCheck != '' and needCheckC == 2">
+                AND needCheck NOT LIKE CONCAT(CONCAT('%', #{needCheck}), '%')
+            </if>
+            <if test="singleManage != null and singleManage != '' and singleManageC == ''">
+                AND singleManage LIKE CONCAT(CONCAT('%', #{singleManage}), '%')
+            </if>
+            <if test="singleManage != null and singleManage != '' and singleManageC == 1">
+                AND singleManage LIKE CONCAT(CONCAT('%', #{singleManage}), '%')
+            </if>
+            <if test="singleManage != null and singleManage != '' and singleManageC == 2">
+                AND singleManage NOT LIKE CONCAT(CONCAT('%', #{singleManage}), '%')
+            </if>
+            <if test="notSingle != null and notSingle != '' and notSingleC == ''">
+                AND notSingle LIKE CONCAT(CONCAT('%', #{notSingle}), '%')
+            </if>
+            <if test="notSingle != null and notSingle != '' and notSingleC == 1">
+                AND notSingle LIKE CONCAT(CONCAT('%', #{notSingle}), '%')
+            </if>
+            <if test="notSingle != null and notSingle != '' and notSingleC == 2">
+                AND notSingle NOT LIKE CONCAT(CONCAT('%', #{notSingle}), '%')
+            </if>
+            <if test="materialState != null and materialState != '' and materialStateC == ''">
+                AND materialState LIKE CONCAT(CONCAT('%', #{materialState}), '%')
+            </if>
+            <if test="materialState != null and materialState != '' and materialStateC == 1">
+                AND materialState LIKE CONCAT(CONCAT('%', #{materialState}), '%')
+            </if>
+            <if test="materialState != null and materialState != '' and materialStateC == 2">
+                AND materialState NOT LIKE CONCAT(CONCAT('%', #{materialState}), '%')
+            </if>
+            <if test="BSManage != null and BSManage != '' and BSManageC == ''">
+                AND BSManage LIKE CONCAT(CONCAT('%', #{BSManage}), '%')
+            </if>
+            <if test="BSManage != null and BSManage != '' and BSManageC == 1">
+                AND BSManage LIKE CONCAT(CONCAT('%', #{BSManage}), '%')
+            </if>
+            <if test="BSManage != null and BSManage != '' and BSManageC == 2">
+                AND BSManage NOT LIKE CONCAT(CONCAT('%', #{BSManage}), '%')
+            </if>
+            <if test="unit != null and unit != '' and unitC == ''">
+                AND unit LIKE CONCAT(CONCAT('%', #{unit}), '%')
+            </if>
+            <if test="unit != null and unit != '' and unitC == 1">
+                AND unit LIKE CONCAT(CONCAT('%', #{unit}), '%')
+            </if>
+            <if test="unit != null and unit != '' and unitC == 2">
+                AND unit NOT LIKE CONCAT(CONCAT('%', #{unit}), '%')
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == ''">
+                AND maxlimit LIKE CONCAT(CONCAT('%', #{maxlimit}), '%')
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 1">
+                AND maxlimit &lt; ${maxlimit}
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 2">
+                AND maxlimit > ${maxlimit}
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 3">
+                AND maxlimit = ${maxlimit}
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 4">
+                AND maxlimit &lt;= ${maxlimit}
+            </if>
+            <if test="maxlimit != null and maxlimit != '' and maxlimitC == 5">
+                AND maxlimit >= ${maxlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == ''">
+                AND minlimit LIKE CONCAT(CONCAT('%', #{minlimit}), '%')
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 1">
+                AND minlimit &lt; ${minlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 2">
+                AND minlimit > ${minlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 3">
+                AND minlimit = ${minlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 4">
+                AND minlimit &lt;= ${minlimit}
+            </if>
+            <if test="minlimit != null and minlimit != '' and minlimitC == 5">
+                AND minlimit >= ${minlimit}
+            </if>
+        </where>
+    </select>
+
+    <select id="MaterialId" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="canShow" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_materialmt WHERE materialState = '启用'
+    </select>
+
+    <update id="saveMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_material
+        <set>
+            <if test="id != null and id != ''">
+                id = #{id},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <!--<if test="date != null and date != ''">
+                date = #{date},
+            </if>-->
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="material != null">
+                material = #{material},
+            </if>
+            <if test="brand != null">
+                brand = #{brand},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="maxlimit != null and maxlimit != ''">
+                maxlimit = #{maxlimit},
+            </if>
+            <if test="minlimit != null and minlimit != ''">
+                minlimit = #{minlimit},
+            </if>
+            <!--<if test="position != null and position != ''">-->
+                <!--position = #{position},-->
+            <!--</if>-->
+            <if test="partner != null and partner != ''">
+                partner = #{partner},
+            </if>
+            <if test="price != null and price != ''">
+                price = #{price},
+            </if>
+            <if test="unit != null and unit != ''">
+                unit = #{unit},
+            </if>
+            <if test="num != null and num != ''">
+                num = #{num},
+            </if>
+            <if test="BSManage != null and BSManage != ''">
+                BSManage = #{BSManage},
+            </if>
+            <if test="needCheck != null and needCheck != ''">
+                needCheck = #{needCheck},
+            </if>
+            <if test="singleManage != null and singleManage != ''">
+                singleManage = #{singleManage},
+            </if>
+            <if test="notSingle != null and notSingle != ''">
+                notSingle = #{notSingle},
+            </if>
+            <if test="materialState != null and materialState != ''">
+                materialState = #{materialState}
+            </if>
+        </set>
+        WHERE onlyId = #{onlyId}
+    </update>
+
+    <delete id="deleteMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+        DELETE FROM eqpt_material WHERE onlyId = #{onlyId}
+    </delete>
+
+    <insert id="newMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+        INSERT INTO eqpt_material VALUES (#{category},#{name},#{id},#{brand},#{spec},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{maxlimit},#{minlimit},#{remark},#{partner},#{num},#{unit},#{price},NULL,'否')
+    </insert>
+
+    <insert id="importMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
+        INSERT INTO eqpt_material VALUES (#{category},#{name},#{id},#{brand},#{spec},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{maxlimit},#{minlimit},#{remark},#{partner},#{num},#{unit},#{price},NULL,'否')
+    </insert>
+
+    <select id="getId" resultType="string">
+        SELECT id FROM eqpt_material WHERE onlyId = #{onlyId}
+    </select>
+
+    <select id="getNum" resultType="string">
+        SELECT num FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="getNumD" resultType="string">
+        SELECT num FROM eqpt_detail WHERE id = #{id} AND reptId = #{reptId}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
+    </select>
+
+    <update id="updMat" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_material
+        <set>
+            <if test="num != null">
+                num = num + #{num}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_detail
+        <set>
+            <if test="num != null">
+                num = num + #{num}
+            </if>
+        </set>
+        WHERE id = #{id} AND postId = #{postId} AND reptId = #{reptId}
+    </update>
+
+    <update id="updMatM" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_material
+        <set>
+            <if test="num != null">
+                num = num - #{num}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updDetailM" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_detail
+        <set>
+            <if test="num != null">
+                num = num - #{num}
+            </if>
+        </set>
+        WHERE id = #{id}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
+        AND reptId = #{reptId}
+    </update>
+
+    <select id="MinLimit" resultType="string">
+        SELECT minlimit FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="MaxLimit" resultType="string">
+        SELECT maxlimit FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="searchSN" resultType="string">
+        SELECT sn FROM eqpt_material WHERE sn = #{sn}
+    </select>
+
+    <select id="lockBn" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT id FROM eqpt_material WHERE id = #{id} AND bn = #{bn}
+    </select>
+
+    <select id="lockSn" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT id FROM eqpt_material WHERE id = #{id} AND sn = #{sn}
+    </select>
+
+    <select id="lockPrice" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT price FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <insert id="newDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},'','','0',#{price},#{materialState})
+    </insert>
+
+    <insert id="insertDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},#{reptId},#{postId},#{num},#{price},'启用')
+    </insert>
+
+    <delete id="deleteDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        DELETE FROM eqpt_detail WHERE id = #{id}
+        <if test="reptId != null">
+            AND reptId = #{reptId}
+        </if>
+        <if test="postId != null">
+            AND postId = #{postId}
+        </if>
+    </delete>
+
+    <delete id="deleteNull" parameterType="com.elex.oa.entity.eqpt.Material">
+        DELETE FROM eqpt_detail WHERE id = #{id} AND reptId = ''
+    </delete>
+
+    <update id="saveDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_detail
+        <set>
+            <if test="materialState != null">
+                materialState = #{materialState},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="spec != null">
+                spec = #{spec},
+            </if>
+            <if test="brand != null">
+                brand = #{brand},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="id != null">
+                id = #{id},
+            </if>
+        </set>
+        WHERE id = #{bn}
+    </update>
+
+    <select id="matInDetail" resultType="string">
+        SELECT DISTINCT id FROM eqpt_detail WHERE reptId = #{reptId}
+        <if test="postId != null and postId != ''">
+            AND postId = #{postId}
+        </if>
+        AND id = #{id}
+    </select>
+
+    <update id="updateDetail" parameterType="com.elex.oa.entity.eqpt.Material">
+        UPDATE eqpt_detail SET postId = #{arg2} WHERE reptId = #{arg0} AND postId = #{arg1}
+    </update>
+</mapper>

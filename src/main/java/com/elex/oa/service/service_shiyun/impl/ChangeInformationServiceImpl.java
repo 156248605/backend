@@ -53,7 +53,11 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
         for(Integer i=0;i<changeInformations.size();i++){
             // 设置姓名
             User changeduser = iUserDao.selectById(changeInformations.get(i).getChangeduserid());
-            changeInformations.get(i).setChangedtruename(changeduser.getTruename());
+            try {
+                changeInformations.get(i).setChangedtruename(changeduser.getTruename());
+            } catch (Exception e) {
+                changeInformations.get(i).setChangedtruename("该员工可能已经删档!");
+            }
             // 设置办理人姓名
             User transactoruser = iUserDao.selectById(changeInformations.get(i).getTransactoruserid());
             changeInformations.get(i).setTransactortruename(transactoruser.getTruename());
@@ -71,6 +75,18 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
     @Override
     public List<ChangeInformation> queryAll() {
         List<ChangeInformation> changeInformations = iChangeInformaionDao.selectAll();
+        for (ChangeInformation changeinformation:changeInformations
+             ) {
+            String truename = null;
+            try {
+                truename = iUserDao.selectById(changeinformation.getChangeduserid()).getTruename();
+            } catch (Exception e) {
+                truename = "该员工可能已经删档!";
+            }
+            changeinformation.setChangedtruename(truename);
+            String transactortruename = iUserDao.selectById(changeinformation.getTransactoruserid()).getTruename();
+            changeinformation.setTransactortruename(transactortruename);
+        }
         return changeInformations;
     }
 
@@ -82,5 +98,11 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
     @Override
     public void removeOne(Integer id) {
         iChangeInformaionDao.deleteOne(id);
+    }
+
+    @Override
+    public List<ChangeInformation> queryByUserid(Integer changeduserid) {
+        List<ChangeInformation> changeInformationList = iChangeInformaionDao.selectByUserid(changeduserid);
+        return changeInformationList;
     }
 }

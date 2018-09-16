@@ -27,6 +27,13 @@ public interface IPostService  {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据岗位编号查询岗位信息
+     *@Date: 15:30 2018\8\11 0011
+     */
+    Post queryOneByPostcode(String postcode);
+
+    /**
+     *@Author:ShiYun;
      *@Description:查询所有岗位信息
      *@Date: 11:17 2018\4\11 0011
      */
@@ -44,19 +51,36 @@ public interface IPostService  {
      *@Description:添加岗位信息并返回主键
      *@Date: 13:07 2018\4\23 0023
      */
-    public Integer addOne(Post post);
+    Integer addOne(Post post);
 
     /**
      *@Author:ShiYun;
      *@Description:修改岗位信息
      *@Date: 11:10 2018\5\2 0002
      */
-    public void modifyOne(Post post);
+    void modifyOne(Post post);
 
     /**
      *@Author:ShiYun;
      *@Description:根据岗位ID删除岗位信息
      *@Date: 14:51 2018\5\2 0002
      */
-    public void remove(Integer id);
+    void remove(Integer id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有岗位（去除下级岗位和本生）
+     *@Date: 13:42 2018\8\30 0030
+     */
+    List<Post> queryPostsRemoveChilren(Integer postid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:判断是否是子节点
+     *@param parentpostid:高级节点
+     *@param childpostid:低级节点
+     *@return 如果childpostid是parentpostid的子节点则返回true,否则返回false
+     *@Date: 13:49 2018\8\30 0030
+     */
+    Boolean isChildPoint(Integer parentpostid,Integer childpostid);
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.List;
 
 @CrossOrigin
 @Controller
@@ -46,5 +47,146 @@ public class OutRepositoryController {
     @ResponseBody
     public void OutRepository (HttpServletRequest request) {
         outRepositoryImpl.OutRepository(request);
+    }
+
+    @RequestMapping("/material")
+    @ResponseBody
+    public void OutMaterial (HttpServletRequest request) throws ParseException  {
+        outRepositoryImpl.OutMaterial(request);
+    }
+
+
+    @RequestMapping("/showoutid")
+    @ResponseBody
+    public List showOutId (HttpServletRequest request) {
+        List dateToId = outRepositoryImpl.showOutId(request);
+        return dateToId;
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public void DeleteInRept (HttpServletRequest request) { outRepositoryImpl.DeleteOutRept(request); }
+
+    @RequestMapping("/check")
+    @ResponseBody
+    public String checkId (HttpServletRequest request) {
+        String result = outRepositoryImpl.canOut(request);
+        return result;
+    }
+
+    @RequestMapping("/negative")
+    @ResponseBody
+    public String negative (HttpServletRequest request) {
+        String result = outRepositoryImpl.negative(request);
+        return result;
+    }
+
+    @RequestMapping("/rcly")
+    @ResponseBody
+    public List<Repository> rcly () {
+        return outRepositoryImpl.wdbhR();
+    }
+
+    @RequestMapping("/xsfh")
+    @ResponseBody
+    public List<Repository> xsfh () {
+        return outRepositoryImpl.wdbhX();
+    }
+
+    @RequestMapping("/cgth")
+    @ResponseBody
+    public List<Repository> cgth () {
+        return outRepositoryImpl.wdbhC();
+    }
+
+    @RequestMapping("/showmatR")
+    @ResponseBody
+    public List<Repository> showmatR (HttpServletRequest request) {
+        return outRepositoryImpl.showmatR(request);
+    }
+
+    @RequestMapping("/showmatX")
+    @ResponseBody
+    public List<Repository> showmatX (HttpServletRequest request) {
+        return outRepositoryImpl.showmatX(request);
+    }
+
+    @RequestMapping("/showmatC")
+    @ResponseBody
+    public List<Repository> showmatC (HttpServletRequest request) {
+        return outRepositoryImpl.showmatC(request);
+    }
+
+    @RequestMapping("/showprojX")
+    @ResponseBody
+    public List<Repository> showprojX (HttpServletRequest request) {
+        return outRepositoryImpl.showprojX(request);
+    }
+
+    @RequestMapping("/showprojR")
+    @ResponseBody
+    public List<Repository> showprojR (HttpServletRequest request) {
+        return outRepositoryImpl.showprojR(request);
+    }
+
+    @RequestMapping("/getInstId")
+    @ResponseBody
+    public String getInstId (String instid){
+        return outRepositoryImpl.getInstId(instid);
+    }
+
+    @RequestMapping("/updateApprove")
+    @ResponseBody
+    public void updateApprove (String instId){
+        outRepositoryImpl.updateApprove(instId);
+    }
+
+    @RequestMapping("/getApprove")
+    @ResponseBody
+    public void getApprove (HttpServletRequest request){
+        outRepositoryImpl.getApprove(request);
+    }
+
+    @RequestMapping("/node")
+    @ResponseBody
+    public String node (HttpServletRequest request){
+        return outRepositoryImpl.node(request);
+    }
+
+    @RequestMapping("/postInfo")
+    @ResponseBody
+    public List<Repository> postInfo (HttpServletRequest request){
+        return outRepositoryImpl.postInfo(request);
+    }
+
+    @RequestMapping("/approveName")
+    @ResponseBody
+    public List<Repository> approveName (HttpServletRequest request){
+        return outRepositoryImpl.approveName(request);
+    }
+
+    @RequestMapping("/findDraft")
+    @ResponseBody
+    public PageInfo<Repository> showDraft (Page page) {
+        PageInfo<Repository> list = outRepositoryImpl.showDraft(page);
+        return list;
+    }
+
+    @RequestMapping("/insertDraft")
+    @ResponseBody
+    public void insertDraft (HttpServletRequest request) throws ParseException{
+        outRepositoryImpl.insertDraft(request);
+    }
+
+    @RequestMapping("/checkDraft")
+    @ResponseBody
+    public String checkDraft (HttpServletRequest request) {
+        return outRepositoryImpl.checkDraft(request);
+    }
+
+    @RequestMapping("/postDraft")
+    @ResponseBody
+    public List<Repository> postDraft (HttpServletRequest request){
+        return outRepositoryImpl.postDraft(request);
     }
 }

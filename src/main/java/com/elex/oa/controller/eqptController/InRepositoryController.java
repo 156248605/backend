@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.List;
 
 @CrossOrigin
 @Controller
@@ -53,4 +54,107 @@ public class InRepositoryController {
         inRepositoryImpl.InsertRepository(request);
     }
 
+    @RequestMapping("/delete")
+    @ResponseBody
+    public void DeleteInRept (HttpServletRequest request) { inRepositoryImpl.DeleteInRept(request); }
+
+    @RequestMapping("/showinid")
+    @ResponseBody
+    public List showInId (HttpServletRequest request) {
+        List dateToId = inRepositoryImpl.showInId(request);
+        return dateToId;
+    }
+
+    @RequestMapping("/check")
+    @ResponseBody
+    public String checkId (HttpServletRequest request) {
+        String result = inRepositoryImpl.canIn(request);
+        return result;
+    }
+
+    @RequestMapping("/postCap")
+    @ResponseBody
+    public String postCap (HttpServletRequest request){
+        String result = inRepositoryImpl.postCap(request);
+        return result;
+    }
+
+    @RequestMapping("/cgsh")
+    @ResponseBody
+    public List<Repository> cgsh () {
+        return inRepositoryImpl.wdbh();
+    }
+
+    @RequestMapping("/showmat")
+    @ResponseBody
+    public List<Repository> showmat (HttpServletRequest request) {
+        return inRepositoryImpl.showmat(request);
+    }
+
+    @RequestMapping("/showproj")
+    @ResponseBody
+    public List<Repository> showproj (HttpServletRequest request) {
+        return inRepositoryImpl.showproj(request);
+    }
+
+    @RequestMapping("/getInstId")
+    @ResponseBody
+    public String getInstId (String instid, HttpServletRequest request){
+        return inRepositoryImpl.getInstId(instid, request);
+    }
+
+    @RequestMapping("/updateApprove")
+    @ResponseBody
+    public void updateApprove (String instId){
+        inRepositoryImpl.updateApprove(instId);
+    }
+
+    @RequestMapping("/getApprove")
+    @ResponseBody
+    public void getApprove (HttpServletRequest request){
+        inRepositoryImpl.getApprove(request);
+    }
+
+    @RequestMapping("/postInfo")
+    @ResponseBody
+    public List<Repository> postInfo (HttpServletRequest request){
+        return inRepositoryImpl.postInfo(request);
+    }
+
+    @RequestMapping("/node")
+    @ResponseBody
+    public String node (HttpServletRequest request){
+        return inRepositoryImpl.node(request);
+    }
+
+    @RequestMapping("/approveName")
+    @ResponseBody
+    public List<Repository> approveName (HttpServletRequest request){
+        return inRepositoryImpl.approveName(request);
+    }
+
+    @RequestMapping("/findDraft")
+    @ResponseBody
+    public PageInfo<Repository> showDraft (Page page) {
+        PageInfo<Repository> list = inRepositoryImpl.showDraft(page);
+        return list;
+    }
+
+    @RequestMapping("/insertDraft")
+    @ResponseBody
+    public void insertDraft (HttpServletRequest request) throws ParseException{
+        inRepositoryImpl.insertDraft(request);
+    }
+
+    @RequestMapping("/checkDraft")
+    @ResponseBody
+    public String checkDraft (HttpServletRequest request) {
+        return inRepositoryImpl.checkDraft(request);
+    }
+
+    @RequestMapping("/postDraft")
+    @ResponseBody
+    public List<Repository> postDraft (HttpServletRequest request){
+        return inRepositoryImpl.postDraft(request);
+    }
 }

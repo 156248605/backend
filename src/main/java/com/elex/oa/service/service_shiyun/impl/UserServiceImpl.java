@@ -7,6 +7,8 @@ import com.elex.oa.service.service_shiyun.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author:ShiYun;
  * @Description:用户（业务层）
@@ -52,6 +54,39 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     @Override
     public User queryByTruename(String truename) {
         User user = iUserDao.selectByTruename(truename);
+        return user;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据登录ID查询用户信息
+     *@Date: 10:16 2018\8\9 0009
+     */
+    @Override
+    public User queryByUsername(String username) {
+        User user = iUserDao.selectByUsername(username);
+        return user;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的在职人员
+     *@Date: 10:01 2018\8\21 0021
+     */
+    @Override
+    public List<User> queryAllServings() {
+        List<User> users = iUserDao.selectAllServings();
+        return users;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据userid查询在职用户
+     *@Date: 19:17 2018\8\21 0021
+     */
+    @Override
+    public User queryServingUserByUserid(Integer userid) {
+        User user = iUserDao.selectServingUserByUserid(userid);
         return user;
     }
 }

@@ -5,6 +5,7 @@ import com.elex.oa.dao.dao_shiyun.*;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.service_shiyun.IDimissionInformationService;
+import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -54,23 +55,21 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         //获得办理日期
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         String transactiondate = simpleDateFormat.format(new Date());
-        if (dimissionInformation.getTransactiondate()!=null && !"".equals(dimissionInformation.getTransactiondate() )) {
-            dimissionInformation.setTransactiondate(transactiondate);//办理日期
-        }
+        dimissionInformation.setTransactiondate(transactiondate);//办理日期
         //获得8个参数
-        dimissionInformation.setApprovalnumbers(1);//待审批单数量默认为1，实际中用userID到ACT_RU_TASK表中查询
+        /*dimissionInformation.setApprovalnumbers(1);//待审批单数量默认为1，实际中用userID到ACT_RU_TASK表中查询
         dimissionInformation.setApprovalstatue(Commons.未处理);
         dimissionInformation.setWorkingnumbers(2);//代办任务
         dimissionInformation.setWorkingstatue(Commons.未处理);
         dimissionInformation.setFilenumbers(3);//占用文件数
         dimissionInformation.setFilestatue(Commons.未处理);
         dimissionInformation.setOfficesupplynumbers(4);//办公用品领用
-        dimissionInformation.setOfficesupplystatue(Commons.未处理);
+        dimissionInformation.setOfficesupplystatue(Commons.未处理);*/
         //添加离职信息
         iDimissionInformationDao.insertOne(dimissionInformation);
         Integer dimissionInformationId = dimissionInformation.getId();
         //将离职的人员从user表中移除(其实是修改状态)
-        iUserDao.deleteById(dimissionInformation.getDimissionuserid());
+        iUserDao.addDimissionById(dimissionInformation.getDimissionuserid());
         return dimissionInformationId;
     }
 
@@ -81,23 +80,34 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
      */
     @Override
     public PageInfo<DimissionInformation> queryByCondition(HashMap<String, Object> paramMap) {
+        System.out.println(123);
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         DimissionInformation dimissionInformation = (DimissionInformation) paramMap.get("entity");
 
         //先查询关系表，获得perids
-        if(dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname())){
+
+        if(dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname()) || (dimissionInformation.getPostnameList()==null?0:dimissionInformation.getPostnameList().size())!=0){
             PersonalInformation personalInformation = new PersonalInformation();
-            personalInformation.setPostname(dimissionInformation.getPostname());
-            personalInformation.setPostnamevalue(dimissionInformation.getPostnamevalue());
-            //如何是不包含就多走一步
-            if (personalInformation.getPostnamevalue().equals("不包含")) {
-                List<Integer> perids = new ArrayList<>();
-                List<PerAndPostRs> perAndPostRs2 = iPerandpostrsDao.selectByConditions2(personalInformation);
-                for(PerAndPostRs perAndPostRs1:perAndPostRs2){
-                    perids.add(perAndPostRs1.getPerid());
+
+            if (dimissionInformation.getPostname()!=null && !"".equals(dimissionInformation.getPostname())) {
+                personalInformation.setPostname(dimissionInformation.getPostname());
+                personalInformation.setPostnamevalue(dimissionInformation.getPostnamevalue());
+
+                //如何是不包含就多走一步
+                if (personalInformation.getPostnamevalue().equals("不包含")) {
+                    List<Integer> perids = new ArrayList<>();
+                    List<PerAndPostRs> perAndPostRs2 = iPerandpostrsDao.selectByConditions2(personalInformation);
+                    for(PerAndPostRs perAndPostRs1:perAndPostRs2){
+                        perids.add(perAndPostRs1.getPerid());
+                    }
+                    personalInformation.setPerids(perids);
                 }
-                personalInformation.setPerids(perids);
+            }
+
+            if (dimissionInformation.getPostnameList()!=null) {
+                personalInformation.setPostnameList(dimissionInformation.getPostnameList());
+                personalInformation.setPostnamevalue(dimissionInformation.getPostnamevalue());
             }
             //这里获得perids是最终的
             List<Integer> perids = new ArrayList<>();
@@ -177,6 +187,18 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         if (iUserDao.selectById(dimissionInformation.getTransactoruserid())!=null) {
             dimissionInformation.setTransactortruename(iUserDao.selectById(dimissionInformation.getTransactoruserid()).getTruename());
         }
+        //获得离职类型
+        if(ihRsetDimissiontypeDao.selectById(dimissionInformation.getDimissiontypeid())!=null){
+           dimissionInformation.setDimissiontype(ihRsetDimissiontypeDao.selectById(dimissionInformation.getDimissiontypeid()).getDimissiontype());
+        }
+        //获得离职去向
+        if (ihRsetDimissiondirectionDao.selectById(dimissionInformation.getDimissiondirectionid())!=null) {
+            dimissionInformation.setDimissiondirection(ihRsetDimissiondirectionDao.selectById(dimissionInformation.getDimissiondirectionid()).getDimissiondirection());
+        }
+        //获得离职原因
+        if (ihRsetDimissionreasonDao.selectById(dimissionInformation.getDimissionreasonid())!=null) {
+            dimissionInformation.setDimissionreason(ihRsetDimissionreasonDao.selectById(dimissionInformation.getDimissionreasonid()).getDimissionreason());
+        }
         return dimissionInformation;
     }
 
@@ -186,8 +208,77 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
      *@Date: 13:49 2018\4\17 0017
      */
     @Override
-    public void modifyOne(DimissionInformation dimissionInformation) {
-        iDimissionInformationDao.updateOne(dimissionInformation);
+    public Object modifyOne(DimissionInformation dimissionInformation) {
+        if(dimissionInformation==null){
+            return RespUtil.successResp("501","请求的参数类型错误，参数不能为空！",null);
+        }
+        Boolean b = false;//判断是否需要进数据库修改数据
+        //先根据ID获取原数据
+        if(dimissionInformation.getId()==null || iDimissionInformationDao.selectOneById(dimissionInformation.getId())==null){
+            return RespUtil.successResp("502","数据请求有误！",null);
+        }
+        DimissionInformation selectOneById = iDimissionInformationDao.selectOneById(dimissionInformation.getId());
+        //判断处理人是否有变
+            //先根据username获得处理人的userid
+            if(dimissionInformation.getTransactorusername()==null || dimissionInformation.getTransactorusername().equals("")){
+                return RespUtil.successResp("503","数据请求有误！",null);
+            }
+            User user = iUserDao.selectByUsername(dimissionInformation.getTransactorusername());
+            if(user==null){
+                return RespUtil.successResp("504","数据请求有误！",null);
+            }
+            //处理办理人的信息
+            if(user.getId()!=selectOneById.getTransactoruserid()){
+                /*//更新办理日期
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                String transactiondate = sdf.format(new Date());
+                dimissionInformation.setTransactiondate(transactiondate);*/
+                b = true;
+            }else {
+                dimissionInformation.setTransactoruserid(null);
+            }
+        //判断最后工作日期是否有变
+        if(dimissionInformation.getLastworkingdate()==null || dimissionInformation.getLastworkingdate().equals("") || dimissionInformation.getLastworkingdate().equals(selectOneById.getLastworkingdate())){
+              dimissionInformation.setLastworkingdate(null);
+        }else {
+                b = true;
+        }
+        //判断离职类型ID是否有变
+        Integer dimissiontypeid = dimissionInformation.getDimissiontypeid();
+        if(dimissiontypeid==null || dimissiontypeid.equals("") || dimissiontypeid==selectOneById.getDimissiontypeid()){
+            dimissionInformation.setDimissiontypeid(null);
+        }else if(ihRsetDimissiontypeDao.selectById(dimissiontypeid)==null) {
+            return RespUtil.successResp("505","数据请求有误！",null);
+        }else {
+            b = true;
+        }
+        //判断离职原因ID是否有变
+        Integer dimissionreasonid = dimissionInformation.getDimissionreasonid();
+        if(dimissionreasonid==null || dimissionreasonid.equals("") || dimissionreasonid==selectOneById.getDimissionreasonid()){
+            dimissionInformation.setDimissionreasonid(null);
+        }else if(ihRsetDimissionreasonDao.selectById(dimissionreasonid)==null){
+            return RespUtil.successResp("506","数据请求有误！",null);
+        }else {
+            b = true;
+        }
+        //判断离职方向ID是否有变
+        Integer dimissiondirectionid = dimissionInformation.getDimissiondirectionid();
+        if(dimissiondirectionid==null || dimissiondirectionid.equals("") || dimissiondirectionid==selectOneById.getDimissiondirectionid()){
+            dimissionInformation.setDimissiondirectionid(null);
+        }else if(ihRsetDimissiondirectionDao.selectById(dimissiondirectionid)==null){
+            return RespUtil.successResp("507","数据请求有误！",null);
+        }else {
+            b = true;
+        }
+        if (b) {
+            //更新办理日期
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String transactiondate = sdf.format(new Date());
+            dimissionInformation.setTransactiondate(transactiondate);
+            iDimissionInformationDao.updateOne(dimissionInformation);
+            return RespUtil.successResp("205","请求成功！",null);
+        }
+        return RespUtil.successResp("508","没有需要修改的数据！",null);
     }
 
     /**
@@ -221,8 +312,10 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
                 dimissionInformations.get(i).setDimissiontruename(iUserDao.selectById(dimissionInformations.get(i).getDimissionuserid()).getTruename());
             }
             //获得部门
-            if (iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid())!=null) {
-                dimissionInformations.get(i).setDepname(iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid()).getDepname());
+            if (iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid())!=null) {
+                if (iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid())!=null) {
+                    dimissionInformations.get(i).setDepname(iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid()).getDepname());
+                }
             }
             //获得离职类型
             if (ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid())!=null) {
@@ -249,7 +342,7 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
     public void removeOne(Integer id) {
         //先将误删的员工删除
         DimissionInformation dimissionInformation = iDimissionInformationDao.selectOneById(id);
-        iUserDao.deleteById2(dimissionInformation.getDimissionuserid());
+        iUserDao.deleteDimissionById(dimissionInformation.getDimissionuserid());
         //再讲离职信息删除
         iDimissionInformationDao.deleteOne(id);
     }

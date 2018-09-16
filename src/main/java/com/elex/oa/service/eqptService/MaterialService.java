@@ -12,18 +12,20 @@ import java.text.ParseException;
 public interface MaterialService {
     PageInfo<Material> showMaterial(Page page);
 
-/*
-    PageInfo<Material> searchMaterial(Page page, HttpServletRequest request);
-*/
-
     // 查找物料
     PageInfo<Material> searchMaterial(Page page, HttpServletRequest request);
 
+    // 是否有记录
+    String record(HttpServletRequest request);
+
     Material changeMaterial(HttpServletRequest request);
 
-    void saveMaterial(HttpServletRequest request) throws ParseException;
+    void saveMaterial(HttpServletRequest request);
 
     void deleteMaterial (HttpServletRequest request);
 
-    String insertMaterial(Material material, HttpServletRequest request)throws ParseException;
+    void insertMaterial(Material material, HttpServletRequest request);
+
+    String checkId(HttpServletRequest request);
+
 }

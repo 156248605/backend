@@ -19,12 +19,15 @@ public class ContractInformation implements Serializable{
     @Id
     private Integer id;
     private String contractcode;//合同编号
+    private List<String> contractcodes;
     private String contractcodevalue;//判断条件
     private Integer userid;//用户ID
     private String employeenumber;//工号
+    private List<String> employeenumbers;
     private List<Integer> userids;//判断条件
     private String employeenumbervalue;//判断条件
     private String truename;//姓名
+    private List<String> truenames;
     private String truenamevalue;//判断条件
     private String startdate;//生效期
     private String startdatevalue1;//判断条件
@@ -33,9 +36,11 @@ public class ContractInformation implements Serializable{
     private String enddatevalue1;//判断条件
     private String enddatevalue2;//判断条件
     private String contractage;//合同年限
+    private List<String> contractages;
     private String contractagevalue;//判断条件
     private Integer contracttypeid;//合同类型编号
     private String contracttype;//合同类型
+    private List<String> contracttypes;
     private String contracttypevalue;//判断条件
     private String attachment;//附件
     private String remark;//备注
@@ -45,10 +50,61 @@ public class ContractInformation implements Serializable{
     private Integer transactoruserid;//最后办理人
     private String transactortruename;//最后办理人姓名
     private String transdate;//最后办理日期
+    private String state;
 
     public ContractInformation() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         this.curdate = sdf.format(new Date());
+    }
+
+
+
+    public List<String> getContractcodes() {
+        return contractcodes;
+    }
+
+    public void setContractcodes(List<String> contractcodes) {
+        this.contractcodes = contractcodes;
+    }
+
+    public List<String> getEmployeenumbers() {
+        return employeenumbers;
+    }
+
+    public void setEmployeenumbers(List<String> employeenumbers) {
+        this.employeenumbers = employeenumbers;
+    }
+
+    public List<String> getTruenames() {
+        return truenames;
+    }
+
+    public void setTruenames(List<String> truenames) {
+        this.truenames = truenames;
+    }
+
+    public List<String> getContractages() {
+        return contractages;
+    }
+
+    public void setContractages(List<String> contractages) {
+        this.contractages = contractages;
+    }
+
+    public List<String> getContracttypes() {
+        return contracttypes;
+    }
+
+    public void setContracttypes(List<String> contracttypes) {
+        this.contracttypes = contracttypes;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public Integer getTransactoruserid() {

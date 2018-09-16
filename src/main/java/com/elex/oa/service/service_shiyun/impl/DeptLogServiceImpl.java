@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class DeptLogServiceImpl implements IDeptLogService {
     @Autowired
-    private IDeptLogDao iDeptLogDao;
+    IDeptLogDao iDeptLogDao;
 
     /**
      *@Author:ShiYun;

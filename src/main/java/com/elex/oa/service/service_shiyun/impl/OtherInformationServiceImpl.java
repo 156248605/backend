@@ -49,4 +49,14 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
     public void modifyOne(OtherInformation otherInformation) {
         iOtherInformationDao.updateOne(otherInformation);
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除其它信息
+     *@Date: 15:33 2018\8\20 0020
+     */
+    @Override
+    public void removeOne(Integer otherinformationid) {
+        iOtherInformationDao.deleteById(otherinformationid);
+    }
 }

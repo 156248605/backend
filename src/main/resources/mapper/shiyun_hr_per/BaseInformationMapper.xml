@@ -138,9 +138,12 @@
 		LEFT JOIN tb_hr_set_zyzsname zyzsname ON b.zyzsnameid = zyzsname.id
 		LEFT JOIN tb_hr_set_parentcompanyname pc ON b.parentcompanyid = pc.id
 		<where>
-			<if test="englishname!=null and englishname!=''">
-				<if test="englishnamevalue==''">
-					AND b.englishname=#{englishname}
+			<if test="englishname!=null and englishname!='' or englishnames!=null">
+				<if test="englishnamevalue=='' and englishnames.size!=0">
+					AND b.englishname IN
+					<foreach collection="englishnames" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="englishnamevalue=='包含'">
 					AND b.englishname LIKE CONCAT(CONCAT('%', #{englishname}), '%')
@@ -149,9 +152,12 @@
 					AND b.englishname NOT LIKE CONCAT(CONCAT('%', #{englishname}), '%')
 				</if>
 			</if>
-			<if test="idcode!=null and idcode!=''">
-				<if test="idcodevalue==''">
-					AND b.idcode=#{idcode}
+			<if test="idcode!=null and idcode!='' or idcodes!=null">
+				<if test="idcodevalue=='' and idcodes.size!=0">
+					AND b.idcode IN
+					<foreach collection="idcodes" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="idcodevalue=='包含'">
 					AND b.idcode LIKE CONCAT(CONCAT('%', #{idcode}), '%')
@@ -163,9 +169,13 @@
 			<if test="birthdayvalue1!=null and birthdayvalue1!='' and birthdayvalue2!=null and birthdayvalue2!=''">
 				AND b.birthday BETWEEN #{birthdayvalue1} AND #{birthdayvalue2}
 			</if>
-			<if test="age!=null and age!=''">
-				<if test="agevalue==''">
-					AND b.birthday BETWEEN #{sbir} AND #{ebir}
+			<if test="age!=null and age!='' or ages!=null">
+				<if test="agevalue=='' and ages.size!=0">
+					AND (
+						<foreach collection="ageMap.entrySet()" item="value" index="key" open="" separator="or" close="">
+							b.birthday BETWEEN #{key} AND #{value}
+						</foreach>
+					)
 				</if>
 				<if test="agevalue== 1">
 					<![CDATA[ AND b.birthday < #{sbir} ]]>
@@ -187,9 +197,12 @@
 					<![CDATA[ OR b.birthday < #{sbir} ]]>
 				</if>
 			</if>
-			<if test="constellation!=null and constellation!=''">
-				<if test="constellationvalue==''">
-					AND b.constellation=#{constellation}
+			<if test="constellation!=null and constellation!='' or constellations!=null">
+				<if test="constellationvalue=='' and constellations.size!=0">
+					AND b.constellation IN
+					<foreach collection="constellations" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="constellationvalue=='包含'">
 					AND b.constellation LIKE CONCAT(CONCAT('%', #{constellation}), '%')
@@ -198,9 +211,12 @@
 					AND b.constellation NOT LIKE CONCAT(CONCAT('%', #{constellation}), '%')
 				</if>
 			</if>
-			<if test="chinesecs!=null and chinesecs!=''">
-				<if test="chinesecsvalue==''">
-					AND b.chinesecs=#{chinesecs}
+			<if test="chinesecs!=null and chinesecs!='' or chinesecses!=null">
+				<if test="chinesecsvalue=='' and chinesecses.size!=0">
+					AND b.chinesecs IN
+					<foreach collection="chinesecses" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="chinesecsvalue=='包含'">
 					AND b.chinesecs=#{chinesecs}
@@ -212,9 +228,12 @@
 			<if test="marriage!=null and marriage!=''">
 				AND b.marriage=#{marriage}
 			</if>
-			<if test="race!=null and race!=''">
-				<if test="racevalue==''">
-					AND race.race=#{race}
+			<if test="race!=null and race!='' or races!=null">
+				<if test="racevalue=='' and races.size!=0">
+					AND race.race IN
+					<foreach collection="races" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="racevalue=='包含'">
 					AND race.race LIKE CONCAT(CONCAT('%', #{race}), '%')
@@ -223,18 +242,30 @@
 					AND race.race NOT LIKE CONCAT(CONCAT('%', #{race}), '%')
 				</if>
 			</if>
-			<if test="children!=null and children!=''">
-				AND children.children=#{children}
+			<if test="childrens!=null and childrens.size!=0">
+				AND children.children IN
+				<foreach collection="childrens" item="param" open="(" separator="," close=")">
+					#{param}
+				</foreach>
 			</if>
-			<if test="zzmm!=null and zzmm!=''">
-				AND zzmm.zzmm=#{zzmm}
+			<if test="zzmms!=null and zzmms.size!=0">
+				AND zzmm.zzmm IN
+				<foreach collection="zzmms" item="param" open="(" separator="," close=")">
+					#{param}
+				</foreach>
 			</if>
-			<if test="zgxl!=null and zgxl!=''">
-				AND zgxl.zgxl=#{zgxl}
+			<if test="zgxls!=null and zgxls.size!=0">
+				AND zgxl.zgxl IN
+				<foreach collection="zgxls" item="param" open="(" separator="," close=")">
+					#{param}
+				</foreach>
 			</if>
-			<if test="byyx!=null and byyx!=''">
-				<if test="byyxvalue==''">
-					AND byyx.byyx=#{byyx}
+			<if test="byyx!=null and byyx!='' or byyxs!=null">
+				<if test="byyxvalue=='' and byyxs.size!=0">
+					AND byyx.byyx IN
+					<foreach collection="byyxs" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="byyxvalue=='包含'">
 					AND byyx.byyx LIKE CONCAT(CONCAT('%', #{byyx}), '%')
@@ -243,9 +274,12 @@
 					AND byyx.byyx NOT LIKE CONCAT(CONCAT('%', #{byyx}), '%')
 				</if>
 			</if>
-			<if test="sxzy!=null and sxzy!=''">
-				<if test="sxzyvalue==''">
-					AND sxzy.sxzy=#{sxzy}
+			<if test="sxzy!=null and sxzy!='' or sxzys!=null">
+				<if test="sxzyvalue=='' and sxzys.size!=0">
+					AND sxzy.sxzy IN
+					<foreach collection="sxzys" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="sxzyvalue=='包含'">
 					AND sxzy.sxzy LIKE CONCAT(CONCAT('%', #{sxzy}), '%')
@@ -254,21 +288,36 @@
 					AND sxzy.sxzy NOT LIKE CONCAT(CONCAT('%', #{sxzy}), '%')
 				</if>
 			</if>
-			<if test="pyfs!=null and pyfs!=''">
-				AND pyfs.pyfs=#{pyfs}
+			<if test="pyfses!=null and pyfses.size!=0">
+				AND pyfs.pyfs IN
+				<foreach collection="pyfses" item="param" open="(" separator="," close=")">
+					#{param}
+				</foreach>
 			</if>
-			<if test="firstla!=null and firstla!=''">
-				AND fla1.fla=#{firstla}
+			<if test="firstlas!=null and firstlas.size!=0">
+				AND fla1.fla IN
+				<foreach collection="firstlas" item="param" open="(" separator="," close=")">
+					#{param}
+				</foreach>
 			</if>
-			<if test="elsela!=null and elsela!=''">
-				AND fla2.fla=#{elsela}
+			<if test="elselas!=null and elselas.size!=0">
+				AND fla2.fla IN
+				<foreach collection="elselas" item="param" open="(" separator="," close=")">
+					#{param}
+				</foreach>
 			</if>
-			<if test="posttitle!=null and posttitle!=''">
-				AND posttitle.posttitle=#{posttitle}
+			<if test="posttitles!=null and posttitles.size!=0">
+				AND posttitle.posttitle IN
+				<foreach collection="posttitles" item="param" open="(" separator="," close=")">
+					#{param}
+				</foreach>
 			</if>
-			<if test="zyzstype!=null and zyzstype!=''">
-				<if test="zyzstypevalue==''">
-					AND zyzstype.zyzstype=#{zyzstype}
+			<if test="zyzstype!=null and zyzstype!='' or zyzstypes!=null">
+				<if test="zyzstypevalue=='' and zyzstypes.size!=0">
+					AND zyzstype.zyzstype IN
+					<foreach collection="zyzstypes" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="zyzstypevalue=='包含'">
 					AND zyzstype.zyzstype LIKE CONCAT(CONCAT('%', #{zyzstype}), '%')
@@ -277,9 +326,12 @@
 					AND zyzstype.zyzstype NOT LIKE CONCAT(CONCAT('%', #{zyzstype}), '%')
 				</if>
 			</if>
-			<if test="zyzsname!=null and zyzsname!=''">
-				<if test="zyzsnamevalue==''">
-					AND zyzsname.zyzsname=#{zyzsname}
+			<if test="zyzsname!=null and zyzsname!='' or zyzsnames!=null">
+				<if test="zyzsnamevalue=='' and zyzsnames.size!=0">
+					AND zyzsname.zyzsname IN
+					<foreach collection="zyzsnames" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="zyzsnamevalue=='包含'">
 					AND zyzsname.zyzsname LIKE CONCAT(CONCAT('%', #{zyzsname}), '%')
@@ -291,9 +343,13 @@
 			<if test="firstworkingtimevalue1!=null and firstworkingtimevalue1!='' and firstworkingtimevalue2!=null and firstworkingtimevalue2!=''">
 				AND b.firstworkingtime BETWEEN #{firstworkingtimevalue1} AND #{firstworkingtimevalue2}
 			</if>
-			<if test="workingage!=null and workingage!=''">
-				<if test="workingagevalue==''">
-					AND b.firstworkingtime BETWEEN #{sfwt} AND #{efwt}
+			<if test="workingage!=null and workingage!='' or workingages!=null">
+				<if test="workingagevalue=='' and workingages.size!=0">
+					AND (
+						<foreach collection="workingageMap.entrySet()" item="value" index="key" open="" separator="or" close="">
+							b.firstworkingtime BETWEEN #{key} AND #{value}
+						</foreach>
+					)
 				</if>
 				<if test="workingagevalue==1">
 					<![CDATA[ AND b.firstworkingtime < #{sfwt} ]]>
@@ -315,9 +371,12 @@
 					<![CDATA[ OR b.firstworkingtime < #{sfwt} ]]>
 				</if>
 			</if>
-			<if test="parentcompany!=null and parentcompany!=''">
-				<if test="parentcompanyvalue==''">
-					AND pc.parentcompanyname=#{parentcompany}
+			<if test="parentcompany!=null and parentcompany!='' or parentcompanys!=null">
+				<if test="parentcompanyvalue=='' and parentcompanys.size!=0">
+					AND pc.parentcompanyname IN
+					<foreach collection="parentcompanys" item="param" open="(" separator="," close=")">
+						#{param}
+					</foreach>
 				</if>
 				<if test="parentcompanyvalue=='包含'">
 					AND pc.parentcompanyname LIKE CONCAT(CONCAT('%', #{parentcompany}), '%')
@@ -327,6 +386,11 @@
 				</if>
 			</if>
 		</where>
-		GROUP BY b.id
+		GROUP BY b.id DESC
 	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_baseinformation
+		WHERE id=#{id}
+	</delete>
 </mapper>

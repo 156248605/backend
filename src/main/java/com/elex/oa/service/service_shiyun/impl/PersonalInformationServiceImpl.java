@@ -42,22 +42,38 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     @Override
     public PageInfo<PersonalInformation> queryPIs(Map<String, Object> paramMap) throws ParseException {
 
-
         PersonalInformation personalInformation = (PersonalInformation) paramMap.get("entity");
         if (personalInformation.getAge()!=null && !"".equals(personalInformation.getAge())) {
             HashMap<String, String> birdayByAge = IDcodeUtil.getBirdayByAge(personalInformation.getAge());
             personalInformation.setSbir(birdayByAge.get("sbir"));
             personalInformation.setEbir(birdayByAge.get("ebir"));
         }//年龄转换成出生日期
+        if(personalInformation.getAges()!=null && personalInformation.getAges().size()!=0){
+            Map<String,String> ageMap = new HashMap<>();
+            for (String age:personalInformation.getAges()
+                 ) {
+                HashMap<String, String> birdayByAge = IDcodeUtil.getBirdayByAge(age);
+                ageMap.put(birdayByAge.get("sbir"),birdayByAge.get("ebir"));
+            }
+            personalInformation.setAgeMap(ageMap);
+        }//年龄数组转换成出生日期
         if (personalInformation.getWorkingage()!=null && !"".equals(personalInformation.getWorkingage())) {
             HashMap<String, String> fwtByWorkingage = IDcodeUtil.getFwtByWorkingage(personalInformation.getWorkingage());
             personalInformation.setSfwt(fwtByWorkingage.get("sfwt"));
             personalInformation.setEfwt(fwtByWorkingage.get("efwt"));
-            System.out.println(personalInformation.getSfwt() + ":" + personalInformation.getEfwt());
-        }//工龄转换层首次工作时间
+        }//工龄转换成首次工作时间
+        if(personalInformation.getWorkingages()!=null && personalInformation.getWorkingages().size()!=0){
+            Map<String,String> workingageMap = new HashMap<>();
+            for (String workingage:personalInformation.getWorkingages()
+                 ) {
+                HashMap<String, String> fwtByWorkingage = IDcodeUtil.getBirdayByAge(workingage);
+                workingageMap.put(fwtByWorkingage.get("sbir"),fwtByWorkingage.get("ebir"));
+            }
+            personalInformation.setWorkingageMap(workingageMap);
+        }//工龄数组转换成首次工作时间
         if (personalInformation!=null) {
             List<Integer> baseinformationids = new ArrayList<>();
-            List<BaseInformation> baseInformations = iBaseInformationDao.selectByConditions(personalInformation);
+            List<BaseInformation> baseInformations = iBaseInformationDao.selectByConditions(personalInformation);//先进行基本信息的查询
             for(int i=0;i<baseInformations.size();i++){
                 baseinformationids.add(baseInformations.get(i).getId());
             }
@@ -65,22 +81,21 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
                 personalInformation.setBaseinformationids(baseinformationids);
             }else {
                 return null;
-            }
+            }//再进行基本信息的id集合提取
 
-            if (personalInformation.getPostname()!=null && !"".equals(personalInformation.getPostname())) {
+            if (personalInformation.getPostname()!=null && !"".equals(personalInformation.getPostname()) || personalInformation.getPostnameList().size()!=0) {
                 if("不包含".equals(personalInformation.getPostnamevalue())){
                     List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectByConditions2(personalInformation);
+                    //这里查出来的是包含的部分，到时候只需not in 一下这部分即可
                     ArrayList<Integer> integers = new ArrayList<>();
                     for(PerAndPostRs pp:perAndPostRs){
                         integers.add(pp.getPerid());
                     }
-                    personalInformation.setPpids(integers);
+                    if (integers.size()!=0) {
+                        personalInformation.setPpids(integers);
+                    }
                 }
-                if (personalInformation.getPpids()!=null) {
-                    System.out.println(personalInformation.getPpids().size());
-                }else {
-                    return null;
-                }
+
                 List<Integer> perids = new ArrayList<>();
                 List<PerAndPostRs> perAndPostRsList = iPerandpostrsDao.selectByConditions(personalInformation);
                 for(int i = 0;i<perAndPostRsList.size();i++){
@@ -89,25 +104,31 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
                 if (perids.size()!=0) {
                     personalInformation.setPerids(perids);
                 }
-            }
+            }//将符合岗位条件的perid集合提取出来
         }
-
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         com.github.pagehelper.PageHelper.startPage(pageNum,pageSize);
-
+        System.out.println(personalInformation.getUsername()+"===============================================>");
         List<PersonalInformation> list = iPersonalInformationDao.selectByConditions(personalInformation);
+        System.out.println(list.size()+"========================================================>");
         return new PageInfo<PersonalInformation>(list);
     }
 
     /**
      *@Author:ShiYun;
-     *@Description:根据ID查询人事信息
+     *@Description:根据ID查询人事信息（不包括离职的）
      *@Date: 18:48 2018\4\10 0010
      */
     @Override
     public PersonalInformation queryOneById(Integer id) {
         PersonalInformation personalInformation = iPersonalInformationDao.selectById(id);
+        return personalInformation;
+    }
+    //包括离职的
+    @Override
+    public PersonalInformation queryOneById2(Integer id) {
+        PersonalInformation personalInformation = iPersonalInformationDao.selectById2(id);
         return personalInformation;
     }
 
@@ -162,7 +183,28 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     public List<PersonalInformation> queryByDepid(Integer depid){
         List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(depid);
         return personalInformationList;
-    };
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据员工号查询员工
+     *@Date: 10:02 2018\8\9 0009
+     */
+    @Override
+    public List<PersonalInformation> queryByEmployeenumber(String employeenumber) {
+        List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByEmployeenumber(employeenumber);
+        return personalInformationList;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除人事主体信息
+     *@Date: 16:10 2018\8\20 0020
+     */
+    @Override
+    public void removeOne(Integer perid) {
+        iPersonalInformationDao.deleteById(perid);
+    }
 
     /**
      *@Author:ShiYun;

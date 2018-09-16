@@ -4,7 +4,6 @@ import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.service_shiyun.*;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
-import com.elex.oa.util.util_shiyun.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -81,7 +80,7 @@ public class ContractInformationController {
                 list.get(i).setContracttype(ihRsetContracttypeService.queryById(list.get(i).getContracttypeid()).getContracttype());
             }
             // 获得合同年限
-            list.get(i).setContractage(IDcodeUtil.getContractage(list.get(i).getStartdate(),list.get(i).getEnddate()));
+            /*list.get(i).setContractage(IDcodeUtil.getContractage(list.get(i).getStartdate(),list.get(i).getEnddate()));*/
         }
         contractInformationPageInfo.setList(list);
 
@@ -98,7 +97,12 @@ public class ContractInformationController {
     public List<ContractInformation> queryContractsByUserid(
             @RequestParam("personalInformationId")Integer personalInformationId
     ){
-        List<ContractInformation> contractInformationList = iContractInformationService.queryByUserid(iPersonalInformationService.queryOneById(personalInformationId).getUserid());
+        List<ContractInformation> contractInformationList = null;
+        if (iPersonalInformationService.queryOneById(personalInformationId)!=null) {
+            contractInformationList = iContractInformationService.queryByUserid(iPersonalInformationService.queryOneById(personalInformationId).getUserid());
+        }else {
+            return null;
+        }
         return contractInformationList;
     }
 
@@ -145,7 +149,7 @@ public class ContractInformationController {
             ContractInformation contractInformation,
             @RequestParam("transactorusername") String transactorusername,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException, ParseException {
         //获得办理人ID
         User user = new User();
         user.setUsername(transactorusername);
@@ -183,7 +187,7 @@ public class ContractInformationController {
             ContractInformation contractInformation,
             @RequestParam("transactorusername") String transactorusername,
             HttpServletRequest request
-    ) throws IOException {
+    ) throws IOException, ParseException {
         Boolean b = false;
         ContractInformation c2 = iContractInformationService.queryById(contractInformation.getId());
         //获得办理人ID
@@ -251,7 +255,11 @@ public class ContractInformationController {
             if (ihRsetContracttypeService.queryById(contractInformation1.getContracttypeid())!=null) {
                 contractInformation1.setContracttype(ihRsetContracttypeService.queryById(contractInformation1.getContracttypeid()).getContracttype());
             }
-            contractInformation1.setContractage(IDcodeUtil.getContractage(contractInformation1.getStartdate(),contractInformation1.getEnddate()));
+            try {
+                contractInformation1.setContractage(IDcodeUtil.getContractage(contractInformation1.getStartdate(),contractInformation1.getEnddate()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (iUserService.getById(contractInformation1.getTransactoruserid())!=null) {
                 contractInformation1.setTransactortruename(iUserService.getById(contractInformation1.getTransactoruserid()).getTruename());
             }

@@ -30,4 +30,11 @@ public interface IBaseInformationService {
      */
     public void modifyOne(BaseInformation baseInformation);
 
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID删除基本信息表
+     *@Date: 15:00 2018\8\20 0020
+     */
+    public void removeOne(Integer baseinformationid);
+
 }

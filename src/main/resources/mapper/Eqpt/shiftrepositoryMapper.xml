@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.eqptDao.ShiftRepositoryMapper">
+
+    <select id="showRepository" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository ORDER BY shiftId DESC
+    </select>
+
+    <select id="searchShift" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository
+        <where>
+            <if test="shiftId != null and shiftId != '' and shiftIdC == ''">
+                AND shiftId LIKE CONCAT(CONCAT('%', #{shiftId}), '%')
+            </if>
+            <if test="shiftId != null and shiftId != '' and shiftIdC == 1">
+                AND shiftId LIKE CONCAT(CONCAT('%', #{shiftId}), '%')
+            </if>
+            <if test="shiftId != null and shiftId != '' and shiftIdC == 2">
+                AND shiftId NOT LIKE CONCAT(CONCAT('%', #{shiftId}), '%')
+            </if>
+            <if test="shiftTime != null and shiftTime != '' and shiftTimeC == ''">
+                AND shiftTime LIKE CONCAT(CONCAT('%', #{shiftTime}), '%')
+            </if>
+            <if test="shiftTime != null and shiftTime != '' and shiftTimeC == 1">
+                AND shiftTime LIKE CONCAT(CONCAT('%', #{shiftTime}), '%')
+            </if>
+            <if test="shiftTime != null and shiftTime != '' and shiftTimeC == 2">
+                AND shiftTime NOT LIKE CONCAT(CONCAT('%', #{shiftTime}), '%')
+            </if>
+            <if test="shiftNum != null and shiftNum != '' and shiftNumC == ''">
+                AND shiftNum LIKE CONCAT(CONCAT('%', #{shiftNum}), '%')
+            </if>
+            <if test="shiftNum != null and shiftNum != '' and shiftNumC == 1">
+                AND shiftNum &lt; ${shiftNum}
+            </if>
+            <if test="shiftNum != null and shiftNum != '' and shiftNumC == 2">
+                AND shiftNum > ${shiftNum}
+            </if>
+            <if test="shiftNum != null and shiftNum != '' and shiftNumC == 3">
+                AND shiftNum = ${shiftNum}
+            </if>
+            <if test="shiftNum != null and shiftNum != '' and shiftNumC == 4">
+                AND shiftNum &lt;= ${shiftNum}
+            </if>
+            <if test="shiftNum != null and shiftNum != '' and shiftNumC == 5">
+                AND shiftNum >= ${shiftNum}
+            </if>
+            <if test="outRept != null and outRept != '' and outReptC == ''">
+                AND outRept LIKE CONCAT(CONCAT('%', #{outRept}), '%')
+            </if>
+            <if test="outRept != null and outRept != '' and outReptC == 1">
+                AND outRept LIKE CONCAT(CONCAT('%', #{outRept}), '%')
+            </if>
+            <if test="outRept != null and outRept != '' and outReptC == 2">
+                AND outRept NOT LIKE CONCAT(CONCAT('%', #{outRept}), '%')
+            </if>
+            <if test="outPost != null and outPost != '' and outPostC == ''">
+                AND outPost LIKE CONCAT(CONCAT('%', #{outPost}), '%')
+            </if>
+            <if test="outPost != null and outPost != '' and outPostC == 1">
+                AND outPost LIKE CONCAT(CONCAT('%', #{outPost}), '%')
+            </if>
+            <if test="outPost != null and outPost != '' and outPostC == 2">
+                AND outPost NOT LIKE CONCAT(CONCAT('%', #{outPost}), '%')
+            </if>
+            <if test="inRept != null and inRept != '' and inReptC == ''">
+                AND inRept LIKE CONCAT(CONCAT('%', #{inRept}), '%')
+            </if>
+            <if test="inRept != null and inRept != '' and inReptC == 1">
+                AND inRept LIKE CONCAT(CONCAT('%', #{inRept}), '%')
+            </if>
+            <if test="inRept != null and inRept != '' and inReptC == 2">
+                AND inRept NOT LIKE CONCAT(CONCAT('%', #{inRept}), '%')
+            </if>
+            <if test="inPost != null and inPost != '' and inPostC == ''">
+                AND inPost LIKE CONCAT(CONCAT('%', #{inPost}), '%')
+            </if>
+            <if test="inPost != null and inPost != '' and inPostC == 1">
+                AND inPost LIKE CONCAT(CONCAT('%', #{inPost}), '%')
+            </if>
+            <if test="inPost != null and inPost != '' and inPostC == 2">
+                AND inPost NOT LIKE CONCAT(CONCAT('%', #{inPost}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == ''">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 1">
+                AND projId LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projId != null and projId != '' and projIdC == 2">
+                AND projId NOT LIKE CONCAT(CONCAT('%', #{projId}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == ''">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 1">
+                AND projName LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="projName != null and projName != '' and projNameC == 2">
+                AND projName NOT LIKE CONCAT(CONCAT('%', #{projName}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == ''">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 1">
+                AND materialId LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="materialId != null and materialId != '' and matIdC == 2">
+                AND materialId NOT LIKE CONCAT(CONCAT('%', #{materialId}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == ''">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 1">
+                AND sn LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="sn != null and sn != '' and snC == 2">
+                AND sn NOT LIKE CONCAT(CONCAT('%', #{sn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == ''">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 1">
+                AND bn LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+            <if test="bn != null and bn != '' and bnC == 2">
+                AND bn NOT LIKE CONCAT(CONCAT('%', #{bn}), '%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateInstId" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_shiftrepository SET INST_ID_ = #{instid} WHERE INST_ID_ = ''
+    </update>
+
+    <update id="updateApprove" parameterType="com.elex.oa.entity.eqpt.Repository">
+        UPDATE eqpt_shiftrepository
+        <set>
+            <if test="arg1 != null and arg1 != ''">
+                secondOne = #{arg1},
+            </if>
+            <if test="arg2 != null and arg2 != ''">
+                thirdOne = #{arg2},
+            </if>
+            <if test="arg3 != null and arg3 != ''">
+                fourthOne = #{arg3},
+            </if>
+        </set>
+        WHERE INST_ID_ = #{arg0}
+    </update>
+
+    <insert id="insertNew" parameterType="string">
+        INSERT INTO eqpt_shiftrepository VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22},NULL)
+    </insert>
+
+    <select id="showSHIFTID" resultType="java.lang.String">
+        SELECT shiftId FROM eqpt_shiftrepository WHERE shiftId LIKE CONCAT(CONCAT('%',#{shiftId},'%'))
+    </select>
+
+    <select id="lockMat" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE id = #{id}
+    </select>
+
+    <select id="theNumberOut" resultType="string">
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId} AND id = #{materialId}
+    </select>
+
+    <select id="theNumberIn" resultType="string">
+        SELECT num FROM eqpt_detail WHERE reptId = #{reptId} AND postId = #{postId}
+    </select>
+
+    <select id="wdbhJ" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT F_WDBH AS shiftId FROM w_jysqd5 WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="wdbhL" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT F_WDBH AS shiftId FROM w_sclld WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="wdbhG" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT F_WDBH AS shiftId FROM w_jysqd5 WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="wdbhT" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT F_WDBH AS shiftId FROM w_sclld WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="showmatJ" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jyd WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        UNION
+        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jyd WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        ORDER BY materialId
+    </select>
+
+    <select id="showmatL" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        UNION
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        ORDER BY materialId
+    </select>
+
+    <select id="showmatG" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jyd WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        UNION
+        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jyd WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        ORDER BY materialId
+    </select>
+
+    <select id="showmatT" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        UNION
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        ORDER BY materialId
+    </select>
+
+    <select id="showprojJ" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_jysqd5.F_XMBH AS projId,w_jysqd5.F_XMMC AS projName FROM w_jysqd5 WHERE F_WDBH = #{wdbh}
+    </select>
+
+    <select id="showprojL" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT w_sclld.F_XMBH AS projId,w_sclld.F_XMMC AS projName FROM w_sclld WHERE F_WDBH = #{wdbh}
+    </select>
+
+    <select id="getInId" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository WHERE INST_ID_ = #{instId}
+    </select>
+
+    <select id="node" resultType="string">
+        SELECT TASK_DEF_KEY_ FROM act_ru_task WHERE PROC_INST_ID_ = #{taskid}
+    </select>
+
+    <select id="approveName" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository WHERE INST_ID_ = #{instId} ORDER BY shiftId DESC LIMIT 1
+    </select>
+
+    <select id="checkDraft" resultType="string">
+        SELECT shiftId FROM eqpt_shiftrepository_draft WHERE materialId = #{materialId} AND shiftId = #{shiftId}
+    </select>
+
+    <select id="getDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository_draft WHERE shiftId = #{shiftId}
+    </select>
+
+    <delete id="deleteDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
+        DELETE FROM eqpt_shiftrepository_draft WHERE shiftId = #{shiftId}
+    </delete>
+
+    <select id="findDraft" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT * FROM eqpt_shiftrepository_draft ORDER BY shiftId DESC
+    </select>
+
+    <insert id="insertDraft" parameterType="string">
+        INSERT INTO eqpt_shiftrepository_draft VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22},NULL)
+    </insert>
+</mapper>

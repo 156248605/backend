@@ -69,4 +69,32 @@ public interface IDeptDao{
      *@Date: 15:30 2018\5\10 0010
      */
     public List<Dept> selectDeptsByDept(Dept dept);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门编号查询部门信息
+     *@Date: 17:04 2018\8\14 0014
+     */
+    public Dept selectDeptByDeptcode(String depcode);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门编号模糊查询部门信息
+     *@Date: 17:05 2018\8\14 0014
+     */
+    public List<Dept> selectDeptByDeptcode2(String depcode);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据部门类型查询部门信息
+     *@Date: 10:54 2018\8\21 0021
+     */
+    public List<Dept> selectDeptByDeptypeid(Integer deptypeid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据公司名称查询公司的部门
+     *@Date: 11:20 2018\8\21 0021
+     */
+    public List<Dept> selectDeptByCompanyname(String companyname);
 }

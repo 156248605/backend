@@ -37,8 +37,8 @@ public class MaterialController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public String InsertMaterial (Material material,HttpServletRequest request) throws ParseException {
-        return materialImpl.insertMaterial(material,request);
+    public void InsertMaterial (Material material,HttpServletRequest request) {
+        materialImpl.insertMaterial(material,request);
     }
 
     @RequestMapping("/change")
@@ -49,7 +49,7 @@ public class MaterialController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public void saveMaterial(HttpServletRequest request) throws ParseException{
+    public void saveMaterial(HttpServletRequest request) {
         materialImpl.saveMaterial(request);
     }
 
@@ -57,5 +57,17 @@ public class MaterialController {
     @ResponseBody
     public void deleteMaterial(HttpServletRequest request){
         materialImpl.deleteMaterial(request);
+    }
+
+    @RequestMapping("/check")
+    @ResponseBody
+    public String checkId (HttpServletRequest request){
+        return materialImpl.checkId(request);
+    }
+
+    @RequestMapping("/record")
+    @ResponseBody
+    public String record (HttpServletRequest request) {
+        return materialImpl.record(request);
     }
 }

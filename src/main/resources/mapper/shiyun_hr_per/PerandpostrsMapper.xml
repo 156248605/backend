@@ -21,8 +21,17 @@
 		WHERE perid=#{perid}
 	</select>
 
+	<select id="selectPeridsByPostid" parameterType="java.lang.Integer" resultMap="PerandpostrsMapper">
+		SELECT * FROM tb_hr_per_and_post_rs
+		WHERE postid=#{postid}
+	</select>
+
 	<delete id="deleteByPerid" parameterType="java.lang.Integer" >
 		DELETE FROM tb_hr_per_and_post_rs WHERE perid=#{perid}
+	</delete>
+
+	<delete id="deleteByPostid" parameterType="java.lang.Integer" >
+		DELETE FROM tb_hr_per_and_post_rs WHERE postid=#{postid}
 	</delete>
 
 	<select id="selectByConditions" parameterType="PersonalInformation" resultMap="PerandpostrsMapper">
@@ -30,14 +39,17 @@
 		FROM tb_hr_per_and_post_rs rs
 		JOIN tb_id_post p ON rs.postid = p.id
 		<where>
-			<if test="postname!=null and postname!=''">
-				<if test="postnamevalue==''">
-					p.postname=#{postname}
+			<if test="postname!=null and postname!='' or postnameList!=null">
+				<if test="postnamevalue=='' and postnameList.size!=0">
+					p.postname IN
+					<foreach collection="postnameList" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
 				</if>
 				<if test="postnamevalue=='包含'">
 					p.postname LIKE CONCAT(CONCAT('%', #{postname}), '%')
 				</if>
-				<if test="postnamevalue=='不包含'">
+				<if test="postnamevalue=='不包含' and perids!=null and perids.size!=0">
 					rs.perid NOT IN
 					<foreach collection="perids" item="param"  open="(" close=")" separator=",">
 						#{param}
@@ -57,4 +69,5 @@
 		</if>
 		GROUP BY rs.perid
 	</select>
+
 </mapper>

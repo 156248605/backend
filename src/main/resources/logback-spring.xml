@@ -67,9 +67,9 @@
 
     <logger name="com.elex.oa.dao" level="DEBUG"/>
 
-  <!--  <logger name="org.mybatis.spring.SqlSessionFactoryBea" level="DEBUG">
+    <logger name="org.mybatis.spring.SqlSessionFactoryBea" level="DEBUG">
         <appender-ref ref="STDOUT" />
-    </logger>-->
+    </logger>
 
 
     <!--<!–日志异步到数据库 –>-->
