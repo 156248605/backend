@@ -5,7 +5,9 @@ package com.elex.oa.dao.eqptDao;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.regexp.RE;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -52,4 +54,14 @@ public interface InRepositoryMapper {
 
     // 删除草稿
     void deleteDraft(Repository repository);
+
+    // 入库通知细节
+    List<HashMap<String, Object>> getNotice();
+
+    // 弹窗子表
+    List<HashMap<String, Object>> noticeChild(String wdbh);
+
+    /*所有*/
+    List<Repository> allNotice();
+
 }

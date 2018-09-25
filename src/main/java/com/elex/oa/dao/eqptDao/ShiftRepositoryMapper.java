@@ -5,6 +5,7 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -66,4 +67,14 @@ public interface ShiftRepositoryMapper {
     void deleteDraft(Repository repository);
 
     void insertDraft(String shiftId, String shiftTime, String shiftReptC, String shiftNum, String shiftInfo, String outRept, String outPost, String inRept, String inPost, String materialId, String materialName, String spec, String unit, String sn, String bn, String remark, String projid, String projname, String c, String firstOne, String secondOne, String thirdOne, String fourthOne);
+
+    List<HashMap<String, Object>> noticeChild(String wdbh);
+
+    List<HashMap<String, Object>> getNoticeS();
+
+    List<HashMap<String, Object>> getNoticeJ();
+
+    List<Repository> allNoticeJ();
+
+    List<Repository> allNoticeS();
 }
