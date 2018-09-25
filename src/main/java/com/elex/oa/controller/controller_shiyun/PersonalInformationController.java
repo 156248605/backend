@@ -783,9 +783,11 @@ public class PersonalInformationController {
 
         //添加人事与岗位关系表的信息
         List<Integer> postids = personalInformation.getPostids();
-        for(Integer postid:postids){
-            PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
-            iPerandpostrsService.addOne(perAndPostRs);
+        if(postids!=null&&postids.size()!=0){
+            for(Integer postid:postids){
+                PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(),postid);
+                iPerandpostrsService.addOne(perAndPostRs);
+            }
         }
         User user = iUserService.getById(personalInformation.getUserid());
         return RespUtil.successResp("200","管理信息添加成功！",user) ;
@@ -2503,6 +2505,19 @@ public class PersonalInformationController {
         }
         /*return RespUtil.successResp("200","提交成功！",companyname);*/
         return companyname;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据登录ID查询岗位名称
+     *@Date: 13:39 2018\9\25 0025
+     */
+    @RequestMapping("/queryHLT001")
+    @ResponseBody//表示该方法的返回结果直接写入 HTTP response body 中，一般在异步获取数据时使用【也就是AJAX】
+    public Object queryHLT001(
+            @RequestParam("username")String username
+    ){
+        return iPostService.queryPostnameByUsername(username);
     }
 
     /**

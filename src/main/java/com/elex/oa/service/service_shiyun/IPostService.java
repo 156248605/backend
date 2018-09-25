@@ -83,4 +83,11 @@ public interface IPostService  {
      *@Date: 13:49 2018\8\30 0030
      */
     Boolean isChildPoint(Integer parentpostid,Integer childpostid);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据登录ID查询岗位名称
+     *@Date: 13:47 2018\9\25 0025
+     */
+    Object queryPostnameByUsername(String username);
 }

@@ -240,7 +240,9 @@ public class PostInformationController {
             post.setFunctionaltypeid(hRsetFunctionalType.getId());
         }
         HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryByPostlevel(post.getPostlevel());
-        post.setPostlevelid(hRsetPostlevel.getId());
+        if(hRsetPostlevel!=null){
+            post.setPostlevelid(hRsetPostlevel.getId());
+        }
         Integer postid = iPostService.addOne(post);
         post.setId(postid);
 
