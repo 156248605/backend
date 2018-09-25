@@ -326,7 +326,7 @@ public class IDcodeUtil {
      *@Description:根据身份证号码获得其所在的省份/城市/区县
      *@Date: 11:04 2018\9\18 0018
      */
-    public static String getProvinceByIdcode(String idcode){
+    /*public static String getProvinceByIdcode(String idcode){
         String provinceCode = idcode.substring(0,2);
         String cityCode = idcode.substring(2,4);
         String countyCode = idcode.substring(4,6);
@@ -2521,7 +2521,6 @@ public class IDcodeUtil {
                         cityName="--";
                         switch (countyCode){
                             case "21":countyName="上海县";break;
-                            case "21":countyName="上海县";break;
                             case "22":countyName="嘉定县";break;
                             case "23":countyName="宝山县";break;
                             case "24":countyName="川沙县";break;
@@ -3810,37 +3809,317 @@ public class IDcodeUtil {
                         }
                     }break;
                     //江西省--景德镇市************************
-                    case "02":{cityName="景德镇市";}break;
+                    case "02":{
+                        cityName="景德镇市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="昌江区";}break;
+                            case "03":{countyName="珠山区";}break;
+                            case "11":{countyName="鹅湖区";}break;
+                            case "12":{countyName="蛟潭区";}break;
+                            case "21":{countyName="乐平县";}break;
+                            case "22":{countyName="浮梁县";}break;
+                            case "81":{countyName="乐平市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--萍乡市************************
-                    case "03":{cityName="萍乡市";}break;
+                    case "03":{
+                        cityName="萍乡市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="安源区";}break;
+                            case "11":{countyName="上栗区";}break;
+                            case "12":{countyName="泸溪县";}break;
+                            case "13":{countyName="湘东区";}break;
+                            case "21":{countyName="莲花县";}break;
+                            case "22":{countyName="上栗县";}break;
+                            case "23":{countyName="泸溪县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--九江市************************
-                    case "04":{cityName="九江市";}break;
+                    case "04":{
+                        cityName="九江市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="庐山区";}break;
+                            case "03":{countyName="浔阳区";}break;
+                            case "21":{countyName="九江县";}break;
+                            case "22":{countyName="瑞昌县";}break;
+                            case "23":{countyName="武宁县";}break;
+                            case "24":{countyName="修水县";}break;
+                            case "25":{countyName="永修县";}break;
+                            case "26":{countyName="德安县";}break;
+                            case "27":{countyName="星子县";}break;
+                            case "28":{countyName="都昌县";}break;
+                            case "29":{countyName="湖口县";}break;
+                            case "30":{countyName="彭泽县";}break;
+                            case "81":{countyName="瑞昌市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--新余市************************
-                    case "05":{cityName="新余市";}break;
+                    case "05":{
+                        cityName="新余市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="渝水区";}break;
+                            case "21":{countyName="分宜县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--鹰潭市************************
-                    case "06":{cityName="鹰潭市";}break;
+                    case "06":{
+                        cityName="鹰潭市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="月湖区";}break;
+                            case "21":{countyName="贵溪县";}break;
+                            case "22":{countyName="余江县";}break;
+                            case "81":{countyName="贵溪市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--赣州市************************
-                    case "07":{cityName="赣州市";}break;
+                    case "07":{
+                        cityName="赣州市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="章贡区";}break;
+                            case "21":{countyName="赣县";}break;
+                            case "22":{countyName="信丰县";}break;
+                            case "23":{countyName="大余县";}break;
+                            case "24":{countyName="上犹县";}break;
+                            case "25":{countyName="崇义县";}break;
+                            case "26":{countyName="安远县";}break;
+                            case "27":{countyName="龙南县";}break;
+                            case "28":{countyName="定南县";}break;
+                            case "29":{countyName="全南县";}break;
+                            case "30":{countyName="宁都县";}break;
+                            case "31":{countyName="于都县";}break;
+                            case "32":{countyName="兴国县";}break;
+                            case "33":{countyName="会昌县";}break;
+                            case "34":{countyName="寻乌县";}break;
+                            case "35":{countyName="石城县";}break;
+                            case "81":{countyName="瑞金市";}break;
+                            case "82":{countyName="南康市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--吉安市************************
-                    case "08":{cityName="吉安市";}break;
+                    case "08":{
+                        cityName="吉安市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="吉州区";}break;
+                            case "03":{countyName="青原区";}break;
+                            case "21":{countyName="吉安县";}break;
+                            case "22":{countyName="吉水县";}break;
+                            case "23":{countyName="峡江县";}break;
+                            case "24":{countyName="新干县";}break;
+                            case "25":{countyName="永丰县";}break;
+                            case "26":{countyName="泰和县";}break;
+                            case "27":{countyName="遂川县";}break;
+                            case "28":{countyName="万安县";}break;
+                            case "29":{countyName="安福县";}break;
+                            case "30":{countyName="永新县";}break;
+                            case "81":{countyName="井冈山市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--宜春市************************
-                    case "09":{cityName="宜春市";}break;
+                    case "09":{
+                        cityName="宜春市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="袁州区";}break;
+                            case "21":{countyName="奉新县";}break;
+                            case "22":{countyName="万载县";}break;
+                            case "23":{countyName="上高县";}break;
+                            case "24":{countyName="宜丰县";}break;
+                            case "25":{countyName="靖安县";}break;
+                            case "26":{countyName="铜鼓县";}break;
+                            case "81":{countyName="丰城市";}break;
+                            case "82":{countyName="樟树市";}break;
+                            case "83":{countyName="高安市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--抚州市************************
-                    case "10":{cityName="抚州市";}break;
+                    case "10":{
+                        cityName="抚州市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="临川区";}break;
+                            case "21":{countyName="南城县";}break;
+                            case "22":{countyName="黎川县";}break;
+                            case "23":{countyName="南丰县";}break;
+                            case "24":{countyName="崇仁县";}break;
+                            case "25":{countyName="乐安县";}break;
+                            case "26":{countyName="宜黄县";}break;
+                            case "27":{countyName="金溪县";}break;
+                            case "28":{countyName="资溪县";}break;
+                            case "29":{countyName="东乡县";}break;
+                            case "30":{countyName="广昌县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--上饶市************************
-                    case "11":{cityName="上饶市";}break;
+                    case "11":{
+                        cityName="上饶市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="信州区";}break;
+                            case "21":{countyName="上饶县";}break;
+                            case "22":{countyName="广丰县";}break;
+                            case "23":{countyName="玉山县";}break;
+                            case "24":{countyName="铅山县";}break;
+                            case "25":{countyName="横峰县";}break;
+                            case "26":{countyName="弋阳县";}break;
+                            case "27":{countyName="余干县";}break;
+                            case "28":{countyName="鄱阳县";}break;
+                            case "29":{countyName="万年县";}break;
+                            case "30":{countyName="婺源县";}break;
+                            case "81":{countyName="德兴市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--赣州地区************************
-                    case "21":{cityName="赣州地区";}break;
+                    case "21":{
+                        cityName="赣州地区";
+                        switch (countyCode){
+                            case "01":{countyName="赣州市";}break;
+                            case "02":{countyName="瑞金市";}break;
+                            case "03":{countyName="南康市";}break;
+                            case "21":{countyName="赣县";}break;
+                            case "22":{countyName="南康市";}break;
+                            case "23":{countyName="信丰市";}break;
+                            case "24":{countyName="大余县";}break;
+                            case "25":{countyName="上犹县";}break;
+                            case "26":{countyName="崇义县";}break;
+                            case "27":{countyName="安远县";}break;
+                            case "28":{countyName="龙南县";}break;
+                            case "29":{countyName="定南县";}break;
+                            case "30":{countyName="全南县";}break;
+                            case "31":{countyName="宁都县";}break;
+                            case "32":{countyName="于都县";}break;
+                            case "33":{countyName="兴国县";}break;
+                            case "34":{countyName="瑞金市";}break;
+                            case "35":{countyName="会昌县";}break;
+                            case "36":{countyName="寻乌县";}break;
+                            case "37":{countyName="石城县";}break;
+                            case "38":{countyName="广昌县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--宜春地区************************
-                    case "22":{cityName="宜春地区";}break;
+                    case "22":{
+                        cityName="宜春地区";
+                        switch (countyCode){
+                            case "01":{countyName="宜春市";}break;
+                            case "02":{countyName="丰城市";}break;
+                            case "03":{countyName="樟树市";}break;
+                            case "04":{countyName="高安市";}break;
+                            case "21":{countyName="丰城县";}break;
+                            case "22":{countyName="高安县";}break;
+                            case "23":{countyName="清江县";}break;
+                            case "24":{countyName="新余县";}break;
+                            case "25":{countyName="宜春县";}break;
+                            case "26":{countyName="奉新县";}break;
+                            case "27":{countyName="万载县";}break;
+                            case "28":{countyName="上高县";}break;
+                            case "29":{countyName="宜丰县";}break;
+                            case "30":{countyName="分宜县";}break;
+                            case "31":{countyName="安义县";}break;
+                            case "32":{countyName="靖安县";}break;
+                            case "33":{countyName="铜鼓县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--上饶地区************************
-                    case "23":{cityName="上饶地区";}break;
+                    case "23":{
+                        cityName="上饶地区";
+                        switch (countyCode){
+                            case "01":{countyName="上饶市";}break;
+                            case "02":{countyName="德兴市";}break;
+                            case "21":{countyName="上饶县";}break;
+                            case "22":{countyName="广丰县";}break;
+                            case "23":{countyName="玉山县";}break;
+                            case "24":{countyName="铅山县";}break;
+                            case "25":{countyName="横峰县";}break;
+                            case "26":{countyName="弋阳县";}break;
+                            case "27":{countyName="贵溪县";}break;
+                            case "28":{countyName="余江县";}break;
+                            case "29":{countyName="余干县";}break;
+                            case "30":{countyName="波阳县";}break;
+                            case "31":{countyName="万年县";}break;
+                            case "32":{countyName="乐平县";}break;
+                            case "33":{countyName="德兴县";}break;
+                            case "34":{countyName="婺源县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--吉安地区************************
-                    case "24":{cityName="吉安地区";}break;
+                    case "24":{
+                        cityName="吉安地区";
+                        switch (countyCode){
+                            case "01":{countyName="吉安市";}break;
+                            case "02":{countyName="井冈山市";}break;
+                            case "21":{countyName="吉安县";}break;
+                            case "22":{countyName="吉水县";}break;
+                            case "23":{countyName="峡江县";}break;
+                            case "24":{countyName="新干县";}break;
+                            case "25":{countyName="永丰县";}break;
+                            case "26":{countyName="泰和县";}break;
+                            case "27":{countyName="遂川县";}break;
+                            case "28":{countyName="万安县";}break;
+                            case "29":{countyName="安福县";}break;
+                            case "30":{countyName="永新县";}break;
+                            case "31":{countyName="莲花县";}break;
+                            case "32":{countyName="宁冈县";}break;
+                            case "33":{countyName="井冈山县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--抚州地区************************
-                    case "25":{cityName="抚州地区";}break;
+                    case "25":{
+                        cityName="抚州地区";
+                        switch (countyCode){
+                            case "01":{countyName="临川市";}break;
+                            case "02":{countyName="临川市";}break;
+                            case "21":{countyName="临川县";}break;
+                            case "22":{countyName="南城县";}break;
+                            case "23":{countyName="黎川县";}break;
+                            case "24":{countyName="南丰县";}break;
+                            case "25":{countyName="崇仁县";}break;
+                            case "26":{countyName="乐安县";}break;
+                            case "27":{countyName="宜黄县";}break;
+                            case "28":{countyName="金溪县";}break;
+                            case "29":{countyName="资溪县";}break;
+                            case "30":{countyName="进贤县";}break;
+                            case "31":{countyName="东乡县";}break;
+                            case "32":{countyName="广昌县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //江西省--九江地区************************
-                    case "26":{cityName="九江地区";}break;
+                    case "26":{
+                        cityName="九江地区";
+                        switch (countyCode){
+                            case "21":{countyName="九江县";}break;
+                            case "22":{countyName="瑞昌县";}break;
+                            case "23":{countyName="武宁县";}break;
+                            case "24":{countyName="修水县";}break;
+                            case "25":{countyName="永修县";}break;
+                            case "26":{countyName="德安县";}break;
+                            case "27":{countyName="星子县";}break;
+                            case "28":{countyName="都昌县";}break;
+                            case "29":{countyName="湖口县";}break;
+                            case "30":{countyName="彭泽县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
                     //********************************
                     default:{
                         cityName="(身份证号码3-4位有误)";
@@ -3849,9 +4128,536 @@ public class IDcodeUtil {
                 }
             }break;
             //山东省的身份证前六位对应关系==============================================================================
-            case "37":{provinceName="山东省";}break;
+            case "37":{
+                provinceName="山东省";
+                switch (cityCode){
+                    //山东省--济南市************************
+                    case "01":{
+                        cityName="济南市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="历下区";}break;
+                            case "03":{countyName="市中区";}break;
+                            case "04":{countyName="槐荫区";}break;
+                            case "05":{countyName="天桥区";}break;
+                            case "11":{countyName="郊区";}break;
+                            case "12":{countyName="历城区";}break;
+                            case "13":{countyName="长清区";}break;
+                            case "20":{countyName="市区";}break;
+                            case "21":{countyName="历城县";}break;
+                            case "22":{countyName="章丘县";}break;
+                            case "23":{countyName="长清县";}break;
+                            case "24":{countyName="平阴县";}break;
+                            case "25":{countyName="济阳县";}break;
+                            case "26":{countyName="商河县";}break;
+                            case "81":{countyName="章丘县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--青岛市************************
+                    case "02":{
+                        cityName="青岛市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="市南区";}break;
+                            case "03":{countyName="市北区";}break;
+                            case "04":{countyName="台东区";}break;
+                            case "05":{countyName="四方区";}break;
+                            case "06":{countyName="沧口区";}break;
+                            case "11":{countyName="黄岛区";}break;
+                            case "12":{countyName="崂山区";}break;
+                            case "13":{countyName="李沧区";}break;
+                            case "14":{countyName="城阳区";}break;
+                            case "20":{countyName="市区";}break;
+                            case "21":{countyName="崂山县";}break;
+                            case "22":{countyName="即墨县";}break;
+                            case "23":{countyName="胶南县";}break;
+                            case "24":{countyName="胶县";}break;
+                            case "25":{countyName="莱西县";}break;
+                            case "26":{countyName="平度县";}break;
+                            case "81":{countyName="胶州市";}break;
+                            case "82":{countyName="即墨市";}break;
+                            case "83":{countyName="平度市";}break;
+                            case "84":{countyName="胶南市";}break;
+                            case "85":{countyName="莱西市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--淄博市************************
+                    case "03":{
+                        cityName="淄博市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="淄川区";}break;
+                            case "03":{countyName="张店区";}break;
+                            case "04":{countyName="博山区";}break;
+                            case "05":{countyName="临淄区";}break;
+                            case "06":{countyName="周村区";}break;
+                            case "21":{countyName="桓台县";}break;
+                            case "22":{countyName="高青县";}break;
+                            case "23":{countyName="沂源县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--枣庄市************************
+                    case "04":{
+                        cityName="枣庄市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="市中区";}break;
+                            case "03":{countyName="薛城区";}break;
+                            case "04":{countyName="峄城区";}break;
+                            case "05":{countyName="台儿庄区";}break;
+                            case "06":{countyName="山亭区";}break;
+                            case "20":{countyName="市区";}break;
+                            case "21":{countyName="藤县";}break;
+                            case "81":{countyName="滕州市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--东营市************************
+                    case "05":{
+                        cityName="东营市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="东营区";}break;
+                            case "03":{countyName="河口区";}break;
+                            case "21":{countyName="垦利区";}break;
+                            case "22":{countyName="利津县";}break;
+                            case "23":{countyName="广饶县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--烟台市************************
+                    case "06":{
+                        cityName="烟台市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="芝罘区";}break;
+                            case "11":{countyName="福山区";}break;
+                            case "12":{countyName="牟平区";}break;
+                            case "13":{countyName="莱山区";}break;
+                            case "19":{countyName="龙口市";}break;
+                            case "20":{countyName="威海市";}break;
+                            case "22":{countyName="蓬莱县";}break;
+                            case "23":{countyName="黄县";}break;
+                            case "24":{countyName="招远县";}break;
+                            case "25":{countyName="掖县";}break;
+                            case "27":{countyName="莱阳县";}break;
+                            case "28":{countyName="栖霞县";}break;
+                            case "29":{countyName="海阳县";}break;
+                            case "31":{countyName="牟平县";}break;
+                            case "32":{countyName="文登县";}break;
+                            case "33":{countyName="容城县";}break;
+                            case "34":{countyName="长岛县";}break;
+                            case "81":{countyName="龙口市";}break;
+                            case "82":{countyName="莱阳市";}break;
+                            case "83":{countyName="莱州市";}break;
+                            case "84":{countyName="蓬莱市";}break;
+                            case "85":{countyName="招远市";}break;
+                            case "86":{countyName="栖霞市";}break;
+                            case "87":{countyName="海阳市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--潍坊市************************
+                    case "07":{
+                        cityName="潍坊市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="潍城区";}break;
+                            case "03":{countyName="寒亭区";}break;
+                            case "04":{countyName="坊子区";}break;
+                            case "05":{countyName="奎文区";}break;
+                            case "19":{countyName="青州市";}break;
+                            case "21":{countyName="益都县";}break;
+                            case "22":{countyName="安丘县";}break;
+                            case "23":{countyName="寿光县";}break;
+                            case "24":{countyName="临朐县";}break;
+                            case "25":{countyName="昌乐县";}break;
+                            case "26":{countyName="昌邑县";}break;
+                            case "27":{countyName="高密县";}break;
+                            case "28":{countyName="诸城县";}break;
+                            case "29":{countyName="五莲县";}break;
+                            case "81":{countyName="青州市";}break;
+                            case "82":{countyName="诸城市";}break;
+                            case "83":{countyName="寿光市";}break;
+                            case "84":{countyName="安丘市";}break;
+                            case "85":{countyName="高密市";}break;
+                            case "86":{countyName="昌邑市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--济宁市************************
+                    case "08":{
+                        cityName="济宁市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="市中区";}break;
+                            case "11":{countyName="任城区";}break;
+                            case "19":{countyName="曲阜市";}break;
+                            case "22":{countyName="衮州县";}break;
+                            case "23":{countyName="曲阜县";}break;
+                            case "25":{countyName="邹县";}break;
+                            case "26":{countyName="微山县";}break;
+                            case "27":{countyName="鱼台县";}break;
+                            case "28":{countyName="金乡县";}break;
+                            case "29":{countyName="嘉祥县";}break;
+                            case "30":{countyName="汶上县";}break;
+                            case "31":{countyName="泗水县";}break;
+                            case "32":{countyName="梁山县";}break;
+                            case "81":{countyName="曲阜市";}break;
+                            case "82":{countyName="衮州市";}break;
+                            case "83":{countyName="邹城市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--泰安市************************
+                    case "09":{
+                        cityName="泰安市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="泰山区";}break;
+                            case "03":{countyName="岱岳区";}break;
+                            case "11":{countyName="郊区";}break;
+                            case "19":{countyName="莱芜市";}break;
+                            case "20":{countyName="新泰市";}break;
+                            case "21":{countyName="宁阳县";}break;
+                            case "22":{countyName="肥城县";}break;
+                            case "23":{countyName="东平县";}break;
+                            case "81":{countyName="莱芜市";}break;
+                            case "82":{countyName="新泰市";}break;
+                            case "83":{countyName="肥城市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--威海市************************
+                    case "10":{
+                        cityName="威海市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="环翠区";}break;
+                            case "21":{countyName="乳山县";}break;
+                            case "81":{countyName="文登市";}break;
+                            case "82":{countyName="荣成市";}break;
+                            case "83":{countyName="乳山市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--日照市************************
+                    case "11":{
+                        cityName="日照市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="东港区";}break;
+                            case "03":{countyName="岚山区";}break;
+                            case "21":{countyName="五莲县";}break;
+                            case "22":{countyName="莒县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--莱芜市************************
+                    case "12":{
+                        cityName="莱芜市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="莱城区";}break;
+                            case "03":{countyName="钢城区";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--临沂市************************
+                    case "13":{
+                        cityName="临沂市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="兰山区";}break;
+                            case "11":{countyName="罗庄区";}break;
+                            case "12":{countyName="河东区";}break;
+                            case "21":{countyName="沂南县";}break;
+                            case "22":{countyName="郯城县";}break;
+                            case "23":{countyName="沂水县";}break;
+                            case "24":{countyName="苍山县";}break;
+                            case "25":{countyName="费县";}break;
+                            case "26":{countyName="平邑县";}break;
+                            case "27":{countyName="莒南县";}break;
+                            case "28":{countyName="蒙阴县";}break;
+                            case "29":{countyName="临沭县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--德州市************************
+                    case "14":{
+                        cityName="德州市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="德城区";}break;
+                            case "21":{countyName="陵县";}break;
+                            case "22":{countyName="宁津县";}break;
+                            case "23":{countyName="庆云县";}break;
+                            case "24":{countyName="临邑县";}break;
+                            case "25":{countyName="齐河县";}break;
+                            case "26":{countyName="平原县";}break;
+                            case "27":{countyName="夏津县";}break;
+                            case "28":{countyName="武城县";}break;
+                            case "81":{countyName="乐陵市";}break;
+                            case "82":{countyName="禹城市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--聊城市************************
+                    case "15":{
+                        cityName="聊城市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="东昌府区";}break;
+                            case "21":{countyName="阳谷县";}break;
+                            case "22":{countyName="莘县";}break;
+                            case "23":{countyName="茌平县";}break;
+                            case "24":{countyName="东阿县";}break;
+                            case "25":{countyName="冠县";}break;
+                            case "26":{countyName="高唐县";}break;
+                            case "81":{countyName="临清市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--滨州市************************
+                    case "16":{
+                        cityName="滨州市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="滨城区";}break;
+                            case "21":{countyName="惠民县";}break;
+                            case "22":{countyName="阳信县";}break;
+                            case "23":{countyName="无棣县";}break;
+                            case "24":{countyName="沾化县";}break;
+                            case "25":{countyName="博兴县";}break;
+                            case "26":{countyName="邹平县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--菏泽市************************
+                    case "17":{
+                        cityName="菏泽市";
+                        switch (countyCode){
+                            case "01":{countyName="市辖区";}break;
+                            case "02":{countyName="牡丹区";}break;
+                            case "21":{countyName="曹县";}break;
+                            case "22":{countyName="单县";}break;
+                            case "23":{countyName="成武县";}break;
+                            case "24":{countyName="巨野县";}break;
+                            case "25":{countyName="郓城县";}break;
+                            case "26":{countyName="鄄城县";}break;
+                            case "27":{countyName="定陶县";}break;
+                            case "28":{countyName="东明县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--烟台地区************************
+                    case "21":{
+                        cityName="烟台地区";
+                        switch (countyCode){
+                            case "01":{countyName="烟台市";}break;
+                            case "02":{countyName="威海市";}break;
+                            case "21":{countyName="福山县";}break;
+                            case "22":{countyName="蓬莱县";}break;
+                            case "24":{countyName="招远县";}break;
+                            case "25":{countyName="掖县";}break;
+                            case "26":{countyName="莱西县";}break;
+                            case "27":{countyName="莱阳县";}break;
+                            case "28":{countyName="栖霞县";}break;
+                            case "29":{countyName="海阳县";}break;
+                            case "30":{countyName="乳山县";}break;
+                            case "31":{countyName="牟平县";}break;
+                            case "32":{countyName="文登县";}break;
+                            case "33":{countyName="容城县";}break;
+                            case "34":{countyName="长岛县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--潍坊地区************************
+                    case "22":{
+                        cityName="潍坊地区";
+                        switch (countyCode){
+                            case "01":{countyName="潍坊市";}break;
+                            case "21":{countyName="益都县";}break;
+                            case "22":{countyName="安丘县";}break;
+                            case "23":{countyName="寿光县";}break;
+                            case "24":{countyName="临朐县";}break;
+                            case "25":{countyName="昌乐县";}break;
+                            case "26":{countyName="昌邑县";}break;
+                            case "27":{countyName="高密县";}break;
+                            case "28":{countyName="诸城县";}break;
+                            case "30":{countyName="平度县";}break;
+                            case "31":{countyName="潍县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--滨州地区************************
+                    case "23":{
+                        cityName="滨州地区";
+                        switch (countyCode){
+                            case "01":{countyName="滨州市";}break;
+                            case "21":{countyName="惠民县";}break;
+                            case "22":{countyName="滨县";}break;
+                            case "23":{countyName="阳信县";}break;
+                            case "24":{countyName="无棣县";}break;
+                            case "25":{countyName="沾化县";}break;
+                            case "26":{countyName="利津县";}break;
+                            case "27":{countyName="广饶县";}break;
+                            case "28":{countyName="博兴县";}break;
+                            case "29":{countyName="桓台县";}break;
+                            case "30":{countyName="邹平县";}break;
+                            case "31":{countyName="高青县";}break;
+                            case "32":{countyName="垦利县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--德州地区************************
+                    case "24":{
+                        cityName="德州地区";
+                        switch (countyCode){
+                            case "01":{countyName="德州市";}break;
+                            case "02":{countyName="乐陵市";}break;
+                            case "03":{countyName="禹城市";}break;
+                            case "21":{countyName="陵县";}break;
+                            case "22":{countyName="平原县";}break;
+                            case "23":{countyName="夏津县";}break;
+                            case "24":{countyName="武城县";}break;
+                            case "25":{countyName="齐河县";}break;
+                            case "26":{countyName="禹城县";}break;
+                            case "27":{countyName="乐陵县";}break;
+                            case "28":{countyName="临邑县";}break;
+                            case "29":{countyName="商河县";}break;
+                            case "30":{countyName="济阳县";}break;
+                            case "31":{countyName="宁津县";}break;
+                            case "32":{countyName="庆云县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--聊城市************************
+                    case "25":{
+                        cityName="聊城市";
+                        switch (countyCode){
+                            case "01":{countyName="聊城市";}break;
+                            case "02":{countyName="东昌府区";}break;
+                            case "21":{countyName="阳谷县";}break;
+                            case "22":{countyName="莘县";}break;
+                            case "23":{countyName="茌平县";}break;
+                            case "24":{countyName="东阿县";}break;
+                            case "25":{countyName="冠县";}break;
+                            case "26":{countyName="高唐县";}break;
+                            case "27":{countyName="高唐县";}break;
+                            case "28":{countyName="临清县";}break;
+                            case "81":{countyName="临清市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--泰安地区************************
+                    case "26":{
+                        cityName="泰安地区";
+                        switch (countyCode){
+                            case "01":{countyName="泰安市";}break;
+                            case "02":{countyName="莱芜市";}break;
+                            case "03":{countyName="新泰市";}break;
+                            case "22":{countyName="莱芜县";}break;
+                            case "23":{countyName="新泰县";}break;
+                            case "24":{countyName="宁阳县";}break;
+                            case "25":{countyName="肥城县";}break;
+                            case "26":{countyName="东平县";}break;
+                            case "27":{countyName="平阴县";}break;
+                            case "28":{countyName="新汶县";}break;
+                            case "30":{countyName="泗水县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--济宁地区************************
+                    case "27":{
+                        cityName="济宁地区";
+                        switch (countyCode){
+                            case "01":{countyName="济宁市";}break;
+                            case "22":{countyName="衮州县";}break;
+                            case "23":{countyName="曲阜县";}break;
+                            case "24":{countyName="泗水县";}break;
+                            case "25":{countyName="邹县";}break;
+                            case "26":{countyName="微山县";}break;
+                            case "27":{countyName="鱼台县";}break;
+                            case "28":{countyName="金乡县";}break;
+                            case "29":{countyName="嘉祥县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--临沂地区************************
+                    case "28":{
+                        cityName="临沂地区";
+                        switch (countyCode){
+                            case "01":{countyName="临沂市";}break;
+                            case "02":{countyName="日照市";}break;
+                            case "21":{countyName="临沂县";}break;
+                            case "22":{countyName="郯城县";}break;
+                            case "23":{countyName="苍山县";}break;
+                            case "24":{countyName="莒南县";}break;
+                            case "25":{countyName="日照县";}break;
+                            case "26":{countyName="莒县";}break;
+                            case "27":{countyName="沂水县";}break;
+                            case "28":{countyName="沂源县";}break;
+                            case "29":{countyName="蒙阴县";}break;
+                            case "30":{countyName="平邑县";}break;
+                            case "31":{countyName="费县";}break;
+                            case "32":{countyName="沂南县";}break;
+                            case "33":{countyName="临沭县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--菏泽地区************************
+                    case "29":{
+                        cityName="菏泽地区";
+                        switch (countyCode){
+                            case "01":{countyName="菏泽市";}break;
+                            case "21":{countyName="菏泽县";}break;
+                            case "22":{countyName="曹县";}break;
+                            case "23":{countyName="定陶县";}break;
+                            case "24":{countyName="成武县";}break;
+                            case "25":{countyName="单县";}break;
+                            case "26":{countyName="巨野县";}break;
+                            case "27":{countyName="梁山县";}break;
+                            case "28":{countyName="郓城县";}break;
+                            case "29":{countyName="鄄城县";}break;
+                            case "30":{countyName="东明县";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //山东省--其它市************************
+                    case "90":{
+                        cityName="--";
+                        switch (countyCode){
+                            case "01":{countyName="青州市";}break;
+                            case "02":{countyName="龙口市";}break;
+                            case "03":{countyName="曲阜市";}break;
+                            case "04":{countyName="莱芜市";}break;
+                            case "05":{countyName="新泰市";}break;
+                            case "06":{countyName="胶州市";}break;
+                            case "07":{countyName="诸城市";}break;
+                            case "08":{countyName="莱阳市";}break;
+                            case "09":{countyName="莱州市";}break;
+                            case "10":{countyName="滕州市";}break;
+                            case "11":{countyName="文登市";}break;
+                            case "12":{countyName="荣成市";}break;
+                            default:countyName="身份证号码5-6位有误";break;
+                        }
+                    }break;
+                    //********************************
+                    default:{
+                        cityName="(身份证号码3-4位有误)";
+                        countyName="--";
+                    }break;
+                }
+            }break;
             //河南省的身份证前六位对应关系==============================================================================
-            case "41":{provinceName="河南省";}break;
+            case "41":{
+                provinceName="河南省";
+
+            }break;
             //湖北省的身份证前六位对应关系==============================================================================
             case "42":{provinceName="湖北省";}break;
             //湖南省的身份证前六位对应关系==============================================================================
@@ -3895,7 +4701,7 @@ public class IDcodeUtil {
             }break;
         }
         return provinceName+"/"+cityName+"/"+countyName;
-    }
+    }*/
 
     /**
      *@Author:ShiYun;

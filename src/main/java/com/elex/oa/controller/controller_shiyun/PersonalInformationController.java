@@ -2509,6 +2509,19 @@ public class PersonalInformationController {
 
     /**
      *@Author:ShiYun;
+     *@Description:根据登录ID查询岗位名称
+     *@Date: 13:39 2018\9\25 0025
+     */
+    @RequestMapping("/queryHLT001")
+    @ResponseBody//表示该方法的返回结果直接写入 HTTP response body 中，一般在异步获取数据时使用【也就是AJAX】
+    public Object queryHLT001(
+            @RequestParam("username")String username
+    ){
+        return iPostService.queryPostnameByUsername(username);
+    }
+
+    /**
+     *@Author:ShiYun;
      *@Description:赵宏钢的接口，根据账号查询信息
      *@Date: 18:30 2018\7\17 0017
      */
