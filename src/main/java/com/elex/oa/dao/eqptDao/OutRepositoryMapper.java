@@ -6,6 +6,7 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -70,4 +71,13 @@ public interface OutRepositoryMapper {
     // 删除草稿
     void deleteDraft(Repository repository);
 
+    List<HashMap<String, Object>> getNoticeR();
+
+    List<HashMap<String, Object>> getNoticeX();
+
+    List<HashMap<String, Object>> noticeChild(String wdbh);
+
+    List<Repository> allNoticeR();
+
+    List<Repository> allNoticeX();
 }

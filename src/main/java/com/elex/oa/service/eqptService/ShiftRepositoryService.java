@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
 public interface ShiftRepositoryService {
@@ -78,4 +79,13 @@ public interface ShiftRepositoryService {
 
     // 返回草稿信息
     List<Repository> postDraft(HttpServletRequest request);
+
+    // 入库通知弹框
+    List<HashMap<String,Object>> notice(HttpServletRequest request);
+
+    // 弹框子表
+    List<HashMap<String,Object>> noticeChild(HttpServletRequest request);
+
+    /*所有出库通知*/
+    PageInfo<Repository> showNotice(Page page, HttpServletRequest request);
 }
