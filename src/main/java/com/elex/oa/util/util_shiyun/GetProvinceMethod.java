@@ -5012,4 +5012,1592 @@ public class GetProvinceMethod {
         }
         return provinceName+"/"+cityName+"/"+countyName;
     }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得湖北省的方法
+     *@Date: 19:33 2018\9\25 0025
+     */
+    private static String getProvinceNameByProvinceCode42(String cityCode,String countyCode){
+        String provinceName = "湖北省";
+        String cityName = "";
+        String countyName = "";
+        switch (cityCode){
+            //湖北省--武汉市************************
+            case "01":{
+                cityName="武汉市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="江岸区";}break;
+                    case "03":{countyName="江汉区";}break;
+                    case "04":{countyName="乔口区";}break;
+                    case "05":{countyName="汉阳区";}break;
+                    case "06":{countyName="武昌区";}break;
+                    case "07":{countyName="青山区";}break;
+                    case "09":{countyName="东湖管理分局";}break;
+                    case "11":{countyName="洪山区";}break;
+                    case "12":{countyName="东西湖区";}break;
+                    case "13":{countyName="汉南区";}break;
+                    case "14":{countyName="蔡甸区";}break;
+                    case "15":{countyName="江夏区";}break;
+                    case "16":{countyName="黄陂区";}break;
+                    case "17":{countyName="新洲区";}break;
+                    case "21":{countyName="蔡甸区";}break;
+                    case "22":{countyName="江夏区";}break;
+                    case "23":{countyName="黄陂区";}break;
+                    case "24":{countyName="新洲县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--黄石市************************
+            case "02":{
+                cityName="黄石市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="黄石港区";}break;
+                    case "03":{countyName="石灰窑区";}break;
+                    case "04":{countyName="下陆区";}break;
+                    case "05":{countyName="铁山区";}break;
+                    case "20":{countyName="市区";}break;
+                    case "21":{countyName="大冶县";}break;
+                    case "22":{countyName="阳新县";}break;
+                    case "81":{countyName="大冶市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--十堰市************************
+            case "03":{
+                cityName="十堰市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="茅箭区";}break;
+                    case "03":{countyName="张湾区";}break;
+                    case "21":{countyName="郧县";}break;
+                    case "22":{countyName="郧西县";}break;
+                    case "23":{countyName="竹山县";}break;
+                    case "24":{countyName="竹溪县";}break;
+                    case "25":{countyName="房县";}break;
+                    case "81":{countyName="丹江口市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--沙市************************
+            case "04":{
+                cityName="沙市";
+                switch (countyCode){
+                    case "00":{countyName="--";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--宜昌市************************
+            case "05":{
+                cityName="宜昌市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="西陵区";}break;
+                    case "03":{countyName="伍家岗区";}break;
+                    case "04":{countyName="点军区";}break;
+                    case "05":{countyName="猇亭区";}break;
+                    case "06":{countyName="夷陵区";}break;
+                    case "21":{countyName="宜昌县";}break;
+                    case "23":{countyName="枝江县";}break;
+                    case "25":{countyName="远安县";}break;
+                    case "26":{countyName="兴山县";}break;
+                    case "27":{countyName="秭归县";}break;
+                    case "28":{countyName="长阳土家族自治县";}break;
+                    case "29":{countyName="五峰土家族自治县";}break;
+                    case "81":{countyName="宜都市";}break;
+                    case "82":{countyName="当阳市";}break;
+                    case "83":{countyName="枝江市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--襄樊市************************
+            case "06":{
+                cityName="襄樊市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="襄城区";}break;
+                    case "03":{countyName="樊东区";}break;
+                    case "04":{countyName="樊西区";}break;
+                    case "05":{countyName="郊区";}break;
+                    case "06":{countyName="樊城区";}break;
+                    case "07":{countyName="襄阳区";}break;
+                    case "19":{countyName="随州市";}break;
+                    case "20":{countyName="老河口市";}break;
+                    case "21":{countyName="襄阳县";}break;
+                    case "22":{countyName="枣阳县";}break;
+                    case "23":{countyName="宜城县";}break;
+                    case "24":{countyName="南漳县";}break;
+                    case "25":{countyName="谷城县";}break;
+                    case "26":{countyName="保康县";}break;
+                    case "81":{countyName="随州市";}break;
+                    case "82":{countyName="老河口市";}break;
+                    case "83":{countyName="枣阳市";}break;
+                    case "84":{countyName="宜城市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--鄂州市************************
+            case "07":{
+                cityName="鄂州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="梁子湖区";}break;
+                    case "03":{countyName="华容区";}break;
+                    case "04":{countyName="鄂城区";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--荆门市************************
+            case "08":{
+                cityName="荆门市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="东宝区";}break;
+                    case "03":{countyName="沙洋区";}break;
+                    case "04":{countyName="掇刀区";}break;
+                    case "21":{countyName="京山县";}break;
+                    case "22":{countyName="沙洋县";}break;
+                    case "81":{countyName="钟祥市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--孝感市************************
+            case "09":{
+                cityName="孝感市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="孝南区";}break;
+                    case "21":{countyName="孝昌县";}break;
+                    case "22":{countyName="大悟县";}break;
+                    case "23":{countyName="云梦县";}break;
+                    case "81":{countyName="应城市";}break;
+                    case "82":{countyName="安陆市";}break;
+                    case "83":{countyName="广水市";}break;
+                    case "84":{countyName="汉川市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--荆州市************************
+            case "10":{
+                cityName="荆州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="沙市区";}break;
+                    case "03":{countyName="荆州区";}break;
+                    case "04":{countyName="江陵区";}break;
+                    case "21":{countyName="松滋县";}break;
+                    case "22":{countyName="公安县";}break;
+                    case "23":{countyName="监利县";}break;
+                    case "24":{countyName="江陵县";}break;
+                    case "81":{countyName="石首市";}break;
+                    case "83":{countyName="洪湖市";}break;
+                    case "87":{countyName="松滋市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--黄冈市************************
+            case "11":{
+                cityName="黄冈市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="黄州区";}break;
+                    case "03":{countyName="龙感湖管理区";}break;
+                    case "21":{countyName="团风县";}break;
+                    case "22":{countyName="红安县";}break;
+                    case "23":{countyName="罗田县";}break;
+                    case "24":{countyName="英山县";}break;
+                    case "25":{countyName="浠水县";}break;
+                    case "26":{countyName="蕲春县";}break;
+                    case "27":{countyName="黄梅县";}break;
+                    case "81":{countyName="麻城市";}break;
+                    case "82":{countyName="武穴市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--咸宁市************************
+            case "12":{
+                cityName="咸宁市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="咸安区";}break;
+                    case "21":{countyName="嘉鱼县";}break;
+                    case "22":{countyName="通城县";}break;
+                    case "23":{countyName="崇阳县";}break;
+                    case "24":{countyName="通山县";}break;
+                    case "81":{countyName="赤壁市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--随州市************************
+            case "13":{
+                cityName="随州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="曾都区";}break;
+                    case "81":{countyName="广水市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--黄冈地区************************
+            case "21":{
+                cityName="黄冈地区";
+                switch (countyCode){
+                    case "01":{countyName="鄂州市";}break;
+                    case "02":{countyName="武穴市";}break;
+                    case "03":{countyName="黄州市";}break;
+                    case "21":{countyName="黄冈县";}break;
+                    case "22":{countyName="新洲县";}break;
+                    case "23":{countyName="红安县";}break;
+                    case "24":{countyName="麻城县";}break;
+                    case "25":{countyName="罗田县";}break;
+                    case "26":{countyName="英山县";}break;
+                    case "27":{countyName="浠水县";}break;
+                    case "28":{countyName="蕲春县";}break;
+                    case "29":{countyName="广济县";}break;
+                    case "30":{countyName="黄梅县";}break;
+                    case "31":{countyName="鄂城县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--孝感地区************************
+            case "22":{
+                cityName="孝感地区";
+                switch (countyCode){
+                    case "01":{countyName="孝感市";}break;
+                    case "02":{countyName="应城市";}break;
+                    case "03":{countyName="安陆市";}break;
+                    case "04":{countyName="广水市";}break;
+                    case "21":{countyName="孝感县";}break;
+                    case "22":{countyName="黄陂县";}break;
+                    case "23":{countyName="大悟县";}break;
+                    case "24":{countyName="应山县";}break;
+                    case "25":{countyName="安陆县";}break;
+                    case "26":{countyName="云梦县";}break;
+                    case "27":{countyName="应城县";}break;
+                    case "28":{countyName="汉川县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--咸宁地区************************
+            case "23":{
+                cityName="咸宁地区";
+                switch (countyCode){
+                    case "01":{countyName="咸宁市";}break;
+                    case "02":{countyName="赤壁市";}break;
+                    case "21":{countyName="咸宁县";}break;
+                    case "22":{countyName="嘉鱼县";}break;
+                    case "23":{countyName="蒲圻县";}break;
+                    case "24":{countyName="通城县";}break;
+                    case "25":{countyName="崇阳县";}break;
+                    case "26":{countyName="通山县";}break;
+                    case "27":{countyName="阳新县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--荆州地区************************
+            case "24":{
+                cityName="荆州地区";
+                switch (countyCode){
+                    case "01":{countyName="仙桃市";}break;
+                    case "02":{countyName="石首市";}break;
+                    case "03":{countyName="洪湖市";}break;
+                    case "04":{countyName="天门市";}break;
+                    case "05":{countyName="潜江市";}break;
+                    case "06":{countyName="钟祥市";}break;
+                    case "21":{countyName="江陵县";}break;
+                    case "22":{countyName="松滋县";}break;
+                    case "23":{countyName="公安县";}break;
+                    case "24":{countyName="石首县";}break;
+                    case "25":{countyName="监利县";}break;
+                    case "26":{countyName="洪湖县";}break;
+                    case "27":{countyName="沔阳县";}break;
+                    case "28":{countyName="天门县";}break;
+                    case "29":{countyName="潜江县";}break;
+                    case "30":{countyName="荆门县";}break;
+                    case "31":{countyName="钟祥县";}break;
+                    case "32":{countyName="京山县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--随州地区************************
+            case "25":{
+                cityName="随州地区";
+                switch (countyCode){
+                    case "01":{countyName="随州市";}break;
+                    case "02":{countyName="老河口市";}break;
+                    case "21":{countyName="襄阳县";}break;
+                    case "22":{countyName="枣阳县";}break;
+                    case "24":{countyName="宜城县";}break;
+                    case "25":{countyName="南漳县";}break;
+                    case "27":{countyName="谷城县";}break;
+                    case "28":{countyName="保康县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--郧阳地区************************
+            case "26":{
+                cityName="郧阳地区";
+                switch (countyCode){
+                    case "01":{countyName="丹江口市";}break;
+                    case "22":{countyName="郧县";}break;
+                    case "23":{countyName="郧西县";}break;
+                    case "24":{countyName="竹山县";}break;
+                    case "25":{countyName="竹溪县";}break;
+                    case "26":{countyName="房县";}break;
+                    case "27":{countyName="神龙架林区";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--宜昌地区************************
+            case "27":{
+                cityName="宜昌地区";
+                switch (countyCode){
+                    case "01":{countyName="枝城市";}break;
+                    case "02":{countyName="当阳市";}break;
+                    case "21":{countyName="宜昌县";}break;
+                    case "22":{countyName="宜都县";}break;
+                    case "23":{countyName="枝江县";}break;
+                    case "24":{countyName="当阳县";}break;
+                    case "25":{countyName="远安县";}break;
+                    case "26":{countyName="兴山县";}break;
+                    case "27":{countyName="秭归县";}break;
+                    case "28":{countyName="长阳土家族自治县";}break;
+                    case "29":{countyName="五峰土家族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--恩施土家族苗族自治州************************
+            case "28":{
+                cityName="恩施土家族苗族自治州";
+                switch (countyCode){
+                    case "01":{countyName="恩施市";}break;
+                    case "02":{countyName="利川市";}break;
+                    case "22":{countyName="建始县";}break;
+                    case "23":{countyName="巴东县";}break;
+                    case "25":{countyName="宣恩县";}break;
+                    case "26":{countyName="咸丰县";}break;
+                    case "27":{countyName="来凤县";}break;
+                    case "28":{countyName="鹤峰县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--省直辖行政单位************************
+            case "29":{
+                cityName="省直辖行政单位";
+                switch (countyCode){
+                    case "21":{countyName="神龙架林区";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--沙洋监狱管理局************************
+            case "30":{
+                cityName="--";
+                switch (countyCode){
+                    case "22":{countyName="沙洋监狱管理局";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖北省--省直辖行政单位************************
+            case "90":{
+                cityName="省直辖行政单位";
+                switch (countyCode){
+                    case "01":{countyName="随州市";}break;
+                    case "03":{countyName="枣阳市";}break;
+                    case "04":{countyName="仙桃市";}break;
+                    case "05":{countyName="潜江市";}break;
+                    case "06":{countyName="天门市";}break;
+                    case "21":{countyName="神龙架林区";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //**************************************
+            default:{
+                cityName="(身份证号码3-4位有误)";
+                countyName="--";
+            }break;
+        }
+        return provinceName+"/"+cityName+"/"+countyName;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得湖南省的方法
+     *@Date: 9:49 2018\9\26 0026
+     */
+    private static String getProvinceNameByProvinceCode43(String cityCode,String countyCode){
+        String provinceName = "湖南省";
+        String cityName = "";
+        String countyName = "";
+        switch (cityCode){
+            //湖南省--长沙市************************
+            case "01":{
+                cityName="长沙市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="芙蓉区";}break;
+                    case "03":{countyName="天心区";}break;
+                    case "04":{countyName="岳麓区";}break;
+                    case "05":{countyName="开福区";}break;
+                    case "11":{countyName="雨花区";}break;
+                    case "20":{countyName="市区";}break;
+                    case "21":{countyName="长沙县";}break;
+                    case "22":{countyName="望城县";}break;
+                    case "23":{countyName="浏阳县";}break;
+                    case "24":{countyName="宁乡县";}break;
+                    case "81":{countyName="浏阳市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--株洲市************************
+            case "02":{
+                cityName="株洲市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="荷塘区";}break;
+                    case "03":{countyName="芦淞区";}break;
+                    case "04":{countyName="石峰区";}break;
+                    case "11":{countyName="天元区";}break;
+                    case "19":{countyName="醴陵市";}break;
+                    case "20":{countyName="市区";}break;
+                    case "21":{countyName="株洲县";}break;
+                    case "22":{countyName="醴陵县";}break;
+                    case "23":{countyName="攸县";}break;
+                    case "24":{countyName="茶陵县";}break;
+                    case "25":{countyName="炎陵县";}break;
+                    case "81":{countyName="醴陵市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--湘潭市************************
+            case "03":{
+                cityName="湘潭市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="雨湖区";}break;
+                    case "03":{countyName="湘江区";}break;
+                    case "04":{countyName="岳塘区";}break;
+                    case "05":{countyName="板塘区";}break;
+                    case "06":{countyName="韶山区";}break;
+                    case "11":{countyName="市区";}break;
+                    case "12":{countyName="韶山区";}break;
+                    case "21":{countyName="湘潭县";}break;
+                    case "22":{countyName="湘乡县";}break;
+                    case "81":{countyName="湘乡市";}break;
+                    case "82":{countyName="韶山市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--衡阳市************************
+            case "04":{
+                cityName="衡阳市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="江东区";}break;
+                    case "03":{countyName="城南区";}break;
+                    case "04":{countyName="城北区";}break;
+                    case "05":{countyName="珠晖区";}break;
+                    case "06":{countyName="雁峰区";}break;
+                    case "07":{countyName="石鼓区";}break;
+                    case "08":{countyName="蒸湘区";}break;
+                    case "11":{countyName="郊区";}break;
+                    case "12":{countyName="南岳区";}break;
+                    case "19":{countyName="耒阳市";}break;
+                    case "21":{countyName="衡阳县";}break;
+                    case "22":{countyName="衡南县";}break;
+                    case "23":{countyName="衡山县";}break;
+                    case "24":{countyName="衡东县";}break;
+                    case "25":{countyName="常宁县";}break;
+                    case "26":{countyName="祁东县";}break;
+                    case "27":{countyName="耒阳县";}break;
+                    case "81":{countyName="耒阳市";}break;
+                    case "82":{countyName="常宁市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--邵阳市************************
+            case "05":{
+                cityName="邵阳市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="双清区";}break;
+                    case "03":{countyName="大祥区";}break;
+                    case "11":{countyName="北塔区";}break;
+                    case "21":{countyName="邵东县";}break;
+                    case "22":{countyName="新邵县";}break;
+                    case "23":{countyName="邵阳县";}break;
+                    case "24":{countyName="隆回县";}break;
+                    case "25":{countyName="洞口县";}break;
+                    case "26":{countyName="武冈县";}break;
+                    case "27":{countyName="绥宁县";}break;
+                    case "28":{countyName="新宁县";}break;
+                    case "29":{countyName="城步苗族自治县";}break;
+                    case "81":{countyName="武冈市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--岳阳市************************
+            case "06":{
+                cityName="岳阳市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="岳阳楼区";}break;
+                    case "03":{countyName="云溪区";}break;
+                    case "11":{countyName="君山区";}break;
+                    case "21":{countyName="岳阳县";}break;
+                    case "22":{countyName="临湘县";}break;
+                    case "23":{countyName="华容县";}break;
+                    case "24":{countyName="湘阴县";}break;
+                    case "25":{countyName="汨罗县";}break;
+                    case "26":{countyName="平江县";}break;
+                    case "81":{countyName="汨罗市";}break;
+                    case "82":{countyName="临湘市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--常德市************************
+            case "07":{
+                cityName="常德市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="武陵区";}break;
+                    case "03":{countyName="鼎城区";}break;
+                    case "21":{countyName="安乡县";}break;
+                    case "22":{countyName="汉寿县";}break;
+                    case "23":{countyName="澧县";}break;
+                    case "24":{countyName="临澧县";}break;
+                    case "25":{countyName="桃源县";}break;
+                    case "26":{countyName="石门县";}break;
+                    case "81":{countyName="津市市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--张家界市************************
+            case "08":{
+                cityName="张家界市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="永定区";}break;
+                    case "11":{countyName="武陵源区";}break;
+                    case "21":{countyName="慈利县";}break;
+                    case "22":{countyName="桑植县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--益阳市************************
+            case "09":{
+                cityName="益阳市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="资阳区";}break;
+                    case "03":{countyName="赫山区";}break;
+                    case "11":{countyName="市区";}break;
+                    case "21":{countyName="南县";}break;
+                    case "22":{countyName="桃江县";}break;
+                    case "23":{countyName="安化县";}break;
+                    case "81":{countyName="沅江市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--郴州市************************
+            case "10":{
+                cityName="郴州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="北湖区";}break;
+                    case "03":{countyName="苏仙区";}break;
+                    case "21":{countyName="桂阳县";}break;
+                    case "22":{countyName="宜章县";}break;
+                    case "23":{countyName="永兴县";}break;
+                    case "24":{countyName="嘉禾县";}break;
+                    case "25":{countyName="临武县";}break;
+                    case "26":{countyName="汝城县";}break;
+                    case "27":{countyName="桂东县";}break;
+                    case "28":{countyName="安仁县";}break;
+                    case "81":{countyName="资兴市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--永州市************************
+            case "11":{
+                cityName="永州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="零陵区";}break;
+                    case "03":{countyName="冷水滩区";}break;
+                    case "21":{countyName="祁阳县";}break;
+                    case "22":{countyName="东安县";}break;
+                    case "23":{countyName="双牌县";}break;
+                    case "24":{countyName="道县";}break;
+                    case "25":{countyName="江永县";}break;
+                    case "26":{countyName="宁远县";}break;
+                    case "27":{countyName="蓝山县";}break;
+                    case "28":{countyName="新田县";}break;
+                    case "29":{countyName="江华瑶族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--怀化市************************
+            case "12":{
+                cityName="怀化市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="鹤城区";}break;
+                    case "21":{countyName="中方县";}break;
+                    case "22":{countyName="沅陵县";}break;
+                    case "23":{countyName="辰溪县";}break;
+                    case "24":{countyName="溆浦县";}break;
+                    case "25":{countyName="会同县";}break;
+                    case "26":{countyName="麻阳苗族自治县";}break;
+                    case "27":{countyName="新晃侗族自治县";}break;
+                    case "28":{countyName="芷江侗族自治县";}break;
+                    case "29":{countyName="靖州苗族侗族自治县";}break;
+                    case "30":{countyName="通道侗族自治县";}break;
+                    case "81":{countyName="洪江市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--娄底市************************
+            case "13":{
+                cityName="娄底市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="娄星区";}break;
+                    case "21":{countyName="双峰县";}break;
+                    case "22":{countyName="新化县";}break;
+                    case "81":{countyName="冷水江市";}break;
+                    case "82":{countyName="涟源市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--湘潭地区************************
+            case "21":{
+                cityName="湘潭地区";
+                switch (countyCode){
+                    case "21":{countyName="湘潭县";}break;
+                    case "22":{countyName="湘乡县";}break;
+                    case "23":{countyName="醴陵县";}break;
+                    case "24":{countyName="浏阳县";}break;
+                    case "25":{countyName="攸县";}break;
+                    case "26":{countyName="茶陵县";}break;
+                    case "27":{countyName="酃县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--岳阳地区************************
+            case "22":{
+                cityName="岳阳地区";
+                switch (countyCode){
+                    case "01":{countyName="岳阳市";}break;
+                    case "22":{countyName="平江县";}break;
+                    case "23":{countyName="湘阴县";}break;
+                    case "24":{countyName="汨罗县";}break;
+                    case "25":{countyName="临湘市";}break;
+                    case "26":{countyName="华容县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--益阳地区************************
+            case "23":{
+                cityName="益阳地区";
+                switch (countyCode){
+                    case "01":{countyName="益阳市";}break;
+                    case "02":{countyName="沅江市";}break;
+                    case "21":{countyName="宜阳县";}break;
+                    case "22":{countyName="南县";}break;
+                    case "23":{countyName="沅江县";}break;
+                    case "24":{countyName="宁乡县";}break;
+                    case "25":{countyName="桃江县";}break;
+                    case "26":{countyName="安化县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--常德地区************************
+            case "24":{
+                cityName="常德地区";
+                switch (countyCode){
+                    case "01":{countyName="常德市";}break;
+                    case "02":{countyName="津市市";}break;
+                    case "21":{countyName="常德县";}break;
+                    case "22":{countyName="安乡县";}break;
+                    case "23":{countyName="汉寿县";}break;
+                    case "24":{countyName="澧县";}break;
+                    case "25":{countyName="临澧县";}break;
+                    case "26":{countyName="桃源县";}break;
+                    case "27":{countyName="石门县";}break;
+                    case "28":{countyName="慈利县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--娄底地区************************
+            case "25":{
+                cityName="娄底地区";
+                switch (countyCode){
+                    case "01":{countyName="娄底市";}break;
+                    case "02":{countyName="冷水江市";}break;
+                    case "03":{countyName="涟源市";}break;
+                    case "21":{countyName="涟源县";}break;
+                    case "22":{countyName="双峰县";}break;
+                    case "23":{countyName="邵东县";}break;
+                    case "24":{countyName="新化县";}break;
+                    case "25":{countyName="新邵县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--邵阳地区************************
+            case "26":{
+                cityName="邵阳地区";
+                switch (countyCode){
+                    case "21":{countyName="邵阳县";}break;
+                    case "22":{countyName="隆回县";}break;
+                    case "23":{countyName="武冈县";}break;
+                    case "24":{countyName="洞口县";}break;
+                    case "25":{countyName="新宁县";}break;
+                    case "26":{countyName="绥宁县";}break;
+                    case "27":{countyName="城步苗族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--衡阳地区************************
+            case "27":{
+                cityName="衡阳地区";
+                switch (countyCode){
+                    case "21":{countyName="衡阳县";}break;
+                    case "22":{countyName="衡南县";}break;
+                    case "23":{countyName="衡山县";}break;
+                    case "24":{countyName="衡东县";}break;
+                    case "25":{countyName="常宁县";}break;
+                    case "26":{countyName="祁东县";}break;
+                    case "27":{countyName="祁阳县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--株洲地区************************
+            case "28":{
+                cityName="株洲地区";
+                switch (countyCode){
+                    case "01":{countyName="株洲市";}break;
+                    case "02":{countyName="资兴市";}break;
+                    case "21":{countyName="郴县";}break;
+                    case "22":{countyName="桂阳县";}break;
+                    case "23":{countyName="永兴县";}break;
+                    case "24":{countyName="宜章县";}break;
+                    case "25":{countyName="资兴县";}break;
+                    case "26":{countyName="嘉禾县";}break;
+                    case "27":{countyName="临武县";}break;
+                    case "28":{countyName="汝城县";}break;
+                    case "29":{countyName="桂东县";}break;
+                    case "30":{countyName="耒阳县";}break;
+                    case "31":{countyName="安仁县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--零陵地区************************
+            case "29":{
+                cityName="零陵地区";
+                switch (countyCode){
+                    case "01":{countyName="永州市";}break;
+                    case "02":{countyName="冷水滩市";}break;
+                    case "21":{countyName="零陵县";}break;
+                    case "22":{countyName="东安县";}break;
+                    case "23":{countyName="道县";}break;
+                    case "24":{countyName="宁远县";}break;
+                    case "25":{countyName="江永县";}break;
+                    case "26":{countyName="江华瑶族自治县";}break;
+                    case "27":{countyName="蓝山县";}break;
+                    case "28":{countyName="新田县";}break;
+                    case "29":{countyName="双牌县";}break;
+                    case "30":{countyName="双牌县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--怀化地区************************
+            case "30":{
+                cityName="怀化地区";
+                switch (countyCode){
+                    case "01":{countyName="怀化市";}break;
+                    case "02":{countyName="洪江市";}break;
+                    case "21":{countyName="黔阳县";}break;
+                    case "22":{countyName="沅陵县";}break;
+                    case "23":{countyName="辰溪县";}break;
+                    case "24":{countyName="溆浦县";}break;
+                    case "25":{countyName="麻阳县";}break;
+                    case "26":{countyName="新晃侗族自治县";}break;
+                    case "27":{countyName="芷江县";}break;
+                    case "28":{countyName="怀化县";}break;
+                    case "29":{countyName="会同县";}break;
+                    case "30":{countyName="靖县";}break;
+                    case "31":{countyName="通道侗族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--湘西土家族苗族自治州************************
+            case "31":{
+                cityName="湘西土家族苗族自治州";
+                switch (countyCode){
+                    case "01":{countyName="吉首市";}break;
+                    case "21":{countyName="吉首县";}break;
+                    case "22":{countyName="泸溪县";}break;
+                    case "23":{countyName="凤凰县";}break;
+                    case "24":{countyName="花垣县";}break;
+                    case "25":{countyName="保靖县";}break;
+                    case "26":{countyName="古丈县";}break;
+                    case "27":{countyName="永顺县";}break;
+                    case "28":{countyName="大庸县";}break;
+                    case "29":{countyName="桑植县";}break;
+                    case "30":{countyName="龙山县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //湖南省--其它市************************
+            case "90":{
+                cityName="--";
+                switch (countyCode){
+                    case "01":{cityName="醴陵市";}break;
+                    case "02":{cityName="湘乡市";}break;
+                    case "03":{cityName="耒阳市";}break;
+                    case "04":{cityName="汨罗市";}break;
+                    case "05":{cityName="津市市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //**************************************
+            default:{
+                cityName="(身份证号码3-4位有误)";
+                countyName="--";
+            }break;
+        }
+        return provinceName+"/"+cityName+"/"+countyName;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得广东省的方法
+     *@Date: 11:18 2018\9\26 0026
+     */
+    private static String getProvinceNameByProvinceCode44(String cityCode,String countyCode){
+        String provinceName = "广东省";
+        String cityName = "";
+        String countyName = "";
+        switch (cityCode){
+            //广东省--广州市************************
+            case "01":{
+                cityName="广州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="东山区";}break;
+                    case "03":{countyName="荔湾区";}break;
+                    case "04":{countyName="越秀区";}break;
+                    case "05":{countyName="珠海区";}break;
+                    case "06":{countyName="天河区";}break;
+                    case "07":{countyName="芳村区";}break;
+                    case "11":{countyName="白云区";}break;
+                    case "12":{countyName="黄浦区";}break;
+                    case "13":{countyName="番禺区";}break;
+                    case "14":{countyName="花都区";}break;
+                    case "15":{countyName="南沙区";}break;
+                    case "16":{countyName="萝岗区";}break;
+                    case "20":{countyName="市区";}break;
+                    case "21":{countyName="花县";}break;
+                    case "22":{countyName="从化县";}break;
+                    case "23":{countyName="新丰县";}break;
+                    case "24":{countyName="龙门县";}break;
+                    case "25":{countyName="增城县";}break;
+                    case "26":{countyName="番禺县";}break;
+                    case "27":{countyName="清远县";}break;
+                    case "28":{countyName="佛冈县";}break;
+                    case "81":{countyName="番禺市";}break;
+                    case "82":{countyName="花都市";}break;
+                    case "83":{countyName="增城市";}break;
+                    case "84":{countyName="从化市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--韶关市************************
+            case "02":{
+                cityName="韶关市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="北江区";}break;
+                    case "03":{countyName="武江区";}break;
+                    case "04":{countyName="浈江区";}break;
+                    case "05":{countyName="曲江区";}break;
+                    case "21":{countyName="曲江县";}break;
+                    case "22":{countyName="始兴县";}break;
+                    case "23":{countyName="南雄县";}break;
+                    case "24":{countyName="仁化县";}break;
+                    case "25":{countyName="乐昌县";}break;
+                    case "26":{countyName="连县";}break;
+                    case "27":{countyName="阳山县";}break;
+                    case "28":{countyName="英德县";}break;
+                    case "29":{countyName="翁源县";}break;
+                    case "30":{countyName="连山壮族瑶族自治县";}break;
+                    case "31":{countyName="连山瑶族自治县";}break;
+                    case "32":{countyName="乳源瑶族自治县";}break;
+                    case "33":{countyName="新丰县";}break;
+                    case "81":{countyName="乐昌市";}break;
+                    case "82":{countyName="南雄市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--深圳市************************
+            case "03":{
+                cityName="深圳市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="盐田区";}break;
+                    case "03":{countyName="罗湖区";}break;
+                    case "04":{countyName="福田区";}break;
+                    case "05":{countyName="南山区";}break;
+                    case "06":{countyName="宝安区";}break;
+                    case "07":{countyName="龙岗区";}break;
+                    case "08":{countyName="盐田区";}break;
+                    case "20":{countyName="市区";}break;
+                    case "21":{countyName="宝安县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--珠海市************************
+            case "04":{
+                cityName="珠海市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="香洲区";}break;
+                    case "03":{countyName="斗门区";}break;
+                    case "04":{countyName="金湾区";}break;
+                    case "21":{countyName="斗门县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--汕头市************************
+            case "05":{
+                cityName="汕头市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="同平区";}break;
+                    case "03":{countyName="安平区";}break;
+                    case "04":{countyName="公园区";}break;
+                    case "05":{countyName="金砂区";}break;
+                    case "06":{countyName="达濠区";}break;
+                    case "07":{countyName="龙湖区";}break;
+                    case "08":{countyName="金园区";}break;
+                    case "09":{countyName="升平区";}break;
+                    case "10":{countyName="河浦区";}break;
+                    case "11":{countyName="金平区";}break;
+                    case "12":{countyName="濠江区";}break;
+                    case "13":{countyName="潮阳区";}break;
+                    case "14":{countyName="潮南区";}break;
+                    case "15":{countyName="澄海区";}break;
+                    case "20":{countyName="潮州市";}break;
+                    case "21":{countyName="澄海县";}break;
+                    case "22":{countyName="饶平县";}break;
+                    case "23":{countyName="南澳县";}break;
+                    case "24":{countyName="潮阳县";}break;
+                    case "25":{countyName="揭阳县";}break;
+                    case "26":{countyName="揭西县";}break;
+                    case "27":{countyName="普宁县";}break;
+                    case "28":{countyName="惠来县";}break;
+                    case "81":{countyName="潮州市";}break;
+                    case "82":{countyName="潮阳市";}break;
+                    case "83":{countyName="澄海市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--佛山市************************
+            case "06":{
+                cityName="佛山市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="城区";}break;
+                    case "03":{countyName="石湾区";}break;
+                    case "04":{countyName="禅城区";}break;
+                    case "05":{countyName="南海区";}break;
+                    case "06":{countyName="顺德区";}break;
+                    case "07":{countyName="三水区";}break;
+                    case "08":{countyName="高明区";}break;
+                    case "20":{countyName="中山市";}break;
+                    case "21":{countyName="三水县";}break;
+                    case "22":{countyName="南海县";}break;
+                    case "23":{countyName="顺德县";}break;
+                    case "24":{countyName="高明县";}break;
+                    case "81":{countyName="顺德市";}break;
+                    case "82":{countyName="南海市";}break;
+                    case "83":{countyName="三水市";}break;
+                    case "84":{countyName="高明市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--江门市************************
+            case "07":{
+                cityName="江门市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="城区";}break;
+                    case "03":{countyName="蓬江区";}break;
+                    case "04":{countyName="江海区";}break;
+                    case "05":{countyName="新会区";}break;
+                    case "11":{countyName="郊区";}break;
+                    case "21":{countyName="新会县";}break;
+                    case "22":{countyName="台山县";}break;
+                    case "23":{countyName="恩平县";}break;
+                    case "24":{countyName="开平县";}break;
+                    case "25":{countyName="鹤山县";}break;
+                    case "26":{countyName="阳江县";}break;
+                    case "27":{countyName="阳春县";}break;
+                    case "81":{countyName="台山市";}break;
+                    case "82":{countyName="新会市";}break;
+                    case "83":{countyName="开平市";}break;
+                    case "84":{countyName="鹤山市";}break;
+                    case "85":{countyName="恩平市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--湛江市************************
+            case "08":{
+                cityName="湛江市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="赤坎区";}break;
+                    case "03":{countyName="霞山区";}break;
+                    case "04":{countyName="坡头区";}break;
+                    case "11":{countyName="麻章区";}break;
+                    case "21":{countyName="吴川县";}break;
+                    case "22":{countyName="麻江县";}break;
+                    case "23":{countyName="遂溪县";}break;
+                    case "24":{countyName="海康县";}break;
+                    case "25":{countyName="徐闻县";}break;
+                    case "81":{countyName="廉江市";}break;
+                    case "82":{countyName="雷州市";}break;
+                    case "83":{countyName="吴川市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--茂名市************************
+            case "09":{
+                cityName="茂名市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="茂南区";}break;
+                    case "03":{countyName="茂港区";}break;
+                    case "21":{countyName="信宜县";}break;
+                    case "22":{countyName="高州县";}break;
+                    case "23":{countyName="电白县";}break;
+                    case "24":{countyName="化州县";}break;
+                    case "81":{countyName="高州市";}break;
+                    case "82":{countyName="化州市";}break;
+                    case "83":{countyName="信宜市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--肇庆市************************
+            case "12":{
+                cityName="肇庆市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="端州区";}break;
+                    case "03":{countyName="鼎湖区";}break;
+                    case "21":{countyName="高要县";}break;
+                    case "22":{countyName="四会县";}break;
+                    case "23":{countyName="广宁县";}break;
+                    case "24":{countyName="怀集县";}break;
+                    case "25":{countyName="封开县";}break;
+                    case "26":{countyName="德庆县";}break;
+                    case "27":{countyName="云浮县";}break;
+                    case "28":{countyName="新兴县";}break;
+                    case "29":{countyName="郁南县";}break;
+                    case "30":{countyName="罗定县";}break;
+                    case "81":{countyName="云浮市";}break;
+                    case "82":{countyName="罗定市";}break;
+                    case "83":{countyName="高要市";}break;
+                    case "84":{countyName="四会市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--惠州市************************
+            case "13":{
+                cityName="惠州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="惠城区";}break;
+                    case "03":{countyName="惠阳区";}break;
+                    case "21":{countyName="惠阳县";}break;
+                    case "22":{countyName="博罗县";}break;
+                    case "23":{countyName="惠东县";}break;
+                    case "24":{countyName="龙门县";}break;
+                    case "81":{countyName="惠阳市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--梅州市************************
+            case "14":{
+                cityName="梅州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="梅江区";}break;
+                    case "21":{countyName="梅县";}break;
+                    case "22":{countyName="大埔县";}break;
+                    case "23":{countyName="丰顺县";}break;
+                    case "24":{countyName="五华县";}break;
+                    case "25":{countyName="兴宁县";}break;
+                    case "26":{countyName="平远县";}break;
+                    case "27":{countyName="蕉岭县";}break;
+                    case "81":{countyName="兴宁市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--汕尾市************************
+            case "15":{
+                cityName="汕尾市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="城区";}break;
+                    case "21":{countyName="海丰县";}break;
+                    case "22":{countyName="陆丰县";}break;
+                    case "23":{countyName="陆河县";}break;
+                    case "81":{countyName="陆丰市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--河源市************************
+            case "16":{
+                cityName="河源市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="源城区";}break;
+                    case "11":{countyName="郊区";}break;
+                    case "21":{countyName="紫金县";}break;
+                    case "22":{countyName="龙川县";}break;
+                    case "23":{countyName="连平县";}break;
+                    case "24":{countyName="和平县";}break;
+                    case "25":{countyName="东源县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--阳江市************************
+            case "17":{
+                cityName="阳江市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="江城区";}break;
+                    case "03":{countyName="阳东区";}break;
+                    case "21":{countyName="阳西县";}break;
+                    case "22":{countyName="阳春县";}break;
+                    case "23":{countyName="阳东县";}break;
+                    case "81":{countyName="阳春市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--清远市************************
+            case "18":{
+                cityName="清远市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="清城区";}break;
+                    case "11":{countyName="清郊区";}break;
+                    case "21":{countyName="佛冈去";}break;
+                    case "22":{countyName="英德县";}break;
+                    case "23":{countyName="阳山县";}break;
+                    case "24":{countyName="连县";}break;
+                    case "25":{countyName="连山壮族瑶族自治县";}break;
+                    case "26":{countyName="连山瑶族自治县";}break;
+                    case "27":{countyName="清新县";}break;
+                    case "81":{countyName="英德市";}break;
+                    case "82":{countyName="连州市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--东菀市************************
+            case "19":{
+                cityName="--";
+                switch (countyCode){
+                    case "00":{countyName="东菀市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--中山市************************
+            case "20":{
+                cityName="--";
+                switch (countyCode){
+                    case "00":{countyName="中山市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--其它市1************************
+            case "25":{
+                cityName="--";
+                switch (countyCode){
+                    case "01":{cityName="惠州市";}break;
+                    case "02":{cityName="东莞市";}break;
+                    case "21":{cityName="惠阳县";}break;
+                    case "22":{cityName="紫金县";}break;
+                    case "23":{cityName="和平县";}break;
+                    case "24":{cityName="连平县";}break;
+                    case "25":{cityName="河源县";}break;
+                    case "26":{cityName="博罗县";}break;
+                    case "27":{cityName="东莞县";}break;
+                    case "28":{cityName="惠东县";}break;
+                    case "29":{cityName="龙川县";}break;
+                    case "30":{cityName="陆丰县";}break;
+                    case "31":{cityName="海丰县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--其它市2************************
+            case "26":{
+                cityName="--";
+                switch (countyCode){
+                    case "21":{cityName="始兴县";}break;
+                    case "22":{cityName="南雄县";}break;
+                    case "23":{cityName="仁化县";}break;
+                    case "24":{cityName="乐昌县";}break;
+                    case "28":{cityName="清远县";}break;
+                    case "30":{cityName="翁源县";}break;
+                    case "31":{cityName="连山壮族瑶族自治县";}break;
+                    case "32":{cityName="连山瑶族自治县";}break;
+                    case "33":{cityName="乳源瑶族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--佛山市************************
+            case "27":{
+                cityName="佛山市";
+                switch (countyCode){
+                    case "01":{cityName="佛山市";}break;
+                    case "02":{cityName="江门市";}break;
+                    case "21":{cityName="三水县";}break;
+                    case "22":{cityName="南海县";}break;
+                    case "23":{cityName="顺德县";}break;
+                    case "24":{cityName="中山县";}break;
+                    case "25":{cityName="斗门县";}break;
+                    case "26":{cityName="新会县";}break;
+                    case "27":{cityName="台山县";}break;
+                    case "28":{cityName="恩平县";}break;
+                    case "29":{cityName="开平县";}break;
+                    case "31":{cityName="鹤山县";}break;
+                    case "32":{cityName="高明县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--其它市3************************
+            case "28":{
+                cityName="--";
+                switch (countyCode){
+                    case "21":{cityName="高要县";}break;
+                    case "22":{cityName="四会县";}break;
+                    case "23":{cityName="广宁县";}break;
+                    case "24":{cityName="怀集县";}break;
+                    case "25":{cityName="封开县";}break;
+                    case "26":{cityName="德庆县";}break;
+                    case "27":{cityName="云浮县";}break;
+                    case "28":{cityName="新兴县";}break;
+                    case "29":{cityName="郁南县";}break;
+                    case "30":{cityName="罗定县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--湛江市************************
+            case "29":{
+                cityName="湛江市";
+                switch (countyCode){
+                    case "01":{cityName="湛江市";}break;
+                    case "02":{cityName="茂名市";}break;
+                    case "21":{cityName="阳江县";}break;
+                    case "22":{cityName="阳春县";}break;
+                    case "23":{cityName="信宜县";}break;
+                    case "24":{cityName="高州县";}break;
+                    case "25":{cityName="电白县";}break;
+                    case "26":{cityName="吴川县";}break;
+                    case "27":{cityName="化州县";}break;
+                    case "28":{cityName="廉江县";}break;
+                    case "29":{cityName="遂溪县";}break;
+                    case "30":{cityName="海康县";}break;
+                    case "31":{cityName="徐闻县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--潮州市************************
+            case "51":{
+                cityName="潮州市";
+                switch (countyCode){
+                    case "01":{cityName="市辖区";}break;
+                    case "02":{cityName="湘桥区";}break;
+                    case "21":{cityName="潮安县";}break;
+                    case "22":{cityName="饶平县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--揭阳市************************
+            case "52":{
+                cityName="揭阳市";
+                switch (countyCode){
+                    case "01":{cityName="市辖区";}break;
+                    case "02":{cityName="榕城区";}break;
+                    case "21":{cityName="揭东县";}break;
+                    case "22":{cityName="揭西县";}break;
+                    case "24":{cityName="惠来县";}break;
+                    case "81":{cityName="普宁市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广东省--云浮市************************
+            case "53":{
+                cityName="云浮市";
+                switch (countyCode){
+                    case "01":{cityName="市辖区";}break;
+                    case "02":{cityName="云城区";}break;
+                    case "21":{cityName="新兴县";}break;
+                    case "22":{cityName="郁南县";}break;
+                    case "23":{cityName="云安县";}break;
+                    case "81":{cityName="罗定市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //**************************************
+            default:{
+                cityName="(身份证号码3-4位有误)";
+                countyName="--";
+            }break;
+        }
+        return provinceName+"/"+cityName+"/"+countyName;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:获得广西壮族自治区的方法
+     *@Date: 14:46 2018\9\26 0026
+     */
+    private static String getProvinceNameByProvinceCode45(String cityCode,String countyCode){
+        String provinceName = "广西壮族自治区";
+        String cityName = "";
+        String countyName = "";
+        switch (cityCode){
+            //广西壮族自治区--南宁市************************
+            case "01":{
+                cityName="南宁市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="兴宁区";}break;
+                    case "03":{countyName="青秀区";}break;
+                    case "04":{countyName="城北区";}break;
+                    case "05":{countyName="江南区";}break;
+                    case "06":{countyName="永新区";}break;
+                    case "07":{countyName="西乡塘区";}break;
+                    case "08":{countyName="良庆区";}break;
+                    case "09":{countyName="邕宁区";}break;
+                    case "11":{countyName="郊区";}break;
+                    case "21":{countyName="邕宁县";}break;
+                    case "22":{countyName="武鸣县";}break;
+                    case "23":{countyName="隆安县";}break;
+                    case "24":{countyName="马山县";}break;
+                    case "25":{countyName="上林县";}break;
+                    case "26":{countyName="宾阳县";}break;
+                    case "27":{countyName="横县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--柳州市************************
+            case "02":{
+                cityName="柳州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="城中区";}break;
+                    case "03":{countyName="鱼峰区";}break;
+                    case "04":{countyName="柳南区";}break;
+                    case "05":{countyName="柳北区";}break;
+                    case "11":{countyName="市郊区";}break;
+                    case "21":{countyName="柳江县";}break;
+                    case "22":{countyName="柳城县";}break;
+                    case "23":{countyName="鹿寨县";}break;
+                    case "24":{countyName="融安县";}break;
+                    case "25":{countyName="融水苗族自治县";}break;
+                    case "26":{countyName="三江侗族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--桂林市************************
+            case "03":{
+                cityName="桂林市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="秀峰区";}break;
+                    case "03":{countyName="叠彩区";}break;
+                    case "04":{countyName="象山区";}break;
+                    case "05":{countyName="七星区";}break;
+                    case "11":{countyName="雁山区";}break;
+                    case "21":{countyName="阳朔县";}break;
+                    case "22":{countyName="临桂县";}break;
+                    case "23":{countyName="灵川县";}break;
+                    case "24":{countyName="全州县";}break;
+                    case "25":{countyName="兴安县";}break;
+                    case "26":{countyName="永福县";}break;
+                    case "27":{countyName="灌阳县";}break;
+                    case "28":{countyName="龙胜各族自治县";}break;
+                    case "29":{countyName="资源县";}break;
+                    case "30":{countyName="平乐县";}break;
+                    case "31":{countyName="荔浦县";}break;
+                    case "32":{countyName="恭城瑶族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--梧州市************************
+            case "04":{
+                cityName="梧州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="白云区";}break;
+                    case "03":{countyName="万秀区";}break;
+                    case "04":{countyName="蝶山区";}break;
+                    case "05":{countyName="长洲区";}break;
+                    case "11":{countyName="市郊区";}break;
+                    case "21":{countyName="苍梧区";}break;
+                    case "22":{countyName="藤县";}break;
+                    case "23":{countyName="蒙山县";}break;
+                    case "81":{countyName="岑溪县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--北海市************************
+            case "05":{
+                cityName="北海市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="海城区";}break;
+                    case "03":{countyName="银海区";}break;
+                    case "12":{countyName="铁山港区";}break;
+                    case "21":{countyName="合浦县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--防城港市************************
+            case "06":{
+                cityName="防城港市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="港口区";}break;
+                    case "03":{countyName="防城区";}break;
+                    case "21":{countyName="上思县";}break;
+                    case "81":{countyName="东兴市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--钦州市************************
+            case "07":{
+                cityName="钦州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="钦南区";}break;
+                    case "03":{countyName="钦北区";}break;
+                    case "21":{countyName="灵山县";}break;
+                    case "22":{countyName="浦北县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--贵港市************************
+            case "08":{
+                cityName="贵港市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="港北区";}break;
+                    case "03":{countyName="港南区";}break;
+                    case "04":{countyName="覃塘区";}break;
+                    case "21":{countyName="平南县";}break;
+                    case "81":{countyName="桂平市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--玉林市************************
+            case "09":{
+                cityName="玉林市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="玉州区";}break;
+                    case "21":{countyName="容县";}break;
+                    case "22":{countyName="陆川县";}break;
+                    case "23":{countyName="博白县";}break;
+                    case "24":{countyName="兴业县";}break;
+                    case "81":{countyName="北流市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--百色市************************
+            case "10":{
+                cityName="百色市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="右江区";}break;
+                    case "21":{countyName="田阳县";}break;
+                    case "22":{countyName="田东县";}break;
+                    case "23":{countyName="平果县";}break;
+                    case "24":{countyName="德保县";}break;
+                    case "25":{countyName="靖西县";}break;
+                    case "26":{countyName="那坡县";}break;
+                    case "27":{countyName="凌云县";}break;
+                    case "28":{countyName="乐业县";}break;
+                    case "29":{countyName="田林县";}break;
+                    case "30":{countyName="西林县";}break;
+                    case "31":{countyName="隆林各族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--贺州市************************
+            case "11":{
+                cityName="贺州市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="八步区";}break;
+                    case "21":{countyName="昭平县";}break;
+                    case "22":{countyName="钟山县";}break;
+                    case "23":{countyName="富川瑶族自治县";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--河池市************************
+            case "12":{
+                cityName="河池市";
+                switch (countyCode){
+                    case "01":{countyName="市辖区";}break;
+                    case "02":{countyName="金城江区";}break;
+                    case "21":{countyName="南丹县";}break;
+                    case "22":{countyName="天峨县";}break;
+                    case "23":{countyName="凤山县";}break;
+                    case "24":{countyName="东兰县";}break;
+                    case "25":{countyName="罗城仫佬族自治县";}break;
+                    case "26":{countyName="环江毛南族自治县";}break;
+                    case "27":{countyName="巴马瑶族自治县";}break;
+                    case "28":{countyName="都安瑶族自治县";}break;
+                    case "29":{countyName="大化瑶族自治县";}break;
+                    case "81":{countyName="宜州市";}break;
+                    default:countyName="身份证号码5-6位有误";break;
+                }
+            }break;
+            //广西壮族自治区--来宾市************************
+            case "13":{cityName="来宾市";}break;
+            //广西壮族自治区--崇左市************************
+            case "14":{cityName="崇左市";}break;
+            //广西壮族自治区--南宁地区************************
+            case "21":{cityName="南宁地区";}break;
+            //广西壮族自治区--柳州地区************************
+            case "22":{cityName="柳州地区";}break;
+            //广西壮族自治区--桂林地区************************
+            case "23":{cityName="桂林地区";}break;
+            //广西壮族自治区--贺州地区************************
+            case "24":{cityName="贺州地区";}break;
+            //广西壮族自治区--玉林地区************************
+            case "25":{cityName="玉林地区";}break;
+            //广西壮族自治区--百色地区************************
+            case "26":{cityName="百色地区";}break;
+            //广西壮族自治区--河池地区************************
+            case "27":{cityName="河池地区";}break;
+            //广西壮族自治区--钦州地区************************
+            case "28":{cityName="钦州地区";}break;
+            //**********************************************
+            default:{
+                cityName="(身份证号码3-4位有误)";
+                countyName="--";
+            }break;
+        }
+        return provinceName+"/"+cityName+"/"+countyName;
+    }
+
 }
