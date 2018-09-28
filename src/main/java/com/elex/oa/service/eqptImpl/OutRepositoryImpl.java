@@ -7,6 +7,7 @@ import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.OutRepositoryService;
+import com.elex.oa.service.project.OperationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,9 @@ public class OutRepositoryImpl implements OutRepositoryService {
 
     @Resource
     private RepositoryMapper repositoryMapper;
+
+    @Resource
+    private OperationService operationService;
 
     /*所有单号*/
     @Override
@@ -418,6 +422,9 @@ public class OutRepositoryImpl implements OutRepositoryService {
                     }
                     materialMapper.updMatM(material);
                 }
+                // 物品消耗添加项目
+                String theOutId = listOUT.get(0).getOutId().toString();
+                operationService.addMaterialInfor(theOutId);
             }
         }
     }
@@ -623,6 +630,14 @@ public class OutRepositoryImpl implements OutRepositoryService {
             list = outRepositoryMapper.allNoticeX();
         }
         return new PageInfo<>(list);
+    }
+
+    // 根据ID查物料价格
+    @Override
+    public String priceOfId(HttpServletRequest request){
+        String id = request.getParameter("id");
+        String price = outRepositoryMapper.priceOfId(id);
+        return price;
     }
 }
 

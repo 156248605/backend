@@ -81,4 +81,7 @@ public interface OutRepositoryService {
 
     /*所有出库通知*/
     PageInfo<Repository> showNotice(Page page, HttpServletRequest request);
+
+    // 根据ID查物料价格
+    String priceOfId(HttpServletRequest request);
 }

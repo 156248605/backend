@@ -80,4 +80,6 @@ public interface OutRepositoryMapper {
     List<Repository> allNoticeR();
 
     List<Repository> allNoticeX();
+
+    String priceOfId(String id);
 }
