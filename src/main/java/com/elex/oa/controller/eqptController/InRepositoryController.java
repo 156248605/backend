@@ -4,6 +4,7 @@ import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.InRepositoryImpl;
 import com.github.pagehelper.PageInfo;
+import com.sun.corba.se.spi.ior.ObjectKey;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin
@@ -156,5 +159,20 @@ public class InRepositoryController {
     @ResponseBody
     public List<Repository> postDraft (HttpServletRequest request){
         return inRepositoryImpl.postDraft(request);
+    }
+
+    @RequestMapping("/getNotice")
+    @ResponseBody
+    public List<HashMap<String, Object>> getNotice(HttpServletRequest request) { return inRepositoryImpl.notice(request); }
+
+    @RequestMapping("/noticeChild")
+    @ResponseBody
+    public List<HashMap<String, Object>> noticeChild(HttpServletRequest request) { return inRepositoryImpl.noticeChild(request); }
+
+    @RequestMapping("/findNotice")
+    @ResponseBody
+    public PageInfo<Repository> showNotice (Page page, HttpServletRequest request) {
+        PageInfo<Repository> list = inRepositoryImpl.showNotice(page,request);
+        return list;
     }
 }

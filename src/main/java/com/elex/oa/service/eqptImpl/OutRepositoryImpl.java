@@ -7,6 +7,7 @@ import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.OutRepositoryService;
+import com.elex.oa.service.project.OperationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,9 @@ public class OutRepositoryImpl implements OutRepositoryService {
 
     @Resource
     private RepositoryMapper repositoryMapper;
+
+    @Resource
+    private OperationService operationService;
 
     /*所有单号*/
     @Override
@@ -108,7 +112,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
         for (int i = 0; i < listOUT.size(); i++) {
             String OUTREPTC = request.getParameter("outReptC");
             String OUTID = request.getParameter("outId");
-            String OUTNUMGET = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUMGET = listOUT.get(i).get("number").toString();
             String OUTNUM = "";
             if (OUTNUMGET.contains(".")) {
                 OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
@@ -190,7 +194,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
             repository.setReptCategory(REPTcategory);
             /*更新数量*/
             String number = repositoryMapper.getNumber(repository);
-            String numAfterOut = String.valueOf(parseInt(number) - parseInt(listOUT.get(i).get("theMatNum").toString()));
+            String numAfterOut = String.valueOf(parseInt(number) - parseInt(listOUT.get(i).get("number").toString()));
             repository.setNum(numAfterOut);
             /*int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
             repository.setOnlyIdR(onlyIdR);
@@ -217,7 +221,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
             material.setReptId(listOUT.get(i).get("reptId").toString());
             String number = repositoryMapper.numInPost(material);
             String outNum = "";
-            String outNumA = listOUT.get(i).get("theMatNum").toString();
+            String outNumA = listOUT.get(i).get("number").toString();
             if (outNumA.contains(".")){
                 outNum = outNumA.substring(0,outNumA.indexOf("."));
             }else{
@@ -259,7 +263,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
         for (int i = 0; i < listOUT.size(); i++) {
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
-            String OUTNUMGET = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUMGET = listOUT.get(i).get("number").toString();
             String OUTNUM = "";
             if (OUTNUMGET.contains(".")) {
                 OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
@@ -286,7 +290,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
         for (int i = 0; i < listOUT.size(); i++) {
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
-            String OUTNUMGET = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUMGET = listOUT.get(i).get("number").toString();
             String OUTNUM = "";
             if (OUTNUMGET.contains(".")) {
                 OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
@@ -418,6 +422,9 @@ public class OutRepositoryImpl implements OutRepositoryService {
                     }
                     materialMapper.updMatM(material);
                 }
+                // 物品消耗添加项目
+                String theOutId = listOUT.get(0).getOutId().toString();
+                operationService.addMaterialInfor(theOutId);
             }
         }
     }
@@ -485,7 +492,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
         for (int i = 0; i < listOUT.size(); i++) {
             String OUTREPTC = request.getParameter("outReptC");
             String OUTID = request.getParameter("outId");
-            String OUTNUMGET = listOUT.get(i).get("theMatNum").toString();
+            String OUTNUMGET = listOUT.get(i).get("number").toString();
             String OUTNUM = "";
             if (OUTNUMGET.contains(".")) {
                 OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
@@ -586,6 +593,51 @@ public class OutRepositoryImpl implements OutRepositoryService {
         String outId = request.getParameter("outId");
         List<Repository> list = outRepositoryMapper.getDraft(outId);
         return list;
+    }
+
+    // 入库通知弹框
+    @Override
+    public List<HashMap<String,Object>> notice(HttpServletRequest request) {
+        String category = request.getParameter("category");
+        List<HashMap<String,Object>> list = null;
+        if (category.equals("日常领用")){
+            list = outRepositoryMapper.getNoticeR();
+        }
+        if (category.equals("销售发货")){
+            list = outRepositoryMapper.getNoticeX();
+        }
+        return list;
+    }
+
+    // 弹框子表
+    @Override
+    public List<HashMap<String,Object>> noticeChild(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<HashMap<String,Object>> list = outRepositoryMapper.noticeChild(wdbh);
+        return list;
+    }
+
+    /*所有出库通知*/
+    @Override
+    public PageInfo<Repository> showNotice(Page page, HttpServletRequest request){
+        String category = request.getParameter("category");
+        PageHelper.startPage(page.getCurrentPage(),page.getRows());
+        List<Repository> list = null;
+        if (category.equals("日常领用")) {
+            list = outRepositoryMapper.allNoticeR();
+        }
+        if (category.equals("销售发货")) {
+            list = outRepositoryMapper.allNoticeX();
+        }
+        return new PageInfo<>(list);
+    }
+
+    // 根据ID查物料价格
+    @Override
+    public String priceOfId(HttpServletRequest request){
+        String id = request.getParameter("id");
+        String price = outRepositoryMapper.priceOfId(id);
+        return price;
     }
 }
 

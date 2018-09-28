@@ -140,4 +140,48 @@
     <insert id="insertDraft" parameterType="string">
         INSERT INTO eqpt_outrepository_draft VALUES (NULL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21})
     </insert>
+
+    <select id="getNoticeR" resultType="HashMap">
+        SELECT '领用申请单' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, F_XMBH, F_XMMC FROM w_lysq WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT '招待申请单' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, F_XMBH, F_XMMC FROM w_zdsqd12 WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="getNoticeX" resultType="HashMap">
+        SELECT '销售发货通知单' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, F_XMBH, F_XMMC FROM w_xsfhtzd WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT '合同交付需求单' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, F_XMBH, F_XMMC FROM w_htjfxqd5 WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT '销售订单合同评审表' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, F_XMBH, F_XMMC FROM w_xsddhtpsb1 WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="noticeChild" resultType="HashMap">
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_XQSL AS num, '' AS price, '' AS sum FROM w_cpmx,w_xsfhtzd WHERE w_cpmx.REF_ID_ = (SELECT ID_ FROM w_xsfhtzd WHERE F_WDBH = #{wdbh}) AND w_xsfhtzd.INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_XQSL AS num, '' AS price, '' AS sum FROM w_xsmx5,w_htjfxqd5 WHERE w_xsmx5.REF_ID_ = (SELECT ID_ FROM w_htjfxqd5 WHERE F_WDBH = #{wdbh}) AND w_htjfxqd5.INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_XSSL AS num, F_XSDJ AS price, F_XSJE AS sum FROM w_xsmx3,w_xsddhtpsb1 WHERE w_xsmx3.REF_ID_ = (SELECT ID_ FROM w_xsddhtpsb1 WHERE F_WDBH = #{wdbh}) AND w_xsddhtpsb1.INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_lylymx,w_lysq WHERE w_lylymx.REF_ID_ = (SELECT ID_ FROM w_lysq WHERE F_WDBH = #{wdbh}) AND w_lysq.INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_lymx13,w_zdsqd12 WHERE w_lymx13.REF_ID_ = (SELECT ID_ FROM w_zdsqd12 WHERE F_WDBH = #{wdbh}) AND w_zdsqd12.INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="allNoticeR" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT DISTINCT '领用申请单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_lysq WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT DISTINCT '招待申请单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_zdsqd12 WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="allNoticeX" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT '销售发货通知单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_xsfhtzd WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT '合同交付需求单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_htjfxqd5 WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        UNION
+        SELECT '销售订单合同评审表' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_xsddhtpsb1 WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="priceOfId" resultType="string">
+        SELECT price FROM eqpt_material WHERE id = #{id}
+    </select>
 </mapper>

@@ -1,13 +1,22 @@
 package com.elex.oa.service.service_shiyun.impl;
 
 import com.elex.oa.dao.dao_shiyun.IPerandpostrsDao;
+import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
 import com.elex.oa.dao.dao_shiyun.IPostDao;
+import com.elex.oa.dao.dao_shiyun.IUserDao;
+import com.elex.oa.entity.entity_shiyun.PerAndPostRs;
+import com.elex.oa.entity.entity_shiyun.PersonalInformation;
 import com.elex.oa.entity.entity_shiyun.Post;
+import com.elex.oa.entity.entity_shiyun.User;
 import com.elex.oa.service.service_shiyun.IPostService;
+import com.elex.oa.util.resp.RespUtil;
+import com.elex.oa.util.util_shiyun.IDcodeUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +32,10 @@ public class PostServiceImpl implements IPostService {
     IPostDao iPostDao;
     @Autowired
     IPerandpostrsDao iPerandpostrsDao;
+    @Autowired
+    IUserDao iUserDao;
+    @Autowired
+    IPersonalInformationDao iPersonalInformationDao;
 
     /**
      *@Author:ShiYun;
@@ -155,5 +168,28 @@ public class PostServiceImpl implements IPostService {
             }
         }
         return false;//上级为null时跳出循环（到顶点），说明不是自己的上级
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据登录ID查询岗位名称
+     *@Date: 13:49 2018\9\25 0025
+     */
+    @Override
+    public Object queryPostnameByUsername(String username) {
+        if(StringUtils.isBlank(username))return RespUtil.successResp("500","登录名为空",null);
+        User user = iUserDao.selectByUsername(username);
+        if(user==null)return RespUtil.successResp("500","登录名不存在",null);
+        PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
+        if(personalInformation==null)return RespUtil.successResp("500","登录名的岗位信息不存在",null);
+        List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectPostidsByPerid(personalInformation.getId());
+        if(perAndPostRs==null ||perAndPostRs.size()==0)return RespUtil.successResp("500","登录名的岗位信息不存在",null);
+        List<String> strs = new ArrayList<>();
+        for (PerAndPostRs p :perAndPostRs
+                ) {
+            strs.add(iPostDao.selectPostByPostid(p.getPostid()).getPostname());
+        }
+        String postnames = IDcodeUtil.getArrayToString(strs, ";");
+        return RespUtil.successResp("200","提交成功！",postnames);
     }
 }

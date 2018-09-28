@@ -128,7 +128,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
         for (int i = 0; i < listSHIFT.size(); i++) {
             String shiftId = request.getParameter("shiftId");
-            String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
+            String shiftNumGet = listSHIFT.get(i).get("number").toString();
             String shiftNum = "";
             if (shiftNumGet.contains(".")) {
                 shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
@@ -209,7 +209,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
         for (int i = 0; i < listSHIFT.size(); i++){
             String materialName = listSHIFT.get(i).get("theMatName").toString();
-            String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
+            String shiftNumGet = listSHIFT.get(i).get("number").toString();
             String shiftNum = "";
             if (shiftNumGet.contains(".")) {
                 shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
@@ -282,7 +282,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             Material material1 = materialMapper.getNum(material);
             // 生产入库改变数量
             String num = material1.getNum();
-            String result = String.valueOf( Integer.parseInt(num) - Integer.parseInt(listSHIFT.get(i).get("theMatNum").toString()) );
+            String result = String.valueOf( Integer.parseInt(num) - Integer.parseInt(listSHIFT.get(i).get("number").toString()) );
             material.setNum(result);
             materialMapper.updMat(material);
         }
@@ -320,7 +320,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             material.setId(listSHIFT.get(i).get("theMatId").toString());
             material.setReptId(reptId);
             material.setPostId(postId);
-            String INNUM = listSHIFT.get(i).get("theMatNum").toString();
+            String INNUM = listSHIFT.get(i).get("number").toString();
             if (listSHIFT.get(0).containsKey("number")){
                 INNUM = listSHIFT.get(i).get("number").toString();
             }
@@ -361,7 +361,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         for (int i = 0; i < listSHIFT.size(); i++) {
             Material material = new Material();
             material.setId(listSHIFT.get(i).get("theMatId").toString());
-            String INNUM = listSHIFT.get(i).get("theMatNum").toString();
+            String INNUM = listSHIFT.get(i).get("number").toString();
             if (listSHIFT.get(0).containsKey("number")){
                 INNUM = listSHIFT.get(i).get("number").toString();
             }
@@ -385,7 +385,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         for (int i = 0; i < listSHIFT.size(); i++) {
             Material material = new Material();
             material.setId(listSHIFT.get(i).get("theMatId").toString());
-            String OUTNUM = listSHIFT.get(i).get("theMatNum").toString();
+            String OUTNUM = listSHIFT.get(i).get("number").toString();
             if (listSHIFT.get(0).containsKey("number")){
                 OUTNUM = listSHIFT.get(i).get("number").toString();
             }
@@ -639,7 +639,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
         for (int i = 0; i < listSHIFT.size(); i++) {
             String shiftId = request.getParameter("shiftId");
-            String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
+            String shiftNumGet = listSHIFT.get(i).get("number").toString();
             String shiftNum = "";
             if (shiftNumGet.contains(".")) {
                 shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
@@ -740,5 +740,42 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         String shiftId = request.getParameter("shiftId");
         List<Repository> list = shiftRepositoryMapper.getDraft(shiftId);
         return list;
+    }
+
+    // 入库通知弹框
+    @Override
+    public List<HashMap<String,Object>> notice(HttpServletRequest request) {
+        String category = request.getParameter("category");
+        List<HashMap<String,Object>> list = null;
+        if (category.equals("借用") || category.equals("归还")){
+            list = shiftRepositoryMapper.getNoticeJ();
+        }
+        if (category.equals("生产领料") || category.equals("生产退料")){
+            list = shiftRepositoryMapper.getNoticeS();
+        }
+        return list;
+    }
+
+    // 弹框子表
+    @Override
+    public List<HashMap<String,Object>> noticeChild(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<HashMap<String,Object>> list = shiftRepositoryMapper.noticeChild(wdbh);
+        return list;
+    }
+
+    /*所有出库通知*/
+    @Override
+    public PageInfo<Repository> showNotice(Page page, HttpServletRequest request){
+        String category = request.getParameter("category");
+        PageHelper.startPage(page.getCurrentPage(),page.getRows());
+        List<Repository> list = null;
+        if (category.equals("借用") || category.equals("归还")){
+            list = shiftRepositoryMapper.allNoticeJ();
+        }
+        if (category.equals("生产领料") || category.equals("生产退料")){
+            list = shiftRepositoryMapper.allNoticeS();
+        }
+        return new PageInfo<>(list);
     }
 }

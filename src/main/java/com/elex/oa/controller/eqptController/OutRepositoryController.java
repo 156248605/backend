@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin
@@ -188,5 +189,20 @@ public class OutRepositoryController {
     @ResponseBody
     public List<Repository> postDraft (HttpServletRequest request){
         return outRepositoryImpl.postDraft(request);
+    }
+
+    @RequestMapping("/getNotice")
+    @ResponseBody
+    public List<HashMap<String, Object>> getNotice(HttpServletRequest request) { return outRepositoryImpl.notice(request); }
+
+    @RequestMapping("/noticeChild")
+    @ResponseBody
+    public List<HashMap<String, Object>> noticeChild(HttpServletRequest request) { return outRepositoryImpl.noticeChild(request); }
+
+    @RequestMapping("/findNotice")
+    @ResponseBody
+    public PageInfo<Repository> showNotice (Page page, HttpServletRequest request) {
+        PageInfo<Repository> list = outRepositoryImpl.showNotice(page,request);
+        return list;
     }
 }

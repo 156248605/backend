@@ -157,7 +157,7 @@ public class InRepositoryImpl implements InRepositoryService {
         for (int i = 0; i < listIN.size(); i++){
             String INREPTC = request.getParameter("inReptC");
             String INID = request.getParameter("inId");
-            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUMGET = listIN.get(i).get("number").toString();
             String INNUM = "";
             if (INNUMGET.contains(".")) {
                 INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
@@ -242,7 +242,7 @@ public class InRepositoryImpl implements InRepositoryService {
         String INLIST = request.getParameter("inList");
         List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
         for (int i = 0; i < listIN.size(); i++) {
-            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUMGET = listIN.get(i).get("number").toString();
             String INNUM = "";
             if (INNUMGET.contains(".")) {
                 INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
@@ -290,10 +290,10 @@ public class InRepositoryImpl implements InRepositoryService {
             /*更新数量*/
             String emptyRept = repositoryMapper.getNumber(repository);
             if (emptyRept.equals("0")) {
-                repository.setNum(listIN.get(i).get("theMatNum").toString());
+                repository.setNum(listIN.get(i).get("number").toString());
             } else {
                 String number = repositoryMapper.getNumber(repository);
-                String numAfterIn = String.valueOf(parseInt(number) + parseInt(listIN.get(i).get("theMatNum").toString()));
+                String numAfterIn = String.valueOf(parseInt(number) + parseInt(listIN.get(i).get("number").toString()));
                 repository.setNum(numAfterIn);
             }
             int onlyIdP = repositoryMapper.lockOnlyIdP(repository);
@@ -319,7 +319,7 @@ public class InRepositoryImpl implements InRepositoryService {
         for (int i = 0; i < listIN.size(); i++) {
             Material material = new Material();
             material.setId(listIN.get(i).get("theMatId").toString());
-            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUMGET = listIN.get(i).get("number").toString();
             String INNUM = "";
             if (INNUMGET.contains(".")) {
                 INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
@@ -347,7 +347,7 @@ public class InRepositoryImpl implements InRepositoryService {
             String reptId = listIN.get(i).get("reptId").toString();
             String postId = "";
             String NUM = "0";
-            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUMGET = listIN.get(i).get("number").toString();
             String INNUM = "";
             if (INNUMGET.contains(".")) {
                 INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
@@ -363,7 +363,7 @@ public class InRepositoryImpl implements InRepositoryService {
                 postId = listIN.get(i).get("postId").toString();
                 Material material = new Material();
                 material.setId(listIN.get(i).get("theMatId").toString());
-                INNUM = listIN.get(i).get("theMatNum").toString();
+                INNUM = listIN.get(i).get("number").toString();
                 repository.setPostId(postId);
                 if (repositoryMapper.getNumber(repository) != null){
                     NUM = repositoryMapper.getNumber(repository);
@@ -536,7 +536,7 @@ public class InRepositoryImpl implements InRepositoryService {
         for (int i = 0; i < listIN.size(); i++){
             String INREPTC = request.getParameter("inReptC");
             String INID = request.getParameter("inId");
-            String INNUMGET = listIN.get(i).get("theMatNum").toString();
+            String INNUMGET = listIN.get(i).get("number").toString();
             String INNUM = "";
             if (INNUMGET.contains(".")) {
                 INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
@@ -644,6 +644,33 @@ public class InRepositoryImpl implements InRepositoryService {
     public List<Repository> postDraft(HttpServletRequest request) {
         String inId = request.getParameter("inId");
         List<Repository> list = inRepositoryMapper.getDraft(inId);
+        return list;
+    }
+
+    /*所有入库通知*/
+    @Override
+    public PageInfo<Repository> showNotice(Page page, HttpServletRequest request){
+        PageHelper.startPage(page.getCurrentPage(),page.getRows());
+        List<Repository> list = inRepositoryMapper.allNotice();
+        return new PageInfo<>(list);
+    }
+
+    // 入库通知弹框
+    @Override
+    public List<HashMap<String,Object>> notice(HttpServletRequest request) {
+        String category = request.getParameter("category");
+        List<HashMap<String,Object>> list = null;
+        if (category.equals("采购收货")){
+            list = inRepositoryMapper.getNotice();
+        }
+        return list;
+    }
+
+    // 弹框子表
+    @Override
+    public List<HashMap<String,Object>> noticeChild(HttpServletRequest request) {
+        String wdbh = request.getParameter("wdbh");
+        List<HashMap<String,Object>> list = inRepositoryMapper.noticeChild(wdbh);
         return list;
     }
 }
