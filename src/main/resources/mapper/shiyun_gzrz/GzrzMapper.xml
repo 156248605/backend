@@ -10,6 +10,30 @@
 		<result property="status" column="INST_STATUS_" />
 	</resultMap>
 
+	<resultMap id="lysqdMapper" type="Lysqd">
+		<id property="id" column="ID_" />
+		<result property="f_lygw" column="F_LYGW" />
+		<result property="f_lybm" column="F_LYBM" />
+		<result property="f_rzrq" column="F_RZRQ" />
+		<result property="f_htqx" column="F_HTQX" />
+		<result property="f_lyxz" column="F_HTQX" />
+		<result property="f_hy_name" column="F_HY_NAME" />
+		<result property="f_xl" column="F_XL" />
+		<result property="f_sy_name" column="F_SY_NAME" />
+		<result property="f_zy" column="F_ZY" />
+		<result property="f_sfzh" column="F_SFZH" />
+		<result property="f_byxx" column="F_BYXX" />
+		<result property="f_hjdz" column="F_HJDZ" />
+		<result property="f_bysj" column="F_BYSJ" />
+		<result property="f_jzdz" column="F_JZDZ" />
+		<result property="f_lxdh" column="F_LXDH" />
+		<result property="f_yjlxr" column="F_YJLXR" />
+		<result property="f_yjlxfs" column="F_YJLXFS" />
+		<result property="f_txrq" column="F_TXRQ" />
+		<result property="f_xm" column="F_XM" />
+	</resultMap>
+
+
 	<select id="selectNamesByDateAndState" resultType="java.lang.String">
 		select distinct F_TBR_NAME from w_gzrz1
 		where F_TBRQ BETWEEN #{date1} and #{date2}
@@ -50,4 +74,65 @@
 		WHERE NAME_ =#{username} AND TENANT_ID_='1'
 	</update>
 
+	<select id="selectLysqd" resultMap="lysqdMapper">
+				SELECT
+					ID_,
+					F_XM,
+					F_LYGW,
+					F_LYBM,
+					F_RZRQ,
+					F_HTQX,
+					F_LYXZ,
+					F_HY_NAME,
+					F_XL,
+					F_SY_NAME,
+					F_ZY,
+					F_SFZH,
+					F_BYXX,
+					F_HJDZ,
+					F_BYSJ,
+					F_JZDZ,
+					F_LXDH,
+					F_YJLXR,
+					F_YJLXFS,
+					F_TXRQ
+				FROM
+					w_lyspd2
+				WHERE
+					PARENT_ID_ IS NULL AND INST_STATUS_='SUCCESS_END'
+	</select>
+
+	<select id="selectLysqdById" parameterType="java.lang.String" resultMap="lysqdMapper">
+		SELECT
+					ID_,
+					F_XM,
+					F_LYGW,
+					F_LYBM,
+					F_RZRQ,
+					F_HTQX,
+					F_LYXZ,
+					F_HY_NAME,
+					F_XL,
+					F_SY_NAME,
+					F_ZY,
+					F_SFZH,
+					F_BYXX,
+					F_HJDZ,
+					F_BYSJ,
+					F_JZDZ,
+					F_LXDH,
+					F_YJLXR,
+					F_YJLXFS,
+					F_TXRQ
+				FROM
+					w_lyspd2
+				WHERE
+					ID_=#{id}
+	</select>
+
+	<update id="updateLysqd" parameterType="java.lang.String">
+		UPDATE w_lyspd2
+		SET PARENT_ID_='SUCCESS_END'
+		WHERE ID_=#{id}
+	</update>
 </mapper>

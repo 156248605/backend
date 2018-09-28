@@ -1,6 +1,7 @@
 package com.elex.oa.dao.dao_shiyun;
 
 import com.elex.oa.entity.entity_shiyun.Gzrz;
+import com.elex.oa.entity.entity_shiyun.Lysqd;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -43,4 +44,25 @@ public interface IGzrzDao {
      */
     void updateOS_USERWenDeleteDimission(String username);
     void updateOS_USERWenDeleteDimission2(String username);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询录用申请单
+     *@Date: 14:29 2018\9\28 0028
+     */
+    List<Lysqd> selectLysqd();
+
+    /**
+     *@Author:ShiYun;
+     *@Description:将已经录入的人员做标记（将PARENT_ID_字段变成"SUCCESS_END"）
+     *@Date: 14:33 2018\9\28 0028
+     */
+    void updateLysqd(String id);
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID查询一条录用申请单
+     *@Date: 17:06 2018\9\28 0028
+     */
+    Lysqd selectLysqdById(String id);
 }

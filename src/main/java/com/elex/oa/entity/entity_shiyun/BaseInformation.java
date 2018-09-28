@@ -37,8 +37,17 @@ public class BaseInformation implements Serializable{
     private Integer zyzsnameid;//职业证书名称ID
     private String firstworkingtime;//首次参加工作时间
     private Integer parentcompanyid;//上家雇主ID
+    private String hj;//户籍
 
     public BaseInformation() {
+    }
+
+    public String getHj() {
+        return hj;
+    }
+
+    public void setHj(String hj) {
+        this.hj = hj;
     }
 
     public Integer getId() {

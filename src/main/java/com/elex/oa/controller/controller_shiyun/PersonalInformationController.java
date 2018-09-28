@@ -249,7 +249,6 @@ public class PersonalInformationController {
                 iPersonalInformationService.removeOne(per.getId());
             }
         }
-
         return getOnePersonalinformation(personalInformationId);
     }
 
@@ -416,6 +415,18 @@ public class PersonalInformationController {
                 personalInformation.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
             }
         }
+        //先获得岗位信息
+        List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformationId);
+        List<String> strs = new ArrayList<>();
+        List<Integer> postids = new ArrayList<>();
+        if (perAndPostRs.size()!=0) {
+            for(PerAndPostRs perAndPost:perAndPostRs){
+                strs.add(iPostService.queryOneByPostid(perAndPost.getPostid()).getPostname());
+                postids.add(perAndPost.getPostid());
+            }
+        }
+        personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs,";"));
+        personalInformation.setPostids(postids);
         //3.获得管理信息
         ManageInformation manageInformation = iManageInformationService.queryOneById(personalInformation.getManageinformationid());
         if (manageInformation!=null) {
@@ -429,7 +440,7 @@ public class PersonalInformationController {
                     }
                 }
             }
-            List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformationId);
+            /*List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformationId);
             List<String> strs = new ArrayList<>();
             List<Integer> postids = new ArrayList<>();
             if (perAndPostRs.size()!=0) {
@@ -439,7 +450,7 @@ public class PersonalInformationController {
                 }
             }
             personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs,";"));
-            personalInformation.setPostids(postids);
+            personalInformation.setPostids(postids);*/
             if (ihRsetRankService.queryById(manageInformation.getRankid())!=null) {
                 personalInformation.setZj(ihRsetRankService.queryById(manageInformation.getRankid()).getRank());
             }
@@ -520,6 +531,7 @@ public class PersonalInformationController {
             @RequestParam("sxzyvalue") String sxzyvalue,
             @RequestParam("zyzsnamevalue") String zyzsnamevalue,
             @RequestParam("parentcompanyvalue") String parentcompanyvalue,
+            @RequestParam("lysqdid") String lysqdid,
             HttpServletRequest request
     ) throws ParseException {
         //工号校验
@@ -626,6 +638,11 @@ public class PersonalInformationController {
         if(personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode())){
             try {
                 baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));//出生日期
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                baseInformation.setHj(IDcodeUtil.getProvinceByIdcode(personalInformation.getIdcode()));//户籍
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -741,6 +758,30 @@ public class PersonalInformationController {
         personalInformation.setUserid(userid);
         personalInformation.setBaseinformationid(baseInformationId);
         Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
+        personalInformation.setId(personalInformationId);
+        if(lysqdid!=null&&!"".equals(lysqdid)){
+            //处理录用申请单（户籍、性别等信息时身份证号解析出来的）
+            //添加岗位信息
+            Lysqd lysqd = iGzrzService.queryLysqdById(lysqdid);
+            PerAndPostRs perAndPostRs = new PerAndPostRs();
+            perAndPostRs.setPerid(personalInformationId);
+            perAndPostRs.setPostid(Integer.valueOf(lysqd.getF_lygw().split("_")[1]));
+            iPerandpostrsService.addOne(perAndPostRs);
+            //部门信息没有对接好，不好操作
+            //添加合同信息(缺少合同编号等必填信息)，光有入职日期和合同期限是不够的
+            //添加人事成本信息(其中薪资是HR设置里面选择的信息，不好匹配)
+            //添加其它信息
+            OtherInformation otherInformation = new OtherInformation();
+            otherInformation.setAddress(lysqd.getF_jzdz());
+            personalInformation.setMobilephone(lysqd.getF_lxdh());
+            otherInformation.setEmergencycontract(lysqd.getF_yjlxr());
+            otherInformation.setEmergencyphone(lysqd.getF_yjlxfs());
+            Integer otherinformationid = iOtherInformationService.saveOne(otherInformation);
+            personalInformation.setOtherinformationid(otherinformationid);
+            iPersonalInformationService.modifyOne(personalInformation);
+            //将录用申请单中的状态改掉
+            iGzrzService.modifyLysqdById(lysqdid);
+        }
         return RespUtil.successResp("200","提交成功！",userid);
     }
 
@@ -2613,5 +2654,16 @@ public class PersonalInformationController {
             System.out.println("格式转换出错！");
         }
         return RespUtil.successResp("205","相应成功！",o);
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询所有的录用申请单
+     *@Date: 15:23 2018\9\28 0028
+     */
+    @RequestMapping("/queryAllLysqd")
+    @ResponseBody
+    public List<Lysqd> queryAllLysqd(){
+        return iGzrzService.queryLyspd();
     }
 }

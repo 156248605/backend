@@ -125,6 +125,7 @@ public class  PersonalInformation implements Serializable{
     private List<String> parentcompanys;//
     private String parentcompanyvalue;//判断条件
     private List<Integer> baseinformationids;//条件查询用
+    private String hj;//户籍
 
     private String zj;//职级（管理信息表5）
     private String entrydate;//入职日期
@@ -154,6 +155,14 @@ public class  PersonalInformation implements Serializable{
     private String remark;//备注
 
     public PersonalInformation() {
+    }
+
+    public String getHj() {
+        return hj;
+    }
+
+    public void setHj(String hj) {
+        this.hj = hj;
     }
 
     public String getDepcode() {
