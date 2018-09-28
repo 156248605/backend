@@ -2,11 +2,15 @@ package com.elex.oa.service.eqptImpl;
 
 
 import com.alibaba.fastjson.JSON;
-import com.elex.oa.dao.eqptDao.*;
+import com.elex.oa.dao.eqptDao.MaterialMapper;
+import com.elex.oa.dao.eqptDao.MaterialMtMapper;
+import com.elex.oa.dao.eqptDao.OutRepositoryMapper;
+import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.OutRepositoryService;
+import com.elex.oa.service.project.OperationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,9 @@ public class OutRepositoryImpl implements OutRepositoryService {
 
     @Resource
     private RepositoryMapper repositoryMapper;
+
+    @Resource
+    private OperationService operationService;
 
     /*所有单号*/
     @Override
@@ -418,6 +425,9 @@ public class OutRepositoryImpl implements OutRepositoryService {
                     }
                     materialMapper.updMatM(material);
                 }
+                // 物品消耗添加项目
+                String theOutId = listOUT.get(0).getOutId();
+                operationService.addMaterialInfor(theOutId);
             }
         }
     }
@@ -623,6 +633,13 @@ public class OutRepositoryImpl implements OutRepositoryService {
             list = outRepositoryMapper.allNoticeX();
         }
         return new PageInfo<>(list);
+    }
+
+    // 根据ID查物料价格
+    @Override
+    public String priceOfId(String id){
+        String price = outRepositoryMapper.priceOfId(id);
+        return price;
     }
 }
 

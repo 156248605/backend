@@ -33,4 +33,12 @@ public class ProjectInforController {
         return projectInforService.amendInfor(projectInfor);
     }
 
+    //添加新项目
+    @RequestMapping("add_infor")
+    @ResponseBody
+    public String addInfor(){
+        projectInforService.addInfor();
+        return "1";
+    }
+
 }

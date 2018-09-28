@@ -15,6 +15,8 @@ public interface OperationService {
     PageInfo queryMaterialList(OperationQuery operationQuery, Page page);
     //查询物品消耗详情
     Map<String,Object> queryMaterialDetail(String projectCode);
+    //添加物品消耗信息
+    void addMaterialInfor(String outId);
     //添加人力成本
     String addHuman(ProjectHuman projectHuman, String detail);
     //查询人力成本信息

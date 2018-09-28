@@ -180,4 +180,8 @@
         UNION
         SELECT '销售订单合同评审表' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_xsddhtpsb1 WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
+
+    <select id="priceOfId" resultType="string">
+        SELECT price FROM eqpt_material WHERE id = #{id}
+    </select>
 </mapper>

@@ -13,6 +13,6 @@ public class InventorySchedule {
 
     @Scheduled(cron = "0 */1 * * * ?")
     public void insertInventory(){
-        inventoryService.insertInv();
+        //inventoryService.insertInv();
     }
 }

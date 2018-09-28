@@ -86,6 +86,15 @@
         <result  column="note"  javaType="string"  property="note"></result>
     </resultMap>
 
+    <resultMap id="materialDetail" type="com.elex.oa.entity.project.ProjectMaterialDetail">
+        <result column="projId"  javaType="string"  property="projectCode"></result>
+        <result column="outId"  javaType="string"  property="outOrder"></result>
+        <result column="materialId"  javaType="string"  property="goodCode"></result>
+        <result column="materialName"  javaType="string"  property="goodName"></result>
+        <result column="outNum"  javaType="string"  property="number"></result>
+    </resultMap>
+
+
     <select id="queryMainList" parameterType="com.elex.oa.entity.project.OperationQuery" resultType="java.util.Map">
         SELECT app.project_code AS projectCode,app.project_name AS projectName,app.in_department AS inDepartment,pro.project_status AS projectStatus,app.project_manager AS projectManager,
         app.project_source AS projectSource,app.business_manager AS businessManager,app.project_type AS projectType
@@ -888,4 +897,28 @@
             </foreach>
         </where>
     </select>
+
+    <select id="queryMaterialsByOutId" parameterType="string" resultMap="materialDetail">
+        SELECT outId, outNum, materialId, materialName, projId FROM eqpt_outrepository WHERE outId = #{outId}
+    </select>
+
+    <select id="queryMaterialByCode" parameterType="string" resultType="string">
+        SELECT total_amount_l FROM pro_material WHERE project_code = #{projectCode}
+    </select>
+
+    <delete id="deleteMaterial" parameterType="string">
+        DELETE FROM pro_material WHERE project_code = #{projectCode}
+    </delete>
+
+    <insert id="insertMaterial" parameterType="com.elex.oa.entity.project.ProjectMaterial">
+         INSERT INTO pro_material (id,project_code,total_amount_l,total_amount_c) VALUES (NULL,#{projectCode},#{totalAmountL},#{totalAmountC})
+    </insert>
+
+    <insert id="insertMaterialDetail" parameterType="java.util.List">
+        INSERT INTO pro_material_detail (id, project_code, out_order, good_code, good_name, number ,unit_price, amount) VALUES
+        <foreach collection="list" separator="," index="index" item="item">
+            (NULL, #{item.projectCode}, #{item.outOrder}, #{item.goodCode}, #{item.goodName}, #{item.number}, #{item.unitPrice}, #{item.amount})
+        </foreach>
+    </insert>
+
 </mapper>

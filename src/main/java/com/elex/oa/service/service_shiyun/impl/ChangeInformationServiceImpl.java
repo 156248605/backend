@@ -8,9 +8,9 @@ import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.service_shiyun.IChangeInformationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,10 +22,10 @@ import java.util.List;
  */
 @Service
 public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformation> implements IChangeInformationService {
-    @Autowired
-    IChangeInformaionDao iChangeInformaionDao;
-    @Autowired
-    IUserDao iUserDao;
+    @Resource
+   private IChangeInformaionDao iChangeInformaionDao;
+    @Resource
+    private IUserDao iUserDao;
 
     /**
      *@Author:ShiYun;

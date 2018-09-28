@@ -7062,6 +7062,7 @@ public class GetProvinceMethod {
                 switch (countyCode){
                     case "01":{countyName="市辖区";}break;
                     case "02":{countyName="东城区";}break;
+<<<<<<< HEAD
                     case "03":{countyName="西城区";}break;
                     case "04":{countyName="锦江区";}break;
                     case "05":{countyName="青羊区";}break;
@@ -7124,6 +7125,8 @@ public class GetProvinceMethod {
                     case "81":{countyName="永川县";}break;
                     case "82":{countyName="江津市";}break;
                     case "83":{countyName="合川市";}break;
+=======
+>>>>>>> 87009200724281031b917f7a83a5e48fc2288fa1
                     default:countyName="身份证号码5-6位有误";break;
                 }
             }break;

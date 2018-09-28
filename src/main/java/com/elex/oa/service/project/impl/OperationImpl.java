@@ -1,16 +1,20 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.elex.oa.dao.eqptDao.OutRepositoryMapper;
 import com.elex.oa.dao.project.OperationDao;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.OperationService;
+import com.elex.oa.util.project.ProjectUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +24,11 @@ import java.util.Map;
 public class OperationImpl implements OperationService {
     @Resource
     private OperationDao operationDao;
+
+    @Resource
+    private OutRepositoryMapper outRepositoryMapper;
+
+
 
     //列表查询主表数据
     @Override
@@ -83,6 +92,38 @@ public class OperationImpl implements OperationService {
         map.put("material",projectMaterial);
         map.put("detail",projectMaterialDetails);
         return map;
+    }
+
+    //添加物品消耗详情
+    @Override
+    public void addMaterialInfor(String outId) {
+        System.out.println(outId);
+        List<ProjectMaterialDetail> materials = operationDao.queryMaterialsByOutId(outId); //根据文档编号查询物品出库信息
+        double amountN = 0;
+        for(ProjectMaterialDetail map:materials) {
+            String price = outRepositoryMapper.priceOfId(map.getGoodCode());
+            double price1 = new BigDecimal(price).setScale(2,BigDecimal.ROUND_UP).doubleValue();
+            int num = Integer.parseInt(map.getNumber());
+            double amount = new BigDecimal(price1 * num).setScale(2,BigDecimal.ROUND_UP).doubleValue();
+            amountN += amount;
+            map.setUnitPrice(price1+"");
+            map.setAmount(amount+"");
+        }
+        String projectCode = materials.get(0).getProjectCode();
+        String amountL = operationDao.queryMaterialByCode(projectCode); //根据项目编号查询相关物品消耗信息
+        ProjectMaterial projectMaterial = new ProjectMaterial();
+        projectMaterial.setProjectCode(projectCode);
+        if(StringUtils.isBlank(amountL)) {
+            projectMaterial.setTotalAmountL(new BigDecimal(amountN).setScale(2,BigDecimal.ROUND_UP).toString());
+            projectMaterial.setTotalAmountC(ProjectUtils.lowerToCaptial(amountN));
+        } else {
+            amountN += Double.parseDouble(amountL);
+            projectMaterial.setTotalAmountL(new BigDecimal(amountN).setScale(2,BigDecimal.ROUND_UP).toString());
+            projectMaterial.setTotalAmountC(ProjectUtils.lowerToCaptial(amountN));
+            operationDao.deleteMaterial(projectCode); //删除物品消耗信息
+        }
+        operationDao.insertMaterial(projectMaterial); //添加物品消耗信息
+        operationDao.insertMaterialDetail(materials); //添加物品消耗信息详情
     }
 
     //添加人力成本
