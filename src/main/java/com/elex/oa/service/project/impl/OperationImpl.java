@@ -114,11 +114,11 @@ public class OperationImpl implements OperationService {
         ProjectMaterial projectMaterial = new ProjectMaterial();
         projectMaterial.setProjectCode(projectCode);
         if(StringUtils.isBlank(amountL)) {
-            projectMaterial.setTotalAmountL(amountN+"");
+            projectMaterial.setTotalAmountL(new BigDecimal(amountN).setScale(2,BigDecimal.ROUND_UP).toString());
             projectMaterial.setTotalAmountC(ProjectUtils.lowerToCaptial(amountN));
         } else {
             amountN += Double.parseDouble(amountL);
-            projectMaterial.setTotalAmountL(amountN+"");
+            projectMaterial.setTotalAmountL(new BigDecimal(amountN).setScale(2,BigDecimal.ROUND_UP).toString());
             projectMaterial.setTotalAmountC(ProjectUtils.lowerToCaptial(amountN));
             operationDao.deleteMaterial(projectCode); //删除物品消耗信息
         }
