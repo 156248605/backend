@@ -83,5 +83,5 @@ public interface OutRepositoryService {
     PageInfo<Repository> showNotice(Page page, HttpServletRequest request);
 
     // 根据ID查物料价格
-    String priceOfId(HttpServletRequest request);
+    String priceOfId(String  id);
 }

@@ -109,4 +109,14 @@ public interface OperationDao {
     List<String> queryMaterialCodes();
     //列表查询物品消耗
     List<ProjectInfor> queryMaterialList(OperationQuery operationQuery);
+    //根据文档编号查询物品出库信息
+    List<ProjectMaterialDetail> queryMaterialsByOutId(String outId);
+    //根据项目编号查询相关物品消耗信息
+    String queryMaterialByCode(String projectCode);
+    //删除物品消耗信息
+    void deleteMaterial(String projectCode);
+    //添加物品消耗信息
+    void insertMaterial(ProjectMaterial projectMaterial);
+    //添加物品消耗信息详情
+    void insertMaterialDetail(List<ProjectMaterialDetail> materials);
 }

@@ -6959,7 +6959,7 @@ public class GetProvinceMethod {
                 cityName="成都市";
                 switch (countyCode){
                     case "01":{countyName="市辖区";}break;
-                    case "01":{countyName="东城区";}break;
+                    case "02":{countyName="东城区";}break;
                     default:countyName="身份证号码5-6位有误";break;
                 }
             }break;

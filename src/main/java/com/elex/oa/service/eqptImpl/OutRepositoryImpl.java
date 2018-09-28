@@ -2,7 +2,10 @@ package com.elex.oa.service.eqptImpl;
 
 
 import com.alibaba.fastjson.JSON;
-import com.elex.oa.dao.eqptDao.*;
+import com.elex.oa.dao.eqptDao.MaterialMapper;
+import com.elex.oa.dao.eqptDao.MaterialMtMapper;
+import com.elex.oa.dao.eqptDao.OutRepositoryMapper;
+import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
@@ -423,7 +426,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
                     materialMapper.updMatM(material);
                 }
                 // 物品消耗添加项目
-                String theOutId = listOUT.get(0).getOutId().toString();
+                String theOutId = listOUT.get(0).getOutId();
                 operationService.addMaterialInfor(theOutId);
             }
         }
@@ -634,8 +637,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
 
     // 根据ID查物料价格
     @Override
-    public String priceOfId(HttpServletRequest request){
-        String id = request.getParameter("id");
+    public String priceOfId(String id){
         String price = outRepositoryMapper.priceOfId(id);
         return price;
     }
