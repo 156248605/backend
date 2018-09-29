@@ -364,7 +364,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
         if(materials == null) {
             result.put("materials","");
         } else {
-            result.put("materials","");
+            result.put("materials",materials);
         }
         String human = projectBoardDao.queryHuman(projectCode); //查询人力成本
         if(human == null) {
@@ -412,7 +412,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
                 }
                 double denominator = Double.parseDouble(projectIncome.getAmount());
                 String margin = new BigDecimal(molecular / denominator * 100).setScale(2,RoundingMode.UP).doubleValue() + "%";
-                result.put("grossProfit",molecular+"");
+                result.put("grossProfit",new BigDecimal(molecular).setScale(2,BigDecimal.ROUND_UP).toString());
                 result.put("grossProfitMargin",margin);
             }
         }
