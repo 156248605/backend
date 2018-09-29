@@ -147,6 +147,7 @@
                 AND infor.related_members LIKE CONCAT('%',#{name},'%')
             </if>
         </where>
+        ORDER BY infor.project_code DESC
     </select>
 
     <update id="amendInfor" parameterType="com.elex.oa.entity.project.ProjectInfor">

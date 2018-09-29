@@ -102,12 +102,12 @@ public class OperationImpl implements OperationService {
         double amountN = 0;
         for(ProjectMaterialDetail map:materials) {
             String price = outRepositoryMapper.priceOfId(map.getGoodCode());
-            double price1 = new BigDecimal(price).setScale(2,BigDecimal.ROUND_UP).doubleValue();
+            double price1 = Double.parseDouble(price);
             int num = Integer.parseInt(map.getNumber());
-            double amount = new BigDecimal(price1 * num).setScale(2,BigDecimal.ROUND_UP).doubleValue();
+            double amount = price1 * num;
             amountN += amount;
-            map.setUnitPrice(price1+"");
-            map.setAmount(amount+"");
+            map.setUnitPrice(new BigDecimal(price1).setScale(2,BigDecimal.ROUND_UP).toString());
+            map.setAmount(new BigDecimal(amount).setScale(2,BigDecimal.ROUND_UP).toString());
         }
         String projectCode = materials.get(0).getProjectCode();
         String amountL = operationDao.queryMaterialByCode(projectCode); //根据项目编号查询相关物品消耗信息

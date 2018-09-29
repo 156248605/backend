@@ -29,56 +29,6 @@
         <result column="F_XMJL_NAME" javaType="string" property="projectManager"></result>
     </resultMap>
 
-    <!--<select id="listQuery" parameterType="com.elex.oa.entity.project.AListQuery" resultMap="approvalList">
-        SELECT project_code,project_name,write_date,project_source,project_type,in_department,proposer,business_manager,project_manager,general_situation FROM pro_app_list
-        <where>
-            <if test="input1 != '' and select1 == 1">
-                AND project_code LIKE CONCAT('%',#{input1},'%')
-            </if>
-            <if test="input1 != '' and select1 == 2">
-                AND  project_code NOT LIKE CONCAT('%',#{input1},'%')
-            </if>
-            <if test="input2 != '' and select2 == 1">
-                AND project_name LIKE  CONCAT('%',#{input2},'%')
-            </if>
-            <if test="input2 != '' and select2 == 2">
-                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
-            </if>
-            <if test="date31 != null and date32 != null">
-                AND write_date BETWEEN #{date31} AND #{date32}
-            </if>
-            <if test="list4 != null">
-                AND project_source IN
-                <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="list5 != null">
-                AND project_type IN
-                <foreach collection="list5" item="item" index="index" separator="," open="(" close=")">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="select6 == 1 and input6 != ''">
-                AND in_department LIKE CONCAT('%',#{input6},'%')
-            </if>
-            <if test="select6 == 2 and input6 != ''">
-                AND in_department LIKE CONCAT('%',#{input6},'%')
-            </if>
-            <if test="select7 == 1 and input7 != ''">
-                AND proposer LIKE CONCAT('%',#{input7},'%')
-            </if>
-            <if test="select7 == 2 and input7 != ''">
-                AND proposer LIKE CONCAT('%',#{input7},'%')
-            </if>
-            <if test="select8 == 1 and input8 != ''">
-                AND business_manager LIKE CONCAT('%',#{input8},'%')
-            </if>
-            <if test="select8 == 2 and input8 != ''">
-                AND business_manager LIKE CONCAT('%',#{input8},'%')
-            </if>
-        </where>
-    </select>-->
 
     <select id="listQuery" parameterType="com.elex.oa.entity.project.AListQuery" resultMap="approvalList1">
         SELECT w.F_XMBH, w.F_XMMC, w.F_TXRQ, w.F_XMLY, w.F_XMLX, w.F_SZBM_NAME, w.F_SWJL_NAME, w.F_XMJL_NAME FROM w_lxsqb w
@@ -131,6 +81,7 @@
             AND w.INST_STATUS_ = 'SUCCESS_END'
             AND NOT EXISTS (SELECT 1 FROM w_lxsqb WHERE w.F_XMBH = F_XMBH AND UPDATE_TIME_  > w.UPDATE_TIME_  )
         </where>
+        ORDER BY w.F_XMBH DESC
     </select>
 
     <select id="queryCodeByName" parameterType="string" resultType="string">
