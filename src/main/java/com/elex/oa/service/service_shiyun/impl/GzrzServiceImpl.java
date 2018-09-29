@@ -1,19 +1,18 @@
 package com.elex.oa.service.service_shiyun.impl;
 
-import com.elex.oa.dao.dao_shiyun.IDeptDao;
 import com.elex.oa.dao.dao_shiyun.IGzrzDao;
-import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
 import com.elex.oa.entity.entity_shiyun.Gzrz;
 import com.elex.oa.entity.entity_shiyun.GzrzVO;
+import com.elex.oa.entity.entity_shiyun.Lysqd;
 import com.elex.oa.service.service_shiyun.IGzrzService;
 import com.elex.oa.util.util_shiyun.IDcodeUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.*;
 
-import static com.elex.oa.util.util_shiyun.IDcodeUtil.*;
+import static com.elex.oa.util.util_shiyun.IDcodeUtil.getFirstAndLastDate;
 
 /**
  * @Author:ShiYun;
@@ -23,8 +22,8 @@ import static com.elex.oa.util.util_shiyun.IDcodeUtil.*;
  */
 @Service
 public class GzrzServiceImpl implements IGzrzService {
-    @Autowired
-    private IGzrzDao iGzrzDao;
+    @Resource
+    IGzrzDao iGzrzDao;
 
     /**
      *@Author:ShiYun;
@@ -315,5 +314,37 @@ public class GzrzServiceImpl implements IGzrzService {
             System.out.println("根据时间获得当月的头尾日期时，格式出错！");
         }
         return gzrzVOList;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:查询录用审批单通过的信息
+     *@Date: 14:58 2018\9\28 0028
+     */
+    @Override
+    public List<Lysqd> queryLyspd() {
+        List<Lysqd> lysqds = iGzrzDao.selectLysqd();
+        return lysqds;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:根据ID查询一条录用申请单
+     *@Date: 17:10 2018\9\28 0028
+     */
+    @Override
+    public Lysqd queryLysqdById(String id) {
+        Lysqd lysqd = iGzrzDao.selectLysqdById(id);
+        return lysqd;
+    }
+
+    /**
+     *@Author:ShiYun;
+     *@Description:修改录用申请单
+     *@Date: 17:31 2018\9\28 0028
+     */
+    @Override
+    public void modifyLysqdById(String id) {
+        iGzrzDao.updateLysqd(id);
     }
 }

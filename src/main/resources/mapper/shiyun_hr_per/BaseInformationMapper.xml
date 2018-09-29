@@ -27,6 +27,7 @@
 		<result column="zyzsnameid" property="zyzsnameid" />
 		<result column="firstworkingtime" property="firstworkingtime" />
 		<result column="parentcompanyid" property="parentcompanyid" />
+		<result column="household_register" property="hj" />
 	</resultMap>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="BaseInformationResultMap">
@@ -63,7 +64,8 @@
 			zyzstypeid,
 			zyzsnameid,
 			firstworkingtime,
-			parentcompanyid)
+			parentcompanyid,
+			household_register)
 		values (
 			null,
 		 	#{userphoto},
@@ -88,7 +90,8 @@
 		 	#{posttitleid},
 		 	#{zyzsnameid},
 		 	#{firstworkingtime},
-  			#{parentcompanyid})
+  			#{parentcompanyid},
+  			#{hj})
 	</insert>
 
 	<update id="updateOne" parameterType="BaseInformation" >
@@ -117,6 +120,7 @@
 			<if test="zyzsnameid!=null and zyzsnameid!=''">zyzsnameid=#{zyzsnameid},</if>
 			<if test="firstworkingtime!=null and firstworkingtime!=''">firstworkingtime=#{firstworkingtime},</if>
 			<if test="parentcompanyid!=null and parentcompanyid!=''">parentcompanyid=#{parentcompanyid},</if>
+			<if test="hj!=null and hj!=''">household_register=#{hj},</if>
 		</set>
 		WHERE id=#{id}
 	</update>
