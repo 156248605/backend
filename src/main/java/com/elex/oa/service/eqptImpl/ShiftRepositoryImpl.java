@@ -9,8 +9,6 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.ShiftRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.regexp.RE;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -546,11 +544,12 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                     material.setPostId(OUTPOST);
                     material.setId(materialId);
                     material.setNum(shiftNum);
-                    if (parseInt(outNum) == parseInt(shiftNum)){
+                    /*if (parseInt(outNum) == parseInt(shiftNum)){
                         materialMapper.deleteDetail(material);
                     }else {
                         materialMapper.updDetailM(material);
-                    }
+                    }*/
+                    materialMapper.updDetailM(material);
                     Material material1 = new Material();
                     material1.setReptId(INREPT);
                     material1.setPostId(INPOST);
@@ -562,13 +561,14 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                     material1.setCategory(material2.getCategory());
                     material1.setBrand(material2.getBrand());
                     material1.setPrice(material2.getPrice());
-                    String result = materialMapper.matInDetail(material1);
+                    /*String result = materialMapper.matInDetail(material1);
                     if(result == null){
                         materialMapper.insertDetail(material1);
                         materialMapper.deleteNull(material1);
                     }else {
                         materialMapper.updDetail(material1);
-                    }
+                    }*/
+                    materialMapper.updDetail(material1);
                 }
             }
         }

@@ -80,6 +80,15 @@
             <if test="reptId != null and reptId != '' and reptIdC == 2">
                 AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
             </if>
+            <if test="reptName != null and reptName != '' and reptNameC == ''">
+                AND reptName LIKE CONCAT(CONCAT('%', #{reptName}), '%')
+            </if>
+            <if test="reptName != null and reptName != '' and reptNameC == 1">
+                AND reptName LIKE CONCAT(CONCAT('%', #{reptName}), '%')
+            </if>
+            <if test="reptName != null and reptName != '' and reptNameC == 2">
+                AND reptName NOT LIKE CONCAT(CONCAT('%', #{reptName}), '%')
+            </if>
             <if test="postId != null and postId != '' and postIdC == ''">
                 AND postId LIKE CONCAT(CONCAT('%', #{postId}), '%')
             </if>
