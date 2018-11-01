@@ -41,8 +41,14 @@ public class DeptServiceImpl implements IDeptService {
      *@Date: 15:29 2018\6\1 0001
      */
     @Override
-    public Dept queryOneDepByDepname(String depname) {
+    public List<Dept> queryOneDepByDepname(String depname) {
         return iDeptDao.selectDeptByDeptname(depname);
+    }
+
+    //根据部门名称模糊查询获得部门
+    @Override
+    public List<Dept> queryOneDepByLikeDepname(String depname) {
+        return iDeptDao.selectDeptByLikeDeptname(depname);
     }
 
     /**
@@ -197,7 +203,7 @@ public class DeptServiceImpl implements IDeptService {
         if (depid!=null) {
             dept = iDeptDao.selectDeptByDepid(depid);
         } else {
-            dept = iDeptDao.selectDeptByDeptname("江苏博智软件科技股份有限公司");
+            dept = iDeptDao.selectDeptByDeptname("江苏博智软件科技股份有限公司").get(0);
         }
         hrManageCard.setDepname(dept.getDepname());
         //获得部门ID

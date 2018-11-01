@@ -60,4 +60,38 @@ public class PerandpostrsServiceImpl implements IPerandpostrsService {
     public void removeByPerid(Integer perid) {
         iPerandpostrsDao.deleteByPerid(perid);
     }
+
+    /**
+     * @Author: shiyun
+     * @Description: 根据perid和postid删除一条信息
+     * @Date  2018\11\1 0001 15:19
+     * @Param [perid, postid]
+     * @return void
+     **/
+    @Override
+    public Boolean removeOneByPeridAndPostid(Integer perid, Integer postid) {
+        PerAndPostRs perAndPostRs = iPerandpostrsDao.selectOneByPeridAndPostid(perid, postid);
+        if(perAndPostRs==null){
+            return false;
+        }
+        try {
+            iPerandpostrsDao.deleteOneByPeridAndPostid(perid,postid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @Author: shiyun
+     * @Description: 根据perid和postid查询一条信息
+     * @Date  2018\11\1 0001 15:19
+     * @Param [perid, postid]
+     * @return com.elex.oa.entity.entity_shiyun.PerAndPostRs
+     **/
+    @Override
+    public PerAndPostRs queryOneByPeridAndPostid(Integer perid, Integer postid) {
+        return iPerandpostrsDao.selectOneByPeridAndPostid(perid, postid);
+    }
 }

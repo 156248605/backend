@@ -3,10 +3,7 @@ package com.elex.oa.entity.entity_shiyun;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -119,7 +116,7 @@ public class ReadPersonalinformationExcel {
                             String str = String.valueOf(cell.getNumericCellValue());
                             isactive = Integer.parseInt(str.substring(0, str.length() - 2 > 0 ? str.length() - 2 : 1));
                         }
-                        if (isactive!=null) {
+                        if (isactive!=null && !"".equals(isactive)) {
                             personalInformation.setIsactive(isactive);
                         } else {
                             personalInformation.setIsactive(1);
@@ -226,6 +223,10 @@ public class ReadPersonalinformationExcel {
                     }else if ("部门编号".equals(columnname.replace(" ",""))) {
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setDepcode(str);
+                    }else if ("部门".equals(columnname.replace(" ",""))) {
+                        cell.setCellType(CellType.STRING);
+                        String str = String.valueOf(cell.getStringCellValue());
+                        personalInformation.setDepname(str);
                     }else if ("岗位".equals(columnname.replace(" ",""))) {
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setPostnames(str);

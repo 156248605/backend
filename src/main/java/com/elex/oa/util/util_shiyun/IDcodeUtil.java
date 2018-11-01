@@ -21,6 +21,7 @@ public class IDcodeUtil {
      *@Date: 17:45 2018\5\15 0015
      */
     public static String getZhuanzhengdate(String entrydate) throws ParseException {
+        entrydate = entrydate.replace('-','/');
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         Date entryDate = sdf.parse(entrydate);
         Calendar entryCal = Calendar.getInstance();
@@ -107,7 +108,15 @@ public class IDcodeUtil {
      *@Date: 20:01 2018\5\12 0012
      */
     public static String getSex(String idcard) {
-        return (Integer.parseInt(idcard.substring(16,17)) % 2)==0?"女":"男";
+        if(idcard==null && "".equals(idcard)){
+            return "";
+        }
+        try {
+            return (Integer.parseInt(idcard.substring(16,17)) % 2)==0?"女":"男";
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**
@@ -117,7 +126,8 @@ public class IDcodeUtil {
      */
     public static String getAge(String birthday) throws Exception {
         if(StringUtils.isBlank(birthday) || birthday.equals("null")){
-            throw new Exception("出生日期有误！");
+            //throw new Exception("出生日期有误！");
+            return  "";
         }
         Calendar curCal = IDcodeUtil.getCalendarByDate(birthday,null);
         //定义年龄

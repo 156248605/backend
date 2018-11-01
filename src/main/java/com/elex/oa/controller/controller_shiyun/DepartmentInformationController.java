@@ -138,7 +138,7 @@ public class DepartmentInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:根据部门名称获取部门对象
+     *@Description:根据部门名称获取部门对象(此方法已经过时)
      *@Date: 13:20 2018\3\16 0016
      */
     @RequestMapping("/queryOneDepByDepname")
@@ -147,7 +147,7 @@ public class DepartmentInformationController {
         Dept dept = null;
         try {
             dept = new Dept();
-            dept = iDeptService.queryOneDepByDepname(depname);
+            dept = iDeptService.queryOneDepByDepname(depname).get(0);
             Dept parentdep = new Dept();
             User principaluser = new User();
             User deputyuser = new User();
@@ -619,7 +619,7 @@ public class DepartmentInformationController {
             }
 
             if (!dept.getDepname().equals(dept2.getDepname())){
-                Dept dept1 = iDeptService.queryOneDepByDepname(dept.getDepname());
+                Dept dept1 = iDeptService.queryOneDepByDepname(dept.getDepname()).get(0);
                 if (dept1==null) {
                     b = true;
                     deptLog.setChangeinformation("部门名称");
@@ -1110,7 +1110,7 @@ public class DepartmentInformationController {
             List<DeptLog> excelInfo = readDeplogExcel.getExcelInfo(multipartFile);
             for(DeptLog deptLog:excelInfo){
                 if (iDeptService.queryOneDepByDepname(deptLog.getDeptname())!=null) {
-                    deptLog.setDeptid(iDeptService.queryOneDepByDepname(deptLog.getDeptname()).getId());
+                    deptLog.setDeptid(iDeptService.queryOneDepByDepname(deptLog.getDeptname()).get(0).getId());
                 }
                 User user = new User();
                 user.setTruename(deptLog.getTransactortruename());
@@ -1139,7 +1139,7 @@ public class DepartmentInformationController {
         List<TitleAndCode> list = new ArrayList<>();
         List<Dept> depts;
         if (iDeptService.queryOneDepByDepname(title)!=null) {
-            depts = iDeptService.queryByParentId(iDeptService.queryOneDepByDepname(title).getId());
+            depts = iDeptService.queryByParentId(iDeptService.queryOneDepByDepname(title).get(0).getId());
         } else {
             return null;
         }
@@ -1173,7 +1173,7 @@ public class DepartmentInformationController {
         //在数据库中将顺序码保存一下
         for (TitleAndCode t:list
              ) {
-            Dept dept = iDeptService.queryOneDepByDepname(t.getTitle());
+            Dept dept = iDeptService.queryOneDepByDepname(t.getTitle()).get(0);
             Dept dept1 = new Dept();
             dept1.setId(dept.getId());
             dept1.setOrdercode(t.getCode());
@@ -1510,7 +1510,7 @@ public class DepartmentInformationController {
     public Boolean validateDeptnameForAddDept(
             @RequestParam("deptname") String deptname
     ){
-        Dept dept = iDeptService.queryOneDepByDepname(deptname);
+        Dept dept = iDeptService.queryOneDepByDepname(deptname).get(0);
         if(dept!=null){
             return true;
         }else{
@@ -1528,7 +1528,7 @@ public class DepartmentInformationController {
     public Boolean validateDeptcodeForAddDept(
             @RequestParam("deptcode") String deptcode
     ){
-        Dept dept = iDeptService.queryOneDepByDepname(deptcode);
+        Dept dept = iDeptService.queryOneByDepcode(deptcode);
         if(dept!=null){
             return true;
         }else {

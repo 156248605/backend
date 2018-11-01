@@ -23,6 +23,10 @@
 		select * from tb_id_department
 		where depname = #{depname} and state=1
 	</select>
+	<select id="selectDeptByLikeDeptname" parameterType="java.lang.String" resultMap="deptMapper">
+		select * from tb_id_department
+		where depname like CONCAT(CONCAT('%',#{depname},'%')) and state=1
+	</select>
 
 	<select id="selectDeptByDeptcode" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
@@ -32,7 +36,7 @@
 
 	<select id="selectDeptByDeptcode2" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
-		where depcode LIKE #{depcode} and state=1
+		where depcode LIKE CONCAT(CONCAT('%',#{depcode},'%')) and state=1
 	</select>
 
 	<select id="selectDeptByDeptypeid" parameterType="java.lang.Integer" resultMap="deptMapper">

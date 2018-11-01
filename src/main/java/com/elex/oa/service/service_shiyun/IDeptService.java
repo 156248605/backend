@@ -15,7 +15,8 @@ import java.util.List;
 public interface IDeptService {
 
     //根据部门名称查询部门对象
-    Dept queryOneDepByDepname(String depname);
+    List<Dept> queryOneDepByDepname(String depname);
+    List<Dept> queryOneDepByLikeDepname(String depname);
 
     /**
      *@Author:ShiYun;

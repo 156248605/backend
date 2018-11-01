@@ -16,7 +16,8 @@ import java.util.List;
 public interface IDeptDao{
 
     //更具部门名称查询部门对象
-    Dept selectDeptByDeptname(String deptname);
+    List<Dept> selectDeptByDeptname(String deptname);
+    List<Dept> selectDeptByLikeDeptname(String deptname);
 
     //更具部门ID查询部门对象
     Dept selectDeptByDepid(Integer id);

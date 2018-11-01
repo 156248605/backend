@@ -21,6 +21,11 @@
 		WHERE perid=#{perid}
 	</select>
 
+	<select id="selectOneByPeridAndPostid" parameterType="java.lang.Integer" resultMap="PerandpostrsMapper">
+		SELECT * FROM tb_hr_per_and_post_rs
+		WHERE perid=#{perid} and postid=#{postid}
+	</select>
+
 	<select id="selectPeridsByPostid" parameterType="java.lang.Integer" resultMap="PerandpostrsMapper">
 		SELECT * FROM tb_hr_per_and_post_rs
 		WHERE postid=#{postid}
@@ -28,6 +33,10 @@
 
 	<delete id="deleteByPerid" parameterType="java.lang.Integer" >
 		DELETE FROM tb_hr_per_and_post_rs WHERE perid=#{perid}
+	</delete>
+
+	<delete id="deleteOneByPeridAndPostid" parameterType="java.lang.Integer" >
+		DELETE FROM tb_hr_per_and_post_rs WHERE perid=#{perid} and postid=#{postid}
 	</delete>
 
 	<delete id="deleteByPostid" parameterType="java.lang.Integer" >
