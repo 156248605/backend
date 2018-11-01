@@ -71,6 +71,7 @@ public class Material {
     private String needCheck;
     // 仓库ID
     private String reptId;
+    private String reptName;
     private String postId;
     // 项目相关
     private String projId;
@@ -105,6 +106,7 @@ public class Material {
     private String numInvC;
     private String palC;
     private String reptIdC;
+    private String reptNameC;
     private String postIdC;
     private String projIdC;
     private String projNameC;
@@ -112,7 +114,7 @@ public class Material {
     public Material() {
     }
 
-    public Material(int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String postId, String projId, String projName, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC, String postIdC, String projIdC, String projNameC) {
+    public Material(int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String reptName, String postId, String projId, String projName, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC, String reptNameC, String postIdC, String projIdC, String projNameC) {
         this.onlyId = onlyId;
         this.bn = bn;
         this.sn = sn;
@@ -138,6 +140,7 @@ public class Material {
         this.fixPosition = fixPosition;
         this.needCheck = needCheck;
         this.reptId = reptId;
+        this.reptName = reptName;
         this.postId = postId;
         this.projId = projId;
         this.projName = projName;
@@ -169,9 +172,26 @@ public class Material {
         this.numInvC = numInvC;
         this.palC = palC;
         this.reptIdC = reptIdC;
+        this.reptNameC = reptNameC;
         this.postIdC = postIdC;
         this.projIdC = projIdC;
         this.projNameC = projNameC;
+    }
+
+    public String getReptName() {
+        return reptName;
+    }
+
+    public void setReptName(String reptName) {
+        this.reptName = reptName;
+    }
+
+    public String getReptNameC() {
+        return reptNameC;
+    }
+
+    public void setReptNameC(String reptNameC) {
+        this.reptNameC = reptNameC;
     }
 
     public String getBn() {
@@ -674,6 +694,7 @@ public class Material {
                 ", fixPosition='" + fixPosition + '\'' +
                 ", needCheck='" + needCheck + '\'' +
                 ", reptId='" + reptId + '\'' +
+                ", reptName='" + reptName + '\'' +
                 ", postId='" + postId + '\'' +
                 ", projId='" + projId + '\'' +
                 ", projName='" + projName + '\'' +
@@ -705,6 +726,7 @@ public class Material {
                 ", numInvC='" + numInvC + '\'' +
                 ", palC='" + palC + '\'' +
                 ", reptIdC='" + reptIdC + '\'' +
+                ", reptNameC='" + reptNameC + '\'' +
                 ", postIdC='" + postIdC + '\'' +
                 ", projIdC='" + projIdC + '\'' +
                 ", projNameC='" + projNameC + '\'' +

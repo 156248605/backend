@@ -8,7 +8,6 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.regexp.RE;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -452,6 +451,8 @@ public class InRepositoryImpl implements InRepositoryService {
                     }
                     material.setPostId(POSTID);
                     material.setReptId(listIN.get(i).getReptId());
+                    String reptName = repositoryMapper.searchReptName(material);
+                    material.setReptName(reptName);
                     material.setName(listIN.get(i).getMaterialName());
                     material.setSpec(listIN.get(i).getSpec());
                     Material material1 = materialMapper.MaterialId(material);

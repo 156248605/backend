@@ -683,4 +683,8 @@
     <delete id="deleteCate" parameterType="string">
         DELETE FROM eqpt_reptcate WHERE onlyId = #{onlyId}
     </delete>
+
+    <select id="searchReptName" resultType="string">
+        SELECT reptName FROM eqpt_repository WHERE reptId = #{reptId}
+    </select>
 </mapper>

@@ -9,8 +9,6 @@ import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.ShiftRepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.regexp.RE;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -245,11 +243,12 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             material.setPostId(outPost);
             material.setId(materialId);
             material.setNum(shiftNum);
-            if (parseInt(outNum) == parseInt(shiftNum)){
+            /*if (parseInt(outNum) == parseInt(shiftNum)){
                 materialMapper.deleteDetail(material);
             }else {
                 materialMapper.updDetailM(material);
-            }
+            }*/
+            materialMapper.updDetailM(material);
             Material material1 = new Material();
             material1.setReptId(inRept);
             material1.setPostId(inPost);
@@ -546,14 +545,17 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                     material.setPostId(OUTPOST);
                     material.setId(materialId);
                     material.setNum(shiftNum);
-                    if (parseInt(outNum) == parseInt(shiftNum)){
+                    /*if (parseInt(outNum) == parseInt(shiftNum)){
                         materialMapper.deleteDetail(material);
                     }else {
                         materialMapper.updDetailM(material);
-                    }
+                    }*/
+                    materialMapper.updDetailM(material);
                     Material material1 = new Material();
                     material1.setReptId(INREPT);
                     material1.setPostId(INPOST);
+                    String reptName = repositoryMapper.searchReptName(material1);
+                    material1.setReptName(reptName);
                     material1.setId(materialId);
                     material1.setNum(shiftNum);
                     material1.setName(materialName);
@@ -569,6 +571,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                     }else {
                         materialMapper.updDetail(material1);
                     }
+                    /*materialMapper.updDetail(material1);*/
                 }
             }
         }

@@ -39,6 +39,7 @@
         <if test="select6 == 2 and input6 != ''">
             AND rz.F_XMJL NOT LIKE CONCAT('%',#{input6},'%')
         </if>
+        ORDER BY gz.F_TBRQ DESC
     </select>
 
 

@@ -133,7 +133,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
             String number = materialMtMapper.manageBS(material);
-            String POSTID = "无";
+            String POSTID = "";
             if (listOUT.get(i).get("postId") != null){
                 POSTID = listOUT.get(i).get("postId").toString();
             }
@@ -163,7 +163,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
                     bn = "无";
                 } else if (number.equals("批次号")) {
                     bn = listOUT.get(i).get("theMatBnSn").toString();
-                    sn = "无";
+                    sn = "";
                 }
                 Repository repository = new Repository();
                 repository.setMaterialId(MATERIALID);
@@ -418,11 +418,12 @@ public class OutRepositoryImpl implements OutRepositoryService {
                         outNum = outNumA;
                     }
                     material.setNum(outNum);
-                    if (parseInt(number) == parseInt(outNum)) {
+                    /*if (parseInt(number) == parseInt(outNum)) {
                         materialMapper.deleteDetail(material);
                     } else {
                         materialMapper.updDetailM(material);
-                    }
+                    }*/
+                    materialMapper.updDetailM(material);
                     materialMapper.updMatM(material);
                 }
                 // 物品消耗添加项目
@@ -515,7 +516,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
             String OUTINFO = request.getParameter("outInfo");
             Material material = new Material();
             material.setId(listOUT.get(i).get("theMatId").toString());
-            String POSTID = "无";
+            String POSTID = "";
             String REPTID = "";
             if (listOUT.get(i).get("postId") != null){
                 POSTID = listOUT.get(i).get("postId").toString();
