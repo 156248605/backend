@@ -243,11 +243,12 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             material.setPostId(outPost);
             material.setId(materialId);
             material.setNum(shiftNum);
-            if (parseInt(outNum) == parseInt(shiftNum)){
+            /*if (parseInt(outNum) == parseInt(shiftNum)){
                 materialMapper.deleteDetail(material);
             }else {
                 materialMapper.updDetailM(material);
-            }
+            }*/
+            materialMapper.updDetailM(material);
             Material material1 = new Material();
             material1.setReptId(inRept);
             material1.setPostId(inPost);
@@ -553,6 +554,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                     Material material1 = new Material();
                     material1.setReptId(INREPT);
                     material1.setPostId(INPOST);
+                    String reptName = repositoryMapper.searchReptName(material1);
+                    material1.setReptName(reptName);
                     material1.setId(materialId);
                     material1.setNum(shiftNum);
                     material1.setName(materialName);
@@ -561,14 +564,14 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
                     material1.setCategory(material2.getCategory());
                     material1.setBrand(material2.getBrand());
                     material1.setPrice(material2.getPrice());
-                    /*String result = materialMapper.matInDetail(material1);
+                    String result = materialMapper.matInDetail(material1);
                     if(result == null){
                         materialMapper.insertDetail(material1);
                         materialMapper.deleteNull(material1);
                     }else {
                         materialMapper.updDetail(material1);
-                    }*/
-                    materialMapper.updDetail(material1);
+                    }
+                    /*materialMapper.updDetail(material1);*/
                 }
             }
         }

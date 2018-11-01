@@ -451,6 +451,8 @@ public class InRepositoryImpl implements InRepositoryService {
                     }
                     material.setPostId(POSTID);
                     material.setReptId(listIN.get(i).getReptId());
+                    String reptName = repositoryMapper.searchReptName(material);
+                    material.setReptName(reptName);
                     material.setName(listIN.get(i).getMaterialName());
                     material.setSpec(listIN.get(i).getSpec());
                     Material material1 = materialMapper.MaterialId(material);
@@ -459,14 +461,13 @@ public class InRepositoryImpl implements InRepositoryService {
                     material.setPrice(material1.getPrice());
                     materialMapper.updMat(material);
                     // 查询是否库存记录
-                    /*String result = materialMapper.matInDetail(material);
+                    String result = materialMapper.matInDetail(material);
                     if(result == null){
                         materialMapper.insertDetail(material);
                         materialMapper.deleteNull(material);
                     }else {
                         materialMapper.updDetail(material);
-                    }*/
-                    materialMapper.updDetail(material);
+                    }
                 }
             }
         }

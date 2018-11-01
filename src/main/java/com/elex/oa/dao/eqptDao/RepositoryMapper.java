@@ -5,7 +5,6 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -108,4 +107,7 @@ public interface RepositoryMapper {
     String fixPostMatInfo(Material material);
 
     List<Repository> fixRept(Material material);
+
+    // 根据仓库Id查询name
+    String searchReptName(Material material);
 }

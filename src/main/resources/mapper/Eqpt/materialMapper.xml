@@ -329,7 +329,10 @@
         UPDATE eqpt_detail
         <set>
             <if test="num != null">
-                num = num + #{num}
+                num = num + #{num},
+            </if>
+            <if test="reptName != null">
+                reptName = #{reptName}
             </if>
         </set>
         WHERE id = #{id} AND postId = #{postId} AND reptId = #{reptId}
@@ -384,11 +387,11 @@
     </select>
 
     <insert id="newDetail" parameterType="com.elex.oa.entity.eqpt.Material">
-        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},'','','0',#{price},#{materialState})
+        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},'','','','0',#{price},#{materialState})
     </insert>
 
     <insert id="insertDetail" parameterType="com.elex.oa.entity.eqpt.Material">
-        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},#{reptId},#{postId},#{num},#{price},'启用')
+        INSERT INTO eqpt_detail VALUES (NULL,#{id},#{name},#{category},#{spec},#{brand},#{reptId},#{reptName},#{postId},#{num},#{price},'启用')
     </insert>
 
     <delete id="deleteDetail" parameterType="com.elex.oa.entity.eqpt.Material">
