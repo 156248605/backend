@@ -221,6 +221,7 @@ public class ReadPersonalinformationExcel {
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setParentcompany(str);
                     }else if ("部门编号".equals(columnname.replace(" ",""))) {
+                        cell.setCellType(CellType.STRING);
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setDepcode(str);
                     }else if ("部门".equals(columnname.replace(" ",""))) {

@@ -2141,7 +2141,7 @@ public class PersonalInformationController {
         baseInformation.setIdphoto1(personalInformation.getIdphoto1());
         baseInformation.setIdphoto2(personalInformation.getIdphoto2());
         baseInformation.setEnglishname(personalInformation.getEnglishname());
-        if (personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode())) {
+        if (personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode()) && !"null".equals(personalInformation.getIdcode())) {
             baseInformation.setIdcode(personalInformation.getIdcode());
             try {
                 baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));
@@ -2385,7 +2385,8 @@ public class PersonalInformationController {
         }
         Integer personalinformationid = iPersonalInformationService.saveOne(personalInformation);
         //8.最后再保存岗位IDs
-        if (personalinformationid!=null) {
+        if (personalinformationid!=null && personalInformation.getPostnames()!=null && !"".equals(personalInformation.getPostnames())) {
+            System.out.println(personalInformation.getPostnames()+"=====================================================================");
             PerAndPostRs perAndPostRs = new PerAndPostRs();
             perAndPostRs.setPerid(personalinformationid);
             String[] split = personalInformation.getPostnames().split("[兼;]");
