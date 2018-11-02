@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -192,13 +193,20 @@ public class ReadPersonalinformationExcel {
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setZyzsname(str);
                     }else if ("首次参加工作时间".equals(columnname.replace(" ",""))) {
-                        cell.setCellType(CellType.STRING);
-                        String str = cell.getStringCellValue().replace("\\", "/");
-                        str = str.replace("年", "/");
-                        str = str.replace("月", "/");
-                        str = str.replace("日", "/");
-                        str = str.replace("-", "/");
-                        str = getDateString(str);
+                        String str = "";
+                        if (cell.getCellType()==1) {
+                            cell.setCellType(CellType.STRING);
+                            str = cell.getStringCellValue();
+                            str = str.replace("年", "/");
+                            str = str.replace("月", "/");
+                            str = str.replace("日", "/");
+                            str = str.replace("-", "/");
+                            str = getDateString(str);
+                        } else if(cell.getCellType()==0){
+                            Date zhaunDate = HSSFDateUtil.getJavaDate(cell.getNumericCellValue());
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                            str = sdf.format(zhaunDate).toString();
+                        }
                         personalInformation.setFirstworkingtime(str);
                     }else if ("上家雇主".equals(columnname.replace(" ",""))) {
                         String str = String.valueOf(cell.getStringCellValue());
@@ -219,22 +227,36 @@ public class ReadPersonalinformationExcel {
                         String str = String.valueOf(cell.getStringCellValue());
                         personalInformation.setZj(str);
                     }else if ("入职时间".equals(columnname.replace(" ",""))) {
-                        cell.setCellType(CellType.STRING);
-                        String str = cell.getStringCellValue().replace("\\", "/");
-                        str = str.replace("年", "/");
-                        str = str.replace("月", "/");
-                        str = str.replace("日", "/");
-                        str = str.replace("-", "/");
-                        str = getDateString(str);
+                        String str = "";
+                        if (cell.getCellType()==1) {
+                            cell.setCellType(CellType.STRING);
+                            str = cell.getStringCellValue();
+                            str = str.replace("年", "/");
+                            str = str.replace("月", "/");
+                            str = str.replace("日", "/");
+                            str = str.replace("-", "/");
+                            str = getDateString(str);
+                        } else if(cell.getCellType()==0){
+                            Date entrydate = HSSFDateUtil.getJavaDate(cell.getNumericCellValue());
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                            str = sdf.format(entrydate).toString();
+                        }
                         personalInformation.setEntrydate(str);
                     }else if ("转正时间".equals(columnname.replace(" ",""))) {
-                        cell.setCellType(CellType.STRING);
-                        String str = cell.getStringCellValue().replace("\\", "/");
-                        str = str.replace("年", "/");
-                        str = str.replace("月", "/");
-                        str = str.replace("日", "/");
-                        str = str.replace("-", "/");
-                        str = getDateString(str);
+                        String str = "";
+                        if (cell.getCellType()==1) {
+                            cell.setCellType(CellType.STRING);
+                            str = cell.getStringCellValue();
+                            str = str.replace("年", "/");
+                            str = str.replace("月", "/");
+                            str = str.replace("日", "/");
+                            str = str.replace("-", "/");
+                            str = getDateString(str);
+                        } else if(cell.getCellType()==0){
+                            Date zhaunDate = HSSFDateUtil.getJavaDate(cell.getNumericCellValue());
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                            str = sdf.format(zhaunDate).toString();
+                        }
                         personalInformation.setZhuanzhengdate(str);
                     }else if ("员工类型".equals(columnname.replace(" ",""))) {
                         String str = String.valueOf(cell.getStringCellValue());

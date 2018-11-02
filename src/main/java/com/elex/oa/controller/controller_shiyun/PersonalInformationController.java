@@ -1,5 +1,6 @@
 package com.elex.oa.controller.controller_shiyun;
 
+import com.alibaba.fastjson.JSON;
 import com.elex.oa.common.common_shiyun.Commons;
 import com.elex.oa.entity.entity_shiyun.*;
 import com.elex.oa.service.service_shiyun.*;
@@ -1913,7 +1914,7 @@ public class PersonalInformationController {
                 pi.setIdphoto1(baseInformation.getIdphoto1());
                 pi.setIdphoto2(baseInformation.getIdphoto2());
                 pi.setEnglishname(baseInformation.getEnglishname());
-                pi.setIdcode("\t" + baseInformation.getIdcode());
+                pi.setIdcode(baseInformation.getIdcode());
                 try {
                     pi.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
                 } catch (Exception e) {
@@ -2060,11 +2061,11 @@ public class PersonalInformationController {
                     goToPost = importOnePersonalInformation_UPDATE(personalInformation,goToPost,per);
                 }else{
                     //工号一样，名字不一样，信息有误请手动解决
-                    goToPost.put(personalInformation.getUsername()+":"+personalInformation.getEmployeenumber(),"此工号的姓名与数据中的不一致，请手动解决");
+                    goToPost.put(personalInformation.getEmployeenumber(),"此工号的数据库数据有误，请联系管理员解决");
                 }
             }
         }
-        return RespUtil.successResp("500","请求成功",goToPost);
+        return RespUtil.successResp("500","请求成功", JSON.toJSONString(goToPost));
     }
 
     /**
@@ -2295,6 +2296,10 @@ public class PersonalInformationController {
             baseInformation.setParentcompanyid(parentcompanyid);
         }
         //普通字段的添加或更新(首次参加工作时间)----------
+        System.out.println(123);
+        String firstTest = personalInformation.getFirstworkingtime();
+        String entryTest = personalInformation.getEntrydate();
+        String zhuanzTest = personalInformation.getZhuanzhengdate();
         baseInformation.setFirstworkingtime(personalInformation.getFirstworkingtime());
         Integer baseinformationid = iBaseInformationService.saveOne(baseInformation);
         personalInformation.setBaseinformationid(baseinformationid);
@@ -3034,6 +3039,8 @@ public class PersonalInformationController {
                     }
                 }
             });
+        }else {
+            goToPost.put(personalInformation.getEmployeenumber()+":"+personalInformation.getTruename()+":"+currentPer.getTruename(),"此工号的员工姓名与数据库中的不一致！");
         }
         return goToPost;
     }
