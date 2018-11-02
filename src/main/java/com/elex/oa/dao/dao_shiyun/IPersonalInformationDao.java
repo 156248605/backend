@@ -90,4 +90,6 @@ public interface IPersonalInformationDao{
      *@Date: 16:08 2018\8\20 0020
      */
     public void deleteById(Integer id);
+
+    void deleteAll();
 }

@@ -85,6 +85,8 @@ public interface IPersonalInformationService{
      */
     void removeOne(Integer perid);
 
+    void removeAll();
+
     /**
      *@Author:ShiYun;
      *@Description:根据人名查询部门经理

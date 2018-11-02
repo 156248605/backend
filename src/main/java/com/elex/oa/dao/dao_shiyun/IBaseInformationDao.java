@@ -48,4 +48,6 @@ public interface IBaseInformationDao {
      *@Date: 15:02 2018\8\20 0020
      */
     public void deleteById(Integer id);
+
+    void deleteAll();
 }

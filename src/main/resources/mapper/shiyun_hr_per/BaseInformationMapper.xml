@@ -397,4 +397,7 @@
 		DELETE FROM tb_id_baseinformation
 		WHERE id=#{id}
 	</delete>
+	<delete id="deleteAll">
+		DELETE FROM tb_id_baseinformation
+	</delete>
 </mapper>

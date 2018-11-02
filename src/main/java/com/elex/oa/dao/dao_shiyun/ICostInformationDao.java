@@ -38,4 +38,6 @@ public interface ICostInformationDao {
      *@Date: 15:23 2018\8\20 0020
      */
     public void deleteById(Integer id);
+
+    void deleteAll();
 }

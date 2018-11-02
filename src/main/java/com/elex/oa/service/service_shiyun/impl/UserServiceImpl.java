@@ -89,4 +89,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         User user = iUserDao.selectServingUserByUserid(userid);
         return user;
     }
+
+    @Override
+    public void removeAll_admin() {
+        iUserDao.deleteAll_admin();
+    }
 }

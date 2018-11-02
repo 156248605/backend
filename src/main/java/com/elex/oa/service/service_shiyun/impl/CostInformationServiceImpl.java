@@ -59,4 +59,9 @@ public class CostInformationServiceImpl implements ICostInformationService {
     public void remvoeOne(Integer costinformationid) {
         iCostInformationDao.deleteById(costinformationid);
     }
+
+    @Override
+    public void remvoeAll() {
+        iCostInformationDao.deleteAll();
+    }
 }

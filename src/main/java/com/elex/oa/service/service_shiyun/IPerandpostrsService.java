@@ -55,4 +55,6 @@ public interface IPerandpostrsService {
      * @return PerAndPostRs
      **/
     PerAndPostRs queryOneByPeridAndPostid(Integer perid,Integer postid);
+
+    void removeAll();
 }

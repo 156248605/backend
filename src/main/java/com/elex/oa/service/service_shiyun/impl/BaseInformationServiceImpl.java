@@ -60,4 +60,9 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
     public void removeOne(Integer baseinformationid) {
         iBaseInformationDao.deleteById(baseinformationid);
     }
+
+    @Override
+    public void removeAll() {
+        iBaseInformationDao.deleteAll();
+    }
 }

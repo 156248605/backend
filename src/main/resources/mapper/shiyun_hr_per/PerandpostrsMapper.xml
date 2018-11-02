@@ -35,6 +35,10 @@
 		DELETE FROM tb_hr_per_and_post_rs WHERE perid=#{perid}
 	</delete>
 
+	<delete id="deleteAll">
+		DELETE FROM tb_hr_per_and_post_rs
+	</delete>
+
 	<delete id="deleteOneByPeridAndPostid" parameterType="java.lang.Integer" >
 		DELETE FROM tb_hr_per_and_post_rs WHERE perid=#{perid} and postid=#{postid}
 	</delete>

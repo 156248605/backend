@@ -59,4 +59,9 @@ public class ManageInformationServiceImpl implements IManageInformationService {
     public void removeOne(Integer manageinformationid) {
         iManageInformationDao.deleteById(manageinformationid);
     }
+
+    @Override
+    public void removeAll() {
+        iManageInformationDao.deleteAll();
+    }
 }

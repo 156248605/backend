@@ -130,6 +130,7 @@ public class IDcodeUtil {
             //throw new Exception("出生日期有误！");
             return  "";
         }
+        System.out.println(birthday+"==============================================================================");
         Calendar curCal = IDcodeUtil.getCalendarByDate(birthday,null);
         //定义年龄
         Integer ny = null;
@@ -156,6 +157,7 @@ public class IDcodeUtil {
         curCal.set(Calendar.SECOND, 0);
         curCal.set(Calendar.MILLISECOND, 0);
         //获得出生日期
+        System.out.println(birthday+"=====================================================================================");
         Date mydate= myFormatter.parse(birthday);
         Calendar birCal = Calendar.getInstance();
         birCal.setTime(mydate);
@@ -195,6 +197,7 @@ public class IDcodeUtil {
      *@Date: 19:20 2018\5\16 0016
      */
     public static String getWorkingage(String firstworkingtime) throws Exception {
+        System.out.println(firstworkingtime+"========================================================================");
         return  IDcodeUtil.getAge(firstworkingtime);
     }
 

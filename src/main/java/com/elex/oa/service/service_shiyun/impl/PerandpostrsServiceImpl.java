@@ -94,4 +94,9 @@ public class PerandpostrsServiceImpl implements IPerandpostrsService {
     public PerAndPostRs queryOneByPeridAndPostid(Integer perid, Integer postid) {
         return iPerandpostrsDao.selectOneByPeridAndPostid(perid, postid);
     }
+
+    @Override
+    public void removeAll() {
+        iPerandpostrsDao.deleteAll();
+    }
 }

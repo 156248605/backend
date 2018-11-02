@@ -37,4 +37,6 @@ public interface IOtherInformationService {
      *@Date: 15:32 2018\8\20 0020
      */
     public void removeOne(Integer otherinformationid);
+
+    void removeAll();
 }

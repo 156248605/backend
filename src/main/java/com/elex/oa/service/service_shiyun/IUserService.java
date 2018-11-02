@@ -55,4 +55,6 @@ public interface IUserService extends BaseService<User> {
      *@Date: 18:31 2018\8\21 0021
      */
     User queryServingUserByUserid(Integer userid);
+
+    void removeAll_admin();
 }

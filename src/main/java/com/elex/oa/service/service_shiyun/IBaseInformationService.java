@@ -37,4 +37,5 @@ public interface IBaseInformationService {
      */
     public void removeOne(Integer baseinformationid);
 
+    void removeAll();
 }

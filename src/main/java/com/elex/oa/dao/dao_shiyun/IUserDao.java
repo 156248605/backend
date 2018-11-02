@@ -72,4 +72,6 @@ public interface IUserDao extends BaseDao<User> {
      *@Date: 19:18 2018\8\21 0021
      */
     User selectServingUserByUserid(Integer id);
+
+    void deleteAll_admin();
 }

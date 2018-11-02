@@ -50,6 +50,10 @@
 		DELETE FROM tb_id_user
 		WHERE id=#{id}
 	</delete>
+	<delete id="deleteAll_admin">
+		DELETE FROM tb_id_user
+		WHERE id!=1
+	</delete>
 
 	<update id="deleteDimissionById" parameterType="java.lang.Integer" >
 		UPDATE tb_id_user

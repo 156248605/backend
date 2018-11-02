@@ -58,4 +58,7 @@
 		DELETE FROM tb_id_manageinformation
 		WHERE id=#{id}
 	</delete>
+	<delete id="deleteAll">
+		DELETE FROM tb_id_manageinformation
+	</delete>
 </mapper>

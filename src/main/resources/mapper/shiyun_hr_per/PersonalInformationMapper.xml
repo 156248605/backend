@@ -484,5 +484,8 @@
 		DELETE FROM tb_id_personalinformation
 		WHERE id=#{id}
 	</delete>
+	<delete id="deleteAll" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_personalinformation
+	</delete>
 
 </mapper>

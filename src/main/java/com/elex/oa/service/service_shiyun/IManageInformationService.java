@@ -37,4 +37,6 @@ public interface IManageInformationService {
      *@Date: 15:11 2018\8\20 0020
      */
     public void removeOne(Integer manageinformationid);
+
+    void removeAll();
 }

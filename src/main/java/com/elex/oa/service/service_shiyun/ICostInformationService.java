@@ -37,4 +37,6 @@ public interface ICostInformationService {
      *@Date: 15:24 2018\8\20 0020
      */
     public void remvoeOne(Integer costinformationid);
+
+    void remvoeAll();
 }

@@ -38,4 +38,6 @@ public interface IManageInformationDao {
      *@Date: 15:10 2018\8\20 0020
      */
     public void deleteById(Integer id);
+
+    void deleteAll();
 }

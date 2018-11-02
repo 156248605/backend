@@ -2075,330 +2075,476 @@ public class PersonalInformationController {
      * @return void
      **/
     public Map<String,String> importOnePersonalInformation_ADD(PersonalInformation personalInformation ,Map<String,String> goToPost){
-        //1.先保存用户表
-        User user = new User();
-        if (personalInformation.getIsactive()!=null) {
+        //如果user表中已经有了，就更新,没有就添加
+        String truename = personalInformation.getTruename();
+        User removedUser = iUserService.queryByTruename(truename);
+        //1.先更新/添加User表的信息(tb_id_user)===========================================================
+        if (removedUser!=null) {
+            Boolean userB = false;
+            Integer isactive = personalInformation.getIsactive();//是否激活
+            if (isactive != null && isactive != removedUser.getIsactive()) {
+                removedUser.setIsactive(isactive);
+                userB = true;
+            }
+            String state = personalInformation.getState();//是否离职状态
+            if (state != null && !"".equals(state)) {
+                removedUser.setState(Integer.parseInt(state));
+                userB = true;
+            }
+            if (userB) {
+                iUserService.update(removedUser);
+                personalInformation.setUserid(removedUser.getId());
+            }
+        }else {
+            User user = new User();
             user.setIsactive(personalInformation.getIsactive());
-        } else {
-            user.setIsactive(1);
+            user.setUsername(personalInformation.getUsername());
+            user.setTruename(personalInformation.getTruename());
+            user.setPassword("123456");
+            user.setState(1);
+            Integer userid = iUserService.saveOne(user);
+            personalInformation.setUserid(userid);
         }
-        //username校验
-        User u;
-        if (personalInformation.getUsername()!=null && !personalInformation.getUsername().equals("") && !personalInformation.getUsername().equals("null")) {
-            u = iUserService.queryByUsername(personalInformation.getUsername());
-            int j = 2;
-            while (u!=null){
-                u = iUserService.queryByUsername(personalInformation.getTruename() + j);
-                j++;
-            }
-            if (j==2) {
-                personalInformation.setUsername(personalInformation.getUsername());
-            } else {
-                j--;
-                personalInformation.setUsername(personalInformation.getTruename()+j);
-            }
-        } else {
-            u = iUserService.queryByUsername(personalInformation.getTruename());
-            int j = 2;
-            while (u!=null){
-                u = iUserService.queryByUsername(personalInformation.getTruename() + j);
-                j++;
-            }
-            if (j==2) {
-                personalInformation.setUsername(personalInformation.getTruename());
-            } else {
-                j--;
-                personalInformation.setUsername(personalInformation.getTruename()+j);
-            }
-        }
-        user.setUsername(personalInformation.getUsername());
-        user.setTruename(personalInformation.getTruename());
-        Integer userid = iUserService.saveOne(user);
-        personalInformation.setUserid(userid);
-        //2.再查询部门ID
-        //普通字段的添加或更新(部门)----------
-        if(!StringUtils.isBlank(personalInformation.getDepcode()) && !"部门编号还未添加".equals(personalInformation.getDepcode())){
-            Dept dept = iDeptService.queryOneByDepcode(personalInformation.getDepcode());
-            if(dept==null){
-                goToPost.put(personalInformation.getUsername(),"员工所在部门不存在，请手动添加/修改");
-            }else {
-                personalInformation.setDepid(dept.getId());
-            }
-        }else if(!StringUtils.isBlank(personalInformation.getDepname())){
-            //不同的公司可以拥有相同的部门名称，所以原则上不可以用部门名称作为导入信息，此处是为了对接老OA的信息
-            List<Dept> depts = iDeptService.queryOneDepByDepname(personalInformation.getDepname());
-            if(depts.size()==1){
-                personalInformation.setDepid(depts.get(0).getId());
-            }else if(depts.size()==0){
-                goToPost.put(personalInformation.getUsername(),"员工所在部门不存在，请手动添加/修改");
-            }else if(depts.size()>1){
-                goToPost.put(personalInformation.getUsername(),"员工所在部门存在多个，请手动添加/修改");
-            }
-        }
-        //3.再保存用户基本信息表
+        //2.在添加Baseinformation表的信息(tb_id_baseinformation)==================================================
         BaseInformation baseInformation = new BaseInformation();
-        baseInformation.setUserphoto(personalInformation.getUserphoto());
-        baseInformation.setIdphoto1(personalInformation.getIdphoto1());
-        baseInformation.setIdphoto2(personalInformation.getIdphoto2());
-        baseInformation.setEnglishname(personalInformation.getEnglishname());
-        if (personalInformation.getIdcode()!=null && !"".equals(personalInformation.getIdcode()) && !"null".equals(personalInformation.getIdcode())) {
-            baseInformation.setIdcode(personalInformation.getIdcode());
+        baseInformation.setUserphoto(personalInformation.getUserphoto());//免冠照片
+        baseInformation.setIdphoto1(personalInformation.getIdphoto1());//身份证正面
+        baseInformation.setIdphoto2(personalInformation.getIdphoto2());//身份证反面
+        baseInformation.setEnglishname(personalInformation.getEnglishname());//英文名
+        baseInformation.setIdcode(personalInformation.getIdcode());//身份证号码
+        if (!StringUtils.isBlank(personalInformation.getIdcode())) {
             try {
-                baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));
+                baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));//解析出生日
+                baseInformation.setConstellation(IDcodeUtil.getConstellation(personalInformation.getIdcode()));//解析出星座
+                baseInformation.setChinesecs(IDcodeUtil.getChinesecs(personalInformation.getIdcode()));//解析出属相
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            personalInformation.setSex(IDcodeUtil.getSex(personalInformation.getIdcode()));
-            baseInformation.setConstellation(IDcodeUtil.getConstellation(personalInformation.getIdcode()));
-            try {
-                baseInformation.setChinesecs(IDcodeUtil.getChinesecs(personalInformation.getIdcode()));
-            } catch (Exception e) {
-                e.printStackTrace();
+            baseInformation.setHj(IDcodeUtil.getProvinceByIdcode(personalInformation.getIdcode()));
+            personalInformation.setSex(IDcodeUtil.getSex(personalInformation.getIdcode()));//为后面添加tb_id_personalinformation表做准备
+        }//户籍（身份证号码解析出来的）
+        //HR1字段的添加或更新(民族)----------
+        if (!StringUtils.isBlank(personalInformation.getRace())) {
+            Integer raceid = null;
+            HRsetRace hRsetRace = ihRsetRaceService.queryByRace(personalInformation.getRace());
+            if (hRsetRace == null) {
+                HRsetRace hRsetRace_ADD = new HRsetRace();
+                hRsetRace_ADD.setRace(personalInformation.getRace());
+                raceid = ihRsetRaceService.addOne(hRsetRace_ADD);
+            } else {
+                raceid = hRsetRace.getId();
             }
+            baseInformation.setRaceid(raceid);
         }
-        if (ihRsetRaceService.queryByRace(personalInformation.getRace())!=null) {
-            baseInformation.setRaceid(ihRsetRaceService.queryByRace(personalInformation.getRace()).getId());
-        }
+        //普通字段的添加或更新(是否已婚)----------
         baseInformation.setMarriage(personalInformation.getMarriage());
-        if (ihRsetChildrenService.queryByChildren(personalInformation.getChildren())!=null) {
-            //如果HR设置里面没有此字段则创建
+        //HR2字段的添加或更新(生育情况)----------
+        if (!StringUtils.isBlank(personalInformation.getChildren())) {
+            Integer childrenid = null;
             HRsetChildren hRsetChildren = ihRsetChildrenService.queryByChildren(personalInformation.getChildren());
-            Integer hRsetChildren_id;
-            if(hRsetChildren==null){
+            if (hRsetChildren == null) {
                 HRsetChildren hRsetChildren_ADD = new HRsetChildren();
                 hRsetChildren_ADD.setChildren(personalInformation.getChildren());
-                hRsetChildren_id = ihRsetChildrenService.addOne(hRsetChildren_ADD);
-            }else {
-                hRsetChildren_id = hRsetChildren.getId();
+                childrenid = ihRsetChildrenService.addOne(hRsetChildren_ADD);
+            } else {
+                childrenid = hRsetChildren.getId();
             }
-
-            baseInformation.setChildrenid(hRsetChildren_id);
+            baseInformation.setChildrenid(childrenid);
         }
-        if (ihRsetZzmmService.queryByZzmm(personalInformation.getZzmm())!=null) {
-            //如果HR设置里面没有此字段则创建
+        //HR3字段的添加或更新(政治面貌)----------
+        if (!StringUtils.isBlank(personalInformation.getZzmm())) {
+            Integer zzmmid = null;
             HRsetZzmm hRsetZzmm = ihRsetZzmmService.queryByZzmm(personalInformation.getZzmm());
-            Integer hRsetZzmm_id;
-            if(hRsetZzmm==null){
+            if (hRsetZzmm == null) {
                 HRsetZzmm hRsetZzmm_ADD = new HRsetZzmm();
                 hRsetZzmm_ADD.setZzmm(personalInformation.getZzmm());
-                hRsetZzmm_id = ihRsetZzmmService.addOne(hRsetZzmm_ADD);
-            }else {
-                hRsetZzmm_id = hRsetZzmm.getId();
+                zzmmid = ihRsetZzmmService.addOne(hRsetZzmm_ADD);
+            } else {
+                zzmmid = hRsetZzmm.getId();
             }
-
-
-            baseInformation.setZzmmid(hRsetZzmm_id);
+            baseInformation.setZzmmid(zzmmid);
         }
-        if (ihRsetZgxlService.queryByZgxl(personalInformation.getZgxl())!=null) {
-            //如果HR设置里面没有此字段则创建
+        //HR4字段的添加或更新(最高学历)----------
+        if (!StringUtils.isBlank(personalInformation.getZgxl())) {
+            Integer zbxlid = null;
             HRsetZgxl hRsetZgxl = ihRsetZgxlService.queryByZgxl(personalInformation.getZgxl());
-            Integer hRsetZgxl_id;
-            if(hRsetZgxl==null){
+            if (hRsetZgxl == null) {
                 HRsetZgxl hRsetZgxl_ADD = new HRsetZgxl();
                 hRsetZgxl_ADD.setZgxl(personalInformation.getZgxl());
-                hRsetZgxl_id = ihRsetZgxlService.addOne(hRsetZgxl_ADD);
-            }else {
-                hRsetZgxl_id = hRsetZgxl.getId();
-            }
-
-            baseInformation.setZgxlid(hRsetZgxl_id);
-        }
-        if(personalInformation.getByyx()!=null && !"".equals(personalInformation.getByyx().trim())){
-            if (ihRsetByyxService.queryByByyx(personalInformation.getByyx())!=null) {
-                baseInformation.setByyxid(ihRsetByyxService.queryByByyx(personalInformation.getByyx()).getId());
+                zbxlid = ihRsetZgxlService.addOne(hRsetZgxl_ADD);
             } else {
-                HRsetByyx hRsetByyx = new HRsetByyx();
-                hRsetByyx.setByyx(personalInformation.getByyx());
-                Integer byyxid = ihRsetByyxService.addOne(hRsetByyx);
-                baseInformation.setByyxid(byyxid);
+                zbxlid = hRsetZgxl.getId();
             }
+            baseInformation.setZgxlid(zbxlid);
         }
-        if(personalInformation.getSxzy()!=null && !"".equals(personalInformation.getSxzy().trim())){
-            if (ihRsetSxzyService.queryBySxzy(personalInformation.getSxzy())!=null) {
-                baseInformation.setSxzyid(ihRsetSxzyService.queryBySxzy(personalInformation.getSxzy()).getId());
+        //HR5字段的添加或更新(毕业院校)----------
+        if (!StringUtils.isBlank(personalInformation.getByyx())) {
+            Integer byyxid = null;
+            HRsetByyx hRsetByyx = ihRsetByyxService.queryByByyx(personalInformation.getByyx());
+            if (hRsetByyx == null) {
+                HRsetByyx hRsetByyx_ADD = new HRsetByyx();
+                hRsetByyx_ADD.setByyx(personalInformation.getByyx());
+                byyxid = ihRsetByyxService.addOne(hRsetByyx_ADD);
             } else {
-                HRsetSxzy hRsetSxzy = new HRsetSxzy();
-                hRsetSxzy.setSxzy(personalInformation.getSxzy());
-                Integer sxzyid = ihRsetSxzyService.addOne(hRsetSxzy);
-                baseInformation.setSxzyid(sxzyid);
+                byyxid = hRsetByyx.getId();
             }
+            baseInformation.setByyxid(byyxid);
         }
-        if (ihRsetPyfsService.queryByPyfs(personalInformation.getPyfs())!=null) {
-            //如果HR设置里面没有此字段则创建
+        //HR6字段的添加或更新(所学专业)----------
+        if (!StringUtils.isBlank(personalInformation.getSxzy())) {
+            Integer sxzyid = null;
+            HRsetSxzy hRsetSxzy = ihRsetSxzyService.queryBySxzy(personalInformation.getSxzy());
+            if (hRsetSxzy == null) {
+                HRsetSxzy hRsetSxzy_ADD = new HRsetSxzy();
+                hRsetSxzy_ADD.setSxzy(personalInformation.getSxzy());
+                sxzyid = ihRsetSxzyService.addOne(hRsetSxzy_ADD);
+            } else {
+                sxzyid = hRsetSxzy.getId();
+            }
+            baseInformation.setSxzyid(sxzyid);
+        }
+        //HR7字段的添加或更新(培养方式)----------
+        if (!StringUtils.isBlank(personalInformation.getPyfs())) {
+            Integer pyfsid = null;
             HRsetPyfs hRsetPyfs = ihRsetPyfsService.queryByPyfs(personalInformation.getPyfs());
-            Integer hRsetPyfs_id;
-            if(hRsetPyfs==null){
+            if (hRsetPyfs == null) {
                 HRsetPyfs hRsetPyfs_ADD = new HRsetPyfs();
                 hRsetPyfs_ADD.setPyfs(personalInformation.getPyfs());
-                hRsetPyfs_id = ihRsetPyfsService.addOne(hRsetPyfs_ADD);
-            }else {
-                hRsetPyfs_id = hRsetPyfs.getId();
-            }
-
-
-            baseInformation.setPyfsid(hRsetPyfs_id);
-        }
-        if (ihRsetFlaService.queryByFla(personalInformation.getFirstla())!=null) {
-            baseInformation.setFirstlaid(ihRsetFlaService.queryByFla(personalInformation.getFirstla()).getId());
-        }
-        if (ihRsetFlaService.queryByFla(personalInformation.getElsela())!=null) {
-            baseInformation.setElselaid(ihRsetFlaService.queryByFla(personalInformation.getElsela()).getId());
-        }
-        if (ihRsetPosttitleService.queryByPosttitle(personalInformation.getPosttitle())!=null) {
-            baseInformation.setPosttitleid(ihRsetPosttitleService.queryByPosttitle(personalInformation.getPosttitle()).getId());
-        }
-        if (ihRsetZyzstypeService.queryByZyzstype(personalInformation.getZyzstype())!=null) {
-            baseInformation.setZyzstypeid(ihRsetZyzstypeService.queryByZyzstype(personalInformation.getZyzstype()).getId());
-        }
-        if(personalInformation.getZyzsname()!=null && !"".equals(personalInformation.getZyzsname().trim())){
-            if (ihRsetZyzsnameService.queryByZyzsname(personalInformation.getZyzsname())!=null) {
-                baseInformation.setZyzsnameid(ihRsetZyzsnameService.queryByZyzsname(personalInformation.getZyzsname()).getId());
+                pyfsid = ihRsetPyfsService.addOne(hRsetPyfs_ADD);
             } else {
-                HRsetZyzsname hRsetZyzsname = new HRsetZyzsname();
-                hRsetZyzsname.setZyzsname(personalInformation.getZyzsname());
-                Integer zyzsnameid = ihRsetZyzsnameService.addOne(hRsetZyzsname);
-                baseInformation.setZyzsnameid(zyzsnameid);
+                pyfsid = hRsetPyfs.getId();
             }
+            baseInformation.setPyfsid(pyfsid);
         }
+        //HR8字段的添加或更新(第一外语)----------
+        if (!StringUtils.isBlank(personalInformation.getFirstla())) {
+            Integer firstlaid = null;
+            HRsetFla hRsetFla = ihRsetFlaService.queryByFla(personalInformation.getFirstla());
+            if (hRsetFla == null) {
+                HRsetFla hRsetFla_ADD = new HRsetFla();
+                hRsetFla_ADD.setFla(personalInformation.getFirstla());
+                firstlaid = ihRsetFlaService.addOne(hRsetFla_ADD);
+            } else {
+                firstlaid = hRsetFla.getId();
+            }
+            baseInformation.setFirstlaid(firstlaid);
+        }
+        //HR9字段的添加或更新(其它外语)----------
+        if (!StringUtils.isBlank(personalInformation.getElsela())) {
+            Integer elselaid = null;
+            HRsetFla hRsetFla = ihRsetFlaService.queryByFla(personalInformation.getElsela());
+            if (hRsetFla == null) {
+                HRsetFla hRsetFla_ADD = new HRsetFla();
+                hRsetFla_ADD.setFla(personalInformation.getElsela());
+                elselaid = ihRsetFlaService.addOne(hRsetFla_ADD);
+            } else {
+                elselaid = hRsetFla.getId();
+            }
+            baseInformation.setFirstlaid(elselaid);
+        }
+        //HR10字段的添加或更新(职称)----------
+        if (!StringUtils.isBlank(personalInformation.getPosttitle())) {
+            Integer posttitleid = null;
+            HRsetPosttitle hRsetPosttitle = ihRsetPosttitleService.queryByPosttitle(personalInformation.getPosttitle());
+            if (hRsetPosttitle == null) {
+                HRsetPosttitle hRsetPosttitle_ADD = new HRsetPosttitle();
+                hRsetPosttitle_ADD.setPosttitle(personalInformation.getPosttitle());
+                posttitleid = ihRsetPosttitleService.addOne(hRsetPosttitle_ADD);
+            } else {
+                posttitleid = hRsetPosttitle.getId();
+            }
+            baseInformation.setPosttitleid(posttitleid);
+        }
+        //HR11字段的添加或更新(职业证书类型)----------
+        if (!StringUtils.isBlank(personalInformation.getZyzstype())) {
+            Integer zyzstypeid = null;
+            HRsetZyzstype hRsetZyzstype = ihRsetZyzstypeService.queryByZyzstype(personalInformation.getZyzstype());
+            if (hRsetZyzstype == null) {
+                HRsetZyzstype hRsetZyzstype_ADD = new HRsetZyzstype();
+                hRsetZyzstype_ADD.setZyzstype(personalInformation.getZyzstype());
+                zyzstypeid = ihRsetZyzstypeService.addOne(hRsetZyzstype_ADD);
+            } else {
+                zyzstypeid = hRsetZyzstype.getId();
+            }
+            baseInformation.setZyzstypeid(zyzstypeid);
+        }
+        //HR12字段的添加或更新(职业证书名称)----------
+        if (!StringUtils.isBlank(personalInformation.getZyzsname())) {
+            Integer zyzsnameid = null;
+            HRsetZyzsname hRsetZyzsname = ihRsetZyzsnameService.queryByZyzsname(personalInformation.getZyzsname());
+            if (hRsetZyzsname == null) {
+                HRsetZyzsname hRsetZyzsname_ADD = new HRsetZyzsname();
+                hRsetZyzsname_ADD.setZyzsname(personalInformation.getZyzsname());
+                zyzsnameid = ihRsetZyzsnameService.addOne(hRsetZyzsname_ADD);
+            } else {
+                zyzsnameid = hRsetZyzsname.getId();
+            }
+            baseInformation.setZyzsnameid(zyzsnameid);
+        }
+        //HR13字段的添加或更新(上家雇主)----------
+        if (!StringUtils.isBlank(personalInformation.getParentcompany())) {
+            Integer parentcompanyid = null;
+            HRsetParentcompany hRsetParentcompany = ihRsetParentcompanyService.queryByParentcompanyname(personalInformation.getParentcompany());
+            if (hRsetParentcompany == null) {
+                HRsetParentcompany hRsetParentcompany_ADD = new HRsetParentcompany();
+                hRsetParentcompany_ADD.setParentcompanyname(personalInformation.getParentcompany());
+                parentcompanyid = ihRsetParentcompanyService.addOne(hRsetParentcompany_ADD);
+            } else {
+                parentcompanyid = hRsetParentcompany.getId();
+            }
+            baseInformation.setParentcompanyid(parentcompanyid);
+        }
+        //普通字段的添加或更新(首次参加工作时间)----------
         baseInformation.setFirstworkingtime(personalInformation.getFirstworkingtime());
-        if(personalInformation.getParentcompany()!=null && !"".equals(personalInformation.getParentcompany().trim())){
-            if (ihRsetParentcompanyService.queryByParentcompanyname(personalInformation.getParentcompany())!=null) {
-                baseInformation.setParentcompanyid(ihRsetParentcompanyService.queryByParentcompanyname(personalInformation.getParentcompany()).getId());
-            } else {
-                HRsetParentcompany hRsetParentcompany = new HRsetParentcompany();
-                hRsetParentcompany.setParentcompanyname(personalInformation.getParentcompany());
-                Integer parentcompanyid = ihRsetParentcompanyService.addOne(hRsetParentcompany);
-                baseInformation.setParentcompanyid(parentcompanyid);
-            }
-        }
         Integer baseinformationid = iBaseInformationService.saveOne(baseInformation);
         personalInformation.setBaseinformationid(baseinformationid);
-        //4.再保存用户管理信息表
+
+        //3.添加管理信息表（tb_id_managerinformation）=============================================================================
         ManageInformation manageInformation = new ManageInformation();
-        if (ihRsetRankService.queryByRank(personalInformation.getZj())!=null) {
-            //如果HR设置里面没有此字段则创建
+        //HR14字段的添加或更新(职级)----------
+        if (!StringUtils.isBlank(personalInformation.getZj())) {
+            //注：PersionalInformation里面的职级是zj,ManageInformation里面的职级是rankid
+            Integer rankid = null;
             HRsetRank hRsetRank = ihRsetRankService.queryByRank(personalInformation.getZj());
-            Integer hRsetRank_id;
-            if(hRsetRank==null){
+            if (hRsetRank == null) {
                 HRsetRank hRsetRank_ADD = new HRsetRank();
                 hRsetRank_ADD.setRank(personalInformation.getZj());
-                hRsetRank_id = ihRsetRankService.addOne(hRsetRank_ADD);
-            }else {
-                hRsetRank_id = hRsetRank.getId();
+                rankid = ihRsetRankService.addOne(hRsetRank_ADD);
+            } else {
+                rankid = hRsetRank.getId();
             }
-
-
-            manageInformation.setRankid(hRsetRank_id);
+            manageInformation.setRankid(rankid);
         }
-        if(personalInformation.getEntrydate()!=null && !"".equals(personalInformation.getEntrydate().trim())){
-            manageInformation.setEntrydate(personalInformation.getEntrydate());
-            if(personalInformation.getZhuanzhengdate()!=null && !"".equals(personalInformation.getZhuanzhengdate().trim())){
-                manageInformation.setZhuanzhengdate(personalInformation.getZhuanzhengdate());
-            }else {
-                try {
-                    manageInformation.setZhuanzhengdate(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+        //HR15字段的添加或更新(员工类型)----------
+        if (!StringUtils.isBlank(personalInformation.getEmployeetype())) {
+            Integer employeetypeid = null;
+            HRsetEmployeetype hRsetEmployeetype = ihRsetEmployeetypeService.queryByEmployeetype(personalInformation.getEmployeetype());
+            if (hRsetEmployeetype == null) {
+                HRsetEmployeetype hRsetEmployeetype_ADD = new HRsetEmployeetype();
+                hRsetEmployeetype_ADD.setEmployeetype(personalInformation.getEmployeetype());
+                employeetypeid = ihRsetEmployeetypeService.addOne(hRsetEmployeetype_ADD);
+            } else {
+                employeetypeid = hRsetEmployeetype.getId();
             }
+            manageInformation.setEmployeetypeid(employeetypeid);
         }
-        if (ihRsetEmployeetypeService.queryByEmployeetype(personalInformation.getEmployeetype())!=null) {
-            manageInformation.setEmployeetypeid(ihRsetEmployeetypeService.queryByEmployeetype(personalInformation.getEmployeetype()).getId());
-        }
+        //普通字段的添加或更新(入职日期)----------
+        manageInformation.setEntrydate(personalInformation.getEntrydate());
+        //普通字段的添加或更新(转正日期)----------
+        manageInformation.setZhuanzhengdate(personalInformation.getZhuanzhengdate());
         Integer manageinformationid = iManageInformationService.saveOne(manageInformation);
         personalInformation.setManageinformationid(manageinformationid);
-        //5.再保存用户成本信息表
+
+        //4.添加成本信息表（tb_id_costinformation）=============================================================================
         CostInformation costInformation = new CostInformation();
-        if (ihRsetSalarystandardService.queryBySalarystandard(personalInformation.getSalary())!=null) {
-            costInformation.setSalarystandardid(ihRsetSalarystandardService.queryBySalarystandard(personalInformation.getSalary()).getId());
-        }
-        if (ihRsetSsbService.queryBySsb(personalInformation.getSsb())!=null) {
-            costInformation.setSsbid(ihRsetSsbService.queryBySsb(personalInformation.getSsb()).getId());
-        }
-        if (ihRsetSsbgscdService.queryBySsbgscd(personalInformation.getSsbgscd())!=null) {
-            costInformation.setSsbgscdid(ihRsetSsbgscdService.queryBySsbgscd(personalInformation.getSsbgscd()).getId());
-        }
-        if (ihRsetSsbgrcdService.queryBySsbgrcd(personalInformation.getSsbgrcd())!=null) {
-            costInformation.setSsbgrcdid(ihRsetSsbgrcdService.queryBySsbgrcd(personalInformation.getSsbgrcd()).getId());
-        }
-        if (ihRsetGjjService.queryByGjj(personalInformation.getGjj())!=null) {
-            costInformation.setGjjid(ihRsetGjjService.queryByGjj(personalInformation.getGjj()).getId());
-        }
-        if (ihRsetGjjgscdService.queryByGjjgscd(personalInformation.getGjjgscd())!=null) {
-            costInformation.setGjjgscdid(ihRsetGjjgscdService.queryByGjjgscd(personalInformation.getGjjgscd()).getId());
-        }
-        if (ihRsetGjjgrcdService.queryByGjjgrcd(personalInformation.getGjjgrcd())!=null) {
-            costInformation.setGjjgrcdid(ihRsetGjjgrcdService.queryByGjjgrcd(personalInformation.getGjjgrcd()).getId());
-        }
-        if (personalInformation.getKhh()!=null && !"".equals(personalInformation.getKhh().trim())) {
-            if (ihRsetKhhService.queryByKhh(personalInformation.getKhh())!=null) {
-                costInformation.setKhhid(ihRsetKhhService.queryByKhh(personalInformation.getKhh()).getId());
-            }else{
-                HRsetKhh hRsetKhh = new HRsetKhh();
-                hRsetKhh.setKhh(personalInformation.getKhh());
-                Integer khhid = ihRsetKhhService.addOne(hRsetKhh);
-                costInformation.setKhhid(khhid);
-            }
-        }
-        costInformation.setSalaryaccount(personalInformation.getSalaryaccount());
-        if(personalInformation.getSbjnd()!=null && !"".equals(personalInformation.getSbjnd().trim())){
-            if (ihRsetSbjndService.queryBySbjnd(personalInformation.getSbjnd())!=null) {
-                costInformation.setSbjndid(ihRsetSbjndService.queryBySbjnd(personalInformation.getSbjnd()).getId());
+        //HR16字段的添加或更新(薪资标准)----------
+        if (!StringUtils.isBlank(personalInformation.getSalary())) {
+            Integer salarystandardid = null;
+            HRsetSalarystandard hRsetSalarystandard = ihRsetSalarystandardService.queryBySalarystandard(personalInformation.getSalary());
+            if (hRsetSalarystandard == null) {
+                HRsetSalarystandard hRsetSalarystandard_ADD = new HRsetSalarystandard();
+                hRsetSalarystandard_ADD.setSalarystandard(personalInformation.getSalary());
+                salarystandardid = ihRsetSalarystandardService.addOne(hRsetSalarystandard_ADD);
             } else {
-                HRsetSbjnd hRsetSbjnd = new HRsetSbjnd();
-                hRsetSbjnd.setSbjnd(personalInformation.getSbjnd());
-                Integer sbjndid = ihRsetSbjndService.addOne(hRsetSbjnd);
-                costInformation.setSbjndid(sbjndid);
+                salarystandardid = hRsetSalarystandard.getId();
             }
+            costInformation.setSalarystandardid(salarystandardid);
         }
+        //HR17字段的添加或更新(社保基数)----------
+        if (!StringUtils.isBlank(personalInformation.getSsb())) {
+            Integer ssbid = null;
+            HRsetSsb hRsetSsb = ihRsetSsbService.queryBySsb(personalInformation.getSsb());
+            if (hRsetSsb == null) {
+                HRsetSsb hRsetSsb_ADD = new HRsetSsb();
+                hRsetSsb_ADD.setSsb(personalInformation.getSsb());
+                ssbid = ihRsetSsbService.addOne(hRsetSsb_ADD);
+            } else {
+                ssbid = hRsetSsb.getId();
+            }
+            costInformation.setSsbid(ssbid);
+        }
+        //HR18字段的添加或更新(社保公司缴费比例)----------
+        if (!StringUtils.isBlank(personalInformation.getSsbgscd())) {
+            Integer ssbgscdid = null;
+            HRsetSsbgscd hRsetSsbgscd = ihRsetSsbgscdService.queryBySsbgscd(personalInformation.getSsbgscd());
+            if (hRsetSsbgscd == null) {
+                HRsetSsbgscd hRsetSsbgscd_ADD = new HRsetSsbgscd();
+                hRsetSsbgscd_ADD.setSsbgscd(personalInformation.getSsbgscd());
+                ssbgscdid = ihRsetSsbgscdService.addOne(hRsetSsbgscd_ADD);
+            } else {
+                ssbgscdid = hRsetSsbgscd.getId();
+            }
+            costInformation.setSsbgscdid(ssbgscdid);
+        }
+        //HR19字段的添加或更新(社保个人缴费比例)----------
+        if (!StringUtils.isBlank(personalInformation.getSsbgrcd())) {
+            Integer ssbgrcdid = null;
+            HRsetSsbgrcd hRsetSsbgrcd = ihRsetSsbgrcdService.queryBySsbgrcd(personalInformation.getSsbgrcd());
+            if (hRsetSsbgrcd == null) {
+                HRsetSsbgrcd hRsetSsbgrcd_ADD = new HRsetSsbgrcd();
+                hRsetSsbgrcd_ADD.setSsbgrcd(personalInformation.getSsbgrcd());
+                ssbgrcdid = ihRsetSsbgrcdService.addOne(hRsetSsbgrcd_ADD);
+            } else {
+                ssbgrcdid = hRsetSsbgrcd.getId();
+            }
+            costInformation.setSsbgrcdid(ssbgrcdid);
+        }
+        //HR20字段的添加或更新(公积金基数)----------
+        if (!StringUtils.isBlank(personalInformation.getGjj())) {
+            Integer gjjid = null;
+            HRsetGjj hRsetGjj = ihRsetGjjService.queryByGjj(personalInformation.getGjj());
+            if (hRsetGjj == null) {
+                HRsetGjj hRsetGjj_ADD = new HRsetGjj();
+                hRsetGjj_ADD.setGjj(personalInformation.getGjj());
+                gjjid = ihRsetGjjService.addOne(hRsetGjj_ADD);
+            } else {
+                gjjid = hRsetGjj.getId();
+            }
+            costInformation.setGjjid(gjjid);
+        }
+        //HR21字段的添加或更新(公积金公司缴费比例)----------
+        if (!StringUtils.isBlank(personalInformation.getGjjgscd())) {
+            Integer gjjgscd_id = null;
+            HRsetGjjgscd hRsetGjjgscd = ihRsetGjjgscdService.queryByGjjgscd(personalInformation.getGjjgscd());
+            if (hRsetGjjgscd == null) {
+                HRsetGjjgscd hRsetGjjgscd_ADD = new HRsetGjjgscd();
+                hRsetGjjgscd_ADD.setGjjgscd(personalInformation.getGjjgscd());
+                gjjgscd_id = ihRsetGjjgscdService.addOne(hRsetGjjgscd_ADD);
+            } else {
+                gjjgscd_id = hRsetGjjgscd.getId();
+            }
+            costInformation.setGjjgscdid(gjjgscd_id);
+        }
+        //HR22字段的添加或更新(公积金个人缴费比例)----------
+        if (!StringUtils.isBlank(personalInformation.getGjjgrcd())) {
+            Integer gjjgrcd_id = null;
+            HRsetGjjgrcd hRsetGjjgrcd = ihRsetGjjgrcdService.queryByGjjgrcd(personalInformation.getGjjgrcd());
+            if (hRsetGjjgrcd == null) {
+                HRsetGjjgrcd hRsetGjjgrcd_ADD = new HRsetGjjgrcd();
+                hRsetGjjgrcd_ADD.setGjjgrcd(personalInformation.getGjjgrcd());
+                gjjgrcd_id = ihRsetGjjgrcdService.addOne(hRsetGjjgrcd_ADD);
+            } else {
+                gjjgrcd_id = hRsetGjjgrcd.getId();
+            }
+            costInformation.setGjjgscdid(gjjgrcd_id);
+        }
+        //HR23字段的添加或更新(开户行)----------
+        if (!StringUtils.isBlank(personalInformation.getKhh())) {
+            Integer khh_id = null;
+            HRsetKhh hRsetKhh = ihRsetKhhService.queryByKhh(personalInformation.getKhh());
+            if (hRsetKhh == null) {
+                HRsetKhh hRsetKhh_ADD = new HRsetKhh();
+                hRsetKhh_ADD.setKhh(personalInformation.getKhh());
+                khh_id = ihRsetKhhService.addOne(hRsetKhh_ADD);
+            } else {
+                khh_id = hRsetKhh.getId();
+            }
+            costInformation.setKhhid(khh_id);
+        }
+        //普通字段的添加或更新(工资账号)----------
+        costInformation.setSalaryaccount(personalInformation.getSalaryaccount());
+        //HR24字段的添加或更新(社保缴纳地)----------
+        if (!StringUtils.isBlank(personalInformation.getSbjnd())) {
+            Integer sbjnd_id = null;
+            HRsetSbjnd hRsetSbjnd = ihRsetSbjndService.queryBySbjnd(personalInformation.getSbjnd());
+            if (hRsetSbjnd == null) {
+                HRsetSbjnd hRsetSbjnd_ADD = new HRsetSbjnd();
+                hRsetSbjnd_ADD.setSbjnd(personalInformation.getSbjnd());
+                sbjnd_id = ihRsetSbjndService.addOne(hRsetSbjnd_ADD);
+            } else {
+                sbjnd_id = hRsetSbjnd.getId();
+            }
+            costInformation.setSbjndid(sbjnd_id);
+        }
+        //普通字段的添加或更新(社保账号)----------
         costInformation.setSbcode(personalInformation.getSbcode());
+        //普通字段的添加或更新(公积金账号)----------
         costInformation.setGjjcode(personalInformation.getGjjcode());
         Integer costinformationid = iCostInformationService.saveOne(costInformation);
         personalInformation.setCostinformationid(costinformationid);
-        //6.再保存用户其它信息表
+
+        //5.添加其它信息表（tb_id_otherinformation）=============================================================================
         OtherInformation otherInformation = new OtherInformation();
+        //普通字段的添加或更新(私人邮箱)----------
         otherInformation.setPrivateemail(personalInformation.getPrivateemail());
+        //普通字段的添加或更新(公司邮箱)----------
         otherInformation.setCompanyemail(personalInformation.getCompanyemail());
+        //普通字段的添加或更新(应急联系人)----------
         otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
-        if (ihRsetEmergencyrpService.queryByEmergencyrp(personalInformation.getEmergencyrp())!=null) {
-            otherInformation.setEmergencyrpid(ihRsetEmergencyrpService.queryByEmergencyrp(personalInformation.getEmergencyrp()).getId());
+        //HR25字段的添加或更新(应急联系人关系)----------
+        if (!StringUtils.isBlank(personalInformation.getEmergencyrp())) {
+            Integer emergencyrp_id = null;
+            HRsetEmergencyrp hRsetEmergencyrp = ihRsetEmergencyrpService.queryByEmergencyrp(personalInformation.getEmergencyrp());
+            if (hRsetEmergencyrp == null) {
+                HRsetEmergencyrp hRsetEmergencyrp_ADD = new HRsetEmergencyrp();
+                hRsetEmergencyrp_ADD.setEmergencyrp(personalInformation.getEmergencyrp());
+                emergencyrp_id = ihRsetEmergencyrpService.addOne(hRsetEmergencyrp_ADD);
+            } else {
+                emergencyrp_id = hRsetEmergencyrp.getId();
+            }
+            otherInformation.setEmergencyrpid(emergencyrp_id);
         }
+        //普通字段的添加或更新(应急联系人电话)----------
         otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
+        //普通字段的添加或更新(住址)----------
         otherInformation.setAddress(personalInformation.getAddress());
-        otherInformation.setRemark(personalInformation.getRemark());
+        //普通字段的添加或更新(备注)----------
+        otherInformation.setAddress(personalInformation.getAddress());
         Integer otherinformationid = iOtherInformationService.saveOne(otherInformation);
         personalInformation.setOtherinformationid(otherinformationid);
-        //7.再保存用户概况信息
-        if (ihRsetTelphoneService.queryByTelphone(personalInformation.getTelphone())!=null) {
-            //如果HR设置里面没有此字段则创建
+
+        //6.添加人事主要信息表（tb_id_personalinformation）=============================================================================
+        //普通字段的添加或更新(部门)----------
+        if (!StringUtils.isBlank(personalInformation.getDepcode()) && !"部门编号还未添加".equals(personalInformation.getDepcode())) {
+            Dept dept = iDeptService.queryOneByDepcode(personalInformation.getDepcode());
+            if (dept == null) {
+                goToPost.put(personalInformation.getUsername(), "员工所在部门不存在，请手动添加/修改");
+            } else {
+                personalInformation.setDepid(dept.getId());
+            }
+        } else if (!StringUtils.isBlank(personalInformation.getDepname())) {
+            //不同的公司可以拥有相同的部门名称，所以原则上不可以用部门名称作为导入信息，此处是为了对接老OA的信息
+            List<Dept> depts = iDeptService.queryOneDepByDepname(personalInformation.getDepname());
+            if (depts.size() == 1) {
+                personalInformation.setDepid(depts.get(0).getId());
+            } else if (depts.size() == 0) {
+                goToPost.put(personalInformation.getUsername(), "员工所在部门不存在，请手动添加/修改");
+            } else if (depts.size() > 1) {
+                goToPost.put(personalInformation.getUsername(), "员工所在部门存在多个，请手动添加/修改");
+            }
+        }
+        //HR26字段的添加或更新(办公电话)----------
+        if (!StringUtils.isBlank(personalInformation.getTelphone())) {
+            Integer telphone_id = null;
             HRsetTelphone hRsetTelphone = ihRsetTelphoneService.queryByTelphone(personalInformation.getTelphone());
-            Integer hRsetTelphone_id;
-            if(hRsetTelphone==null){
+            if (hRsetTelphone == null) {
                 HRsetTelphone hRsetTelphone_ADD = new HRsetTelphone();
                 hRsetTelphone_ADD.setTelphone(personalInformation.getTelphone());
-                hRsetTelphone_id = ihRsetTelphoneService.addOne(hRsetTelphone_ADD);
-            }else {
-                hRsetTelphone_id = hRsetTelphone.getId();
+                telphone_id = ihRsetTelphoneService.addOne(hRsetTelphone_ADD);
+            } else {
+                telphone_id = hRsetTelphone.getId();
             }
-
-            personalInformation.setTelphoneid(hRsetTelphone_id);
+            personalInformation.setTelphoneid(telphone_id);
         }
+        //普通字段的添加或更新(移动电话/手机号)----------//不用特殊处理
         Integer personalinformationid = iPersonalInformationService.saveOne(personalInformation);
-        //8.最后再保存岗位IDs
-        if (personalinformationid!=null && personalInformation.getPostnames()!=null && !"".equals(personalInformation.getPostnames())) {
-            System.out.println(personalInformation.getPostnames()+"=====================================================================");
-            PerAndPostRs perAndPostRs = new PerAndPostRs();
-            perAndPostRs.setPerid(personalinformationid);
-            String[] split = personalInformation.getPostnames().split("[兼;]");
-            List<Integer> postids = new ArrayList<>();
-            for(String postname:split){
-                if (iPostService.queryOneByPostname(postname)!=null) {
-                    Integer postid = iPostService.queryOneByPostname(postname).getId();
-                    perAndPostRs.setPostid(postid);
-                    iPerandpostrsService.addOne(perAndPostRs);
-                    postids.add(postid);
-                }
+
+        //7.添加人事岗位关系表主要信息表（tb_hr_per_and_post_rs）=============================================================================
+        Map<Integer, Integer> newMap = new HashMap<>();
+        String[] postnames = new String[0];
+        if (personalInformation.getPostnames()!=null && !"".equals(personalInformation.getPostnames())) {
+            postnames = personalInformation.getPostnames().split("[兼;]");
+        }
+        if (postnames.length>0) {
+            for (String postname : postnames
+            ) {
+                Post post = iPostService.queryOneByPostname(postname);
+                newMap.put(post.getId(), personalInformation.getId());
             }
+            newMap.forEach((postid,perid)->{
+                PerAndPostRs perAndPostRs = new PerAndPostRs(perid,postid);
+                iPerandpostrsService.addOne(perAndPostRs);
+            });
         }
         return goToPost;
     }
@@ -2959,6 +3105,37 @@ public class PersonalInformationController {
 
         }
         return RespUtil.successResp("200","删除成功！",usernames) ;
+    }
+
+    /**
+     * @Author: shiyun
+     * @Description: 测试用
+     * @Date  2018\11\2 0002 12:53
+     * @Param
+     * @return
+     **/
+    @RequestMapping("/deleteAllInformations")
+    @ResponseBody
+    public Object deleteAllInformations(
+    ){
+            //1.先删除用户表（直接删除）
+            iUserService.removeAll_admin();
+            //2.再删除相应的基本信息表（直接删除）
+            iBaseInformationService.removeAll();
+            //3.再删除相应的管理信息表（直接删除）
+            iManageInformationService.removeAll();
+            //4.再删除相应的成本信息表（直接删除）
+            iCostInformationService.remvoeAll();
+            //5.再删除相应的人事岗位关系表（直接删除）
+            iPerandpostrsService.removeAll();
+            //6.再删除相应的其他信息表（直接删除）
+            iOtherInformationService.removeAll();
+            //7.再删除相应的合同信息表（直接删除）
+            //8.再删除相应的人事变更表（直接删除）
+            //9.再删除人事信息主表（直接删除）
+            iPersonalInformationService.removeAll();
+            //10.最后再修改部门表
+        return RespUtil.successResp("200","删除成功！",null) ;
     }
 
     /**

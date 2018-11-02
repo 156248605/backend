@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,11 +28,11 @@ import java.util.Map;
 @Service
 public class PersonalInformationServiceImpl implements IPersonalInformationService {
 
-    @Autowired
+    @Resource
     IPersonalInformationDao iPersonalInformationDao;
-    @Autowired
+    @Resource
     IBaseInformationDao iBaseInformationDao;
-    @Autowired
+    @Resource
     IPerandpostrsDao iPerandpostrsDao;
 
     /**
@@ -204,6 +205,11 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     @Override
     public void removeOne(Integer perid) {
         iPersonalInformationDao.deleteById(perid);
+    }
+
+    @Override
+    public void removeAll() {
+        iPersonalInformationDao.deleteAll();
     }
 
     /**

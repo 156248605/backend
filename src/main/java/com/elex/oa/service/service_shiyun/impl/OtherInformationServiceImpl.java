@@ -59,4 +59,9 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
     public void removeOne(Integer otherinformationid) {
         iOtherInformationDao.deleteById(otherinformationid);
     }
+
+    @Override
+    public void removeAll() {
+        iOtherInformationDao.deleteAll();
+    }
 }
