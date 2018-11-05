@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.hr_shiyun.IUserDao">
+
+	<resultMap id="UserMapper" type="User">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="truename" property="truename" />
+		<result column="isactive" property="isactive" />
+		<result column="state" property="state" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_id_user (
+			id,
+			username,
+			truename,
+			isactive,
+			state)
+		values (
+			NULL,
+			#{username},
+			#{truename},
+			#{isactive},
+			1)
+	</insert>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="UserMapper">
+		select * from tb_id_user
+		where id=#{id}
+	</select>
+
+	<select id="selectServingUserByUserid" parameterType="java.lang.Integer" resultMap="UserMapper">
+		select * from tb_id_user
+		where id=#{id} AND state=1
+	</select>
+
+	<select id="selectByTruename" resultType="java.lang.String" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE truename=#{truename}
+	</select>
+
+	<select id="selectByUsername" resultType="java.lang.String" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE username=#{username}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_user
+		WHERE id=#{id}
+	</delete>
+	<delete id="deleteAll_admin">
+		DELETE FROM tb_id_user
+		WHERE id!=1
+	</delete>
+
+	<update id="deleteDimissionById" parameterType="java.lang.Integer" >
+		UPDATE tb_id_user
+		SET state=1
+		WHERE id=#{id}
+	</update>
+
+	<update id="addDimissionById" parameterType="java.lang.Integer" >
+		UPDATE tb_id_user
+		SET state=0
+		WHERE id=#{id}
+	</update>
+
+	<select id="selectByConditions" parameterType="ContractInformation" resultMap="UserMapper">
+		SELECT
+		u.id
+		FROM
+		tb_id_user u
+		JOIN tb_id_personalinformation p ON u.id = p.userid
+		<where>
+			<if test="truename!=null and truename!='' or truenames!=null">
+				<if test="truenamevalue=='' and truenames.size!=0">
+					AND u.truename IN
+					<foreach collection="truenames" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="truenamevalue=='包含'">
+					AND u.truename LIKE CONCAT(CONCAT('%',#{truename}),'%')
+				</if>
+				<if	test="truenamevalue=='不包含'">
+					AND u.truename NOT LIKE CONCAT(CONCAT('%',#{truename}),'%')
+				</if>
+			</if>
+			<if test="employeenumber!=null and employeenumber!='' or employeenumbers!=null">
+				<if test="employeenumbervalue=='' and employeenumbers.size!=0">
+					AND p.employeenumber IN
+					<foreach collection="employeenumbers" item="param" open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="employeenumbervalue=='包含'">
+					AND p.employeenumber LIKE CONCAT(CONCAT('%',#{employeenumber}),'%')
+				</if>
+				<if	test="employeenumbervalue=='不包含'">
+					AND p.employeenumber NOT LIKE CONCAT(CONCAT('%',#{employeenumber}),'%')
+				</if>
+			</if>
+			and u.state=1
+		</where>
+		ORDER BY u.id DESC
+	</select>
+
+	<select id="selectAllServings" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE state=1
+	</select>
+
+</mapper>

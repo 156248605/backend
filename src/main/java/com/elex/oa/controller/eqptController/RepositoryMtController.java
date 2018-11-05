@@ -2,7 +2,7 @@ package com.elex.oa.controller.eqptController;
 
 
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.entity_shiyun.User;
+import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.RepositoryMtImpl;

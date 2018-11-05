@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.hr_shiyun.IPostDao">
+
+	<resultMap id="postMapper" type="Post">
+		<id column="id" property="id" />
+		<result column="postname" property="postname" />
+		<result column="functionaltypeid" property="functionaltypeid" />
+		<result column="postlevelid" property="postlevelid" />
+		<result column="postcode" property="postcode" />
+		<result column="parentpostid" property="parentpostid" />
+		<result column="organization" property="organization" />
+		<result column="duty" property="duty" />
+		<result column="entryrequirements" property="entryrequirements" />
+		<result column="jobdescription" property="jobdescription" />
+		<result column="dutyfile" property="dutyfile" />
+		<result column="state" property="state" />
+		<result column="ordercode" property="ordercode" />
+	</resultMap>
+
+	<select id="selectPostByPostid" parameterType="java.lang.Integer" resultMap="postMapper">
+		select * from tb_id_post
+		where id = #{id} and state=1
+		ORDER BY ordercode
+	</select>
+
+	<select id="selectPostByPostname" parameterType="java.lang.String" resultMap="postMapper">
+		select * from tb_id_post
+		where postname = #{postname} and state=1
+		ORDER BY ordercode
+	</select>
+
+	<select id="selectPostByPostcode" parameterType="java.lang.String" resultMap="postMapper">
+		select * from tb_id_post
+		where postcode = #{postcode} and state=1
+		ORDER BY ordercode
+	</select>
+
+	<select id="selectAllPosts" resultMap="postMapper">
+		select * from tb_id_post WHERE state=1
+		ORDER BY ordercode
+	</select>
+
+	<select id="selectPostsByParentpostid" parameterType="java.lang.Integer" resultMap="postMapper">
+		select * from tb_id_post
+		<where>
+			<if test="_parameter!=null and _parameter!=''">
+				parentpostid = #{_parameter,jdbcType=INTEGER}
+			</if>
+			<if test="_parameter==null or _parameter==''">
+				parentpostid is null
+			</if>
+			and state=1
+		</where>
+		ORDER BY ordercode
+	</select>
+
+	<insert id="insertOne" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_id_post
+		(id,
+		postname,
+		functionaltypeid,
+		postlevelid,
+		 postcode,
+		 parentpostid,
+		 organization,
+		 duty,
+		 entryrequirements,
+		 jobdescription,
+		 dutyfile,state,
+		 ordercode)
+		VALUES
+		(NULL ,
+		#{postname},
+		#{functionaltypeid},
+		#{postlevelid},
+		#{postcode},
+		#{parentpostid},
+		#{organization},
+		#{duty},
+		#{entryrequirements},
+		#{jobdescription},
+		#{dutyfile},1,0)
+	</insert>
+
+	<update id="updateOne" parameterType="Post">
+		UPDATE tb_id_post
+		<set>
+			<if test="postname!=null and postname!=''" >postname=#{postname},</if>
+			<if test="functionaltypeid!=null and functionaltypeid!=''" >functionaltypeid=#{functionaltypeid},</if>
+			<if test="functionaltypeid==null or functionaltypeid==''" >functionaltypeid=NULL,</if>
+			<if test="postlevelid!=null and postlevelid!=''" >postlevelid=#{postlevelid},</if>
+			<if test="postcode!=null and postcode!=''" >postcode=#{postcode},</if>
+			<if test="parentpostid!=null and parentpostid!=''" >parentpostid=#{parentpostid},</if>
+			<if test="organization!=null and organization!=''" >organization=#{organization},</if>
+			<if test="duty!=null and duty!=''" >duty=#{duty},</if>
+			<if test="entryrequirements!=null and entryrequirements!=''" >entryrequirements=#{entryrequirements},</if>
+			<if test="jobdescription!=null and jobdescription!=''" >jobdescription=#{jobdescription},</if>
+			<if test="dutyfile!=null and dutyfile!=''" >dutyfile=#{dutyfile}</if>
+			<if test="ordercode!=null and ordercode!=''" >ordercode=#{ordercode}</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_post
+		WHERE id=#{_parameter,jdbcType=NUMERIC}
+	</delete>
+
+</mapper>

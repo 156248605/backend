@@ -2,18 +2,16 @@ package com.elex.oa.service.eqptImpl;
 
 
 import com.alibaba.fastjson.JSON;
-import com.elex.oa.dao.dao_shiyun.IUserDao;
+import com.elex.oa.dao.hr_shiyun.IUserDao;
 import com.elex.oa.dao.eqptDao.PositionMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.entity_shiyun.User;
+import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.eqpt.Material;
-import com.elex.oa.entity.eqpt.Position;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.RepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.hibernate.usertype.LoggableUserType;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.hr_shiyun.IRenewContractRecordDao">
+
+	<resultMap id="RenewContractRecordResultMap" type="RenewContractRecord">
+		<id column="id" property="id" />
+		<result column="contractid" property="contractid" />
+		<result column="startdate" property="startdate" />
+		<result column="enddate" property="enddate" />
+		<result column="zhbgruserid" property="zhbgruserid" />
+		<result column="zhbgdate" property="zhbgdate" />
+	</resultMap>
+
+	<select id="selectByContractId" parameterType="java.lang.Integer" resultMap="RenewContractRecordResultMap">
+		SELECT
+			*
+		FROM
+			tb_hr_renewcontractrecord
+		WHERE
+			contractid=#{contractid}
+	</select>
+
+	<!--<select id="selectById" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">
+		SELECT
+			id,
+			contractcode,
+			userid,
+			startdate,
+			enddate,
+			contracttype,
+			istrainingagreement,
+			remark
+		FROM
+			tb_hr_contractinformation
+		WHERE
+			id=#{id}
+	</select>-->
+
+</mapper>

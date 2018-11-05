@@ -1,19 +1,19 @@
 package com.elex.oa.service.project.impl;
 
-import com.elex.oa.controller.controller_shiyun.PersonalInformationController;
+import com.elex.oa.controller.hr_shiyun.PersonalInformationController;
 import com.elex.oa.dao.project.OperationDao;
 import com.elex.oa.dao.project.ProjectBoardDao;
 import com.elex.oa.dao.project.ProjectSetDao;
 import com.elex.oa.dao.project.WeeklyPlanDao;
-import com.elex.oa.entity.entity_shiyun.Dept;
-import com.elex.oa.entity.entity_shiyun.PerAndPostRs;
-import com.elex.oa.entity.entity_shiyun.PersonalInformation;
+import com.elex.oa.entity.hr_entity.Dept;
+import com.elex.oa.entity.hr_entity.PerAndPostRs;
+import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectBoardService;
-import com.elex.oa.service.service_shiyun.IDeptService;
-import com.elex.oa.service.service_shiyun.IPerandpostrsService;
-import com.elex.oa.service.service_shiyun.IPersonalInformationService;
-import com.elex.oa.service.service_shiyun.IPostService;
+import com.elex.oa.service.hr_service.IDeptService;
+import com.elex.oa.service.hr_service.IPerandpostrsService;
+import com.elex.oa.service.hr_service.IPersonalInformationService;
+import com.elex.oa.service.hr_service.IPostService;
 import com.elex.oa.util.util_per.SpellUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

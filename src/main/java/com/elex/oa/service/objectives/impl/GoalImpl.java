@@ -1,11 +1,11 @@
 package com.elex.oa.service.objectives.impl;
 
 import com.elex.oa.dao.objectives.GoalDao;
-import com.elex.oa.entity.entity_shiyun.Dept;
+import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.objectives.Goal;
 import com.elex.oa.entity.objectives.Goal2;
 import com.elex.oa.service.objectives.GoalService;
-import com.elex.oa.service.service_shiyun.IDeptService;
+import com.elex.oa.service.hr_service.IDeptService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

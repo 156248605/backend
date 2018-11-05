@@ -8,7 +8,7 @@ import com.elex.oa.entity.project.NewProject;
 import com.elex.oa.entity.project.ProjectCode;
 import com.elex.oa.mongo.project.NewProjectMongo;
 import com.elex.oa.service.project.NewProjcetService;
-import com.elex.oa.service.service_shiyun.IDeptService;
+import com.elex.oa.service.hr_service.IDeptService;
 import com.elex.oa.util.project.ProjectUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

@@ -2,15 +2,11 @@ package com.elex.oa.controller.eqptController;
 
 
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.entity_shiyun.User;
+import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.RepositoryImpl;
-import com.elex.oa.service.project.ProjectBoardService;
 import com.github.pagehelper.PageInfo;
-import org.apache.regexp.RE;
-import org.apache.tomcat.util.http.parser.HttpParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +16,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @CrossOrigin

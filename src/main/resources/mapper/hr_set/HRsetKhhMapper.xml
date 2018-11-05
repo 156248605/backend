@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.hr_shiyun.IHRsetKhhDao">
+
+	<resultMap id="KhhMapper" type="HRsetKhh">
+		<id column="id" property="id" />
+		<result column="khh" property="khh" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="HRsetKhh" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_set_khh (
+			id,
+			khh)
+		values (
+			NULL,
+			#{khh})
+	</insert>
+
+	<select id="selectAll" resultMap="KhhMapper">
+		SELECT * FROM tb_hr_set_khh
+		ORDER BY id DESC
+	</select>
+
+	<select id="selectByConditions" parameterType="HRsetKhh" resultMap="KhhMapper">
+		SELECT * FROM tb_hr_set_khh
+		<where>
+			<if test="id!=null and id!=''">AND id=#{id}</if>
+			<if test="khh!=null and khh!=''">AND khh=#{khh}</if>
+		</where>
+	</select>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_hr_set_khh WHERE id=#{id}
+	</delete>
+
+	<update id="updateOne" parameterType="HRsetFunctionalType">
+		UPDATE tb_hr_set_khh
+		SET khh=#{khh}
+		WHERE id=#{id}
+	</update>
+</mapper>

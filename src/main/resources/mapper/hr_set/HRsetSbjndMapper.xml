@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.hr_shiyun.IHRsetSbjndDao">
+
+	<resultMap id="SbjndMapper" type="HRsetSbjnd">
+		<id column="id" property="id" />
+		<result column="sbjnd" property="sbjnd" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="HRsetSbjnd" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_set_Sbjnd (
+			id,
+			sbjnd)
+		values (
+			NULL,
+			#{sbjnd})
+	</insert>
+
+	<select id="selectAll" resultMap="SbjndMapper">
+		SELECT * FROM tb_hr_set_sbjnd
+		ORDER BY id DESC
+	</select>
+
+	<select id="selectByConditions" parameterType="HRsetSbjnd" resultMap="SbjndMapper">
+		SELECT * FROM tb_hr_set_sbjnd
+		<where>
+			<if test="id!=null and id!=''">AND id=#{id}</if>
+			<if test="sbjnd!=null and sbjnd!=''">AND sbjnd=#{sbjnd}</if>
+		</where>
+	</select>
+
+	<delete id="deleteOne" parameterType="java.lang.Integer">
+		DELETE FROM tb_hr_set_sbjnd WHERE id=#{id}
+	</delete>
+
+	<update id="updateOne" parameterType="HRsetFunctionalType">
+		UPDATE tb_hr_set_sbjnd
+		SET sbjnd=#{sbjnd}
+		WHERE id=#{id}
+	</update>
+</mapper>

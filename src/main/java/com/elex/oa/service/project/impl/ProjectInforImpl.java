@@ -1,12 +1,12 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
-import com.elex.oa.dao.dao_shiyun.IDeptDao;
-import com.elex.oa.dao.dao_shiyun.IPersonalInformationDao;
-import com.elex.oa.dao.dao_shiyun.IUserDao;
+import com.elex.oa.dao.hr_shiyun.IDeptDao;
+import com.elex.oa.dao.hr_shiyun.IPersonalInformationDao;
+import com.elex.oa.dao.hr_shiyun.IUserDao;
 import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.dao.project.ProjectSetDao;
-import com.elex.oa.entity.entity_shiyun.User;
+import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
 import com.github.pagehelper.PageHelper;
