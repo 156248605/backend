@@ -33,7 +33,7 @@
 		DELETE FROM tb_hr_set_byyx WHERE id=#{id}
 	</delete>
 
-	<update id="updateOne" parameterType="HRsetFunctionalType">
+	<update id="updateOne" parameterType="HRsetByyx">
 		UPDATE tb_hr_set_byyx
 		SET byyx=#{byyx}
 		WHERE id=#{id}
