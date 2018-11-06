@@ -2083,6 +2083,7 @@ public class PersonalInformationController {
         if (removedUser!=null) {
             Boolean userB = false;
             Integer isactive = personalInformation.getIsactive();//是否激活
+            System.out.println(20186);
             if (isactive != null && isactive != removedUser.getIsactive()) {
                 removedUser.setIsactive(isactive);
                 userB = true;
@@ -2098,7 +2099,12 @@ public class PersonalInformationController {
             }
         }else {
             User user = new User();
-            user.setIsactive(personalInformation.getIsactive());
+            System.out.println(2102);
+            if (personalInformation.getIsactive()!=null) {
+                user.setIsactive(personalInformation.getIsactive());
+            } else {
+                user.setIsactive(1);
+            }
             user.setUsername(personalInformation.getUsername());
             user.setTruename(personalInformation.getTruename());
             user.setPassword("123456");
@@ -2832,6 +2838,7 @@ public class PersonalInformationController {
                 } else {
                     salarystandardid = hRsetSalarystandard.getId();
                 }
+                costinformationB = true;
                 costInformation.setSalarystandardid(salarystandardid);
             }
             //HR17字段的添加或更新(社保基数)----------
@@ -2845,6 +2852,7 @@ public class PersonalInformationController {
                 } else {
                     ssbid = hRsetSsb.getId();
                 }
+                costinformationB = true;
                 costInformation.setSsbid(ssbid);
             }
             //HR18字段的添加或更新(社保公司缴费比例)----------
@@ -2858,6 +2866,7 @@ public class PersonalInformationController {
                 } else {
                     ssbgscdid = hRsetSsbgscd.getId();
                 }
+                costinformationB = true;
                 costInformation.setSsbgscdid(ssbgscdid);
             }
             //HR19字段的添加或更新(社保个人缴费比例)----------
@@ -2871,6 +2880,7 @@ public class PersonalInformationController {
                 } else {
                     ssbgrcdid = hRsetSsbgrcd.getId();
                 }
+                costinformationB = true;
                 costInformation.setSsbgrcdid(ssbgrcdid);
             }
             //HR20字段的添加或更新(公积金基数)----------
@@ -2884,6 +2894,7 @@ public class PersonalInformationController {
                 } else {
                     gjjid = hRsetGjj.getId();
                 }
+                costinformationB = true;
                 costInformation.setGjjid(gjjid);
             }
             //HR21字段的添加或更新(公积金公司缴费比例)----------
@@ -2897,6 +2908,7 @@ public class PersonalInformationController {
                 } else {
                     gjjgscd_id = hRsetGjjgscd.getId();
                 }
+                costinformationB = true;
                 costInformation.setGjjgscdid(gjjgscd_id);
             }
             //HR22字段的添加或更新(公积金个人缴费比例)----------
@@ -2910,6 +2922,7 @@ public class PersonalInformationController {
                 } else {
                     gjjgrcd_id = hRsetGjjgrcd.getId();
                 }
+                costinformationB = true;
                 costInformation.setGjjgscdid(gjjgrcd_id);
             }
             //HR23字段的添加或更新(开户行)----------
@@ -2923,6 +2936,7 @@ public class PersonalInformationController {
                 } else {
                     khh_id = hRsetKhh.getId();
                 }
+                costinformationB = true;
                 costInformation.setKhhid(khh_id);
             }
             //普通字段的添加或更新(工资账号)----------
@@ -2938,13 +2952,22 @@ public class PersonalInformationController {
                 } else {
                     sbjnd_id = hRsetSbjnd.getId();
                 }
+                costinformationB = true;
                 costInformation.setSbjndid(sbjnd_id);
             }
             //普通字段的添加或更新(社保账号)----------
-            costInformation.setSbcode(personalInformation.getSbcode());
+            if (!StringUtils.isBlank(personalInformation.getSbcode())) {
+                costinformationB = true;
+                costInformation.setSbcode(personalInformation.getSbcode());
+            }
             //普通字段的添加或更新(公积金账号)----------
-            costInformation.setGjjcode(personalInformation.getGjjcode());
-            iCostInformationService.modifyOne(costInformation);
+            if (!StringUtils.isBlank(personalInformation.getGjjcode())) {
+                costinformationB = true;
+                costInformation.setGjjcode(personalInformation.getGjjcode());
+            }
+            if (costinformationB) {
+                iCostInformationService.modifyOne(costInformation);
+            }
             //5.更新其它信息表（tb_id_otherinformation）=============================================================================
             OtherInformation otherInformation = new OtherInformation();
             otherInformation.setId(currentPer.getOtherinformationid());
@@ -3024,7 +3047,7 @@ public class PersonalInformationController {
             for (String postname : postnames
             ) {
                 Post post = iPostService.queryOneByPostname(postname);
-                newMap.put(post.getId(), personalInformation.getId());
+                newMap.put(post.getId(), currentPer.getId());
             }
             //分两步：1)没有的添加上;2)多余的删除
             //1)没有的添加上;
@@ -3045,7 +3068,6 @@ public class PersonalInformationController {
                 }
             });
         }else {
-            System.out.println(3047);
             goToPost.put(personalInformation.getEmployeenumber()+":"+personalInformation.getTruename()+":"+currentPer.getTruename(),"此工号的员工姓名与数据库中的不一致！");
         }
         return goToPost;

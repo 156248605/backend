@@ -61,7 +61,6 @@
 	<update id="updateOne" parameterType="CostInformation" >
 		update tb_id_costinformation
 		<set>
-			id=#{id},
 			<if test="salarystandardid!=null and salarystandardid!=''">salarystandardid=#{salarystandardid},</if>
 			<if test="ssbid!=null and ssbid!=''">ssbid=#{ssbid},</if>
 			<if test="ssbgscdid!=null and ssbgscdid!=''">ssbgscdid=#{ssbgscdid},</if>

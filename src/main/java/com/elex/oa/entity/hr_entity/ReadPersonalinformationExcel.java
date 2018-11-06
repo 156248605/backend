@@ -113,7 +113,8 @@ public class ReadPersonalinformationExcel {
                         Integer isactive = null;
                         cell.setCellType(CellType.STRING);
                         String str = String.valueOf(cell.getStringCellValue());
-                        isactive = str == null ? null : Integer.parseInt(str);
+                        isactive = (str == null ? 1 : Integer.parseInt(str));
+                        System.out.println(117);
                         personalInformation.setIsactive(isactive);
                     }else if ("登录ID".equals(columnname.replace(" ",""))) {
                         cell.setCellType(CellType.STRING);
