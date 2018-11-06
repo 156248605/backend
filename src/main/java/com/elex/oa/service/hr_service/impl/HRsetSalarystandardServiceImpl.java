@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetSalarystandardDao;
+import com.elex.oa.dao.hr.IHRsetSalarystandardDao;
 import com.elex.oa.entity.hr_entity.HRsetSalarystandard;
 import com.elex.oa.service.hr_service.IHRsetSalarystandardService;
 import com.github.pagehelper.PageHelper;

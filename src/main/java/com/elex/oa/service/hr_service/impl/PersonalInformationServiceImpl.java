@@ -1,8 +1,8 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IBaseInformationDao;
-import com.elex.oa.dao.hr_shiyun.IPerandpostrsDao;
-import com.elex.oa.dao.hr_shiyun.IPersonalInformationDao;
+import com.elex.oa.dao.hr.IBaseInformationDao;
+import com.elex.oa.dao.hr.IPerandpostrsDao;
+import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.entity.hr_entity.BaseInformation;
 import com.elex.oa.entity.hr_entity.PerAndPostRs;
 import com.elex.oa.entity.hr_entity.PersonalInformation;

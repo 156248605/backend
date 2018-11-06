@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IGzrzDao;
+import com.elex.oa.dao.hr.IGzrzDao;
 import com.elex.oa.entity.hr_entity.Gzrz;
 import com.elex.oa.entity.hr_entity.GzrzVO;
 import com.elex.oa.entity.hr_entity.Lysqd;

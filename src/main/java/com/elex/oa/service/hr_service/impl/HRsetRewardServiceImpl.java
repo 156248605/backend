@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetRewardDao;
+import com.elex.oa.dao.hr.IHRsetRewardDao;
 import com.elex.oa.entity.hr_entity.HRsetReward;
 import com.elex.oa.service.hr_service.IHRsetRewardService;
 import com.github.pagehelper.PageHelper;

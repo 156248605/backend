@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetTeachingstyleDao;
+import com.elex.oa.dao.hr.IHRsetTeachingstyleDao;
 import com.elex.oa.entity.hr_entity.HRsetTeachingstyle;
 import com.elex.oa.service.hr_service.IHRsetTeachingstyleService;
 import com.github.pagehelper.PageHelper;

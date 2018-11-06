@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetDimissiontypeDao;
+import com.elex.oa.dao.hr.IHRsetDimissiontypeDao;
 import com.elex.oa.entity.hr_entity.HRsetDimissiontype;
 import com.elex.oa.service.hr_service.IHRsetDimissiontypeService;
 import com.github.pagehelper.PageHelper;

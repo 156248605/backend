@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IEmailDao;
+import com.elex.oa.dao.hr.IEmailDao;
 import com.elex.oa.entity.hr_entity.Email;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IEmail;

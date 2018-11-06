@@ -1,6 +1,6 @@
 package com.elex.oa.service.eqptImpl;
 
-import com.elex.oa.dao.hr_shiyun.IUserDao;
+import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMtMapper;
 import com.elex.oa.entity.Page;

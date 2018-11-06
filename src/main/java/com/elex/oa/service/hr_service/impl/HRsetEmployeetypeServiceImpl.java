@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetEmployeetypeDao;
+import com.elex.oa.dao.hr.IHRsetEmployeetypeDao;
 import com.elex.oa.entity.hr_entity.HRsetEmployeetype;
 import com.elex.oa.service.hr_service.IHRsetEmployeetypeService;
 import com.github.pagehelper.PageHelper;

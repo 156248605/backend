@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetZyzsnameDao;
+import com.elex.oa.dao.hr.IHRsetZyzsnameDao;
 import com.elex.oa.entity.hr_entity.HRsetZyzsname;
 import com.elex.oa.service.hr_service.IHRsetZyzsnameService;
 import com.github.pagehelper.PageHelper;

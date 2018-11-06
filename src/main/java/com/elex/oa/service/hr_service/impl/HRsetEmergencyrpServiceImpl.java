@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetEmergencyrpDao;
+import com.elex.oa.dao.hr.IHRsetEmergencyrpDao;
 import com.elex.oa.entity.hr_entity.HRsetEmergencyrp;
 import com.elex.oa.service.hr_service.IHRsetEmergencyrpService;
 import com.github.pagehelper.PageHelper;

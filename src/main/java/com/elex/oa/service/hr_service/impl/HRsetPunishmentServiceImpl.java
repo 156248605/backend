@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetPunishmentDao;
+import com.elex.oa.dao.hr.IHRsetPunishmentDao;
 import com.elex.oa.entity.hr_entity.HRsetPunishment;
 import com.elex.oa.service.hr_service.IHRsetPunishmentService;
 import com.github.pagehelper.PageHelper;

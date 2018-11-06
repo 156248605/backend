@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetCoursetypeDao;
+import com.elex.oa.dao.hr.IHRsetCoursetypeDao;
 import com.elex.oa.entity.hr_entity.HRsetCoursetype;
 import com.elex.oa.service.hr_service.IHRsetCoursetypeService;
 import com.github.pagehelper.PageHelper;

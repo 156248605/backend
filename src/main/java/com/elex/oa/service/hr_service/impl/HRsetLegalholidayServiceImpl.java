@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetLegalholidayDao;
+import com.elex.oa.dao.hr.IHRsetLegalholidayDao;
 import com.elex.oa.entity.hr_entity.HRsetLegalholiday;
 import com.elex.oa.service.hr_service.IHRsetLegalholidayService;
 import com.github.pagehelper.PageHelper;

@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetTelphoneDao;
+import com.elex.oa.dao.hr.IHRsetTelphoneDao;
 import com.elex.oa.entity.hr_entity.HRsetTelphone;
 import com.elex.oa.service.hr_service.IHRsetTelphoneService;
 import com.github.pagehelper.PageHelper;

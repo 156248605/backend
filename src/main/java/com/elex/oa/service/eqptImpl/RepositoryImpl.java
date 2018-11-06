@@ -2,7 +2,7 @@ package com.elex.oa.service.eqptImpl;
 
 
 import com.alibaba.fastjson.JSON;
-import com.elex.oa.dao.hr_shiyun.IUserDao;
+import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.eqptDao.PositionMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.entity.Page;

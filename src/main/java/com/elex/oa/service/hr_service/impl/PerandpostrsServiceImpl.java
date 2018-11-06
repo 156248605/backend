@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IPerandpostrsDao;
+import com.elex.oa.dao.hr.IPerandpostrsDao;
 import com.elex.oa.entity.hr_entity.PerAndPostRs;
 import com.elex.oa.service.hr_service.IPerandpostrsService;
 import org.springframework.beans.factory.annotation.Autowired;

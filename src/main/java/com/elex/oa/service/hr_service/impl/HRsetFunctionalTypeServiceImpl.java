@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetFunctionalTypeDao;
+import com.elex.oa.dao.hr.IHRsetFunctionalTypeDao;
 import com.elex.oa.entity.hr_entity.HRsetFunctionalType;
 import com.elex.oa.service.hr_service.IHRsetFunctionalTypeService;
 import com.github.pagehelper.PageHelper;

@@ -1,7 +1,7 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IRAndPInformationDao;
-import com.elex.oa.dao.hr_shiyun.IUserDao;
+import com.elex.oa.dao.hr.IRAndPInformationDao;
+import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.RAndPInformation;
 import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.service.hr_service.IRAndPInformationService;

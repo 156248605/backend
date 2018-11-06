@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetDimissionreasonDao;
+import com.elex.oa.dao.hr.IHRsetDimissionreasonDao;
 import com.elex.oa.entity.hr_entity.HRsetDimissionreason;
 import com.elex.oa.service.hr_service.IHRsetDimissionreasonService;
 import com.github.pagehelper.PageHelper;

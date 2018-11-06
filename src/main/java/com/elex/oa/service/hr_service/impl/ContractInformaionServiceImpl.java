@@ -1,9 +1,9 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IContractInformationDao;
-import com.elex.oa.dao.hr_shiyun.IHRsetContracttypeDao;
-import com.elex.oa.dao.hr_shiyun.IPersonalInformationDao;
-import com.elex.oa.dao.hr_shiyun.IUserDao;
+import com.elex.oa.dao.hr.IContractInformationDao;
+import com.elex.oa.dao.hr.IHRsetContracttypeDao;
+import com.elex.oa.dao.hr.IPersonalInformationDao;
+import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
 import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.entity.hr_entity.User;

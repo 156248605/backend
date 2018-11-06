@@ -1,9 +1,9 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IDeptDao;
-import com.elex.oa.dao.hr_shiyun.IHRsetDeptypeDao;
-import com.elex.oa.dao.hr_shiyun.IPersonalInformationDao;
-import com.elex.oa.dao.hr_shiyun.IUserDao;
+import com.elex.oa.dao.hr.IDeptDao;
+import com.elex.oa.dao.hr.IHRsetDeptypeDao;
+import com.elex.oa.dao.hr.IPersonalInformationDao;
+import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IDeptService;
 import com.elex.oa.util.resp.Resp;

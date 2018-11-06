@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetParentcompanyDao;
+import com.elex.oa.dao.hr.IHRsetParentcompanyDao;
 import com.elex.oa.entity.hr_entity.HRsetParentcompany;
 import com.elex.oa.service.hr_service.IHRsetParentcompanyService;
 import com.github.pagehelper.PageHelper;

@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IOtherInformationDao;
+import com.elex.oa.dao.hr.IOtherInformationDao;
 import com.elex.oa.entity.hr_entity.OtherInformation;
 import com.elex.oa.service.hr_service.IOtherInformationService;
 import org.springframework.beans.factory.annotation.Autowired;

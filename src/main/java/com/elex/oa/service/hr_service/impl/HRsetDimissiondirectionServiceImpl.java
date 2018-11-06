@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetDimissiondirectionDao;
+import com.elex.oa.dao.hr.IHRsetDimissiondirectionDao;
 import com.elex.oa.entity.hr_entity.HRsetDimissiondirection;
 import com.elex.oa.service.hr_service.IHRsetDimissiondirectionService;
 import com.github.pagehelper.PageHelper;

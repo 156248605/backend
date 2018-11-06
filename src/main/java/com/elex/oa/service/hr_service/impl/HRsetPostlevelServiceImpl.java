@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetPostlevelDao;
+import com.elex.oa.dao.hr.IHRsetPostlevelDao;
 import com.elex.oa.entity.hr_entity.HRsetPostlevel;
 import com.elex.oa.service.hr_service.IHRsetPostlevelService;
 import com.github.pagehelper.PageHelper;

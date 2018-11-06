@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetDeptypeDao;
+import com.elex.oa.dao.hr.IHRsetDeptypeDao;
 import com.elex.oa.entity.hr_entity.HRsetDeptype;
 import com.elex.oa.service.hr_service.IHRsetDeptypeService;
 import com.github.pagehelper.PageHelper;

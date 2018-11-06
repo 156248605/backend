@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetPyfsDao;
+import com.elex.oa.dao.hr.IHRsetPyfsDao;
 import com.elex.oa.entity.hr_entity.HRsetPyfs;
 import com.elex.oa.service.hr_service.IHRsetPyfsService;
 import com.github.pagehelper.PageHelper;

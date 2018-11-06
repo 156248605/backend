@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr_shiyun.IHRsetCustomwelfareleaveDao;
+import com.elex.oa.dao.hr.IHRsetCustomwelfareleaveDao;
 import com.elex.oa.entity.hr_entity.HRsetCustomwelfareleave;
 import com.elex.oa.service.hr_service.IHRsetCustomwelfareleaveService;
 import com.github.pagehelper.PageHelper;

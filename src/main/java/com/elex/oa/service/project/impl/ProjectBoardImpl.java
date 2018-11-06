@@ -1,6 +1,6 @@
 package com.elex.oa.service.project.impl;
 
-import com.elex.oa.controller.hr_shiyun.PersonalInformationController;
+import com.elex.oa.controller.hr.PersonalInformationController;
 import com.elex.oa.dao.project.OperationDao;
 import com.elex.oa.dao.project.ProjectBoardDao;
 import com.elex.oa.dao.project.ProjectSetDao;
