@@ -18,54 +18,54 @@ public interface IHRsetByyxService {
      *@Description:添加一条信息
      *@Date: 18:38 2018\5\11 0011
      */
-    public Integer addOne(HRsetByyx hRsetByyx);
+    Integer addOne(HRsetByyx hRsetByyx);
 
     /**
      *@Author:ShiYun;
      *@Description:查询所有信息
      *@Date: 18:39 2018\5\11 0011
      */
-    public List<HRsetByyx> queryAll();
+    List<HRsetByyx> queryAll();
 
     /**
      *@Author:ShiYun;
      *@Description:根据条件查询对象
      *@Date: 10:19 2018\5\14 0014
      */
-    public List<HRsetByyx> queryByConditions(HRsetByyx hRsetByyx);
+    List<HRsetByyx> queryByConditions(HRsetByyx hRsetByyx);
 
     /**
      *@Author:ShiYun;
      *@Description:根据ID查询对象
      *@Date: 10:21 2018\5\14 0014
      */
-    public HRsetByyx queryById(Integer id);
+    HRsetByyx queryById(Integer id);
 
     /**
      *@Author:ShiYun;
      *@Description:根据HR的值查询对象
      *@Date: 10:21 2018\5\14 0014
      */
-    public HRsetByyx queryByByyx(String byyx);
+    HRsetByyx queryByByyx(String byyx);
 
     /**
      *@Author:ShiYun;
      *@Description:分页
      *@Date: 11:35 2018\5\19 0019
      */
-    public PageInfo<HRsetByyx> queryByParam(HashMap<String,Object> paramMap);
+    PageInfo<HRsetByyx> queryByParam(HashMap<String,Object> paramMap);
 
     /**
      *@Author:ShiYun;
      *@Description:根据ID删除HR信息
      *@Date: 16:44 2018\5\19 0019
      */
-    public void removeOne(Integer id);
+    void removeOne(Integer id);
 
     /**
      *@Author:ShiYun;
      *@Description:HR信息的修改
      *@Date: 17:34 2018\5\19 0019
      */
-    public void modifyOne(HRsetByyx hRsetByyx);
+    void modifyOne(HRsetByyx hRsetByyx);
 }

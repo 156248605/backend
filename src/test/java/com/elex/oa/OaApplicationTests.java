@@ -1,7 +1,10 @@
 package com.elex.oa;
 
+import com.elex.oa.dao.hr.IHRsetDao;
+import com.elex.oa.service.hr_service.IHRsetService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -13,9 +16,11 @@ import java.util.Scanner;
 public class OaApplicationTests {
 
 
+
 	@Test
 	public void contextLoads() {
 		Scanner scanner = new Scanner(System.in);
+		String expected = "\"id\":1,\"name\":\"MacBook\",\"price\":1000";
 		String str =scanner.next();
 		//String str = "2017/7/9";
 		String[] strs = str.split("/");

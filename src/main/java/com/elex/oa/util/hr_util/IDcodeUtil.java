@@ -197,7 +197,6 @@ public class IDcodeUtil {
      *@Date: 19:20 2018\5\16 0016
      */
     public static String getWorkingage(String firstworkingtime) throws Exception {
-        System.out.println(firstworkingtime+"========================================================================");
         return  IDcodeUtil.getAge(firstworkingtime);
     }
 

@@ -8,4 +8,7 @@ package com.elex.oa.common.hr;
  */
 public interface Commons {
     String realpath = "F:/static";
+    int REST_SUCCESS = 200;
+    int REST_SERVER_ERROR = 400;
+    int REST_PARAM_ERROR = 500;
 }

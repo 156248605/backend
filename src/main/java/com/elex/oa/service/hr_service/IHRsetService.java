@@ -32,7 +32,7 @@ public interface IHRsetService {
      *@Description:根据条件查询对象
      *@Date: 10:19 2018\5\14 0014
      */
-    Object queryByConditions(HRset hRset);
+    List<HRset> queryByConditions(HRset hRset);
 
     /**
      *@Author:ShiYun;
@@ -46,7 +46,7 @@ public interface IHRsetService {
      *@Description:分页
      *@Date: 11:35 2018\5\19 0019
      */
-    Object queryByParam(HashMap<String, Object> paramMap);
+    PageInfo queryByParam(HashMap<String, Object> paramMap);
 
     /**
      *@Author:ShiYun;
@@ -60,5 +60,5 @@ public interface IHRsetService {
      *@Description:HR信息的修改
      *@Date: 17:34 2018\5\19 0019
      */
-    Object modifyOne(HRset hRset);
+    Boolean modifyOne(HRset hRset);
 }

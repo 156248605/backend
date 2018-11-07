@@ -21,6 +21,10 @@ public class HRset implements Serializable {
         this.id = id;
     }
 
+    public HRset(String datatype) {
+        this.datatype = datatype;
+    }
+
     public HRset(String datatype, String datavalue) {
         this.datatype = datatype;
         this.datavalue = datavalue;

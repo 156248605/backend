@@ -34,4 +34,5 @@ public interface PositionMapper {
     String recordout(Repository repository);
 
     String recordshift(Repository repository);
+
 }
