@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.Scanner;
 
 
@@ -19,20 +22,16 @@ public class OaApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		Scanner scanner = new Scanner(System.in);
-		String expected = "\"id\":1,\"name\":\"MacBook\",\"price\":1000";
-		String str =scanner.next();
-		//String str = "2017/7/9";
-		String[] strs = str.split("/");
-		if(strs.length==3){
-			String year = strs[0];
-			String month = strs[1];
-			month = month.length()==2?month:"0"+month;
-			String day = strs[2];
-			day = day.length()==2?day:"0"+day;
-			str = year+"/"+month+"/"+day;
+		Properties prop = new Properties();
+		InputStream in = OaApplication.class.getClassLoader().getResourceAsStream("config/HR_API_Conf.properties");
+		try {
+			prop.load(in);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		System.out.println(str);
+		System.out.println(prop.getProperty("swagger.api.title")+"==============================================");
+		System.out.println(prop.getProperty("swagger.api.version")+"==============================================");
+		System.out.println(prop.getProperty("swagger.base-package")+"==============================================");
 	}
 
 }

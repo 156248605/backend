@@ -18,14 +18,14 @@ public interface IHRsetService {
      *@Description:添加一条信息
      *@Date: 18:38 2018\5\11 0011
      */
-    Object addOne(HRset hRset);
+    Integer addOne(HRset hRset);
 
     /**
      *@Author:ShiYun;
      *@Description:查询所有信息
      *@Date: 18:39 2018\5\11 0011
      */
-    Object queryAll();
+    List<HRset> queryAll();
 
     /**
      *@Author:ShiYun;
@@ -39,7 +39,7 @@ public interface IHRsetService {
      *@Description:根据ID查询对象
      *@Date: 10:21 2018\5\14 0014
      */
-    Object queryById(Integer id);
+    HRset queryById(Integer id);
 
     /**
      *@Author:ShiYun;
@@ -53,12 +53,12 @@ public interface IHRsetService {
      *@Description:根据ID删除HR信息
      *@Date: 16:44 2018\5\19 0019
      */
-    Object removeOne(Integer id);
+    Boolean removeOne(Integer id);
 
     /**
      *@Author:ShiYun;
      *@Description:HR信息的修改
      *@Date: 17:34 2018\5\19 0019
      */
-    Boolean modifyOne(HRset hRset);
+    HRset modifyOne(HRset hRset);
 }
