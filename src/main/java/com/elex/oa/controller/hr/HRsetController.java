@@ -7,10 +7,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,15 +32,15 @@ public class HRsetController {
      */
     @ApiOperation("根据datatype和datavalue添加HRset的信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "body",dataType = "String",name = "datatype",value = "HRset的数据类型"),
-            @ApiImplicitParam(paramType = "body",dataType = "String",name = "datavalue",value = "HRset数据的值")
+            @ApiImplicitParam(paramType = "query",dataType = "String",name = "datatype",value = "HRset的数据类型"),
+            @ApiImplicitParam(paramType = "query",dataType = "String",name = "datavalue",value = "HRset数据的值")
     })
     @ApiResponses({
             @ApiResponse(code = Commons.REST_SUCCESS, message = "成功"),
             @ApiResponse(code = Commons.REST_SERVER_ERROR, message = "请求错误"),
             @ApiResponse(code = Commons.REST_PARAM_ERROR, message = "请求参数无效")
     })
-    @RequestMapping("/addOneHRset")
+    @PostMapping("/addOneHRset")
     @ResponseBody
     public String addOneHRset(
             @RequestParam("datatype") String datatype,
@@ -58,7 +55,7 @@ public class HRsetController {
      *@Description:HRset信息的查询（全部）
      *@Date: 18:45 2018\5\11 0011
      */
-    @RequestMapping("/queryAllHRset")
+    @GetMapping("/queryAllHRset")
     @ResponseBody
     public List<HRset> queryAllHRset(
             @RequestParam("datatype") String datatype
@@ -71,7 +68,7 @@ public class HRsetController {
      *@Description:HRset信息的查询（分页）
      *@Date: 11:32 2018\5\19 0019
      */
-    @RequestMapping("/queryHRsetPageInfo")
+    @GetMapping("/queryHRsetPageInfo")
     @ResponseBody
     public PageInfo<HRset> queryHRPageInfo(
             @RequestParam("datatype") String datatype,
@@ -92,7 +89,7 @@ public class HRsetController {
      * @Param [datatype, datavalue]
      * @return java.lang.Boolean
      **/
-    @RequestMapping("/queryValidateHRset")
+    @GetMapping("/queryValidateHRset")
     @ResponseBody
     public Boolean queryValidateHR(
             @RequestParam("datatype") String datatype,
@@ -112,7 +109,7 @@ public class HRsetController {
      * @Param [ids]
      * @return java.lang.String
      **/
-    @RequestMapping("/removeHRset")
+    @DeleteMapping("/removeHRset")
     @ResponseBody
     public String removeHRset(
             @RequestParam("ids") List<Integer> ids
@@ -130,15 +127,15 @@ public class HRsetController {
      * @Param [datatype, datavalue, id]
      * @return java.lang.String
      **/
-    @RequestMapping("/modifyHRset")
+    @PutMapping("/modifyHRset")
     @ResponseBody
     public String modifyHRset(
             @RequestParam("datatype") String datatype,
             @RequestParam("datavalue")String datavalue,
             @RequestParam("id")Integer id
     ){
-        Boolean aBoolean = ihRsetService.modifyOne(new HRset(id, datatype, datavalue));
-        if(aBoolean){
+        HRset hRset = ihRsetService.modifyOne(new HRset(id, datatype, datavalue));
+        if(hRset!=null){
             return "修改成功！";
         }
         return "修改失败！";

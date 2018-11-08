@@ -30,7 +30,7 @@ public class HRsetServiceImpl implements IHRsetService {
      * @return java.lang.Object
      **/
     @Override
-    public Object addOne(HRset hRset) {
+    public Integer addOne(HRset hRset) {
         ihRsetDao.insertOne(hRset);
         return hRset.getId();
     }
@@ -43,7 +43,7 @@ public class HRsetServiceImpl implements IHRsetService {
      * @return java.lang.Object
      **/
     @Override
-    public Object queryAll() {
+    public List<HRset> queryAll() {
         List<HRset> hRsetList = ihRsetDao.selectAll();
         return hRsetList;
     }
@@ -54,7 +54,7 @@ public class HRsetServiceImpl implements IHRsetService {
     }
 
     @Override
-    public Object queryById(Integer id) {
+    public HRset queryById(Integer id) {
         List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(id));
         return hRsetList.size()==0?null:hRsetList.get(0);
     }
@@ -70,19 +70,20 @@ public class HRsetServiceImpl implements IHRsetService {
     }
 
     @Override
-    public Object removeOne(Integer id) {
+    public Boolean removeOne(Integer id) {
         ihRsetDao.deleteOne(id);
         return true;
     }
 
     @Override
-    public Boolean modifyOne(HRset hRset) {
+    public HRset modifyOne(HRset hRset) {
         try {
             ihRsetDao.updateOne(hRset);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
-        return true;
+        List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(hRset.getId()));
+        return hRsetList.size()==0?null:hRsetList.get(0);
     }
 }
