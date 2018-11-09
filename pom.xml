@@ -13,7 +13,7 @@
 	<repositories>
 		<repository>
 			<id>dayatang-releases</id>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+                        <url>http://172.16.8.212:8081/repository/maven-public/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
