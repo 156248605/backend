@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: HR设置
@@ -71,7 +72,12 @@ public class HRsetServiceImpl implements IHRsetService {
 
     @Override
     public Boolean removeOne(Integer id) {
-        ihRsetDao.deleteOne(id);
+        try {
+            ihRsetDao.deleteOne(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
@@ -85,5 +91,54 @@ public class HRsetServiceImpl implements IHRsetService {
         }
         List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(hRset.getId()));
         return hRsetList.size()==0?null:hRsetList.get(0);
+    }
+
+    @Override
+    public Boolean modifyHRset(HRset hRset) {
+        System.out.println(hRset.toString());
+        try {
+            ihRsetDao.updateOne(hRset);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(hRset.getId()));
+        return hRsetList.size()==0?false:true;
+    }
+
+    /**
+     * @Author: shiyun
+     * @Description: 删除多个
+     * @Date  2018\11\9 0009 13:34
+     * @Param [ids]
+     * @return java.util.Map<java.lang.Integer,java.lang.String>
+     **/
+    @Override
+    public Map<Integer, String> removeMultiple(List<Integer> ids) {
+        Map<Integer,String> map = new HashMap<>();
+        for(Integer i=0;i<ids.size();i++){
+            Boolean aBoolean = true;
+            try {
+                ihRsetDao.deleteOne(ids.get(i));
+            } catch (Exception e) {
+                e.printStackTrace();
+                aBoolean = false;
+            }
+            if(aBoolean){
+                map.put(ids.get(i),"删除成功！");
+            }else {
+                map.put(ids.get(i),"删除失败！");
+            }
+        }
+        return map;
+    }
+
+    @Override
+    public Boolean queryValidateHRset(HRset hRset) {
+        List<HRset> hRsetList = ihRsetDao.selectByConditions(hRset);
+        if(hRsetList==null || hRsetList.size()==0){
+            return false;
+        }
+        return true;
     }
 }

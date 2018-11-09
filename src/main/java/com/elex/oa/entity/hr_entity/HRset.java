@@ -10,6 +10,8 @@ import java.io.Serializable;
  * @Version 1.0
  **/
 public class HRset implements Serializable {
+
+    private static final long serialVersionUID = 4194437220453549386L;
     private Integer id;//HR设置主键
     private String datatype;//HR字段类型
     private String datavalue;//HR字段值

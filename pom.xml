@@ -304,6 +304,15 @@
 			<version>2.7.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.assertj/assertj-core-java8 -->
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core-java8</artifactId>
+			<version>1.0.0m1</version>
+			<scope>test</scope>
+		</dependency>
+
+
 		<!--<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>

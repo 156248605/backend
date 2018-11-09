@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -61,4 +62,24 @@ public interface IHRsetService {
      *@Date: 17:34 2018\5\19 0019
      */
     HRset modifyOne(HRset hRset);
+
+    Boolean modifyHRset(HRset hRset);
+
+    /**
+     * @Author: shiyun
+     * @Description: 删除多个
+     * @Date  2018\11\9 0009 13:33
+     * @Param
+     * @return
+     **/
+    Map<Integer,String> removeMultiple(List<Integer> ids);
+
+    /**
+     * @Author: shiyun
+     * @Description: 根据条件查询是否存在
+     * @Date  2018\11\9 0009 13:43
+     * @Param
+     * @return true:存在;false:不存在;
+     **/
+    Boolean queryValidateHRset(HRset hRset);
 }

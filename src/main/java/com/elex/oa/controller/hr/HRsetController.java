@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: shiyun
@@ -30,24 +31,13 @@ public class HRsetController {
      *@Description:HRset信息的添加
      *@Date: 18:43 2018\5\11 0011
      */
-    @ApiOperation("根据datatype和datavalue添加HRset的信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",dataType = "String",name = "datatype",value = "HRset的数据类型"),
-            @ApiImplicitParam(paramType = "query",dataType = "String",name = "datavalue",value = "HRset数据的值")
-    })
-    @ApiResponses({
-            @ApiResponse(code = Commons.REST_SUCCESS, message = "成功"),
-            @ApiResponse(code = Commons.REST_SERVER_ERROR, message = "请求错误"),
-            @ApiResponse(code = Commons.REST_PARAM_ERROR, message = "请求参数无效")
-    })
     @PostMapping("/addOneHRset")
     @ResponseBody
     public String addOneHRset(
-            @RequestParam("datatype") String datatype,
-            @RequestParam("datavalue") String datavalue
+          @RequestBody  HRset hRset
     ){
-        Integer id = (Integer) ihRsetService.addOne(new HRset(datatype,datavalue));
-        return "添加成功！";
+        Integer id = (Integer) ihRsetService.addOne(hRset);
+        return id!=null?"添加成功！":"添加失败！";
     }
 
     /**
@@ -55,12 +45,12 @@ public class HRsetController {
      *@Description:HRset信息的查询（全部）
      *@Date: 18:45 2018\5\11 0011
      */
-    @GetMapping("/queryAllHRset")
+    @RequestMapping("/queryAllHRset")
     @ResponseBody
     public List<HRset> queryAllHRset(
-            @RequestParam("datatype") String datatype
+           HRset hRset
     ){
-        return ihRsetService.queryByConditions(new HRset(datatype));
+        return ihRsetService.queryByConditions(hRset);
     }
 
     /**
@@ -68,7 +58,7 @@ public class HRsetController {
      *@Description:HRset信息的查询（分页）
      *@Date: 11:32 2018\5\19 0019
      */
-    @GetMapping("/queryHRsetPageInfo")
+    @RequestMapping("/queryHRsetPageInfo")
     @ResponseBody
     public PageInfo<HRset> queryHRPageInfo(
             @RequestParam("datatype") String datatype,
@@ -89,17 +79,12 @@ public class HRsetController {
      * @Param [datatype, datavalue]
      * @return java.lang.Boolean
      **/
-    @GetMapping("/queryValidateHRset")
+    @RequestMapping("/queryValidateHRset")
     @ResponseBody
-    public Boolean queryValidateHR(
-            @RequestParam("datatype") String datatype,
-            @RequestParam("datavalue") String datavalue
+    public Boolean queryValidateHRset(
+            HRset hRset
     ){
-        List<HRset> hRsetList = ihRsetService.queryByConditions(new HRset(datatype, datavalue));
-        if(hRsetList==null || hRsetList.size()==0){
-            return false;
-        }
-        return true;
+        return ihRsetService.queryValidateHRset(hRset);
     }
 
     /**
@@ -109,15 +94,12 @@ public class HRsetController {
      * @Param [ids]
      * @return java.lang.String
      **/
-    @DeleteMapping("/removeHRset")
+    @RequestMapping("/removeHRset")
     @ResponseBody
-    public String removeHRset(
+    public Map<Integer,String> removeHRset(
             @RequestParam("ids") List<Integer> ids
     ){
-        for(Integer i=0;i<ids.size();i++){
-            ihRsetService.removeOne(ids.get(i));
-        }
-        return "提交成功！";
+        return ihRsetService.removeMultiple(ids);
     }
 
     /**
@@ -127,17 +109,12 @@ public class HRsetController {
      * @Param [datatype, datavalue, id]
      * @return java.lang.String
      **/
-    @PutMapping("/modifyHRset")
+    @RequestMapping("/modifyHRset")
     @ResponseBody
     public String modifyHRset(
-            @RequestParam("datatype") String datatype,
-            @RequestParam("datavalue")String datavalue,
-            @RequestParam("id")Integer id
+            @RequestBody HRset hRset
     ){
-        HRset hRset = ihRsetService.modifyOne(new HRset(id, datatype, datavalue));
-        if(hRset!=null){
-            return "修改成功！";
-        }
-        return "修改失败！";
+        Boolean aBoolean = ihRsetService.modifyHRset(hRset);
+        return aBoolean?"修改成功！":"修改失败！";
     }
 }

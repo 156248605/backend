@@ -25,14 +25,14 @@ import java.util.Properties;
 @Configuration
 @EnableSwagger2
 public class SwaggerConf {
-    /*@Value("${swagger.api.title}")
+    @Value("${swagger.api.title:HR REST API}")
     private String apiTitle;
-    @Value("${swagger.api.version}")
+    @Value("${swagger.api.version:1.0.0}")
     private String apiVersion;
-    @Value("${swagger.base-package}")
+    @Value("${swagger.base-package:com.elex.oa.controller.hr}")
     private String basePackage;
 
-    @Bean
+
     public Docket docket(){
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title(apiTitle)
@@ -44,5 +44,5 @@ public class SwaggerConf {
                 .apis(RequestHandlerSelectors.basePackage(basePackage))
                 .paths(PathSelectors.any())
                 .build();
-    }*/
+    }
 }
