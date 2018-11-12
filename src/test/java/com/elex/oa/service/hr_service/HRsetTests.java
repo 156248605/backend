@@ -3,6 +3,8 @@ package com.elex.oa.service.hr_service;
 import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.entity.hr_entity.HRset;
 import com.github.pagehelper.PageInfo;
+import org.assertj.core.api.AbstractBooleanAssert;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -77,5 +79,11 @@ public class HRsetTests {
         HRset hRset = ihRsetService.modifyOne(new HRset(2, "汉族"));
         Assert.assertNotNull("test7_modifyOne hRset is null",hRset);
         Assert.assertEquals("test7_modifyOne hRset.datavalue","汉族",hRset.getDatavalue());
+    }
+
+    @Test
+    public void test8_modifyHRset(){
+        Boolean aBoolean = ihRsetService.modifyHRset(new HRset(2, "藏族"));
+        Assertions.assertThat(aBoolean).isTrue();
     }
 }    
