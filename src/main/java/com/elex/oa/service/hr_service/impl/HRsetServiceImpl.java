@@ -125,6 +125,7 @@ public class HRsetServiceImpl implements IHRsetService {
                 aBoolean = false;
             }
             if(aBoolean){
+                System.out.println(ids.get(i)+"===========>删除成功！");
                 map.put(ids.get(i),"删除成功！");
             }else {
                 map.put(ids.get(i),"删除失败！");

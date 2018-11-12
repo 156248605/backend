@@ -65,9 +65,9 @@ public class HRsetControllerTest {
         ids.add(1);
         MultiValueMap<String, Object> map = new LinkedMultiValueMap();
         map.put("ids", ids);
-        String s = restTemplate.postForObject("/hrset/removeHRset",map, String.class);
-        Assertions.assertThat(map.size()).isEqualTo(1);
-        Assertions.assertThat(map.get(1)).isEqualTo("删除成功！");
+        Map res = restTemplate.postForObject("/hrset/removeHRset", map, Map.class);
+        Assertions.assertThat(res.size()).isEqualTo(1);
+        Assertions.assertThat(res.get("1")).isEqualTo("删除成功！");
     }
 
     @Test

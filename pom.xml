@@ -280,11 +280,11 @@
 			<version>5.0.8.RELEASE</version>
 		</dependency>
 
-		<!--<dependency>
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>25.1-jre</version>
-		</dependency>-->
+		</dependency>
 
 	</dependencies>
 
