@@ -35,7 +35,7 @@
 		LEFT JOIN tb_id_user u ON per.userid = u.id
 		LEFT JOIN tb_id_department d ON per.depid = d.id
 		LEFT JOIN tb_hr_per_and_post_rs r ON per.id = r.perid
-		LEFT JOIN tb_hr_set_telphone t ON per.telphoneid = t.id
+		LEFT JOIN tb_hr_set t ON per.telphoneid = t.id
 		<where>
 			<if test="isactive!=null and isactive!='' or isactive==0">
 				u.isactive=#{isactive}
