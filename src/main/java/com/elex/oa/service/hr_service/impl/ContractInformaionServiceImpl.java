@@ -1,19 +1,20 @@
 package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.IContractInformationDao;
-import com.elex.oa.dao.hr.IHRsetContracttypeDao;
+import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
+import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.service.hr_service.IContractInformationService;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.*;
 
@@ -26,13 +27,13 @@ import java.util.*;
 @Service
 public class ContractInformaionServiceImpl implements IContractInformationService {
 
-    @Autowired
+    @Resource
     IContractInformationDao iContractInformationDao;
-    @Autowired
+    @Resource
     IUserDao iUserDao;
-    @Autowired
-    IHRsetContracttypeDao ihRsetContracttypeDao;
-    @Autowired
+    @Resource
+    IHRsetDao ihRsetDao;
+    @Resource
     IPersonalInformationDao iPersonalInformationDao;
 
     /**
@@ -84,8 +85,9 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         System.out.println(per.getEmployeenumber());
         contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
         //获得合同类型
-        if (ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid())!=null) {
-            contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+        List<HRset> contractList = ihRsetDao.selectByConditions(new HRset(contractInformation.getContracttypeid()));
+        if ( contractList!=null && contractList.size()==1) {
+            contractInformation.setContracttype(contractList.get(0).getDatavalue());
         }
         //获得办理人姓名
         contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
@@ -122,7 +124,10 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
                 contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
             }
             //获得合同类型
-            contractInformation.setContracttype(ihRsetContracttypeDao.selectById(contractInformation.getContracttypeid()).getContracttype());
+            List<HRset> contractList = ihRsetDao.selectByConditions(new HRset(contractInformation.getContracttypeid()));
+            if (contractList!=null && contractInformationList.size()==1) {
+                contractInformation.setContracttype(contractList.get(0).getDatavalue());
+            }
             //获得办理人姓名
             contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
             //获得合同期限

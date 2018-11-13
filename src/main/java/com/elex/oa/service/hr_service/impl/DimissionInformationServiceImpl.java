@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,24 +26,20 @@ import java.util.List;
  */
 @Service
 public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionInformation> implements IDimissionInformationService {
-    @Autowired
+    @Resource
     IDimissionInformationDao iDimissionInformationDao;
-    @Autowired
+    @Resource
     IPersonalInformationDao iPersonalInformationDao;
-    @Autowired
+    @Resource
     IUserDao iUserDao;
-    @Autowired
+    @Resource
     IDeptDao iDeptDao;
-    @Autowired
+    @Resource
     IPostDao iPostDao;
-    @Autowired
+    @Resource
     IPerandpostrsDao iPerandpostrsDao;
-    @Autowired
-    IHRsetDimissiontypeDao ihRsetDimissiontypeDao;
-    @Autowired
-    IHRsetDimissiondirectionDao ihRsetDimissiondirectionDao;
-    @Autowired
-    IHRsetDimissionreasonDao ihRsetDimissionreasonDao;
+    @Resource
+    IHRsetDao ihRsetDao;
 
     /**
      *@Author:ShiYun;
@@ -154,16 +151,19 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
                 dimissionInformations.get(i).setDepname(iDeptDao.selectDeptByDepid(iPersonalInformationDao.selectByUserid(dimissionInformations.get(i).getDimissionuserid()).getDepid()).getDepname());
             }
             //获得离职类型
-            if (ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid())!=null) {
-                dimissionInformations.get(i).setDimissiontype(ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid()).getDimissiontype());
+            List<HRset> hRsetDimissiontypeList = ihRsetDao.selectByConditions(new HRset(dimissionInformations.get(i).getDimissiontypeid()));
+            if (hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1) {
+                dimissionInformations.get(i).setDimissiontype(hRsetDimissiontypeList.get(0).getDatavalue());
             }
             //获得离职去向
-            if (ihRsetDimissiondirectionDao.selectById(dimissionInformations.get(i).getDimissiondirectionid())!=null) {
-                dimissionInformations.get(i).setDimissiondirection(ihRsetDimissiondirectionDao.selectById(dimissionInformations.get(i).getDimissiondirectionid()).getDimissiondirection());
+            List<HRset> hRsetDimissiondirectionList = ihRsetDao.selectByConditions(new HRset(dimissionInformations.get(i).getDimissiondirectionid()));
+            if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
+                dimissionInformations.get(i).setDimissiondirection(hRsetDimissiondirectionList.get(0).getDatavalue());
             }
             //获得离职原因
-            if (ihRsetDimissionreasonDao.selectById(dimissionInformations.get(i).getDimissionreasonid())!=null) {
-                dimissionInformations.get(i).setDimissionreason(ihRsetDimissionreasonDao.selectById(dimissionInformations.get(i).getDimissionreasonid()).getDimissionreason());
+            List<HRset> hRsetDimissionreasonList = ihRsetDao.selectByConditions(new HRset(dimissionInformations.get(i).getDimissionreasonid()));
+            if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
+                dimissionInformations.get(i).setDimissionreason(hRsetDimissionreasonList.get(0).getDatavalue());
             }
         }
         PageInfo<DimissionInformation> dimissionInformationPageInfo = new PageInfo<DimissionInformation>(dimissionInformations);
@@ -187,16 +187,19 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
             dimissionInformation.setTransactortruename(iUserDao.selectById(dimissionInformation.getTransactoruserid()).getTruename());
         }
         //获得离职类型
-        if(ihRsetDimissiontypeDao.selectById(dimissionInformation.getDimissiontypeid())!=null){
-           dimissionInformation.setDimissiontype(ihRsetDimissiontypeDao.selectById(dimissionInformation.getDimissiontypeid()).getDimissiontype());
+        List<HRset> hRsetDimissiontypeList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissiontypeid()));
+        if(hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1){
+           dimissionInformation.setDimissiontype(hRsetDimissiontypeList.get(0).getDatavalue());
         }
         //获得离职去向
-        if (ihRsetDimissiondirectionDao.selectById(dimissionInformation.getDimissiondirectionid())!=null) {
-            dimissionInformation.setDimissiondirection(ihRsetDimissiondirectionDao.selectById(dimissionInformation.getDimissiondirectionid()).getDimissiondirection());
+        List<HRset> hRsetDimissiondirectionList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissiondirectionid()));
+        if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
+            dimissionInformation.setDimissiondirection(hRsetDimissiondirectionList.get(0).getDatavalue());
         }
         //获得离职原因
-        if (ihRsetDimissionreasonDao.selectById(dimissionInformation.getDimissionreasonid())!=null) {
-            dimissionInformation.setDimissionreason(ihRsetDimissionreasonDao.selectById(dimissionInformation.getDimissionreasonid()).getDimissionreason());
+        List<HRset> hRsetDimissionreasonList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissionreasonid()));
+        if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
+            dimissionInformation.setDimissionreason(hRsetDimissionreasonList.get(0).getDatavalue());
         }
         return dimissionInformation;
     }
@@ -244,27 +247,30 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         }
         //判断离职类型ID是否有变
         Integer dimissiontypeid = dimissionInformation.getDimissiontypeid();
+        List<HRset> hRsetDimissiontypeList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissiontypeid()));
         if(dimissiontypeid==null || dimissiontypeid.equals("") || dimissiontypeid==selectOneById.getDimissiontypeid()){
             dimissionInformation.setDimissiontypeid(null);
-        }else if(ihRsetDimissiontypeDao.selectById(dimissiontypeid)==null) {
+        }else if(hRsetDimissiontypeList==null || hRsetDimissiontypeList.size()==0) {
             return RespUtil.successResp("505","数据请求有误！",null);
         }else {
             b = true;
         }
         //判断离职原因ID是否有变
         Integer dimissionreasonid = dimissionInformation.getDimissionreasonid();
+        List<HRset> hRsetDimissionreasonList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissionreasonid()));
         if(dimissionreasonid==null || dimissionreasonid.equals("") || dimissionreasonid==selectOneById.getDimissionreasonid()){
             dimissionInformation.setDimissionreasonid(null);
-        }else if(ihRsetDimissionreasonDao.selectById(dimissionreasonid)==null){
+        }else if(hRsetDimissionreasonList==null || hRsetDimissionreasonList.size()==0){
             return RespUtil.successResp("506","数据请求有误！",null);
         }else {
             b = true;
         }
         //判断离职方向ID是否有变
         Integer dimissiondirectionid = dimissionInformation.getDimissiondirectionid();
+        List<HRset> hRsetDimissiondirectionList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissiondirectionid()));
         if(dimissiondirectionid==null || dimissiondirectionid.equals("") || dimissiondirectionid==selectOneById.getDimissiondirectionid()){
             dimissionInformation.setDimissiondirectionid(null);
-        }else if(ihRsetDimissiondirectionDao.selectById(dimissiondirectionid)==null){
+        }else if(hRsetDimissiondirectionList==null || hRsetDimissiondirectionList.size()==0){
             return RespUtil.successResp("507","数据请求有误！",null);
         }else {
             b = true;
@@ -317,16 +323,19 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
                 }
             }
             //获得离职类型
-            if (ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid())!=null) {
-                dimissionInformations.get(i).setDimissiontype(ihRsetDimissiontypeDao.selectById(dimissionInformations.get(i).getDimissiontypeid()).getDimissiontype());
+            List<HRset> hRsetDimissiontypeList = ihRsetDao.selectByConditions(new HRset(dimissionInformations.get(i).getDimissiontypeid()));
+            if (hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1) {
+                dimissionInformations.get(i).setDimissiontype(hRsetDimissiontypeList.get(0).getDatavalue());
             }
             //获得离职去向
-            if (ihRsetDimissiondirectionDao.selectById(dimissionInformations.get(i).getDimissiondirectionid())!=null) {
-                dimissionInformations.get(i).setDimissiondirection(ihRsetDimissiondirectionDao.selectById(dimissionInformations.get(i).getDimissiondirectionid()).getDimissiondirection());
+            List<HRset> hRsetDimissiondirectionList = ihRsetDao.selectByConditions(new HRset(dimissionInformations.get(i).getDimissiondirectionid()));
+            if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
+                dimissionInformations.get(i).setDimissiondirection(hRsetDimissiondirectionList.get(0).getDatavalue());
             }
             //获得离职原因
-            if (ihRsetDimissionreasonDao.selectById(dimissionInformations.get(i).getDimissionreasonid())!=null) {
-                dimissionInformations.get(i).setDimissionreason(ihRsetDimissionreasonDao.selectById(dimissionInformations.get(i).getDimissionreasonid()).getDimissionreason());
+            List<HRset> hRsetDimissionreasonList = ihRsetDao.selectByConditions(new HRset(dimissionInformations.get(i).getDimissionreasonid()));
+            if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
+                dimissionInformations.get(i).setDimissionreason(hRsetDimissionreasonList.get(0).getDatavalue());
             }
         }
         return dimissionInformations;

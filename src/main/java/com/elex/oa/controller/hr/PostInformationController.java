@@ -39,11 +39,8 @@ public class PostInformationController {
     private IPostLogService iPostLogService;
     @Autowired
     private IUserService iUserService;
-
     @Autowired
-    IHRsetFunctionalTypeService ihRsetFunctionalTypeService;
-    @Autowired
-    IHRsetPostlevelService ihRsetPostlevelService;
+    IHRsetService ihRsetService;
 
 
     /**
@@ -62,13 +59,13 @@ public class PostInformationController {
             parentpost.setPostname("无上级岗位");
         }
         post.setParentpost(parentpost);
-        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post.getFunctionaltypeid());
+        HRset hRsetFunctionalType = ihRsetService.queryById(post.getFunctionaltypeid());
         if (hRsetFunctionalType!=null) {
-            post.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            post.setFunctionaltype(hRsetFunctionalType.getDatavalue());
         }
-        HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryById(post.getPostlevelid());
+        HRset hRsetPostlevel = ihRsetService.queryById(post.getPostlevelid());
         if (hRsetPostlevel!=null) {
-            post.setPostlevel(hRsetPostlevel.getPostlevel());
+            post.setPostlevel(hRsetPostlevel.getDatavalue());
         }
         return post;
     }
@@ -90,13 +87,13 @@ public class PostInformationController {
             parentpost.setPostname("无上级岗位");
         }
         post.setParentpost(parentpost);
-        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post.getFunctionaltypeid());
+        HRset hRsetFunctionalType = ihRsetService.queryById(post.getFunctionaltypeid());
         if (hRsetFunctionalType!=null) {
-            post.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            post.setFunctionaltype(hRsetFunctionalType.getDatavalue());
         }
-        HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryById(post.getPostlevelid());
+        HRset hRsetPostlevel = ihRsetService.queryById(post.getPostlevelid());
         if (hRsetPostlevel!=null) {
-            post.setPostlevel(hRsetPostlevel.getPostlevel());
+            post.setPostlevel(hRsetPostlevel.getDatavalue());
         }
         return post;
     }
@@ -119,13 +116,13 @@ public class PostInformationController {
             parentpost.setPostname("无上级岗位");
         }
         post.setParentpost(parentpost);
-        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post.getFunctionaltypeid());
+        HRset hRsetFunctionalType = ihRsetService.queryById(post.getFunctionaltypeid());
         if (hRsetFunctionalType!=null) {
-            post.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            post.setFunctionaltype(hRsetFunctionalType.getDatavalue());
         }
-        HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryById(post.getPostlevelid());
+        HRset hRsetPostlevel = ihRsetService.queryById(post.getPostlevelid());
         if (hRsetPostlevel!=null) {
-            post.setPostlevel(hRsetPostlevel.getPostlevel());
+            post.setPostlevel(hRsetPostlevel.getDatavalue());
         }
         return post;
     }
@@ -140,13 +137,13 @@ public class PostInformationController {
     public List<Post> queryPosts(){
         List<Post> posts = iPostService.queryAllPosts();
         for(Post post:posts){
-            HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post.getFunctionaltypeid());
+            HRset hRsetFunctionalType = ihRsetService.queryById(post.getFunctionaltypeid());
             if (hRsetFunctionalType!=null) {
-                post.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+                post.setFunctionaltype(hRsetFunctionalType.getDatavalue());
             }
-            HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryById(post.getPostlevelid());
+            HRset hRsetPostlevel = ihRsetService.queryById(post.getPostlevelid());
             if (hRsetPostlevel!=null) {
-                post.setPostlevel(hRsetPostlevel.getPostlevel());
+                post.setPostlevel(hRsetPostlevel.getDatavalue());
             }
         }
         return posts;
@@ -235,13 +232,13 @@ public class PostInformationController {
                 e.printStackTrace();
             }
         }
-        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryByFuctionaltype(post.getFunctionaltype());
-        if (hRsetFunctionalType!=null) {
-            post.setFunctionaltypeid(hRsetFunctionalType.getId());
+        List<HRset> hRsetFunctionalList = ihRsetService.queryByConditions(new HRset("functionaltype", post.getFunctionaltype()));
+        if (hRsetFunctionalList!=null && hRsetFunctionalList.size()==1) {
+            post.setFunctionaltypeid(hRsetFunctionalList.get(0).getId());
         }
-        HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryByPostlevel(post.getPostlevel());
-        if(hRsetPostlevel!=null){
-            post.setPostlevelid(hRsetPostlevel.getId());
+        List<HRset> postlevelList = ihRsetService.queryByConditions(new HRset("postlevel", post.getPostlevel()));
+        if(postlevelList!=null && postlevelList.size()==1){
+            post.setPostlevelid(postlevelList.get(0).getId());
         }
         Integer postid = iPostService.addOne(post);
         post.setId(postid);
@@ -270,13 +267,13 @@ public class PostInformationController {
         Post post = iPostService.queryOneByPostid(id);
         Post parentpost = iPostService.queryOneByPostid(post.getParentpostid());
         post.setParentpost(parentpost);
-        HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post.getFunctionaltypeid());
+        HRset hRsetFunctionalType = ihRsetService.queryById(post.getFunctionaltypeid());
         if (hRsetFunctionalType!=null) {
-            post.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            post.setFunctionaltype(hRsetFunctionalType.getDatavalue());
         }
-        HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryById(post.getPostlevelid());
+        HRset hRsetPostlevel = ihRsetService.queryById(post.getPostlevelid());
         if (hRsetPostlevel!=null) {
-            post.setPostlevel(hRsetPostlevel.getPostlevel());
+            post.setPostlevel(hRsetPostlevel.getDatavalue());
         }
         return post;
     }
@@ -315,13 +312,13 @@ public class PostInformationController {
             postLog.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());//默认为管理员，实际从session中拿
 
             Post post2 = iPostService.queryOneByPostid(post.getId());
-            HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(post2.getFunctionaltypeid());
+            HRset hRsetFunctionalType = ihRsetService.queryById(post2.getFunctionaltypeid());
             if (hRsetFunctionalType!=null) {
-                post2.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+                post2.setFunctionaltype(hRsetFunctionalType.getDatavalue());
             }
-            HRsetPostlevel hRsetPostlevel = ihRsetPostlevelService.queryById(post2.getPostlevelid());
+            HRset hRsetPostlevel = ihRsetService.queryById(post2.getPostlevelid());
             if (hRsetPostlevel!=null) {
-                post2.setPostlevel(hRsetPostlevel.getPostlevel());
+                post2.setPostlevel(hRsetPostlevel.getDatavalue());
             }
 
             if (!post.getPostname().equals(post2.getPostname())){
@@ -402,13 +399,13 @@ public class PostInformationController {
             }
 
             if (b) {
-                HRsetFunctionalType hRsetFunctionalType1 = ihRsetFunctionalTypeService.queryByFuctionaltype(post.getFunctionaltype());
-                if (hRsetFunctionalType1!=null) {
-                    post.setFunctionaltypeid(hRsetFunctionalType1.getId());
+                List<HRset> hRsetFunctionalList = ihRsetService.queryByConditions(new HRset("functionaltype", post.getFunctionaltype()));
+                if (hRsetFunctionalList!=null && hRsetFunctionalList.size()==1) {
+                    post.setFunctionaltypeid(hRsetFunctionalList.get(0).getId());
                 }
-                HRsetPostlevel hRsetPostlevel1 = ihRsetPostlevelService.queryByPostlevel(post.getPostlevel());
-                if (hRsetPostlevel1!=null) {
-                    post.setPostlevelid(hRsetPostlevel1.getId());
+                List<HRset> hRsetPostlevelList = ihRsetService.queryByConditions(new HRset("postlevel", post.getPostlevel()));
+                if (hRsetPostlevelList!=null && hRsetPostlevelList.size()==1) {
+                    post.setPostlevelid(hRsetPostlevelList.get(0).getId());
                 }
                 iPostService.modifyOne(post);
             } else {

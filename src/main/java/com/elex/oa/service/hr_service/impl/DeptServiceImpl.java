@@ -1,7 +1,7 @@
 package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.IDeptDao;
-import com.elex.oa.dao.hr.IHRsetDeptypeDao;
+import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.*;
@@ -33,7 +33,7 @@ public class DeptServiceImpl implements IDeptService {
     @Resource
     private IUserDao iUserDao;
     @Resource
-    private IHRsetDeptypeDao ihRsetDeptypeDao;
+    private IHRsetDao ihRsetDao;
 
     /**
      *@Author:ShiYun;
@@ -635,19 +635,31 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public List<Dept> queryAllCompany1and2() {
         //先获得一级公司和二级公司的类型ID
-        HRsetDeptype hRsetDeptype = new HRsetDeptype();
-        hRsetDeptype.setDeptype("一级公司");
-        List<HRsetDeptype> hRsetDeptypeList = ihRsetDeptypeDao.selectByConditions(hRsetDeptype);
-        Integer id1 = hRsetDeptypeList.get(0).getId();
-        hRsetDeptype.setDeptype("二级公司");
-        List<HRsetDeptype> hRsetDeptypeList2 = ihRsetDeptypeDao.selectByConditions(hRsetDeptype);
-        Integer id2 = hRsetDeptypeList2.get(0).getId();
+        Integer firstDeptypeid = null;
+        List<HRset> hRsetFirstList = ihRsetDao.selectByConditions(new HRset("deptype", "一级公司"));
+        if(hRsetFirstList!=null && hRsetFirstList.size()==1){
+            firstDeptypeid = hRsetFirstList.get(0).getId();
+        }
+        Integer secondDeptypeid = null;
+        List<HRset> hRsetSecondList = ihRsetDao.selectByConditions(new HRset("deptype", "二级公司"));
+        if(hRsetSecondList!=null && hRsetSecondList.size()==1){
+            secondDeptypeid = hRsetSecondList.get(0).getId();
+        }
+
         //获得相应的公司
-        List<Dept> deptList = iDeptDao.selectDeptByDeptypeid(id1);
-        List<Dept> deptList2 = iDeptDao.selectDeptByDeptypeid(id2);
-        for (Dept d:deptList
-             ) {
-            deptList2.add(d);
+        List<Dept> deptList = null;
+        if (firstDeptypeid!=null) {
+            deptList = iDeptDao.selectDeptByDeptypeid(firstDeptypeid);
+        }
+        List<Dept> deptList2 = null;
+        if (secondDeptypeid!=null) {
+            deptList2 = iDeptDao.selectDeptByDeptypeid(secondDeptypeid);
+        }
+        if (deptList!=null && deptList.size()>0) {
+            for (Dept d:deptList
+                 ) {
+                deptList2.add(d);
+            }
         }
         return deptList2;
     }

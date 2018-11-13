@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,12 +38,8 @@ public class DimissionController {
     @Autowired
     IPostService iPostService;
     @Autowired
-    IHRsetDimissiontypeService ihRsetDimissiontypeService;
-    @Autowired
-    IHRsetDimissiondirectionService ihRsetDimissiondirectionService;
-    @Autowired
-    IHRsetDimissionreasonService ihRsetDimissionreasonService;
-    @Autowired
+    IHRsetService ihRsetService;
+    @Resource
     IGzrzDao iGzrzDao;
 
     /**
@@ -201,20 +198,23 @@ public class DimissionController {
                     dimissionInformation.setDimissionuserid(iUserService.queryByTruename(dimissionInformation.getDimissiontruename()).getId());
                 }
                 //获得dimissiontypeid
-                if (ihRsetDimissiontypeService.queryByDimissiontype(dimissionInformation.getDimissiontype())!=null) {
-                    dimissionInformation.setDimissiontypeid(ihRsetDimissiontypeService.queryByDimissiontype(dimissionInformation.getDimissiontype()).getId());
+                List<HRset> hRsetDimissiontypeList = ihRsetService.queryByConditions(new HRset("dimissiontype", dimissionInformation.getDimissiontype()));
+                if (hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1) {
+                    dimissionInformation.setDimissiontypeid(hRsetDimissiontypeList.get(0).getId());
                 }
                 //获得dimissiondirectionid
-                if (ihRsetDimissiondirectionService.queryByDimissiondirection(dimissionInformation.getDimissiondirection())!=null) {
-                    dimissionInformation.setDimissiondirectionid(ihRsetDimissiondirectionService.queryByDimissiondirection(dimissionInformation.getDimissiondirection()).getId());
+                List<HRset> hRsetDimissiondirectionList = ihRsetService.queryByConditions(new HRset("dimissiondirection", dimissionInformation.getDimissiondirection()));
+                if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
+                    dimissionInformation.setDimissiondirectionid(hRsetDimissiondirectionList.get(0).getId());
                 }
                 //获得transactoruserid
                 if (iUserService.queryByTruename(dimissionInformation.getTransactortruename())!=null) {
                     dimissionInformation.setTransactoruserid(iUserService.queryByTruename(dimissionInformation.getTransactortruename()).getId());
                 }
                 //获得dimissionreasonid
-                if (ihRsetDimissionreasonService.queryByDimissionreason(dimissionInformation.getDimissionreason())!=null) {
-                    dimissionInformation.setDimissionreasonid(ihRsetDimissionreasonService.queryByDimissionreason(dimissionInformation.getDimissionreason()).getId());
+                List<HRset> hRsetDimissionreasonList = ihRsetService.queryByConditions(new HRset("dimissionreason", dimissionInformation.getDimissionreason()));
+                if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
+                    dimissionInformation.setDimissionreasonid(hRsetDimissionreasonList.get(0).getId());
                 }
                 iDimissionInformationService.addOne(dimissionInformation);
             }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class ContractInformationController {
     @Autowired
     IRenewContractRecordService iRenewContractRecordService;
     @Autowired
-    IHRsetContracttypeService ihRsetContracttypeService;
+    IHRsetService ihRsetService;
 
     /**
      *@Author:ShiYun;
@@ -76,8 +77,9 @@ public class ContractInformationController {
             User user = iUserService.getById(userid);
             list.get(i).setTruename(user.getTruename());
             //获得合同类型
-            if (ihRsetContracttypeService.queryById(list.get(i).getContracttypeid())!=null) {
-                list.get(i).setContracttype(ihRsetContracttypeService.queryById(list.get(i).getContracttypeid()).getContracttype());
+            HRset hRsetContracttype = ihRsetService.queryById(list.get(i).getContracttypeid());
+            if (hRsetContracttype!=null) {
+                list.get(i).setContracttype(hRsetContracttype.getDatavalue());
             }
             // 获得合同年限
             /*list.get(i).setContractage(IDcodeUtil.getContractage(list.get(i).getStartdate(),list.get(i).getEnddate()));*/
@@ -252,8 +254,9 @@ public class ContractInformationController {
             if (iPersonalInformationService.queryOneByUserid(contractInformation1.getUserid())!=null) {
                 contractInformation1.setEmployeenumber(iPersonalInformationService.queryOneByUserid(contractInformation1.getUserid()).getEmployeenumber());
             }
-            if (ihRsetContracttypeService.queryById(contractInformation1.getContracttypeid())!=null) {
-                contractInformation1.setContracttype(ihRsetContracttypeService.queryById(contractInformation1.getContracttypeid()).getContracttype());
+            HRset hRsetContracttype = ihRsetService.queryById(contractInformation.getContracttypeid());
+            if (hRsetContracttype!=null) {
+                contractInformation1.setContracttype(hRsetContracttype.getDatavalue());
             }
             try {
                 contractInformation1.setContractage(IDcodeUtil.getContractage(contractInformation1.getStartdate(),contractInformation1.getEnddate()));
@@ -300,8 +303,9 @@ public class ContractInformationController {
                 if (iUserService.queryByTruename(contractInformation.getTruename())!=null) {
                     contractInformation.setUserid(iUserService.queryByTruename(contractInformation.getTruename()).getId());
                 }
-                if (ihRsetContracttypeService.queryByContracttype(contractInformation.getContracttype())!=null) {
-                    contractInformation.setContracttypeid(ihRsetContracttypeService.queryByContracttype(contractInformation.getContracttype()).getId());
+                HRset hRsetContracttype = ihRsetService.queryById(contractInformation.getContracttypeid());
+                if (hRsetContracttype!=null) {
+                    contractInformation.setContracttypeid(hRsetContracttype.getId());
                 }
                 if (iUserService.queryByTruename(contractInformation.getTransactortruename())!=null) {
                     contractInformation.setTransactoruserid(iUserService.queryByTruename(contractInformation.getTransactortruename()).getId());

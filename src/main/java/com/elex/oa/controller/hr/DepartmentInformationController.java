@@ -35,22 +35,13 @@ public class DepartmentInformationController {
     IDeptLogService iDeptLogService;
 
     @Autowired
-    IHRsetFunctionalTypeService ihRsetFunctionalTypeService;
+    IHRsetService ihRsetService;
 
     @Autowired
     IChangeInformationService iChangeInformationService;
 
     @Autowired
-    IHRsetDeptypeService ihRsetDeptypeService;
-
-    @Autowired
     IBaseInformationService iBaseInformationService;
-
-    @Autowired
-    IHRsetRaceService ihRsetRaceService;
-
-    @Autowired
-    IHRsetChildrenService ihRsetChildrenService;
 
     @Autowired
     IPostService iPostService;
@@ -66,75 +57,6 @@ public class DepartmentInformationController {
 
     @Autowired
     IPerandpostrsService iPerandpostrsService;
-
-    @Autowired
-    IHRsetZzmmService ihRsetZzmmService;//政治面貌
-
-    @Autowired
-    IHRsetZgxlService ihRsetZgxlService;//最高学历
-
-    @Autowired
-    IHRsetByyxService ihRsetByyxService;//毕业院校
-
-    @Autowired
-    IHRsetSxzyService ihRsetSxzyService;//所学专业
-
-    @Autowired
-    IHRsetPyfsService ihRsetPyfsService;//培养方式
-
-    @Autowired
-    IHRsetFlaService ihRsetFlaService;//外语
-
-    @Autowired
-    IHRsetPosttitleService ihRsetPosttitleService;//职称
-
-    @Autowired
-    IHRsetZyzstypeService ihRsetZyzstypeService;//职业证书类型
-
-    @Autowired
-    IHRsetZyzsnameService ihRsetZyzsnameService;//职业证书名称
-
-    @Autowired
-    IHRsetParentcompanyService ihRsetParentcompanyService;//上家公司
-
-    @Autowired
-    IHRsetRankService ihRsetRankService;//职级
-
-    @Autowired
-    IHRsetEmployeetypeService ihRsetEmployeetypeService;//员工类型
-
-    @Autowired
-    IHRsetSalarystandardService ihRsetSalarystandardService;//薪资标准
-
-    @Autowired
-    IHRsetSsbService ihRsetSsbService;//社保基数
-
-    @Autowired
-    IHRsetSsbgscdService ihRsetSsbgscdService;//社保公司缴费比例
-
-    @Autowired
-    IHRsetSsbgrcdService ihRsetSsbgrcdService;//社保个人缴费比例
-
-    @Autowired
-    IHRsetGjjService ihRsetGjjService;//公积金基数
-
-    @Autowired
-    IHRsetGjjgscdService ihRsetGjjgscdService;//公积金公司缴费比例
-
-    @Autowired
-    IHRsetGjjgrcdService ihRsetGjjgrcdService;//公积金个人缴费比例
-
-    @Autowired
-    IHRsetKhhService ihRsetKhhService;//开户行
-
-    @Autowired
-    IHRsetSbjndService ihRsetSbjndService;//社保缴纳地
-
-    @Autowired
-    IHRsetTelphoneService ihRsetTelphoneService;//办公电话
-
-    @Autowired
-    IHRsetEmergencyrpService ihRsetEmergencyrpService;//应急联系人关系
 
     /**
      *@Author:ShiYun;
@@ -182,13 +104,13 @@ public class DepartmentInformationController {
             List<PersonalInformation> personalInformations = iPersonalInformationService.queryPIs(personalInformation);
             dept.setNumbers(personalInformations.size());
 
-            HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid());
-            if (hRsetFunctionalType!=null) {
-                dept.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            HRset hRsetFunctionaltype = ihRsetService.queryById(dept.getFunctionaltypeid());
+            if (hRsetFunctionaltype!=null) {
+                dept.setFunctionaltype(hRsetFunctionaltype.getDatavalue());
             }
-            HRsetDeptype hRsetDeptype = ihRsetDeptypeService.queryById(dept.getDeptypeid());
+            HRset hRsetDeptype = ihRsetService.queryById(dept.getDeptypeid());
             if(hRsetDeptype!=null){
-                dept.setDeptype(hRsetDeptype.getDeptype());
+                dept.setDeptype(hRsetDeptype.getDatavalue());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,13 +167,13 @@ public class DepartmentInformationController {
             List<PersonalInformation> personalInformations = iPersonalInformationService.queryPIs(personalInformation);
             dept.setNumbers(personalInformations.size());
 
-            HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid());
-            if (hRsetFunctionalType!=null) {
-                dept.setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            HRset hRsetFunctionaltype = ihRsetService.queryById(dept.getFunctionaltypeid());
+            if (hRsetFunctionaltype!=null) {
+                dept.setFunctionaltype(hRsetFunctionaltype.getDatavalue());
             }
-            HRsetDeptype hRsetDeptype = ihRsetDeptypeService.queryById(dept.getDeptypeid());
+            HRset hRsetDeptype = ihRsetService.queryById(dept.getDeptypeid());
             if(hRsetDeptype!=null){
-                dept.setDeptype(hRsetDeptype.getDeptype());
+                dept.setDeptype(hRsetDeptype.getDatavalue());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -270,13 +192,13 @@ public class DepartmentInformationController {
     public List<Dept> queryDepartments(){
         List<Dept> depts = iDeptService.queryAllDepts();
         for(int i=0;i<depts.size();i++){
-            HRsetFunctionalType hRsetFunctionalType = ihRsetFunctionalTypeService.queryById(depts.get(i).getFunctionaltypeid());
-            if (hRsetFunctionalType!=null) {
-                depts.get(i).setFunctionaltype(hRsetFunctionalType.getFunctionaltype());
+            HRset hRsetFunctionaltype = ihRsetService.queryById(depts.get(i).getFunctionaltypeid());
+            if (hRsetFunctionaltype!=null) {
+                depts.get(i).setFunctionaltype(hRsetFunctionaltype.getDatavalue());
             }
-            HRsetDeptype hRsetDeptype = ihRsetDeptypeService.queryById(depts.get(i).getDeptypeid());
+            HRset hRsetDeptype = ihRsetService.queryById(depts.get(i).getDeptypeid());
             if(hRsetDeptype!=null){
-                depts.get(i).setDeptype(hRsetDeptype.getDeptype());
+                depts.get(i).setDeptype(hRsetDeptype.getDatavalue());
             }
         }
         return depts;
@@ -364,11 +286,13 @@ public class DepartmentInformationController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         String changedate = simpleDateFormat.format(new Date());
         //先将部门信息添加到数据库中
-        if (ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype())!=null) {
-            dept.setFunctionaltypeid(ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype()).getId());
+        List<HRset> hRsetFunctionaltypeList = ihRsetService.queryByConditions(new HRset("functionaltype", dept.getFunctionaltype()));
+        if (hRsetFunctionaltypeList!=null && hRsetFunctionaltypeList.size()==1) {
+            dept.setFunctionaltypeid(hRsetFunctionaltypeList.get(0).getId());
         }
-        if(ihRsetDeptypeService.queryByDeptype(dept.getDeptype())!=null){
-            dept.setDeptypeid(ihRsetDeptypeService.queryByDeptype(dept.getDeptype()).getId());
+        List<HRset> hRsetDeptypeList = ihRsetService.queryByConditions(new HRset("deptype", dept.getDeptype()));
+        if(hRsetDeptypeList!=null && hRsetDeptypeList.size()==1){
+            dept.setDeptypeid(hRsetDeptypeList.get(0).getId());
         }
 
         //添加公司名称
@@ -573,11 +497,13 @@ public class DepartmentInformationController {
     @ResponseBody
     public Dept queryOneByDepid(@RequestParam("depid") Integer id){
         Dept dept = iDeptService.queryOneDepByDepid(id);
-        if (ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid())!=null) {
-            dept.setFunctionaltype(ihRsetFunctionalTypeService.queryById(dept.getFunctionaltypeid()).getFunctionaltype());
+        HRset hRsetFunctionaltype = ihRsetService.queryById(dept.getFunctionaltypeid());
+        if (hRsetFunctionaltype!=null) {
+            dept.setFunctionaltype(hRsetFunctionaltype.getDatavalue());
         }
-        if(ihRsetDeptypeService.queryById(dept.getDeptypeid())!=null){
-            dept.setDeptype(ihRsetDeptypeService.queryById(dept.getDeptypeid()).getDeptype());
+        HRset hRsetDeptype = ihRsetService.queryById(dept.getDeptypeid());
+        if(hRsetDeptype!=null){
+            dept.setDeptype(hRsetDeptype.getDatavalue());
         }
         return dept;
     }
@@ -614,8 +540,9 @@ public class DepartmentInformationController {
             deptLog.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());//默认为管理员，实际从session中拿
 
             Dept dept2 = iDeptService.queryOneDepByDepid(dept.getId());
-            if (ihRsetFunctionalTypeService.queryById(dept2.getFunctionaltypeid())!=null) {
-                dept2.setFunctionaltype(ihRsetFunctionalTypeService.queryById(dept2.getFunctionaltypeid()).getFunctionaltype());
+            HRset hRsetFunctionaltype = ihRsetService.queryById(dept2.getFunctionaltypeid());
+            if (hRsetFunctionaltype!=null) {
+                dept2.setFunctionaltype(hRsetFunctionaltype.getDatavalue());
             }
 
             if (!dept.getDepname().equals(dept2.getDepname())){
@@ -948,11 +875,13 @@ public class DepartmentInformationController {
             }
 
             if (b) {
-                if (ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype())!=null) {
-                    dept.setFunctionaltypeid(ihRsetFunctionalTypeService.queryByFuctionaltype(dept.getFunctionaltype()).getId());
+                List<HRset> hRsetFunctionaltypeList = ihRsetService.queryByConditions(new HRset("functionaltype", dept.getFunctionaltype()));
+                if (hRsetFunctionaltypeList!=null && hRsetFunctionaltypeList.size()==1) {
+                    dept.setFunctionaltypeid(hRsetFunctionaltypeList.get(0).getId());
                 }
-                if (ihRsetDeptypeService.queryByDeptype(dept.getDeptype())!=null) {
-                    dept.setDeptypeid(ihRsetDeptypeService.queryByDeptype(dept.getDeptype()).getId());
+                List<HRset> hRsetDeptypeList = ihRsetService.queryByConditions(new HRset("deptype", dept.getDeptype()));
+                if (hRsetDeptypeList!=null && hRsetDeptypeList.size()==1) {
+                    dept.setDeptypeid(hRsetDeptypeList.get(0).getId());
                 }
 
                 //添加公司名称
@@ -1569,42 +1498,42 @@ public class DepartmentInformationController {
             }
             personalInformation.setConstellation(baseInformation.getConstellation());
             personalInformation.setChinesecs(baseInformation.getChinesecs());
-            if (ihRsetRaceService.queryById(baseInformation.getRaceid())!=null) {
-                personalInformation.setRace(ihRsetRaceService.queryById(baseInformation.getRaceid()).getRace());
+            if (ihRsetService.queryById(baseInformation.getRaceid())!=null) {
+                personalInformation.setRace(ihRsetService.queryById(baseInformation.getRaceid()).getDatavalue());
             }
             personalInformation.setMarriage(baseInformation.getMarriage());
-            if (ihRsetChildrenService.queryById(baseInformation.getChildrenid())!=null) {
-                personalInformation.setChildren(ihRsetChildrenService.queryById(baseInformation.getChildrenid()).getChildren());
+            if (ihRsetService.queryById(baseInformation.getChildrenid())!=null) {
+                personalInformation.setChildren(ihRsetService.queryById(baseInformation.getChildrenid()).getDatavalue());
             }
-            if (ihRsetZzmmService.queryById(baseInformation.getZzmmid())!=null) {
-                personalInformation.setZzmm(ihRsetZzmmService.queryById(baseInformation.getZzmmid()).getZzmm());
+            if (ihRsetService.queryById(baseInformation.getZzmmid())!=null) {
+                personalInformation.setZzmm(ihRsetService.queryById(baseInformation.getZzmmid()).getDatavalue());
             }
-            if (ihRsetZgxlService.queryById(baseInformation.getZgxlid())!=null) {
-                personalInformation.setZgxl(ihRsetZgxlService.queryById(baseInformation.getZgxlid()).getZgxl());
+            if (ihRsetService.queryById(baseInformation.getZgxlid())!=null) {
+                personalInformation.setZgxl(ihRsetService.queryById(baseInformation.getZgxlid()).getDatavalue());
             }
-            if (ihRsetByyxService.queryById(baseInformation.getByyxid())!=null) {
-                personalInformation.setByyx(ihRsetByyxService.queryById(baseInformation.getByyxid()).getByyx());
+            if (ihRsetService.queryById(baseInformation.getByyxid())!=null) {
+                personalInformation.setByyx(ihRsetService.queryById(baseInformation.getByyxid()).getDatavalue());
             }
-            if (ihRsetSxzyService.queryById(baseInformation.getSxzyid())!=null) {
-                personalInformation.setSxzy(ihRsetSxzyService.queryById(baseInformation.getSxzyid()).getSxzy());
+            if (ihRsetService.queryById(baseInformation.getSxzyid())!=null) {
+                personalInformation.setSxzy(ihRsetService.queryById(baseInformation.getSxzyid()).getDatavalue());
             }
-            if (ihRsetPyfsService.queryById(baseInformation.getPyfsid())!=null) {
-                personalInformation.setPyfs(ihRsetPyfsService.queryById(baseInformation.getPyfsid()).getPyfs());
+            if (ihRsetService.queryById(baseInformation.getPyfsid())!=null) {
+                personalInformation.setPyfs(ihRsetService.queryById(baseInformation.getPyfsid()).getDatavalue());
             }
-            if (ihRsetFlaService.queryById(baseInformation.getFirstlaid())!=null) {
-                personalInformation.setFirstla(ihRsetFlaService.queryById(baseInformation.getFirstlaid()).getFla());
+            if (ihRsetService.queryById(baseInformation.getFirstlaid())!=null) {
+                personalInformation.setFirstla(ihRsetService.queryById(baseInformation.getFirstlaid()).getDatavalue());
             }
-            if (ihRsetFlaService.queryById(baseInformation.getElselaid())!=null) {
-                personalInformation.setElsela(ihRsetFlaService.queryById(baseInformation.getElselaid()).getFla());
+            if (ihRsetService.queryById(baseInformation.getElselaid())!=null) {
+                personalInformation.setElsela(ihRsetService.queryById(baseInformation.getElselaid()).getDatavalue());
             }
-            if (ihRsetPosttitleService.queryById(baseInformation.getPosttitleid())!=null) {
-                personalInformation.setPosttitle(ihRsetPosttitleService.queryById(baseInformation.getPosttitleid()).getPosttitle());
+            if (ihRsetService.queryById(baseInformation.getPosttitleid())!=null) {
+                personalInformation.setPosttitle(ihRsetService.queryById(baseInformation.getPosttitleid()).getDatavalue());
             }
-            if (ihRsetZyzstypeService.queryById(baseInformation.getZyzstypeid())!=null) {
-                personalInformation.setZyzstype(ihRsetZyzstypeService.queryById(baseInformation.getZyzstypeid()).getZyzstype());
+            if (ihRsetService.queryById(baseInformation.getZyzstypeid())!=null) {
+                personalInformation.setZyzstype(ihRsetService.queryById(baseInformation.getZyzstypeid()).getDatavalue());
             }
-            if (ihRsetZyzsnameService.queryById(baseInformation.getZyzsnameid())!=null) {
-                personalInformation.setZyzsname(ihRsetZyzsnameService.queryById(baseInformation.getZyzsnameid()).getZyzsname());
+            if (ihRsetService.queryById(baseInformation.getZyzsnameid())!=null) {
+                personalInformation.setZyzsname(ihRsetService.queryById(baseInformation.getZyzsnameid()).getDatavalue());
             }
             personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
             if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
@@ -1614,8 +1543,8 @@ public class DepartmentInformationController {
                     e.printStackTrace();
                 }
             }
-            if (ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid())!=null) {
-                personalInformation.setParentcompany(ihRsetParentcompanyService.queryById(baseInformation.getParentcompanyid()).getParentcompanyname());
+            if (ihRsetService.queryById(baseInformation.getParentcompanyid())!=null) {
+                personalInformation.setParentcompany(ihRsetService.queryById(baseInformation.getParentcompanyid()).getDatavalue());
             }
         }
         //3.获得管理信息
@@ -1642,8 +1571,8 @@ public class DepartmentInformationController {
             }
             personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs,";"));
             personalInformation.setPostids(postids);
-            if (ihRsetRankService.queryById(manageInformation.getRankid())!=null) {
-                personalInformation.setZj(ihRsetRankService.queryById(manageInformation.getRankid()).getRank());
+            if (ihRsetService.queryById(manageInformation.getRankid())!=null) {
+                personalInformation.setZj(ihRsetService.queryById(manageInformation.getRankid()).getDatavalue());
             }
             personalInformation.setEntrydate(manageInformation.getEntrydate());
             try {
@@ -1652,40 +1581,40 @@ public class DepartmentInformationController {
                 e.printStackTrace();
             }
             personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
-            if (ihRsetEmployeetypeService.queryById(manageInformation.getEmployeetypeid())!=null) {
-                personalInformation.setEmployeetype(ihRsetEmployeetypeService.queryById(manageInformation.getEmployeetypeid()).getEmployeetype());
+            if (ihRsetService.queryById(manageInformation.getEmployeetypeid())!=null) {
+                personalInformation.setEmployeetype(ihRsetService.queryById(manageInformation.getEmployeetypeid()).getDatavalue());
             }
         }
         //获得成本信息
         CostInformation costInformation = iCostInformationService.queryOneById(personalInformation.getCostinformationid());
         if (costInformation!=null) {
-            if (ihRsetSalarystandardService.queryById(costInformation.getSalarystandardid())!=null) {
-                personalInformation.setSalary(ihRsetSalarystandardService.queryById(costInformation.getSalarystandardid()).getSalarystandard());
+            if (ihRsetService.queryById(costInformation.getSalarystandardid())!=null) {
+                personalInformation.setSalary(ihRsetService.queryById(costInformation.getSalarystandardid()).getDatavalue());
             }
-            if (ihRsetSsbService.queryById(costInformation.getSsbid())!=null) {
-                personalInformation.setSsb(ihRsetSsbService.queryById(costInformation.getSsbid()).getSsb());
+            if (ihRsetService.queryById(costInformation.getSsbid())!=null) {
+                personalInformation.setSsb(ihRsetService.queryById(costInformation.getSsbid()).getDatavalue());
             }
-            if (ihRsetSsbgscdService.queryById(costInformation.getSsbgscdid())!=null) {
-                personalInformation.setSsbgscd(ihRsetSsbgscdService.queryById(costInformation.getSsbgscdid()).getSsbgscd());
+            if (ihRsetService.queryById(costInformation.getSsbgscdid())!=null) {
+                personalInformation.setSsbgscd(ihRsetService.queryById(costInformation.getSsbgscdid()).getDatavalue());
             }
-            if (ihRsetSsbgrcdService.queryById(costInformation.getSsbgrcdid())!=null) {
-                personalInformation.setSsbgrcd(ihRsetSsbgrcdService.queryById(costInformation.getSsbgrcdid()).getSsbgrcd());
+            if (ihRsetService.queryById(costInformation.getSsbgrcdid())!=null) {
+                personalInformation.setSsbgrcd(ihRsetService.queryById(costInformation.getSsbgrcdid()).getDatavalue());
             }
-            if (ihRsetGjjService.queryById(costInformation.getGjjid())!=null) {
-                personalInformation.setGjj(ihRsetGjjService.queryById(costInformation.getGjjid()).getGjj());
+            if (ihRsetService.queryById(costInformation.getGjjid())!=null) {
+                personalInformation.setGjj(ihRsetService.queryById(costInformation.getGjjid()).getDatavalue());
             }
-            if (ihRsetGjjgscdService.queryById(costInformation.getGjjgscdid())!=null) {
-                personalInformation.setGjjgscd(ihRsetGjjgscdService.queryById(costInformation.getGjjgscdid()).getGjjgscd());
+            if (ihRsetService.queryById(costInformation.getGjjgscdid())!=null) {
+                personalInformation.setGjjgscd(ihRsetService.queryById(costInformation.getGjjgscdid()).getDatavalue());
             }
-            if (ihRsetGjjgrcdService.queryById(costInformation.getGjjgrcdid())!=null) {
-                personalInformation.setGjjgrcd(ihRsetGjjgrcdService.queryById(costInformation.getGjjgrcdid()).getGjjgrcd());
+            if (ihRsetService.queryById(costInformation.getGjjgrcdid())!=null) {
+                personalInformation.setGjjgrcd(ihRsetService.queryById(costInformation.getGjjgrcdid()).getDatavalue());
             }
-            if (ihRsetKhhService.queryById(costInformation.getKhhid())!=null) {
-                personalInformation.setKhh(ihRsetKhhService.queryById(costInformation.getKhhid()).getKhh());
+            if (ihRsetService.queryById(costInformation.getKhhid())!=null) {
+                personalInformation.setKhh(ihRsetService.queryById(costInformation.getKhhid()).getDatavalue());
             }
             personalInformation.setSalaryaccount(costInformation.getSalaryaccount());
-            if (ihRsetSbjndService.queryById(costInformation.getSbjndid())!=null) {
-                personalInformation.setSbjnd(ihRsetSbjndService.queryById(costInformation.getSbjndid()).getSbjnd());
+            if (ihRsetService.queryById(costInformation.getSbjndid())!=null) {
+                personalInformation.setSbjnd(ihRsetService.queryById(costInformation.getSbjndid()).getDatavalue());
             }
             personalInformation.setSbcode(costInformation.getSbcode());
             personalInformation.setGjjcode(costInformation.getGjjcode());
@@ -1693,14 +1622,14 @@ public class DepartmentInformationController {
         //获得其他信息
         OtherInformation otherInformation = iOtherInformationService.queryOneById(personalInformation.getOtherinformationid());
         if (otherInformation!=null) {
-            if (ihRsetTelphoneService.queryById(personalInformation.getTelphoneid())!=null) {
-                personalInformation.setTelphone(ihRsetTelphoneService.queryById(personalInformation.getTelphoneid()).getTelphone());
+            if (ihRsetService.queryById(personalInformation.getTelphoneid())!=null) {
+                personalInformation.setTelphone(ihRsetService.queryById(personalInformation.getTelphoneid()).getDatavalue());
             }
             personalInformation.setPrivateemail(otherInformation.getPrivateemail());
             personalInformation.setCompanyemail(otherInformation.getCompanyemail());
             personalInformation.setEmergencycontract(otherInformation.getEmergencycontract());
-            if (ihRsetEmergencyrpService.queryById(otherInformation.getEmergencyrpid())!=null) {
-                personalInformation.setEmergencyrp(ihRsetEmergencyrpService.queryById(otherInformation.getEmergencyrpid()).getEmergencyrp());
+            if (ihRsetService.queryById(otherInformation.getEmergencyrpid())!=null) {
+                personalInformation.setEmergencyrp(ihRsetService.queryById(otherInformation.getEmergencyrpid()).getDatavalue());
             }
             personalInformation.setEmergencyphone(otherInformation.getEmergencyphone());
             personalInformation.setAddress(otherInformation.getAddress());
