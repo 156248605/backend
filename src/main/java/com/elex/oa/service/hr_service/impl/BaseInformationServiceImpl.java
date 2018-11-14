@@ -3,6 +3,7 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.IBaseInformationDao;
 import com.elex.oa.entity.hr_entity.BaseInformation;
 import com.elex.oa.service.hr_service.IBaseInformationService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,7 +49,33 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
      */
     @Override
     public void modifyOne(BaseInformation baseInformation) {
-        iBaseInformationDao.updateOne(baseInformation);
+        Boolean isNull = false;
+        if(StringUtils.isNotEmpty(baseInformation.getUserphoto()))isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getIdphoto1()))isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getIdphoto2()))isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getEnglishname()))isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getIdcode()))isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getBirthday()))isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getConstellation()))isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getChinesecs()))isNull=true;
+        if(baseInformation.getRaceid()!=null)isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getMarriage()))isNull=true;
+        if(baseInformation.getChildrenid()!=null)isNull=true;
+        if(baseInformation.getZzmmid()!=null)isNull=true;
+        if(baseInformation.getZgxlid()!=null)isNull=true;
+        if(baseInformation.getByyxid()!=null)isNull=true;
+        if(baseInformation.getSxzyid()!=null)isNull=true;
+        if(baseInformation.getPyfsid()!=null)isNull=true;
+        if(baseInformation.getFirstlaid()!=null)isNull=true;
+        if(baseInformation.getElselaid()!=null)isNull=true;
+        if(baseInformation.getPosttitleid()!=null)isNull=true;
+        if(baseInformation.getZyzstypeid()!=null)isNull=true;
+        if(baseInformation.getZyzsnameid()!=null)isNull=true;
+        if(StringUtils.isNotEmpty(baseInformation.getFirstworkingtime()))isNull=true;
+        if(baseInformation.getParentcompanyid()!=null)isNull=true;
+        if (isNull) {
+            iBaseInformationDao.updateOne(baseInformation);
+        }
     }
 
     /**

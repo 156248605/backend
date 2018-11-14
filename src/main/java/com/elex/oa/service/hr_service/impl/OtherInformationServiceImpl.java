@@ -3,6 +3,7 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.IOtherInformationDao;
 import com.elex.oa.entity.hr_entity.OtherInformation;
 import com.elex.oa.service.hr_service.IOtherInformationService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,17 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
      */
     @Override
     public void modifyOne(OtherInformation otherInformation) {
-        iOtherInformationDao.updateOne(otherInformation);
+        Boolean isNotNull = false;
+        if(StringUtils.isNotEmpty(otherInformation.getPrivateemail()))isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getCompanyemail()))isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getEmergencycontract()))isNotNull=true;
+        if(otherInformation.getEmergencyrpid()!=null)isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getEmergencyphone()))isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getAddress()))isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getRemark()))isNotNull=true;
+        if (isNotNull) {
+            iOtherInformationDao.updateOne(otherInformation);
+        }
     }
 
     /**

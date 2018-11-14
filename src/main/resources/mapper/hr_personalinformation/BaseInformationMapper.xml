@@ -128,19 +128,19 @@
 	<select id="selectByConditions" parameterType="PersonalInformation" resultMap="BaseInformationResultMap">
 		SELECT b.id
 		FROM tb_id_baseinformation b
-		LEFT JOIN tb_hr_set_race race ON b.raceid = race.id
-		LEFT JOIN tb_hr_set_children children ON b.childrenid = children.id
-		LEFT JOIN tb_hr_set_zzmm zzmm ON b.zzmmid = zzmm.id
-		LEFT JOIN tb_hr_set_zgxl zgxl ON b.zgxlid = zgxl.id
-		LEFT JOIN tb_hr_set_byyx byyx ON b.byyxid = byyx.id
-		LEFT JOIN tb_hr_set_sxzy sxzy ON b.sxzyid = sxzy.id
-		LEFT JOIN tb_hr_set_pyfs pyfs ON b.pyfsid = pyfs.id
-		LEFT JOIN tb_hr_set_fla fla1 ON b.firstlaid = fla1.id
-		LEFT JOIN tb_hr_set_fla fla2 ON b.elselaid = fla2.id
-		LEFT JOIN tb_hr_set_posttitle posttitle ON b.posttitleid = posttitle.id
-		LEFT JOIN tb_hr_set_zyzstype zyzstype ON b.zyzstypeid = zyzstype.id
-		LEFT JOIN tb_hr_set_zyzsname zyzsname ON b.zyzsnameid = zyzsname.id
-		LEFT JOIN tb_hr_set_parentcompanyname pc ON b.parentcompanyid = pc.id
+		LEFT JOIN tb_hr_set race ON b.raceid = race.id
+		LEFT JOIN tb_hr_set children ON b.childrenid = children.id
+		LEFT JOIN tb_hr_set zzmm ON b.zzmmid = zzmm.id
+		LEFT JOIN tb_hr_set zgxl ON b.zgxlid = zgxl.id
+		LEFT JOIN tb_hr_set byyx ON b.byyxid = byyx.id
+		LEFT JOIN tb_hr_set sxzy ON b.sxzyid = sxzy.id
+		LEFT JOIN tb_hr_set pyfs ON b.pyfsid = pyfs.id
+		LEFT JOIN tb_hr_set fla1 ON b.firstlaid = fla1.id
+		LEFT JOIN tb_hr_set fla2 ON b.elselaid = fla2.id
+		LEFT JOIN tb_hr_set posttitle ON b.posttitleid = posttitle.id
+		LEFT JOIN tb_hr_set zyzstype ON b.zyzstypeid = zyzstype.id
+		LEFT JOIN tb_hr_set zyzsname ON b.zyzsnameid = zyzsname.id
+		LEFT JOIN tb_hr_set pc ON b.parentcompanyid = pc.id
 		<where>
 			<if test="englishname!=null and englishname!='' or englishnames!=null">
 				<if test="englishnamevalue=='' and englishnames.size!=0">
@@ -234,114 +234,114 @@
 			</if>
 			<if test="race!=null and race!='' or races!=null">
 				<if test="racevalue=='' and races.size!=0">
-					AND race.race IN
+					AND race.datavalue IN
 					<foreach collection="races" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="racevalue=='包含'">
-					AND race.race LIKE CONCAT(CONCAT('%', #{race}), '%')
+					AND race.datavalue LIKE CONCAT(CONCAT('%', #{race}), '%')
 				</if>
 				<if test="racevalue=='不包含'">
-					AND race.race NOT LIKE CONCAT(CONCAT('%', #{race}), '%')
+					AND race.datavalue NOT LIKE CONCAT(CONCAT('%', #{race}), '%')
 				</if>
 			</if>
 			<if test="childrens!=null and childrens.size!=0">
-				AND children.children IN
+				AND children.datavalue IN
 				<foreach collection="childrens" item="param" open="(" separator="," close=")">
 					#{param}
 				</foreach>
 			</if>
 			<if test="zzmms!=null and zzmms.size!=0">
-				AND zzmm.zzmm IN
+				AND zzmm.datavalue IN
 				<foreach collection="zzmms" item="param" open="(" separator="," close=")">
 					#{param}
 				</foreach>
 			</if>
 			<if test="zgxls!=null and zgxls.size!=0">
-				AND zgxl.zgxl IN
+				AND zgxl.datavalue IN
 				<foreach collection="zgxls" item="param" open="(" separator="," close=")">
 					#{param}
 				</foreach>
 			</if>
 			<if test="byyx!=null and byyx!='' or byyxs!=null">
 				<if test="byyxvalue=='' and byyxs.size!=0">
-					AND byyx.byyx IN
+					AND byyx.datavalue IN
 					<foreach collection="byyxs" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="byyxvalue=='包含'">
-					AND byyx.byyx LIKE CONCAT(CONCAT('%', #{byyx}), '%')
+					AND byyx.datavalue LIKE CONCAT(CONCAT('%', #{byyx}), '%')
 				</if>
 				<if test="byyxvalue=='不包含'">
-					AND byyx.byyx NOT LIKE CONCAT(CONCAT('%', #{byyx}), '%')
+					AND byyx.datavalue NOT LIKE CONCAT(CONCAT('%', #{byyx}), '%')
 				</if>
 			</if>
 			<if test="sxzy!=null and sxzy!='' or sxzys!=null">
 				<if test="sxzyvalue=='' and sxzys.size!=0">
-					AND sxzy.sxzy IN
+					AND sxzy.datavalue IN
 					<foreach collection="sxzys" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="sxzyvalue=='包含'">
-					AND sxzy.sxzy LIKE CONCAT(CONCAT('%', #{sxzy}), '%')
+					AND sxzy.datavalue LIKE CONCAT(CONCAT('%', #{sxzy}), '%')
 				</if>
 				<if test="sxzyvalue=='不包含'">
-					AND sxzy.sxzy NOT LIKE CONCAT(CONCAT('%', #{sxzy}), '%')
+					AND sxzy.datavalue NOT LIKE CONCAT(CONCAT('%', #{sxzy}), '%')
 				</if>
 			</if>
 			<if test="pyfses!=null and pyfses.size!=0">
-				AND pyfs.pyfs IN
+				AND pyfs.datavalue IN
 				<foreach collection="pyfses" item="param" open="(" separator="," close=")">
 					#{param}
 				</foreach>
 			</if>
 			<if test="firstlas!=null and firstlas.size!=0">
-				AND fla1.fla IN
+				AND fla1.datavalue IN
 				<foreach collection="firstlas" item="param" open="(" separator="," close=")">
 					#{param}
 				</foreach>
 			</if>
 			<if test="elselas!=null and elselas.size!=0">
-				AND fla2.fla IN
+				AND fla2.datavalue IN
 				<foreach collection="elselas" item="param" open="(" separator="," close=")">
 					#{param}
 				</foreach>
 			</if>
 			<if test="posttitles!=null and posttitles.size!=0">
-				AND posttitle.posttitle IN
+				AND posttitle.datavalue IN
 				<foreach collection="posttitles" item="param" open="(" separator="," close=")">
 					#{param}
 				</foreach>
 			</if>
 			<if test="zyzstype!=null and zyzstype!='' or zyzstypes!=null">
 				<if test="zyzstypevalue=='' and zyzstypes.size!=0">
-					AND zyzstype.zyzstype IN
+					AND zyzstype.datavalue IN
 					<foreach collection="zyzstypes" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="zyzstypevalue=='包含'">
-					AND zyzstype.zyzstype LIKE CONCAT(CONCAT('%', #{zyzstype}), '%')
+					AND zyzstype.datavalue LIKE CONCAT(CONCAT('%', #{zyzstype}), '%')
 				</if>
 				<if test="zyzstypevalue=='不包含'">
-					AND zyzstype.zyzstype NOT LIKE CONCAT(CONCAT('%', #{zyzstype}), '%')
+					AND zyzstype.datavalue NOT LIKE CONCAT(CONCAT('%', #{zyzstype}), '%')
 				</if>
 			</if>
 			<if test="zyzsname!=null and zyzsname!='' or zyzsnames!=null">
 				<if test="zyzsnamevalue=='' and zyzsnames.size!=0">
-					AND zyzsname.zyzsname IN
+					AND zyzsname.datavalue IN
 					<foreach collection="zyzsnames" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="zyzsnamevalue=='包含'">
-					AND zyzsname.zyzsname LIKE CONCAT(CONCAT('%', #{zyzsname}), '%')
+					AND zyzsname.datavalue LIKE CONCAT(CONCAT('%', #{zyzsname}), '%')
 				</if>
 				<if test="zyzsnamevalue=='不包含'">
-					AND zyzsname.zyzsname NOT LIKE CONCAT(CONCAT('%', #{zyzsname}), '%')
+					AND zyzsname.datavalue NOT LIKE CONCAT(CONCAT('%', #{zyzsname}), '%')
 				</if>
 			</if>
 			<if test="firstworkingtimevalue1!=null and firstworkingtimevalue1!='' and firstworkingtimevalue2!=null and firstworkingtimevalue2!=''">
@@ -377,16 +377,16 @@
 			</if>
 			<if test="parentcompany!=null and parentcompany!='' or parentcompanys!=null">
 				<if test="parentcompanyvalue=='' and parentcompanys.size!=0">
-					AND pc.parentcompanyname IN
+					AND pc.datavalue IN
 					<foreach collection="parentcompanys" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="parentcompanyvalue=='包含'">
-					AND pc.parentcompanyname LIKE CONCAT(CONCAT('%', #{parentcompany}), '%')
+					AND pc.datavalue LIKE CONCAT(CONCAT('%', #{parentcompany}), '%')
 				</if>
 				<if test="parentcompanyvalue=='不包含'">
-					AND pc.parentcompanyname NOT LIKE CONCAT(CONCAT('%', #{parentcompany}), '%')
+					AND pc.datavalue NOT LIKE CONCAT(CONCAT('%', #{parentcompany}), '%')
 				</if>
 			</if>
 		</where>
@@ -397,6 +397,7 @@
 		DELETE FROM tb_id_baseinformation
 		WHERE id=#{id}
 	</delete>
+
 	<delete id="deleteAll">
 		DELETE FROM tb_id_baseinformation
 	</delete>

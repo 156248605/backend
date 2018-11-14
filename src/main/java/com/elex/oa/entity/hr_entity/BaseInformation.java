@@ -244,31 +244,31 @@ public class BaseInformation implements Serializable{
 
     @Override
     public String toString() {
-        return "BaseInformation{" +
-                "id=" + id +
-                ", userphoto='" + userphoto + '\'' +
-                ", idphoto1='" + idphoto1 + '\'' +
-                ", idphoto2='" + idphoto2 + '\'' +
-                ", englishname='" + englishname + '\'' +
-                ", idcode='" + idcode + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", constellation='" + constellation + '\'' +
-                ", chinesecs='" + chinesecs + '\'' +
-                ", raceid=" + raceid +
-                ", marriage='" + marriage + '\'' +
-                ", childrenid=" + childrenid +
-                ", zzmmid=" + zzmmid +
-                ", zgxlid=" + zgxlid +
-                ", byyxid=" + byyxid +
-                ", sxzyid=" + sxzyid +
-                ", pyfsid=" + pyfsid +
-                ", firstlaid=" + firstlaid +
-                ", elselaid=" + elselaid +
-                ", posttitleid=" + posttitleid +
-                ", zyzstypeid=" + zyzstypeid +
-                ", zyzsnameid=" + zyzsnameid +
-                ", firstworkingtime='" + firstworkingtime + '\'' +
-                ", parentcompanyid=" + parentcompanyid +
+        return "BaseInformation{" + "\n" +
+                "id=" + id + "\n" +
+                ", userphoto='" + userphoto + '\'' + "\n" +
+                ", idphoto1='" + idphoto1 + '\'' + "\n" +
+                ", idphoto2='" + idphoto2 + '\'' + "\n" +
+                ", englishname='" + englishname + '\'' + "\n" +
+                ", idcode='" + idcode + '\'' + "\n" +
+                ", birthday='" + birthday + '\'' + "\n" +
+                ", constellation='" + constellation + '\'' + "\n" +
+                ", chinesecs='" + chinesecs + '\'' + "\n" +
+                ", raceid=" + raceid + "\n" +
+                ", marriage='" + marriage + '\'' + "\n" +
+                ", childrenid=" + childrenid + "\n" +
+                ", zzmmid=" + zzmmid + "\n" +
+                ", zgxlid=" + zgxlid + "\n" +
+                ", byyxid=" + byyxid + "\n" +
+                ", sxzyid=" + sxzyid + "\n" +
+                ", pyfsid=" + pyfsid + "\n" +
+                ", firstlaid=" + firstlaid + "\n" +
+                ", elselaid=" + elselaid + "\n" +
+                ", posttitleid=" + posttitleid + "\n" +
+                ", zyzstypeid=" + zyzstypeid + "\n" +
+                ", zyzsnameid=" + zyzsnameid + "\n" +
+                ", firstworkingtime='" + firstworkingtime + '\'' + "\n" +
+                ", parentcompanyid=" + parentcompanyid + "\n" +
                 '}';
     }
 }

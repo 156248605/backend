@@ -9,6 +9,7 @@ import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -83,7 +84,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
                 return null;
             }//再进行基本信息的id集合提取
 
-            if (personalInformation.getPostname()!=null && !"".equals(personalInformation.getPostname()) || personalInformation.getPostnameList().size()!=0) {
+            if (StringUtils.isNotEmpty(personalInformation.getPostname()) || (null!=personalInformation.getPostnameList() && personalInformation.getPostnameList().size() > 0)) {
                 if("不包含".equals(personalInformation.getPostnamevalue())){
                     List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectByConditions2(personalInformation);
                     //这里查出来的是包含的部分，到时候只需not in 一下这部分即可
@@ -109,9 +110,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         com.github.pagehelper.PageHelper.startPage(pageNum,pageSize);
-        System.out.println(personalInformation.getUsername()+"===============================================>");
         List<PersonalInformation> list = iPersonalInformationDao.selectByConditions(personalInformation);
-        System.out.println(list.size()+"========================================================>");
         return new PageInfo<PersonalInformation>(list);
     }
 

@@ -91,15 +91,15 @@ public class OtherInformation implements Serializable{
 
     @Override
     public String toString() {
-        return "OtherInformation{" +
-                "id=" + id +
-                ", privateemail='" + privateemail + '\'' +
-                ", companyemail='" + companyemail + '\'' +
-                ", emergencycontract='" + emergencycontract + '\'' +
-                ", emergencyrpid=" + emergencyrpid +
-                ", emergencyphone='" + emergencyphone + '\'' +
-                ", address='" + address + '\'' +
-                ", remark='" + remark + '\'' +
+        return "OtherInformation{" +"\n"+
+                "id=" + id +"\n"+
+                ", privateemail='" + privateemail + '\'' +"\n"+
+                ", companyemail='" + companyemail + '\'' +"\n"+
+                ", emergencycontract='" + emergencycontract + '\'' +"\n"+
+                ", emergencyrpid=" + emergencyrpid +"\n"+
+                ", emergencyphone='" + emergencyphone + '\'' +"\n"+
+                ", address='" + address + '\'' +"\n"+
+                ", remark='" + remark + '\'' +"\n"+
                 '}';
     }
 }

@@ -2357,7 +2357,7 @@ public class PersonalInformationController {
             //7.更新人事岗位关系表主要信息表（tb_hr_per_and_post_rs）=============================================================================
             //先准备两个集合（原数据及需要目标数据）
             Map<Integer, Integer> oldMap = new HashMap<>();
-            List<PerAndPostRs> perAndPostRsList_old = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformation.getId());
+            List<PerAndPostRs> perAndPostRsList_old = iPerandpostrsService.queryPerAndPostRsByPerid(currentPer.getId());
             for (PerAndPostRs p : perAndPostRsList_old
             ) {
                 oldMap.put(p.getPostid(), p.getPerid());
@@ -2372,7 +2372,7 @@ public class PersonalInformationController {
             //分两步：1)没有的添加上;2)多余的删除
             //1)没有的添加上;
             newMap.forEach((postid, perid) -> {
-                boolean postBoolean = oldMap.containsKey(postid);
+                boolean postBoolean = oldMap.containsKey(postid) && oldMap.get(postid).equals(perid);
                 if (!postBoolean) {
                     iPerandpostrsService.addOne(new PerAndPostRs(perid, postid));
                 }
