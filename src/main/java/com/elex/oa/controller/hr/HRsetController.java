@@ -54,6 +54,20 @@ public class HRsetController {
     }
 
     /**
+     * @Author: shiyun
+     * @Description: 查询所有的HRset字段
+     * @Date  2018\11\14 0014 10:34
+     * @Param
+     * @return
+     **/
+    @RequestMapping("/queryAllHRsetByNull")
+    @ResponseBody
+    public List<HRset> queryAllHRsetByNull(){
+        return ihRsetService.queryAll();
+    }
+
+
+    /**
      *@Author:ShiYun;
      *@Description:HRset信息的查询（分页）
      *@Date: 11:32 2018\5\19 0019

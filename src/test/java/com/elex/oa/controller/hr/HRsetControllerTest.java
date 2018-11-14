@@ -76,4 +76,11 @@ public class HRsetControllerTest {
         String res = restTemplate.postForObject("/hrset/modifyHRset", new HRset(2, "新疆维吾尔族"), String.class);
         Assertions.assertThat(res).isEqualTo("修改成功！");
     }
+
+    @Test
+    public void test7_queryAllHRsetByNull(){
+        List list = restTemplate.postForObject("/hrset/queryAllHRsetByNull", null, List.class);
+        System.out.println(list.toString());
+        Assertions.assertThat(list.size()).isEqualTo(457);
+    }
 }    
