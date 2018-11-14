@@ -60,7 +60,6 @@ public class IDcodeUtil {
      *@Date: 19:00 2018\5\12 0012
      */
     public static String getBirthday(String idcard) throws Exception {
-        System.out.println(idcard+"==============================================================================================================");
         Integer month = Integer.valueOf(idcard.substring(10,12));
         if(month<=0 || month>12)throw new Exception("身份证的号码输入不符合标准，出生月必须在[1,12]之间！");
         Integer year = Integer.valueOf(idcard.substring(6,10));
@@ -130,7 +129,6 @@ public class IDcodeUtil {
             //throw new Exception("出生日期有误！");
             return  "";
         }
-        System.out.println(birthday+"==============================================================================");
         Calendar curCal = IDcodeUtil.getCalendarByDate(birthday,null);
         //定义年龄
         Integer ny = null;
@@ -157,7 +155,6 @@ public class IDcodeUtil {
         curCal.set(Calendar.SECOND, 0);
         curCal.set(Calendar.MILLISECOND, 0);
         //获得出生日期
-        System.out.println(birthday+"=====================================================================================");
         Date mydate= myFormatter.parse(birthday);
         Calendar birCal = Calendar.getInstance();
         birCal.setTime(mydate);

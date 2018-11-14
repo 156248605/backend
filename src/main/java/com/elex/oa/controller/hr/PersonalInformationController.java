@@ -123,37 +123,37 @@ public class PersonalInformationController {
                     pi.setRace(ihRsetService.queryById(baseInformation.getRaceid()).getDatavalue());
                 }
                 pi.setMarriage(baseInformation.getMarriage());
-                if (ihRsetService.queryById(baseInformation.getChildrenid()) != null) {
+                if (baseInformation.getChildrenid()!=null && ihRsetService.queryById(baseInformation.getChildrenid())!= null) {
                     pi.setChildren(ihRsetService.queryById(baseInformation.getChildrenid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getZzmmid()) != null) {
+                if (baseInformation.getZzmmid()!=null && ihRsetService.queryById(baseInformation.getZzmmid()) != null) {
                     pi.setZzmm(ihRsetService.queryById(baseInformation.getZzmmid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getZgxlid()) != null) {
+                if (baseInformation.getZgxlid()!=null && ihRsetService.queryById(baseInformation.getZgxlid()) != null) {
                     pi.setZgxl(ihRsetService.queryById(baseInformation.getZgxlid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getByyxid()) != null) {
+                if (baseInformation.getByyxid()!=null && ihRsetService.queryById(baseInformation.getByyxid()) != null) {
                     pi.setByyx(ihRsetService.queryById(baseInformation.getByyxid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getSxzyid()) != null) {
+                if (baseInformation.getSxzyid()!=null && ihRsetService.queryById(baseInformation.getSxzyid()) != null) {
                     pi.setSxzy(ihRsetService.queryById(baseInformation.getSxzyid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getPyfsid()) != null) {
+                if (baseInformation.getPyfsid()!=null && ihRsetService.queryById(baseInformation.getPyfsid()) != null) {
                     pi.setPyfs(ihRsetService.queryById(baseInformation.getPyfsid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getFirstlaid()) != null) {
+                if (baseInformation.getFirstlaid()!=null && ihRsetService.queryById(baseInformation.getFirstlaid()) != null) {
                     pi.setFirstla(ihRsetService.queryById(baseInformation.getFirstlaid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getElselaid()) != null) {
+                if (baseInformation.getElselaid()!=null && ihRsetService.queryById(baseInformation.getElselaid()) != null) {
                     pi.setElsela(ihRsetService.queryById(baseInformation.getElselaid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getPosttitleid()) != null) {
+                if (baseInformation.getPosttitleid()!=null && ihRsetService.queryById(baseInformation.getPosttitleid()) != null) {
                     pi.setPosttitle(ihRsetService.queryById(baseInformation.getPosttitleid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getZyzstypeid()) != null) {
+                if (baseInformation.getZyzstypeid()!=null && ihRsetService.queryById(baseInformation.getZyzstypeid()) != null) {
                     pi.setZyzstype(ihRsetService.queryById(baseInformation.getZyzstypeid()).getDatavalue());
                 }
-                if (ihRsetService.queryById(baseInformation.getZyzsnameid()) != null) {
+                if (baseInformation.getZyzsnameid()!=null && ihRsetService.queryById(baseInformation.getZyzsnameid()) != null) {
                     pi.setZyzsname(ihRsetService.queryById(baseInformation.getZyzsnameid()).getDatavalue());
                 }
                 pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
@@ -164,7 +164,7 @@ public class PersonalInformationController {
                         e.printStackTrace();
                     }
                 }
-                if (ihRsetService.queryById(baseInformation.getParentcompanyid()) != null) {
+                if (baseInformation.getParentcompanyid()!=null && ihRsetService.queryById(baseInformation.getParentcompanyid()) != null) {
                     pi.setParentcompany(ihRsetService.queryById(baseInformation.getParentcompanyid()).getDatavalue());
                 }
                 //添加manageinformation的六个字段
@@ -456,13 +456,13 @@ public class PersonalInformationController {
         //获得其他信息
         OtherInformation otherInformation = iOtherInformationService.queryOneById(personalInformation.getOtherinformationid());
         if (otherInformation != null) {
-            if (ihRsetService.queryById(personalInformation.getTelphoneid()) != null) {
+            if (personalInformation.getTelphoneid()!=null && ihRsetService.queryById(personalInformation.getTelphoneid()) != null) {
                 personalInformation.setTelphone(ihRsetService.queryById(personalInformation.getTelphoneid()).getDatavalue());
             }
             personalInformation.setPrivateemail(otherInformation.getPrivateemail());
             personalInformation.setCompanyemail(otherInformation.getCompanyemail());
             personalInformation.setEmergencycontract(otherInformation.getEmergencycontract());
-            if (ihRsetService.queryById(otherInformation.getEmergencyrpid()) != null) {
+            if (otherInformation.getEmergencyrpid()!=null && ihRsetService.queryById(otherInformation.getEmergencyrpid()) != null) {
                 personalInformation.setEmergencyrp(ihRsetService.queryById(otherInformation.getEmergencyrpid()).getDatavalue());
             }
             personalInformation.setEmergencyphone(otherInformation.getEmergencyphone());
@@ -1977,7 +1977,6 @@ public class PersonalInformationController {
         if (removedUser != null) {
             Boolean userB = false;
             Integer isactive = personalInformation.getIsactive();//是否激活
-            System.out.println(20186);
             if (isactive != null && isactive != removedUser.getIsactive()) {
                 removedUser.setIsactive(isactive);
                 userB = true;
@@ -1993,7 +1992,6 @@ public class PersonalInformationController {
             }
         } else {
             User user = new User();
-            System.out.println(2102);
             if (personalInformation.getIsactive() != null) {
                 user.setIsactive(personalInformation.getIsactive());
             } else {

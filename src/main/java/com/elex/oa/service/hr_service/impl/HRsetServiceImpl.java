@@ -56,6 +56,7 @@ public class HRsetServiceImpl implements IHRsetService {
 
     @Override
     public HRset queryById(Integer id) {
+        if(id==null)return null;
         List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(id));
         return hRsetList.size()==0?null:hRsetList.get(0);
     }
