@@ -11,4 +11,5 @@ public interface Commons {
     int REST_SUCCESS = 200;
     int REST_SERVER_ERROR = 400;
     int REST_PARAM_ERROR = 500;
+    String HRSET_CONTRACTTYPE = "contracttype";
 }

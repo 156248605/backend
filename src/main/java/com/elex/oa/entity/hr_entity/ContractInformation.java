@@ -57,7 +57,11 @@ public class ContractInformation implements Serializable{
         this.curdate = sdf.format(new Date());
     }
 
-
+    public ContractInformation(String contractcode) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        this.curdate = sdf.format(new Date());
+        this.contractcode = contractcode;
+    }
 
     public List<String> getContractcodes() {
         return contractcodes;

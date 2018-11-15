@@ -106,6 +106,11 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         return contractInformation;
     }
 
+    @Override
+    public ContractInformation queryByContractcode(String contractcode) {
+        return iContractInformationDao.selectOneByContractcode(contractcode);
+    }
+
     /**
      *@Author:ShiYun;
      *@Description:根据userid查询合同信息

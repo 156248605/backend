@@ -32,7 +32,7 @@
 		FROM
 			tb_hr_contractinformation c
 		LEFT JOIN tb_id_user u ON c.userid = u.id
-		LEFT JOIN tb_hr_set_contracttype ct ON c.contracttypeid = ct.id
+		LEFT JOIN tb_hr_set ct ON c.contracttypeid = ct.id
 		<where>
 			<if test="userids!=null">
 				AND c.userid IN
@@ -56,16 +56,16 @@
 			</if>
 			<if test="contracttype!=null and contracttype!='' or contracttypes!=null">
 				<if test="contracttypevalue=='' and contracttypes.size!=0">
-					AND ct.contracttype IN
+					AND ct.datavalue IN
 					<foreach collection="contracttypes" item="param" open="(" close=")" separator=",">
 						#{param}
 					</foreach>
 				</if>
 				<if test="contracttypevalue=='包含'">
-					AND ct.contracttype LIKE CONCAT(CONCAT('%',#{contracttype}),'%')
+					AND ct.datavalue LIKE CONCAT(CONCAT('%',#{contracttype}),'%')
 				</if>
 				<if	test="contracttypevalue=='不包含'">
-					AND ct.contracttype NOT LIKE CONCAT(CONCAT('%',#{contracttype}),'%')
+					AND ct.datavalue NOT LIKE CONCAT(CONCAT('%',#{contracttype}),'%')
 				</if>
 			</if>
 			<if test="contractage!=null and contractage!='' or contractages!=null">
@@ -111,10 +111,28 @@
 					AND c.remark NOT LIKE CONCAT(CONCAT('%',#{remark}),'%')
 				</if>
 			</if>
-			AND c.enddate <![CDATA[>]]> #{curdate}
 		</where>
 		GROUP BY c.id DESC
 	</select>
+
+    <select id="selectOneByContractcode" parameterType="java.lang.String" resultMap="ContractInformationResultMap">
+        SELECT
+			id,
+			contractcode,
+			userid,
+			startdate,
+			enddate,
+			contracttypeid,
+			attachment,
+			remark,
+			transactoruserid,
+			transdate,
+			contractage
+		FROM
+			tb_hr_contractinformation
+		WHERE
+			contractcode=#{contractcode}
+    </select>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="ContractInformationResultMap">
 		SELECT
