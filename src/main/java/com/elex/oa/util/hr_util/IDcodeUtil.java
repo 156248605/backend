@@ -241,7 +241,11 @@ public class IDcodeUtil {
         Calendar cal = IDcodeUtil.getCalendarByDate(startdate, enddate);
         Integer year = cal.get(Calendar.YEAR);
         Integer month = cal.get(Calendar.MONTH)+1;
-        return year+(year>0?"年":"")+month+(month>0?"月":"");
+        if(month>=12){
+            month -=12;
+            year +=1;
+        }
+        return (year>0?(year+"年"):"") + (month>0?(month+"月"):"");
     }
 
     /**
@@ -250,27 +254,6 @@ public class IDcodeUtil {
      *@Date: 13:56 2018\5\28 0028
      */
     public static String getContractage(String contractage){
-        /*String str1 = "";
-        String year = "";
-        if (contractage!=null && !"".equals(contractage)) {
-            if(contractage.indexOf("年")!=-1 && contractage.indexOf("月")!=-1){
-                str1 = contractage.substring(0,contractage.indexOf("年"));
-                year = Integer.parseInt(str1) + 1 + "";
-            }
-            if(contractage.indexOf("年")!=-1 && contractage.indexOf("月")==-1){
-                str1 = contractage.substring(0,contractage.indexOf("年"));
-                System.out.println(contractage.indexOf("年"));
-                year = Integer.parseInt(str1) + "";
-            }
-            if(contractage.indexOf("年")==-1 && contractage.indexOf("月")!=-1){
-                year = 1 + "";
-            }
-            if(contractage.indexOf("年")==-1 && contractage.indexOf("月")==-1){
-                year = contractage;
-            }
-        }else {
-            return null;
-        }*/
         return contractage;
     }
 
