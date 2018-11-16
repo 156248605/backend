@@ -1,10 +1,13 @@
 package com.elex.oa.controller.hr;
 
+import com.alibaba.fastjson.JSON;
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.IGzrzDao;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.*;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +20,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -189,38 +193,117 @@ public class DimissionController {
     public String importDimissionInformations(
             @RequestParam("file") MultipartFile multipartFile
     ){
+        Map<String,String> responseMap = new HashMap<>();
         try {
             ReadDimissioninformationExcel readDimissioninformationExcel = new ReadDimissioninformationExcel();
             List<DimissionInformation> excelInfo = readDimissioninformationExcel.getExcelInfo(multipartFile);
             for(DimissionInformation dimissionInformation:excelInfo){
                 //获得dimissionuserid
-                if (iUserService.queryByTruename(dimissionInformation.getDimissiontruename())!=null) {
+                User dimissionuser = iUserService.queryByUsername(dimissionInformation.getDimissiontruename());
+                if (dimissionuser!=null) {
                     dimissionInformation.setDimissionuserid(iUserService.queryByTruename(dimissionInformation.getDimissiontruename()).getId());
+                }else {
+                    responseMap.put(dimissionInformation.getDimissiontruename(),"此员工查不到");
+                    continue;
                 }
-                //获得dimissiontypeid
-                List<HRset> hRsetDimissiontypeList = ihRsetService.queryByConditions(new HRset("dimissiontype", dimissionInformation.getDimissiontype()));
-                if (hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1) {
-                    dimissionInformation.setDimissiontypeid(hRsetDimissiontypeList.get(0).getId());
+                List<DimissionInformation> dimissionInformationList = iDimissionInformationService.queryByDimission(new DimissionInformation(dimissionuser.getId()));
+                if(dimissionInformationList==null || dimissionInformationList.size()==0){
+                    //没有则添加
+                    importDimission_ADD(dimissionInformation);
+                }else if(dimissionInformationList.size()==1){
+                    //有且一个则修改
+                    dimissionInformation.setId(dimissionInformationList.get(0).getId());
+                    importDimission_MODIFY(dimissionInformation);
+                }else if(dimissionInformationList.size()>1){
+                    responseMap.put(dimissionInformation.getDimissiontruename(),"此员工在数据库中有多条，请联系管理员及时解决");
                 }
-                //获得dimissiondirectionid
-                List<HRset> hRsetDimissiondirectionList = ihRsetService.queryByConditions(new HRset("dimissiondirection", dimissionInformation.getDimissiondirection()));
-                if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
-                    dimissionInformation.setDimissiondirectionid(hRsetDimissiondirectionList.get(0).getId());
-                }
-                //获得transactoruserid
-                if (iUserService.queryByTruename(dimissionInformation.getTransactortruename())!=null) {
-                    dimissionInformation.setTransactoruserid(iUserService.queryByTruename(dimissionInformation.getTransactortruename()).getId());
-                }
-                //获得dimissionreasonid
-                List<HRset> hRsetDimissionreasonList = ihRsetService.queryByConditions(new HRset("dimissionreason", dimissionInformation.getDimissionreason()));
-                if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
-                    dimissionInformation.setDimissionreasonid(hRsetDimissionreasonList.get(0).getId());
-                }
-                iDimissionInformationService.addOne(dimissionInformation);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return "数据导入失败！";
         }
-        return "数据导入成功！";
+        return responseMap.size()==0?"数据导入成功！":(JSON.toJSONString(responseMap));
+    }
+
+    private void importDimission_ADD(DimissionInformation dimissionInformation) {
+        //获得dimissiontypeid
+        if (StringUtils.isNotEmpty(dimissionInformation.getDimissiontype())) {
+            Integer dimissiontypeid = null;
+            List<HRset> hRsetDimissiontypeList = ihRsetService.queryByConditions(new HRset("dimissiontype", dimissionInformation.getDimissiontype()));
+            if (hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1) {
+                dimissiontypeid = hRsetDimissiontypeList.get(0).getId();
+            }else if(hRsetDimissiontypeList==null || hRsetDimissiontypeList.size()==0) {
+                dimissiontypeid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_TYPE, dimissionInformation.getDimissiontype()));
+            }
+            dimissionInformation.setDimissiontypeid(dimissiontypeid);
+        }
+        //获得dimissiondirectionid
+        if (StringUtils.isNotEmpty(dimissionInformation.getDimissiondirection())) {
+            Integer dimissiondirectionid = null;
+            List<HRset> hRsetDimissiondirectionList = ihRsetService.queryByConditions(new HRset("dimissiondirection", dimissionInformation.getDimissiondirection()));
+            if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
+                dimissiondirectionid = hRsetDimissiondirectionList.get(0).getId();
+            }else if(null == hRsetDimissiondirectionList || hRsetDimissiondirectionList.size()==0){
+                dimissiondirectionid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_DIRECTION,dimissionInformation.getDimissiondirection()));
+            }
+            dimissionInformation.setDimissiondirectionid(dimissiondirectionid);
+        }
+        //获得dimissionreasonid
+        if (StringUtils.isNotEmpty(dimissionInformation.getDimissionreason())) {
+            Integer dimissionreasonid = null;
+            List<HRset> hRsetDimissionreasonList = ihRsetService.queryByConditions(new HRset("dimissionreason", dimissionInformation.getDimissionreason()));
+            if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
+                dimissionreasonid = hRsetDimissionreasonList.get(0).getId();
+            }else if(null==hRsetDimissionreasonList || hRsetDimissionreasonList.size()==0){
+                dimissionreasonid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_REASON,dimissionInformation.getDimissionreason()));
+            }
+            dimissionInformation.setDimissionreasonid(dimissionreasonid);
+        }
+        //获得transactoruserid
+        if (iUserService.queryByTruename(dimissionInformation.getTransactortruename())!=null) {
+            dimissionInformation.setTransactoruserid(iUserService.queryByTruename(dimissionInformation.getTransactortruename()).getId());
+        }
+        iDimissionInformationService.addOne(dimissionInformation);
+    }
+
+    private void importDimission_MODIFY(DimissionInformation dimissionInformation){
+        //获得dimissiontypeid
+        if (StringUtils.isNotEmpty(dimissionInformation.getDimissiontype())) {
+            Integer dimissiontypeid = null;
+            List<HRset> hRsetDimissiontypeList = ihRsetService.queryByConditions(new HRset("dimissiontype", dimissionInformation.getDimissiontype()));
+            if (hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1) {
+                dimissiontypeid = hRsetDimissiontypeList.get(0).getId();
+            }else if(hRsetDimissiontypeList==null || hRsetDimissiontypeList.size()==0) {
+                dimissiontypeid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_TYPE, dimissionInformation.getDimissiontype()));
+            }
+            dimissionInformation.setDimissiontypeid(dimissiontypeid);
+        }
+        //获得dimissiondirectionid
+        if (StringUtils.isNotEmpty(dimissionInformation.getDimissiondirection())) {
+            Integer dimissiondirectionid = null;
+            List<HRset> hRsetDimissiondirectionList = ihRsetService.queryByConditions(new HRset("dimissiondirection", dimissionInformation.getDimissiondirection()));
+            if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
+                dimissiondirectionid = hRsetDimissiondirectionList.get(0).getId();
+            }else if(null == hRsetDimissiondirectionList || hRsetDimissiondirectionList.size()==0){
+                dimissiondirectionid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_DIRECTION,dimissionInformation.getDimissiondirection()));
+            }
+            dimissionInformation.setDimissiondirectionid(dimissiondirectionid);
+        }
+        //获得dimissionreasonid
+        if (StringUtils.isNotEmpty(dimissionInformation.getDimissionreason())) {
+            Integer dimissionreasonid = null;
+            List<HRset> hRsetDimissionreasonList = ihRsetService.queryByConditions(new HRset("dimissionreason", dimissionInformation.getDimissionreason()));
+            if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
+                dimissionreasonid = hRsetDimissionreasonList.get(0).getId();
+            }else if(null==hRsetDimissionreasonList || hRsetDimissionreasonList.size()==0){
+                dimissionreasonid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_REASON,dimissionInformation.getDimissionreason()));
+            }
+            dimissionInformation.setDimissionreasonid(dimissionreasonid);
+        }
+        //获得transactoruserid
+        if (iUserService.queryByTruename(dimissionInformation.getTransactortruename())!=null) {
+            dimissionInformation.setTransactoruserid(iUserService.queryByTruename(dimissionInformation.getTransactortruename()).getId());
+        }
+        iDimissionInformationService.modifyOne(dimissionInformation);
     }
 }

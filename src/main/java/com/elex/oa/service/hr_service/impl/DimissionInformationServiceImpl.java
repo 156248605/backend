@@ -8,6 +8,7 @@ import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -170,6 +171,16 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         return dimissionInformationPageInfo;
     }
 
+    @Override
+    public List<DimissionInformation> queryByDimission(DimissionInformation dimissionInformation) {
+        Boolean isNotNull = false;
+        if(dimissionInformation.getDimissionuserid()!=null)isNotNull=true;
+        if (isNotNull) {
+            return iDimissionInformationDao.selectByDimission(dimissionInformation);
+        }
+        return null;
+    }
+
     /**
      *@Author:ShiYun;
      *@Description:根据dimissionid查询离职信息
@@ -216,70 +227,25 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         }
         Boolean b = false;//判断是否需要进数据库修改数据
         //先根据ID获取原数据
-        if(dimissionInformation.getId()==null || iDimissionInformationDao.selectOneById(dimissionInformation.getId())==null){
+        DimissionInformation selectOneById = iDimissionInformationDao.selectOneById(dimissionInformation.getId());
+        if(dimissionInformation.getId()==null || selectOneById==null){
             return RespUtil.successResp("502","数据请求有误！",null);
         }
-        DimissionInformation selectOneById = iDimissionInformationDao.selectOneById(dimissionInformation.getId());
         //判断处理人是否有变
-            //先根据username获得处理人的userid
-            if(dimissionInformation.getTransactorusername()==null || dimissionInformation.getTransactorusername().equals("")){
-                return RespUtil.successResp("503","数据请求有误！",null);
-            }
-            User user = iUserDao.selectByUsername(dimissionInformation.getTransactorusername());
-            if(user==null){
-                return RespUtil.successResp("504","数据请求有误！",null);
-            }
-            //处理办理人的信息
-            if(user.getId()!=selectOneById.getTransactoruserid()){
-                /*//更新办理日期
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                String transactiondate = sdf.format(new Date());
-                dimissionInformation.setTransactiondate(transactiondate);*/
-                b = true;
-            }else {
-                dimissionInformation.setTransactoruserid(null);
-            }
+        if(dimissionInformation.getTransactoruserid()!=selectOneById.getTransactoruserid()){
+            b = true;
+        }
         //判断最后工作日期是否有变
-        if(dimissionInformation.getLastworkingdate()==null || dimissionInformation.getLastworkingdate().equals("") || dimissionInformation.getLastworkingdate().equals(selectOneById.getLastworkingdate())){
-              dimissionInformation.setLastworkingdate(null);
-        }else {
-                b = true;
-        }
+        if(StringUtils.isNotEmpty(dimissionInformation.getLastworkingdate()) && !dimissionInformation.getLastworkingdate().equals(selectOneById.getLastworkingdate()))b=true;
         //判断离职类型ID是否有变
-        Integer dimissiontypeid = dimissionInformation.getDimissiontypeid();
-        List<HRset> hRsetDimissiontypeList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissiontypeid()));
-        if(dimissiontypeid==null || dimissiontypeid.equals("") || dimissiontypeid==selectOneById.getDimissiontypeid()){
-            dimissionInformation.setDimissiontypeid(null);
-        }else if(hRsetDimissiontypeList==null || hRsetDimissiontypeList.size()==0) {
-            return RespUtil.successResp("505","数据请求有误！",null);
-        }else {
-            b = true;
-        }
+        if(null!=dimissionInformation.getDimissiontypeid() && dimissionInformation.getDimissiontypeid().intValue()!=selectOneById.getDimissiontypeid().intValue())b=true;
         //判断离职原因ID是否有变
-        Integer dimissionreasonid = dimissionInformation.getDimissionreasonid();
-        List<HRset> hRsetDimissionreasonList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissionreasonid()));
-        if(dimissionreasonid==null || dimissionreasonid.equals("") || dimissionreasonid==selectOneById.getDimissionreasonid()){
-            dimissionInformation.setDimissionreasonid(null);
-        }else if(hRsetDimissionreasonList==null || hRsetDimissionreasonList.size()==0){
-            return RespUtil.successResp("506","数据请求有误！",null);
-        }else {
-            b = true;
-        }
+        if(null!=dimissionInformation.getDimissionreasonid() && dimissionInformation.getDimissionreasonid().intValue()!=selectOneById.getDimissionreasonid().intValue())b=true;
         //判断离职方向ID是否有变
-        Integer dimissiondirectionid = dimissionInformation.getDimissiondirectionid();
-        List<HRset> hRsetDimissiondirectionList = ihRsetDao.selectByConditions(new HRset(dimissionInformation.getDimissiondirectionid()));
-        if(dimissiondirectionid==null || dimissiondirectionid.equals("") || dimissiondirectionid==selectOneById.getDimissiondirectionid()){
-            dimissionInformation.setDimissiondirectionid(null);
-        }else if(hRsetDimissiondirectionList==null || hRsetDimissiondirectionList.size()==0){
-            return RespUtil.successResp("507","数据请求有误！",null);
-        }else {
-            b = true;
-        }
+        if(null!=dimissionInformation.getDimissiondirectionid() && dimissionInformation.getDimissiondirectionid().intValue()!=selectOneById.getDimissiondirectionid().intValue())b=true;
+        //判断办理日期是否有变
+        if(StringUtils.isNotEmpty(dimissionInformation.getTransactiondate()) && !dimissionInformation.getTransactiondate().equals(selectOneById.getTransactiondate()))b=true;
         if (b) {
-            //更新办理日期
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            String transactiondate = sdf.format(new Date());
-            dimissionInformation.setTransactiondate(transactiondate);
             iDimissionInformationDao.updateOne(dimissionInformation);
             return RespUtil.successResp("205","请求成功！",null);
         }

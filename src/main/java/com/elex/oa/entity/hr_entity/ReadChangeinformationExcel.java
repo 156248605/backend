@@ -33,10 +33,10 @@ public class ReadChangeinformationExcel extends ReadBaseExcel<ChangeInformation>
                     String str = String.valueOf(cell.getStringCellValue());
                     changeInformation.setChangedtruename(str);
                 }else if ("变更前内容".equals(columnname.trim())) {
-                    String str = String.valueOf(cell.getStringCellValue());
+                    String str = ExcelUtil.getStringByNumberCell(cell);
                     changeInformation.setBeforeinformation(str);
                 }else if ("变更后内容".equals(columnname.trim())) {
-                    String str = String.valueOf(cell.getStringCellValue());
+                    String str = ExcelUtil.getStringByNumberCell(cell);
                     changeInformation.setAfterinformation(str);
                 }else if ("变更原因".equals(columnname.trim())) {
                     String str = String.valueOf(cell.getStringCellValue());

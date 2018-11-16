@@ -12,4 +12,7 @@ public interface Commons {
     int REST_SERVER_ERROR = 400;
     int REST_PARAM_ERROR = 500;
     String HRSET_CONTRACTTYPE = "contracttype";
+    String HRSET_DIMISSION_TYPE = "dimissiontype";
+    String HRSET_DIMISSION_DIRECTION = "dimissiondirection";
+    String HRSET_DIMISSION_REASON = "dimissionreason";
 }

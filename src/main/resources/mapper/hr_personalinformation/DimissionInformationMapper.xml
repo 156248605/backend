@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.elex.oa.dao.hr.IDimissionInformationDao">
 
-	<resultMap id="dimissionInformaionMapper" type="DimissionInformation">
+	<resultMap id="dimissionInformationMapper" type="DimissionInformation">
 		<id column="id" property="id" />
 		<result column="dimissionuserid" property="dimissionuserid" />
 		<result column="lastworkingdate" property="lastworkingdate" />
@@ -58,7 +58,7 @@
 		#{officesupplystatue})
 	</insert>
 
-	<select id="selectByCondition" parameterType="DimissionInformation" resultMap="dimissionInformaionMapper">
+	<select id="selectByCondition" parameterType="DimissionInformation" resultMap="dimissionInformationMapper">
 		select
 			dm.id,
 			dm.dimissionuserid,
@@ -70,9 +70,9 @@
 			dm.dimissiondirectionid
 		from tb_hr_dimission dm
 		    JOIN tb_id_user u ON dm.transactoruserid = u.id
-		    JOIN tb_hr_set_dimissiontype dt ON dm.dimissiontypeid = dt.id
-		    JOIN tb_hr_set_dimissiondirection dd ON dm.dimissiondirectionid = dd.id
-		    JOIN tb_hr_set_dimissionreason dr ON dm.dimissionreasonid = dr.id
+		    JOIN tb_hr_set dt ON dm.dimissiontypeid = dt.id
+		    JOIN tb_hr_set dd ON dm.dimissiondirectionid = dd.id
+		    JOIN tb_hr_set dr ON dm.dimissionreasonid = dr.id
 		<where>
 			<if test="userids!=null">
 				AND dm.dimissionuserid IN
@@ -85,44 +85,44 @@
 			</if>
 			<if test="dimissiontype!=null and dimissiontype!='' or dimissiontypes!=null">
 				<if test="dimissiontypevalue=='' and dimissiontypes.size!=0">
-					AND dt.dimissiontype IN
+					AND dt.datavalue IN
 					<foreach collection="dimissiontypes" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="dimissiontypevalue=='包含'">
-					AND dt.dimissiontype LIKE CONCAT('%',#{dimissiontype},'%')
+					AND dt.datavalue LIKE CONCAT('%',#{dimissiontype},'%')
 				</if>
 				<if test="dimissiontypevalue=='不包含'">
-					AND dt.dimissiontype NOT LIKE CONCAT('%',#{dimissiontype},'%')
+					AND dt.datavalue NOT LIKE CONCAT('%',#{dimissiontype},'%')
 				</if>
 			</if>
 			<if test="dimissionreason!=null and dimissionreason!='' or dimissionreasons!=null">
 				<if test="dimissionreasonvalue=='' and dimissionreasons.size!=0">
-					AND dr.dimissionreason IN
+					AND dr.datavalue IN
 					<foreach collection="dimissionreasons" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="dimissionreasonvalue=='包含'">
-					AND dr.dimissionreason LIKE CONCAT('%',#{dimissionreason},'%')
+					AND dr.datavalue LIKE CONCAT('%',#{dimissionreason},'%')
 				</if>
 				<if test="dimissionreasonvalue=='不包含'">
-					AND dr.dimissionreason NOT LIKE CONCAT('%',#{dimissionreason},'%')
+					AND dr.datavalue NOT LIKE CONCAT('%',#{dimissionreason},'%')
 				</if>
 			</if>
 			<if test="dimissiondirection!=null and dimissiondirection!='' or dimissiondirections!=null">
 				<if test="dimissiondirectionvalue=='' and dimissiondirections.size!=0">
-					AND dd.dimissiondirection IN
+					AND dd.datavalue IN
 					<foreach collection="dimissiondirections" item="param" open="(" separator="," close=")">
 						#{param}
 					</foreach>
 				</if>
 				<if test="dimissiondirectionvalue=='包含'">
-					AND dd.dimissiondirection LIKE CONCAT('%',#{dimissiondirection},'%')
+					AND dd.datavalue LIKE CONCAT('%',#{dimissiondirection},'%')
 				</if>
 				<if test="dimissiondirectionvalue=='不包含'">
-					AND dd.dimissiondirection NOT LIKE CONCAT('%',#{dimissiondirection},'%')
+					AND dd.datavalue NOT LIKE CONCAT('%',#{dimissiondirection},'%')
 				</if>
 			</if>
 			<if test="transactortruename!=null and transactortruename!='' or transactortruenames!=null">
@@ -146,7 +146,25 @@
 		ORDER BY dm.id DESC
 	</select>
 
-	<select id="selectOneById" parameterType="java.lang.Integer" resultMap="dimissionInformaionMapper">
+	<select id="selectByDimission" parameterType="DimissionInformation" resultMap="dimissionInformationMapper">
+		select
+		dm.id,
+		dm.dimissionuserid,
+		dm.lastworkingdate,
+		dm.dimissiontypeid,
+		dm.dimissionreasonid,
+		dm.transactoruserid,
+		dm.transactiondate,
+		dm.dimissiondirectionid
+		from tb_hr_dimission dm
+		<where>
+			<if test="dimissionuserid!=null">AND dm.dimissionuserid =#{dimissionuserid}</if>
+			and 1=1
+		</where>
+		ORDER BY dm.id DESC
+	</select>
+
+	<select id="selectOneById" parameterType="java.lang.Integer" resultMap="dimissionInformationMapper">
 		select * from tb_hr_dimission
 		WHERE id =#{_parameter,jdbcType=NUMERIC}
 	</select>

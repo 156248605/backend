@@ -81,7 +81,7 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
             try {
                 truename = iUserDao.selectById(changeinformation.getChangeduserid()).getTruename();
             } catch (Exception e) {
-                truename = "该员工可能已经删档!";
+                truename = "该员工可能已经删档！";
             }
             changeinformation.setChangedtruename(truename);
             User transactoruser = iUserDao.selectById(changeinformation.getTransactoruserid());

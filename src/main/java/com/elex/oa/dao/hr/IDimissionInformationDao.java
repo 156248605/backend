@@ -19,33 +19,35 @@ public interface IDimissionInformationDao extends BaseDao<DimissionInformation> 
      *@Description:添加离职信息并返回主键
      *@Date: 16:29 2018\4\16 0016
      */
-    public Integer insertOne(DimissionInformation dimissionInformation);
+     Integer insertOne(DimissionInformation dimissionInformation);
 
     /**
      *@Author:ShiYun;
      *@Description:根据条件查询离职信息
      *@Date: 18:25 2018\4\16 0016
      */
-    public List<DimissionInformation> selectByCondition(DimissionInformation dimissionInformation);
+     List<DimissionInformation> selectByCondition(DimissionInformation dimissionInformation);
+
+     List<DimissionInformation> selectByDimission(DimissionInformation dimissionInformation);
 
     /**
      *@Author:ShiYun;
      *@Description:根据dimissionid查询离职信息
      *@Date: 13:37 2018\4\17 0017
      */
-    public DimissionInformation selectOneById(Integer id);
+     DimissionInformation selectOneById(Integer id);
 
     /**
      *@Author:ShiYun;
      *@Description:根据dimissionid修改离职信息
      *@Date: 13:42 2018\4\17 0017
      */
-    public void updateOne(DimissionInformation dimissionInformation);
+     void updateOne(DimissionInformation dimissionInformation);
 
     /**
      *@Author:ShiYun;
      *@Description:删除离职信息
      *@Date: 13:53 2018\5\30 0030
      */
-    public void deleteOne(Integer id);
+     void deleteOne(Integer id);
 }

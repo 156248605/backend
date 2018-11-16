@@ -41,7 +41,7 @@ public class ReadDimissioninformationExcel extends ReadBaseExcel<DimissionInform
                     String str = String.valueOf(cell.getStringCellValue());
                     dimissionInformation.setTransactortruename(str);
                 }else if ("办理日期".equals(columnname.trim())) {
-                    String str = String.valueOf(cell.getStringCellValue());
+                    String str = ExcelUtil.getStringByDateCell(cell);
                     dimissionInformation.setTransactiondate(str);
                 }else if ("离职去向".equals(columnname.trim())) {
                     String str = String.valueOf(cell.getStringCellValue());

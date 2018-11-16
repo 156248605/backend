@@ -103,6 +103,10 @@ public class DimissionInformation  implements Serializable {
     public DimissionInformation() {
     }
 
+    public DimissionInformation(Integer dimissionuserid) {
+        this.dimissionuserid = dimissionuserid;
+    }
+
     public String getTransactorusername() {
         return transactorusername;
     }

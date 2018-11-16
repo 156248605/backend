@@ -1,5 +1,6 @@
 package com.elex.oa.controller.hr;
 
+import com.alibaba.fastjson.JSON;
 import com.elex.oa.entity.hr_entity.ChangeInformation;
 import com.elex.oa.entity.hr_entity.ReadChangeinformationExcel;
 import com.elex.oa.service.hr_service.IChangeInformationService;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -92,21 +94,28 @@ public class ChangeInformationController {
     public String importChangeinformations(
             @RequestParam("file") MultipartFile multipartFile
     ){
+        Map<String,String> responseMap = new HashMap<>();
         try {
             ReadChangeinformationExcel readChangeinformationExcel = new ReadChangeinformationExcel();
             List<ChangeInformation> excelInfo = readChangeinformationExcel.getExcelInfo(multipartFile);
             for(ChangeInformation changeInformation:excelInfo){
                 if (iUserService.queryByTruename(changeInformation.getChangedtruename())!=null) {
                     changeInformation.setChangeduserid(iUserService.queryByTruename(changeInformation.getChangedtruename()).getId());
+                }else {
+                    responseMap.put(changeInformation.getChangedtruename(),"该员工查不到，请重新导入");
+                    continue;
                 }
                 if (iUserService.queryByTruename(changeInformation.getTransactortruename())!=null) {
                     changeInformation.setTransactoruserid(iUserService.queryByTruename(changeInformation.getTransactortruename()).getId());
+                }else {
+                    responseMap.put(changeInformation.getTransactortruename(),"该办理人查不到，请重新导入");
+                    continue;
                 }
                 iChangeInformationService.addOne(changeInformation);
             }
         } catch (Exception e) {
             return "数据导入失败！";
         }
-        return "数据导入成功！";
+        return responseMap.size()==0?"数据导入成功！":(JSON.toJSONString(responseMap));
     }
 }
