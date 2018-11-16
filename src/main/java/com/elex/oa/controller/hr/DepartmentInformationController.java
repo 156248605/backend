@@ -670,7 +670,12 @@ public class DepartmentInformationController {
                 }
                 b = true;
                 deptLog.setChangeinformation("部门正职");
-                deptLog.setBeforeinformation(iUserService.getById(dept2.getPrincipaluserid()).getTruename());
+                User principaluser = iUserService.getById(dept2.getPrincipaluserid());
+                if (principaluser!=null) {
+                    deptLog.setBeforeinformation(iUserService.getById(dept2.getPrincipaluserid()).getTruename());
+                } else {
+                    deptLog.setBeforeinformation("原部门正职已经不存在！");
+                }
                 deptLog.setAfterinformation(iUserService.getById(dept.getPrincipaluserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
             }if (dept2.getDeputyuserid()!=null && dept.getDeputyuserid()!=null &&  !dept2.getDeputyuserid().toString().equals(dept.getDeputyuserid().toString())){
@@ -758,7 +763,12 @@ public class DepartmentInformationController {
                 }
                 b = true;
                 deptLog.setChangeinformation("部门副职");
-                deptLog.setBeforeinformation(iUserService.getById(dept2.getDeputyuserid()).getTruename());
+                User deputyuser = iUserService.getById(dept2.getDeputyuserid());
+                if (deputyuser!=null) {
+                    deptLog.setBeforeinformation(iUserService.getById(dept2.getDeputyuserid()).getTruename());
+                } else {
+                    deptLog.setBeforeinformation("原副职信息已经不存在！");
+                }
                 deptLog.setAfterinformation(iUserService.getById(dept.getDeputyuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
             }
@@ -855,7 +865,12 @@ public class DepartmentInformationController {
                 }
                 b = true;
                 deptLog.setChangeinformation("部门秘书");
-                deptLog.setBeforeinformation(iUserService.getById(dept2.getSecretaryuserid()).getTruename());
+                User secretaryuser = iUserService.getById(dept2.getSecretaryuserid());
+                if (secretaryuser!=null) {
+                    deptLog.setBeforeinformation(iUserService.getById(dept2.getSecretaryuserid()).getTruename());
+                } else {
+                    deptLog.setBeforeinformation("原秘书信息已经不存在！");
+                }
                 deptLog.setAfterinformation(iUserService.getById(dept.getSecretaryuserid()).getTruename());
                 iDeptLogService.addOne(deptLog);
             }
