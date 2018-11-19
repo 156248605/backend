@@ -111,19 +111,6 @@ public class PostInformationController {
         Post post = iPostService.queryOneByPostcode(code);
         Post parentpost = iPostService.queryOneByPostid(post.getParentpostid());
         post.setParentpost(parentpost);
-        if(parentpost == null){
-            parentpost = new Post();
-            parentpost.setPostname("无上级岗位");
-        }
-        post.setParentpost(parentpost);
-        HRset hRsetFunctionalType = ihRsetService.queryById(post.getFunctionaltypeid());
-        if (hRsetFunctionalType!=null) {
-            post.setFunctionaltype(hRsetFunctionalType.getDatavalue());
-        }
-        HRset hRsetPostlevel = ihRsetService.queryById(post.getPostlevelid());
-        if (hRsetPostlevel!=null) {
-            post.setPostlevel(hRsetPostlevel.getDatavalue());
-        }
         return post;
     }
 
@@ -232,27 +219,8 @@ public class PostInformationController {
                 e.printStackTrace();
             }
         }
-        List<HRset> hRsetFunctionalList = ihRsetService.queryByConditions(new HRset("functionaltype", post.getFunctionaltype()));
-        if (hRsetFunctionalList!=null && hRsetFunctionalList.size()==1) {
-            post.setFunctionaltypeid(hRsetFunctionalList.get(0).getId());
-        }
-        List<HRset> postlevelList = ihRsetService.queryByConditions(new HRset("postlevel", post.getPostlevel()));
-        if(postlevelList!=null && postlevelList.size()==1){
-            post.setPostlevelid(postlevelList.get(0).getId());
-        }
         Integer postid = iPostService.addOne(post);
         post.setId(postid);
-
-        /*
-         *Map<String,Object> result = new HashMap<>();
-         * if(postid == post.getId()){
-         *      result.put("result","success");
-         *      result.put("message","添加成功");
-         * }else{
-         *       result.put("result","failure");
-         *      result.put("message","添加失败，稍后再试");
-         * }
-         */
         return RespUtil.successResp("200","提交成功!",post) ;
     }
 
@@ -267,14 +235,6 @@ public class PostInformationController {
         Post post = iPostService.queryOneByPostid(id);
         Post parentpost = iPostService.queryOneByPostid(post.getParentpostid());
         post.setParentpost(parentpost);
-        HRset hRsetFunctionalType = ihRsetService.queryById(post.getFunctionaltypeid());
-        if (hRsetFunctionalType!=null) {
-            post.setFunctionaltype(hRsetFunctionalType.getDatavalue());
-        }
-        HRset hRsetPostlevel = ihRsetService.queryById(post.getPostlevelid());
-        if (hRsetPostlevel!=null) {
-            post.setPostlevel(hRsetPostlevel.getDatavalue());
-        }
         return post;
     }
 
@@ -312,42 +272,52 @@ public class PostInformationController {
             postLog.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());//默认为管理员，实际从session中拿
 
             Post post2 = iPostService.queryOneByPostid(post.getId());
-            HRset hRsetFunctionalType = ihRsetService.queryById(post2.getFunctionaltypeid());
-            if (hRsetFunctionalType!=null) {
-                post2.setFunctionaltype(hRsetFunctionalType.getDatavalue());
-            }
-            HRset hRsetPostlevel = ihRsetService.queryById(post2.getPostlevelid());
-            if (hRsetPostlevel!=null) {
-                post2.setPostlevel(hRsetPostlevel.getDatavalue());
-            }
-
             if (!post.getPostname().equals(post2.getPostname())){
                 b = true;
                 postLog.setChangeinformation("岗位名称");
                 postLog.setBeforeinformation(post2.getPostname());
                 postLog.setAfterinformation(post.getPostname());
                 iPostLogService.addOne(postLog);
-            }if (!post.getFunctionaltype().equals(post2.getFunctionaltype())){
+            }if (null!=post.getFunctionaltypeid() && (null==post2.getFunctionaltypeid() || post.getFunctionaltypeid().intValue()!=post2.getFunctionaltypeid().intValue())){
                 b = true;
                 postLog.setChangeinformation("职能类型");
                 postLog.setBeforeinformation(post2.getFunctionaltype());
-                postLog.setAfterinformation(post.getFunctionaltype());
+                postLog.setAfterinformation(ihRsetService.queryById(post.getFunctionaltypeid()).getDatavalue());
                 iPostLogService.addOne(postLog);
             }
-            if ( post.getParentpostid()!=null && !post.getParentpostid().toString().equals(post2.getParentpostid().toString())){
+            if (!post.getParentpostid().toString().equals(post2.getParentpostid().toString())){
                 b = true;
                 postLog.setChangeinformation("上级岗位");
                 postLog.setBeforeinformation(iPostService.queryOneByPostid(post2.getParentpostid()).getPostname());
                 postLog.setAfterinformation(iPostService.queryOneByPostid(post.getParentpostid()).getPostname());
                 iPostLogService.addOne(postLog);
             }
-            if (!post.getPostlevel().equals(post2.getPostlevel())){
+            if (null!=post.getPostfamilyid() && (null==post2.getPostfamilyid() || post.getPostfamilyid().intValue()!=post2.getPostfamilyid().intValue())){
                 b = true;
-                postLog.setChangeinformation("岗位级别");
-                postLog.setBeforeinformation(post2.getPostlevel());
-                postLog.setAfterinformation(post.getPostlevel());
+                postLog.setChangeinformation("职系");
+                postLog.setBeforeinformation(post2.getPostfamily());
+                postLog.setAfterinformation(ihRsetService.queryById(post.getPostfamilyid()).getDatavalue());
                 iPostLogService.addOne(postLog);
-            }if (!post.getPostcode().equals(post2.getPostcode())){
+            }if (null!=post.getPostgradeid() && (null==post2.getPostgradeid() || post.getPostgradeid().intValue()!=post2.getPostgradeid().intValue())){
+                b = true;
+                postLog.setChangeinformation("职等");
+                postLog.setBeforeinformation(post2.getPostgrade());
+                postLog.setAfterinformation(ihRsetService.queryById(post.getPostgradeid()).getDatavalue());
+                iPostLogService.addOne(postLog);
+            }if (null!=post.getRankid() && (null==post2.getRankid() || post.getRankid().intValue()!=post2.getRankid().intValue())){
+                b = true;
+                postLog.setChangeinformation("职级");
+                postLog.setBeforeinformation(post2.getRank());
+                postLog.setAfterinformation(ihRsetService.queryById(post.getRankid()).getDatavalue());
+                iPostLogService.addOne(postLog);
+            }if (null!=post.getPostlevelid() && (null==post2.getPostlevelid() || post.getPostlevelid().intValue()!=post2.getPostlevelid().intValue())){
+                b = true;
+                postLog.setChangeinformation("岗级");
+                postLog.setBeforeinformation(post2.getPostlevel());
+                postLog.setAfterinformation(ihRsetService.queryById(post.getPostlevelid()).getDatavalue());
+                iPostLogService.addOne(postLog);
+            }
+            if (!post.getPostcode().equals(post2.getPostcode())){
                 b = true;
                 postLog.setChangeinformation("岗位编号");
                 postLog.setBeforeinformation(post2.getPostcode());
@@ -413,7 +383,7 @@ public class PostInformationController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("400","提交文件失败！",null);
+            return RespUtil.successResp("400","提交失败！",null);
         }
         return RespUtil.successResp("200","提交成功！",post);
     }

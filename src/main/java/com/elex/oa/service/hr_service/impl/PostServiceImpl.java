@@ -1,13 +1,7 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr.IPerandpostrsDao;
-import com.elex.oa.dao.hr.IPersonalInformationDao;
-import com.elex.oa.dao.hr.IPostDao;
-import com.elex.oa.dao.hr.IUserDao;
-import com.elex.oa.entity.hr_entity.PerAndPostRs;
-import com.elex.oa.entity.hr_entity.PersonalInformation;
-import com.elex.oa.entity.hr_entity.Post;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.dao.hr.*;
+import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IPostService;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.hr_util.IDcodeUtil;
@@ -15,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,14 +22,16 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements IPostService {
 
-    @Autowired
+    @Resource
     IPostDao iPostDao;
-    @Autowired
+    @Resource
     IPerandpostrsDao iPerandpostrsDao;
-    @Autowired
+    @Resource
     IUserDao iUserDao;
-    @Autowired
+    @Resource
     IPersonalInformationDao iPersonalInformationDao;
+    @Resource
+    IHRsetDao ihRsetDao;
 
     /**
      *@Author:ShiYun;
@@ -44,8 +41,11 @@ public class PostServiceImpl implements IPostService {
     @Override
     public Post queryOneByPostid(Integer id) {
         Post post = iPostDao.selectPostByPostid(id);
-        return post;
+        return getPostdetailByPost(post);
     }
+
+
+
 
     /**
      *@Author:ShiYun;
@@ -66,7 +66,7 @@ public class PostServiceImpl implements IPostService {
     @Override
     public Post queryOneByPostcode(String postcode) {
         Post post = iPostDao.selectPostByPostcode(postcode);
-        return post;
+        return getPostdetailByPost(post);
     }
 
     /**
@@ -190,5 +190,26 @@ public class PostServiceImpl implements IPostService {
         }
         String postnames = IDcodeUtil.getArrayToString(strs, ";");
         return RespUtil.successResp("200","提交成功！",postnames);
+    }
+
+    private Post getPostdetailByPost(Post post) {
+        if (post!=null) {
+            if (null!=post.getFunctionaltypeid()) {
+                post.setFunctionaltype(ihRsetDao.selectById(post.getFunctionaltypeid()).getDatavalue());
+            }
+            if (null!=post.getPostfamilyid()) {
+                post.setPostfamily(ihRsetDao.selectById(post.getPostfamilyid()).getDatavalue());
+            }
+            if (null!=post.getPostgradeid()) {
+                post.setPostgrade(ihRsetDao.selectById(post.getPostgradeid()).getDatavalue());
+            }
+            if (null!=post.getRankid()) {
+                post.setRank(ihRsetDao.selectById(post.getRankid()).getDatavalue());
+            }
+            if (null!=post.getPostlevelid()) {
+                post.setPostlevel(ihRsetDao.selectById(post.getPostlevelid()).getDatavalue());
+            }
+        }
+        return post;
     }
 }

@@ -11,8 +11,14 @@ public class Post implements Serializable{
     private String postname; //名称
     private String functionaltype;  //职能类型
     private Integer functionaltypeid;//职能类型ID
-    private String postlevel; //职级
-    private Integer postlevelid;//职级ID
+    private String postfamily;//职系
+    private Integer postfamilyid;//
+    private String postgrade;//职等
+    private Integer postgradeid;//
+    private String rank;//职级
+    private Integer rankid;//
+    private String postlevel; //岗级
+    private Integer postlevelid;//岗级ID
     private String postcode; //岗位编码
     private Integer parentpostid; //上级岗位id
     private Post parentpost; //上级岗位
@@ -25,6 +31,54 @@ public class Post implements Serializable{
     private Integer ordercode;//顺序码
 
     public Post() {
+    }
+
+    public String getPostfamily() {
+        return postfamily;
+    }
+
+    public void setPostfamily(String postfamily) {
+        this.postfamily = postfamily;
+    }
+
+    public Integer getPostfamilyid() {
+        return postfamilyid;
+    }
+
+    public void setPostfamilyid(Integer postfamilyid) {
+        this.postfamilyid = postfamilyid;
+    }
+
+    public String getPostgrade() {
+        return postgrade;
+    }
+
+    public void setPostgrade(String postgrade) {
+        this.postgrade = postgrade;
+    }
+
+    public Integer getPostgradeid() {
+        return postgradeid;
+    }
+
+    public void setPostgradeid(Integer postgradeid) {
+        this.postgradeid = postgradeid;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public Integer getRankid() {
+        return rankid;
+    }
+
+    public void setRankid(Integer rankid) {
+        this.rankid = rankid;
     }
 
     public Integer getOrdercode() {

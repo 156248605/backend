@@ -34,6 +34,8 @@ public interface IHRsetDao {
      */
     List<HRset> selectByConditions(HRset hRset);
 
+    HRset selectById(Integer id);
+
     /**
      *@Author:ShiYun;
      *@Description:根据ID删除HR信息

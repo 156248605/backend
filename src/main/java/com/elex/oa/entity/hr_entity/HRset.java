@@ -14,6 +14,7 @@ public class HRset implements Serializable {
     private static final long serialVersionUID = 4194437220453549386L;
     private Integer id;//HR设置主键
     private String datatype;//HR字段类型
+    private String datacode;//HR字段编码(可以为空)
     private String datavalue;//HR字段值
 
     public HRset() {
@@ -37,9 +38,22 @@ public class HRset implements Serializable {
         this.datavalue = datavalue;
     }
 
+    public HRset(String datatype, String datacode, String datavalue) {
+        this.datatype = datatype;
+        this.datacode = datacode;
+        this.datavalue = datavalue;
+    }
+
     public HRset(Integer id, String datatype, String datavalue) {
         this.id = id;
         this.datatype = datatype;
+        this.datavalue = datavalue;
+    }
+
+    public HRset(Integer id, String datatype, String datacode, String datavalue) {
+        this.id = id;
+        this.datatype = datatype;
+        this.datacode = datacode;
         this.datavalue = datavalue;
     }
 
@@ -57,6 +71,14 @@ public class HRset implements Serializable {
 
     public void setDatatype(String datatype) {
         this.datatype = datatype;
+    }
+
+    public String getDatacode() {
+        return datacode;
+    }
+
+    public void setDatacode(String datacode) {
+        this.datacode = datacode;
     }
 
     public String getDatavalue() {

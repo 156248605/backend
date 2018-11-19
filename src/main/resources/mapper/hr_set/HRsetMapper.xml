@@ -5,6 +5,7 @@
 	<resultMap id="HRsetMapper" type="HRset">
 		<id column="id" property="id" />
 		<result column="datatype" property="datatype" />
+		<result column="datacode" property="datacode" />
 		<result column="datavalue" property="datavalue" />
 	</resultMap>
 
@@ -12,23 +13,32 @@
 		insert into tb_hr_set (
 			id,
 			datatype,
+			datacode,
 			datavalue)
 		values (
 			NULL,
 			#{datatype},
+			#{adtacode},
 			#{datavalue})
 	</insert>
 
 	<select id="selectAll" resultMap="HRsetMapper">
-		SELECT * FROM tb_hr_set
+		SELECT id,datatype,datacode,datavalue FROM tb_hr_set
+		ORDER BY id DESC
+	</select>
+
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="HRsetMapper">
+		SELECT id,datatype,datacode,datavalue FROM tb_hr_set
+		where id=#{id}
 		ORDER BY id DESC
 	</select>
 
 	<select id="selectByConditions" parameterType="HRset" resultMap="HRsetMapper">
-		SELECT * FROM tb_hr_set
+		SELECT id,datatype,datacode,datavalue FROM tb_hr_set
 		<where>
 			<if test="id!=null and id!=''">AND id=#{id}</if>
 			<if test="datatype!=null and datatype!=''">AND datatype=#{datatype}</if>
+			<if test="datacode!=null and datacode!=''">AND datacode=#{datacode}</if>
 			<if test="datavalue!=null and datavalue!=''">AND datavalue=#{datavalue}</if>
 		</where>
 	</select>
@@ -39,7 +49,8 @@
 
 	<update id="updateOne" parameterType="HRset">
 		UPDATE tb_hr_set
-		SET datavalue=#{datavalue}
+		SET datavalue=#{datavalue},
+		    datacode=#{datacode}
 		WHERE id=#{id}
 	</update>
 </mapper>

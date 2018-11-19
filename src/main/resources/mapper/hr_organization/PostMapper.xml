@@ -6,6 +6,9 @@
 		<id column="id" property="id" />
 		<result column="postname" property="postname" />
 		<result column="functionaltypeid" property="functionaltypeid" />
+		<result column="postfamilyid" property="postfamilyid" />
+		<result column="postgradeid" property="postgradeid" />
+		<result column="rankid" property="rankid" />
 		<result column="postlevelid" property="postlevelid" />
 		<result column="postcode" property="postcode" />
 		<result column="parentpostid" property="parentpostid" />
@@ -58,9 +61,12 @@
 	<insert id="insertOne" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_post
 		(id,
-		postname,
-		functionaltypeid,
-		postlevelid,
+		 postname,
+		 functionaltypeid,
+		 postfamilyid,
+		 postgradeid,
+		 rankid,
+		 postlevelid,
 		 postcode,
 		 parentpostid,
 		 organization,
@@ -73,6 +79,9 @@
 		(NULL ,
 		#{postname},
 		#{functionaltypeid},
+		#{postfamilyid},
+		#{postgradeid},
+		#{rankid},
 		#{postlevelid},
 		#{postcode},
 		#{parentpostid},
@@ -89,6 +98,9 @@
 			<if test="postname!=null and postname!=''" >postname=#{postname},</if>
 			<if test="functionaltypeid!=null and functionaltypeid!=''" >functionaltypeid=#{functionaltypeid},</if>
 			<if test="functionaltypeid==null or functionaltypeid==''" >functionaltypeid=NULL,</if>
+			<if test="postfamilyid!=null and postfamilyid!=''" >postfamilyid=#{postfamilyid},</if>
+			<if test="postgradeid!=null and postgradeid!=''" >postgradeid=#{postgradeid},</if>
+			<if test="rankid!=null and rankid!=''" >rankid=#{rankid},</if>
 			<if test="postlevelid!=null and postlevelid!=''" >postlevelid=#{postlevelid},</if>
 			<if test="postcode!=null and postcode!=''" >postcode=#{postcode},</if>
 			<if test="parentpostid!=null and parentpostid!=''" >parentpostid=#{parentpostid},</if>
