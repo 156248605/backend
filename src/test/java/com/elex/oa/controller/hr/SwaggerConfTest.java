@@ -28,8 +28,8 @@ public class SwaggerConfTest {
 
     @Test
     public void test1_getBean(){
-        ApplicationContext context = new AnnotationConfigApplicationContext(TestConfiguration.class);
-        Test2 test2 = (Test2) context.getBean("testBean");
-        System.out.println(test2.toString());
+//        ApplicationContext context = new AnnotationConfigApplicationContext(TestConfiguration.class);
+//        Test2 test2 = (Test2) context.getBean("testBean");
+//        System.out.println(test2.toString());
     }
 }

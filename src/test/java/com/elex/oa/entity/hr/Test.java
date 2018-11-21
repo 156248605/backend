@@ -29,7 +29,6 @@ public class Test {
         System.out.println("Test容器启动初始化。。。");
     }
 
-    @Bean(name = "testBean")
     public Test2 test2(){
         return new Test2(apiTitle,apiVersion,basePackage);
     }
