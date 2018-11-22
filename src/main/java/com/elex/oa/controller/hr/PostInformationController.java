@@ -285,7 +285,7 @@ public class PostInformationController {
                 postLog.setAfterinformation(ihRsetService.queryById(post.getFunctionaltypeid()).getDatavalue());
                 iPostLogService.addOne(postLog);
             }
-            if (!post.getParentpostid().toString().equals(post2.getParentpostid().toString())){
+            if (null!=post.getParentpostid() && (null==post2.getParentpostid() || post.getParentpostid().intValue()==post2.getParentpostid().intValue())){
                 b = true;
                 postLog.setChangeinformation("上级岗位");
                 postLog.setBeforeinformation(iPostService.queryOneByPostid(post2.getParentpostid()).getPostname());
