@@ -42,10 +42,6 @@ public class PostServiceImpl implements IPostService {
     public Post queryOneByPostid(Integer id) {
         Post post = iPostDao.selectPostByPostid(id);
         if(null==post)return null;
-        post.setPostfamily(ihRsetDao.selectById(post.getPostfamilyid()).getDatavalue());
-        post.setPostgrade(ihRsetDao.selectById(post.getPostgradeid()).getDatavalue());
-        post.setRank(ihRsetDao.selectById(post.getRankid()).getDatavalue());
-        post.setPostlevel(ihRsetDao.selectById(post.getPostlevelid()).getDatavalue());
         return getPostdetailByPost(post);
     }
 
@@ -200,19 +196,34 @@ public class PostServiceImpl implements IPostService {
     private Post getPostdetailByPost(Post post) {
         if (post!=null) {
             if (null!=post.getFunctionaltypeid()) {
-                post.setFunctionaltype(ihRsetDao.selectById(post.getFunctionaltypeid()).getDatavalue());
+                HRset hRset_functionaltype = ihRsetDao.selectById(post.getFunctionaltypeid());
+                if (null!=hRset_functionaltype) {
+                    post.setFunctionaltype(hRset_functionaltype.getDatavalue());
+                }
             }
             if (null!=post.getPostfamilyid()) {
-                post.setPostfamily(ihRsetDao.selectById(post.getPostfamilyid()).getDatavalue());
+                HRset hRset_postfamily = ihRsetDao.selectById(post.getPostfamilyid());
+                if (null!=hRset_postfamily) {
+                    post.setPostfamily(hRset_postfamily.getDatavalue());
+                }
             }
             if (null!=post.getPostgradeid()) {
-                post.setPostgrade(ihRsetDao.selectById(post.getPostgradeid()).getDatavalue());
+                HRset hRset_postgrade = ihRsetDao.selectById(post.getPostgradeid());
+                if (null!=hRset_postgrade) {
+                    post.setPostgrade(hRset_postgrade.getDatavalue());
+                }
             }
             if (null!=post.getRankid()) {
-                post.setRank(ihRsetDao.selectById(post.getRankid()).getDatavalue());
+                HRset hRset_postrank = ihRsetDao.selectById(post.getRankid());
+                if (null!=hRset_postrank) {
+                    post.setRank(hRset_postrank.getDatavalue());
+                }
             }
             if (null!=post.getPostlevelid()) {
-                post.setPostlevel(ihRsetDao.selectById(post.getPostlevelid()).getDatavalue());
+                HRset hRset_postlevel = ihRsetDao.selectById(post.getPostlevelid());
+                if (null!=hRset_postlevel) {
+                    post.setPostlevel(hRset_postlevel.getDatavalue());
+                }
             }
         }
         return post;
