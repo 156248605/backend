@@ -31,10 +31,10 @@ public class HRsetController {
      *@Description:HRset信息的添加
      *@Date: 18:43 2018\5\11 0011
      */
-    @PostMapping("/addOneHRset")
+    @RequestMapping("/addOneHRset")
     @ResponseBody
     public String addOneHRset(
-          @RequestBody  HRset hRset
+          HRset hRset
     ){
         Integer id = (Integer) ihRsetService.addOne(hRset);
         return id!=null?"添加成功！":"添加失败！";
@@ -126,7 +126,7 @@ public class HRsetController {
     @RequestMapping("/modifyHRset")
     @ResponseBody
     public String modifyHRset(
-            @RequestBody HRset hRset
+             HRset hRset
     ){
         Boolean aBoolean = ihRsetService.modifyHRset(hRset);
         return aBoolean?"修改成功！":"修改失败！";
