@@ -246,7 +246,7 @@ public class PostInformationController {
     @RequestMapping("/updateOnePost")
     @ResponseBody
     public Object updateOnePost(
-            @Valid Post post,
+            Post post,
             HttpServletRequest request,
             @RequestParam("transactorusername") String transactorusername
     ){
