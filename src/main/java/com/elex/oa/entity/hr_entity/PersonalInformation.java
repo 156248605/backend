@@ -42,6 +42,7 @@ public class  PersonalInformation implements Serializable{
     private String principalemployeenumber;//主管工号（源于人事信息）（只显示）
 
     private List<Integer> postids;//岗位IDs（人事和岗位的关系表2）
+    private List<Post> postList;//多岗位
     private String postnames;//多岗位（源自人事和岗位的关系信息）（只显示）
     private String postname;//判断条件
     private List<String> postnameList;//
@@ -155,6 +156,14 @@ public class  PersonalInformation implements Serializable{
     private String remark;//备注
 
     public PersonalInformation() {
+    }
+
+    public List<Post> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
     }
 
     public String getHj() {

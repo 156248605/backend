@@ -41,6 +41,11 @@ public class PostServiceImpl implements IPostService {
     @Override
     public Post queryOneByPostid(Integer id) {
         Post post = iPostDao.selectPostByPostid(id);
+        if(null==post)return null;
+        post.setPostfamily(ihRsetDao.selectById(post.getPostfamilyid()).getDatavalue());
+        post.setPostgrade(ihRsetDao.selectById(post.getPostgradeid()).getDatavalue());
+        post.setRank(ihRsetDao.selectById(post.getRankid()).getDatavalue());
+        post.setPostlevel(ihRsetDao.selectById(post.getPostlevelid()).getDatavalue());
         return getPostdetailByPost(post);
     }
 

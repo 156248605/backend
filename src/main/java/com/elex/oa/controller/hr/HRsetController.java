@@ -131,4 +131,21 @@ public class HRsetController {
         Boolean aBoolean = ihRsetService.modifyHRset(hRset);
         return aBoolean?"修改成功！":"修改失败！";
     }
+
+    /**
+     * @Author: shiyun
+     * @Description: TODO
+     * @Date  2018\11\23 0023 11:14
+     * @Param
+     * @return
+     **/
+    @RequestMapping("/queryPostgradeByPostfamilyid")
+    @ResponseBody
+    public List<HRset> queryPostgradeByPostfamilyid(
+            @RequestParam(value = "postfamilyid")Integer postfamilyid
+    ){
+        List<HRset> hRsetList = ihRsetService.queryPostgradeByPostfamilyid(postfamilyid);
+        return hRsetList;
+    }
+
 }

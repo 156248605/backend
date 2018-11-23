@@ -82,4 +82,6 @@ public interface IHRsetService {
      * @return true:存在;false:不存在;
      **/
     Boolean queryValidateHRset(HRset hRset);
+
+    List<HRset> queryPostgradeByPostfamilyid(Integer postfamilyid);
 }

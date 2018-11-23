@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.hr.IPostRelationshipDao">
+
+	<resultMap id="PostRelationshipMapper" type="PostRelationship">
+		<id column="id" property="id" />
+		<result column="postfamilyid" property="postfamilyid" />
+		<result column="postgradeid" property="postgradeid" />
+		<result column="postrankid" property="postrankid" />
+		<result column="postlevelid" property="postlevelid" />
+	</resultMap>
+
+	<insert id="insert" parameterType="PostRelationship" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_hr_set_postrp (
+			id,
+			postfamilyid,
+			postgradeid,
+			postrankid,
+			postlevelid)
+		values (
+			NULL,
+			#{postfamilyid},
+			#{postgradeid},
+			#{postrankid},
+			#{postlevelid})
+	</insert>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_hr_set_postrp WHERE id=#{id}
+	</delete>
+
+	<update id="updateOne" parameterType="PostRelationship">
+		UPDATE tb_hr_set_postrp
+		SET
+		 <if test="null!=postfamilyid and ''!=postfamilyid">postfamilyid=#{postfamilyid},</if>
+		 <if test="null!=postgradeid and ''!=postgradeid">postgradeid=#{postgradeid},</if>
+		 <if test="null!=postrankid and ''!=postrankid">postrankid=#{postrankid},</if>
+		 <if test="null!=postlevelid and ''!=postlevelid">postlevelid=#{postlevelid},</if>
+		WHERE id=#{id}
+	</update>
+
+	<select id="selectOneById" parameterType="java.lang.Integer" resultMap="PostRelationshipMapper">
+		SELECT id,postfamilyid,postgradeid,postrankid,postlevelid FROM tb_hr_set_postrp
+		where id=#{id}
+		ORDER BY id DESC
+	</select>
+
+	<select id="selectByCondition" parameterType="PostRelationship" resultMap="PostRelationshipMapper">
+		SELECT id,postfamilyid,postgradeid,postrankid,postlevelid FROM tb_hr_set_postrp
+		<where>
+			<if test="id!=null and id!=''">AND id=#{id}</if>
+			<if test="postfamilyid!=null and postfamilyid!=''">AND postfamilyid=#{postfamilyid}</if>
+			<if test="postgradeid!=null and postgradeid!=''">AND postgradeid=#{postgradeid}</if>
+			<if test="postrankid!=null and postrankid!=''">AND postrankid=#{postrankid}</if>
+			<if test="postlevelid!=null and postlevelid!=''">AND postlevelid=#{postlevelid}</if>
+		</where>
+	</select>
+
+	<select id="selectAll" resultMap="PostRelationshipMapper">
+		SELECT prp.id,prp.postfamilyid,prp.postgradeid,prp.postrankid,prp.postlevelid
+		FROM tb_hr_set_postrp prp
+		join tb_hr_set pl on pl.id = prp.postlevelid
+		ORDER BY CHAR_LENGTH(pl.datavalue) DESC ,pl.datavalue DESC
+	</select>
+
+	<select id="getPostgradeidListByPostfamilyid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT distinct postgradeid FROM tb_hr_set_postrp
+		WHERE postfamilyid = #{postfamilyid}
+	</select>
+
+</mapper>

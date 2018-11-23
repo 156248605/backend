@@ -98,9 +98,13 @@ public class PersonalInformationController {
                 //添加岗位信息
                 List<PerAndPostRs> perAndPostRss = iPerandpostrsService.queryPerAndPostRsByPerid(pi.getId());
                 List<String> strs = new ArrayList<>();
+                List<Post> postList = new ArrayList<>();
                 for (PerAndPostRs perAndPostRs : perAndPostRss) {
+                    Post post = iPostService.queryOneByPostid(perAndPostRs.getPostid());
+                    postList.add(post);
                     strs.add(iPostService.queryOneByPostid(perAndPostRs.getPostid()).getPostname());
                 }
+                pi.setPostList(postList);
                 pi.setPostnames(IDcodeUtil.getArrayToString(strs, ";"));
                 //添加办公电话
                 if (ihRsetService.queryById(pi.getTelphoneid()) != null) {
@@ -373,12 +377,16 @@ public class PersonalInformationController {
         List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformationId);
         List<String> strs = new ArrayList<>();
         List<Integer> postids = new ArrayList<>();
+        List<Post> postList = new ArrayList<>();
         if (perAndPostRs.size() != 0) {
             for (PerAndPostRs perAndPost : perAndPostRs) {
+                Post post = iPostService.queryOneByPostid(perAndPost.getPostid());
+                postList.add(post);
                 strs.add(iPostService.queryOneByPostid(perAndPost.getPostid()).getPostname());
                 postids.add(perAndPost.getPostid());
             }
         }
+        personalInformation.setPostList(postList);
         personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs, ";"));
         personalInformation.setPostids(postids);
         //3.获得管理信息
@@ -1948,6 +1956,10 @@ public class PersonalInformationController {
                 //先获得员工号
                 List<PersonalInformation> per = iPersonalInformationService.queryByEmployeenumber(personalInformation.getEmployeenumber());
                 if (per.size() == 0) {
+                    if(null==personalInformation.getEmployeenumber() || "".equals(personalInformation.getEmployeenumber())){
+                        goToPost.put(personalInformation.getEmployeenumber(), "此工号的数据数据为空");
+                        continue;
+                    }
                     //添加数据
                     goToPost = importOnePersonalInformation_ADD(personalInformation, goToPost);
                 } else if (per.size() == 1) {

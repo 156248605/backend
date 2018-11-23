@@ -18,7 +18,7 @@
 		values (
 			NULL,
 			#{datatype},
-			#{adtacode},
+			#{datacode},
 			#{datavalue})
 	</insert>
 

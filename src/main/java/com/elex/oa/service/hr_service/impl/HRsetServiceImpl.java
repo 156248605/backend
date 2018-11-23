@@ -1,6 +1,7 @@
 package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.IHRsetDao;
+import com.elex.oa.dao.hr.IPostRelationshipDao;
 import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.service.hr_service.IHRsetService;
 import com.github.pagehelper.PageHelper;
@@ -8,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.Map;
 public class HRsetServiceImpl implements IHRsetService {
     @Resource
     private IHRsetDao ihRsetDao;
+    @Resource
+    private IPostRelationshipDao iPostRelationshipDao;
 
     /**
      * @Author: shiyun
@@ -141,5 +145,19 @@ public class HRsetServiceImpl implements IHRsetService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<HRset> queryPostgradeByPostfamilyid(Integer postfamilyid) {
+        List<Integer> postgradeidList = iPostRelationshipDao.getPostgradeidListByPostfamilyid(postfamilyid);
+        List<HRset> postgradeList = new ArrayList<>();
+        if (null!=postgradeidList || postgradeidList.size()>0) {
+            for (Integer id:postgradeidList
+                 ) {
+                HRset hRset = ihRsetDao.selectById(id);
+                if(null!=hRset)postgradeList.add(hRset);
+            }
+        }
+        return postgradeList.size()>0?postgradeList:null;
     }
 }
