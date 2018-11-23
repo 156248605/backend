@@ -321,7 +321,10 @@ public class DepartmentInformationController {
         if(principaluserid!=null){
             //如果在其他部门任正职、副职、秘书的话，需先将原部门信息相应信息修改并添加部门信息修改日志
             PersonalInformation principalPer = iPersonalInformationService.queryOneByUserid(principaluserid);
-            Dept dept1 = iDeptService.queryOneDepByDepid(principalPer.getDepid());
+            Dept dept1 = null;
+            if (null!=principalPer) {
+                dept1 = iDeptService.queryOneDepByDepid(principalPer.getDepid());
+            }
             if (dept1!=null) {
                 String perBeforeinformation = dept1.getDepname();
                 if(principaluserid==dept1.getPrincipaluserid()||principaluserid==dept1.getDeputyuserid()||principaluserid==dept1.getSecretaryuserid()){
