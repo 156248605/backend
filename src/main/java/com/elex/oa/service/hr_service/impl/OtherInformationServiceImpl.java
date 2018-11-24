@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * @Author:ShiYun;
  * @Description:人事信息的其他信息
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OtherInformationServiceImpl implements IOtherInformationService {
 
-    @Autowired
+    @Resource
     IOtherInformationDao iOtherInformationDao;
 
     /**
@@ -37,9 +39,11 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
      */
     @Override
     public Integer saveOne(OtherInformation otherInformation) {
-        Integer otherInformationId = iOtherInformationDao.insertOne(otherInformation);
+        Integer otherInformationId = iOtherInformationDao.insertOne(dosomethingBeforeSaveone(otherInformation));
         return otherInformation.getId();
     }
+
+
 
     /**
      *@Author:ShiYun;
@@ -48,18 +52,12 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
      */
     @Override
     public void modifyOne(OtherInformation otherInformation) {
-        Boolean isNotNull = false;
-        if(StringUtils.isNotEmpty(otherInformation.getPrivateemail()))isNotNull=true;
-        if(StringUtils.isNotEmpty(otherInformation.getCompanyemail()))isNotNull=true;
-        if(StringUtils.isNotEmpty(otherInformation.getEmergencycontract()))isNotNull=true;
-        if(otherInformation.getEmergencyrpid()!=null)isNotNull=true;
-        if(StringUtils.isNotEmpty(otherInformation.getEmergencyphone()))isNotNull=true;
-        if(StringUtils.isNotEmpty(otherInformation.getAddress()))isNotNull=true;
-        if(StringUtils.isNotEmpty(otherInformation.getRemark()))isNotNull=true;
-        if (isNotNull) {
-            iOtherInformationDao.updateOne(otherInformation);
+        if (getaBooleanBeforeModifyone(otherInformation)) {
+            iOtherInformationDao.updateOne(dosomethingBeforeSaveone(otherInformation));
         }
     }
+
+
 
     /**
      *@Author:ShiYun;
@@ -74,5 +72,27 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
     @Override
     public void removeAll() {
         iOtherInformationDao.deleteAll();
+    }
+
+    private OtherInformation dosomethingBeforeSaveone(OtherInformation otherInformation) {
+        if(null!=otherInformation.getPrivateemail() && "null".equals(otherInformation.getPrivateemail()))otherInformation.setPrivateemail(null);
+        if(null!=otherInformation.getCompanyemail() && "null".equals(otherInformation.getCompanyemail()))otherInformation.setCompanyemail(null);
+        if(null!=otherInformation.getEmergencycontract() && "null".equals(otherInformation.getEmergencycontract()))otherInformation.setEmergencycontract(null);
+        if(null!=otherInformation.getEmergencyphone() && "null".equals(otherInformation.getEmergencyphone()))otherInformation.setEmergencyphone(null);
+        if(null!=otherInformation.getAddress() && "null".equals(otherInformation.getAddress()))otherInformation.setAddress(null);
+        if(null!=otherInformation.getRemark() && "null".equals(otherInformation.getRemark()))otherInformation.setRemark(null);
+        return otherInformation;
+    }
+
+    private Boolean getaBooleanBeforeModifyone(OtherInformation otherInformation) {
+        Boolean isNotNull = false;
+        if(StringUtils.isNotEmpty(otherInformation.getPrivateemail()))isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getCompanyemail()))isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getEmergencycontract()))isNotNull=true;
+        if(otherInformation.getEmergencyrpid()!=null)isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getEmergencyphone()))isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getAddress()))isNotNull=true;
+        if(StringUtils.isNotEmpty(otherInformation.getRemark()))isNotNull=true;
+        return isNotNull;
     }
 }

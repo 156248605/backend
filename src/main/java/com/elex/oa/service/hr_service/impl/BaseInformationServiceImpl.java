@@ -38,9 +38,11 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
      */
     @Override
     public Integer saveOne(BaseInformation baseInformation) {
-        Integer baseInformationId = iBaseInformationDao.insertOne(baseInformation);
+        Integer baseInformationId = iBaseInformationDao.insertOne(dosomethingBeforeSaveOne(baseInformation));
         return baseInformation.getId();
     }
+
+
 
     /**
      *@Author:ShiYun;
@@ -49,6 +51,12 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
      */
     @Override
     public void modifyOne(BaseInformation baseInformation) {
+        if (getaBooleanBeforeModifyone(baseInformation)) {
+            iBaseInformationDao.updateOne(dosomethingBeforeSaveOne(baseInformation));
+        }
+    }
+
+    private Boolean getaBooleanBeforeModifyone(BaseInformation baseInformation) {
         Boolean isNull = false;
         if(StringUtils.isNotEmpty(baseInformation.getUserphoto()))isNull=true;
         if(StringUtils.isNotEmpty(baseInformation.getIdphoto1()))isNull=true;
@@ -73,9 +81,7 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
         if(baseInformation.getZyzsnameid()!=null)isNull=true;
         if(StringUtils.isNotEmpty(baseInformation.getFirstworkingtime()))isNull=true;
         if(baseInformation.getParentcompanyid()!=null)isNull=true;
-        if (isNull) {
-            iBaseInformationDao.updateOne(baseInformation);
-        }
+        return isNull;
     }
 
     /**
@@ -91,5 +97,20 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
     @Override
     public void removeAll() {
         iBaseInformationDao.deleteAll();
+    }
+
+    private BaseInformation dosomethingBeforeSaveOne(BaseInformation baseInformation) {
+        if(StringUtils.isNotEmpty(baseInformation.getUserphoto()) && "null".equals(baseInformation.getUserphoto()))baseInformation.setUserphoto(null);
+        if(StringUtils.isNotEmpty(baseInformation.getIdphoto1()) && "null".equals(baseInformation.getIdphoto1()))baseInformation.setIdphoto1(null);
+        if(StringUtils.isNotEmpty(baseInformation.getIdphoto2()) && "null".equals(baseInformation.getIdphoto2()))baseInformation.setIdphoto2(null);
+        if(StringUtils.isNotEmpty(baseInformation.getEnglishname()) && "null".equals(baseInformation.getEnglishname()))baseInformation.setEnglishname(null);
+        if(StringUtils.isNotEmpty(baseInformation.getIdcode()) && "null".equals(baseInformation.getIdcode()))baseInformation.setIdcode(null);
+        if(StringUtils.isNotEmpty(baseInformation.getBirthday()) && "null".equals(baseInformation.getBirthday()))baseInformation.setBirthday(null);
+        if(StringUtils.isNotEmpty(baseInformation.getConstellation()) && "null".equals(baseInformation.getConstellation()))baseInformation.setConstellation(null);
+        if(StringUtils.isNotEmpty(baseInformation.getChinesecs()) && "null".equals(baseInformation.getChinesecs()))baseInformation.setChinesecs(null);
+        if(StringUtils.isNotEmpty(baseInformation.getMarriage()) && "null".equals(baseInformation.getMarriage()))baseInformation.setMarriage(null);
+        if(StringUtils.isNotEmpty(baseInformation.getFirstworkingtime()) && "null".equals(baseInformation.getFirstworkingtime()))baseInformation.setFirstworkingtime(null);
+        if(StringUtils.isNotEmpty(baseInformation.getHj()) && "null".equals(baseInformation.getHj()))baseInformation.setHj(null);
+        return baseInformation;
     }
 }

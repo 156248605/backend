@@ -6,6 +6,8 @@ import com.elex.oa.service.hr_service.ICostInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * @Author:ShiYun;
  * @Description:人事信息的成本信息
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CostInformationServiceImpl implements ICostInformationService {
 
-    @Autowired
+    @Resource
     ICostInformationDao iCostInformationDao;
 
     /**
@@ -36,9 +38,11 @@ public class CostInformationServiceImpl implements ICostInformationService {
      */
     @Override
     public Integer saveOne(CostInformation costInformation) {
-        Integer costInformationId = iCostInformationDao.insertOne(costInformation);
+        Integer costInformationId = iCostInformationDao.insertOne(dosomethingBeforeSaveone(costInformation));
         return costInformation.getId();
     }
+
+
 
     /**
      *@Author:ShiYun;
@@ -47,8 +51,8 @@ public class CostInformationServiceImpl implements ICostInformationService {
      */
     @Override
     public void modifyOne(CostInformation costInformation) {
-        if (null != costInformation && !"".equals(costInformation)) {
-            iCostInformationDao.updateOne(costInformation);
+        if (null != costInformation) {
+            iCostInformationDao.updateOne(dosomethingBeforeSaveone(costInformation));
         }
     }
 
@@ -65,5 +69,12 @@ public class CostInformationServiceImpl implements ICostInformationService {
     @Override
     public void remvoeAll() {
         iCostInformationDao.deleteAll();
+    }
+
+    private CostInformation dosomethingBeforeSaveone(CostInformation costInformation) {
+        if(null!=costInformation.getSalaryaccount() && "null".equals(costInformation.getSalaryaccount()))costInformation.setSalaryaccount(null);
+        if(null!=costInformation.getSbcode() && "null".equals(costInformation.getSbcode()))costInformation.setSbcode(null);
+        if(null!=costInformation.getGjjcode() && "null".equals(costInformation.getGjjcode()))costInformation.setGjjcode(null);
+        return costInformation;
     }
 }

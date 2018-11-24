@@ -149,9 +149,11 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
      */
     @Override
     public Integer saveOne(PersonalInformation personalInformation) {
-        Integer personalInformationId = iPersonalInformationDao.insertOne(personalInformation);
+        Integer personalInformationId = iPersonalInformationDao.insertOne(dosomethingBeforeSaveone(personalInformation));
         return personalInformation.getId();
     }
+
+
 
     /**
      *@Author:ShiYun;
@@ -160,7 +162,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
      */
     @Override
     public void modifyOne(PersonalInformation personalInformation) {
-        iPersonalInformationDao.updateOne(personalInformation);
+        iPersonalInformationDao.updateOne(dosomethingBeforeSaveone(personalInformation));
     }
 
     /**
@@ -219,5 +221,12 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     public List<PersonalInformation> queryAllByNull() {
         List<PersonalInformation> personalInformations = iPersonalInformationDao.selectAll();
         return personalInformations;
+    }
+
+    private PersonalInformation dosomethingBeforeSaveone(PersonalInformation personalInformation) {
+        if(null!=personalInformation.getEmployeenumber() && "null".equals(personalInformation.getEmployeenumber()))personalInformation.setEmployeenumber(null);
+        if(null!=personalInformation.getSex() && "null".equals(personalInformation.getSex()))personalInformation.setSex(null);
+        if(null!=personalInformation.getMobilephone() && "null".equals(personalInformation.getMobilephone()))personalInformation.setMobilephone(null);
+        return personalInformation;
     }
 }

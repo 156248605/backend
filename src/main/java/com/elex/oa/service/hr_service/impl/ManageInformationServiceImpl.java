@@ -6,6 +6,8 @@ import com.elex.oa.service.hr_service.IManageInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * @Author:ShiYun;
  * @Description:人事信息的管理信息
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ManageInformationServiceImpl implements IManageInformationService {
 
-    @Autowired
+    @Resource
     IManageInformationDao iManageInformationDao;
 
     /**
@@ -36,9 +38,11 @@ public class ManageInformationServiceImpl implements IManageInformationService {
      */
     @Override
     public Integer saveOne(ManageInformation manageInformation) {
-        Integer manageInformationId = iManageInformationDao.insertOne(manageInformation);
+        Integer manageInformationId = iManageInformationDao.insertOne(dosomethingBeforeSaveone(manageInformation));
         return manageInformation.getId();
     }
+
+
 
     /**
      *@Author:ShiYun;
@@ -47,7 +51,7 @@ public class ManageInformationServiceImpl implements IManageInformationService {
      */
     @Override
     public void modifyOne(ManageInformation manageInformation) {
-        iManageInformationDao.updateOne(manageInformation);
+        iManageInformationDao.updateOne(dosomethingBeforeSaveone(manageInformation));
     }
 
     /**
@@ -63,5 +67,11 @@ public class ManageInformationServiceImpl implements IManageInformationService {
     @Override
     public void removeAll() {
         iManageInformationDao.deleteAll();
+    }
+
+    private ManageInformation dosomethingBeforeSaveone(ManageInformation manageInformation) {
+        if(null!=manageInformation.getEntrydate() && "null".equals(manageInformation.getEntrydate()))manageInformation.setEntrydate(null);
+        if(null!=manageInformation.getZhuanzhengdate() && "null".equals(manageInformation.getZhuanzhengdate()))manageInformation.setZhuanzhengdate(null);
+        return manageInformation;
     }
 }
