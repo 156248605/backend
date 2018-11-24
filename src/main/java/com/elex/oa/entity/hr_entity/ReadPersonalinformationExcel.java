@@ -182,7 +182,7 @@ public class ReadPersonalinformationExcel extends ReadBaseExcel<PersonalInformat
                     String str = String.valueOf(cell.getStringCellValue());
                     personalInformation.setAddress(str);
                 }else if ("备注".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
+                    String str = ExcelUtil.getStringByNumberCell(cell);
                     personalInformation.setRemark(str);
                 }
             }
