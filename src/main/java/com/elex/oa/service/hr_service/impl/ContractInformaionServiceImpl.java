@@ -163,7 +163,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      *@Date: 17:51 2018\5\25 0025
      */
     public List<ContractInformation> queryAll(ContractInformation contractInformation){
-        List<ContractInformation> contractInformationList = iContractInformationDao.selectAll(contractInformation);
+        List<ContractInformation> contractInformationList = iContractInformationDao.selectAll();
         for (ContractInformation con:contractInformationList
              ) {
             User user = iUserDao.selectById(con.getUserid());

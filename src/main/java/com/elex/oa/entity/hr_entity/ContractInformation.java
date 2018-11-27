@@ -50,7 +50,7 @@ public class ContractInformation implements Serializable{
     private Integer transactoruserid;//最后办理人
     private String transactortruename;//最后办理人姓名
     private String transdate;//最后办理日期
-    private String state;
+    private String state;//
 
     public ContractInformation() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");

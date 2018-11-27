@@ -549,7 +549,8 @@ public class DepartmentInformationController {
             }
 
             if (!dept.getDepname().equals(dept2.getDepname())){
-                Dept dept1 = iDeptService.queryOneDepByDepname(dept.getDepname()).get(0);
+                List<Dept> tempDeplist = iDeptService.queryOneDepByDepname(dept.getDepname());
+                Dept dept1 =(tempDeplist==null || tempDeplist.size()==0)?null:tempDeplist.get(0);
                 if (dept1==null) {
                     b = true;
                     deptLog.setChangeinformation("部门名称");

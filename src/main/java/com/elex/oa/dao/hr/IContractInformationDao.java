@@ -56,7 +56,7 @@ public interface IContractInformationDao {
      *@Description:查询所有信息
      *@Date: 17:53 2018\5\25 0025
      */
-    List<ContractInformation> selectAll(ContractInformation contractInformation);
+    List<ContractInformation> selectAll();
 
     /**
      *@Author:ShiYun;
