@@ -11,7 +11,6 @@ import java.util.List;
  * @Date 2018\11\27 0027 13:09
  * @Version 1.0
  **/
-@Table(name = "tb_hr_contract_info")
 public class ContractInfo implements Serializable {
     private static final long serialVersionUID = -1857987343062377115L;
     private String contractcode;//合同编号(主键)
@@ -49,6 +48,10 @@ public class ContractInfo implements Serializable {
     private String state;//
 
     public ContractInfo() {
+    }
+
+    public ContractInfo(String contractcode) {
+        this.contractcode = contractcode;
     }
 
     public String getContractcode() {

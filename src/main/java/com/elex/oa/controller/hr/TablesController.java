@@ -1,5 +1,6 @@
 package com.elex.oa.controller.hr;
 
+import com.elex.oa.service.restructure_hrService.IContractInfoService;
 import com.elex.oa.service.restructure_hrService.IHrdatadictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TablesController {
     @Autowired
     IHrdatadictionaryService iHrdatadictionaryService;
+    @Autowired
+    IContractInfoService iContractInfoService;
 
     @RequestMapping("/tb_hr_data_dictionary")
     @ResponseBody
@@ -30,8 +33,8 @@ public class TablesController {
     @RequestMapping("/tb_hr_contract_info")
     @ResponseBody
     public String changetable_tb_hr_contract_info(){
-
-        return "更新数据成功";
+        Boolean aBoolean = iContractInfoService.changeTable();
+        return aBoolean?"更新数据成功":"更新失败";
     }
 
 

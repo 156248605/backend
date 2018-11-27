@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.restructure_hr.IContractinfoDao">
+
+	<resultMap id="ContractInfoResultMap" type="ContractInfo">
+		<result column="contractcode" property="contractcode" />
+		<result column="employeenumber" property="employeenumber" />
+		<result column="startdate" property="startdate" />
+		<result column="enddate" property="enddate" />
+		<result column="contracttypeid" property="contracttypeid" />
+		<result column="attachment" property="attachment" />
+		<result column="remark" property="remark" />
+		<result column="transactoruserid" property="transactoruserid" />
+		<result column="transdate" property="transdate" />
+		<result column="contractage" property="contractage" />
+	</resultMap>
+
+	<insert id="insert" parameterType="ContractInfo">
+		  insert into tb_hr_contract_info
+		  ( contractcode,
+			employeenumber,
+			startdate,
+			enddate,
+			contracttypeid,
+			attachment,
+			remark,
+			transactoruserid,
+			transdate,
+			contractage)
+		  VALUES
+		  (#{contractcode},
+		   #{employeenumber},
+		   #{startdate},
+		   #{enddate},
+		   #{contracttypeid},
+		   #{attachment},
+		   #{remark},
+		   #{transactoruserid},
+		   #{transdate},
+		   #{contractage})
+	</insert>
+
+	<select id="selectByEntity" parameterType="ContractInfo" resultMap="ContractInfoResultMap">
+		select contractcode,employeenumber,startdate,enddate,contracttypeid,attachment,remark,transactoruserid,transdate,contractage
+		from tb_hr_contract_info
+		<where>
+			<if	test="null!=contractcode and ''!=contractcode">AND contractcode=#{contractcode}</if>
+			<if	test="null!=employeenumber and ''!=employeenumber">AND employeenumber=#{employeenumber}</if>
+			<if	test="null!=startdate and ''!=startdate">AND startdate=#{startdate}</if>
+			<if	test="null!=enddate and ''!=enddate">AND enddate=#{enddate}</if>
+			<if	test="null!=contracttypeid and ''!=contracttypeid">AND contracttypeid=#{contracttypeid}</if>
+			<if	test="null!=attachment and ''!=attachment">AND attachment=#{attachment}</if>
+			<if	test="null!=remark and ''!=remark">AND remark=#{remark}</if>
+			<if	test="null!=transactoruserid and ''!=transactoruserid">AND transactoruserid=#{transactoruserid}</if>
+			<if	test="null!=transdate and ''!=transdate">AND transdate=#{transdate}</if>
+			<if	test="null!=contractage and ''!=contractage">AND contractage=#{contractage}</if>
+		</where>
+	</select>
+</mapper>
