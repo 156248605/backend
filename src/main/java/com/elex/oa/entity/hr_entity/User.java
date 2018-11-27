@@ -13,8 +13,22 @@ public class User implements Serializable{
     private String truename;//姓名
     private Integer isactive;//是否激活
     private Integer state;//状态
+    private String employeenumber;//员工号
 
     public User() {
+    }
+
+    public User(Integer id, String employeenumber) {
+        this.id = id;
+        this.employeenumber = employeenumber;
+    }
+
+    public String getEmployeenumber() {
+        return employeenumber;
+    }
+
+    public void setEmployeenumber(String employeenumber) {
+        this.employeenumber = employeenumber;
     }
 
     public Integer getId() {

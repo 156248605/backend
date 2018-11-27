@@ -74,4 +74,6 @@ public interface IUserDao extends BaseDao<User> {
     User selectServingUserByUserid(Integer id);
 
     void deleteAll_admin();
+
+    void updateUser(User user);
 }

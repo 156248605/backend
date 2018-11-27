@@ -7,6 +7,7 @@ import com.elex.oa.service.hr_service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> implements IUserService {
 
-    @Autowired
+    @Resource
     IUserDao iUserDao;
 
     /**
@@ -93,5 +94,17 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     @Override
     public void removeAll_admin() {
         iUserDao.deleteAll_admin();
+    }
+
+    @Override
+    public Boolean modifyUser(User user) {
+        if(user==null || user.getId()==null)return false;
+        try {
+            iUserDao.updateUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

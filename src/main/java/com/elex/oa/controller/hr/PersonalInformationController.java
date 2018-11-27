@@ -2205,6 +2205,7 @@ public class PersonalInformationController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        personalInformation.setId(currentPer.getId());
         if (truename.equals(currentPer.getTruename())) {
             //名字正确，下面更新信息
             //1.先更新User表的信息(tb_id_user)===========================================================
@@ -2619,6 +2620,11 @@ public class PersonalInformationController {
     public Object queryGXF005() {
         List<Dept> depts = iDeptService.queryAllCompany1and2();
         ArrayList<String> strs = new ArrayList<>();
+
+        if(null == depts || depts.size()==0){
+            strs.add("公司类型不存在，请先到人力资源-部门信息-设置部门的职能类型");
+            return strs;
+        }
         for (Dept d : depts
         ) {
             strs.add(d.getDepname());

@@ -57,4 +57,6 @@ public interface IUserService extends BaseService<User> {
     User queryServingUserByUserid(Integer userid);
 
     void removeAll_admin();
+
+    Boolean modifyUser(User user);
 }

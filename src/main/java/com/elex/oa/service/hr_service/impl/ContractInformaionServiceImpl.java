@@ -73,6 +73,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     @Override
     public ContractInformation queryById(Integer id) {
         ContractInformation contractInformation = iContractInformationDao.selectById(id);
+        if(null == contractInformation)return null;
         //获得姓名
         if (contractInformation!=null && contractInformation.getUserid()!=null && iUserDao.selectById(contractInformation.getUserid())!=null) {
             contractInformation.setTruename(iUserDao.selectById(contractInformation.getUserid()).getTruename());

@@ -33,6 +33,25 @@ public class UserController {
     IDeptService iDeptService;
 
     /**
+     * @Author: shiyun
+     * @Description: 将tb_hr_personalinformation表中employeenumber字段添加到tb_id_user表中
+     * @Date  2018\11\26 0026 17:10
+     * @Param
+     * @return
+     **/
+
+    @RequestMapping("/updateEmployeenumber")
+    @ResponseBody
+    public String updateEmployeenumber(){
+        Boolean aBoolean = true;
+        List<PersonalInformation> personalInformations = iPersonalInformationService.queryAllByNull();
+        for (PersonalInformation per:personalInformations){
+            aBoolean = iUserService.modifyUser(new User(per.getUserid(), per.getEmployeenumber()));
+        }
+        return aBoolean?"Success":"Error";
+    }
+
+    /**
      *@Author:ShiYun;
      *@Description:查询一个用户信息
      *@Date: 11:58 2018\4\12 0012
