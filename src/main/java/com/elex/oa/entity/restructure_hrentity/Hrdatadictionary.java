@@ -17,6 +17,10 @@ public class Hrdatadictionary implements Serializable {
     public Hrdatadictionary() {
     }
 
+    public Hrdatadictionary(String datacode) {
+        this.datacode = datacode;
+    }
+
     public Hrdatadictionary(String datacode, String datatype, String datavalue) {
         this.datacode = datacode;
         this.datatype = datatype;

@@ -2,24 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao">
 
-	<resultMap id="HrdatadictionaryMapper" type="HRset">
-		<id column="id" property="id" />
+	<resultMap id="HrdatadictionaryMapper" type="Hrdatadictionary">
 		<result column="datatype" property="datatype" />
 		<result column="datacode" property="datacode" />
 		<result column="datavalue" property="datavalue" />
 	</resultMap>
 
-	<insert id="insertOne" parameterType="HRset" useGeneratedKeys="true" keyProperty="id">
-		insert into tb_hr_set (
-			id,
+	<insert id="insert" parameterType="Hrdatadictionary">
+		insert into tb_hr_data_dictionary (
 			datatype,
 			datacode,
 			datavalue)
 		values (
-			NULL,
 			#{datatype},
 			#{datacode},
 			#{datavalue})
 	</insert>
+
+	<select id="selectByEntity" parameterType="Hrdatadictionary" resultMap="HrdatadictionaryMapper">
+		select datacode,datatype,datavalue
+		from tb_hr_data_dictionary
+		<where>
+			<if test="datacode!=null and datacode!=''">AND datacode=#{datacode}</if>
+			<if test="datatype!=null and datatype!=''">AND datatype=#{datatype}</if>
+			<if test="datavalue!=null and datavalue!=''">AND datavalue=#{datavalue}</if>
+		</where>
+	</select>
 
 </mapper>

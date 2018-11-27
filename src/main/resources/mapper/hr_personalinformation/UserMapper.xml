@@ -9,6 +9,7 @@
 		<result column="truename" property="truename" />
 		<result column="isactive" property="isactive" />
 		<result column="state" property="state" />
+		<result column="employeenumber" property="employeenumber" />
 	</resultMap>
 
 	<insert id="insertOne" parameterType="User" useGeneratedKeys="true" keyProperty="id">
@@ -17,13 +18,15 @@
 			username,
 			truename,
 			isactive,
-			state)
+			state,
+			employeenumber)
 		values (
 			NULL,
 			#{username},
 			#{truename},
 			#{isactive},
-			1)
+			1,
+			#{employeenumber})
 	</insert>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="UserMapper">
@@ -111,5 +114,17 @@
 		SELECT * FROM tb_id_user
 		WHERE state=1
 	</select>
+
+	<update id="updateUser" parameterType="User" >
+		UPDATE tb_id_user
+		set
+		<if test="username!=null and username!='' and username!='null'">username=#{username},</if>
+		<if test="password!=null and password!='' and password!='null'">password=#{password},</if>
+		<if test="truename!=null and truename!='' and truename!='null'">truename=#{truename},</if>
+		<if test="isactive!=null and isactive!='' and isactive!='null'">isactive=#{isactive},</if>
+		<if test="state!=null and state!='' and state!='null'">state=#{state},</if>
+		<if test="employeenumber!=null and employeenumber!='' and employeenumber!='null'">employeenumber=#{employeenumber}</if>
+		where id=#{id}
+	</update>
 
 </mapper>
