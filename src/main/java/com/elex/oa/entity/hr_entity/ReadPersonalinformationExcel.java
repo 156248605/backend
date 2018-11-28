@@ -39,7 +39,7 @@ public class ReadPersonalinformationExcel extends ReadBaseExcel<PersonalInformat
                     personalInformation.setIdphoto2(str);
                 }else if ("工号".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    if(str.length()<6){//工号不足补0
+                    if(str.indexOf("admin")==-1 && str.length()<6){//工号不足补0
                         switch (str.length()){
                             case 1:str = "00000"+str;break;
                             case 2:str = "0000"+str;break;

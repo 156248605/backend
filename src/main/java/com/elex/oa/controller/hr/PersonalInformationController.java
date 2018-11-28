@@ -2378,7 +2378,11 @@ public class PersonalInformationController {
             for (String postname : postnames
             ) {
                 Post post = iPostService.queryOneByPostname(postname);
-                newMap.put(post.getId(), currentPer.getId());
+                if (null!=post) {
+                    newMap.put(post.getId(), currentPer.getId());
+                } else {
+                    goToPost.put(personalInformation.getEmployeenumber(),"所在的岗位不存在["+postname+"]");
+                }
             }
             //分两步：1)没有的添加上;2)多余的删除
             //1)没有的添加上;

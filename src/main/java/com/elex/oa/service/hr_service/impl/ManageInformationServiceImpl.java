@@ -51,7 +51,21 @@ public class ManageInformationServiceImpl implements IManageInformationService {
      */
     @Override
     public void modifyOne(ManageInformation manageInformation) {
-        iManageInformationDao.updateOne(dosomethingBeforeSaveone(manageInformation));
+        manageInformation = dosomethingBeforeSaveone(manageInformation);
+        Boolean valBoolean = validateEntityBeforeModifyOne(manageInformation);
+        if (valBoolean) {
+            iManageInformationDao.updateOne(manageInformation);
+        }
+    }
+
+    private Boolean validateEntityBeforeModifyOne(ManageInformation manageInformation) {
+        Boolean valBoolean = true;
+        if(manageInformation.getId()==null)valBoolean=false;
+        if(manageInformation.getRankid()==null)valBoolean=false;
+        if(manageInformation.getEmployeetypeid()==null)valBoolean=false;
+        if(manageInformation.getEntrydate()==null || "".equals(manageInformation.getEntrydate()))valBoolean=false;
+        if(manageInformation.getZhuanzhengdate()==null || "".equals(manageInformation.getZhuanzhengdate()))valBoolean=false;
+        return valBoolean;
     }
 
     /**

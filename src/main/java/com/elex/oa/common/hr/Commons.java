@@ -15,4 +15,6 @@ public interface Commons {
     String HRSET_DIMISSION_TYPE = "dimissiontype";
     String HRSET_DIMISSION_DIRECTION = "dimissiondirection";
     String HRSET_DIMISSION_REASON = "dimissionreason";
+    String POST_STATE_ON = "1";//岗位开启状态
+    String POST_STATE_OFF = "0";//岗位关闭状态
 }
