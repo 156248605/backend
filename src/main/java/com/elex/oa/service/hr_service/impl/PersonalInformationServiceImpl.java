@@ -1,11 +1,7 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr.IBaseInformationDao;
-import com.elex.oa.dao.hr.IPerandpostrsDao;
-import com.elex.oa.dao.hr.IPersonalInformationDao;
-import com.elex.oa.entity.hr_entity.BaseInformation;
-import com.elex.oa.entity.hr_entity.PerAndPostRs;
-import com.elex.oa.entity.hr_entity.PersonalInformation;
+import com.elex.oa.dao.hr.*;
+import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
@@ -34,6 +30,14 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     IBaseInformationDao iBaseInformationDao;
     @Resource
     IPerandpostrsDao iPerandpostrsDao;
+    @Resource
+    IDeptDao iDeptDao;
+    @Resource
+    IPostDao iPostDao;
+    @Resource
+    IUserDao iUserDao;
+    @Resource
+    IHRsetDao ihRsetDao;
 
     /**
      *@Author:ShiYun;
@@ -114,6 +118,87 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return new PageInfo<PersonalInformation>(list);
     }
 
+    @Override
+    public Map<String, List<String>> getParamsForFirstpage() {
+        Map<String, List<String>> resp = new HashMap<>();
+        //get depnames
+        List<String> depnames = iDeptDao.selectAllDepnames();
+        resp.put("depnames",depnames);
+        //get postnames
+        List<String> postnames = iPostDao.getAllPostnames();
+        resp.put("postnames",postnames);
+        //get truenames and usernames
+        List<User> userList = iUserDao.selectAll();
+        List<String> truenames = new ArrayList<>();
+        List<String> usernames = new ArrayList<>();
+        List<String> employeenumbers = new ArrayList<>();
+        for (User u:userList
+             ) {
+            truenames.add(u.getTruename());
+            usernames.add(u.getUsername());
+            employeenumbers.add(u.getEmployeenumber());
+        }
+        resp.put("truenames",truenames);
+        resp.put("usernames",usernames);
+        resp.put("employeenumbers",employeenumbers);
+        //get hrsets
+        List<HRset> hRsetList = ihRsetDao.selectAll();
+        List<String> races = new ArrayList<>();
+        List<String> childs = new ArrayList<>();
+        List<String> zzmms = new ArrayList<>();
+        List<String> zgxls = new ArrayList<>();
+        List<String> byyxs = new ArrayList<>();
+        List<String> pyfss = new ArrayList<>();
+        List<String> flas = new ArrayList<>();
+        List<String> sxzys = new ArrayList<>();
+        List<String> posttitles = new ArrayList<>();
+        List<String> zyzstypes = new ArrayList<>();
+        List<String> zyzsnames = new ArrayList<>();
+        List<String> telphones = new ArrayList<>();
+        List<String> parentcompanys = new ArrayList<>();
+        for (HRset h:hRsetList
+             ) {
+            if(h.getDatatype().equals("race"))races.add(h.getDatavalue());
+            if(h.getDatatype().equals("children"))childs.add(h.getDatavalue());
+            if(h.getDatatype().equals("zzmm"))zzmms.add(h.getDatavalue());
+            if(h.getDatatype().equals("zgxl"))zgxls.add(h.getDatavalue());
+            if(h.getDatatype().equals("byyx"))byyxs.add(h.getDatavalue());
+            if(h.getDatatype().equals("pyfs"))pyfss.add(h.getDatavalue());
+            if(h.getDatatype().equals("fla"))flas.add(h.getDatavalue());
+            if(h.getDatatype().equals("sxzy"))sxzys.add(h.getDatavalue());
+            if(h.getDatatype().equals("posttitle"))posttitles.add(h.getDatavalue());
+            if(h.getDatatype().equals("zyzstype"))zyzstypes.add(h.getDatavalue());
+            if(h.getDatatype().equals("zyzsname"))zyzsnames.add(h.getDatavalue());
+            if(h.getDatatype().equals("telphone"))telphones.add(h.getDatavalue());
+            if(h.getDatatype().equals("parentcompany"))parentcompanys.add(h.getDatavalue());
+        }
+        resp.put("races",races);
+        resp.put("childs",childs);
+        resp.put("zzmms",zzmms);
+        resp.put("zgxls",zgxls);
+        resp.put("byyxs",byyxs);
+        resp.put("pyfss",pyfss);
+        resp.put("flas",flas);
+        resp.put("sxzys",sxzys);
+        resp.put("posttitles",posttitles);
+        resp.put("zyzstypes",zyzstypes);
+        resp.put("zyzsnames",zyzsnames);
+        resp.put("telphones",telphones);
+        resp.put("parentcompanys",parentcompanys);
+        //get mobilephones\englishnames\idcodes\ages\workingages
+        List<String> mobilephones = iPersonalInformationDao.selectAllmobilephones();
+        List<String> englishnames = iPersonalInformationDao.selectAllenglishnames();
+        List<String> idcodes = iPersonalInformationDao.selectAllidcodes();
+        List<String> ages = iPersonalInformationDao.selectAllages();
+        List<String> workingages = iPersonalInformationDao.selectAllworkingages();
+        resp.put("mobilephones",mobilephones);
+        resp.put("englishnames",englishnames);
+        resp.put("idcodes",idcodes);
+        resp.put("ages",ages);
+        resp.put("workingages",workingages);
+        return resp;
+    }
+
     /**
      *@Author:ShiYun;
      *@Description:根据ID查询人事信息（不包括离职的）
@@ -192,9 +277,9 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
      *@Date: 10:02 2018\8\9 0009
      */
     @Override
-    public List<PersonalInformation> queryByEmployeenumber(String employeenumber) {
-        List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByEmployeenumber(employeenumber);
-        return personalInformationList;
+    public PersonalInformation queryByEmployeenumber(String employeenumber) {
+        PersonalInformation personalInformation = iPersonalInformationDao.selectByEmployeenumber(employeenumber);
+        return personalInformation;
     }
 
     /**

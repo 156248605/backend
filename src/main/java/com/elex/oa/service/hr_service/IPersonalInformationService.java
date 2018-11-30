@@ -20,6 +20,7 @@ public interface IPersonalInformationService{
      *@Date: 10:03 2018\4\8 0008
      */
     PageInfo<PersonalInformation> queryPIs(Map<String,Object> paramMap) throws ParseException;
+    Map<String,List<String>> getParamsForFirstpage();
 
     /**
      *@Author:ShiYun;
@@ -76,7 +77,7 @@ public interface IPersonalInformationService{
      *@Description:根据员工号查询员工
      *@Date: 10:01 2018\8\9 0009
      */
-    List<PersonalInformation> queryByEmployeenumber(String employeenumber);
+    PersonalInformation queryByEmployeenumber(String employeenumber);
 
     /**
      *@Author:ShiYun;

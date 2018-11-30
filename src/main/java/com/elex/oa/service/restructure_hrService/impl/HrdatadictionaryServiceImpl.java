@@ -44,7 +44,6 @@ public class HrdatadictionaryServiceImpl implements IHrdatadictionaryService {
         Integer val = validateHrdatadictionary(hrDataDictionary);
         if (val==0) {
             iHrdatadictionaryDao.insert(getDatacodeByEntity(hrDataDictionary));
-            System.out.println(hrDataDictionary.getDatacode()+"==========");
             return hrDataDictionary.getDatacode();
         }else {
             return null;

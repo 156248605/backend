@@ -21,6 +21,10 @@
 		<result column="ordercode" property="ordercode" />
 	</resultMap>
 
+	<select id="getAllPostnames" resultType="java.lang.String">
+		select postname from tb_id_post where state=1
+	</select>
+
 	<select id="selectPostByPostid" parameterType="java.lang.Integer" resultMap="postMapper">
 		select * from tb_id_post
 		where id = #{id} and state=1

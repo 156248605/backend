@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.restructure_hr.IPostinfoDao">
+
+	<resultMap id="postinfoMapper" type="Postinfo">
+		<result column="postcode" property="postcode" />
+		<result column="parent_postcode" property="parent_postcode" />
+		<result column="postname" property="postname" />
+		<result column="functionaltypeid" property="functionaltypeid" />
+		<result column="postfamilyid" property="postfamilyid" />
+		<result column="postgradeid" property="postgradeid" />
+		<result column="postrankid" property="postrankid" />
+		<result column="postlevelid" property="postlevelid" />
+		<result column="organization" property="organization" />
+		<result column="jobdescription" property="jobdescription" />
+		<result column="duty" property="duty" />
+		<result column="entryrequirements" property="entryrequirements" />
+		<result column="dutyfile" property="dutyfile" />
+		<result column="state" property="state" />
+		<result column="ordercode" property="ordercode" />
+		<result column="node_level" property="node_level" />
+	</resultMap>
+
+	<insert id="insert" parameterType="Postinfo">
+		insert into tb_id_post_info
+		(
+		 postcode,
+		 parent_postcode,
+		 postname,
+		 functionaltypeid,
+		 postfamilyid,
+		 postgradeid,
+		 postrankid,
+		 postlevelid,
+		 organization,
+		 jobdescription,
+		 duty,
+		 entryrequirements,
+		 dutyfile,
+		 state,
+		 ordercode,
+		 node_level
+		 )
+		VALUES
+		(
+		#{postcode},
+		#{parent_postcode},
+		#{postname},
+		#{functionaltypeid},
+		#{postfamilyid},
+		#{postgradeid},
+		#{postrankid},
+		#{postlevelid},
+		#{organization},
+		#{jobdescription},
+		#{duty},
+		#{entryrequirements},
+		#{dutyfile},
+		#{state},
+		#{ordercode},
+		#{node_level}
+		)
+	</insert>
+
+	<select id="selectByEntity" parameterType="Postinfo" resultMap="postinfoMapper">
+		select postcode,parent_postcode,postname,functionaltypeid,postfamilyid,postgradeid,postrankid,postlevelid,organization,jobdescription,duty,entryrequirements,dutyfile,state,ordercode,node_level
+		from tb_id_post_info
+		<where>
+			<if	test="null!=postcode and ''!=postcode">AND postcode=#{postcode}</if>
+			<if	test="null!=parent_postcode and ''!=parent_postcode">AND parent_postcode=#{parent_postcode}</if>
+			<if	test="null!=postname and ''!=postname">AND postname=#{postname}</if>
+			<if	test="null!=functionaltypeid and ''!=functionaltypeid">AND functionaltypeid=#{functionaltypeid}</if>
+			<if	test="null!=postfamilyid and ''!=postfamilyid">AND postfamilyid=#{postfamilyid}</if>
+			<if	test="null!=postgradeid and ''!=postgradeid">AND postgradeid=#{postgradeid}</if>
+			<if	test="null!=postrankid and ''!=postrankid">AND postrankid=#{postrankid}</if>
+			<if	test="null!=postlevelid and ''!=postlevelid">AND postlevelid=#{postlevelid}</if>
+			<if	test="null!=organization and ''!=organization">AND organization=#{organization}</if>
+			<if	test="null!=jobdescription and ''!=jobdescription">AND jobdescription=#{jobdescription}</if>
+			<if	test="null!=duty and ''!=duty">AND duty=#{duty}</if>
+			<if	test="null!=entryrequirements and ''!=entryrequirements">AND entryrequirements=#{entryrequirements}</if>
+			<if	test="null!=dutyfile and ''!=dutyfile">AND dutyfile=#{dutyfile}</if>
+			<if	test="null!=state and ''!=state">AND state=#{state}</if>
+			<if	test="null!=ordercode and ''!=ordercode">AND ordercode=#{ordercode}</if>
+			<if	test="null!=node_level and ''!=node_level">AND node_level=#{node_level}</if>
+		</where>
+	</select>
+
+	<update id="updateByEntity" parameterType="Postinfo" >
+		UPDATE tb_id_post_info
+		<set>
+			<if	test="null!=parent_postcode and  ''!=parent_postcode"> parent_postcode=#{parent_postcode},</if>
+			<if	test="null!=postname and  ''!=postname"> postname=#{postname},</if>
+			<if	test="null!=functionaltypeid and  ''!=functionaltypeid">functionaltypeid=#{functionaltypeid},</if>
+			<if	test="null!=postfamilyid and ''!=postfamilyid">postfamilyid=#{postfamilyid},</if>
+			<if	test="null!=postgradeid and ''!=postgradeid">postgradeid=#{postgradeid},</if>
+			<if	test="null!=postrankid and ''!=postrankid">postrankid=#{postrankid},</if>
+			<if	test="null!=postlevelid and ''!=postlevelid">postlevelid=#{postlevelid},</if>
+			<if	test="null!=organization and ''!=organization">organization=#{organization},</if>
+			<if	test="null!=jobdescription and ''!=jobdescription">jobdescription=#{jobdescription},</if>
+			<if	test="null!=duty and ''!=duty">duty=#{duty},</if>
+			<if	test="null!=entryrequirements and ''!=entryrequirements">entryrequirements=#{entryrequirements},</if>
+			<if	test="null!=dutyfile and ''!=dutyfile">dutyfile=#{dutyfile},</if>
+			<if	test="null!=state and ''!=state">state=#{state},</if>
+			<if	test="null!=ordercode and ''!=ordercode">ordercode=#{ordercode},</if>
+			<if	test="null!=node_level and ''!=node_level">node_level=#{node_level}</if>
+		</set>
+		WHERE postcode=#{postcode}
+	</update>
+
+</mapper>

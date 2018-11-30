@@ -20,6 +20,8 @@ public interface IPostDao  {
     //根据岗位名称查询岗位信息
     Post selectPostByPostname(String postname);
 
+    List<String> getAllPostnames();
+
     /**
      *@Author:ShiYun;
      *@Description:根据岗位编号查询岗位信息

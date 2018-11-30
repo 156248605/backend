@@ -1,7 +1,7 @@
 package com.elex.oa.controller.hr;
 
-import com.elex.oa.service.restructure_hrService.IContractInfoService;
-import com.elex.oa.service.restructure_hrService.IHrdatadictionaryService;
+import com.elex.oa.dao.restructure_hr.IDepinfoDao;
+import com.elex.oa.service.restructure_hrService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +21,13 @@ public class TablesController {
     @Autowired
     IHrdatadictionaryService iHrdatadictionaryService;
     @Autowired
-    IContractInfoService iContractInfoService;
+    IContractinfoService iContractInfoService;
+    @Autowired
+    IDepinfoService iDepinfoService;
+    @Autowired
+    IPostinfoService iPostinfoService;
+    @Autowired
+    IPostlevelrelationshipinfoService iPostlevelrelationshipinfoService;
 
     @RequestMapping("/tb_hr_data_dictionary")
     @ResponseBody
@@ -35,6 +41,41 @@ public class TablesController {
     public String changetable_tb_hr_contract_info(){
         Boolean aBoolean = iContractInfoService.changeTable();
         return aBoolean?"更新数据成功":"更新失败";
+    }
+
+    @RequestMapping("/tb_id_dep_info")
+    @ResponseBody
+    public String changetable_tb_id_dep_info(){
+        Boolean aBoolean = iDepinfoService.changeTable();
+        return aBoolean?"更新数据成功":"更新失败";
+    }
+
+    @RequestMapping("/tb_id_post_info")
+    @ResponseBody
+    public String changetable_tb_id_post_info(){
+        Boolean aBoolean = iPostinfoService.changeTable();
+        return aBoolean?"更新数据成功":"更新失败";
+    }
+
+    @RequestMapping("/tb_id_post_info/updateNodelevel")
+    @ResponseBody
+    public String changetable_tb_id_post_info_updateNodelevel(){
+        Boolean aBoolean = iPostinfoService.updateNodelevel();
+        return aBoolean?"更新数据成功":"更新失败";
+    }
+
+    @RequestMapping("/tb_postlevel_relationship_info")
+    @ResponseBody
+    public String changetable_tb_postlevel_relationship_info(){
+        Boolean aBoolean = iPostlevelrelationshipinfoService.changeTable();
+        return aBoolean?"更新数据成功":"更新失败";
+    }
+
+    @RequestMapping("/tb_id_personal_info")
+    @ResponseBody
+    public String changetable_tb_id_personal_info(){
+
+        return true?"更新数据成功":"更新失败";
     }
 
 

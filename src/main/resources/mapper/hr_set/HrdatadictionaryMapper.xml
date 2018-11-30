@@ -29,4 +29,8 @@
 		</where>
 	</select>
 
+	<delete id="deleteByDatacode" parameterType="java.lang.String" >
+		delete from tb_hr_data_dictionary where datacode=#{datacode}
+	</delete>
+
 </mapper>

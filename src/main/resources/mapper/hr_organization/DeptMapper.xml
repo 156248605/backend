@@ -28,6 +28,10 @@
 		where depname like CONCAT(CONCAT('%',#{depname},'%')) and state=1
 	</select>
 
+	<select id="selectAllDepnames" resultType="java.lang.String">
+		select depname from tb_id_department where state=1
+	</select>
+
 	<select id="selectDeptByDeptcode" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
 		where depcode = #{depcode} and state=1

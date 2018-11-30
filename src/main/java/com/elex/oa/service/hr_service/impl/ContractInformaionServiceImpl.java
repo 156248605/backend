@@ -135,7 +135,9 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
                 contractInformation.setContracttype(contractList.get(0).getDatavalue());
             }
             //获得办理人姓名
-            contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
+            if (null!=contractInformation.getTransactoruserid()) {
+                contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
+            }
             //获得合同期限
             try {
                 contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));

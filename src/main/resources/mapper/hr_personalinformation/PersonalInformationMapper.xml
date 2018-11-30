@@ -16,6 +16,32 @@
 		<result column="otherinformationid" property="otherinformationid" />
 	</resultMap>
 
+	<select id="selectAllmobilephones" resultType="java.lang.String">
+		select distinct mobilephone from tb_id_personalinformation
+	</select>
+	<select id="selectAllenglishnames" resultType="java.lang.String">
+		select distinct englishname from tb_id_baseinformation where englishname is not  null
+	</select>
+	<select id="selectAllidcodes" resultType="java.lang.String">
+		select distinct idcode from tb_id_baseinformation
+	</select>
+	<select id="selectAllages" resultType="java.lang.String">
+		SELECT
+			distinct TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS 'age'
+		FROM
+			tb_id_baseinformation
+		where
+			 birthday is not null
+	</select>
+	<select id="selectAllworkingages" resultType="java.lang.String">
+		SELECT
+			DISTINCT TIMESTAMPDIFF(YEAR, firstworkingtime, CURDATE()) AS 'workingage'
+		FROM
+			tb_id_baseinformation
+		WHERE
+			firstworkingtime is NOT NULL
+	</select>
+
 	<select id="selectByConditions" parameterType="PersonalInformation" resultMap="PersonalInformationResultMap">
 		SELECT
 			per.id,

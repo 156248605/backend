@@ -62,6 +62,35 @@ public class PersonalInformationController {
     @Autowired
     IContractInformationService iContractInformationService;
 
+
+
+    @RequestMapping("/PersonalInformationController/queryPersonalInformations")
+    @ResponseBody
+    public Map<String,Object> getInitPage(
+            @RequestParam("page") Integer page,
+            @RequestParam("rows") Integer rows,
+            PersonalInformation personalInformation
+    ) throws ParseException {
+        Map<String, Object> resp = new HashMap<String, Object>();
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("pageNum", page);
+        paramMap.put("pageSize", rows);
+        paramMap.put("entity", personalInformation);
+        PageInfo<PersonalInformation> list = iPersonalInformationService.queryPIs(paramMap);
+        if (list != null) {
+            List<PersonalInformation> list1 = list.getList();
+            for (PersonalInformation pi : list1
+            ) {
+                pi = getPageinfoInstance(pi);
+            }
+            list.setList(list1);
+        }
+        resp.put("pageData",list);
+        Map<String, List<String>> paramsForFirstpage = iPersonalInformationService.getParamsForFirstpage();
+        resp.put("selections",paramsForFirstpage);
+       return resp;
+    }
+
     /**
      * @Author:ShiYun;
      * @Description:人事信息的查询
@@ -82,105 +111,110 @@ public class PersonalInformationController {
             List<PersonalInformation> list1 = list.getList();
             for (PersonalInformation pi : list1
             ) {
-                //添加信息user的三个的字段
-                User user = iUserService.getById(pi.getUserid());
-                pi.setIsactive(user.getIsactive());
-                pi.setTruename(user.getTruename());
-                pi.setUsername(user.getUsername());
-                //添加信息personalinformation的六个字段
-                Dept dept = new Dept();
-                dept = iDeptService.queryOneDepByDepid(pi.getDepid());
-                if (dept != null) {
-                    pi.setDepname(dept.getDepname());
-                } else {
-                    pi.setDepname("部门信息还未添加");
-                }
-                //添加岗位信息
-                List<PerAndPostRs> perAndPostRss = iPerandpostrsService.queryPerAndPostRsByPerid(pi.getId());
-                List<String> strs = new ArrayList<>();
-                List<Post> postList = new ArrayList<>();
-                for (PerAndPostRs perAndPostRs : perAndPostRss) {
-                    Post post = iPostService.queryOneByPostid(perAndPostRs.getPostid());
-                    postList.add(post);
-                    strs.add(iPostService.queryOneByPostid(perAndPostRs.getPostid()).getPostname());
-                }
-                pi.setPostList(postList);
-                pi.setPostnames(IDcodeUtil.getArrayToString(strs, ";"));
-                //添加办公电话
-                if (ihRsetService.queryById(pi.getTelphoneid()) != null) {
-                    pi.setTelphone(ihRsetService.queryById(pi.getTelphoneid()).getDatavalue());
-                }
-                //添加baseinformation的28个字段
-                BaseInformation baseInformation = iBaseInformationService.queryOneById(pi.getBaseinformationid());
-                pi.setEnglishname(baseInformation.getEnglishname());
-                pi.setIdcode(baseInformation.getIdcode());
-                pi.setUserphoto(baseInformation.getUserphoto());
-                pi.setBirthday(baseInformation.getBirthday());
-                try {
-                    pi.setAge(IDcodeUtil.getAge(pi.getBirthday()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                pi.setConstellation(baseInformation.getConstellation());
-                pi.setChinesecs(baseInformation.getChinesecs());
-                if (ihRsetService.queryById(baseInformation.getRaceid()) != null) {
-                    pi.setRace(ihRsetService.queryById(baseInformation.getRaceid()).getDatavalue());
-                }
-                pi.setMarriage(baseInformation.getMarriage());
-                if (baseInformation.getChildrenid()!=null && ihRsetService.queryById(baseInformation.getChildrenid())!= null) {
-                    pi.setChildren(ihRsetService.queryById(baseInformation.getChildrenid()).getDatavalue());
-                }
-                if (baseInformation.getZzmmid()!=null && ihRsetService.queryById(baseInformation.getZzmmid()) != null) {
-                    pi.setZzmm(ihRsetService.queryById(baseInformation.getZzmmid()).getDatavalue());
-                }
-                if (baseInformation.getZgxlid()!=null && ihRsetService.queryById(baseInformation.getZgxlid()) != null) {
-                    pi.setZgxl(ihRsetService.queryById(baseInformation.getZgxlid()).getDatavalue());
-                }
-                if (baseInformation.getByyxid()!=null && ihRsetService.queryById(baseInformation.getByyxid()) != null) {
-                    pi.setByyx(ihRsetService.queryById(baseInformation.getByyxid()).getDatavalue());
-                }
-                if (baseInformation.getSxzyid()!=null && ihRsetService.queryById(baseInformation.getSxzyid()) != null) {
-                    pi.setSxzy(ihRsetService.queryById(baseInformation.getSxzyid()).getDatavalue());
-                }
-                if (baseInformation.getPyfsid()!=null && ihRsetService.queryById(baseInformation.getPyfsid()) != null) {
-                    pi.setPyfs(ihRsetService.queryById(baseInformation.getPyfsid()).getDatavalue());
-                }
-                if (baseInformation.getFirstlaid()!=null && ihRsetService.queryById(baseInformation.getFirstlaid()) != null) {
-                    pi.setFirstla(ihRsetService.queryById(baseInformation.getFirstlaid()).getDatavalue());
-                }
-                if (baseInformation.getElselaid()!=null && ihRsetService.queryById(baseInformation.getElselaid()) != null) {
-                    pi.setElsela(ihRsetService.queryById(baseInformation.getElselaid()).getDatavalue());
-                }
-                if (baseInformation.getPosttitleid()!=null && ihRsetService.queryById(baseInformation.getPosttitleid()) != null) {
-                    pi.setPosttitle(ihRsetService.queryById(baseInformation.getPosttitleid()).getDatavalue());
-                }
-                if (baseInformation.getZyzstypeid()!=null && ihRsetService.queryById(baseInformation.getZyzstypeid()) != null) {
-                    pi.setZyzstype(ihRsetService.queryById(baseInformation.getZyzstypeid()).getDatavalue());
-                }
-                if (baseInformation.getZyzsnameid()!=null && ihRsetService.queryById(baseInformation.getZyzsnameid()) != null) {
-                    pi.setZyzsname(ihRsetService.queryById(baseInformation.getZyzsnameid()).getDatavalue());
-                }
-                pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
-                if (baseInformation.getFirstworkingtime() != null && !"".equals(baseInformation.getFirstworkingtime())) {
-                    try {
-                        pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (baseInformation.getParentcompanyid()!=null && ihRsetService.queryById(baseInformation.getParentcompanyid()) != null) {
-                    pi.setParentcompany(ihRsetService.queryById(baseInformation.getParentcompanyid()).getDatavalue());
-                }
-                //添加manageinformation的六个字段
-                ManageInformation manageInformation = iManageInformationService.queryOneById(pi.getManageinformationid());
-                //添加costinformation的18个字段
-                CostInformation costInformation = iCostInformationService.queryOneById(pi.getCostinformationid());
-                //添加otherinformation的六个字段
-                OtherInformation otherInformation = iOtherInformationService.queryOneById(pi.getOtherinformationid());
+                pi = getPageinfoInstance(pi);
             }
             list.setList(list1);
         }
         return list;
+    }
+
+    private PersonalInformation getPageinfoInstance(PersonalInformation pi) {
+        //添加信息user的三个的字段
+        User user = iUserService.getById(pi.getUserid());
+        pi.setIsactive(user.getIsactive());
+        pi.setTruename(user.getTruename());
+        pi.setUsername(user.getUsername());
+        //添加信息personalinformation的六个字段
+        Dept dept = new Dept();
+        dept = iDeptService.queryOneDepByDepid(pi.getDepid());
+        if (dept != null) {
+            pi.setDepname(dept.getDepname());
+        } else {
+            pi.setDepname("部门信息还未添加");
+        }
+        //添加岗位信息
+        List<PerAndPostRs> perAndPostRss = iPerandpostrsService.queryPerAndPostRsByPerid(pi.getId());
+        List<String> strs = new ArrayList<>();
+        List<Post> postList = new ArrayList<>();
+        for (PerAndPostRs perAndPostRs : perAndPostRss) {
+            Post post = iPostService.queryOneByPostid(perAndPostRs.getPostid());
+            postList.add(post);
+            strs.add(iPostService.queryOneByPostid(perAndPostRs.getPostid()).getPostname());
+        }
+        pi.setPostList(postList);
+        pi.setPostnames(IDcodeUtil.getArrayToString(strs, ";"));
+        //添加办公电话
+        if (ihRsetService.queryById(pi.getTelphoneid()) != null) {
+            pi.setTelphone(ihRsetService.queryById(pi.getTelphoneid()).getDatavalue());
+        }
+        //添加baseinformation的28个字段
+        BaseInformation baseInformation = iBaseInformationService.queryOneById(pi.getBaseinformationid());
+        pi.setEnglishname(baseInformation.getEnglishname());
+        pi.setIdcode(baseInformation.getIdcode());
+        pi.setUserphoto(baseInformation.getUserphoto());
+        pi.setBirthday(baseInformation.getBirthday());
+        try {
+            pi.setAge(IDcodeUtil.getAge(pi.getBirthday()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        pi.setConstellation(baseInformation.getConstellation());
+        pi.setChinesecs(baseInformation.getChinesecs());
+        if (ihRsetService.queryById(baseInformation.getRaceid()) != null) {
+            pi.setRace(ihRsetService.queryById(baseInformation.getRaceid()).getDatavalue());
+        }
+        pi.setMarriage(baseInformation.getMarriage());
+        if (baseInformation.getChildrenid()!=null && ihRsetService.queryById(baseInformation.getChildrenid())!= null) {
+            pi.setChildren(ihRsetService.queryById(baseInformation.getChildrenid()).getDatavalue());
+        }
+        if (baseInformation.getZzmmid()!=null && ihRsetService.queryById(baseInformation.getZzmmid()) != null) {
+            pi.setZzmm(ihRsetService.queryById(baseInformation.getZzmmid()).getDatavalue());
+        }
+        if (baseInformation.getZgxlid()!=null && ihRsetService.queryById(baseInformation.getZgxlid()) != null) {
+            pi.setZgxl(ihRsetService.queryById(baseInformation.getZgxlid()).getDatavalue());
+        }
+        if (baseInformation.getByyxid()!=null && ihRsetService.queryById(baseInformation.getByyxid()) != null) {
+            pi.setByyx(ihRsetService.queryById(baseInformation.getByyxid()).getDatavalue());
+        }
+        if (baseInformation.getSxzyid()!=null && ihRsetService.queryById(baseInformation.getSxzyid()) != null) {
+            pi.setSxzy(ihRsetService.queryById(baseInformation.getSxzyid()).getDatavalue());
+        }
+        if (baseInformation.getPyfsid()!=null && ihRsetService.queryById(baseInformation.getPyfsid()) != null) {
+            pi.setPyfs(ihRsetService.queryById(baseInformation.getPyfsid()).getDatavalue());
+        }
+        if (baseInformation.getFirstlaid()!=null && ihRsetService.queryById(baseInformation.getFirstlaid()) != null) {
+            pi.setFirstla(ihRsetService.queryById(baseInformation.getFirstlaid()).getDatavalue());
+        }
+        if (baseInformation.getElselaid()!=null && ihRsetService.queryById(baseInformation.getElselaid()) != null) {
+            pi.setElsela(ihRsetService.queryById(baseInformation.getElselaid()).getDatavalue());
+        }
+        if (baseInformation.getPosttitleid()!=null && ihRsetService.queryById(baseInformation.getPosttitleid()) != null) {
+            pi.setPosttitle(ihRsetService.queryById(baseInformation.getPosttitleid()).getDatavalue());
+        }
+        if (baseInformation.getZyzstypeid()!=null && ihRsetService.queryById(baseInformation.getZyzstypeid()) != null) {
+            pi.setZyzstype(ihRsetService.queryById(baseInformation.getZyzstypeid()).getDatavalue());
+        }
+        if (baseInformation.getZyzsnameid()!=null && ihRsetService.queryById(baseInformation.getZyzsnameid()) != null) {
+            pi.setZyzsname(ihRsetService.queryById(baseInformation.getZyzsnameid()).getDatavalue());
+        }
+        pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
+        if (baseInformation.getFirstworkingtime() != null && !"".equals(baseInformation.getFirstworkingtime())) {
+            try {
+                pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (baseInformation.getParentcompanyid()!=null && ihRsetService.queryById(baseInformation.getParentcompanyid()) != null) {
+            pi.setParentcompany(ihRsetService.queryById(baseInformation.getParentcompanyid()).getDatavalue());
+        }
+        //添加manageinformation的六个字段
+        ManageInformation manageInformation = iManageInformationService.queryOneById(pi.getManageinformationid());
+        //添加costinformation的18个字段
+        CostInformation costInformation = iCostInformationService.queryOneById(pi.getCostinformationid());
+        //添加otherinformation的六个字段
+        OtherInformation otherInformation = iOtherInformationService.queryOneById(pi.getOtherinformationid());
+        return pi;
     }
 
     /**
@@ -497,8 +531,8 @@ public class PersonalInformationController {
             HttpServletRequest request
     ) throws ParseException {
         //工号校验
-        List<PersonalInformation> personalInformationList = iPersonalInformationService.queryByEmployeenumber(personalInformation.getEmployeenumber());
-        if (personalInformationList.size() > 0) {
+        PersonalInformation perTemp = iPersonalInformationService.queryByEmployeenumber(personalInformation.getEmployeenumber());
+        if (null!=perTemp) {
             return RespUtil.successResp("500", "工号已存在，请重新输入！", null);
         }
         //username校验
@@ -1954,20 +1988,19 @@ public class PersonalInformationController {
             for (int i = 0; i < personalInformationList.size(); i++) {
                 PersonalInformation personalInformation = personalInformationList.get(i);
                 //先获得员工号
-                List<PersonalInformation> per = iPersonalInformationService.queryByEmployeenumber(personalInformation.getEmployeenumber());
-                if (per.size() == 0) {
+                String employeenumber = personalInformation.getEmployeenumber();
+                if(StringUtils.isEmpty(employeenumber))continue;
+                PersonalInformation per = iPersonalInformationService.queryByEmployeenumber(personalInformation.getEmployeenumber());
+                if (null==per) {
                     if(null==personalInformation.getEmployeenumber() || "".equals(personalInformation.getEmployeenumber())){
                         goToPost.put(personalInformation.getEmployeenumber(), "此工号的数据数据为空");
                         continue;
                     }
                     //添加数据
                     goToPost = importOnePersonalInformation_ADD(personalInformation, goToPost);
-                } else if (per.size() == 1) {
+                } else{
                     //说明信息已经存在，下面查询名字是否正确
                     goToPost = importOnePersonalInformation_UPDATE(personalInformation, goToPost, per);
-                } else {
-                    //工号一样，名字不一样，信息有误请手动解决
-                    goToPost.put(personalInformation.getEmployeenumber(), "此工号的数据库数据有误，请联系管理员解决");
                 }
             }
         }
@@ -1998,6 +2031,14 @@ public class PersonalInformationController {
                 removedUser.setState(Integer.parseInt(state));
                 userB = true;
             }
+            String username = personalInformation.getUsername();
+            if(StringUtils.isNotEmpty(username)){
+                removedUser.setUsername(username);
+                userB = true;
+            }else {
+                removedUser.setUsername(personalInformation.getTruename());
+                userB = true;
+            }
             if (userB) {
                 iUserService.update(removedUser);
                 personalInformation.setUserid(removedUser.getId());
@@ -2009,8 +2050,14 @@ public class PersonalInformationController {
             } else {
                 user.setIsactive(1);
             }
-            user.setUsername(personalInformation.getUsername());
-            user.setTruename(personalInformation.getTruename());
+            String truenameTemp = personalInformation.getTruename();
+            user.setTruename(truenameTemp);
+            String usernameTemp = personalInformation.getUsername();
+            if (StringUtils.isNotEmpty(usernameTemp)) {
+                user.setUsername(usernameTemp);
+            } else if(StringUtils.isNotEmpty(truenameTemp)){
+                user.setUsername(truenameTemp);
+            }
             user.setPassword("123456");
             user.setState(1);
             Integer userid = iUserService.saveOne(user);
@@ -2197,13 +2244,17 @@ public class PersonalInformationController {
      * @Date 2018\11\1 0001 15:41
      * @Param [personalInformation, goToPost]
      **/
-    public Map<String, String> importOnePersonalInformation_UPDATE(PersonalInformation personalInformation, Map<String, String> goToPost, List<PersonalInformation> per) {
+    public Map<String, String> importOnePersonalInformation_UPDATE(PersonalInformation personalInformation, Map<String, String> goToPost, PersonalInformation currentPer) {
         String truename = personalInformation.getTruename();
-        PersonalInformation currentPer = per.get(0);
+        System.out.println(truename);
         try {
             currentPer = getOnePersonalinformation(currentPer.getId());
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+        if(null==currentPer){
+            goToPost.put(truename+":"+personalInformation.getEmployeenumber(),"不存在");
+            return goToPost;
         }
         personalInformation.setId(currentPer.getId());
         if (truename.equals(currentPer.getTruename())) {

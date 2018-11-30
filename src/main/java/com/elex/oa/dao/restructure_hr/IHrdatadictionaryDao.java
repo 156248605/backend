@@ -10,4 +10,6 @@ public interface IHrdatadictionaryDao {
     void insert(Hrdatadictionary hrDataDictionary);
 
     List<Hrdatadictionary> selectByEntity(Hrdatadictionary hrdatadictionary);
+
+    void deleteByDatacode(String datacode);
 }

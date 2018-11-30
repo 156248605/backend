@@ -18,6 +18,9 @@ public interface IDeptDao{
     List<Dept> selectDeptByDeptname(String deptname);
     List<Dept> selectDeptByLikeDeptname(String deptname);
 
+    //查询所有的部门名称
+    List<String> selectAllDepnames();
+
     //更具部门ID查询部门对象
     Dept selectDeptByDepid(Integer id);
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.restructure_hr.IDepinfoDao">
+
+	<resultMap id="depinfoMapper" type="DepInfo">
+		<result column="depcode" property="depcode" />
+		<result column="companyname" property="companyname" />
+		<result column="depname" property="depname" />
+		<result column="functionaltypeid" property="functionaltypeid" />
+		<result column="deptypeid" property="deptypeid" />
+		<result column="parent_depcode" property="parent_depcode" />
+		<result column="principaluserid" property="principaluserid" />
+		<result column="deputyuserid" property="deputyuserid" />
+		<result column="secretaryuserid" property="secretaryuserid" />
+		<result column="dutydescription" property="dutydescription" />
+		<result column="depdescription" property="depdescription" />
+		<result column="state" property="state" />
+		<result column="ordercode" property="ordercode" />
+		<result column="node_level" property="node_level" />
+	</resultMap>
+
+	<insert id="insert" parameterType="DepInfo" >
+		insert into tb_id_dep_info
+		(depcode,
+		companyname,
+		depname,
+		functionaltypeid,
+		deptypeid,
+		parent_depcode,
+		principaluserid,
+		deputyuserid,
+		secretaryuserid,
+		dutydescription,
+		depdescription,
+		state,
+		ordercode,
+		node_level
+		)
+		VALUES
+		(
+		#{depcode},
+		#{companyname},
+		#{depname},
+		#{functionaltypeid},
+		#{deptypeid},
+		#{parent_depcode},
+		#{principaluserid},
+		#{deputyuserid},
+		#{secretaryuserid},
+		#{dutydescription},
+		#{depdescription},
+		'1',
+		#{ordercode},
+		#{node_level}
+		)
+	</insert>
+
+	<select id="selectByEntity" parameterType="DepInfo" resultMap="depinfoMapper">
+		select depcode,companyname,depname,functionaltypeid,deptypeid,parent_depcode,principaluserid,deputyuserid,secretaryuserid,dutydescription,depdescription,state,ordercode,node_level
+		from tb_id_dep_info
+		<where>
+			<if	test="null!=depcode and ''!=depcode">AND depcode=#{depcode}</if>
+			<if	test="null!=companyname and ''!=companyname">AND companyname=#{companyname}</if>
+			<if	test="null!=depname and ''!=depname">AND depname=#{depname}</if>
+			<if	test="null!=functionaltypeid and ''!=functionaltypeid">AND functionaltypeid=#{functionaltypeid}</if>
+			<if	test="null!=deptypeid and ''!=deptypeid">AND deptypeid=#{deptypeid}</if>
+			<if	test="null!=parent_depcode and ''!=parent_depcode">AND parent_depcode=#{parent_depcode}</if>
+			<if	test="null!=principaluserid and ''!=principaluserid">AND principaluserid=#{principaluserid}</if>
+			<if	test="null!=deputyuserid and ''!=deputyuserid">AND deputyuserid=#{deputyuserid}</if>
+			<if	test="null!=secretaryuserid and ''!=secretaryuserid">AND secretaryuserid=#{secretaryuserid}</if>
+			<if	test="null!=dutydescription and ''!=dutydescription">AND dutydescription=#{dutydescription}</if>
+			<if	test="null!=depdescription and ''!=depdescription">AND depdescription=#{depdescription}</if>
+			<if	test="null!=state and ''!=state">AND state=#{state}</if>
+			<if	test="null!=ordercode and ''!=ordercode">AND ordercode=#{ordercode}</if>
+			<if	test="null!=node_level and ''!=node_level">AND node_level=#{node_level}</if>
+		</where>
+	</select>
+
+</mapper>

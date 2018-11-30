@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.restructure_hr.IPostlevelrelationshipinfoDao">
+
+	<resultMap id="PostlevelrelationshipinfoMapper" type="Postlevelrelationshipinfo">
+		<id column="id" property="id" />
+		<result column="postfamilyid" property="postfamilyid" />
+		<result column="postgradeid" property="postgradeid" />
+		<result column="postrankid" property="postrankid" />
+		<result column="postlevelid" property="postlevelid" />
+	</resultMap>
+
+	<insert id="insert" parameterType="Postlevelrelationshipinfo">
+		insert into tb_postlevel_relationship_info (
+			id,
+			postfamilyid,
+			postgradeid,
+			postrankid,
+			postlevelid)
+		values (
+			#{id},
+			#{postfamilyid},
+			#{postgradeid},
+			#{postrankid},
+			#{postlevelid})
+	</insert>
+
+	<select id="selectByEntity" parameterType="Postlevelrelationshipinfo" resultMap="PostlevelrelationshipinfoMapper">
+		select id,postfamilyid,postgradeid,postrankid,postlevelid
+		from tb_postlevel_relationship_info
+		<where>
+			<if	test="null!=id and ''!=id">AND id=#{id}</if>
+			<if	test="null!=postfamilyid and ''!=postfamilyid">AND postfamilyid=#{postfamilyid}</if>
+			<if	test="null!=postgradeid and ''!=postgradeid">AND postgradeid=#{postgradeid}</if>
+			<if	test="null!=postrankid and ''!=postrankid">AND postrankid=#{postrankid}</if>
+			<if	test="null!=postlevelid and ''!=postlevelid">AND postlevelid=#{postlevelid}</if>
+		</where>
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM tb_postlevel_relationship_info WHERE id=#{id}
+	</delete>
+
+</mapper>
