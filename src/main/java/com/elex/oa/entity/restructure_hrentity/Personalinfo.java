@@ -61,7 +61,7 @@ public class Personalinfo implements Serializable {
     private String gjjcode;//公积金账号
     private String privateemail;//个人邮箱
     private String companyemail;//公司邮箱
-    private String emergencycontract;//紧急联系人
+    private String emergencycontact;//紧急联系人
     private String emergencyrpid;//紧急联系人关系（外键）（数据字典）
     private String emergencyphone;//紧急联系电话
     private String address;//住址
@@ -484,12 +484,12 @@ public class Personalinfo implements Serializable {
         this.companyemail = companyemail;
     }
 
-    public String getEmergencycontract() {
-        return emergencycontract;
+    public String getEmergencycontact() {
+        return emergencycontact;
     }
 
-    public void setEmergencycontract(String emergencycontract) {
-        this.emergencycontract = emergencycontract;
+    public void setEmergencycontact(String emergencycontact) {
+        this.emergencycontact = emergencycontact;
     }
 
     public String getEmergencyrpid() {
@@ -626,7 +626,7 @@ public class Personalinfo implements Serializable {
                 ", gjjcode='" + gjjcode + '\'' +
                 ", privateemail='" + privateemail + '\'' +
                 ", companyemail='" + companyemail + '\'' +
-                ", emergencycontract='" + emergencycontract + '\'' +
+                ", emergencycontact='" + emergencycontact + '\'' +
                 ", emergencyrpid='" + emergencyrpid + '\'' +
                 ", emergencyphone='" + emergencyphone + '\'' +
                 ", address='" + address + '\'' +

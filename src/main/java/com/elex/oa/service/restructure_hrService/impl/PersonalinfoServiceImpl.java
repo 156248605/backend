@@ -2,6 +2,7 @@ package com.elex.oa.service.restructure_hrService.impl;
 
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
+import com.elex.oa.dao.restructure_hr.IPersonalinfoDao;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.restructure_hrentity.Personalinfo;
 import com.elex.oa.service.restructure_hrService.IPersonalinfoService;
@@ -31,6 +32,13 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
     ICostInformationDao iCostInformationDao;
     @Resource
     IOtherInformationDao iOtherInformationDao;
+    @Resource
+    IDimissionInformationDao iDimissionInformationDao;
+    @Resource
+    IPersonalinfoDao iPersonalinfoDao;
+    @Resource
+    HrUtilsTemp hrUtilsTemp;
+
 
     @Override
     public Boolean changeTable() {
@@ -43,12 +51,16 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
             //tb_id_user表数据的转移
             personalinfo = getPersonalinfoByUser(u, personalinfo);
             if(null==personalinfo){
+                System.out.println(u.toString()+"===============================================================================================");
                 valBoolean = false;
                 continue;
             }
-
+            Personalinfo personalinfoTemp = iPersonalinfoDao.selectPersonalinfoByEmployeenumber(personalinfo.getEmployeenumber());
+            //存在则更新数据，不存在则添加数据
+            if(null==personalinfoTemp)iPersonalinfoDao.insert(personalinfo);
+            if(null!=personalinfoTemp)iPersonalinfoDao.updateByPersonalinfo(personalinfo);
         }
-        return null;
+        return valBoolean;
     }
 
     private Personalinfo getPersonalinfoByUser(User u, Personalinfo personalinfo) {
@@ -62,6 +74,20 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         //tb_id_personalinformation表数据的转移
         PersonalInformation personalInformation = iPersonalInformationDao.selectByEmployeenumber(u.getEmployeenumber());
         personalinfo = getPersonalinfoByPersonalinformation(personalinfo, personalInformation);
+        //tb_hr_dimission表数据的转移
+        personalinfo = getPersonalinfoByDimissioninformation(u, personalinfo);
+        return personalinfo;
+    }
+
+    private Personalinfo getPersonalinfoByDimissioninformation(User u, Personalinfo personalinfo) {
+        DimissionInformation dimissionInformation = iDimissionInformationDao.selectByUserid(u.getId());
+        if(null==dimissionInformation)return personalinfo;
+        personalinfo.setLastworkingdate(dimissionInformation.getLastworkingdate());
+        personalinfo.setDimissiontypeid(hrUtilsTemp.getDatacodeByHrsetid(dimissionInformation.getDimissiontypeid()));
+        personalinfo.setDimissiondirectionid(hrUtilsTemp.getDatacodeByHrsetid(dimissionInformation.getDimissiondirectionid()));
+        personalinfo.setDimissionreasonid(hrUtilsTemp.getDatacodeByHrsetid(dimissionInformation.getDimissionreasonid()));
+        personalinfo.setDimission_transaction_id(hrUtilsTemp.getEmployeenumberByUserid(u.getId()));
+        personalinfo.setDimission_transaction_date(dimissionInformation.getTransactiondate());
         return personalinfo;
     }
 
@@ -69,9 +95,9 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         if(null==personalInformation)return personalinfo;
         personalinfo.setSex(personalInformation.getSex());
         //部门编号需转换
-        personalinfo.setDepcode(new HrUtilsTemp().getDepcodeByDepid(personalInformation.getDepid()));
+        personalinfo.setDepcode(hrUtilsTemp.getDepcodeByDepid(personalInformation.getDepid()));
         //办公电话需转换
-        personalinfo.setTelphoneid(new HrUtilsTemp().getDatacodeByHrsetid(personalInformation.getTelphoneid()));
+        personalinfo.setTelphoneid(hrUtilsTemp.getDatacodeByHrsetid(personalInformation.getTelphoneid()));
         personalinfo.setMobilephone(personalInformation.getMobilephone());
         //tb_id_baseinformation表数据的转移
         BaseInformation baseInformation = iBaseInformationDao.selectById(personalInformation.getBaseinformationid());
@@ -85,7 +111,6 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         //tb_id_otherinformation表数据的转移
         OtherInformation otherInformation = iOtherInformationDao.selectById(personalInformation.getOtherinformationid());
         personalinfo = getPersonalinfoByOtherinformation(personalinfo, otherInformation);
-
         return personalinfo;
     }
 
@@ -93,8 +118,8 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         if(null==otherInformation)return null;
         personalinfo.setPrivateemail(otherInformation.getPrivateemail());
         personalinfo.setCompanyemail(otherInformation.getCompanyemail());
-        personalinfo.setEmergencycontract(otherInformation.getEmergencycontract());
-        personalinfo.setEmergencyrpid(new HrUtilsTemp().getDatacodeByHrsetid(otherInformation.getEmergencyrpid()));
+        personalinfo.setEmergencycontact(otherInformation.getEmergencycontract());
+        personalinfo.setEmergencyrpid(hrUtilsTemp.getDatacodeByHrsetid(otherInformation.getEmergencyrpid()));
         personalinfo.setEmergencyphone(otherInformation.getEmergencyphone());
         personalinfo.setAddress(otherInformation.getAddress());
         personalinfo.setRemark(otherInformation.getRemark());
@@ -103,7 +128,6 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
 
     private Personalinfo getPersonalinfoByCostinformation(Personalinfo personalinfo, CostInformation costInformation) {
         if(null==costInformation)return personalinfo;
-        HrUtilsTemp hrUtilsTemp = new HrUtilsTemp();
         personalinfo.setSalarystandardid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getSalarystandardid()));
         personalinfo.setSsbid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getSsbid()));
         personalinfo.setSsbgscdid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getSsbgscdid()));
@@ -122,7 +146,7 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
 
     private Personalinfo getPersonalinfoByManageinformation(Personalinfo personalinfo, ManageInformation manageInformation) {
         if(null==manageInformation)return personalinfo;
-        personalinfo.setEmployeetypeid(new HrUtilsTemp().getDatacodeByHrsetid(manageInformation.getEmployeetypeid()));
+        personalinfo.setEmployeetypeid(hrUtilsTemp.getDatacodeByHrsetid(manageInformation.getEmployeetypeid()));
         personalinfo.setEntrydate(manageInformation.getEntrydate());
         personalinfo.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
         return personalinfo;
@@ -130,7 +154,6 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
 
     private Personalinfo getPersonalinfoByBaseinformation(Personalinfo personalinfo, BaseInformation baseInformation) {
         if(null==baseInformation)return personalinfo;
-        HrUtilsTemp hrUtilsTemp = new HrUtilsTemp();
         personalinfo.setUserphoto(baseInformation.getUserphoto());
         personalinfo.setIdphoto1(baseInformation.getIdphoto1());
         personalinfo.setIdphoto2(baseInformation.getIdphoto2());

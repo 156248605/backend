@@ -169,6 +169,11 @@
 		WHERE id =#{_parameter,jdbcType=NUMERIC}
 	</select>
 
+	<select id="selectByUserid" parameterType="java.lang.Integer" resultMap="dimissionInformationMapper">
+		select * from tb_hr_dimission
+		WHERE dimissionuserid =#{_parameter,jdbcType=NUMERIC}
+	</select>
+
 	<update id="updateOne" parameterType="DimissionInformation" >
 		update tb_hr_dimission
 		<set>

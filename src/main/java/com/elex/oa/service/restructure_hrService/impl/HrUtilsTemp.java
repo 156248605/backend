@@ -2,9 +2,11 @@ package com.elex.oa.service.restructure_hrService.impl;
 
 import com.elex.oa.dao.hr.IDeptDao;
 import com.elex.oa.dao.hr.IHRsetDao;
+import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.HRset;
+import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class HrUtilsTemp {
     IHrdatadictionaryDao iHrdatadictionaryDao;
     @Resource
     IDeptDao iDeptDao;
+    @Resource
+    IUserDao iUserDao;
 
     public String getDatacodeByHrsetid(Integer hrsetid) {
         if(null==hrsetid)return null;
@@ -54,5 +58,12 @@ public class HrUtilsTemp {
         Dept dept = iDeptDao.selectDeptByDepid(depid);
         if(null==dept)return null;
         return dept.getDepcode();
+    }
+
+    public String getEmployeenumberByUserid(Integer userid){
+        if(null==userid)return null;
+        User user = iUserDao.selectById(userid);
+        if(null==user)return null;
+        return user.getEmployeenumber();
     }
 }    

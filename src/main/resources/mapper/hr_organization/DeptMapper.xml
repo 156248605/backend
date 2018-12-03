@@ -23,6 +23,7 @@
 		select * from tb_id_department
 		where depname = #{depname} and state=1
 	</select>
+
 	<select id="selectDeptByLikeDeptname" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
 		where depname like CONCAT(CONCAT('%',#{depname},'%')) and state=1

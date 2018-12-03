@@ -30,6 +30,8 @@ public interface IDimissionInformationDao extends BaseDao<DimissionInformation> 
 
      List<DimissionInformation> selectByDimission(DimissionInformation dimissionInformation);
 
+     DimissionInformation selectByUserid(Integer dimissionuserid);
+
     /**
      *@Author:ShiYun;
      *@Description:根据dimissionid查询离职信息

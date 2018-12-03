@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.restructure_hr.IPersonalinfoDao">
+
+	<resultMap id="PersonalInfoResultMap" type="PersonalInfo">
+		<result column="employeenumber" property="employeenumber" />
+		<result column="username" property="username" />
+		<result column="truename" property="truename" />
+		<result column="password" property="password" />
+		<result column="isactive" property="isactive" />
+		<result column="state" property="state" />
+		<result column="idcode" property="idcode" />
+		<result column="birthday" property="birthday" />
+		<result column="sex" property="sex" />
+		<result column="chinesecs" property="chinesecs" />
+		<result column="constellation" property="constellation" />
+		<result column="household_register" property="household_register" />
+		<result column="depcode" property="depcode" />
+		<result column="telphoneid" property="telphoneid" />
+		<result column="mobilephone" property="mobilephone" />
+		<result column="userphoto" property="userphoto" />
+		<result column="idphoto1" property="idphoto1" />
+		<result column="idphoto2" property="idphoto2" />
+		<result column="englishname" property="englishname" />
+		<result column="raceid" property="raceid" />
+		<result column="marriage" property="marriage" />
+		<result column="zzmmid" property="zzmmid" />
+		<result column="childrenid" property="childrenid" />
+		<result column="byyxid" property="byyxid" />
+		<result column="zgxlid" property="zgxlid" />
+		<result column="sxzyid" property="sxzyid" />
+		<result column="pyfsid" property="pyfsid" />
+		<result column="firstlaid" property="firstlaid" />
+		<result column="elselaid" property="elselaid" />
+		<result column="posttitleid" property="posttitleid" />
+		<result column="zyzstypeid" property="zyzstypeid" />
+		<result column="zyzsnameid" property="zyzsnameid" />
+		<result column="parentcompanyid" property="parentcompanyid" />
+		<result column="firstworkingtime" property="firstworkingtime" />
+		<result column="employeetypeid" property="employeetypeid" />
+		<result column="entrydate" property="entrydate" />
+		<result column="zhuanzhengdate" property="zhuanzhengdate" />
+		<result column="salarystandardid" property="salarystandardid" />
+		<result column="ssbid" property="ssbid" />
+		<result column="ssbgscdid" property="ssbgscdid" />
+		<result column="ssbgrcdid" property="ssbgrcdid" />
+		<result column="gjjid" property="gjjid" />
+		<result column="gjjgscdid" property="gjjgscdid" />
+		<result column="gjjgrcdid" property="gjjgrcdid" />
+		<result column="khhid" property="khhid" />
+		<result column="salaryaccount" property="salaryaccount" />
+		<result column="sbjndid" property="sbjndid" />
+		<result column="sbcode" property="sbcode" />
+		<result column="gjjcode" property="gjjcode" />
+		<result column="privateemail" property="privateemail" />
+		<result column="companyemail" property="companyemail" />
+		<result column="emergencycontract" property="emergencycontract" />
+		<result column="emergencyrpid" property="emergencyrpid" />
+		<result column="emergencyphone" property="emergencyphone" />
+		<result column="address" property="address" />
+		<result column="remark" property="remark" />
+		<result column="lastworkingdate" property="lastworkingdate" />
+		<result column="dimissiontypeid" property="dimissiontypeid" />
+		<result column="dimissiondirectionid" property="dimissiondirectionid" />
+		<result column="dimissionreasonid" property="dimissionreasonid" />
+		<result column="dimission_transaction_id" property="dimission_transaction_id" />
+		<result column="dimission_transaction_date" property="dimission_transaction_date" />
+	</resultMap>
+
+	<insert id="insert" parameterType="Personalinfo" >
+		insert into tb_id_personal_info
+		(
+			employeenumber,
+			username,
+			truename,
+			password,
+			isactive,
+			state,
+			idcode,
+			birthday,
+			sex,
+			chinesecs,
+			constellation,
+			household_register,
+			depcode,
+			telphoneid,
+			mobilephone,
+			userphoto,
+			idphoto1,
+			idphoto2,
+			englishname,
+			raceid,
+			marriage,
+			zzmmid,
+			childrenid,
+			byyxid,
+			zgxlid,
+			sxzyid,
+			pyfsid,
+			firstlaid,
+			elselaid,
+			posttitleid,
+			zyzstypeid,
+			zyzsnameid,
+			parentcompanyid,
+			firstworkingtime,
+			employeetypeid,
+			entrydate,
+			zhuanzhengdate,
+			salarystandardid,
+			ssbid,
+			ssbgscdid,
+			ssbgrcdid,
+			gjjid,
+			gjjgscdid,
+			gjjgrcdid,
+			khhid,
+			salaryaccount,
+			sbjndid,
+			sbcode,
+			gjjcode,
+			privateemail,
+			companyemail,
+			emergencycontact,
+			emergencyrpid,
+			emergencyphone,
+			address,
+			remark,
+			lastworkingdate,
+			dimissiontypeid,
+			dimissiondirectionid,
+			dimissionreasonid,
+			dimission_transaction_id,
+			dimission_transaction_date
+		)
+		VALUES
+		(
+			#{employeenumber},
+			#{username},
+			#{truename},
+			#{password},
+			#{isactive},
+			#{state},
+			#{idcode},
+			#{birthday},
+			#{sex},
+			#{chinesecs},
+			#{constellation},
+			#{household_register},
+			#{depcode},
+			#{telphoneid},
+			#{mobilephone},
+			#{userphoto},
+			#{idphoto1},
+			#{idphoto2},
+			#{englishname},
+			#{raceid},
+			#{marriage},
+			#{zzmmid},
+			#{childrenid},
+			#{byyxid},
+			#{zgxlid},
+			#{sxzyid},
+			#{pyfsid},
+			#{firstlaid},
+			#{elselaid},
+			#{posttitleid},
+			#{zyzstypeid},
+			#{zyzsnameid},
+			#{parentcompanyid},
+			#{firstworkingtime},
+			#{employeetypeid},
+			#{entrydate},
+			#{zhuanzhengdate},
+			#{salarystandardid},
+			#{ssbid},
+			#{ssbgscdid},
+			#{ssbgrcdid},
+			#{gjjid},
+			#{gjjgscdid},
+			#{gjjgrcdid},
+			#{khhid},
+			#{salaryaccount},
+			#{sbjndid},
+			#{sbcode},
+			#{gjjcode},
+			#{privateemail},
+			#{companyemail},
+			#{emergencycontact},
+			#{emergencyrpid},
+			#{emergencyphone},
+			#{address},
+			#{remark},
+			#{lastworkingdate},
+			#{dimissiontypeid},
+			#{dimissiondirectionid},
+			#{dimissionreasonid},
+			#{dimission_transaction_id},
+			#{dimission_transaction_date}
+		)
+	</insert>
+
+	<delete id="deleteByEmployeenumber" parameterType="java.lang.String">
+		delete from tb_id_personal_info where employeenumber=#{employeenumber}
+	</delete>
+
+	<update id="updateByPersonalinfo" parameterType="Personalinfo">
+		update tb_id_personal_info
+		<set>
+			<if	test="null!=username and ''!=username">username=#{username},</if>
+			<if	test="null!=truename and ''!=truename">truename=#{truename},</if>
+			<if	test="null!=password and ''!=password">password=#{password},</if>
+			<if	test="null!=isactive and ''!=isactive">isactive=#{isactive},</if>
+			<if	test="null!=state and ''!=state">state=#{state},</if>
+			<if	test="null!=idcode and ''!=idcode">idcode=#{idcode},</if>
+			<if	test="null!=birthday and ''!=birthday">birthday=#{birthday},</if>
+			<if	test="null!=sex and ''!=sex">sex=#{sex},</if>
+			<if	test="null!=chinesecs and ''!=chinesecs">chinesecs=#{chinesecs},</if>
+			<if	test="null!=constellation and ''!=constellation">constellation=#{constellation},</if>
+			<if	test="null!=household_register and ''!=household_register">household_register=#{household_register},</if>
+			<if	test="null!=depcode and ''!=depcode">depcode=#{depcode},</if>
+			<if	test="null!=telphoneid and ''!=telphoneid">telphoneid=#{telphoneid},</if>
+			<if	test="null!=mobilephone and ''!=mobilephone">mobilephone=#{mobilephone},</if>
+			<if	test="null!=userphoto and ''!=userphoto">userphoto=#{userphoto},</if>
+			<if	test="null!=idphoto1 and ''!=idphoto1">idphoto1=#{idphoto1},</if>
+			<if	test="null!=idphoto2 and ''!=idphoto2">idphoto2=#{idphoto2},</if>
+			<if	test="null!=englishname and ''!=englishname">englishname=#{englishname},</if>
+			<if	test="null!=raceid and ''!=raceid">raceid=#{raceid},</if>
+			<if	test="null!=marriage and ''!=marriage">marriage=#{marriage},</if>
+			<if	test="null!=zzmmid and ''!=zzmmid">zzmmid=#{zzmmid},</if>
+			<if	test="null!=childrenid and ''!=childrenid">childrenid=#{childrenid},</if>
+			<if	test="null!=byyxid and ''!=byyxid">byyxid=#{byyxid},</if>
+			<if	test="null!=zgxlid and ''!=zgxlid">zgxlid=#{zgxlid},</if>
+			<if	test="null!=sxzyid and ''!=sxzyid">sxzyid=#{sxzyid},</if>
+			<if	test="null!=pyfsid and ''!=pyfsid">pyfsid=#{pyfsid},</if>
+			<if	test="null!=firstlaid and ''!=firstlaid">firstlaid=#{firstlaid},</if>
+			<if	test="null!=elselaid and ''!=elselaid">elselaid=#{elselaid},</if>
+			<if	test="null!=posttitleid and ''!=posttitleid">posttitleid=#{posttitleid},</if>
+			<if	test="null!=zyzstypeid and ''!=zyzstypeid">zyzstypeid=#{zyzstypeid},</if>
+			<if	test="null!=zyzsnameid and ''!=zyzsnameid">zyzsnameid=#{zyzsnameid},</if>
+			<if	test="null!=parentcompanyid and ''!=parentcompanyid">parentcompanyid=#{parentcompanyid},</if>
+			<if	test="null!=firstworkingtime and ''!=firstworkingtime">firstworkingtime=#{firstworkingtime},</if>
+			<if	test="null!=employeetypeid and ''!=employeetypeid">employeetypeid=#{employeetypeid},</if>
+			<if	test="null!=entrydate and ''!=entrydate">entrydate=#{entrydate},</if>
+			<if	test="null!=zhuanzhengdate and ''!=zhuanzhengdate">zhuanzhengdate=#{zhuanzhengdate},</if>
+			<if	test="null!=salarystandardid and ''!=salarystandardid">salarystandardid=#{salarystandardid},</if>
+			<if	test="null!=ssbid and ''!=ssbid">ssbid=#{ssbid},</if>
+			<if	test="null!=ssbgscdid and ''!=ssbgscdid">ssbgscdid=#{ssbgscdid},</if>
+			<if	test="null!=ssbgrcdid and ''!=ssbgrcdid">ssbgrcdid=#{ssbgrcdid},</if>
+			<if	test="null!=gjjid and ''!=gjjid">gjjid=#{gjjid},</if>
+			<if	test="null!=gjjgscdid and ''!=gjjgscdid">gjjgscdid=#{gjjgscdid},</if>
+			<if	test="null!=gjjgrcdid and ''!=gjjgrcdid">gjjgrcdid=#{gjjgrcdid},</if>
+			<if	test="null!=khhid and ''!=khhid">khhid=#{khhid},</if>
+			<if	test="null!=salaryaccount and ''!=salaryaccount">salaryaccount=#{salaryaccount},</if>
+			<if	test="null!=sbjndid and ''!=sbjndid">sbjndid=#{sbjndid},</if>
+			<if	test="null!=sbcode and ''!=sbcode">sbcode=#{sbcode},</if>
+			<if	test="null!=gjjcode and ''!=gjjcode">gjjcode=#{gjjcode},</if>
+			<if	test="null!=privateemail and ''!=privateemail">privateemail=#{privateemail},</if>
+			<if	test="null!=companyemail and ''!=companyemail">companyemail=#{companyemail},</if>
+			<if	test="null!=emergencycontact and ''!=emergencycontact">emergencycontact=#{emergencycontact},</if>
+			<if	test="null!=emergencyrpid and ''!=emergencyrpid">emergencyrpid=#{emergencyrpid},</if>
+			<if	test="null!=emergencyphone and ''!=emergencyphone">emergencyphone=#{emergencyphone},</if>
+			<if	test="null!=address and ''!=address">address=#{address},</if>
+			<if	test="null!=remark and ''!=remark">remark=#{remark},</if>
+			<if	test="null!=lastworkingdate and ''!=lastworkingdate">lastworkingdate=#{lastworkingdate},</if>
+			<if	test="null!=dimissiontypeid and ''!=dimissiontypeid">dimissiontypeid=#{dimissiontypeid},</if>
+			<if	test="null!=dimissiondirectionid and ''!=dimissiondirectionid">dimissiondirectionid=#{dimissiondirectionid},</if>
+			<if	test="null!=dimissionreasonid and ''!=dimissionreasonid">dimissionreasonid=#{dimissionreasonid},</if>
+			<if	test="null!=dimission_transaction_id and ''!=dimission_transaction_id">dimission_transaction_id=#{dimission_transaction_id},</if>
+			<if	test="null!=dimission_transaction_date and ''!=dimission_transaction_date">dimission_transaction_date=#{dimission_transaction_date}</if>
+		</set>
+		where employeenumber=#{employeenumber}
+	</update>
+
+	<select id="selectPersonalinfoByEmployeenumber" parameterType="java.lang.String" resultMap="PersonalInfoResultMap">
+		select employeenumber,username,truename,password,isactive,state,idcode,birthday,sex,chinesecs,
+				constellation,household_register,depcode,telphoneid,mobilephone,userphoto,idphoto1,idphoto2,englishname,raceid,
+				marriage,zzmmid,childrenid,byyxid,zgxlid,sxzyid,pyfsid,firstlaid,elselaid,posttitleid,
+				zyzstypeid,zyzsnameid,parentcompanyid,firstworkingtime,employeetypeid,entrydate,zhuanzhengdate,salarystandardid,ssbid,ssbgscdid,
+				ssbgrcdid,gjjid,gjjgscdid,gjjgrcdid,khhid,salaryaccount,sbjndid,sbcode,gjjcode,privateemail,
+				companyemail,emergencycontact,emergencyrpid,emergencyphone,address,remark,lastworkingdate,dimissiontypeid,dimissiondirectionid,dimissionreasonid,
+				dimission_transaction_id,dimission_transaction_date
+		from tb_id_personal_info
+		where employeenumber=#{employeenumber}
+	</select>
+
+	<select id="selectByEntity" parameterType="Personalinfo" resultMap="PersonalInfoResultMap">
+		select employeenumber,username,truename,password,isactive,state,idcode,birthday,sex,chinesecs,
+				constellation,household_register,depcode,telphoneid,mobilephone,userphoto,idphoto1,idphoto2,englishname,raceid,
+				marriage,zzmmid,childrenid,byyxid,zgxlid,sxzyid,pyfsid,firstlaid,elselaid,posttitleid,
+				zyzstypeid,zyzsnameid,parentcompanyid,firstworkingtime,employeetypeid,entrydate,zhuanzhengdate,salarystandardid,ssbid,ssbgscdid,
+				ssbgrcdid,gjjid,gjjgscdid,gjjgrcdid,khhid,salaryaccount,sbjndid,sbcode,gjjcode,privateemail,
+				companyemail,emergencycontact,emergencyrpid,emergencyphone,address,remark,lastworkingdate,dimissiontypeid,dimissiondirectionid,dimissionreasonid,
+				dimission_transaction_id,dimission_transaction_date
+		from tb_id_personal_info
+		<where>
+			<if test="null!=employeenumber and ''!=employeenumber">AND employeenumber=#{employeenumber}</if>
+			<if test="null!=username and ''!=username">AND username=#{username}</if>
+			<if test="null!=truename and ''!=truename">AND truename=#{truename}</if>
+			<if test="null!=password and ''!=password">AND password=#{password}</if>
+			<if test="null!=isactive and ''!=isactive">AND isactive=#{isactive}</if>
+			<if test="null!=state and ''!=state">AND state=#{state}</if>
+			<if test="null!=idcode and ''!=idcode">AND idcode=#{idcode}</if>
+			<if test="null!=birthday and ''!=birthday">AND birthday=#{birthday}</if>
+			<if test="null!=sex and ''!=sex">AND sex=#{sex}</if>
+			<if test="null!=chinesecs and ''!=chinesecs">AND chinesecs=#{chinesecs}</if>
+			<if test="null!=constellation and ''!=constellation">AND constellation=#{constellation}</if>
+			<if test="null!=household_register and ''!=household_register">AND household_register=#{household_register}</if>
+			<if test="null!=depcode and ''!=depcode">AND depcode=#{depcode}</if>
+			<if test="null!=telphoneid and ''!=telphoneid">AND telphoneid=#{telphoneid}</if>
+			<if test="null!=mobilephone and ''!=mobilephone">AND mobilephone=#{mobilephone}</if>
+			<if test="null!=userphoto and ''!=userphoto">AND userphoto=#{userphoto}</if>
+			<if test="null!=idphoto1 and ''!=idphoto1">AND idphoto1=#{idphoto1}</if>
+			<if test="null!=idphoto2 and ''!=idphoto2">AND idphoto2=#{idphoto2}</if>
+			<if test="null!=englishname and ''!=englishname">AND englishname=#{englishname}</if>
+			<if test="null!=raceid and ''!=raceid">AND raceid=#{raceid}</if>
+			<if test="null!=marriage and ''!=marriage">AND marriage=#{marriage}</if>
+			<if test="null!=zzmmid and ''!=zzmmid">AND zzmmid=#{zzmmid}</if>
+			<if test="null!=childrenid and ''!=childrenid">AND childrenid=#{childrenid}</if>
+			<if test="null!=byyxid and ''!=byyxid">AND byyxid=#{byyxid}</if>
+			<if test="null!=zgxlid and ''!=zgxlid">AND zgxlid=#{zgxlid}</if>
+			<if test="null!=sxzyid and ''!=sxzyid">AND sxzyid=#{sxzyid}</if>
+			<if test="null!=pyfsid and ''!=pyfsid">AND pyfsid=#{pyfsid}</if>
+			<if test="null!=firstlaid and ''!=firstlaid">AND firstlaid=#{firstlaid}</if>
+			<if test="null!=elselaid and ''!=elselaid">AND elselaid=#{elselaid}</if>
+			<if test="null!=posttitleid and ''!=posttitleid">AND posttitleid=#{posttitleid}</if>
+			<if test="null!=zyzstypeid and ''!=zyzstypeid">AND zyzstypeid=#{zyzstypeid}</if>
+			<if test="null!=zyzsnameid and ''!=zyzsnameid">AND zyzsnameid=#{zyzsnameid}</if>
+			<if test="null!=parentcompanyid and ''!=parentcompanyid">AND parentcompanyid=#{parentcompanyid}</if>
+			<if test="null!=firstworkingtime and ''!=firstworkingtime">AND firstworkingtime=#{firstworkingtime}</if>
+			<if test="null!=employeetypeid and ''!=employeetypeid">AND employeetypeid=#{employeetypeid}</if>
+			<if test="null!=entrydate and ''!=entrydate">AND entrydate=#{entrydate}</if>
+			<if test="null!=zhuanzhengdate and ''!=zhuanzhengdate">AND zhuanzhengdate=#{zhuanzhengdate}</if>
+			<if test="null!=salarystandardid and ''!=salarystandardid">AND salarystandardid=#{salarystandardid}</if>
+			<if test="null!=ssbid and ''!=ssbid">AND ssbid=#{ssbid}</if>
+			<if test="null!=ssbgscdid and ''!=ssbgscdid">AND ssbgscdid=#{ssbgscdid}</if>
+			<if test="null!=ssbgrcdid and ''!=ssbgrcdid">AND ssbgrcdid=#{ssbgrcdid}</if>
+			<if test="null!=gjjid and ''!=gjjid">AND gjjid=#{gjjid}</if>
+			<if test="null!=gjjgscdid and ''!=gjjgscdid">AND gjjgscdid=#{gjjgscdid}</if>
+			<if test="null!=gjjgrcdid and ''!=gjjgrcdid">AND gjjgrcdid=#{gjjgrcdid}</if>
+			<if test="null!=khhid and ''!=khhid">AND khhid=#{khhid}</if>
+			<if test="null!=salaryaccount and ''!=salaryaccount">AND salaryaccount=#{salaryaccount}</if>
+			<if test="null!=sbjndid and ''!=sbjndid">AND sbjndid=#{sbjndid}</if>
+			<if test="null!=sbcode and ''!=sbcode">AND sbcode=#{sbcode}</if>
+			<if test="null!=gjjcode and ''!=gjjcode">AND gjjcode=#{gjjcode}</if>
+			<if test="null!=privateemail and ''!=privateemail">AND privateemail=#{privateemail}</if>
+			<if test="null!=companyemail and ''!=companyemail">AND companyemail=#{companyemail}</if>
+			<if test="null!=emergencycontact and ''!=emergencycontact">AND emergencycontact=#{emergencycontact}</if>
+			<if test="null!=emergencyrpid and ''!=emergencyrpid">AND emergencyrpid=#{emergencyrpid}</if>
+			<if test="null!=emergencyphone and ''!=emergencyphone">AND emergencyphone=#{emergencyphone}</if>
+			<if test="null!=address and ''!=address">AND address=#{address}</if>
+			<if test="null!=remark and ''!=remark">AND remark=#{remark}</if>
+			<if test="null!=lastworkingdate and ''!=lastworkingdate">AND lastworkingdate=#{lastworkingdate}</if>
+			<if test="null!=dimissiontypeid and ''!=dimissiontypeid">AND dimissiontypeid=#{dimissiontypeid}</if>
+			<if test="null!=dimissiondirectionid and ''!=dimissiondirectionid">AND dimissiondirectionid=#{dimissiondirectionid}</if>
+			<if test="null!=dimissionreasonid and ''!=dimissionreasonid">AND dimissionreasonid=#{dimissionreasonid}</if>
+			<if test="null!=dimission_transaction_id and ''!=dimission_transaction_id">AND dimission_transaction_id=#{dimission_transaction_id}</if>
+			<if test="null!=dimission_transaction_date and ''!=dimission_transaction_date">AND dimission_transaction_date=#{dimission_transaction_date}</if>
+		</where>
+	</select>
+
+</mapper>

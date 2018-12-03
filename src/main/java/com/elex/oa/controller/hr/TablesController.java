@@ -27,6 +27,8 @@ public class TablesController {
     IPostinfoService iPostinfoService;
     @Autowired
     IPostlevelrelationshipinfoService iPostlevelrelationshipinfoService;
+    @Autowired
+    IPersonalinfoService iPersonalinfoService;
 
     @RequestMapping("/tb_hr_data_dictionary")
     @ResponseBody
@@ -73,8 +75,8 @@ public class TablesController {
     @RequestMapping("/tb_id_personal_info")
     @ResponseBody
     public String changetable_tb_id_personal_info(){
-
-        return true?"更新数据成功":"更新失败";
+        Boolean aBoolean = iPersonalinfoService.changeTable();
+        return aBoolean?"更新数据成功":"更新失败";
     }
 
 
