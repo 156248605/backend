@@ -1,5 +1,7 @@
 package com.elex.oa.entity.restructure_hrentity;
 
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -8,8 +10,10 @@ import java.io.Serializable;
  * @Date 2018\11\29 0029 16:50
  * @Version 1.0
  **/
+@Table(name = "tb_id_personal_info")
 public class Personalinfo implements Serializable {
     private static final long serialVersionUID = 7301487008224606934L;
+    @Id
     private String employeenumber;//员工号（主键）
     private String username;//账号
     private String truename;//姓名
