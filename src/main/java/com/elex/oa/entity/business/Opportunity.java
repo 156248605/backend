@@ -1,5 +1,6 @@
 package com.elex.oa.entity.business;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Table(name = "tb_business_opportunity")
 public class Opportunity implements Serializable {
     private static final long serialVersionUID = -6031794208850900550L;
+    @Id
     private String code;//商机编码（主键）
     private String clueid;//线索编码
     private String opportunityname;//产品名称
@@ -34,6 +36,7 @@ public class Opportunity implements Serializable {
     private List<TrackInfo> trackInfoList;//跟踪日志
     private String sale_truename;//销售人的姓名
     private String scheme_truename;//方案人的姓名
+    private List<BusinessAttachment> businessAttachmentList;//附件
 
     public Opportunity() {
     }
@@ -198,6 +201,14 @@ public class Opportunity implements Serializable {
         this.scheme_truename = scheme_truename;
     }
 
+    public List<BusinessAttachment> getBusinessAttachmentList() {
+        return businessAttachmentList;
+    }
+
+    public void setBusinessAttachmentList(List<BusinessAttachment> businessAttachmentList) {
+        this.businessAttachmentList = businessAttachmentList;
+    }
+
     @Override
     public String toString() {
         return "Opportunity{" +
@@ -221,6 +232,7 @@ public class Opportunity implements Serializable {
                 ", trackInfoList=" + trackInfoList +
                 ", sale_truename='" + sale_truename + '\'' +
                 ", scheme_truename='" + scheme_truename + '\'' +
+                ", businessAttachmentList=" + businessAttachmentList +
                 '}';
     }
 }
