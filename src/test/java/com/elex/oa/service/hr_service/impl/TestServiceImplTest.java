@@ -26,7 +26,7 @@ public class TestServiceImplTest {
 
     @org.junit.Test
     public void test(){
-        Test test = new Test();
+        /*Test test = new Test();
         //select接口
         test.setAge("1");
         List<Test> testList = iTestDao.select(test);//根据实体中的属性值进行查询，查询条件使用等号
@@ -64,6 +64,6 @@ public class TestServiceImplTest {
          example.createCriteria().andLike("age", "1");
          //自定义查询
          List<Test> vipList3 = iTestDao.selectByExample(example);
-        System.out.println(vipList3.toString());
+        System.out.println(vipList3.toString());*/
     }
 }    
