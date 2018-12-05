@@ -2,7 +2,9 @@ package com.elex.oa.entity.business;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ public class Opportunity implements Serializable {
     private String opportunityname;//产品名称
     private String trackid;//跟踪描述编码
     private String resource;//商机来源
-    private String discover;//创建时间
+    private String createtime;//创建时间
     private String custom;//客户
     private String contact;//联系人
     private String contactphone;//联系人电话
@@ -31,11 +33,17 @@ public class Opportunity implements Serializable {
     private String sale_employeenumber;//销售人员工号
     private String scheme_employeenumber;//方案人员工号
     private String state;//线索状态（开启、关闭、已转商机）
+    private String opportunity_price;//商机价值
 
+    @Transient
     private String trackcontent;//跟踪描述内容（最新的）
-    private List<TrackInfo> trackInfoList;//跟踪日志
+    @Transient
+    private List<TrackInfo> trackInfoList=new ArrayList<>();//跟踪日志
+    @Transient
     private String sale_truename;//销售人的姓名
+    @Transient
     private String scheme_truename;//方案人的姓名
+    @Transient
     private List<BusinessAttachment> businessAttachmentList;//附件
 
     public Opportunity() {
@@ -81,12 +89,12 @@ public class Opportunity implements Serializable {
         this.resource = resource;
     }
 
-    public String getDiscover() {
-        return discover;
+    public String getCreatetime() {
+        return createtime;
     }
 
-    public void setDiscover(String discover) {
-        this.discover = discover;
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
     }
 
     public String getCustom() {
@@ -209,6 +217,14 @@ public class Opportunity implements Serializable {
         this.businessAttachmentList = businessAttachmentList;
     }
 
+    public String getOpportunity_price() {
+        return opportunity_price;
+    }
+
+    public void setOpportunity_price(String opportunity_price) {
+        this.opportunity_price = opportunity_price;
+    }
+
     @Override
     public String toString() {
         return "Opportunity{" +
@@ -217,7 +233,7 @@ public class Opportunity implements Serializable {
                 ", opportunityname='" + opportunityname + '\'' +
                 ", trackid='" + trackid + '\'' +
                 ", resource='" + resource + '\'' +
-                ", discover='" + discover + '\'' +
+                ", createtime='" + createtime + '\'' +
                 ", custom='" + custom + '\'' +
                 ", contact='" + contact + '\'' +
                 ", contactphone='" + contactphone + '\'' +

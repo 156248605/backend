@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.business.IClueDao">
+
+	<resultMap id="ClueMapper" type="Clue">
+		<result column="code" property="code" />
+		<result column="cluename" property="cluename" />
+		<result column="trackid" property="trackid" />
+		<result column="resource" property="resource" />
+		<result column="createtime" property="createtime" />
+		<result column="custom" property="custom" />
+		<result column="contact" property="contact" />
+		<result column="contactphone" property="contactphone" />
+		<result column="owner" property="owner" />
+		<result column="sale_employeenumber" property="sale_employeenumber" />
+		<result column="scheme_employeenumber" property="scheme_employeenumber" />
+		<result column="state" property="state" />
+		<result column="clue_price" property="clue_price" />
+	</resultMap>
+
+	<select id="selectByCondition" parameterType="Clue" resultMap="ClueMapper">
+		select code,cluename,trackid,resource,createtime,custom,contact,contactphone,owner,sale_employeenumber,scheme_employeenumber,state,clue_price
+		from tb_business_clue
+		<where>
+			<if	test="null!=code and ''!=code">AND code=#{code}</if>
+			<if	test="null!=cluename and ''!=cluename">AND cluename=#{cluename}</if>
+			<if	test="null!=trackid and ''!=trackid">AND trackid=#{trackid}</if>
+			<if	test="null!=resource and ''!=resource">AND resource=#{resource}</if>
+			<if	test="null!=createtime and ''!=createtime">AND createtime=#{createtime}</if>
+			<if	test="null!=custom and ''!=custom">AND custom=#{custom}</if>
+			<if	test="null!=contact and ''!=contact">AND contact=#{contact}</if>
+			<if	test="null!=contactphone and ''!=contactphone">AND contactphone=#{contactphone}</if>
+			<if	test="null!=owner and ''!=owner">AND owner=#{owner}</if>
+			<if	test="null!=sale_employeenumber and ''!=sale_employeenumber">AND sale_employeenumber=#{sale_employeenumber}</if>
+			<if	test="null!=scheme_employeenumber and ''!=scheme_employeenumber">AND scheme_employeenumber=#{scheme_employeenumber}</if>
+			<if	test="null!=state and ''!=state">AND state=#{state}</if>
+			<if	test="null!=clue_price and ''!=clue_price">AND clue_price=#{clue_price}</if>
+		</where>
+	</select>
+</mapper>
