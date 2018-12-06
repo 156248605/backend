@@ -1,13 +1,18 @@
-package com.elex.oa.service.restructure_hrService.impl;
+package com.elex.oa.util.hr_util;
 
+import com.elex.oa.dao.business.ITrackInfoDao;
 import com.elex.oa.dao.hr.IDeptDao;
 import com.elex.oa.dao.hr.IHRsetDao;
+import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
+import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.HRset;
+import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,6 +34,10 @@ public class HrUtilsTemp {
     IDeptDao iDeptDao;
     @Resource
     IUserDao iUserDao;
+    @Resource
+    IPersonalInformationDao iPersonalInformationDao;
+    @Resource
+    ITrackInfoDao iTrackInfoDao;
 
     public String getDatacodeByHrsetid(Integer hrsetid) {
         if(null==hrsetid)return null;
@@ -65,5 +74,23 @@ public class HrUtilsTemp {
         User user = iUserDao.selectById(userid);
         if(null==user)return null;
         return user.getEmployeenumber();
+    }
+
+    public String getTruenameByEmployeenumber(String employeenumber){
+        if(StringUtils.isEmpty(employeenumber))return null;
+        PersonalInformation personalInformation = iPersonalInformationDao.selectByEmployeenumber(employeenumber);
+        if(null==personalInformation)return null;
+        Integer userid = personalInformation.getUserid();
+        if(null==userid)return null;
+        User user = iUserDao.selectById(userid);
+        if(null==user)return null;
+        return user.getTruename();
+    }
+
+    public String getTrackcontentByTrackid(String trackid){
+        if(StringUtils.isEmpty(trackid))return null;
+        TrackInfo trackInfo = iTrackInfoDao.selectByPrimaryKey(trackid);
+        if(null==trackInfo)return null;
+        return trackInfo.getTrack_content();
     }
 }    

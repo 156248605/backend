@@ -5,11 +5,10 @@ import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPostinfoDao;
-import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.entity.hr_entity.Post;
-import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.service.restructure_hrService.IPostinfoService;
+import com.elex.oa.util.hr_util.HrUtilsTemp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

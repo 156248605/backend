@@ -4,13 +4,13 @@ import com.alibaba.druid.util.StringUtils;
 import com.elex.oa.dao.hr.IDeptDao;
 import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPersonalInformationDao;
-import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.restructure_hr.IDepinfoDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.service.restructure_hrService.IDepinfoService;
+import com.elex.oa.util.hr_util.HrUtilsTemp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
