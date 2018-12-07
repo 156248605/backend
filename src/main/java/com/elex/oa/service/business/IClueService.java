@@ -5,4 +5,6 @@ import com.github.pagehelper.PageInfo;
 
 public interface IClueService {
     PageInfo<Clue> getPageInfoByCondition(Integer pageNum,Integer pageSize,Clue clue);
+
+    Boolean addClueInfo(Clue clue);
 }

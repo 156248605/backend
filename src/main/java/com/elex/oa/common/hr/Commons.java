@@ -17,4 +17,7 @@ public interface Commons {
     String HRSET_DIMISSION_REASON = "dimissionreason";
     String POST_STATE_ON = "1";//岗位开启状态
     String POST_STATE_OFF = "0";//岗位关闭状态
+    String CLUE_ON = "线索开启状态";
+    String CLUE_OFF = "线索关闭状态";
+    String CLUE_TRANSFOR_OPPORTUNITY = "线索已转商机状态";
 }
