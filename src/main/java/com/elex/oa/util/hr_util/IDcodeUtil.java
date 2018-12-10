@@ -112,7 +112,7 @@ public class IDcodeUtil {
      *@Date: 20:01 2018\5\12 0012
      */
     public static String getSex(String idcard) {
-        if(StringUtils.isEmpty(idcard) || "null".equals(idcard))return null;
+        if(StringUtils.isEmpty(idcard.trim()) || "null".equals(idcard))return null;
         try {
             return (Integer.parseInt(idcard.substring(16,17)) % 2)==0?"女":"男";
         } catch (NumberFormatException e) {

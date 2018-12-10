@@ -7,4 +7,10 @@ public interface IClueService {
     PageInfo<Clue> getPageInfoByCondition(Integer pageNum,Integer pageSize,Clue clue);
 
     Boolean addClueInfo(Clue clue);
+
+    Clue getDetailClueinfo(String cluecode);
+
+    Boolean modifyClueInfo(Clue clue);
+
+    Boolean closeClueInfo(String cluecode);
 }

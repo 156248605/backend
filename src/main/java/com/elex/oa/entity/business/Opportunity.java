@@ -29,7 +29,7 @@ public class Opportunity implements Serializable {
     private String owner;//业主方
     private String custom_decisionmaker;//客户决策人
     private String custom_budget;//客户预算
-    private String business_budget;//商机预算
+    private String opportunity_budget;//商机预算
     private String sale_employeenumber;//销售人员工号
     private String scheme_employeenumber;//方案人员工号
     private String state;//线索状态（开启、关闭、已转商机）
@@ -145,12 +145,12 @@ public class Opportunity implements Serializable {
         this.custom_budget = custom_budget;
     }
 
-    public String getBusiness_budget() {
-        return business_budget;
+    public String getOpportunity_budget() {
+        return opportunity_budget;
     }
 
-    public void setBusiness_budget(String business_budget) {
-        this.business_budget = business_budget;
+    public void setOpportunity_budget(String opportunity_budget) {
+        this.opportunity_budget = opportunity_budget;
     }
 
     public String getSale_employeenumber() {
@@ -227,28 +227,29 @@ public class Opportunity implements Serializable {
 
     @Override
     public String toString() {
-        return "Opportunity{" +
-                "code='" + code + '\'' +
-                ", clueid='" + clueid + '\'' +
-                ", opportunityname='" + opportunityname + '\'' +
-                ", trackid='" + trackid + '\'' +
-                ", resource='" + resource + '\'' +
-                ", createtime='" + createtime + '\'' +
-                ", custom='" + custom + '\'' +
-                ", contact='" + contact + '\'' +
-                ", contactphone='" + contactphone + '\'' +
-                ", owner='" + owner + '\'' +
-                ", custom_decisionmaker='" + custom_decisionmaker + '\'' +
-                ", custom_budget='" + custom_budget + '\'' +
-                ", business_budget='" + business_budget + '\'' +
-                ", sale_employeenumber='" + sale_employeenumber + '\'' +
-                ", scheme_employeenumber='" + scheme_employeenumber + '\'' +
-                ", state='" + state + '\'' +
-                ", trackcontent='" + trackcontent + '\'' +
-                ", trackInfoList=" + trackInfoList +
-                ", sale_truename='" + sale_truename + '\'' +
-                ", scheme_truename='" + scheme_truename + '\'' +
-                ", businessAttachmentList=" + businessAttachmentList +
+        return "Opportunity{\n" +
+                "code='" + code + '\'' +'\n'+
+                ", clueid='" + clueid + '\'' +'\n'+
+                ", opportunityname='" + opportunityname + '\'' +'\n'+
+                ", trackid='" + trackid + '\'' +'\n'+
+                ", resource='" + resource + '\'' +'\n'+
+                ", createtime='" + createtime + '\'' +'\n'+
+                ", custom='" + custom + '\'' +'\n'+
+                ", contact='" + contact + '\'' +'\n'+
+                ", contactphone='" + contactphone + '\'' +'\n'+
+                ", owner='" + owner + '\'' +'\n'+
+                ", custom_decisionmaker='" + custom_decisionmaker + '\'' +'\n'+
+                ", custom_budget='" + custom_budget + '\'' +'\n'+
+                ", opportunity_budget='" + opportunity_budget + '\'' +'\n'+
+                ", sale_employeenumber='" + sale_employeenumber + '\'' +'\n'+
+                ", scheme_employeenumber='" + scheme_employeenumber + '\'' +'\n'+
+                ", state='" + state + '\'' +'\n'+
+                ", opportunity_price='" + opportunity_price + '\'' +'\n'+
+                ", trackcontent='" + trackcontent + '\'' +'\n'+
+                ", trackInfoList=" + trackInfoList +'\n'+
+                ", sale_truename='" + sale_truename + '\'' +'\n'+
+                ", scheme_truename='" + scheme_truename + '\'' +'\n'+
+                ", businessAttachmentList=" + businessAttachmentList +'\n'+
                 '}';
     }
 }
