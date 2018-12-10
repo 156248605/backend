@@ -16,6 +16,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,5 +94,12 @@ public class HrUtilsTemp {
         TrackInfo trackInfo = iTrackInfoDao.selectByPrimaryKey(trackid);
         if(null==trackInfo)return null;
         return trackInfo.getTrack_content();
+    }
+
+    public String getDateStringByTimeMillis(Long l){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date(l);
+        String dateString = sdf.format(date);
+        return dateString;
     }
 }    

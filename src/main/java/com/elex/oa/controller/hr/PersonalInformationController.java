@@ -2017,6 +2017,9 @@ public class PersonalInformationController {
     public Map<String, String> importOnePersonalInformation_ADD(PersonalInformation personalInformation, Map<String, String> goToPost) {
         //如果user表中已经有了，就更新,没有就添加
         String truename = personalInformation.getTruename();
+        if(StringUtils.isEmpty(truename)){
+            goToPost.put(personalInformation.getEmployeenumber(),"姓名不存在，此员工无法插入！");
+        }
         User removedUser = iUserService.queryByTruename(truename);
         //1.先更新/添加User表的信息(tb_id_user)===========================================================
         if (removedUser != null) {
