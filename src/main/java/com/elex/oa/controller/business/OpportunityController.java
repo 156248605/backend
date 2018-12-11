@@ -5,6 +5,7 @@ import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.service.business.IOpportunityService;
 import com.elex.oa.util.resp.RespUtil;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,7 +42,6 @@ public class OpportunityController {
             HttpServletRequest request,
             @RequestParam("attachmentSize")int i
     ){
-        System.out.println(opportunity.toString());
         //获得附件地址
         List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
         opportunity.setBusinessAttachmentList(businessAttachmentList);
@@ -51,6 +51,48 @@ public class OpportunityController {
         //调用业务层方法
         Boolean aBoolean = iOpportunityService.transforClueToOpportunity(opportunity);
         return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
+    }
+
+    @RequestMapping("/getPageInfo")
+    @ResponseBody
+    public PageInfo<Opportunity> getPageInfo(
+            @RequestParam("page") int page,
+            @RequestParam("rows") int rows,
+            Opportunity opportunity
+    ){
+        return iOpportunityService.getPageInfoByCondition(page,rows,opportunity);
+    }
+
+    @RequestMapping("/getDetailOpportunityinfo")
+    @ResponseBody
+    public Opportunity getDetailOpportunityinfo(
+            @RequestParam("opportunitycode")String opportunitycode
+    ){
+        Opportunity detailOpportunityinfo = iOpportunityService.getDetailOpportunityinfo(opportunitycode);
+        return detailOpportunityinfo;
+    }
+
+    @RequestMapping(value = "/opportunity_UPDATE",consumes = "multipart/form-data")
+    @ResponseBody
+    public Object opportunity_UPDATE(
+            Opportunity opportunity,
+            HttpServletRequest request,
+            @RequestParam("attachmentSize")int i
+    ){
+        //获得附件地址
+        List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
+        opportunity.setBusinessAttachmentList(businessAttachmentList);
+        Boolean aBoolean = iOpportunityService.modifyOpportunityInfo(opportunity);
+        return aBoolean?RespUtil.successResp("200","更新成功！",opportunity.getCode()):RespUtil.successResp("500","更新失败！",null);
+    }
+
+    @RequestMapping("/closeOpportunityinfo")
+    @ResponseBody
+    public Object closeOpportunityinfo(
+            @RequestParam("opportunitycode")String opportunitycode
+    ){
+        Boolean aBoolean = iOpportunityService.closeOpportunityInfo(opportunitycode);
+        return aBoolean?RespUtil.successResp("200","关闭成功！",null):RespUtil.successResp("500","关闭失败！",null);
     }
 
     private List<BusinessAttachment> getBusinessAttachmentList(MultipartHttpServletRequest request, int i) {

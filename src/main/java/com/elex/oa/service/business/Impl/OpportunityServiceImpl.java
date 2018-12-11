@@ -11,11 +11,14 @@ import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.service.business.IOpportunityService;
 import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Description: DOTO
@@ -46,6 +49,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         //添加商机信息
         opportunity.setTrackid(trackInfo_opportunity.getCode());
         opportunity.setState(Commons.OPPORTUNITY_ON);
+        opportunity.setCreatetime(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
         iOpportunityDao.insertSelective(opportunity);
         //添加附件信息
         Boolean aBoolean = getaBooleanByAddAttachment(opportunity);
@@ -53,6 +57,98 @@ public class OpportunityServiceImpl implements IOpportunityService {
         //设置显示状态为“已转商机状态”
         aBoolean = getaBooleanBySetClueState(opportunity.getClueid());
         return aBoolean;
+    }
+
+    @Override
+    public PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Opportunity> opportunityList = iOpportunityDao.select(opportunity);
+        for (Opportunity o:opportunityList
+        ) {
+            o = getOpportunityByOpportunity(o);
+        }
+        return new PageInfo<Opportunity>(opportunityList);
+    }
+
+    @Override
+    public Opportunity getDetailOpportunityinfo(String opportunitycode) {
+        if(StringUtils.isEmpty(opportunitycode))return null;
+        Opportunity opportunity = iOpportunityDao.selectByPrimaryKey(opportunitycode);
+        if(null==opportunity)return null;
+        //获得销售人和方案人
+        opportunity = getOpportunityByOpportunity(opportunity);
+        //获得跟踪日志
+        List<TrackInfo> trackInfoList = iTrackInfoDao.select(new TrackInfo(opportunitycode));
+        opportunity.setTrackInfoList(trackInfoList);
+        return opportunity;
+    }
+
+    @Override
+    public Boolean modifyOpportunityInfo(Opportunity opportunity) {
+        Boolean aBoolean = true;
+        //步骤：1.跟踪-->2.线索-->3.附件
+        //添加跟踪信息
+        aBoolean = getaBooleanByUpdateTrackInfo(opportunity,aBoolean);
+        return aBoolean;
+    }
+
+    @Override
+    public Boolean closeOpportunityInfo(String opportunitycode) {
+        if(StringUtils.isEmpty(opportunitycode))return false;
+        Opportunity opportunity = iOpportunityDao.selectByPrimaryKey(opportunitycode);
+        if(null==opportunity)return false;
+        Boolean aBoolean = true;
+        try {
+            opportunity.setState(Commons.OPPORTUNITY_OFF);
+            //添加关闭跟踪
+            opportunity.setTrackcontent("最后阶段：商机没有价值，已关闭！");
+            TrackInfo trackInfo = getTrackInfoByObject(opportunity);
+            iTrackInfoDao.insert(trackInfo);
+            //更新线索状态
+            opportunity.setTrackid(trackInfo.getCode());
+            iOpportunityDao.updateByPrimaryKeySelective(opportunity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            aBoolean = false;
+        }
+        return aBoolean;
+    }
+
+    private Boolean getaBooleanByUpdateTrackInfo(Opportunity opportunity, Boolean aBoolean) {
+        if(null==opportunity)return false;
+        TrackInfo trackInfo = getTrackInfoByObject(opportunity);
+        iTrackInfoDao.insert(trackInfo);
+        //更新线索信息
+        aBoolean = getaBooleanByUpdateOpportunity(opportunity,trackInfo.getCode(),aBoolean);
+        return aBoolean;
+    }
+
+    private Boolean getaBooleanByUpdateOpportunity(Opportunity opportunity, String newTrackid, Boolean aBoolean) {
+        if(aBoolean==false)return false;
+        //String oldTrackid = opportunity.getTrackid();//将跟踪编码旧值截留保存
+        try {
+            opportunity.setTrackid(newTrackid);
+            iOpportunityDao.updateByPrimaryKeySelective(opportunity);//根据主键更新属性不为null的值
+        } catch (Exception e) {
+            e.printStackTrace();
+            //添加线索失败需要回滚
+            //iTrackInfoDao.deleteByPrimaryKey(newTrackid);
+            return false;
+        }
+        //添加附件信息
+        aBoolean = getaBooleanByAddAttachment(opportunity);
+        return aBoolean;
+    }
+
+    private Opportunity getOpportunityByOpportunity(Opportunity opportunity) {
+        if(null==opportunity)return null;
+        //获得最新的跟踪描述
+        opportunity.setTrackcontent(hrUtilsTemp.getTrackcontentByTrackid(opportunity.getTrackid()));
+        //获得销售人姓名
+        opportunity.setSale_truename(hrUtilsTemp.getTruenameByEmployeenumber(opportunity.getSale_employeenumber()));
+        //获得方案人姓名
+        opportunity.setScheme_truename(hrUtilsTemp.getTruenameByEmployeenumber(opportunity.getScheme_employeenumber()));
+        return opportunity;
     }
 
     private Boolean getaBooleanBySetClueState(String clueid) {
