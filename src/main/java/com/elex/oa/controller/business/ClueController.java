@@ -65,14 +65,36 @@ public class ClueController {
         return aBoolean?RespUtil.successResp("200","添加成功！",clueCode):RespUtil.successResp("500","添加失败！",null);
     }
 
-    @RequestMapping("/clue_attachment_ADD")
+    @RequestMapping("/getDetailClueinfo")
     @ResponseBody
-    public String clue_attachment_ADD(
-            HttpServletRequest request
+    public Clue getDetailClueinfo(
+            @RequestParam("cluecode")String cluecode
     ){
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        List<MultipartFile> files = multipartRequest.getFiles("");
-        return true?"添加成功！":"添加失败！";
+        Clue detailClueinfo = iClueService.getDetailClueinfo(cluecode);
+        return detailClueinfo;
+    }
+
+    @RequestMapping(value = "/clue_UPDATE",consumes = "multipart/form-data")
+    @ResponseBody
+    public Object clue_UPDATE(
+            Clue clue,
+            HttpServletRequest request,
+            @RequestParam("attachmentSize")int i
+    ){
+        //获得附件地址
+        List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
+        clue.setBusinessAttachmentList(businessAttachmentList);
+        Boolean aBoolean = iClueService.modifyClueInfo(clue);
+        return aBoolean?RespUtil.successResp("200","更新成功！",clue.getCode()):RespUtil.successResp("500","更新失败！",null);
+    }
+
+    @RequestMapping("/closeClueinfo")
+    @ResponseBody
+    public Object closeClueinfo(
+            @RequestParam("cluecode")String cluecode
+    ){
+        Boolean aBoolean = iClueService.closeClueInfo(cluecode);
+        return aBoolean?RespUtil.successResp("200","关闭成功！",null):RespUtil.successResp("500","关闭失败！",null);
     }
 
     private List<BusinessAttachment> getBusinessAttachmentList(MultipartHttpServletRequest request, int i) {

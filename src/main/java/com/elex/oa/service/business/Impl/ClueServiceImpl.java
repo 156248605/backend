@@ -11,7 +11,9 @@ import com.elex.oa.service.business.IClueService;
 import com.elex.oa.util.hr_util.HrUtilsTemp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
  * @Version 1.0
  **/
 @Service
+@Transactional
 public class ClueServiceImpl implements IClueService {
     @Resource
     IClueDao iClueDao;
@@ -53,6 +56,75 @@ public class ClueServiceImpl implements IClueService {
         return aBoolean;
     }
 
+    @Override
+    public Clue getDetailClueinfo(String cluecode) {
+        if(StringUtils.isEmpty(cluecode))return null;
+        Clue clue = iClueDao.selectByPrimaryKey(cluecode);
+        if(null==clue)return null;
+        //获得销售人和方案人
+        clue = getClueByClue(clue);
+        //获得跟踪日志
+        List<TrackInfo> trackInfoList = iTrackInfoDao.select(new TrackInfo(cluecode));
+        clue.setTrackInfoList(trackInfoList);
+        return clue;
+    }
+
+    @Override
+    public Boolean modifyClueInfo(Clue clue) {
+        Boolean aBoolean = true;
+        //步骤：1.跟踪-->2.线索-->3.附件
+        //添加跟踪信息
+        aBoolean = getaBooleanByUpdateTrackInfo(clue,aBoolean);
+        return aBoolean;
+    }
+
+    @Override
+    public Boolean closeClueInfo(String cluecode) {
+        if(StringUtils.isEmpty(cluecode))return false;
+        Clue clue = iClueDao.selectByPrimaryKey(cluecode);
+        if(null==clue)return false;
+        Boolean aBoolean = true;
+        try {
+            clue.setState(Commons.CLUE_OFF);
+            //添加关闭跟踪
+            clue.setTrackcontent("最后阶段：线索没有价值，已关闭！");
+            TrackInfo trackInfo = getTrackInfoByClue(clue);
+            iTrackInfoDao.insert(trackInfo);
+            //更新线索状态
+            clue.setTrackid(trackInfo.getCode());
+            iClueDao.updateByPrimaryKeySelective(clue);
+        } catch (Exception e) {
+            e.printStackTrace();
+            aBoolean = false;
+        }
+        return aBoolean;
+    }
+
+    private Boolean getaBooleanByUpdateTrackInfo(Clue clue, Boolean aBoolean) {
+        TrackInfo trackInfo = getTrackInfoByClue(clue);
+        iTrackInfoDao.insert(trackInfo);
+        //更新线索信息
+        aBoolean = getaBooleanByUpdateClue(clue,trackInfo.getCode(),aBoolean);
+        return aBoolean;
+    }
+
+    private Boolean getaBooleanByUpdateClue(Clue clue, String newTrackid, Boolean aBoolean) {
+        if(aBoolean==false)return false;
+        String oldTrackid = clue.getTrackid();//将跟踪编码旧值截留保存
+        try {
+            clue.setTrackid(newTrackid);
+            iClueDao.updateByPrimaryKeySelective(clue);//根据主键更新属性不为null的值
+        } catch (Exception e) {
+            e.printStackTrace();
+            //添加线索失败需要回滚
+            //iTrackInfoDao.deleteByPrimaryKey(newTrackid);
+            return false;
+        }
+        //添加附件信息
+        aBoolean = getaBooleanByAddAttachment(clue, aBoolean,true,oldTrackid);
+        return aBoolean;
+    }
+
     private Boolean getaBooleanByAddTrackInfo(Clue clue,Boolean aBoolean) {
         TrackInfo trackInfo = getTrackInfoByClue(clue);
         iTrackInfoDao.insert(trackInfo);
@@ -70,15 +142,15 @@ public class ClueServiceImpl implements IClueService {
         } catch (Exception e) {
             e.printStackTrace();
             //添加线索失败需要回滚
-            iTrackInfoDao.deleteByPrimaryKey(trackCode);
+            //iTrackInfoDao.deleteByPrimaryKey(trackCode);
             return false;
         }
         //添加附件信息
-        aBoolean = getaBooleanByAddAttachment(clue, aBoolean);
+        aBoolean = getaBooleanByAddAttachment(clue, aBoolean,false,null);
         return aBoolean;
     }
 
-    private Boolean getaBooleanByAddAttachment(Clue clue, Boolean aBoolean) {
+    private Boolean getaBooleanByAddAttachment(Clue clue, Boolean aBoolean,Boolean isAdd,String oldTrackid) {
         if(null==clue.getBusinessAttachmentList())return aBoolean;
         try {
             for (BusinessAttachment b:clue.getBusinessAttachmentList()
@@ -91,8 +163,13 @@ public class ClueServiceImpl implements IClueService {
         } catch (Exception e) {
             e.printStackTrace();
             //添加附件失败需要回滚
-            iClueDao.deleteByPrimaryKey(clue.getCode());
-            iTrackInfoDao.deleteByPrimaryKey(clue.getTrackid());
+            /*if (isAdd) {
+                iClueDao.deleteByPrimaryKey(clue.getCode());//添加回滚
+            } else {
+                clue.setTrackid(oldTrackid);
+                iClueDao.updateByPrimaryKeySelective(clue);//更新回滚
+            }
+            iTrackInfoDao.deleteByPrimaryKey(clue.getTrackid());*/
             return false;
         }
         return aBoolean;
@@ -101,11 +178,12 @@ public class ClueServiceImpl implements IClueService {
     private TrackInfo getTrackInfoByClue(Clue clue) {
         //在tb_business_track表中添加跟踪信息
         TrackInfo trackInfo = new TrackInfo();
-        trackInfo.setCode("track_"+System.currentTimeMillis());
+        long l = System.currentTimeMillis();
+        trackInfo.setCode("track_"+l);
         trackInfo.setDependence_code(clue.getCode());
         trackInfo.setTrack_content(clue.getTrackcontent());
         //获得时间
-        trackInfo.setTrack_date(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        trackInfo.setTrack_date(hrUtilsTemp.getDateStringByTimeMillis(l));
         return trackInfo;
     }
 

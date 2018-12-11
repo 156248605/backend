@@ -22,6 +22,10 @@ public class TrackInfo implements Serializable {
     public TrackInfo() {
     }
 
+    public TrackInfo(String dependence_code) {
+        this.dependence_code = dependence_code;
+    }
+
     public String getCode() {
         return code;
     }

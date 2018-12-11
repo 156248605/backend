@@ -20,4 +20,7 @@ public interface Commons {
     String CLUE_ON = "线索开启状态";
     String CLUE_OFF = "线索关闭状态";
     String CLUE_TRANSFOR_OPPORTUNITY = "线索已转商机状态";
+    String OPPORTUNITY_ON = "商机开启状态";
+    String OPPORTUNITY_OFF = "商机关闭状态";
+    String OPPORTUNITY_TRANSFOR_PROJECT = "商机已转项目状态";
 }
