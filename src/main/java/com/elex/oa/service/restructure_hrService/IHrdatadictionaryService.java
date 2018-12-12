@@ -1,6 +1,10 @@
 package com.elex.oa.service.restructure_hrService;
 
-public interface IHrdatadictionaryService {
+import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
+import com.github.pagehelper.PageInfo;
 
+public interface IHrdatadictionaryService {
     Boolean changeTable();
+
+    PageInfo<Hrdatadictionary> getPageInfo(Integer pageNum,Integer pageSize,Hrdatadictionary hrdatadictionary);
 }

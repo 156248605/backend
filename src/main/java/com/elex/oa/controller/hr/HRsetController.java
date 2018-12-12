@@ -2,7 +2,9 @@ package com.elex.oa.controller.hr;
 
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.HRset;
+import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.hr_service.IHRsetService;
+import com.elex.oa.service.restructure_hrService.IHrdatadictionaryService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import java.util.Map;
 public class HRsetController {
     @Autowired
     IHRsetService ihRsetService;
+    @Autowired
+    IHrdatadictionaryService iHrdatadictionaryService;
 
     /**
      *@Author:ShiYun;
@@ -69,21 +73,17 @@ public class HRsetController {
 
     /**
      *@Author:ShiYun;
-     *@Description:HRset信息的查询（分页）
+     *@Description:HRset信息的查询（分页）=>新接口
      *@Date: 11:32 2018\5\19 0019
      */
     @RequestMapping("/queryHRsetPageInfo")
     @ResponseBody
-    public PageInfo<HRset> queryHRPageInfo(
+    public PageInfo<Hrdatadictionary> queryHRPageInfo(
             @RequestParam("datatype") String datatype,
             @RequestParam("page") Integer page,
             @RequestParam("rows") Integer rows
     ){
-        HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("pageNum",page);
-        paramMap.put("pageSize",rows);
-        paramMap.put("entity",new HRset(datatype));
-        return ihRsetService.queryByParam(paramMap);
+        return iHrdatadictionaryService.getPageInfo(page, rows, new Hrdatadictionary(datatype, null));
     }
 
     /**
