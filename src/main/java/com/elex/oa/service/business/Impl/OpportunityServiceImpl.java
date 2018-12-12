@@ -1,5 +1,6 @@
 package com.elex.oa.service.business.Impl;
 
+import afu.org.checkerframework.checker.oigj.qual.O;
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.business.IBusinessAttachmentDao;
 import com.elex.oa.dao.business.IClueDao;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: DOTO
@@ -52,7 +55,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         opportunity.setCreatetime(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
         iOpportunityDao.insertSelective(opportunity);
         //添加附件信息
-        Boolean aBoolean = getaBooleanByAddAttachment(opportunity);
+        Boolean aBoolean = getaBooleanByAddAttachment(opportunity,true);
         if(aBoolean==false)return false;
         //设置显示状态为“已转商机状态”
         aBoolean = getaBooleanBySetClueState(opportunity.getClueid());
@@ -114,6 +117,16 @@ public class OpportunityServiceImpl implements IOpportunityService {
         return aBoolean;
     }
 
+    @Override
+    public Map<String, Object> getBusinessInfoByState_OFF() {
+        Map<String, Object> respMap = new HashMap<>();
+        List<Clue> clueList = iClueDao.select(new Clue(Commons.CLUE_OFF));
+        respMap.put("clueList",clueList);
+        List<Opportunity> opportunityList = iOpportunityDao.select(new Opportunity(Commons.OPPORTUNITY_OFF));
+        respMap.put("opportunityList",opportunityList);
+        return respMap;
+    }
+
     private Boolean getaBooleanByUpdateTrackInfo(Opportunity opportunity, Boolean aBoolean) {
         if(null==opportunity)return false;
         TrackInfo trackInfo = getTrackInfoByObject(opportunity);
@@ -136,7 +149,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
             return false;
         }
         //添加附件信息
-        aBoolean = getaBooleanByAddAttachment(opportunity);
+        aBoolean = getaBooleanByAddAttachment(opportunity,aBoolean);
         return aBoolean;
     }
 
@@ -186,8 +199,8 @@ public class OpportunityServiceImpl implements IOpportunityService {
         return trackInfo;
     }
 
-    private Boolean getaBooleanByAddAttachment(Opportunity opportunity) {
-        if(null==opportunity.getBusinessAttachmentList())return false;
+    private Boolean getaBooleanByAddAttachment(Opportunity opportunity,Boolean aBoolean) {
+        if(null==opportunity.getBusinessAttachmentList())return aBoolean;
         try {
             for (BusinessAttachment b:opportunity.getBusinessAttachmentList()
             ) {
@@ -200,6 +213,6 @@ public class OpportunityServiceImpl implements IOpportunityService {
             e.printStackTrace();
             return false;
         }
-        return true;
+        return aBoolean;
     }
 }

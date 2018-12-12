@@ -49,6 +49,10 @@ public class Opportunity implements Serializable {
     public Opportunity() {
     }
 
+    public Opportunity(String state) {
+        this.state = state;
+    }
+
     public String getCode() {
         return code;
     }

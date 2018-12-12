@@ -52,17 +52,20 @@ public class ClueController {
     public Object clue_ADD(
             Clue clue,
             HttpServletRequest request,
-            @RequestParam("attachmentSize")int i
+            @RequestParam(name = "attachmentSize", required = false)Integer i
     ){
+        System.out.println(clue);
         //获得附件地址
-        List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
-        clue.setBusinessAttachmentList(businessAttachmentList);
+        if (null!=i) {
+            List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
+            clue.setBusinessAttachmentList(businessAttachmentList);
+        }
         //自动生成线索编码（主键）
         String clueCode = "clue_"+System.currentTimeMillis();
         clue.setCode(clueCode);
         //调用业务层方法
         Boolean aBoolean = iClueService.addClueInfo(clue);
-        return aBoolean?RespUtil.successResp("200","添加成功！",clueCode):RespUtil.successResp("500","添加失败！",null);
+        return true?RespUtil.successResp("200","添加成功！",clueCode):RespUtil.successResp("500","添加失败！",null);
     }
 
     @RequestMapping("/getDetailClueinfo")
@@ -79,11 +82,13 @@ public class ClueController {
     public Object clue_UPDATE(
             Clue clue,
             HttpServletRequest request,
-            @RequestParam("attachmentSize")int i
+            @RequestParam(name = "attachmentSize", required = false)Integer i
     ){
         //获得附件地址
-        List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
-        clue.setBusinessAttachmentList(businessAttachmentList);
+        if (null!=i) {
+            List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
+            clue.setBusinessAttachmentList(businessAttachmentList);
+        }
         Boolean aBoolean = iClueService.modifyClueInfo(clue);
         return aBoolean?RespUtil.successResp("200","更新成功！",clue.getCode()):RespUtil.successResp("500","更新失败！",null);
     }
