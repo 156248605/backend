@@ -83,4 +83,8 @@
 		GROUP BY rs.perid
 	</select>
 
+	<select id="selectAll" resultMap="PerandpostrsMapper">
+		select perid,postid
+		from tb_hr_per_and_post_rs
+	</select>
 </mapper>
