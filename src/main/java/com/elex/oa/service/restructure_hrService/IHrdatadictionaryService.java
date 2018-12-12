@@ -7,4 +7,6 @@ public interface IHrdatadictionaryService {
     Boolean changeTable();
 
     PageInfo<Hrdatadictionary> getPageInfo(Integer pageNum,Integer pageSize,Hrdatadictionary hrdatadictionary);
+
+    Boolean add(Hrdatadictionary hrdatadictionary);
 }

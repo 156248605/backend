@@ -49,7 +49,16 @@ public class HrdatadictionaryServiceImpl implements IHrdatadictionaryService {
         return new PageInfo<>(hrdatadictionaryList);
     }
 
+    @Override
+    public Boolean add(Hrdatadictionary hrdatadictionary) {
+        String resp = addHrdatadictionary(hrdatadictionary);
+        if(null==resp)return false;
+        return true;
+    }
+
     private String addHrdatadictionary(Hrdatadictionary hrDataDictionary){
+        if(null==hrDataDictionary)return null;
+        if(StringUtils.isEmpty(hrDataDictionary.getDatacode()))hrDataDictionary.setDatacode(hrDataDictionary.getDatatype()+"_"+System.currentTimeMillis());
         Integer val = validateHrdatadictionary(hrDataDictionary);
         if (val==0) {
             iHrdatadictionaryDao.insert(getDatacodeByEntity(hrDataDictionary));

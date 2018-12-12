@@ -32,16 +32,16 @@ public class HRsetController {
 
     /**
      *@Author:ShiYun;
-     *@Description:HRset信息的添加
+     *@Description:HRset信息的添加=>新接口
      *@Date: 18:43 2018\5\11 0011
      */
     @RequestMapping("/addOneHRset")
     @ResponseBody
     public String addOneHRset(
-          HRset hRset
+          Hrdatadictionary hrdatadictionary
     ){
-        Integer id = (Integer) ihRsetService.addOne(hRset);
-        return id!=null?"添加成功！":"添加失败！";
+        Boolean aBoolean = iHrdatadictionaryService.add(hrdatadictionary);
+        return aBoolean?"添加成功！":"添加失败！";
     }
 
     /**
