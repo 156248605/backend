@@ -19,6 +19,10 @@ public class Postlevelrelationshipinfo implements Serializable {
     public Postlevelrelationshipinfo() {
     }
 
+    public Postlevelrelationshipinfo(String postfamilyid) {
+        this.postfamilyid = postfamilyid;
+    }
+
     public String getPostfamilyid() {
         return postfamilyid;
     }

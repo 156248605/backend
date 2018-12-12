@@ -33,4 +33,16 @@
 		delete from tb_hr_data_dictionary where datacode=#{datacode}
 	</delete>
 
+	<select id="selectAll" resultMap="HrdatadictionaryMapper">
+		select * from tb_hr_data_dictionary
+	</select>
+
+	<update id="update" parameterType="Hrdatadictionary" >
+		update tb_hr_data_dictionary
+		<set>
+			<if test="null!=datatype and ''!=datatype">datatype=#{datatype},</if>
+			<if test="null!=datavalue and ''!=datavalue">datavalue=#{datavalue}</if>
+		</set>
+		where datacode=#{datacode}
+	</update>
 </mapper>

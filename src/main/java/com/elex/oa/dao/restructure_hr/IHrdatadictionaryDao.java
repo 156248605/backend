@@ -12,4 +12,8 @@ public interface IHrdatadictionaryDao {
     List<Hrdatadictionary> selectByEntity(Hrdatadictionary hrdatadictionary);
 
     void deleteByDatacode(String datacode);
+
+    List<Hrdatadictionary> selectAll();
+
+    void update(Hrdatadictionary hrdatadictionary);
 }

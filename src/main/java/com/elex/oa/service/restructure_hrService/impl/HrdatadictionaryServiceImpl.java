@@ -11,7 +11,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: DOTO
@@ -56,6 +58,58 @@ public class HrdatadictionaryServiceImpl implements IHrdatadictionaryService {
         return true;
     }
 
+    @Override
+    public List<Hrdatadictionary> queryByConditions(Hrdatadictionary hrdatadictionary) {
+        return iHrdatadictionaryDao.selectByEntity(hrdatadictionary);
+    }
+
+    @Override
+    public List<Hrdatadictionary> queryAll() {
+        return iHrdatadictionaryDao.selectAll();
+    }
+
+    @Override
+    public Boolean queryValidateHrdatadictionary(Hrdatadictionary hrdatadictionary) {
+        Integer resp = validateHrdatadictionary(hrdatadictionary);
+        if(resp==0)return false;
+        return true;
+    }
+
+    @Override
+    public Map<String, String> removeMultipleByCodes(List<String> ids) {
+        if(null==ids)return null;
+        Map<String,String> respMap = new HashMap<>();
+        for (String datacode:ids
+             ) {
+            //如果不存在则不删除
+            if(validateDatacode(datacode)==0){
+                respMap.put(datacode,"删除失败");
+                continue;
+            }
+            try {
+                iHrdatadictionaryDao.deleteByDatacode(datacode);
+                respMap.put(datacode,"删除成功！");
+            } catch (Exception e) {
+                e.printStackTrace();
+                respMap.put(datacode,"删除失败");
+            }
+        }
+        return respMap;
+    }
+
+    @Override
+    public Boolean modifyHrdatadictionary(Hrdatadictionary hrdatadictionary) {
+        Integer validateDatacode = validateDatacode(hrdatadictionary.getDatacode());
+        if(validateDatacode==0)return false;
+        try {
+            iHrdatadictionaryDao.update(hrdatadictionary);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     private String addHrdatadictionary(Hrdatadictionary hrDataDictionary){
         if(null==hrDataDictionary)return null;
         if(StringUtils.isEmpty(hrDataDictionary.getDatacode()))hrDataDictionary.setDatacode(hrDataDictionary.getDatatype()+"_"+System.currentTimeMillis());
@@ -93,6 +147,7 @@ public class HrdatadictionaryServiceImpl implements IHrdatadictionaryService {
     }
 
     private Integer validateDatacode(String datacode){
+        if(StringUtils.isEmpty(datacode))return 0;
         List<Hrdatadictionary> hrdatadictionaryList = iHrdatadictionaryDao.selectByEntity(new Hrdatadictionary(datacode));
         return hrdatadictionaryList.size()==0?0:-1;
     }

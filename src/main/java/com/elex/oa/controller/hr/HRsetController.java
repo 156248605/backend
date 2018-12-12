@@ -5,6 +5,7 @@ import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.hr_service.IHRsetService;
 import com.elex.oa.service.restructure_hrService.IHrdatadictionaryService;
+import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class HRsetController {
     IHRsetService ihRsetService;
     @Autowired
     IHrdatadictionaryService iHrdatadictionaryService;
+    @Autowired
+    IPostlevelrelationshipinfoService iPostlevelrelationshipinfoService;
+
 
     /**
      *@Author:ShiYun;
@@ -46,28 +50,28 @@ public class HRsetController {
 
     /**
      *@Author:ShiYun;
-     *@Description:HRset信息的查询（全部）
+     *@Description:HRset信息的查询（全部）=>新接口
      *@Date: 18:45 2018\5\11 0011
      */
     @RequestMapping("/queryAllHRset")
     @ResponseBody
-    public List<HRset> queryAllHRset(
-           HRset hRset
+    public List<Hrdatadictionary> queryAllHRset(
+            Hrdatadictionary hrdatadictionary
     ){
-        return ihRsetService.queryByConditions(hRset);
+        return iHrdatadictionaryService.queryByConditions(hrdatadictionary);
     }
 
     /**
      * @Author: shiyun
-     * @Description: 查询所有的HRset字段
+     * @Description:查询所有的HRset字段=>新接口
      * @Date  2018\11\14 0014 10:34
      * @Param
      * @return
      **/
     @RequestMapping("/queryAllHRsetByNull")
     @ResponseBody
-    public List<HRset> queryAllHRsetByNull(){
-        return ihRsetService.queryAll();
+    public List<Hrdatadictionary> queryAllHRsetByNull(){
+        return iHrdatadictionaryService.queryAll();
     }
 
 
@@ -88,7 +92,7 @@ public class HRsetController {
 
     /**
      * @Author: shiyun
-     * @Description: HRset信息的查询（校验）
+     * @Description:HRset信息的查询（校验:存在返回true，不存在返回false）=>新接口
      * @Date  2018\11\7 0007 13:51
      * @Param [datatype, datavalue]
      * @return java.lang.Boolean
@@ -96,29 +100,29 @@ public class HRsetController {
     @RequestMapping("/queryValidateHRset")
     @ResponseBody
     public Boolean queryValidateHRset(
-            HRset hRset
+            Hrdatadictionary hrdatadictionary
     ){
-        return ihRsetService.queryValidateHRset(hRset);
+        return iHrdatadictionaryService.queryValidateHrdatadictionary(hrdatadictionary);
     }
 
     /**
      * @Author: shiyun
-     * @Description: HRset信息的删除
+     * @Description:HRset信息的删除=>新接口
      * @Date  2018\11\7 0007 13:51
      * @Param [ids]
      * @return java.lang.String
      **/
     @RequestMapping("/removeHRset")
     @ResponseBody
-    public Map<Integer,String> removeHRset(
-            @RequestParam("ids") List<Integer> ids
+    public Map<String,String> removeHRset(
+            @RequestParam("ids") List<String> ids
     ){
-        return ihRsetService.removeMultiple(ids);
+        return iHrdatadictionaryService.removeMultipleByCodes(ids);
     }
 
     /**
      * @Author: shiyun
-     * @Description: HRset信息修改
+     * @Description:HRset信息修改=>新接口
      * @Date  2018\11\7 0007 13:50
      * @Param [datatype, datavalue, id]
      * @return java.lang.String
@@ -126,26 +130,25 @@ public class HRsetController {
     @RequestMapping("/modifyHRset")
     @ResponseBody
     public String modifyHRset(
-             HRset hRset
+            Hrdatadictionary hrdatadictionary
     ){
-        Boolean aBoolean = ihRsetService.modifyHRset(hRset);
+        Boolean aBoolean = iHrdatadictionaryService.modifyHrdatadictionary(hrdatadictionary);
         return aBoolean?"修改成功！":"修改失败！";
     }
 
     /**
      * @Author: shiyun
-     * @Description: TODO
+     * @Description:根据职系查询职等=>新接口
      * @Date  2018\11\23 0023 11:14
      * @Param
      * @return
      **/
     @RequestMapping("/queryPostgradeByPostfamilyid")
     @ResponseBody
-    public List<HRset> queryPostgradeByPostfamilyid(
-            @RequestParam(value = "postfamilyid")Integer postfamilyid
+    public List<Hrdatadictionary> queryPostgradeByPostfamilyid(
+            @RequestParam(value = "postfamilyid")String postfamilycode
     ){
-        List<HRset> hRsetList = ihRsetService.queryPostgradeByPostfamilyid(postfamilyid);
-        return hRsetList;
+        return  iPostlevelrelationshipinfoService.queryPostgradeByPostfamilycode(postfamilycode);
     }
 
 }

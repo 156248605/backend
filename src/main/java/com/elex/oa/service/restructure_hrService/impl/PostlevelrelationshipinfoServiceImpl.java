@@ -5,6 +5,7 @@ import com.elex.oa.dao.hr.IPostRelationshipDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPostlevelrelationshipinfoDao;
 import com.elex.oa.entity.hr_entity.PostRelationship;
+import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Postlevelrelationshipinfo;
 import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
 import com.elex.oa.util.hr_util.HrUtilsTemp;
@@ -12,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,11 +27,9 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
     @Resource
     IPostRelationshipDao iPostRelationshipDao;
     @Resource
-    IHRsetDao ihRsetDao;
+    IPostlevelrelationshipinfoDao iPostlevelrelationshipinfoDao;
     @Resource
     IHrdatadictionaryDao iHrdatadictionaryDao;
-    @Resource
-    IPostlevelrelationshipinfoDao iPostlevelrelationshipinfoDao;
 
     @Override
     public Boolean changeTable() {
@@ -48,6 +48,19 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
             iPostlevelrelationshipinfoDao.insert(newBean);
         }
         return valBean;
+    }
+
+    @Override
+    public List<Hrdatadictionary> queryPostgradeByPostfamilycode(String postfamilycode) {
+        List<Postlevelrelationshipinfo> postlevelrelationshipinfoList = iPostlevelrelationshipinfoDao.selectByEntity(new Postlevelrelationshipinfo(postfamilycode));
+        List<Hrdatadictionary> hrdatadictionaryList = new ArrayList<>();
+        for (Postlevelrelationshipinfo p:postlevelrelationshipinfoList
+             ) {
+            Hrdatadictionary hrdatadictionary = iHrdatadictionaryDao.selectByEntity(new Hrdatadictionary(p.getPostgradeid())).get(0);
+            if(null==hrdatadictionary)continue;
+            hrdatadictionaryList.add(hrdatadictionary);
+        }
+        return hrdatadictionaryList;
     }
 
     private Boolean getValBeforeAddOrModify(Postlevelrelationshipinfo newBean) {
