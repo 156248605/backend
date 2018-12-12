@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: DOTO
@@ -40,11 +41,13 @@ public class OpportunityController {
     public Object opportunity_ADD(
             Opportunity opportunity,
             HttpServletRequest request,
-            @RequestParam("attachmentSize")int i
+            @RequestParam(name = "attachmentSize", required = false)Integer i
     ){
         //获得附件地址
-        List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
-        opportunity.setBusinessAttachmentList(businessAttachmentList);
+        if (null!=i) {
+            List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
+            opportunity.setBusinessAttachmentList(businessAttachmentList);
+        }
         //自动生成商机编码（主键）
         String opportunityCode = "opportunity_"+System.currentTimeMillis();
         opportunity.setCode(opportunityCode);
@@ -77,11 +80,13 @@ public class OpportunityController {
     public Object opportunity_UPDATE(
             Opportunity opportunity,
             HttpServletRequest request,
-            @RequestParam("attachmentSize")int i
+            @RequestParam(name = "attachmentSize", required = false)Integer i
     ){
         //获得附件地址
-        List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
-        opportunity.setBusinessAttachmentList(businessAttachmentList);
+        if (null!=i) {
+            List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
+            opportunity.setBusinessAttachmentList(businessAttachmentList);
+        }
         Boolean aBoolean = iOpportunityService.modifyOpportunityInfo(opportunity);
         return aBoolean?RespUtil.successResp("200","更新成功！",opportunity.getCode()):RespUtil.successResp("500","更新失败！",null);
     }
@@ -93,6 +98,13 @@ public class OpportunityController {
     ){
         Boolean aBoolean = iOpportunityService.closeOpportunityInfo(opportunitycode);
         return aBoolean?RespUtil.successResp("200","关闭成功！",null):RespUtil.successResp("500","关闭失败！",null);
+    }
+
+    @RequestMapping("/getBusinessInfoByState_OFF")
+    @ResponseBody
+    public Map<String,Object> getBusinessInfoByState_OFF(){
+        Map<String, Object> businessInfoByState_off = iOpportunityService.getBusinessInfoByState_OFF();
+        return businessInfoByState_off;
     }
 
     private List<BusinessAttachment> getBusinessAttachmentList(MultipartHttpServletRequest request, int i) {

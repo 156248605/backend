@@ -45,6 +45,10 @@ public class Clue implements Serializable {
     public Clue() {
     }
 
+    public Clue(String state) {
+        this.state = state;
+    }
+
     public String getCode() {
         return code;
     }
