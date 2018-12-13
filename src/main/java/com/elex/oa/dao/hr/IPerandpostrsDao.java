@@ -84,4 +84,6 @@ public interface IPerandpostrsDao {
     List<PerAndPostRs> selectByConditions2(PersonalInformation personalInformation);
 
     void deleteAll();
+
+    List<PerAndPostRs> selectAll();
 }

@@ -29,6 +29,8 @@ public class TablesController {
     IPostlevelrelationshipinfoService iPostlevelrelationshipinfoService;
     @Autowired
     IPersonalinfoService iPersonalinfoService;
+    @Autowired
+    IPostandpersonalrelationshipService iPostandpersonalrelationshipService;
 
     @RequestMapping("/tb_hr_data_dictionary")
     @ResponseBody
@@ -79,5 +81,11 @@ public class TablesController {
         return aBoolean?"更新数据成功":"更新失败";
     }
 
+    @RequestMapping("/tb_postandpersonal_relationship_info")
+    @ResponseBody
+    public String changetable_tb_postandpersonal_relationship_info(){
+        Boolean aBoolean = iPostandpersonalrelationshipService.changeTable();
+        return aBoolean?"更新数据成功":"更新失败";
+    }
 
 }    

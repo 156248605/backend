@@ -24,7 +24,7 @@ import java.util.List;
  * @Version 1.0
  **/
 @Service
-public class ContractInfoServiceImpl implements IContractinfoService {
+public class ContractinfoServiceImpl implements IContractinfoService {
     @Resource
     IContractInformationDao iContractInformationDao;
     @Resource
