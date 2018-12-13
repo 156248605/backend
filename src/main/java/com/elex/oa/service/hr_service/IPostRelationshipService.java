@@ -10,4 +10,6 @@ public interface IPostRelationshipService {
     List<PostRelationship> queryAllPostrelationship();
 
     Object removeById(List<Integer> postrp_ids);
+
+
 }

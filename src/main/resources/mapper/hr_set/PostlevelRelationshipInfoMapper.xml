@@ -41,4 +41,10 @@
 		DELETE FROM tb_postlevel_relationship_info WHERE id=#{id}
 	</delete>
 
+	<select id="selectAll" resultMap="PostlevelrelationshipinfoMapper">
+		select * from tb_postlevel_relationship_info pri
+		join tb_hr_data_dictionary hdd on hdd.datacode = pri.postlevelid
+		ORDER BY CHAR_LENGTH(hdd.datavalue) DESC ,hdd.datavalue DESC
+	</select>
+
 </mapper>

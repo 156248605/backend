@@ -39,9 +39,10 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
         for (PostRelationship p:postRelationshipList
              ) {
             //将旧表的旧对象数据放入新对象中
-            Postlevelrelationshipinfo newBean = getNewBeanNyOldBean(p);
+            Postlevelrelationshipinfo newBean = getNewBeanByOldBean(p);
             //添加数据前先校验一下里面是否有空值
             valBean = validateBeforeAddOrModify(newBean);
+            valBean = getValBeforeAddOrModify(newBean);
             if(!valBean)continue;
             //随机生成id
             newBean.setId("postlevel_relationship_"+System.currentTimeMillis());
@@ -63,6 +64,62 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
         return hrdatadictionaryList;
     }
 
+    @Override
+    public Boolean add(Postlevelrelationshipinfo postlevelrelationshipinfo) {
+        Boolean aBoolean = validateBeforeAddOrModify(postlevelrelationshipinfo);
+        if(!aBoolean)return aBoolean;
+        postlevelrelationshipinfo.setId("postlevel_relationship_"+System.currentTimeMillis());
+        try {
+            iPostlevelrelationshipinfoDao.insert(postlevelrelationshipinfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return aBoolean;
+    }
+
+    @Override
+    public List<Postlevelrelationshipinfo> queryAllPostlevelrelationshipinfo() {
+        List<Postlevelrelationshipinfo> postlevelrelationshipinfoList = iPostlevelrelationshipinfoDao.selectAll();
+        for (Postlevelrelationshipinfo p:postlevelrelationshipinfoList
+             ) {
+            p = getPostlevelrelationshipinfoDetail(p);
+        }
+        return postlevelrelationshipinfoList;
+    }
+
+    private Postlevelrelationshipinfo getPostlevelrelationshipinfoDetail(Postlevelrelationshipinfo p) {
+        p.setPostfamily(getDatavalueByDatacode(p.getPostfamilyid()));
+        p.setPostgrade(getDatavalueByDatacode(p.getPostgradeid()));
+        p.setPostrank(getDatavalueByDatacode(p.getPostrankid()));
+        p.setPostlevel(getDatavalueByDatacode(p.getPostlevelid()));
+        return p;
+    }
+
+    @Override
+    public Boolean removeByIds(List<String> ids) {
+        if(null==ids)return false;
+        for (String id:ids
+             ) {
+            try {
+                iPostlevelrelationshipinfoDao.deleteById(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Boolean validateBeforeAddOrModify(Postlevelrelationshipinfo newBean) {
+        Boolean valBean = true;
+        if(StringUtils.isEmpty(newBean.getPostfamilyid()))valBean=false;
+        if(StringUtils.isEmpty(newBean.getPostgradeid()))valBean=false;
+        if(StringUtils.isEmpty(newBean.getPostrankid()))valBean=false;
+        if(StringUtils.isEmpty(newBean.getPostlevelid()))valBean=false;
+        return valBean;
+    }
+
     private Boolean getValBeforeAddOrModify(Postlevelrelationshipinfo newBean) {
         //根据不同的情况不同处理
         List<Postlevelrelationshipinfo> postlevelrelationshipinfoList = iPostlevelrelationshipinfoDao.selectByEntity(newBean);
@@ -81,24 +138,17 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
         }
     }
 
-    private Boolean validateBeforeAddOrModify(Postlevelrelationshipinfo newBean) {
-        Boolean valBean = true;
-        if(StringUtils.isEmpty(newBean.getPostfamilyid()))valBean=false;
-        if(StringUtils.isEmpty(newBean.getPostgradeid()))valBean=false;
-        if(StringUtils.isEmpty(newBean.getPostrankid()))valBean=false;
-        if(StringUtils.isEmpty(newBean.getPostlevelid()))valBean=false;
-        if (valBean) {
-            valBean = getValBeforeAddOrModify(newBean);
-        }
-        return valBean;
-    }
-
-    private Postlevelrelationshipinfo getNewBeanNyOldBean(PostRelationship p) {
+    private Postlevelrelationshipinfo getNewBeanByOldBean(PostRelationship p) {
         Postlevelrelationshipinfo postlevelrelationshipinfo = new Postlevelrelationshipinfo();
         postlevelrelationshipinfo.setPostfamilyid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostfamilyid()));
         postlevelrelationshipinfo.setPostgradeid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostgradeid()));
         postlevelrelationshipinfo.setPostrankid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostrankid()));
         postlevelrelationshipinfo.setPostlevelid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostlevelid()));
         return postlevelrelationshipinfo;
+    }
+
+    private String getDatavalueByDatacode(String datacode){
+        List<Hrdatadictionary> hrdatadictionaryList = iHrdatadictionaryDao.selectByEntity(new Hrdatadictionary(datacode));
+        return hrdatadictionaryList.get(0).getDatavalue();
     }
 }

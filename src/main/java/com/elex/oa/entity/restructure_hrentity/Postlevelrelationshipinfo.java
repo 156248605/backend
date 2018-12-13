@@ -16,6 +16,11 @@ public class Postlevelrelationshipinfo implements Serializable {
     private String postlevelid;
     private String id;
 
+    private String postfamily;
+    private String postgrade;
+    private String postrank;
+    private String postlevel;
+
     public Postlevelrelationshipinfo() {
     }
 
@@ -63,6 +68,38 @@ public class Postlevelrelationshipinfo implements Serializable {
         this.id = id;
     }
 
+    public String getPostfamily() {
+        return postfamily;
+    }
+
+    public void setPostfamily(String postfamily) {
+        this.postfamily = postfamily;
+    }
+
+    public String getPostgrade() {
+        return postgrade;
+    }
+
+    public void setPostgrade(String postgrade) {
+        this.postgrade = postgrade;
+    }
+
+    public String getPostrank() {
+        return postrank;
+    }
+
+    public void setPostrank(String postrank) {
+        this.postrank = postrank;
+    }
+
+    public String getPostlevel() {
+        return postlevel;
+    }
+
+    public void setPostlevel(String postlevel) {
+        this.postlevel = postlevel;
+    }
+
     @Override
     public String toString() {
         return "Postlevelrelationshipinfo{" +
@@ -71,6 +108,10 @@ public class Postlevelrelationshipinfo implements Serializable {
                 ", postrankid='" + postrankid + '\'' +
                 ", postlevelid='" + postlevelid + '\'' +
                 ", id='" + id + '\'' +
+                ", postfamily='" + postfamily + '\'' +
+                ", postgrade='" + postgrade + '\'' +
+                ", postrank='" + postrank + '\'' +
+                ", postlevel='" + postlevel + '\'' +
                 '}';
     }
 }

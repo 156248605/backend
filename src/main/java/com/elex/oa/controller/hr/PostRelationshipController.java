@@ -3,8 +3,11 @@ package com.elex.oa.controller.hr;
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.entity.hr_entity.PostRelationship;
+import com.elex.oa.entity.restructure_hrentity.Postlevelrelationshipinfo;
 import com.elex.oa.service.hr_service.IHRsetService;
 import com.elex.oa.service.hr_service.IPostRelationshipService;
+import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,10 +29,12 @@ import java.util.Map;
 public class PostRelationshipController {
     @Autowired
     IPostRelationshipService iPostRelationshipService;
+    @Autowired
+    IPostlevelrelationshipinfoService iPostlevelrelationshipinfoService;
 
     /**
      * @Author: shiyun
-     * @Description: TODO
+     * @Description:添加一条岗位关系=>新接口
      * @Date  2018\11\22 0022 16:32
      * @Param
      * @return
@@ -38,28 +43,28 @@ public class PostRelationshipController {
     @RequestMapping("/addPostrelationship")
     @ResponseBody
     public String addPostrelationship(
-           PostRelationship postRelationship
+           Postlevelrelationshipinfo postlevelrelationshipinfo
     ){
-        Integer id = iPostRelationshipService.addPostrp(postRelationship);
-        return id!=null?"添加成功！":"添加失败！";
+        Boolean aBoolean = iPostlevelrelationshipinfoService.add(postlevelrelationshipinfo);
+        return aBoolean?"添加成功！":"添加失败！";
     }
 
     /**
      * @Author: shiyun
-     * @Description: TODO
+     * @Description:查询所有的岗位关系=>新接口
      * @Date  2018\11\22 0022 16:32
      * @Param
      * @return
      **/
     @RequestMapping("/queryAllPostrelationship")
     @ResponseBody
-    public List<PostRelationship> queryAllPostrelationship(){
-        return iPostRelationshipService.queryAllPostrelationship();
+    public List<Postlevelrelationshipinfo> queryAllPostrelationship(){
+        return iPostlevelrelationshipinfoService.queryAllPostlevelrelationshipinfo();
     }
 
     /**
      * @Author: shiyun
-     * @Description: TODO
+     * @Description:根据ID删除岗位关系=>新接口
      * @Date  2018\11\23 0023 9:43
      * @Param
      * @return
@@ -67,8 +72,9 @@ public class PostRelationshipController {
     @RequestMapping("/removePostrelationship")
     @ResponseBody
     public Object removePostrelationship(
-            @RequestParam(value = "postrpids") List<Integer> postrpids
+            @RequestParam(value = "postrpids") List<String> ids
     ){
-        return iPostRelationshipService.removeById(postrpids);
+        Boolean aBoolean = iPostlevelrelationshipinfoService.removeByIds(ids);
+        return aBoolean? RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",null);
     }
 }

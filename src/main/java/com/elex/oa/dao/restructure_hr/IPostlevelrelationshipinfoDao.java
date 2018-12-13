@@ -12,4 +12,6 @@ public interface IPostlevelrelationshipinfoDao {
     List<Postlevelrelationshipinfo> selectByEntity(Postlevelrelationshipinfo postlevelrelationshipinfo);
 
     void deleteById(String id);
+
+    List<Postlevelrelationshipinfo> selectAll();
 }
