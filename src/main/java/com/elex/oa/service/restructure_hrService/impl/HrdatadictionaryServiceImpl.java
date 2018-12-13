@@ -5,6 +5,8 @@ import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.restructure_hrService.IHrdatadictionaryService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,13 @@ public class HrdatadictionaryServiceImpl implements IHrdatadictionaryService {
             }
         }
         return valBoolean;
+    }
+
+    @Override
+    public PageInfo<Hrdatadictionary> getPageInfo(Integer pageNum, Integer pageSize, Hrdatadictionary hrdatadictionary) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Hrdatadictionary> hrdatadictionaryList = iHrdatadictionaryDao.selectByEntity(hrdatadictionary);
+        return new PageInfo<>(hrdatadictionaryList);
     }
 
     private String addHrdatadictionary(Hrdatadictionary hrDataDictionary){
