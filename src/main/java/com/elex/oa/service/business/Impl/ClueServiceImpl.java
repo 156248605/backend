@@ -138,7 +138,7 @@ public class ClueServiceImpl implements IClueService {
         try {
             clue.setTrackid(trackCode);
             clue.setState(Commons.CLUE_ON);
-            if(StringUtils.isEmpty(clue.getCreatetime().trim()))clue.setCreatetime(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+            if(StringUtils.isEmpty(clue.getCreatetime().trim()) || clue.getCreatetime().length()<19)clue.setCreatetime(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
             iClueDao.insert(clue);
         } catch (Exception e) {
             e.printStackTrace();

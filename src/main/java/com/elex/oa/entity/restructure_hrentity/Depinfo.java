@@ -19,6 +19,14 @@ public class Depinfo implements Serializable{
     private String ordercode;//顺序码
     private String node_level;//层级
 
+    private String functionaltype;
+    private String deptype;
+    private Depinfo parentdep;
+    private Personalinfo principaluser;
+    private Personalinfo deputyuser;
+    private Personalinfo secretaryuser;
+
+
     public Depinfo() {
     }
 
@@ -141,6 +149,54 @@ public class Depinfo implements Serializable{
 
     public void setNode_level(String node_level) {
         this.node_level = node_level;
+    }
+
+    public String getFunctionaltype() {
+        return functionaltype;
+    }
+
+    public void setFunctionaltype(String functionaltype) {
+        this.functionaltype = functionaltype;
+    }
+
+    public String getDeptype() {
+        return deptype;
+    }
+
+    public void setDeptype(String deptype) {
+        this.deptype = deptype;
+    }
+
+    public Depinfo getParentdep() {
+        return parentdep;
+    }
+
+    public void setParentdep(Depinfo parentdep) {
+        this.parentdep = parentdep;
+    }
+
+    public Personalinfo getPrincipaluser() {
+        return principaluser;
+    }
+
+    public void setPrincipaluser(Personalinfo principaluser) {
+        this.principaluser = principaluser;
+    }
+
+    public Personalinfo getDeputyuser() {
+        return deputyuser;
+    }
+
+    public void setDeputyuser(Personalinfo deputyuser) {
+        this.deputyuser = deputyuser;
+    }
+
+    public Personalinfo getSecretaryuser() {
+        return secretaryuser;
+    }
+
+    public void setSecretaryuser(Personalinfo secretaryuser) {
+        this.secretaryuser = secretaryuser;
     }
 
     @Override

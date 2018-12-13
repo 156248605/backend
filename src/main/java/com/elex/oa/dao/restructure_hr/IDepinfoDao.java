@@ -10,4 +10,6 @@ public interface IDepinfoDao {
     void insert(Depinfo depinfo);
 
     List<Depinfo> selectByEntity(Depinfo depinfo);
+
+    Depinfo selectByDepcode(String depcode);
 }

@@ -102,4 +102,11 @@ public class HrUtilsTemp {
         String dateString = sdf.format(date);
         return dateString;
     }
+
+    public String getDatavalueByDatacode(String datacode){
+        if(StringUtils.isEmpty(datacode))return null;
+        List<Hrdatadictionary> hrdatadictionaryList = iHrdatadictionaryDao.selectByEntity(new Hrdatadictionary(datacode));
+        if(null==hrdatadictionaryList || hrdatadictionaryList.size()!=1)return null;
+        return hrdatadictionaryList.get(0).getDatavalue();
+    }
 }    

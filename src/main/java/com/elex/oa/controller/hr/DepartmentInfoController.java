@@ -2,11 +2,13 @@ package com.elex.oa.controller.hr;
 
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.DeptTree;
+import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.service.restructure_hrService.IDepinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -29,5 +31,13 @@ public class DepartmentInfoController {
     @ResponseBody
     public Map<String,Object> listDepts(){
         return iDepinfoService.gerDepTree();
+    }
+
+    @RequestMapping("/queryOneDepByDepcode")
+    @ResponseBody
+    public Depinfo queryOneDepByDepcode(
+            @RequestParam("depcode")String depcode
+    ){
+        return iDepinfoService.queryOneByDepcode(depcode);
     }
 }    

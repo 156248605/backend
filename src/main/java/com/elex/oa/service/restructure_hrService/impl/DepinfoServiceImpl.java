@@ -6,11 +6,13 @@ import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.restructure_hr.IDepinfoDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
+import com.elex.oa.dao.restructure_hr.IPersonalinfoDao;
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.service.restructure_hrService.IDepinfoService;
 import com.elex.oa.util.hr_util.HrUtilsTemp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,13 +29,13 @@ public class DepinfoServiceImpl implements IDepinfoService {
     @Resource
     IDeptDao iDeptDao;
     @Resource
-    IHRsetDao ihRsetDao;
-    @Resource
-    IHrdatadictionaryDao iHrdatadictionaryDao;
-    @Resource
     IDepinfoDao iDepinfoDao;
     @Resource
     IPersonalInformationDao iPersonalInformationDao;
+    @Resource
+    HrUtilsTemp hrUtilsTemp;
+    @Resource
+    IPersonalinfoDao iPersonalinfoDao;
 
     @Override
     public Boolean changeTable() {
@@ -64,6 +66,13 @@ public class DepinfoServiceImpl implements IDepinfoService {
         return respMap;
     }
 
+    @Override
+    public Depinfo queryOneByDepcode(String depcode) {
+        Depinfo depinfo = getDepinfoByDepcode(depcode);
+        depinfo = getDepinfoDetailByDepinfo(depinfo);
+        return depinfo;
+    }
+
     private Map<String, Object> getRespMapByParentcode(String parentcode,Map<String,Object> respMap){
         List<Depinfo> depinfoList = iDepinfoDao.selectByEntity(new Depinfo(null, parentcode));
         if(depinfoList==null)return respMap;
@@ -82,7 +91,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
         return respMap;
     }
 
-    public List<Map<String, Object>>  getOrderedChildren(List<Map<String, Object>> children){
+    private List<Map<String, Object>>  getOrderedChildren(List<Map<String, Object>> children){
         //将子节点排序
         children.sort(new Comparator<Map<String, Object>>() {
             @Override
@@ -108,7 +117,8 @@ public class DepinfoServiceImpl implements IDepinfoService {
         if(null == depinfoList || depinfoList.size()==0){
             return null;
         }else if(depinfoList.size()==1){
-            return depinfoList.get(0);
+            Depinfo depinfo = depinfoList.get(0);
+            return depinfo;
         }
         return null;
     }
@@ -140,4 +150,19 @@ public class DepinfoServiceImpl implements IDepinfoService {
         return personalInformation.getEmployeenumber();
     }
 
+    private Depinfo getDepinfoDetailByDepinfo(Depinfo depinfo){
+        //获取职能类型
+          depinfo.setFunctionaltype(hrUtilsTemp.getDatavalueByDatacode(depinfo.getFunctionaltypeid()));
+        //获取部门类型
+          depinfo.setDeptype(hrUtilsTemp.getDatavalueByDatacode(depinfo.getDeptypeid()));
+        //获取上级部门
+          depinfo.setParentdep(iDepinfoDao.selectByDepcode(depinfo.getParent_depcode()));
+        //获取部门正职
+          depinfo.setPrincipaluser(iPersonalinfoDao.selectPersonalinfoByEmployeenumber(depinfo.getPrincipaluserid()));
+        //获取部门副职
+          depinfo.setDeputyuser(iPersonalinfoDao.selectPersonalinfoByEmployeenumber(depinfo.getDeputyuserid()));
+        //获取部门秘书
+          depinfo.setSecretaryuser(iPersonalinfoDao.selectPersonalinfoByEmployeenumber(depinfo.getSecretaryuserid()));
+        return depinfo;
+    }
 }

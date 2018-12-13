@@ -76,4 +76,10 @@
 		</where>
 	</select>
 
+	<select id="selectByDepcode" parameterType="java.lang.String" resultMap="depinfoMapper">
+		select depcode,companyname,depname,functionaltypeid,deptypeid,parent_depcode,principaluserid,deputyuserid,secretaryuserid,dutydescription,depdescription,state,ordercode,node_level
+		from tb_id_dep_info
+		where depcode=#{depcode}
+	</select>
+
 </mapper>

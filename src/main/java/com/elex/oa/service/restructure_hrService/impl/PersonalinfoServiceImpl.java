@@ -51,7 +51,6 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
             //tb_id_user表数据的转移
             personalinfo = getPersonalinfoByUser(u, personalinfo);
             if(null==personalinfo){
-                System.out.println(u.toString()+"===============================================================================================");
                 valBoolean = false;
                 continue;
             }
