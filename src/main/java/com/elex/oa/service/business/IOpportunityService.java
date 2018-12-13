@@ -12,6 +12,8 @@ public interface IOpportunityService {
 
     Opportunity getDetailOpportunityinfo(String opportunitycode);
 
+    Opportunity getDetailOpportunityinfoByCluecode(String cluecode);
+
     Boolean modifyOpportunityInfo(Opportunity opportunity);
 
     Boolean closeOpportunityInfo(String opportunitycode);

@@ -87,6 +87,15 @@ public class OpportunityServiceImpl implements IOpportunityService {
     }
 
     @Override
+    public Opportunity getDetailOpportunityinfoByCluecode(String cluecode) {
+
+        List<Opportunity> opportunityList = iOpportunityDao.select(new Opportunity(cluecode, null));
+        if(null==opportunityList || opportunityList.size()>1)return null;
+        Opportunity opportunity = getDetailOpportunityinfo(opportunityList.get(0).getCode());
+        return opportunity;
+    }
+
+    @Override
     public Boolean modifyOpportunityInfo(Opportunity opportunity) {
         Boolean aBoolean = true;
         //步骤：1.跟踪-->2.线索-->3.附件

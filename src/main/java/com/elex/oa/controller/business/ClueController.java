@@ -3,7 +3,9 @@ package com.elex.oa.controller.business;
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.business.Clue;
+import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.service.business.IClueService;
+import com.elex.oa.service.business.IOpportunityService;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -36,6 +38,8 @@ import java.util.List;
 public class ClueController {
     @Autowired
     IClueService iClueService;
+    @Autowired
+    IOpportunityService iOpportunityService;
 
     @RequestMapping("/getPageInfo")
     @ResponseBody
@@ -75,6 +79,15 @@ public class ClueController {
     ){
         Clue detailClueinfo = iClueService.getDetailClueinfo(cluecode);
         return detailClueinfo;
+    }
+
+    @RequestMapping("/getDetailOpportunityinfo")
+    @ResponseBody
+    public Opportunity getDetailOpportunityinfo(
+            @RequestParam("cluecode")String cluecode
+    ){
+        Opportunity detailOpportunityinfo = iOpportunityService.getDetailOpportunityinfoByCluecode(cluecode);
+        return detailOpportunityinfo;
     }
 
     @RequestMapping(value = "/clue_UPDATE",consumes = "multipart/form-data")

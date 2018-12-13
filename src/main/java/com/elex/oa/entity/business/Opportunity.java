@@ -53,6 +53,11 @@ public class Opportunity implements Serializable {
         this.state = state;
     }
 
+    public Opportunity(String clueid, String state) {
+        this.clueid = clueid;
+        this.state = state;
+    }
+
     public String getCode() {
         return code;
     }
