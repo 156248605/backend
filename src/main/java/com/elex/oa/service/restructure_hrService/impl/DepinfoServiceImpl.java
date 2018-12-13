@@ -14,7 +14,7 @@ import com.elex.oa.util.hr_util.HrUtilsTemp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: DOTO
@@ -49,6 +49,50 @@ public class DepinfoServiceImpl implements IDepinfoService {
             getDepcodeByAddDepInfo(getNewDepinfoByDept(d));
         }
         return valBoolean;
+    }
+
+    @Override
+    public Map<String, Object> gerDepTree() {
+        Map<String,Object> respMap = new HashMap<>();
+        List<Depinfo> depinfoList = iDepinfoDao.selectByEntity(new Depinfo(null, "top"));
+        respMap.put("title",depinfoList.get(0).getDepname());
+        respMap.put("code",depinfoList.get(0).getDepcode());
+        respMap.put("ordercode",depinfoList.get(0).getOrdercode());
+        respMap.put("expand",true);
+        //获取children值
+        respMap = getRespMapByParentcode(depinfoList.get(0).getDepcode(),respMap);
+        return respMap;
+    }
+
+    private Map<String, Object> getRespMapByParentcode(String parentcode,Map<String,Object> respMap){
+        List<Depinfo> depinfoList = iDepinfoDao.selectByEntity(new Depinfo(null, parentcode));
+        if(depinfoList==null)return respMap;
+        List<Map<String, Object>> children = new ArrayList<>();
+        for (Depinfo d:depinfoList
+             ) {
+            Map<String,Object> respMapTemp = new HashMap<>();
+            respMapTemp.put("title",d.getDepname());
+            respMapTemp.put("code",d.getDepcode());
+            respMapTemp.put("ordercode",d.getOrdercode());
+            respMap.put("expand",true);
+            respMapTemp = getRespMapByParentcode(d.getDepcode(), respMapTemp);
+            children.add(respMapTemp);
+        }
+        respMap.put("children",getOrderedChildren(children));
+        return respMap;
+    }
+
+    public List<Map<String, Object>>  getOrderedChildren(List<Map<String, Object>> children){
+        //将子节点排序
+        children.sort(new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                Integer ordercode1 = Integer.parseInt((String)(o1.get("ordercode")));
+                Integer ordercode2 = Integer.parseInt((String)(o2.get("ordercode")));
+                return ordercode1.compareTo(ordercode2);
+            }
+        });
+        return children;
     }
 
     private String getDepcodeByAddDepInfo(Depinfo depinfo){

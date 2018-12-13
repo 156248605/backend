@@ -220,7 +220,7 @@ public class DepartmentInformationController {
 
     /**
      *@Author:ShiYun;
-     *@Description:将部门树列出来
+     *@Description:将部门树列出来=>已转（见DepartmentInfoController的"/listDepts"）
      *@Date: 10:43 2018\4\16 0016
      */
     @RequestMapping("/listDepts")
