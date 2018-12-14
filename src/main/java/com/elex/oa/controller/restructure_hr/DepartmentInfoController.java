@@ -46,7 +46,6 @@ public class DepartmentInfoController {
             Depinfo depinfo,
             @RequestParam("transactorusername") String transactorusername
     ){
-        System.out.println(123);
         Boolean aBoolean = iDepinfoService.addOneDepartment(depinfo, transactorusername);
         return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
     }
@@ -55,5 +54,13 @@ public class DepartmentInfoController {
     @ResponseBody
     public List<Depinfo> queryDepartments(){
         return iDepinfoService.queryDepartmentinfoList();
+    }
+
+    @RequestMapping("/queryDepartmentsRemoveChilren")
+    @ResponseBody
+    public List<Map<String,String>> queryDepartmentsRemoveChilren(
+            @RequestParam("depcode") String depcode
+    ){
+        return iDepinfoService.queryDepartmentsRemoveChilren(depcode);
     }
 }    

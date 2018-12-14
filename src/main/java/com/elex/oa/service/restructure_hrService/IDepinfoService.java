@@ -15,4 +15,6 @@ public interface IDepinfoService {
     Boolean addOneDepartment(Depinfo depinfo,String transactorusername);
 
     List<Depinfo> queryDepartmentinfoList();
+
+    List<Map<String,String>> queryDepartmentsRemoveChilren(String depcode);
 }

@@ -85,6 +85,23 @@ public class DepinfoServiceImpl implements IDepinfoService {
     }
 
     @Override
+    public List<Map<String, String>> queryDepartmentsRemoveChilren(String depcode) {
+        if(null==depcode || StringUtils.isEmpty(depcode))return null;
+        //步骤：1.获得需要被移除的部门removeList；2.获得所有的部门numList；3.总的减去需要被移除的就是最终结果rspList=numList-rmoveList
+        //获取当前部门信息
+        Depinfo curDepinfo = iDepinfoDao.selectByDepcode(depcode);
+        if(null==curDepinfo)return null;
+        //1.获得需要被移除的部门removeList；
+        List<Map<String, String>> removeList = getRemoveList(curDepinfo);
+        //2.获得所有的部门numList；
+        List<Map<String, String>> numList = getNumList();
+        //3.获得最终结果rspList=numList-rmoveList
+        List<Map<String, String>> respList = getRespListByNumListAndRemoveList(numList, removeList);
+        return respList;
+    }
+
+
+    @Override
     public Boolean addOneDepartment(Depinfo depinfo, String transactorusername) {
         //先校验部门编号是否存在
         Depinfo depinfoTemp = iDepinfoDao.selectByDepcode(depinfo.getDepcode());
@@ -102,6 +119,68 @@ public class DepinfoServiceImpl implements IDepinfoService {
             removeOldPosition(depinfo.getSecretaryuserid(),transactorusername,depinfo.getDepname());
         }
         return true;
+    }
+
+    //总的减去需要被移除的就是最终结果rspList=numList-removeList
+    private List<Map<String, String>> getRespListByNumListAndRemoveList(List<Map<String, String>> numList,List<Map<String, String>> removeList){
+        List<Map<String, String>> respList = new ArrayList<>();
+        Boolean aBoolean = true;
+        for (Map<String,String> num:numList
+             ) {
+            aBoolean = true;
+            loop:for (Map<String,String> remove:removeList
+                 ) {
+                boolean tempBoolean = num.get("depcode").equals(remove.get("depcode"));
+                if(tempBoolean){
+                    aBoolean = false;
+                    break loop;//跳出loop循环，默认值只跳出一层
+                }
+            }
+            if(aBoolean)respList.add(num);
+        }
+        return respList;
+    }
+
+    //获得所有的部门numList（里面只有depcode,depname）
+    private List<Map<String, String>> getNumList() {
+        List<Depinfo> depinfoList = iDepinfoDao.selectAll();
+        List<Map<String, String>> numList = new ArrayList<>();
+        for (Depinfo d:depinfoList
+        ) {
+            numList.add(getMapForDepcodeAndDepname(d));
+        }
+        return numList;
+    }
+
+    //获得需要被移除的部门removeList（里面只有depcode,depname）
+    private List<Map<String, String>> getRemoveList(Depinfo curDepinfo) {
+        List<Map<String, String>> removeList = new ArrayList<>();
+        removeList.add(getMapForDepcodeAndDepname(curDepinfo));
+        //添加需要被移除的子部门
+        removeList = getChildrenAndShelfDepinfo(removeList,curDepinfo.getDepcode());
+        return removeList;
+    }
+
+    //获得子部门对象集合（里面只有depcode,depname）
+    private List<Map<String, String>> getChildrenAndShelfDepinfo(List<Map<String, String>> respList,String parentDepcode){
+        List<Depinfo> depinfoList = iDepinfoDao.selectByEntity(new Depinfo(null, parentDepcode));
+        if(null==depinfoList)return respList;
+        for (Depinfo d:depinfoList
+             ) {
+            //将被移除对象放入集合
+            respList.add(getMapForDepcodeAndDepname(d));
+            //递归查询下级部门
+            respList = getChildrenAndShelfDepinfo(respList,d.getDepcode());
+        }
+        return respList;
+    }
+
+    //获得部门对象（里面只有depcode,depname）
+    private Map<String, String> getMapForDepcodeAndDepname(Depinfo d) {
+        Map<String, String> respMap = new HashMap<>();
+        respMap.put("depcode", d.getDepcode());
+        respMap.put("depname", d.getDepname());
+        return respMap;
     }
 
     //移除旧部门的相应的岗位：
