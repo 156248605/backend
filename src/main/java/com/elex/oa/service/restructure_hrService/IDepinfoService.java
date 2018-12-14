@@ -8,7 +8,11 @@ import java.util.Map;
 public interface IDepinfoService {
     Boolean changeTable();
 
-    Map<String,Object> gerDepTree();
+    Map<String,Object> getDepTree();
 
     Depinfo queryOneByDepcode(String depcode);
+
+    Boolean addOneDepartment(Depinfo depinfo,String transactorusername);
+
+    List<Depinfo> queryDepartmentinfoList();
 }

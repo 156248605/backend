@@ -1,9 +1,15 @@
 package com.elex.oa.entity.restructure_hrentity;
 
-import java.io.Serializable;
+import org.springframework.data.annotation.Persistent;
 
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
+@Table(name = "tb_id_dep_info")
 public class Depinfo implements Serializable{
     private static final long serialVersionUID = 8597283980607439617L;
+    @Id
     private String depcode;// 部门编号(主键)
     private String companyname;// 公司名称
     private String depname;// 部门名称
@@ -19,11 +25,17 @@ public class Depinfo implements Serializable{
     private String ordercode;//顺序码
     private String node_level;//层级
 
+    @Transient
     private String functionaltype;
+    @Transient
     private String deptype;
+    @Transient
     private Depinfo parentdep;
+    @Transient
     private Personalinfo principaluser;
+    @Transient
     private Personalinfo deputyuser;
+    @Transient
     private Personalinfo secretaryuser;
 
 
@@ -37,6 +49,12 @@ public class Depinfo implements Serializable{
     public Depinfo(String depcode, String parent_depcode) {
         this.depcode = depcode;
         this.parent_depcode = parent_depcode;
+    }
+
+    public Depinfo(String depcode, String parent_depcode, String state) {
+        this.depcode = depcode;
+        this.parent_depcode = parent_depcode;
+        this.state = state;
     }
 
     public String getDepcode() {

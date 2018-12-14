@@ -19,42 +19,6 @@
 		<result column="node_level" property="node_level" />
 	</resultMap>
 
-	<insert id="insert" parameterType="DepInfo" >
-		insert into tb_id_dep_info
-		(depcode,
-		companyname,
-		depname,
-		functionaltypeid,
-		deptypeid,
-		parent_depcode,
-		principaluserid,
-		deputyuserid,
-		secretaryuserid,
-		dutydescription,
-		depdescription,
-		state,
-		ordercode,
-		node_level
-		)
-		VALUES
-		(
-		#{depcode},
-		#{companyname},
-		#{depname},
-		#{functionaltypeid},
-		#{deptypeid},
-		#{parent_depcode},
-		#{principaluserid},
-		#{deputyuserid},
-		#{secretaryuserid},
-		#{dutydescription},
-		#{depdescription},
-		'1',
-		#{ordercode},
-		#{node_level}
-		)
-	</insert>
-
 	<select id="selectByEntity" parameterType="DepInfo" resultMap="depinfoMapper">
 		select depcode,companyname,depname,functionaltypeid,deptypeid,parent_depcode,principaluserid,deputyuserid,secretaryuserid,dutydescription,depdescription,state,ordercode,node_level
 		from tb_id_dep_info

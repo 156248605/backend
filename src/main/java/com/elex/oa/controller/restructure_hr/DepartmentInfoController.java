@@ -1,9 +1,8 @@
-package com.elex.oa.controller.hr;
+package com.elex.oa.controller.restructure_hr;
 
-import com.elex.oa.entity.hr_entity.Dept;
-import com.elex.oa.entity.hr_entity.DeptTree;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.service.restructure_hrService.IDepinfoService;
+import com.elex.oa.util.resp.RespUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +21,7 @@ import java.util.Map;
  **/
 @Controller
 @CrossOrigin
-@RequestMapping("/dep")
+@RequestMapping("/depinfo")
 public class DepartmentInfoController {
     @Autowired
     IDepinfoService iDepinfoService;
@@ -30,7 +29,7 @@ public class DepartmentInfoController {
     @RequestMapping("/listDepts")
     @ResponseBody
     public Map<String,Object> listDepts(){
-        return iDepinfoService.gerDepTree();
+        return iDepinfoService.getDepTree();
     }
 
     @RequestMapping("/queryOneDepByDepcode")
@@ -39,5 +38,22 @@ public class DepartmentInfoController {
             @RequestParam("depcode")String depcode
     ){
         return iDepinfoService.queryOneByDepcode(depcode);
+    }
+
+    @RequestMapping("/addOneDepartment")
+    @ResponseBody
+    public Object addOneDepartment(
+            Depinfo depinfo,
+            @RequestParam("transactorusername") String transactorusername
+    ){
+        System.out.println(123);
+        Boolean aBoolean = iDepinfoService.addOneDepartment(depinfo, transactorusername);
+        return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
+    }
+
+    @RequestMapping("/queryDepartments")
+    @ResponseBody
+    public List<Depinfo> queryDepartments(){
+        return iDepinfoService.queryDepartmentinfoList();
     }
 }    

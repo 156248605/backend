@@ -67,139 +67,6 @@
 		<result column="dimission_transaction_date" property="dimission_transaction_date" />
 	</resultMap>
 
-	<insert id="insert" parameterType="Personalinfo" >
-		insert into tb_id_personal_info
-		(
-			employeenumber,
-			username,
-			truename,
-			password,
-			isactive,
-			state,
-			idcode,
-			birthday,
-			sex,
-			chinesecs,
-			constellation,
-			household_register,
-			depcode,
-			telphoneid,
-			mobilephone,
-			userphoto,
-			idphoto1,
-			idphoto2,
-			englishname,
-			raceid,
-			marriage,
-			zzmmid,
-			childrenid,
-			byyxid,
-			zgxlid,
-			sxzyid,
-			pyfsid,
-			firstlaid,
-			elselaid,
-			posttitleid,
-			zyzstypeid,
-			zyzsnameid,
-			parentcompanyid,
-			firstworkingtime,
-			employeetypeid,
-			entrydate,
-			zhuanzhengdate,
-			salarystandardid,
-			ssbid,
-			ssbgscdid,
-			ssbgrcdid,
-			gjjid,
-			gjjgscdid,
-			gjjgrcdid,
-			khhid,
-			salaryaccount,
-			sbjndid,
-			sbcode,
-			gjjcode,
-			privateemail,
-			companyemail,
-			emergencycontact,
-			emergencyrpid,
-			emergencyphone,
-			address,
-			remark,
-			lastworkingdate,
-			dimissiontypeid,
-			dimissiondirectionid,
-			dimissionreasonid,
-			dimission_transaction_id,
-			dimission_transaction_date
-		)
-		VALUES
-		(
-			#{employeenumber},
-			#{username},
-			#{truename},
-			#{password},
-			#{isactive},
-			#{state},
-			#{idcode},
-			#{birthday},
-			#{sex},
-			#{chinesecs},
-			#{constellation},
-			#{household_register},
-			#{depcode},
-			#{telphoneid},
-			#{mobilephone},
-			#{userphoto},
-			#{idphoto1},
-			#{idphoto2},
-			#{englishname},
-			#{raceid},
-			#{marriage},
-			#{zzmmid},
-			#{childrenid},
-			#{byyxid},
-			#{zgxlid},
-			#{sxzyid},
-			#{pyfsid},
-			#{firstlaid},
-			#{elselaid},
-			#{posttitleid},
-			#{zyzstypeid},
-			#{zyzsnameid},
-			#{parentcompanyid},
-			#{firstworkingtime},
-			#{employeetypeid},
-			#{entrydate},
-			#{zhuanzhengdate},
-			#{salarystandardid},
-			#{ssbid},
-			#{ssbgscdid},
-			#{ssbgrcdid},
-			#{gjjid},
-			#{gjjgscdid},
-			#{gjjgrcdid},
-			#{khhid},
-			#{salaryaccount},
-			#{sbjndid},
-			#{sbcode},
-			#{gjjcode},
-			#{privateemail},
-			#{companyemail},
-			#{emergencycontact},
-			#{emergencyrpid},
-			#{emergencyphone},
-			#{address},
-			#{remark},
-			#{lastworkingdate},
-			#{dimissiontypeid},
-			#{dimissiondirectionid},
-			#{dimissionreasonid},
-			#{dimission_transaction_id},
-			#{dimission_transaction_date}
-		)
-	</insert>
-
 	<delete id="deleteByEmployeenumber" parameterType="java.lang.String">
 		delete from tb_id_personal_info where employeenumber=#{employeenumber}
 	</delete>
@@ -359,4 +226,21 @@
 		</where>
 	</select>
 
+	<select id="selectUsersByEMPLOYEE_ON" resultMap="PersonalInfoResultMap">
+		select employeenumber,truename
+		from tb_id_personal_info
+		where state='1'
+	</select>
+
+	<select id="selectDepcodeByEmployeenumber" parameterType="java.lang.String" resultType="java.util.Map">
+		select depcode
+		from tb_id_personal_info
+		where employeenumber = #{employeenumber}
+	</select>
+
+	<select id="selectUserByEmployeenumber" parameterType="java.lang.String" resultType="java.util.Map">
+		select truename
+		from tb_id_personal_info
+		where employeenumber = #{employeenumber}
+	</select>
 </mapper>

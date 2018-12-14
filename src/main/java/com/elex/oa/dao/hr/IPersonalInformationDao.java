@@ -1,5 +1,6 @@
 package com.elex.oa.dao.hr;
 
+import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.hr_entity.DimissionInformation;
 import com.elex.oa.entity.hr_entity.PersonalInformation;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,7 +15,7 @@ import java.util.List;
  * @Modify By:
  */
 @Mapper
-public interface IPersonalInformationDao{
+public interface IPersonalInformationDao {
     /**
      *@Author:ShiYun;
      *@Description:根据条件查询人事信息

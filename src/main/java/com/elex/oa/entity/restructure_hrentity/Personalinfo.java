@@ -80,6 +80,11 @@ public class Personalinfo implements Serializable {
     public Personalinfo() {
     }
 
+    public Personalinfo(String employeenumber, String depcode) {
+        this.employeenumber = employeenumber;
+        this.depcode = depcode;
+    }
+
     public String getEmployeenumber() {
         return employeenumber;
     }

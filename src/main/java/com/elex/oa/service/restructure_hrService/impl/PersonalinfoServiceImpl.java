@@ -62,6 +62,11 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         return valBoolean;
     }
 
+    @Override
+    public List<Personalinfo> queryAllUsersByEMPLOYEE_ON() {
+        return iPersonalinfoDao.selectUsersByEMPLOYEE_ON();
+    }
+
     private Personalinfo getPersonalinfoByUser(User u, Personalinfo personalinfo) {
         if(null==u.getEmployeenumber())return null;
         personalinfo.setEmployeenumber(u.getEmployeenumber());

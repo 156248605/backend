@@ -23,4 +23,6 @@ public interface Commons {
     String OPPORTUNITY_ON = "商机开启状态";
     String OPPORTUNITY_OFF = "商机关闭状态";
     String OPPORTUNITY_TRANSFOR_PROJECT = "商机已转项目状态";
+    String EMPLOYEE_ON = "1";//员工在职状态
+    String EMPLOYEE_OFF = "0";//员工离职状态
 }
