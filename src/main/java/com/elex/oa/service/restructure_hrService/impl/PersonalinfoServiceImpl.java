@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: DOTO
@@ -63,7 +64,7 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
     }
 
     @Override
-    public List<Personalinfo> queryAllUsersByEMPLOYEE_ON() {
+    public List<Map<String,String>> queryAllUsersByEMPLOYEE_ON() {
         return iPersonalinfoDao.selectUsersByEMPLOYEE_ON();
     }
 

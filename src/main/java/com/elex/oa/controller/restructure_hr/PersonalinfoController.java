@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: DOTO
@@ -25,7 +26,7 @@ public class PersonalinfoController {
 
     @RequestMapping("/queryAllUsers")
     @ResponseBody
-    public List<Personalinfo> queryAllUsers(){
+    public List<Map<String,String>> queryAllUsers(){
         return iPersonalinfoService.queryAllUsersByEMPLOYEE_ON();
     }
 }    

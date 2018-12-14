@@ -17,7 +17,7 @@ public interface IPersonalinfoDao extends BaseDao<Personalinfo> {
 
     List<Personalinfo> selectByEntity(Personalinfo personalinfo);
 
-    List<Personalinfo> selectUsersByEMPLOYEE_ON();
+    List<Map<String,String>> selectUsersByEMPLOYEE_ON();
 
     Map<String,String> selectDepcodeByEmployeenumber(String employeenumber);
 
