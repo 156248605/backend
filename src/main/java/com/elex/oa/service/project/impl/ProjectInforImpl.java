@@ -62,12 +62,20 @@ public class ProjectInforImpl implements ProjectInforService {
         for(ApprovalList approvalList: approvalLists) {
             approvalList.setWriteDate(approvalList.getWriteDate().substring(0,10));
             approvalList.setProjectStatus(code);
-            User user = iUserDao.selectByTruename(approvalList.getProjectManager());
-            Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
-            Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
-            User user1 = iUserDao.selectById(principaluserid);
-            String truename = user1.getTruename();
-            approvalList.setDepartmentManager(truename);
+            if(approvalList.getProjectManager()==null){
+                approvalList.setDepartmentManager("");
+            }else {
+                User user = iUserDao.selectByTruename(approvalList.getProjectManager());
+                if(iPersonalInformationDao.selectByUserid(user.getId()).getDepid()!=null){
+                    Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
+                    Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
+                    User user1 = iUserDao.selectById(principaluserid);
+                    String truename = user1.getTruename();
+                    approvalList.setDepartmentManager(truename);
+                }else {
+                    approvalList.setDepartmentManager("");
+                }
+            }
         }
         projectInforDao.addInfor(approvalLists); //添加项目详情信息
     }
@@ -118,11 +126,18 @@ public class ProjectInforImpl implements ProjectInforService {
 
         User user = iUserDao.selectByTruename(projectInfor.getProjectManager());
         Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
-        Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
-        User user1 = iUserDao.selectById(principaluserid);
-        String truename = user1.getTruename();
-        projectInfor.setDepartmentManager(truename);
-
+        if(depid!=null){
+            Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
+            if(principaluserid!=null){
+                User user1 = iUserDao.selectById(principaluserid);
+                String truename = user1.getTruename()==null?"":user1.getTruename();
+                projectInfor.setDepartmentManager(truename);
+            }else {
+                projectInfor.setDepartmentManager("");
+            }
+        }else {
+            projectInfor.setDepartmentManager("");
+        }
         projectInforDao.amendInfor(projectInfor);
         return "1";
     }
