@@ -63,4 +63,15 @@ public class DepartmentInfoController {
     ){
         return iDepinfoService.queryDepartmentsRemoveChilren(depcode);
     }
+
+    @RequestMapping("/updateOneDepartment")
+    @ResponseBody
+    public Object updateOneDepartment(
+            Depinfo depinfo,
+            @RequestParam("transactorusername") String transactorusername,
+            @RequestParam("oldDepcode") String oldDepcode
+    ){
+        Boolean aBoolean = iDepinfoService.updateOneDepartment(depinfo, transactorusername,oldDepcode);
+        return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
+    }
 }    

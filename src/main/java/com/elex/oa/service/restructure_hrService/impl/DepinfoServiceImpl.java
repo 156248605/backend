@@ -100,6 +100,21 @@ public class DepinfoServiceImpl implements IDepinfoService {
         return respList;
     }
 
+    @Override
+    public Boolean updateOneDepartment(Depinfo depinfo,String transactorusername,String oldDepcode) {
+        //先修改，修改成功后再添加日志（前提将原有的信息保存下来）
+        //获取部门的原有信息
+        Depinfo oldDepinfo = iDepinfoDao.selectByDepcode(oldDepcode);
+        oldDepinfo = getDepinfoDetailByDepinfo(oldDepinfo);
+        //获取部门的新信息
+        Depinfo newDepinfo = getDepinfoDetailByDepinfo(depinfo);
+        //更新部门信息
+        iDepinfoDao.updateByPrimaryKeySelective(depinfo);
+        //添加部门日志信息
+        //先判断该字段是否需要添加该字段的日志
+        Boolean aBoolean = addDepinfologsByOlddepinfoAndNewdepinfo(oldDepinfo, newDepinfo, transactorusername);
+        return aBoolean;
+    }
 
     @Override
     public Boolean addOneDepartment(Depinfo depinfo, String transactorusername) {
@@ -120,6 +135,94 @@ public class DepinfoServiceImpl implements IDepinfoService {
         }
         return true;
     }
+
+    //根据部门对象添加部门日志
+    private Boolean addDepinfologsByOlddepinfoAndNewdepinfo(Depinfo oldDepinfo,Depinfo newDepinfo,String transactorusername){
+        Boolean aBoolean = false;
+        //部门编号
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getDepcode(),newDepinfo.getDepcode())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getDepcode(), newDepinfo.getDepcode(), "部门编号");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //公司名称
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getCompanyname(),newDepinfo.getCompanyname())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getCompanyname(), newDepinfo.getCompanyname(), "公司名称");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //部门名称
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getDepname(),newDepinfo.getDepname())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getDepname(), newDepinfo.getDepname(), "部门名称");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //职能类型
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getFunctionaltypeid(),newDepinfo.getFunctionaltypeid())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getFunctionaltype(), newDepinfo.getFunctionaltype(), "职能类型");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //部门类型
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getDeptypeid(),newDepinfo.getDeptypeid())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getDeptype(), newDepinfo.getDeptype(), "部门类型");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //上级部门
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getParent_depcode(),newDepinfo.getParent_depcode())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getParentdep().getDepname(), newDepinfo.getParentdep().getDepname(), "上级部门");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //部门层级
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getNode_level(),newDepinfo.getNode_level())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getNode_level(), newDepinfo.getNode_level(), "部门层级");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //部门正职
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getPrincipaluserid(),newDepinfo.getPrincipaluserid())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getPrincipaluser().getTruename(), newDepinfo.getPrincipaluser().getTruename(), "部门正职");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //部门副职
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getDeputyuserid(),newDepinfo.getDeputyuserid())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getDeputyuser().getTruename(), newDepinfo.getDeputyuser().getTruename(), "部门副职");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //部门秘书
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getSecretaryuserid(),newDepinfo.getSecretaryuserid())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getSecretaryuser().getTruename(), newDepinfo.getSecretaryuser().getTruename(), "部门秘书");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //部门职责
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getDutydescription(),newDepinfo.getDutydescription())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getDutydescription(), newDepinfo.getDutydescription(), "部门职责");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+        //部门概述
+        if(getaBooleanByOldAndNewInfo(oldDepinfo.getDepdescription(),newDepinfo.getDepdescription())){
+            Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getDepdescription(), newDepinfo.getDepdescription(), "部门概述");
+            addDepinfolog(logMap,transactorusername);
+            aBoolean = true;
+        }
+
+        return aBoolean;
+    };
+
+    //先判断该字段是否需要添加该字段的日志
+    private Boolean getaBooleanByOldAndNewInfo(String beforeInfo,String afterInfo){
+        if(null==beforeInfo)return false;
+        if(StringUtils.isEmpty(beforeInfo))return false;
+        if(null==afterInfo)return true;
+        if(afterInfo.equals(beforeInfo))return false;
+        return true;
+    };
 
     //总的减去需要被移除的就是最终结果rspList=numList-removeList
     private List<Map<String, String>> getRespListByNumListAndRemoveList(List<Map<String, String>> numList,List<Map<String, String>> removeList){
@@ -283,15 +386,25 @@ public class DepinfoServiceImpl implements IDepinfoService {
         return respMap;
     }
 
-    //获得部门信息修改日志的四个参数：depcode、changeinformation、beforeinformation、afterinformation
+    //获得部门信息修改日志的四个参数：depcode、changeinformation、beforeinformation、afterinformation(仅仅适用职位的修改)
     private Map<String,String> getDepLogInfoByPositionuserid(String depcode,String userid,String employeenumber,String changeinformationName){
         Map<String,String> respMap = null;
-        if(null!=userid && userid==employeenumber){
+        if(null!=userid && userid.equals(employeenumber)){
             respMap.put("depcode",depcode);
             respMap.put("changeinformation",changeinformationName);
             respMap.put("beforeinformation",iPersonalinfoDao.selectUserByEmployeenumber(employeenumber).get("truename"));
             respMap.put("afterinformation",null);
         }
+        return respMap;
+    }
+
+    //获得部门信息修改日志的四个参数：depcode、changeinformation、beforeinformation、afterinformation（适用所有的）
+    private Map<String,String> getDepLogInfoByOldAndNewInfo(String depcode,String beforeInfo,String afterInfo,String changeinformationName){
+        Map<String,String> respMap = new HashMap<>();
+        respMap.put("depcode",depcode);
+        respMap.put("changeinformation",changeinformationName);
+        respMap.put("beforeinformation",beforeInfo);
+        respMap.put("afterinformation",afterInfo);
         return respMap;
     }
 

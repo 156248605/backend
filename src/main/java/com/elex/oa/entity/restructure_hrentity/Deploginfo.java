@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @Date 2018\12\14 0014 11:31
  * @Version 1.0
  **/
-@Table(name = "tb_logingo_dept")
+@Table(name = "tb_loginfo_dept")
 public class Deploginfo implements Serializable {
     private static final long serialVersionUID = -4639516981098489602L;
     @Id
