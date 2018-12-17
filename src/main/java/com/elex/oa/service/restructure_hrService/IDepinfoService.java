@@ -23,4 +23,6 @@ public interface IDepinfoService {
     List<Map<String,Object>> getSortDepinformation(String depcode);
 
     Map<String,Object> submitSortdata(List<Map> respMap);
+
+    Boolean deleteDeptsByDepcode(String depcode);
 }

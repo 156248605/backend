@@ -94,4 +94,13 @@ public class DepartmentInfoController {
         List<Map> respMap = JSONObject.parseArray(sortdata, Map.class);
         return iDepinfoService.submitSortdata(respMap);
     }
+
+    @RequestMapping("/deleteDeptsByDepcode")
+    @ResponseBody
+    public Object deleteDeptsByDepcode(
+            @RequestParam("depcode") String depcode
+    ){
+        Boolean aBoolean = iDepinfoService.deleteDeptsByDepcode(depcode);
+        return aBoolean? RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",null);
+    }
 }    

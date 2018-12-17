@@ -155,6 +155,39 @@ public class DepinfoServiceImpl implements IDepinfoService {
         return getDepTree();
     }
 
+    @Override
+    public Boolean deleteDeptsByDepcode(String depcode) {
+        Boolean aBoolean = true;
+        if(null==depcode || StringUtils.isEmpty(depcode))return false;
+        //获得所有将被删除的部门编号
+        List<String> depcodeList = new ArrayList<>();
+        depcodeList.add(depcode);
+        depcodeList = getAllRemovedDepcodes(depcodeList,depcode);
+        for (String depcodeTemp:depcodeList
+             ) {
+            try {
+                iDepinfoDao.deleteByPrimaryKey(depcodeTemp);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(depcodeTemp+"删除失败！");
+                aBoolean = false;
+            }
+        }
+        return aBoolean;
+    }
+
+    //获得所有将被删除的子部门编号
+    private List<String> getAllRemovedDepcodes(List<String> depcodeList,String parent_depcode){
+        List<Depinfo> depinfoList = iDepinfoDao.select(new Depinfo(null, parent_depcode));
+        if(null==depinfoList)return depcodeList;
+        for (Depinfo d:depinfoList
+             ) {
+            depcodeList.add(d.getDepcode());
+            depcodeList = getAllRemovedDepcodes(depcodeList,d.getDepcode());
+        }
+        return depcodeList;
+    }
+
     //根据部门对象添加部门日志
     private Boolean addDepinfologsByOlddepinfoAndNewdepinfo(Depinfo oldDepinfo,Depinfo newDepinfo,String transactorusername){
         Boolean aBoolean = false;
