@@ -74,4 +74,12 @@ public class DepartmentInfoController {
         Boolean aBoolean = iDepinfoService.updateOneDepartment(depinfo, transactorusername,oldDepcode);
         return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
     }
+
+    @RequestMapping("/sortDepinformation")
+    @ResponseBody
+    public List<Map<String,Object>> sortDepinformation(
+            @RequestParam("depcode") String depcode
+    ){
+        return iDepinfoService.getSortDepinformation(depcode);
+    }
 }    

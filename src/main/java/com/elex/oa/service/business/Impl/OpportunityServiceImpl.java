@@ -52,7 +52,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         //添加商机信息
         opportunity.setTrackid(trackInfo_opportunity.getCode());
         opportunity.setState(Commons.OPPORTUNITY_ON);
-        if (StringUtils.isEmpty(opportunity.getCreatetime().trim()) || opportunity.getCreatetime().length()<19) {
+        if (null==opportunity.getCreatetime() || StringUtils.isEmpty(opportunity.getCreatetime().trim()) || opportunity.getCreatetime().length()<19) {
             opportunity.setCreatetime(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
         }
         iOpportunityDao.insertSelective(opportunity);

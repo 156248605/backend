@@ -136,6 +136,13 @@ public class DepinfoServiceImpl implements IDepinfoService {
         return true;
     }
 
+    @Override
+    public List<Map<String, Object>> getSortDepinformation(String depcode) {
+        Depinfo parentDpeinfo = iDepinfoDao.selectByDepcode(depcode);
+        if(null==parentDpeinfo)return null;
+        return getChildrenNodeByDepcode(parentDpeinfo.getParent_depcode());
+    }
+
     //根据部门对象添加部门日志
     private Boolean addDepinfologsByOlddepinfoAndNewdepinfo(Depinfo oldDepinfo,Depinfo newDepinfo,String transactorusername){
         Boolean aBoolean = false;
@@ -425,6 +432,22 @@ public class DepinfoServiceImpl implements IDepinfoService {
         }
         respMap.put("children",getOrderedChildren(children));
         return respMap;
+    }
+
+    //获得同级部门depcode、depname、ordercode三个数据
+    private List<Map<String, Object>> getChildrenNodeByDepcode(String depcode){
+        List<Depinfo> depinfoList = iDepinfoDao.select(new Depinfo(null, depcode));
+        if(null==depinfoList)return null;
+        List<Map<String, Object>> respList = new ArrayList<>();
+        for (Depinfo d:depinfoList
+             ) {
+            Map<String,Object> respMapTemp = new HashMap<>();
+            respMapTemp.put("depcode",d.getDepcode());
+            respMapTemp.put("depname",d.getDepname());
+            respMapTemp.put("ordercode",d.getOrdercode());
+            respList.add(respMapTemp);
+        }
+        return getOrderedChildren(respList);
     }
 
     //获得排序后的子节点
