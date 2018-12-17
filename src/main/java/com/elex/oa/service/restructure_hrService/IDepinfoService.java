@@ -21,4 +21,6 @@ public interface IDepinfoService {
     Boolean updateOneDepartment(Depinfo depinfo,String transactorusername,String oldDepcode);
 
     List<Map<String,Object>> getSortDepinformation(String depcode);
+
+    Map<String,Object> submitSortdata(List<Map> respMap);
 }

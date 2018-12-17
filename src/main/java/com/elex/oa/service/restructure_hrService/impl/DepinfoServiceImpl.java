@@ -143,6 +143,18 @@ public class DepinfoServiceImpl implements IDepinfoService {
         return getChildrenNodeByDepcode(parentDpeinfo.getParent_depcode());
     }
 
+    @Override
+    public Map<String, Object> submitSortdata(List<Map> respMap) {
+        if(null==respMap)return null;
+        //更新排序编码
+        for (Map<String,String> m:respMap
+             ) {
+            iDepinfoDao.updateByPrimaryKeySelective(new Depinfo(m.get("depcode"),null,null,m.get("ordercode")));
+        }
+        //获得部门树数据
+        return getDepTree();
+    }
+
     //根据部门对象添加部门日志
     private Boolean addDepinfologsByOlddepinfoAndNewdepinfo(Depinfo oldDepinfo,Depinfo newDepinfo,String transactorusername){
         Boolean aBoolean = false;

@@ -57,6 +57,13 @@ public class Depinfo implements Serializable{
         this.state = state;
     }
 
+    public Depinfo(String depcode, String parent_depcode, String state, String ordercode) {
+        this.depcode = depcode;
+        this.parent_depcode = parent_depcode;
+        this.state = state;
+        this.ordercode = ordercode;
+    }
+
     public String getDepcode() {
         return depcode;
     }

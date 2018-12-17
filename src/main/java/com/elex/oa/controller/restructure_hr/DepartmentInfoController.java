@@ -1,5 +1,7 @@
 package com.elex.oa.controller.restructure_hr;
 
+import com.alibaba.fastjson.JSONObject;
+import com.elex.oa.entity.hr_entity.TitleAndCode;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.service.restructure_hrService.IDepinfoService;
 import com.elex.oa.util.resp.RespUtil;
@@ -81,5 +83,15 @@ public class DepartmentInfoController {
             @RequestParam("depcode") String depcode
     ){
         return iDepinfoService.getSortDepinformation(depcode);
+    }
+
+    @RequestMapping("/submitSortdata")
+    @ResponseBody
+    public Map<String,Object> submitSortdata(
+            @RequestParam("sortdata") String sortdata
+    ){
+        //将JSON字符串转换成List集合
+        List<Map> respMap = JSONObject.parseArray(sortdata, Map.class);
+        return iDepinfoService.submitSortdata(respMap);
     }
 }    
