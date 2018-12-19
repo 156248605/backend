@@ -3,8 +3,11 @@ package com.elex.oa.controller.restructure_hr;
 import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.entity.hr_entity.TitleAndCode;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
+import com.elex.oa.entity.restructure_hrentity.Deploginfo;
 import com.elex.oa.service.restructure_hrService.IDepinfoService;
+import com.elex.oa.service.restructure_hrService.IDeploginfoService;
 import com.elex.oa.util.resp.RespUtil;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +30,8 @@ import java.util.Map;
 public class DepartmentInfoController {
     @Autowired
     IDepinfoService iDepinfoService;
+    @Autowired
+    IDeploginfoService iDeploginfoService;
 
     @RequestMapping("/listDepts")
     @ResponseBody
@@ -102,5 +107,21 @@ public class DepartmentInfoController {
     ){
         Boolean aBoolean = iDepinfoService.deleteDeptsByDepcode(depcode);
         return aBoolean? RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",null);
+    }
+
+    @RequestMapping("/queryDeptLogInformations")
+    @ResponseBody
+    public PageInfo<Deploginfo> queryDeptLogInformations(
+            @RequestParam("page")Integer page,
+            @RequestParam("rows")Integer rows,
+            Deploginfo deploginfo
+    ){
+        return iDeploginfoService.queryDeptLogInformations(page,rows,deploginfo);
+    }
+
+    @RequestMapping("/queryAllDeptLogInformations")
+    @ResponseBody
+    public List<Deploginfo> queryAllDeptLogInformations(){
+        return iDeploginfoService.queryAllDeptLogInformations();
     }
 }    
