@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -123,5 +124,14 @@ public class DepartmentInfoController {
     @ResponseBody
     public List<Deploginfo> queryAllDeptLogInformations(){
         return iDeploginfoService.queryAllDeptLogInformations();
+    }
+
+    @RequestMapping("/importDeploginformations")
+    @ResponseBody
+    public Object importDeploginformations(
+            @RequestParam("file") MultipartFile multipartFile
+    ){
+        Map<String, String> respMap = iDeploginfoService.importDeploginformations(multipartFile);
+        return respMap.size()==0?RespUtil.successResp("200","导入成功！",null):RespUtil.successResp("500","导入失败！",null);
     }
 }    

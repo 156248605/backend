@@ -173,4 +173,13 @@ public class HrUtilsTemp {
         Personalinfo personalinfo = iPersonalinfoDao.selectByPrimaryKey(employeenumber);
         return personalinfo.getTruename();
     }
+
+    //此方法有BUG（部门名称不是唯一标识）
+    public String getDepcodeByDepname(String depname){
+        if(null==depname)return null;
+        if(StringUtils.isEmpty(depname))return null;
+        List<Depinfo> depinfoList = iDepinfoDao.select(new Depinfo(null, depname, null, null, null));
+        if(null==depinfoList || depinfoList.size()==0)return null;
+        return depinfoList.get(0).getDepcode();
+    }
 }    

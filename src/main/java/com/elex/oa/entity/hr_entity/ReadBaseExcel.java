@@ -34,7 +34,7 @@ public class ReadBaseExcel<T> {
     //获取总列数
     public int getTotalCells() {  return totalCells;}
     //获取错误信息
-    public String getErrorInfo() { return errorMsg; }
+    public String getErrorInfo(MultipartFile multipartFile) { return errorMsg; }
 
     /**
      * 读EXCEL文件，获取信息集合

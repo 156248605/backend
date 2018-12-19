@@ -1,4 +1,4 @@
-package com.elex.oa.controller.hr;
+package com.elex.oa.controller.restructure_hr;
 
 import com.elex.oa.service.restructure_hrService.*;
 import org.springframework.beans.factory.annotation.Autowired;
