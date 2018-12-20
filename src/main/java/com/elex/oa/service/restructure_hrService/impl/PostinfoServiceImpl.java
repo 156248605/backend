@@ -12,7 +12,7 @@ import com.elex.oa.util.hr_util.HrUtilsTemp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: DOTO
@@ -57,6 +57,52 @@ public class PostinfoServiceImpl implements IPostinfoService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Map<String, Object> getPostTree() {
+        Map<String,Object> respMap = new HashMap<>();
+        List<Postinfo> postinfoList = iPostinfoDao.selectByEntity(new Postinfo(null, "top"));
+        respMap.put("title",postinfoList.get(0).getPostname());
+        respMap.put("code",postinfoList.get(0).getPostcode());
+        respMap.put("ordercode",postinfoList.get(0).getOrdercode());
+        respMap.put("expand",true);
+        //获取children值
+        respMap = getRespMapByParentcode(postinfoList.get(0).getPostcode(),respMap);
+        return respMap;
+    }
+
+    //获得岗位树的数据
+    private Map<String, Object> getRespMapByParentcode(String parentcode,Map<String,Object> respMap){
+        List<Postinfo> postinfoList = iPostinfoDao.selectByEntity(new Postinfo(null, parentcode));
+        if(postinfoList==null)return respMap;
+        List<Map<String, Object>> children = new ArrayList<>();
+        for (Postinfo p:postinfoList
+        ) {
+            Map<String,Object> respMapTemp = new HashMap<>();
+            respMapTemp.put("title",p.getPostname());
+            respMapTemp.put("code",p.getPostcode());
+            respMapTemp.put("ordercode",p.getOrdercode());
+            respMap.put("expand",true);
+            respMapTemp = getRespMapByParentcode(p.getPostcode(), respMapTemp);
+            children.add(respMapTemp);
+        }
+        respMap.put("children",getOrderedChildren(children));
+        return respMap;
+    }
+
+    //获得排序后的子节点
+    private List<Map<String, Object>>  getOrderedChildren(List<Map<String, Object>> children){
+        //将子节点排序
+        children.sort(new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                Integer ordercode1 = Integer.parseInt((String)(o1.get("ordercode")));
+                Integer ordercode2 = Integer.parseInt((String)(o2.get("ordercode")));
+                return ordercode1.compareTo(ordercode2);
+            }
+        });
+        return children;
     }
 
     private void updateNodelevelByParent_postcode(String parent_postcode,String parent_nodelevel){

@@ -132,6 +132,6 @@ public class DepartmentInfoController {
             @RequestParam("file") MultipartFile multipartFile
     ){
         Map<String, String> respMap = iDeploginfoService.importDeploginformations(multipartFile);
-        return respMap.size()==0?RespUtil.successResp("200","导入成功！",null):RespUtil.successResp("500","导入失败！",null);
+        return respMap.size()==0?RespUtil.successResp("200","导入成功！",null):RespUtil.successResp("500","导入失败！",respMap);
     }
 }    

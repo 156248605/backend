@@ -1,5 +1,6 @@
 package com.elex.oa.entity.restructure_hrentity;
 
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -26,6 +27,15 @@ public class Postinfo implements Serializable {
     private String state;//状态
     private String ordercode;//顺序码
     private String node_level;//层级
+
+    @Transient
+    private Postinfo parentpost;
+    @Transient
+    private String postrank;
+    @Transient
+    private String functionaltype;
+    @Transient
+    private String childrenPostnames;//下级岗位名称分隔符';'
 
     public Postinfo() {
     }
@@ -165,6 +175,38 @@ public class Postinfo implements Serializable {
 
     public void setNode_level(String node_level) {
         this.node_level = node_level;
+    }
+
+    public Postinfo getParentpost() {
+        return parentpost;
+    }
+
+    public void setParentpost(Postinfo parentpost) {
+        this.parentpost = parentpost;
+    }
+
+    public String getPostrank() {
+        return postrank;
+    }
+
+    public void setPostrank(String postrank) {
+        this.postrank = postrank;
+    }
+
+    public String getFunctionaltype() {
+        return functionaltype;
+    }
+
+    public void setFunctionaltype(String functionaltype) {
+        this.functionaltype = functionaltype;
+    }
+
+    public String getChildrenPostnames() {
+        return childrenPostnames;
+    }
+
+    public void setChildrenPostnames(String childrenPostnames) {
+        this.childrenPostnames = childrenPostnames;
     }
 
     @Override
