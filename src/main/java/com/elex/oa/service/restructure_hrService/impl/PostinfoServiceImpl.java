@@ -82,6 +82,14 @@ public class PostinfoServiceImpl implements IPostinfoService {
         return iPostinfoDao.selectByEntity(new Postinfo(null,null,"1"));
     }
 
+    @Override
+    public Boolean validateByPostcode(String postcode) {
+        Postinfo postTemp = getPostinfoByPostcode(postcode);
+        if(null==postTemp)return false;
+        return true;
+    }
+
+
     //根据岗位（粗略的信息）获得详细的岗位信息
     private Postinfo getPostinfoDetailByPostinfo(Postinfo postinfo) {
         if(null==postinfo)return postinfo;
@@ -127,6 +135,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
         return children;
     }
 
+    //根据父节点的postcode和父节点的node_level来级联更新它的所有子节点的层级
     private void updateNodelevelByParent_postcode(String parent_postcode,String parent_nodelevel){
         String current_postlevel = (Integer.parseInt(parent_nodelevel)+1)+"";
         List<Postinfo> tempPostinfoList = iPostinfoDao.selectByEntity(new Postinfo(null, parent_postcode));
@@ -140,6 +149,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
         }
     }
 
+    //添加一条岗位信息并返回postcode(主键)
     private String getPostcodeByAddPostinfo(Postinfo postinfo) {
         Postinfo temPostinfo = getPostinfoByPostcode(postinfo.getPostcode());
         if(null!=temPostinfo)return null;
@@ -147,6 +157,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
         return postinfo.getPostcode();
     }
 
+    //根据旧对象（Post）获得新对象（Postinfo）
     private Postinfo getNewPostinfoByPost(Post p) {
         Postinfo postinfo = new Postinfo();
         postinfo.setPostcode(p.getPostcode());
@@ -169,6 +180,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
         return postinfo;
     }
 
+    //根据tb_id_post表的id查询岗位编号（已过时）
     private String getPostcodeByPostid(Integer parentpostid) {
         Post post = iPostDao.selectPostByPostid(parentpostid);
         if(null==post)return "top";

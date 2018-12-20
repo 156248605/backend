@@ -15,4 +15,6 @@ public interface IPostinfoService {
     Postinfo queryOnePostByPostcode(String postcode);
 
     List<Postinfo> queryPostinfoList();
+
+    Boolean validateByPostcode(String postcode);
 }

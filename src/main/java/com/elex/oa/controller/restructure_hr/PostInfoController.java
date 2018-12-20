@@ -2,6 +2,7 @@ package com.elex.oa.controller.restructure_hr;
 
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.service.restructure_hrService.IPostinfoService;
+import com.elex.oa.util.resp.RespUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,4 +46,12 @@ public class PostInfoController {
         return iPostinfoService.queryPostinfoList();
     }
 
+    @RequestMapping("/validateByPostcode")
+    @ResponseBody
+    public Object validateByPostcode(
+            @RequestParam("postcode")String postcode
+    ){
+        Boolean aBoolean = iPostinfoService.validateByPostcode(postcode);
+        return aBoolean? RespUtil.successResp("200","岗位编号已存在！",null):RespUtil.successResp("500","岗位编号不存在",null);
+    }
 }
