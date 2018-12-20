@@ -1,0 +1,51 @@
+=================================================================================
+共四张表：
+1.线索表tb_business_clue
+2.商机表tb_business_opportunity
+3.附件表tb_business_attachment
+4.跟踪日志表（包括当前和历史）tb_business_track
+=================================================================================
+线索表（tb_business_clue）：
+编码（主键）：code varchar
+名称：cluename varchar
+跟踪描述(外键)(跟踪描述表里面的编码)：trackid varchar
+来源：resource varchar
+创建时间：discovertime varchar
+客户：custom varchar
+联系人：contact varchar
+联系人电话：contactphone varchar
+业主方：owner varchar
+销售人（外键）：sale_employeenumber varchar
+方案人（外键）：scheme_employeenumber varchar
+状态：state varchar
+线索价值：clue_price varchar
+=================================================================================
+商机表（tb_business_opportunity）：
+编码（主键）：code varchar
+线索编码（外键）(线索编码)：clueid varchar
+产品名称：opportunityname varchar
+跟踪描述(外键)(跟踪描述表里面的编码)：trackid varchar
+来源：resource varchar
+创建时间：discovertime varchar
+客户：custom varchar
+联系人：contact varchar
+联系人电话：contactphone varchar
+业主方：owner varchar
+客户决策人：custom_decisionmaker varchar
+客户预算：custom_budget varchar
+商机预算：opportunity_budget varchar
+销售人（外键）：sale_employeenumber varchar
+方案人（外键）：scheme_employeenumber varchar
+状态：state varchar
+价值：opportunity_price varchar
+=================================================================================
+附件表（tb_business_attachment）：
+编码（主键）：code varchar
+线索或商机编码（外键）：dependence_code varchar
+附件地址：attachment_address varchar
+=================================================================================
+跟踪日志表（包括当前和历史）(tb_business_track):
+编码（主键）：code varchar
+线索或商机编码（外键）：dependence_code varchar
+跟踪内容：track_content varchar
+变更时间：track_date varchar
