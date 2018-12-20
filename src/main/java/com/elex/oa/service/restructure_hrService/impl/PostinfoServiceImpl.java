@@ -1,6 +1,5 @@
 package com.elex.oa.service.restructure_hrService.impl;
 
-import com.alibaba.druid.util.StringUtils;
 import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
@@ -9,6 +8,7 @@ import com.elex.oa.entity.hr_entity.Post;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.service.restructure_hrService.IPostinfoService;
 import com.elex.oa.util.hr_util.HrUtilsTemp;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,9 +27,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
     @Resource
     IPostinfoDao iPostinfoDao;
     @Resource
-    IHRsetDao ihRsetDao;
-    @Resource
-    IHrdatadictionaryDao iHrdatadictionaryDao;
+    HrUtilsTemp hrUtilsTemp;
 
     @Override
     public Boolean changeTable() {
@@ -70,6 +68,30 @@ public class PostinfoServiceImpl implements IPostinfoService {
         //获取children值
         respMap = getRespMapByParentcode(postinfoList.get(0).getPostcode(),respMap);
         return respMap;
+    }
+
+    @Override
+    public Postinfo queryOnePostByPostcode(String postcode) {
+        Postinfo postinfo = getPostinfoByPostcode(postcode);
+        postinfo = getPostinfoDetailByPostinfo(postinfo);
+        return postinfo;
+    }
+
+    @Override
+    public List<Postinfo> queryPostinfoList() {
+        return iPostinfoDao.selectByEntity(new Postinfo(null,null,"1"));
+    }
+
+    //根据岗位（粗略的信息）获得详细的岗位信息
+    private Postinfo getPostinfoDetailByPostinfo(Postinfo postinfo) {
+        if(null==postinfo)return postinfo;
+        //获得职能类型
+        postinfo.setFunctionaltype(hrUtilsTemp.getDatavalueByDatacode(postinfo.getFunctionaltypeid()));
+        //获取上级岗位
+        postinfo.setParentpost(iPostinfoDao.selectByPrimaryKey(postinfo.getParent_postcode()));
+        //获取职级
+        postinfo.setPostrank(hrUtilsTemp.getDatavalueByDatacode(postinfo.getPostrankid()));
+        return postinfo;
     }
 
     //获得岗位树的数据
@@ -153,6 +175,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
         return post.getPostcode();
     }
 
+    //根据岗位编号获得岗位信息（粗略信息）
     private Postinfo getPostinfoByPostcode(String postcode) {
         if(StringUtils.isEmpty(postcode))return null;
         List<Postinfo> postinfoList = iPostinfoDao.selectByEntity(new Postinfo(postcode));

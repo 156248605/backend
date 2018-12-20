@@ -1,5 +1,7 @@
 package com.elex.oa.entity.restructure_hrentity;
 
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 
@@ -9,8 +11,10 @@ import java.io.Serializable;
  * @Date 2018\11\27 0027 18:35
  * @Version 1.0
  **/
+@Table(name = "tb_id_post_info")
 public class Postinfo implements Serializable {
     private static final long serialVersionUID = -8477580653993244148L;
+    @Id
     private String postcode; //岗位编码(主键)
     private String parent_postcode; //上级岗位编码
     private String postname; //名称
@@ -47,6 +51,12 @@ public class Postinfo implements Serializable {
     public Postinfo(String postcode, String parent_postcode) {
         this.postcode = postcode;
         this.parent_postcode = parent_postcode;
+    }
+
+    public Postinfo(String postcode, String parent_postcode, String state) {
+        this.postcode = postcode;
+        this.parent_postcode = parent_postcode;
+        this.state = state;
     }
 
     public String getPostcode() {

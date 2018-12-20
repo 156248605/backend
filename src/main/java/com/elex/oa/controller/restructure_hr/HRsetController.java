@@ -1,4 +1,4 @@
-package com.elex.oa.controller.hr;
+package com.elex.oa.controller.restructure_hr;
 
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.HRset;

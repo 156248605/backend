@@ -21,47 +21,6 @@
 		<result column="node_level" property="node_level" />
 	</resultMap>
 
-	<insert id="insert" parameterType="Postinfo">
-		insert into tb_id_post_info
-		(
-		 postcode,
-		 parent_postcode,
-		 postname,
-		 functionaltypeid,
-		 postfamilyid,
-		 postgradeid,
-		 postrankid,
-		 postlevelid,
-		 organization,
-		 jobdescription,
-		 duty,
-		 entryrequirements,
-		 dutyfile,
-		 state,
-		 ordercode,
-		 node_level
-		 )
-		VALUES
-		(
-		#{postcode},
-		#{parent_postcode},
-		#{postname},
-		#{functionaltypeid},
-		#{postfamilyid},
-		#{postgradeid},
-		#{postrankid},
-		#{postlevelid},
-		#{organization},
-		#{jobdescription},
-		#{duty},
-		#{entryrequirements},
-		#{dutyfile},
-		#{state},
-		#{ordercode},
-		#{node_level}
-		)
-	</insert>
-
 	<select id="selectByEntity" parameterType="Postinfo" resultMap="postinfoMapper">
 		select postcode,parent_postcode,postname,functionaltypeid,postfamilyid,postgradeid,postrankid,postlevelid,organization,jobdescription,duty,entryrequirements,dutyfile,state,ordercode,node_level
 		from tb_id_post_info

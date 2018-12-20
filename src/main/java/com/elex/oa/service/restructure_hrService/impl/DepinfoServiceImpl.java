@@ -561,6 +561,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
 
     //根据部门（粗略的信息）获得详细的部门信息
     private Depinfo getDepinfoDetailByDepinfo(Depinfo depinfo){
+        if(null==depinfo)return depinfo;
         //获取职能类型
           depinfo.setFunctionaltype(hrUtilsTemp.getDatavalueByDatacode(depinfo.getFunctionaltypeid()));
         //获取部门类型

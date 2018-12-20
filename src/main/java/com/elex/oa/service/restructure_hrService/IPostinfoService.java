@@ -1,5 +1,8 @@
 package com.elex.oa.service.restructure_hrService;
 
+import com.elex.oa.entity.restructure_hrentity.Postinfo;
+
+import java.util.List;
 import java.util.Map;
 
 public interface IPostinfoService {
@@ -8,4 +11,8 @@ public interface IPostinfoService {
     Boolean updateNodelevel();
 
     Map<String,Object> getPostTree();
+
+    Postinfo queryOnePostByPostcode(String postcode);
+
+    List<Postinfo> queryPostinfoList();
 }
