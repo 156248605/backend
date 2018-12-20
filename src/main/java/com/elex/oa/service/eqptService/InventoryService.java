@@ -32,7 +32,7 @@ public interface InventoryService {
     List showInvId(HttpServletRequest request) ;
 
     // 查询盘点的仓库内物料情况(选物料)
-    List<Material> chooseMat(HttpServletRequest request);
+    // List<Material> chooseMat(HttpServletRequest request);
 
     // 查询盘点的仓库内物料情况(选物料)
     List<Material> matinrept(HttpServletRequest request);
@@ -51,9 +51,7 @@ public interface InventoryService {
 
 
     // 定时流程
-    List<HashMap<String, Object>> insertInv();
-
-    List<HashMap<String, Object>> testInv();
+    List<HashMap<String, Object>> insertInv(String instid);
 
     List getInvId();
 }

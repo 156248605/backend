@@ -1,6 +1,7 @@
 package com.elex.oa.dao.eqptDao;
 
 import com.elex.oa.entity.eqpt.Material;
+import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public interface MaterialMtMapper {
 
     List<Material> searchDetail(Material material);
 
+    Material MaterialDetail(Material material);
     /*Material MaterialMtId(Material material);
 
     void saveMaterialMt(Material material);
@@ -26,4 +28,6 @@ public interface MaterialMtMapper {
     String recordin(Material material);
     String recordout(Material material);
     String recordshift(Material material);
+
+    List<Material> detailInRept(Repository repository);
 }

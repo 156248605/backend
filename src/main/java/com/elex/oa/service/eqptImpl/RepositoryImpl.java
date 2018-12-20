@@ -61,6 +61,7 @@ public class RepositoryImpl implements RepositoryService {
             List<Repository> listR = repositoryMapper.RepositoryList();
             return new PageInfo<>(listR);
         } else {
+            PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setReptCategory(REPTCATEGORY);
             repository.setReptCateC(REPTCATEGORYC);

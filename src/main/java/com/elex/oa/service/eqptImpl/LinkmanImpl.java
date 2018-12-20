@@ -73,6 +73,7 @@ public class LinkmanImpl implements LinkmanService{
             List<Linkman> listL = linkmanMapper.LinkmanList();
             return new PageInfo<>(listL);
         }else {
+            PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Linkman> listL = linkmanMapper.searchFor(linkman);
             return new PageInfo<>(listL);
         }

@@ -75,12 +75,12 @@ public class InventoryController {
         return dateToId;
     }
 
-    @RequestMapping("/chooseMat")
+    /*@RequestMapping("/chooseMat")
     @ResponseBody
     public List<Material> chooseMat(HttpServletRequest request){
         List<Material> ListMir = inventoryImpl.chooseMat(request);
         return ListMir;
-    }
+    }*/
 
     @RequestMapping("/matinrept")
     @ResponseBody
@@ -111,5 +111,11 @@ public class InventoryController {
     @ResponseBody
     public List getInvId(){
         return inventoryImpl.getInvId();
+    }
+
+    @RequestMapping("/insertInv")
+    @ResponseBody
+    public List<HashMap<String, Object>> insertInv(String instid){
+        return inventoryImpl.insertInv(instid);
     }
 }

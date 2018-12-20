@@ -84,6 +84,7 @@ public class PartnerImpl implements PartnerService {
             List<Partner> listP = partnerMapper.PartnerList();
             return new PageInfo<>(listP);
         } else {
+            PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Partner partner = new Partner();
             partner.setPnCategory(pnCategory);
             partner.setPnCateC(pnCategoryC);

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface ShiftRepositoryMapper {
-    List<Repository> showRepository();
+    List<Repository> showRepository(Repository repository);
 
     List<Repository> searchShift(Repository repository);
 
@@ -66,7 +66,7 @@ public interface ShiftRepositoryMapper {
     // 删除草稿
     void deleteDraft(Repository repository);
 
-    void insertDraft(String shiftId, String shiftTime, String shiftReptC, String shiftNum, String shiftInfo, String outRept, String outPost, String inRept, String inPost, String materialId, String materialName, String spec, String unit, String sn, String bn, String remark, String projid, String projname, String c, String firstOne, String secondOne, String thirdOne, String fourthOne);
+    void insertDraft(String shiftId, String shiftTime, String shiftReptC, String shiftNum, String shiftInfo, String outRept, String outPost, String inRept, String inPost, String materialId, String materialName, String spec, String unit, String sn, String bn, String remark, String projid, String projname, String c, String firstOne, String secondOne, String thirdOne, String fourthOne, String AUTHOR);
 
     List<HashMap<String, Object>> noticeChild(String wdbh);
 
@@ -77,4 +77,6 @@ public interface ShiftRepositoryMapper {
     List<Repository> allNoticeJ();
 
     List<Repository> allNoticeS();
+    List<Repository> allNoticeG();
+    List<Repository> allNoticeT();
 }

@@ -67,6 +67,9 @@ public interface InRepositoryService {
     // 保存草稿
     void insertDraft(HttpServletRequest request) throws ParseException;
 
+    // 删除草稿
+    void deleteDraft(HttpServletRequest request);
+
     // 确认是否是草稿
     String checkDraft(HttpServletRequest request);
 

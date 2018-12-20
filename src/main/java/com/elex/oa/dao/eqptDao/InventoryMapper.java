@@ -31,7 +31,7 @@ public interface InventoryMapper {
     // 打开草稿内容
     List<Repository> openDraft(Repository repository);
 
-    List<Material> chooseMat(Material material);
+    //List<Material> chooseMat(Material material);
 
     List<Repository> reptlist();
 
@@ -51,7 +51,7 @@ public interface InventoryMapper {
     List getInvId();
 
     // 获取流程信息
-    List<HashMap<String, Object>> invInfo(String INST_STATUS_);
+    List<HashMap<String, Object>> invInfo(String INST_ID_);
 
     List<HashMap<String, Object>> invDetail(String REF_ID_);
 
@@ -61,4 +61,5 @@ public interface InventoryMapper {
     void changeNum (Repository repository);
 
     void changeNumMat (Repository repository);
+
 }

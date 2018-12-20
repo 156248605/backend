@@ -61,6 +61,10 @@ public class InRepositoryController {
     @ResponseBody
     public void DeleteInRept (HttpServletRequest request) { inRepositoryImpl.DeleteInRept(request); }
 
+    @RequestMapping("/deleteDraft")
+    @ResponseBody
+    public void deleteDraft (HttpServletRequest request) { inRepositoryImpl.deleteDraft(request); }
+
     @RequestMapping("/showinid")
     @ResponseBody
     public List showInId (HttpServletRequest request) {

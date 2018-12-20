@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface InRepositoryMapper {
-    List<Repository> findAll();
+    List<Repository> findAll(Repository repository);
 
     void insertNew(String REPTcategory, String INID, String INTIME, String INNUM, String reptCategory, String inId, String inTime, String inNum, String inInfo, String reptId, String postId, String materialId, String materialName, String spec, String unit, String sn, String bn, String inReptC, String check, String remark, String projId, String projName, String c);
 
@@ -44,7 +44,7 @@ public interface InRepositoryMapper {
     List<Repository> findDraft();
 
     // 添加草稿
-    void insertDraft(String repTcategory, String inid, String intime, String innum, String ininfo, String reptid, String postid, String materialid, String materialname, String spec, String unit, String sn, String bn, String inreptc, String check, String remark, String projid, String projname, String c, String firstOne, String secondOne, String thirdOne, String fourthOne);
+    void insertDraft(String repTcategory, String inid, String intime, String innum, String ininfo, String reptid, String postid, String materialid, String materialname, String spec, String unit, String sn, String bn, String inreptc, String check, String remark, String projid, String projname, String c, String firstOne, String secondOne, String thirdOne, String fourthOne,String author);
 
     // 确认草稿
     String checkDraft(Repository repository);

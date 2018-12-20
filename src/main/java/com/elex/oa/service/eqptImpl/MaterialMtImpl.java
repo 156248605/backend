@@ -3,6 +3,7 @@ package com.elex.oa.service.eqptImpl;
 import com.elex.oa.dao.eqptDao.MaterialMtMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
+import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.MaterialMtService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +22,15 @@ public class MaterialMtImpl implements MaterialMtService {
     public PageInfo<Material> showDetail(Page page) {
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         List<Material> listM = materialMtMapper.detailList();
+        return new PageInfo<>(listM);
+    }
+
+    @Override
+    public PageInfo<Material> materialInRept(Page page,HttpServletRequest request) {
+        PageHelper.startPage(page.getCurrentPage(),page.getRows());
+        Repository repository = new Repository();
+        repository.setReptId(request.getParameter("reptId"));
+        List<Material> listM = materialMtMapper.detailInRept(repository);
         return new PageInfo<>(listM);
     }
 

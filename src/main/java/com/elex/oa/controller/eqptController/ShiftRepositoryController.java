@@ -213,4 +213,8 @@ public class ShiftRepositoryController {
         PageInfo<Repository> list = shiftRepositoryImpl.showNotice(page,request);
         return list;
     }
+
+    @RequestMapping("/deleteDraft")
+    @ResponseBody
+    public void deleteDraft (HttpServletRequest request) { shiftRepositoryImpl.deleteDraft(request); }
 }

@@ -28,12 +28,6 @@ public class InventoryImpl implements InventoryService {
     @Resource
     private InventoryMapper inventoryMapper;
 
-    @Override
-    public List<HashMap<String, Object>> testInv(){
-        List<HashMap<String, Object>> list = inventoryMapper.test();
-        return list;
-    }
-
     // 显示所有信息
     @Override
     public PageInfo<Repository> showAllInfo(Page page) {
@@ -99,18 +93,22 @@ public class InventoryImpl implements InventoryService {
 
     }
 
-    // 定时流程
+
+    // 流程结束同步
     @Override
-    public List<HashMap<String, Object>> insertInv(){
-        String INST_STATUS_ = "SUCCESS_END";
-        List<HashMap<String, Object>> list1 = inventoryMapper.invInfo(INST_STATUS_);
+    public List<HashMap<String, Object>> insertInv(String instid){
+        String INST_ID_ = String.valueOf(Integer.parseInt(instid) + 1);
+        //String INST_ID_ = "2600000010651031";
+        List<HashMap<String, Object>> list1 = inventoryMapper.invInfo(INST_ID_);
         if (list1.size() > 0) {
             String wdbh = list1.get(0).get("ID_").toString();// 两张表同样部分
             String PAL = list1.get(0).get("F_JEYKXX").toString();// 盈亏金额小写
             String PALCAL = "";// 盈亏金额大写
+            String invId = list1.get(0).get("F_PDBH").toString();
             List<HashMap<String, Object>> list = inventoryMapper.invDetail(wdbh);
             for (int i = 0; i < list.size(); i++){
-                Calendar cal= Calendar.getInstance();
+                Repository repository = new Repository();
+                /*Calendar cal= Calendar.getInstance();
                 String y,m;
                 y = String.valueOf(cal.get(Calendar.YEAR));
                 m = String.valueOf((cal.get(Calendar.MONTH)+1 > 10)?cal.get(Calendar.MONTH)+1:"0"+String.valueOf(cal.get(Calendar.MONTH)+1) );
@@ -122,8 +120,8 @@ public class InventoryImpl implements InventoryService {
                     result = String.valueOf(parseInt(showInvId.get(showInvId.size()-1).toString())+1);
                 }else {
                     result = y+m+"0001";
-                }
-                repository.setInvId(result);
+                }*/
+                repository.setInvId(invId);// 1.确定盘点单号
                 String invTime = list.get(i).get("UPDATE_TIME_").toString();// 2.获取盘点时间(需要修改)
                 String materialId = list.get(i).get("F_WPBM").toString();// 3.获取物料Id(需要修改)
                 String materialName = list.get(i).get("F_WPMC").toString();// 4.获取物料名称(需要修改)
@@ -138,8 +136,6 @@ public class InventoryImpl implements InventoryService {
                 String palPer = list.get(i).get("F_PDYK").toString();// 13.获取物品盈亏(需要修改)
                 String instId = list.get(i).get("REF_ID_").toString();// 14.INSTID
                 // 这两个值在主表
-                String pal = PAL;// 14.获取总盈亏(小写)(需要修改)
-                String palCal = PALCAL;// 15.获取总盈亏(大写)(需要修改)
                 repository.setInvTime(invTime);
                 repository.setMaterialId(materialId);
                 repository.setMaterialName(materialName);
@@ -153,8 +149,8 @@ public class InventoryImpl implements InventoryService {
                 repository.setUnit(String.valueOf(parseInt(numInv) - parseInt(num)));
                 repository.setRemark(remark);
                 repository.setPalPer(palPer);
-                repository.setPal(pal);
-                repository.setPalCal(palCal);
+                repository.setPal(PAL);
+                repository.setPalCal(PALCAL);
                 repository.setInstid(instId);
                 inventoryMapper.changeNum(repository);// 修改数据(detail)
                 inventoryMapper.changeNumMat(repository);// 修改数据(material)
@@ -252,6 +248,7 @@ public class InventoryImpl implements InventoryService {
         inventoryMapper.delete(repository);
     }
 
+    // 修改草稿
     @Override
     public void changeInfo(HttpServletRequest request) throws ParseException{
         String INVLIST = request.getParameter("invList");
@@ -282,6 +279,7 @@ public class InventoryImpl implements InventoryService {
         }
     }
 
+    // 确定盘点单号
     @Override
     public List showInvId(HttpServletRequest request){
         String dateToId = request.getParameter("date");
@@ -304,14 +302,14 @@ public class InventoryImpl implements InventoryService {
         }
     }
 
-    @Override
+    /*@Override
     public List<Material> chooseMat(HttpServletRequest request) {
         String id = request.getParameter("pdbh");
         Material material = new Material();
         material.setId(id);
         List<Material> listMIR = inventoryMapper.chooseMat(material);
         return listMIR;
-    }
+    }*/
 
     @Override
     public List<Material> matinrept(HttpServletRequest request) {

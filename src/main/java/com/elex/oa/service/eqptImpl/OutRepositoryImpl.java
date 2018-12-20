@@ -47,7 +47,9 @@ public class OutRepositoryImpl implements OutRepositoryService {
     @Override
     public PageInfo<Repository> ShowRepository(Page page, HttpServletRequest request){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Repository> list =  outRepositoryMapper.findAll();
+        Repository repository = new Repository();
+        repository.setAuthor(request.getParameter("author"));
+        List<Repository> list =  outRepositoryMapper.findAll(repository);
         return new PageInfo<>(list);
     }
 
@@ -74,7 +76,9 @@ public class OutRepositoryImpl implements OutRepositoryService {
         String projNameC = request.getParameter("projNameC");
         if (projId.equals("") && projName.equals("") && reptId.equals("") && reptCategory.equals("") && postId.equals("") && outId.equals("") && sn.equals("") && bn.equals("") && outTime.equals("")){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
-            List<Repository> listR = outRepositoryMapper.findAll();
+            Repository repository = new Repository();
+            repository.setAuthor(request.getParameter("author"));
+            List<Repository> listR = outRepositoryMapper.findAll(repository);
             return new PageInfo<>(listR);
         } else {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
@@ -547,13 +551,14 @@ public class OutRepositoryImpl implements OutRepositoryService {
             } else if (number.equals("批次号")) {
                 bn = listOUT.get(i).get("theMatBnSn").toString();
                 sn = "无";
-            } else if (number.equals("否")) {
+            } /*else if (number.equals("否")) {
                 sn = "无";
                 bn = "无";
-            } else {
+            }*/ else {
                 sn = " ";
                 bn = " ";
             }
+            String AUTHOR = request.getParameter("author");
             Repository repository = new Repository();
             repository.setMaterialId(MATERIALID);
             repository.setPostId(POSTID);
@@ -563,32 +568,45 @@ public class OutRepositoryImpl implements OutRepositoryService {
             repository.setSn(sn);
             repository.setProjId(PROJID);
             repository.setProjName(PROJNAME);
+            repository.setAuthor(AUTHOR);
             String REPTcategory = "";
             if (!REPTID.equals("")) {
                 REPTcategory = repositoryMapper.searchCategory(repository);
             }
             String C = "";
-            outRepositoryMapper.insertDraft(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
+            outRepositoryMapper.insertDraft(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne,AUTHOR);
         }
+    }
+
+    // 删除草稿
+    @Override
+    public void deleteDraft(HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setInId(request.getParameter("inId"));
+        outRepositoryMapper.deleteDraft(repository);
     }
 
 
     // 确认是否是草稿
     @Override
     public String checkDraft(HttpServletRequest request) {
-        String a = "";
+        String draftButton = "";
         String outId = request.getParameter("outId");
         String materialId = request.getParameter("materialId");
+        String author = request.getParameter("author");
         Repository repository = new Repository();
-        repository.setInId(outId);
+        repository.setOutId(outId);
         repository.setMaterialId(materialId);
         String result = outRepositoryMapper.checkDraft(repository);
-        if (result != null) {
-            a = "1";
-        }else {
-            a = "0";
+        if (result == null) {
+            result = "";
         }
-        return a;
+        if (result.equals(author)) {
+            draftButton = "1";
+        }else {
+            draftButton = "0";
+        }
+        return draftButton;
     }
 
     // 返回草稿信息

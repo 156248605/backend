@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper
 public interface OutRepositoryMapper {
-    List<Repository> findAll();
+    List<Repository> findAll(Repository repository);
 
     void insertNew(String REPTcategory, String OUTID, String OUTTIME, String OUTNUM, String OUTINFO, String reptCategory, String outId, String outTime, String outNum, String outInfo, String reptId, String position, String materialId, String materialName, String spec, String unit, String sn, String bn, String outReptC, String remark, String projId, String projName);
 
@@ -60,7 +60,7 @@ public interface OutRepositoryMapper {
     List<Repository> findDraft();
 
     // 添加草稿
-    void insertDraft(String repTcategory, String outid, String outtime, String outnum, String outinfo, String reptid, String postid, String materialid, String materialname, String spec, String unit, String sn, String bn, String outreptc, String remark, String projid, String projname, String c, String firstOne, String secondOne, String thirdOne, String fourthOne);
+    void insertDraft(String repTcategory, String outid, String outtime, String outnum, String outinfo, String reptid, String postid, String materialid, String materialname, String spec, String unit, String sn, String bn, String outreptc, String remark, String projid, String projname, String c, String firstOne, String secondOne, String thirdOne, String fourthOne, String AUTHOR);
 
     // 确认草稿
     String checkDraft(Repository repository);

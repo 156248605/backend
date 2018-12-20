@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.net.HttpRetryException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,7 +50,9 @@ public class InRepositoryImpl implements InRepositoryService {
     @Override
     public PageInfo<Repository> ShowRepository (Page page, HttpServletRequest request){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Repository> list = inRepositoryMapper.findAll();
+        Repository repository = new Repository();
+        repository.setAuthor(request.getParameter("author"));
+        List<Repository> list = inRepositoryMapper.findAll(repository);
         return new PageInfo<>(list);
     }
 
@@ -81,7 +84,9 @@ public class InRepositoryImpl implements InRepositoryService {
         // 查询判断
         if (projId.equals("") && projName.equals("") && reptId.equals("") && reptCategory.equals("") && postId.equals("") && inId.equals("") && sn.equals("") && bn.equals("") && inTime.equals("") && inNum.equals("") && materialId.equals("")){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
-            List<Repository> listR = inRepositoryMapper.findAll();
+            Repository repository = new Repository();
+            repository.setAuthor(request.getParameter("author"));
+            List<Repository> listR = inRepositoryMapper.findAll(repository);
             return new PageInfo<>(listR);
         } else {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
@@ -259,7 +264,8 @@ public class InRepositoryImpl implements InRepositoryService {
             material.setReptId(listIN.get(i).get("reptId").toString());
             material.setName(listIN.get(i).get("theMatName").toString());
             material.setSpec(listIN.get(i).get("theMatSpec").toString());
-            Material material1 = materialMapper.MaterialId(material);
+            Material material1 = materialMtMapper.MaterialDetail(material);
+            //Material material1 = materialMapper.MaterialId(material);
             material.setCategory(material1.getCategory());
             material.setBrand(material1.getBrand());
             material.setPrice(material1.getPrice());
@@ -455,7 +461,8 @@ public class InRepositoryImpl implements InRepositoryService {
                     material.setReptName(reptName);
                     material.setName(listIN.get(i).getMaterialName());
                     material.setSpec(listIN.get(i).getSpec());
-                    Material material1 = materialMapper.MaterialId(material);
+                    Material material1 = materialMtMapper.MaterialDetail(material);
+                    //Material material1 = materialMapper.MaterialId(material);
                     material.setCategory(material1.getCategory());
                     material.setBrand(material1.getBrand());
                     material.setPrice(material1.getPrice());
@@ -590,13 +597,14 @@ public class InRepositoryImpl implements InRepositoryService {
             } else if (number.equals("批次号")) {
                 bn = listIN.get(i).get("theMatBnSn").toString();
                 sn = "无";
-            } else if (number.equals("否")) {
+            } /*else if (number.equals("否")) {
                 sn = "无";
                 bn = "无";
-            } else {
+            }*/ else {
                 sn = " ";
                 bn = " ";
             }
+            String AUTHOR = request.getParameter("author");
             Repository repository = new Repository();
             repository.setInId(INID);
             repository.setMaterialId(MATERIALID);
@@ -612,32 +620,44 @@ public class InRepositoryImpl implements InRepositoryService {
             repository.setInInfo(ININFO);
             repository.setProjId(PROJID);
             repository.setProjName(PROJNAME);
+            repository.setAuthor(AUTHOR);
             String REPTcategory = "";
             if (!REPTID.equals("")) {
                 REPTcategory = repositoryMapper.searchCategory(repository);
             }
             String C = "";
-            inRepositoryMapper.insertDraft(REPTcategory, INID, INTIME, INNUM, ININFO, REPTID, POSTID, MATERIALID, MATERIALNAME, SPEC, UNIT, sn, bn,INREPTC, CHECK, REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
+            inRepositoryMapper.insertDraft(REPTcategory, INID, INTIME, INNUM, ININFO, REPTID, POSTID, MATERIALID, MATERIALNAME, SPEC, UNIT, sn, bn,INREPTC, CHECK, REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne,AUTHOR);
         }
     }
 
+    // 删除草稿
+    @Override
+    public void deleteDraft (HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setInId(request.getParameter("inId"));
+        inRepositoryMapper.deleteDraft(repository);
+    }
 
-    // 确认是否是草稿
+    // 确认是否是登陆者的草稿
     @Override
     public String checkDraft(HttpServletRequest request) {
-        String a = "";
+        String draftButton = "";
         String inId = request.getParameter("inId");
         String materialId = request.getParameter("materialId");
+        String author = request.getParameter("author");
         Repository repository = new Repository();
         repository.setInId(inId);
         repository.setMaterialId(materialId);
         String result = inRepositoryMapper.checkDraft(repository);
-        if (result != null) {
-            a = "1";
-        }else {
-            a = "0";
+        if (result == null) {
+            result = "";
         }
-        return a;
+        if (result.equals(author)) {
+            draftButton = "1";
+        }else {
+            draftButton = "0";
+        }
+        return draftButton;
     }
 
     // 返回草稿信息

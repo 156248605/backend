@@ -29,6 +29,13 @@ public class MaterialMtController {
         return list;
     }
 
+    @RequestMapping("/listInRept")
+    @ResponseBody
+    public PageInfo<Material> materialInRept(Page page,HttpServletRequest request){
+        PageInfo<Material> list = materialMtImpl.materialInRept(page,request);
+        return list;
+    }
+
     @RequestMapping("/search")
     @ResponseBody
     public PageInfo<Material> materialSearch(Page page, HttpServletRequest request){

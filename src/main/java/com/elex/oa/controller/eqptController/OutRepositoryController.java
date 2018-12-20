@@ -68,6 +68,10 @@ public class OutRepositoryController {
     @ResponseBody
     public void DeleteInRept (HttpServletRequest request) { outRepositoryImpl.DeleteOutRept(request); }
 
+    @RequestMapping("/deleteDraft")
+    @ResponseBody
+    public void deleteDraft (HttpServletRequest request) { outRepositoryImpl.deleteDraft(request); }
+
     @RequestMapping("/check")
     @ResponseBody
     public String checkId (HttpServletRequest request) {

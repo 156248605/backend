@@ -56,6 +56,7 @@ public class PositionServiceImpl implements PositionService {
             List<Repository> listP = positionMapper.PositionList();
             return new PageInfo<>(listP);
         } else {
+            PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setReptId(REPTID);
             repository.setReptIdC(REPTIDC);

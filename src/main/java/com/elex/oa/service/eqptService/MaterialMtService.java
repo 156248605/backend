@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface MaterialMtService {
     PageInfo<Material> showDetail(Page page);
+
+    PageInfo<Material> materialInRept(Page page, HttpServletRequest request);
+
     // 查找物料
     PageInfo<Material> searchDetail(Page page, HttpServletRequest request);
 

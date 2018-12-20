@@ -35,18 +35,8 @@ public class MaterialImpl implements MaterialService {
     @Override
     public PageInfo<Material> searchMaterial(Page page, HttpServletRequest request){
         String ID = request.getParameter("id");
-        /*List<String> listID = null;
-        if (ID.length() > 2) {
-            JSONArray jsonArrayID = JSONArray.fromObject(ID);
-            listID = (List) JSONArray.toCollection(jsonArrayID);
-        }*/
         String IDC = request.getParameter("idC");
         String NAME = request.getParameter("name");
-        /*List<String> listName = null;
-        if (NAME.length() > 2) {
-            JSONArray jsonArrayNAME = JSONArray.fromObject(NAME);
-            listName = (List) JSONArray.toCollection(jsonArrayNAME);
-        }*/
         String NAMEC = request.getParameter("nameC");
         String MAT = request.getParameter("material");
         String MATC = request.getParameter("materialC");
@@ -78,17 +68,20 @@ public class MaterialImpl implements MaterialService {
         String BSMANAGEC = request.getParameter("BSManageC");
         String NEEDCHECK = request.getParameter("needCheck");
         String NEEDCHECKC = request.getParameter("needCheckC");
+        String FIXPOSITION = request.getParameter("fixPosition");
+        String FIXPOSITIONC = request.getParameter("fixPositionC");
         String MATERIALSTATE = request.getParameter("materialState");
         String MATERIALSTATEC = request.getParameter("materialStateC");
         String SINGLEMANAGE = request.getParameter("singleManage");
         String SINGLEMANAGEC = request.getParameter("singleManageC");
         String NOTSINGLE = request.getParameter("notSingle");
         String NOTSINGLEC = request.getParameter("notSingleC");
-        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && REMARK.equals("") && SPEC.equals("") && NOTSINGLE.equals("") && SINGLEMANAGE.equals("") && BSMANAGE.equals("") && NEEDCHECK.equals("") && MATERIALSTATE.equals("")) {
+        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && REMARK.equals("") && SPEC.equals("") && NOTSINGLE.equals("") && SINGLEMANAGE.equals("") && BSMANAGE.equals("") && FIXPOSITION.equals("") && NEEDCHECK.equals("") && MATERIALSTATE.equals("")) {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
             List<Material> listM = materialMapper.MaterialList();
             return new PageInfo<>(listM);
         }else {
+            PageHelper.startPage(page.getCurrentPage(), page.getRows());
             Material material = new Material();
             material.setId(ID);
             material.setIdC(IDC);
@@ -118,6 +111,8 @@ public class MaterialImpl implements MaterialService {
             material.setBSManageC(BSMANAGEC);
             material.setNeedCheck(NEEDCHECK);
             material.setNeedCheckC(NEEDCHECKC);
+            material.setFixPosition(FIXPOSITION);
+            material.setFixPositionC(FIXPOSITIONC);
             material.setMaterialState(MATERIALSTATE);
             material.setMaterialStateC(MATERIALSTATEC);
             material.setSingleManage(SINGLEMANAGE);
@@ -167,6 +162,7 @@ public class MaterialImpl implements MaterialService {
         material.setMaterial(request.getParameter("material"));
         material.setBrand(request.getParameter("brand"));
         material.setBSManage(request.getParameter("BSManage"));
+        material.setFixPosition(request.getParameter("fixPosition"));
         material.setNeedCheck(request.getParameter("needCheck"));
         material.setMaterialState(request.getParameter("materialState"));
         material.setSingleManage(request.getParameter("singleManage"));
@@ -217,6 +213,7 @@ public class MaterialImpl implements MaterialService {
         material.setMaxlimit(request.getParameter("maxlimit"));
         material.setMinlimit(request.getParameter("minlimit"));
         material.setBSManage(request.getParameter("BSManage"));
+        material.setFixPosition(request.getParameter("fixPosition"));
         material.setNeedCheck(request.getParameter("needCheck"));
         material.setMaterialState(request.getParameter("materialState"));
         material.setSingleManage(request.getParameter("singleManage"));

@@ -46,7 +46,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
     @Override
     public PageInfo<Repository> ShowRepository(Page page, HttpServletRequest request) {
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Repository> list = shiftRepositoryMapper.showRepository();
+        Repository repository = new Repository();
+        repository.setAuthor(request.getParameter("author"));
+        List<Repository> list = shiftRepositoryMapper.showRepository(repository);
         return new PageInfo<>(list);
     }
 
@@ -80,7 +82,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         String projNameC = request.getParameter("projNameC");
         if (shiftId.equals("") && shiftTime.equals("") && shiftNum.equals("") && outReptId.equals("") && outPostId.equals("") && inReptId.equals("") && inPostId.equals("") && materialId.equals("") && sn.equals("") && bn.equals("") && projId.equals("") && projName.equals("") ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
-            List<Repository> listR = shiftRepositoryMapper.showRepository();
+            Repository repository = new Repository();
+            repository.setAuthor(request.getParameter("author"));
+            List<Repository> listR = shiftRepositoryMapper.showRepository(repository);
             return new PageInfo<>(listR);
         } else {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
@@ -256,7 +260,8 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             material1.setNum(shiftNum);
             material1.setName(materialName);
             material1.setSpec(listSHIFT.get(i).get("theMatSpec").toString());
-            Material material2 = materialMapper.MaterialId(material);
+            //Material material2 = materialMapper.MaterialId(material);
+            Material material2 = materialMtMapper.MaterialDetail(material);
             material1.setCategory(material2.getCategory());
             material1.setBrand(material2.getBrand());
             material1.setPrice(material2.getPrice());
@@ -337,7 +342,9 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             int b = parseInt(INNUM);
             String postCap = "";
             Repository repository1 = repositoryMtMapper.searchPostCap(repository);
-            if (repository1.getPostCap().equals("无限制")){
+            if (repository1 == null) {
+                postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
+            }else if (repository1.getPostCap().equals("无限制")){
                 postCap = String.valueOf(parseInt(NUM) + parseInt(INNUM) + 1);
             }else {
                 postCap = repository1.getPostCap();
@@ -640,9 +647,11 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         shiftRepositoryMapper.deleteDraft(repository1);
         String SHIFTLIST = request.getParameter("shiftList");
         List<HashMap> listSHIFT =JSON.parseArray(SHIFTLIST, HashMap.class);
+        System.out.println(listSHIFT);
         for (int i = 0; i < listSHIFT.size(); i++) {
             String shiftId = request.getParameter("shiftId");
-            String shiftNumGet = listSHIFT.get(i).get("number").toString();
+            //String shiftNumGet = listSHIFT.get(i).get("number").toString();
+            String shiftNumGet = listSHIFT.get(i).get("theMatNum").toString();
             String shiftNum = "";
             if (shiftNumGet.contains(".")) {
                 shiftNum = shiftNumGet.substring(0,shiftNumGet.indexOf("."));
@@ -692,6 +701,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             String secondOne = "";
             String thirdOne = "";
             String fourthOne = "";
+            String AUTHOR = request.getParameter("author");
             Material material = new Material();
             material.setId(materialId);
             String bn = null;
@@ -706,35 +716,47 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
             } else if (number.equals("批次号")) {
                 bn = listSHIFT.get(i).get("theMatBnSn").toString();
                 sn = "无";
-            } else if (number.equals("否")) {
+            }/* else if (number.equals("否")) {
                 sn = "无";
                 bn = "无";
-            } else {
+            } */else {
                 sn = " ";
                 bn = " ";
             }
             String C = "";
-            shiftRepositoryMapper.insertDraft(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
+            shiftRepositoryMapper.insertDraft(shiftId,shiftTime,shiftReptC,shiftNum,shiftInfo,outRept,outPost,inRept,inPost,materialId,materialName,spec,unit,sn,bn,remark,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne,AUTHOR);
         }
     }
 
 
+    // 删除草稿
+    @Override
+    public void deleteDraft(HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setInId(request.getParameter("inId"));
+        shiftRepositoryMapper.deleteDraft(repository);
+    }
+
     // 确认是否是草稿
     @Override
     public String checkDraft(HttpServletRequest request) {
-        String a = "";
+        String draftButton = "";
         String shiftId = request.getParameter("shiftId");
         String materialId = request.getParameter("materialId");
+        String author = request.getParameter("author");
         Repository repository = new Repository();
         repository.setShiftId(shiftId);
         repository.setMaterialId(materialId);
         String result = shiftRepositoryMapper.checkDraft(repository);
-        if (result != null) {
-            a = "1";
-        }else {
-            a = "0";
+        if (result == null) {
+            result = "";
         }
-        return a;
+        if (result.equals(author)) {
+            draftButton = "1";
+        }else {
+            draftButton = "0";
+        }
+        return draftButton;
     }
 
     // 返回草稿信息
@@ -773,11 +795,14 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         String category = request.getParameter("category");
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         List<Repository> list = null;
-        if (category.equals("借用") || category.equals("归还")){
+        if (category.equals("借用")){
             list = shiftRepositoryMapper.allNoticeJ();
-        }
-        if (category.equals("生产领料") || category.equals("生产退料")){
+        }else if (category.equals("生产领料")){
             list = shiftRepositoryMapper.allNoticeS();
+        }else if (category.equals("生产退料")){
+            list = shiftRepositoryMapper.allNoticeT();
+        }else if (category.equals("归还")){
+            list = shiftRepositoryMapper.allNoticeG();
         }
         return new PageInfo<>(list);
     }
