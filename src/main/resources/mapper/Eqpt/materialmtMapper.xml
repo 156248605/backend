@@ -5,6 +5,10 @@
         SELECT * FROM eqpt_detail WHERE materialState = '启用' ORDER BY id
     </select>
 
+    <select id="detailInRept" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_detail WHERE materialState = '启用' AND reptId = #{reptId} ORDER BY id
+    </select>
+
     <select id="searchDetail" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_detail
         <where>
@@ -101,8 +105,8 @@
         </where>
     </select>
 
-    <select id="MaterialMtId" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_materialmt WHERE id = #{id}
+    <select id="MaterialDetail" resultType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_detail WHERE id = #{id}
     </select>
 
     <update id="saveMaterialMt" parameterType="com.elex.oa.entity.eqpt.Material">

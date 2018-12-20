@@ -3,7 +3,10 @@
 <mapper namespace="com.elex.oa.dao.eqptDao.ShiftRepositoryMapper">
 
     <select id="showRepository" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_shiftrepository ORDER BY shiftId DESC
+        SELECT * , '' as author FROM eqpt_shiftrepository
+        UNION
+        SELECT * FROM eqpt_shiftrepository_draft WHERE author = #{author}
+        ORDER BY shiftId DESC
     </select>
 
     <select id="searchShift" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -170,7 +173,7 @@
     </select>
 
     <select id="wdbhJ" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT F_WDBH AS shiftId FROM w_jysqd5 WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS shiftId FROM w_jydbsqd WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="wdbhL" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -178,7 +181,7 @@
     </select>
 
     <select id="wdbhG" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT DISTINCT F_WDBH AS shiftId FROM w_jysqd5 WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT F_WDBH AS shiftId FROM w_jydbsqd WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="wdbhT" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -186,35 +189,35 @@
     </select>
 
     <select id="showmatJ" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jyd WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,w_jy.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jy WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jydbsqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND w_jy.F_WLBM = eqpt_material.id
         UNION
-        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jyd WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jy WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jydbsqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jy))
         ORDER BY materialId
     </select>
 
     <select id="showmatL" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,w_jy.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jy WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND w_jy.F_WLBM = eqpt_material.id
         UNION
-        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jy WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jy))
         ORDER BY materialId
     </select>
 
     <select id="showmatG" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jyd WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,w_jy.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jy WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jydbsqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND w_jy.F_WLBM = eqpt_material.id
         UNION
-        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jyd WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        SELECT w_lymx5.F_WLBM AS materialId,w_lymx5.F_WLMC AS materialName,w_lymx5.F_GGXH AS spec,w_lymx5.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx5,w_jy WHERE w_lymx5.REF_ID_ = (SELECT DISTINCT ID_ FROM w_jydbsqd WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx5.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jy))
         ORDER BY materialId
     </select>
 
     <select id="showmatT" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,w_jyd.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND w_jyd.F_WLBM = eqpt_material.id
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,w_jy.F_XLH AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jy WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND w_jy.F_WLBM = eqpt_material.id
         UNION
-        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jyd WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jyd))
+        SELECT w_lymx.F_WLBM AS materialId,w_lymx.F_WLMC AS materialName,w_lymx.F_GGXH AS spec,w_lymx.F_LYSL AS shiftNum,'' AS sn,(eqpt_material.unit) AS unit,eqpt_material.remark AS remark FROM eqpt_material,w_lymx,w_jy WHERE w_lymx.REF_ID_ = (SELECT DISTINCT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh} ORDER BY ID_ DESC LIMIT 1) AND eqpt_material.id = w_lymx.F_WLBM AND eqpt_material.id = ANY(SELECT id FROM eqpt_material WHERE eqpt_material.id not in (SELECT F_WLBM FROM w_jy))
         ORDER BY materialId
     </select>
 
     <select id="showprojJ" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT w_jysqd5.F_XMBH AS projId,w_jysqd5.F_XMMC AS projName FROM w_jysqd5 WHERE F_WDBH = #{wdbh}
+        SELECT w_jydbsqd.F_XMBH AS projId,w_jydbsqd.F_XMMC AS projName FROM w_jydbsqd WHERE F_WDBH = #{wdbh}
     </select>
 
     <select id="showprojL" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -234,15 +237,15 @@
     </select>
 
     <select id="checkDraft" resultType="string">
-        SELECT shiftId FROM eqpt_shiftrepository_draft WHERE materialId = #{materialId} AND shiftId = #{shiftId}
+        SELECT author FROM eqpt_shiftrepository_draft WHERE materialId = #{materialId} AND shiftId = #{shiftId}
     </select>
 
     <select id="getDraft" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_shiftrepository_draft WHERE shiftId = #{shiftId}
+        SELECT * FROM eqpt_shiftrepository_draft WHERE shiftId LIKE CONCAT(CONCAT('%',#{shiftId},'%'))
     </select>
 
     <delete id="deleteDraft" parameterType="com.elex.oa.entity.eqpt.Repository">
-        DELETE FROM eqpt_shiftrepository_draft WHERE shiftId = #{shiftId}
+        DELETE FROM eqpt_shiftrepository_draft WHERE shiftId LIKE CONCAT(CONCAT('%',#{shiftId},'%'))
     </delete>
 
     <select id="findDraft" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -250,7 +253,7 @@
     </select>
 
     <insert id="insertDraft" parameterType="string">
-        INSERT INTO eqpt_shiftrepository_draft VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22},NULL)
+        INSERT INTO eqpt_shiftrepository_draft VALUES (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},#{arg8},#{arg9},#{arg10},#{arg11},#{arg12},#{arg13},#{arg14},#{arg15},#{arg16},#{arg17},#{arg18},#{arg19},#{arg20},#{arg21},#{arg22},NULL,#{arg23})
     </insert>
 
     <select id="getNoticeS" resultType="HashMap">
@@ -258,11 +261,11 @@
     </select>
 
     <select id="getNoticeJ" resultType="HashMap">
-        SELECT '借用调拨申请单' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, F_XMBH, F_XMMC FROM w_jysqd5 WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT '借用调拨申请单' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, F_XMBH, F_XMMC FROM w_jydbsqd WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="noticeChild" resultType="HashMap">
-        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_lymx5,w_jysqd5 WHERE w_lymx5.REF_ID_ = (SELECT ID_ FROM w_jysqd5 WHERE F_WDBH = #{wdbh}) AND w_jysqd5.INST_STATUS_ = 'SUCCESS_END'
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_lymx5,w_jydbsqd WHERE w_lymx5.REF_ID_ = (SELECT ID_ FROM w_jydbsqd WHERE F_WDBH = #{wdbh}) AND w_jydbsqd.INST_STATUS_ = 'SUCCESS_END'
         UNION
         SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_lymx,w_sclld WHERE w_lymx.REF_ID_ = (SELECT ID_ FROM w_sclld WHERE F_WDBH = #{wdbh}) AND w_sclld.INST_STATUS_ = 'SUCCESS_END'
     </select>
@@ -272,6 +275,14 @@
     </select>
 
     <select id="allNoticeJ" resultType="HashMap">
-        SELECT DISTINCT '借用调拨申请单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_jysqd5 WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT DISTINCT '借用调拨申请单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_jydbsqd WHERE F_WDBH NOT IN (SELECT shiftInfo FROM eqpt_shiftrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="allNoticeT" resultType="HashMap">
+        SELECT DISTINCT '生产领料单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_sclld WHERE INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="allNoticeG" resultType="HashMap">
+        SELECT DISTINCT '借用调拨申请单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_jydbsqd WHERE INST_STATUS_ = 'SUCCESS_END'
     </select>
 </mapper>

@@ -38,9 +38,9 @@
         SELECT invId FROM eqpt_inventory_draft WHERE invId LIKE CONCAT(CONCAT('%',#{invId},'%'))
     </select>
 
-    <select id="chooseMat" resultType="com.elex.oa.entity.eqpt.Repository">
+    <!--<select id="chooseMat" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT DISTINCT w_ykmx1.F_WPBM AS materialId,w_ykmx1.F_WPMC AS materialName,w_ykmx1.F_GGXH AS spec,w_ykmx1.F_WPLB AS category,w_ykmx1.F_CK AS reptId,w_ykmx1.F_KW AS postId,w_ykmx1.F_DJ AS price,w_ykmx1.F_KCSL AS num,w_ykmx1.F_PDSL AS numInv,w_ykmx1.F_PDYK AS palPer,w_ykmx1.F_BZ AS remark FROM w_ykmx1,w_kcpdd2 WHERE w_ykmx1.REF_ID_ = (SELECT ID_ FROM w_kcpdd2 WHERE F_PDBH = #{id} ORDER BY ID_ DESC LIMIT 1)
-    </select>
+    </select>-->
 
     <select id="matinrept" resultType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_detail WHERE reptId = #{reptId} AND id IN (${id})
@@ -254,16 +254,16 @@
         WHERE invId = #{invId} AND reptId = #{reptId} AND position = #{position} AND materialId = #{materialId}
     </update>
 
-    <select id="getInvId" resultType="java.lang.String">
+    <!--<select id="getInvId" resultType="java.lang.String">
         SELECT DISTINCT F_PDBH FROM w_kcpdd2 WHERE F_PDBH NOT IN (SELECT invId FROM eqpt_inventory) AND INST_STATUS_ = 'SUCCESS_END'
-    </select>
+    </select>-->
 
     <select id="invInfo" resultType="HashMap">
-        SELECT * FROM w_kcpdd2 WHERE INST_STATUS_ = #{arg0} AND ID_ NOT IN (SELECT INST_ID_ FROM eqpt_inventory) ORDER BY ID_ DESC LIMIT 1
+        SELECT * FROM w_kcpdd2 WHERE ID_ = #{INST_ID_}
     </select>
 
     <select id="invDetail" resultType="HashMap">
-        SELECT * FROM w_ykmx1 WHERE REF_ID_ = #{arg0}
+        SELECT * FROM w_ykmx1 WHERE REF_ID_ = #{INST_ID_}
     </select>
 
     <select id="test" resultType="HashMap">

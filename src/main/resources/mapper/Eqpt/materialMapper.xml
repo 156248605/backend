@@ -165,6 +165,15 @@
             <if test="BSManage != null and BSManage != '' and BSManageC == 2">
                 AND BSManage NOT LIKE CONCAT(CONCAT('%', #{BSManage}), '%')
             </if>
+            <if test="fixPosition != null and fixPosition != '' and fixPositionC == ''">
+                AND fixPosition LIKE CONCAT(CONCAT('%', #{fixPosition}), '%')
+            </if>
+            <if test="fixPosition != null and fixPosition != '' and fixPositionC == 1">
+                AND fixPosition LIKE CONCAT(CONCAT('%', #{fixPosition}), '%')
+            </if>
+            <if test="fixPosition != null and fixPosition != '' and fixPositionC == 2">
+                AND fixPosition NOT LIKE CONCAT(CONCAT('%', #{fixPosition}), '%')
+            </if>
             <if test="unit != null and unit != '' and unitC == ''">
                 AND unit LIKE CONCAT(CONCAT('%', #{unit}), '%')
             </if>
@@ -272,6 +281,9 @@
             <if test="BSManage != null and BSManage != ''">
                 BSManage = #{BSManage},
             </if>
+            <if test="fixPosition != null and fixPosition != ''">
+                fixPosition = #{fixPosition},
+            </if>
             <if test="needCheck != null and needCheck != ''">
                 needCheck = #{needCheck},
             </if>
@@ -293,7 +305,7 @@
     </delete>
 
     <insert id="newMaterial" parameterType="com.elex.oa.entity.eqpt.Material">
-        INSERT INTO eqpt_material VALUES (#{category},#{name},#{id},#{brand},#{spec},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{maxlimit},#{minlimit},#{remark},#{partner},#{num},#{unit},#{price},NULL,'否')
+        INSERT INTO eqpt_material VALUES (#{category},#{name},#{id},#{brand},#{spec},#{material},#{BSManage},#{singleManage},#{notSingle},#{needCheck},#{materialState},#{maxlimit},#{minlimit},#{remark},#{partner},#{num},#{unit},#{price},NULL,#{fixPosition})
     </insert>
 
     <insert id="importMaterial" parameterType="com.elex.oa.entity.eqpt.Material">

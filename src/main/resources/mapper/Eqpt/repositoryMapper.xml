@@ -431,7 +431,7 @@
     </delete>
 
     <select id="matlist" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT DISTINCT id FROM eqpt_material WHERE fixPosition = '否'
+        SELECT DISTINCT id FROM eqpt_material WHERE fixPosition = '是'
     </select>
 
     <update id="updRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
