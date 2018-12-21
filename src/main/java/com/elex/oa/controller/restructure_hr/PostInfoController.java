@@ -1,7 +1,9 @@
 package com.elex.oa.controller.restructure_hr;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.service.restructure_hrService.IPostinfoService;
+import com.elex.oa.util.hr_util.HrUtilsTemp;
 import com.elex.oa.util.resp.RespUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +11,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +33,8 @@ import java.util.Map;
 public class PostInfoController {
     @Autowired
     IPostinfoService iPostinfoService;
+    @Autowired
+    HrUtilsTemp hrUtilsTemp;
 
     @RequestMapping("/listPosts")
     @ResponseBody
@@ -53,5 +63,20 @@ public class PostInfoController {
     ){
         Boolean aBoolean = iPostinfoService.validateByPostcode(postcode);
         return aBoolean? RespUtil.successResp("200","岗位编号已存在！",null):RespUtil.successResp("500","岗位编号不存在",null);
+    }
+
+    @RequestMapping("/addOnePost")
+    @ResponseBody
+    public Object addOnePost(
+            HttpServletRequest request,
+            Postinfo postinfo
+    ){
+        System.out.println(123);
+        //获取岗位说明书的地址
+        String dutyfile = hrUtilsTemp.getSignalFileAddress(request, "df", "/org/file");
+        postinfo.setDutyfile(dutyfile);
+        //调用服务层
+        Boolean aBoolean = iPostinfoService.addOnePost(postinfo);
+        return aBoolean?RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
     }
 }

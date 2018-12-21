@@ -1,5 +1,6 @@
 package com.elex.oa.service.restructure_hrService.impl;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
@@ -86,6 +87,18 @@ public class PostinfoServiceImpl implements IPostinfoService {
     public Boolean validateByPostcode(String postcode) {
         Postinfo postTemp = getPostinfoByPostcode(postcode);
         if(null==postTemp)return false;
+        return true;
+    }
+
+    @Override
+    public Boolean addOnePost(Postinfo postinfo) {
+        //获取不足的数据
+        postinfo.setState(Commons.POST_ON);
+        postinfo.setOrdercode("0");
+        postinfo.setNode_level(hrUtilsTemp.getNodelevelByParentpostcode(postinfo.getParent_postcode()));
+        //添加一条数据
+        String postcode = getPostcodeByAddPostinfo(postinfo);
+        if(null==postcode)return false;
         return true;
     }
 

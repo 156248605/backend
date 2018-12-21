@@ -9,6 +9,7 @@ import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.restructure_hr.IDepinfoDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPersonalinfoDao;
+import com.elex.oa.dao.restructure_hr.IPostinfoDao;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.HRset;
@@ -17,6 +18,7 @@ import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Personalinfo;
+import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,6 +56,8 @@ public class HrUtilsTemp {
     ITrackInfoDao iTrackInfoDao;
     @Resource
     IDepinfoDao iDepinfoDao;
+    @Resource
+    IPostinfoDao iPostinfoDao;
     @Resource
     IPersonalinfoDao iPersonalinfoDao;
 
@@ -232,5 +236,16 @@ public class HrUtilsTemp {
             }
         }
         return fileNameList;
+    }
+
+    //根据父节点的postcode获取子节点的层级码
+    public String getNodelevelByParentpostcode(String parent_postcode){
+        if(null==parent_postcode || StringUtils.isEmpty(parent_postcode))return null;
+        Postinfo parent_postinfo = iPostinfoDao.selectByPrimaryKey(parent_postcode);
+        if(null == parent_postinfo)return null;
+        String parent_nodelevel = parent_postinfo.getNode_level();
+        int i = Integer.parseInt(parent_nodelevel) + 1;
+        String node_level = i + "";
+        return node_level;
     }
 }    
