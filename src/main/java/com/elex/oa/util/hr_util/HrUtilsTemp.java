@@ -1,5 +1,6 @@
 package com.elex.oa.util.hr_util;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.business.ITrackInfoDao;
 import com.elex.oa.dao.hr.IDeptDao;
 import com.elex.oa.dao.hr.IHRsetDao;
@@ -18,9 +19,16 @@ import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Personalinfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -181,5 +189,48 @@ public class HrUtilsTemp {
         List<Depinfo> depinfoList = iDepinfoDao.select(new Depinfo(null, depname, null, null, null));
         if(null==depinfoList || depinfoList.size()==0)return null;
         return depinfoList.get(0).getDepcode();
+    }
+
+    //获取文件地址（单个文件）
+    public String getSignalFileAddress(HttpServletRequest request, String filename, String dirsPath) {
+        String fileAddress = "";
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
+        List<MultipartFile> files= multipartRequest.getFiles(filename);
+        if(files.size()!=0){
+            try {
+                String realPath = Commons.realpath + dirsPath;
+                Long l = Calendar.getInstance().getTimeInMillis();
+                File file = new File(realPath + "/" + l);
+                file.mkdirs();
+                fileAddress = dirsPath + l+ "/" + files.get(0).getOriginalFilename();
+                files.get(0).transferTo(new File(realPath + "/" + l,files.get(0).getOriginalFilename()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return fileAddress;
+    }
+
+    //获取多个文件
+    public List<String> getMultiFileAddress(HttpServletRequest request, int i) {
+        List<String> fileNameList = new ArrayList<>();
+        for(int j=0;j<i;j++){
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
+            List<MultipartFile> attachments = multipartRequest.getFiles("attachment_"+(j+1));
+            if(attachments.size()!=0){
+                String realPath = Commons.realpath;
+                Long l = Calendar.getInstance().getTimeInMillis();
+                File file = new File(realPath + "/business/attachments/" + l);
+                file.mkdirs();
+                String attachment_address = "/business/attachments/" + l + "/" + attachments.get(0).getOriginalFilename();
+                try {
+                    attachments.get(0).transferTo(new File(realPath + attachment_address));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                fileNameList.add(attachment_address);
+            }
+        }
+        return fileNameList;
     }
 }    
