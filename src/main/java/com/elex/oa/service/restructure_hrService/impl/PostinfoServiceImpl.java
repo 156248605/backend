@@ -112,7 +112,25 @@ public class PostinfoServiceImpl implements IPostinfoService {
         postinfo.setParentpost(iPostinfoDao.selectByPrimaryKey(postinfo.getParent_postcode()));
         //获取职级
         postinfo.setPostrank(hrUtilsTemp.getDatavalueByDatacode(postinfo.getPostrankid()));
+        //获取下级岗位
+        postinfo.setChildrenPostnames(getChildrenPostnamesByParentpostcode(postinfo.getPostcode()));
         return postinfo;
+    }
+
+    //获取下级岗位名称
+    private String getChildrenPostnamesByParentpostcode(String parent_psotcode) {
+        if(null == parent_psotcode || StringUtils.isEmpty(parent_psotcode))return null;
+        String childrenPostnames = null;
+        List<Postinfo> tempPostinfoList = iPostinfoDao.selectByEntity(new Postinfo(null, parent_psotcode));
+        if(null!=tempPostinfoList && tempPostinfoList.size()>0){
+            childrenPostnames = "";
+            for (Postinfo p:tempPostinfoList
+                 ) {
+                childrenPostnames += p.getPostname()+";";
+            }
+            childrenPostnames = childrenPostnames.substring(0,childrenPostnames.length()-2);
+        }
+        return childrenPostnames;
     }
 
     //获得岗位树的数据
