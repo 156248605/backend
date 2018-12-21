@@ -19,4 +19,6 @@ public interface IPostinfoService {
     Boolean validateByPostcode(String postcode);
 
     Boolean addOnePost(Postinfo postinfo);
+
+    List<Map<String, String>> queryPostsRemoveChilren(String postcode);
 }

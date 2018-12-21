@@ -149,6 +149,7 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
 
     private String getDatavalueByDatacode(String datacode){
         List<Hrdatadictionary> hrdatadictionaryList = iHrdatadictionaryDao.selectByEntity(new Hrdatadictionary(datacode));
+        if(null==hrdatadictionaryList || hrdatadictionaryList.size()==0)return null;
         return hrdatadictionaryList.get(0).getDatavalue();
     }
 }

@@ -79,4 +79,12 @@ public class PostInfoController {
         Boolean aBoolean = iPostinfoService.addOnePost(postinfo);
         return aBoolean?RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
     }
+
+    @RequestMapping("/queryPostsRemoveChilren")
+    @ResponseBody
+    public List<Map<String, String>> queryPostsRemoveChilren(
+            @RequestParam("postcode")String postcode
+    ){
+        return iPostinfoService.queryPostsRemoveChilren(postcode);
+    }
 }
