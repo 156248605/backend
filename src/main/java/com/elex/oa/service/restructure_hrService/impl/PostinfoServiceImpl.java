@@ -5,8 +5,10 @@ import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPostinfoDao;
+import com.elex.oa.dao.restructure_hr.IPostloginfoDao;
 import com.elex.oa.entity.hr_entity.Post;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
+import com.elex.oa.entity.restructure_hrentity.Postloginfo;
 import com.elex.oa.service.restructure_hrService.IPostinfoService;
 import com.elex.oa.util.hr_util.HrUtilsTemp;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +31,8 @@ public class PostinfoServiceImpl implements IPostinfoService {
     IPostinfoDao iPostinfoDao;
     @Resource
     HrUtilsTemp hrUtilsTemp;
+    @Resource
+    IPostloginfoDao iPostloginfoDao;
 
     @Override
     public Boolean changeTable() {
@@ -116,6 +120,128 @@ public class PostinfoServiceImpl implements IPostinfoService {
         //3.获得最终结果rspList=numList-rmoveList
         List<Map<String, String>> respList = getRespListByNumListAndRemoveList(numList, removeList);
         return respList;
+    }
+
+    @Override
+    public Boolean updateOnePost(Postinfo curPostinfo,String transactorusername) {
+        //获取原岗位数据
+        Postinfo oldPostinfo = iPostinfoDao.selectByPrimaryKey(curPostinfo.getPostcode());
+        oldPostinfo = getPostinfoDetailByPostinfo(oldPostinfo);
+        //获取新岗位数据
+        Postinfo newPostinfo = getPostinfoDetailByPostinfo(curPostinfo);
+        //更新岗位信息
+        iPostinfoDao.updateByPrimaryKeySelective(curPostinfo);
+        //进行比较并添加相关的日志
+        Boolean aBoolean = addPostinfologsByOldpostinfoAndNewpostinfo(oldPostinfo, newPostinfo, transactorusername);
+        return aBoolean;
+    }
+
+    //根据新旧对象对比添加岗位日志
+    private Boolean addPostinfologsByOldpostinfoAndNewpostinfo(Postinfo oldPostinfo, Postinfo newPostinfo, String transactorusername) {
+        //初始化参数
+        Boolean respBoolean = false;//1.返回参数
+        Boolean isNotEqual = false;//2.判断两个参数是否相同，相同则不需要添加日志
+        String postcode = newPostinfo.getPostcode();//3.岗位编号
+        String beforeInfo = null;//4.变跟前内容
+        String afterInfo = null;//5.变更后内容
+        String changeinformationName = null;//6.变更项目//7.变更人已知transactorusername
+        //上级岗位
+        isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getParent_postcode(),newPostinfo.getParent_postcode());
+        beforeInfo = hrUtilsTemp.getPostnameByPostcode(oldPostinfo.getPostcode());
+        afterInfo = hrUtilsTemp.getPostnameByPostcode(newPostinfo.getPostcode());
+        changeinformationName = "上级岗位";
+        respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
+        //岗位名称
+        isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getPostname(),newPostinfo.getPostname());
+        beforeInfo = oldPostinfo.getPostname();
+        afterInfo = newPostinfo.getPostname();
+        changeinformationName = "岗位名称";
+        respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
+        //职能类型
+        isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getFunctionaltypeid(),newPostinfo.getFunctionaltypeid());
+        beforeInfo = hrUtilsTemp.getDatavalueByDatacode(oldPostinfo.getFunctionaltypeid());
+        afterInfo = hrUtilsTemp.getDatavalueByDatacode(newPostinfo.getFunctionaltypeid());
+        changeinformationName = "职能类型";
+        respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
+        //职级
+        isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getPostrankid(),newPostinfo.getPostrankid());
+        beforeInfo = hrUtilsTemp.getDatavalueByDatacode(oldPostinfo.getPostrankid());
+        afterInfo = hrUtilsTemp.getDatavalueByDatacode(newPostinfo.getPostrankid());
+        changeinformationName = "职级";
+        respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
+        //编制
+        isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getOrganization(),newPostinfo.getOrganization());
+        beforeInfo = oldPostinfo.getOrganization();
+        afterInfo = newPostinfo.getOrganization();
+        changeinformationName = "编制";
+        respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
+        //岗位描述
+        isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getJobdescription(),newPostinfo.getJobdescription());
+        beforeInfo = oldPostinfo.getJobdescription();
+        afterInfo = newPostinfo.getJobdescription();
+        changeinformationName = "岗位描述";
+        respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
+        //岗位职责
+        isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getDuty(),newPostinfo.getDuty());
+        beforeInfo = oldPostinfo.getDuty();
+        afterInfo = newPostinfo.getDuty();
+        changeinformationName = "岗位职责";
+        respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
+        //任职要求
+        isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getEntryrequirements(),newPostinfo.getEntryrequirements());
+        beforeInfo = oldPostinfo.getEntryrequirements();
+        afterInfo = newPostinfo.getEntryrequirements();
+        changeinformationName = "任职要求";
+        respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
+        return respBoolean;
+    }
+
+    //添加一条日志并返回布尔值
+    private Boolean getaBooleanByAddPostloginfo(Boolean respBoolean,Boolean isNotEqual,String postcode, String beforeInfo, String afterInfo, String changeinformationName,String transactorusername){
+        if(isNotEqual){
+            Map<String, String> logMap = getPostLogInfoByOldAndNewInfo(postcode, beforeInfo, afterInfo, changeinformationName);
+            addPostinfolog(logMap,transactorusername);
+            respBoolean = true;
+        }
+        return respBoolean;
+    }
+
+    //添加岗位日志
+    private void addPostinfolog(Map<String, String> logMap, String transactorusername) {
+        if(null==logMap)return;
+        //自动生成ID
+        Postloginfo postloginfo = new Postloginfo();
+        postloginfo.setId("post_log_"+System.currentTimeMillis());
+        //添加部门日志的四个参数
+        postloginfo.setPostcode(logMap.get("postcode"));
+        postloginfo.setChangeinformation(logMap.get("changeinformation"));
+        postloginfo.setBeforeinformation(logMap.get("beforeinformation"));
+        postloginfo.setAfterinformation(logMap.get("afterinformation"));
+        //添加其它信息
+        postloginfo.setChangereason("业务需要");
+        postloginfo.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        postloginfo.setTransactoruserid(transactorusername);
+        //添加部门日志
+        iPostloginfoDao.insertSelective(postloginfo);//有选择的保存，Null属性不保存
+    }
+
+    //获得岗位信息修改日志的四个参数：postcode、changeinformation、beforeinformation、afterinformation（适用所有的）
+    private Map<String, String> getPostLogInfoByOldAndNewInfo(String postcode, String beforeInfo, String afterInfo, String changeinformationName) {
+        Map<String,String> respMap = new HashMap<>();
+        respMap.put("postcode",postcode);
+        respMap.put("changeinformation",changeinformationName);
+        respMap.put("beforeinformation",beforeInfo);
+        respMap.put("afterinformation",afterInfo);
+        return respMap;
+    }
+
+    //先判断该字段是否需要添加该字段的日志
+    private Boolean getaBooleanByOldAndNewInfo(String beforeInfo, String afterInfo) {
+        if(null==beforeInfo)return false;
+        if(StringUtils.isEmpty(beforeInfo))return false;
+        if(null==afterInfo)return true;
+        if(afterInfo.equals(beforeInfo))return false;
+        return true;
     }
 
     //总的减去需要被移除的就是最终结果rspList=numList-removeList

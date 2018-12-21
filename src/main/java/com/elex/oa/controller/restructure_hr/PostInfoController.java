@@ -71,9 +71,8 @@ public class PostInfoController {
             HttpServletRequest request,
             Postinfo postinfo
     ){
-        System.out.println(123);
         //获取岗位说明书的地址
-        String dutyfile = hrUtilsTemp.getSignalFileAddress(request, "df", "/org/file");
+        String dutyfile = hrUtilsTemp.getSignalFileAddress(request, "df", "/org/file/");
         postinfo.setDutyfile(dutyfile);
         //调用服务层
         Boolean aBoolean = iPostinfoService.addOnePost(postinfo);
@@ -86,5 +85,18 @@ public class PostInfoController {
             @RequestParam("postcode")String postcode
     ){
         return iPostinfoService.queryPostsRemoveChilren(postcode);
+    }
+
+    @RequestMapping("/updateOnePost")
+    @ResponseBody
+    public Object updateOnePost(
+            Postinfo postinfo,
+            HttpServletRequest request,
+            @RequestParam("transactorusername") String transactorusername
+    ){
+        String dutyfile = hrUtilsTemp.getSignalFileAddress(request, "df", "/org/file/");
+        postinfo.setDutyfile(dutyfile);
+        Boolean aBoolean = iPostinfoService.updateOnePost(postinfo,transactorusername);
+        return true?RespUtil.successResp("200","修改成功！",null):RespUtil.successResp("500","修改失败！",null);
     }
 }

@@ -196,6 +196,7 @@ public class HrUtilsTemp {
     }
 
     //获取文件地址（单个文件）
+    //fielname="df",dirsPath="/org/file/"
     public String getSignalFileAddress(HttpServletRequest request, String filename, String dirsPath) {
         String fileAddress = "";
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
@@ -212,6 +213,7 @@ public class HrUtilsTemp {
                 e.printStackTrace();
             }
         }
+        if(StringUtils.isEmpty(fileAddress))return null;
         return fileAddress;
     }
 
@@ -247,5 +249,13 @@ public class HrUtilsTemp {
         int i = Integer.parseInt(parent_nodelevel) + 1;
         String node_level = i + "";
         return node_level;
+    }
+
+    //根据postcode获取postname
+    public String getPostnameByPostcode(String postcode){
+        if(null==postcode || StringUtils.isEmpty(postcode))return null;
+        Postinfo postinfo = iPostinfoDao.selectByPrimaryKey(postcode);
+        if(null==postinfo)return null;
+        return postinfo.getPostname();
     }
 }    
