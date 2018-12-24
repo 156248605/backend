@@ -56,6 +56,23 @@ public class DeploginfoServiceImpl implements IDeploginfoService {
     }
 
     @Override
+    public Map<String, String> removeDeplogByIds(List<String> deplogids) {
+        if(null==deplogids)return null;
+        Map<String,String> respMap = new HashMap<>();
+        for (String id:deplogids
+             ) {
+            try {
+                iDeploginfoDao.deleteByPrimaryKey(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                respMap.put(id,"此条信息删除失败");
+            }
+        }
+        return respMap.size()==0?null:respMap;
+    }
+
+
+    @Override
     public Map<String, String> importDeploginformations(MultipartFile multipartFile) {
         //获取对象集合
         Map<String,String> respMap = new HashMap<>();

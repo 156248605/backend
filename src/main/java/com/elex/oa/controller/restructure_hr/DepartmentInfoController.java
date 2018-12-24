@@ -126,6 +126,15 @@ public class DepartmentInfoController {
         return iDeploginfoService.queryAllDeptLogInformations();
     }
 
+    @RequestMapping("/deleteDeplogByIds")
+    @ResponseBody
+    public Object deleteDeplogByIds(
+            @RequestParam("deplogids")List<String> deplogids
+    ){
+        Map<String, String> respMap = iDeploginfoService.removeDeplogByIds(deplogids);
+        return null==respMap?RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",respMap);
+    }
+
     @RequestMapping("/importDeploginformations")
     @ResponseBody
     public Object importDeploginformations(

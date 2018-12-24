@@ -137,4 +137,19 @@ public class PostInfoController {
     ){
         return iPostloginfoService.queryDeptLogInformations(page,rows,postloginfo);
     }
+
+    @RequestMapping("/queryAllPostLogInformations")
+    @ResponseBody
+    public List<Postloginfo> queryAllPostLogInformations(){
+        return iPostloginfoService.queryAllPostLogInformations();
+    }
+
+    @RequestMapping("/deletePostlogByIds")
+    @ResponseBody
+    public Object deletePostlogByIds(
+            @RequestParam("postlogids")List<String> postlogids
+    ){
+        Map<String, String> respMap = iPostloginfoService.removePostlogByIds(postlogids);
+        return null==respMap?RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",respMap);
+    }
 }

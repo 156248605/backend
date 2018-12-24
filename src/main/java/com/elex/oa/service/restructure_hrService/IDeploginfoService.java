@@ -12,5 +12,7 @@ public interface IDeploginfoService {
 
     List<Deploginfo> queryAllDeptLogInformations();
 
+    Map<String,String> removeDeplogByIds(List<String> deplogids);
+
     Map<String,String> importDeploginformations(MultipartFile multipartFile);
 }
