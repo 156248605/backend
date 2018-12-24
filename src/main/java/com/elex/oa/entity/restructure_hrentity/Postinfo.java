@@ -59,6 +59,13 @@ public class Postinfo implements Serializable {
         this.state = state;
     }
 
+    public Postinfo(String postcode, String parent_postcode, String state, String ordercode) {
+        this.postcode = postcode;
+        this.parent_postcode = parent_postcode;
+        this.state = state;
+        this.ordercode = ordercode;
+    }
+
     public String getPostcode() {
         return postcode;
     }

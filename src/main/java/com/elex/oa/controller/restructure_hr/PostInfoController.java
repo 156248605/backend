@@ -1,23 +1,21 @@
 package com.elex.oa.controller.restructure_hr;
 
-import com.elex.oa.common.hr.Commons;
+import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
+import com.elex.oa.entity.restructure_hrentity.Postloginfo;
 import com.elex.oa.service.restructure_hrService.IPostinfoService;
+import com.elex.oa.service.restructure_hrService.IPostloginfoService;
 import com.elex.oa.util.hr_util.HrUtilsTemp;
 import com.elex.oa.util.resp.RespUtil;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +31,8 @@ import java.util.Map;
 public class PostInfoController {
     @Autowired
     IPostinfoService iPostinfoService;
+    @Autowired
+    IPostloginfoService iPostloginfoService;
     @Autowired
     HrUtilsTemp hrUtilsTemp;
 
@@ -97,6 +97,44 @@ public class PostInfoController {
         String dutyfile = hrUtilsTemp.getSignalFileAddress(request, "df", "/org/file/");
         postinfo.setDutyfile(dutyfile);
         Boolean aBoolean = iPostinfoService.updateOnePost(postinfo,transactorusername);
-        return true?RespUtil.successResp("200","修改成功！",null):RespUtil.successResp("500","修改失败！",null);
+        return aBoolean?RespUtil.successResp("200","修改成功！",null):RespUtil.successResp("500","修改失败！",null);
+    }
+
+    @RequestMapping("/deletePostsByPostcode")
+    @ResponseBody
+    public Object deletePostsByPostcode(
+            @RequestParam("postcode")String postcode
+    ){
+        Boolean aBoolean = iPostinfoService.deletePostsByPostcode(postcode);
+        return aBoolean?RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",null);
+    }
+
+    @RequestMapping("/sortPostinformation")
+    @ResponseBody
+    public List<Map<String,Object>> sortPostinformation(
+            @RequestParam("postcode")String postcode
+    ){
+        List<Map<String, Object>> respMap = iPostinfoService.getSortPostinformation(postcode);
+        return respMap;
+    }
+
+    @RequestMapping("/submitSortdata")
+    @ResponseBody
+    public Map<String,Object> submitSortdata(
+            @RequestParam("sortdata") String sortdata
+    ){
+        //将JSON字符串转换成List集合
+        List<Map> respMap = JSONObject.parseArray(sortdata, Map.class);
+        return iPostinfoService.submitSortdata(respMap);
+    }
+
+    @RequestMapping("/queryPostLogInformations")
+    @ResponseBody
+    public PageInfo<Postloginfo> queryPostLogInformations(
+            @RequestParam("page")Integer page,
+            @RequestParam("rows")Integer rows,
+            Postloginfo postloginfo
+    ){
+        return iPostloginfoService.queryDeptLogInformations(page,rows,postloginfo);
     }
 }

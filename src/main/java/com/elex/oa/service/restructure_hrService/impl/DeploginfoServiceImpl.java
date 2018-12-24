@@ -93,7 +93,7 @@ public class DeploginfoServiceImpl implements IDeploginfoService {
         return respMap;
     }
 
-    private Deploginfo getDetailDeploginfoByDeploginfo(Deploginfo deploginfo){
+    private Deploginfo  getDetailDeploginfoByDeploginfo(Deploginfo deploginfo){
         deploginfo.setDepname(hrUtilsTemp.getDepnameByDepcode(deploginfo.getDepcode()));
         deploginfo.setTransactortruename(hrUtilsTemp.getTruenameByEmployeenumberInnewtable(deploginfo.getTransactoruserid()));
         return deploginfo;

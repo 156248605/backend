@@ -23,4 +23,10 @@ public interface IPostinfoService {
     List<Map<String, String>> queryPostsRemoveChilren(String postcode);
 
     Boolean updateOnePost(Postinfo postinfo,String transactorusername);
+
+    Boolean deletePostsByPostcode(String postcode);
+
+    List<Map<String,Object>> getSortPostinformation(String postcode);
+
+    Map<String,Object> submitSortdata(List<Map> respMap);
 }

@@ -136,6 +136,56 @@ public class PostinfoServiceImpl implements IPostinfoService {
         return aBoolean;
     }
 
+    @Override
+    public Boolean deletePostsByPostcode(String postcode) {
+        if(null==postcode || StringUtils.isEmpty(postcode))return false;
+        //先将本身和子岗位的编码查询出来
+        List<Map<String, String>> removeList = getRemoveList(iPostinfoDao.selectByPrimaryKey(postcode));
+        if(null==removeList || removeList.size()==0)return false;
+        for (Map<String,String> m:removeList
+             ) {
+            String postcodeTemp = m.get("postcode");
+            iPostinfoDao.deleteByPrimaryKey(postcodeTemp);
+        }
+        return true;
+    }
+
+    @Override
+    public List<Map<String, Object>> getSortPostinformation(String postcode) {
+        Postinfo parentPostinfo = iPostinfoDao.selectByPrimaryKey(postcode);
+        if(null==parentPostinfo)return null;
+        return getChildrenNodeByPostcode(parentPostinfo.getParent_postcode());
+    }
+
+    @Override
+    public Map<String, Object> submitSortdata(List<Map> respMap) {
+        if(null==respMap)return null;
+        //更新排序编码
+        for (Map<String,String> m:respMap
+             ) {
+            iPostinfoDao.updateByPrimaryKeySelective(new Postinfo(m.get("postcode"),null,null,m.get("ordercode")));
+        }
+        //获得岗位树数据
+        return getPostTree();
+    }
+
+
+    //获得同级岗位postcode、postname、ordercode三个数据
+    private List<Map<String, Object>> getChildrenNodeByPostcode(String postcode) {
+        List<Postinfo> postinfoList = iPostinfoDao.select(new Postinfo(null, postcode));
+        if(null==postinfoList)return null;
+        List<Map<String, Object>> respList = new ArrayList<>();
+        for (Postinfo p:postinfoList
+        ) {
+            Map<String,Object> respMapTemp = new HashMap<>();
+            respMapTemp.put("postcode",p.getPostcode());
+            respMapTemp.put("postname",p.getPostname());
+            respMapTemp.put("ordercode",p.getOrdercode());
+            respList.add(respMapTemp);
+        }
+        return getOrderedChildren(respList);
+    }
+
     //根据新旧对象对比添加岗位日志
     private Boolean addPostinfologsByOldpostinfoAndNewpostinfo(Postinfo oldPostinfo, Postinfo newPostinfo, String transactorusername) {
         //初始化参数
