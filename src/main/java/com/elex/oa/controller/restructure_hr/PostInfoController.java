@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -151,5 +152,14 @@ public class PostInfoController {
     ){
         Map<String, String> respMap = iPostloginfoService.removePostlogByIds(postlogids);
         return null==respMap?RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",respMap);
+    }
+
+    @RequestMapping("/importPostloginformations")
+    @ResponseBody
+    public Object importPostloginformations(
+            @RequestParam("file")MultipartFile multipartFile
+            ){
+        Map<String, String> respMap = iPostloginfoService.importPostloginformations(multipartFile);
+        return respMap.size()==0?RespUtil.successResp("200","导入成功！",null):RespUtil.successResp("500","导入失败！",respMap);
     }
 }

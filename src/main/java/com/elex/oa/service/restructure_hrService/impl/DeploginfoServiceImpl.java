@@ -86,12 +86,12 @@ public class DeploginfoServiceImpl implements IDeploginfoService {
         return respMap;
     }
 
-    private Map<String, String> getRespMapByInsertDeploginfo(Map<String, String> respMap, Deploginfo d) {
+    private Map<String, String> getRespMapByInsertDeploginfo(Map<String, String> respMap, Deploginfo deploginfo) {
         //先获取部门编号
-        String depcode = d.getDepcode();
+        String depcode = deploginfo.getDepcode();
         if(StringUtils.isEmpty(depcode)){
             //部门号不存在则用部门名称
-            depcode = hrUtilsTemp.getDepcodeByDepname(d.getDepname());
+            depcode = hrUtilsTemp.getDepcodeByDepname(deploginfo.getDepname());
         }
         if(StringUtils.isEmpty(depcode)) return respMap;
         Depinfo depinfoTemp = iDepinfoDao.selectByPrimaryKey(depcode);
@@ -101,7 +101,7 @@ public class DeploginfoServiceImpl implements IDeploginfoService {
         }
         //添加相应的部门日志信息
         try {
-            iDeploginfoDao.insertSelective(d);
+            iDeploginfoDao.insertSelective(deploginfo);
         } catch (Exception e) {
             e.printStackTrace();
             respMap.put(depcode,":该部门的数据导入失败！");

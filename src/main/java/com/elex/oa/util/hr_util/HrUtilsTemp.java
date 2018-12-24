@@ -258,4 +258,12 @@ public class HrUtilsTemp {
         if(null==postinfo)return null;
         return postinfo.getPostname();
     }
-}    
+
+    //此方法有BUG（岗位名称不是唯一标识）
+    public String getPostcodeByPostname(String postname) {
+        if(null==postname || StringUtils.isEmpty(postname))return null;
+        List<Postinfo> postinfoList = iPostinfoDao.select(new Postinfo(null, postname, null, null, null));
+        if(null==postinfoList || postinfoList.size()==0)return null;
+        return postinfoList.get(0).getPostcode();
+    }
+}
