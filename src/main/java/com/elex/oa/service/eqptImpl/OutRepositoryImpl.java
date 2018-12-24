@@ -500,7 +500,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
         for (int i = 0; i < listOUT.size(); i++) {
             String OUTREPTC = request.getParameter("outReptC");
             String OUTID = request.getParameter("outId");
-            String OUTNUMGET = listOUT.get(i).get("number").toString();
+            String OUTNUMGET = listOUT.get(i).containsKey("number") ? listOUT.get(i).get("number").toString() : "";
             String OUTNUM = "";
             if (OUTNUMGET.contains(".")) {
                 OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));

@@ -141,9 +141,9 @@
     <select id="noticeChild" resultType="HashMap">
         SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_XQSL AS num, '' AS price, '' AS sum FROM w_cpmx,w_xsfhtzd WHERE w_cpmx.REF_ID_ = (SELECT ID_ FROM w_xsfhtzd WHERE F_WDBH = #{wdbh}) AND w_xsfhtzd.INST_STATUS_ = 'SUCCESS_END'
         UNION
-        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_XQSL AS num, '' AS price, '' AS sum FROM w_lylymx,w_liysqd WHERE w_lylymx.REF_ID_ = (SELECT ID_ FROM w_liysqd WHERE F_WDBH = #{wdbh}) AND w_liysqd.INST_STATUS_ = 'SUCCESS_END'
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_lylymx,w_liysqd WHERE w_lylymx.REF_ID_ = (SELECT ID_ FROM w_liysqd WHERE F_WDBH = #{wdbh}) AND w_liysqd.INST_STATUS_ = 'SUCCESS_END'
         UNION
-        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_XSSL AS num, F_XSDJ AS price, F_XSJE AS sum FROM w_zdsqlymx,w_zdsqd WHERE w_zdsqlymx.REF_ID_ = (SELECT ID_ FROM w_zdsqd WHERE F_WDBH = #{wdbh}) AND w_zdsqd.INST_STATUS_ = 'SUCCESS_END'
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_zdsqlymx,w_zdsqd WHERE w_zdsqlymx.REF_ID_ = (SELECT ID_ FROM w_zdsqd WHERE F_WDBH = #{wdbh}) AND w_zdsqd.INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="allNoticeR" resultType="com.elex.oa.entity.eqpt.Repository">
