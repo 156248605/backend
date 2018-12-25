@@ -6,9 +6,10 @@ import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IDeptService;
+import com.elex.oa.util.hr_util.PageHelper;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
-import com.elex.oa.util.hr_util.PageHelper;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,6 +35,9 @@ public class DeptServiceImpl implements IDeptService {
     private IUserDao iUserDao;
     @Resource
     private IHRsetDao ihRsetDao;
+
+    /*@Resource
+    private Logger logger = LoggerFactory.getLogger(this.getClass());*/
 
     /**
      *@Author:ShiYun;
@@ -610,21 +614,36 @@ public class DeptServiceImpl implements IDeptService {
         if (truename!=null || !"".equals(truename)) {
             user = iUserDao.selectByTruename(truename);
         }else {
-            return null;
-        }
-        PersonalInformation personalInformation;
-        if (user!=null) {
-            personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
-        } else {
-            return null;
-        }
-        Dept dept = null;
-        if (personalInformation!=null && personalInformation.getDepid()!=null) {
-            dept = iDeptDao.selectDeptByDepid(personalInformation.getDepid());
-        }else {
+            /*this.logger.info("=================================");
+            this.logger.info("员工姓名不能为空或NUll！");
+            this.logger.info("=================================");*/
             return "99";
         }
-        return dept.getFunctionaltypeid()==7?dept.getDepcode().substring(4,6):dept.getDepcode().substring(0,2);
+        PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
+        Integer depid;
+        if(null==personalInformation || null == personalInformation.getDepid()){
+            /*this.logger.info("=================================");
+            this.logger.info("员工所在的人事信息不存在或员工没有设置部门信息！");
+            this.logger.info("=================================");*/
+            return "99";
+        }else {
+            depid = personalInformation.getDepid();
+        }
+        Dept dept = iDeptDao.selectDeptByDepid(depid);
+        if(null==dept){
+            /*this.logger.info("=================================");
+            this.logger.info("员工所在的部门不存在，请重新设置部门或添加新部门！");
+            this.logger.info("=================================");*/
+            return "99";
+        }
+        String depcode = dept.getDepcode();
+        boolean marker = NumberUtils.isNumber(String.valueOf(depcode.charAt(0)));
+        if(marker) {
+            return depcode.substring(0,2);
+        } else {
+            int length = depcode.length();
+            return depcode.substring(length-2, length);
+        }
     }
 
     /**

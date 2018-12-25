@@ -7,8 +7,8 @@ import com.elex.oa.entity.project.NProjectQuery;
 import com.elex.oa.entity.project.NewProject;
 import com.elex.oa.entity.project.ProjectCode;
 import com.elex.oa.mongo.project.NewProjectMongo;
-import com.elex.oa.service.project.NewProjcetService;
 import com.elex.oa.service.hr_service.IDeptService;
+import com.elex.oa.service.project.NewProjcetService;
 import com.elex.oa.util.project.ProjectUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -63,6 +63,8 @@ public class NewProjectImpl implements NewProjcetService {
     @Override
     public String obtainCodeName(String name) {
         String departmentMark = iDeptService.queryByTruename(name);
+        System.out.println(departmentMark);
+        System.out.println();
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("ELEX-PRJ-");
