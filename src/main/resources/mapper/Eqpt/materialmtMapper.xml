@@ -106,7 +106,7 @@
     </select>
 
     <select id="MaterialDetail" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_detail WHERE id = #{id} LIMIT 1
+        SELECT * FROM eqpt_material WHERE id = #{id} LIMIT 1
     </select>
 
     <update id="saveMaterialMt" parameterType="com.elex.oa.entity.eqpt.Material">

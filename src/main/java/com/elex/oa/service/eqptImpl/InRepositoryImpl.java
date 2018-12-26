@@ -544,7 +544,7 @@ public class InRepositoryImpl implements InRepositoryService {
         for (int i = 0; i < listIN.size(); i++){
             String INREPTC = request.getParameter("inReptC");
             String INID = request.getParameter("inId");
-            String INNUMGET = listIN.get(i).get("number").toString();
+            String INNUMGET = listIN.get(i).containsKey("number") ? listIN.get(i).get("number").toString() : "";
             String INNUM = "";
             if (INNUMGET.contains(".")) {
                 INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));

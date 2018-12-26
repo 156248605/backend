@@ -582,7 +582,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
     @Override
     public void deleteDraft(HttpServletRequest request) {
         Repository repository = new Repository();
-        repository.setInId(request.getParameter("inId"));
+        repository.setOutId(request.getParameter("outId"));
         outRepositoryMapper.deleteDraft(repository);
     }
 
