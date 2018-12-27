@@ -530,7 +530,7 @@
     </select>
 
     <select id="matOutRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT reptId FROM eqpt_repository WHERE reptId IN (SELECT reptId FROM eqpt_detail WHERE id = #{id})
+        SELECT reptId FROM eqpt_repository WHERE reptId IN (SELECT reptId FROM eqpt_detail WHERE id = #{id} AND num != 0)
     </select>
 
     <select id="matOutPost" resultType="com.elex.oa.entity.eqpt.Repository">

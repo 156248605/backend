@@ -391,13 +391,20 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         for (int i = 0; i < listSHIFT.size(); i++) {
             Material material = new Material();
             material.setId(listSHIFT.get(i).get("theMatId").toString());
+            material.setReptId(listSHIFT.get(i).get("outRept").toString());
+            if (listSHIFT.get(i).containsKey("outPost")) {
+                material.setPostId(listSHIFT.get(i).get("outPost").toString());
+            }
             String OUTNUM = listSHIFT.get(i).get("number").toString();
             if (listSHIFT.get(0).containsKey("number")){
                 OUTNUM = listSHIFT.get(i).get("number").toString();
             }
             String MIN = materialMapper.MinLimit(material);
-            String NUM = materialMapper.getNum(material);
-            if (parseInt(NUM) - parseInt(OUTNUM) < parseInt(MIN)) {
+            String NUM = repositoryMapper.numInPost(material);
+            System.out.println("原有:" + parseInt(NUM));
+            System.out.println("调拨:" + parseInt(OUTNUM));
+            System.out.println("结果:" + (parseInt(NUM) - parseInt(OUTNUM)));
+            if (parseInt(NUM) - parseInt(OUTNUM) < 0) {
                 result = "1";
                 break;
             } else{
