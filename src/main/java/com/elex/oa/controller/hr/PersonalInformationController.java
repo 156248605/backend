@@ -2719,7 +2719,9 @@ public class PersonalInformationController {
     public List<Object> queryGXF007() {
         List<Object> list = new ArrayList<>();
         List<Dept> depts = iDeptService.queryAllDepts();
+        if(null==depts)return null;
         for (Dept dept : depts) {
+            if(null==dept.getDeptypeid())continue;
             if (dept.getDeptypeid() != 1 && dept.getDeptypeid() != 3) {
                 Map<String, Object> deptMap = new HashMap<>();
                 deptMap.put("deptId", dept.getId());
