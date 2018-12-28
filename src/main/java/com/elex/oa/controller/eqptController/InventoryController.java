@@ -115,7 +115,7 @@ public class InventoryController {
 
     @RequestMapping("/insertInv")
     @ResponseBody
-    public List<HashMap<String, Object>> insertInv(String instid){
-        return inventoryImpl.insertInv(instid);
+    public List<HashMap<String, Object>> insertInv(String instId){
+        return inventoryImpl.insertInv(instId);
     }
 }

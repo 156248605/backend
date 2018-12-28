@@ -259,7 +259,7 @@
     </select>-->
 
     <select id="invInfo" resultType="HashMap">
-        SELECT * FROM w_kcpdd2 WHERE ID_ = #{INST_ID_}
+        SELECT * FROM w_kcpdd2 WHERE ID_ = #{INST_ID_} AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <select id="invDetail" resultType="HashMap">
