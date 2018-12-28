@@ -187,4 +187,6 @@ public interface IDeptService {
      *@Date: 14:08 2018\9\8 0008
      */
     String queryCompanynameByUseridOrTruename(Integer userid,String truename) throws Exception;
+
+    Boolean updateOneDepartment(Dept dept,String transactorusername);
 }

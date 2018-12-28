@@ -1,14 +1,13 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.dao.hr.IDeptDao;
-import com.elex.oa.dao.hr.IHRsetDao;
-import com.elex.oa.dao.hr.IPersonalInformationDao;
-import com.elex.oa.dao.hr.IUserDao;
+import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IDeptService;
+import com.elex.oa.util.hr_util.HrUtilsTemp;
 import com.elex.oa.util.hr_util.PageHelper;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +34,10 @@ public class DeptServiceImpl implements IDeptService {
     private IUserDao iUserDao;
     @Resource
     private IHRsetDao ihRsetDao;
+    @Resource
+    HrUtilsTemp hrUtilsTemp;
+    @Resource
+    IDeptLogDao iDeptLogDao;
 
     /*@Resource
     private Logger logger = LoggerFactory.getLogger(this.getClass());*/
@@ -790,5 +793,138 @@ public class DeptServiceImpl implements IDeptService {
         companyname = dept.getCompanyname()==null?"":dept.getCompanyname();
         depname = dept.getDepname()==null?"":dept.getDepname();
         return companyname + "--" +depname;
+    }
+
+    @Override
+    public Boolean updateOneDepartment(Dept dept, String transactorusername) {
+        //获取旧部门信息
+        Dept oldDept = iDeptDao.selectDeptByDepid(dept.getId());
+        oldDept = getDetailDeptByDept(oldDept);
+        //获取新部门信息
+        Dept newDept = getDetailDeptByDept(dept);
+        //比较新旧部门信息是否有修改并添加部门日志信息（返回布尔值）
+        Boolean aBoolean = getaBooleanByOlddeptAndNewdept(oldDept, newDept, transactorusername);
+        if(!aBoolean)return aBoolean;
+        //修改部门信息
+        iDeptDao.updateOne(newDept);
+        return aBoolean;
+    }
+
+    //比较新旧部门信息是否有修改并添加部门日志信息（返回布尔值）
+    private Boolean getaBooleanByOlddeptAndNewdept(Dept oldDept,Dept newDept,String transactorusername){
+        Boolean isUpdate = false;
+        Boolean respBoolean = false;
+        Integer depid = oldDept.getId();
+        String beforeinformation = "";
+        String afterinformation = "";
+        //判断部门编号（首先判断是否相等，如果不相等还要判断是否可用）
+        if(!newDept.getDepcode().equals(oldDept.getDepcode())){
+            Boolean isExist = getaBooleanByDepcode(newDept.getDepcode());
+            if(isExist==null)return false;
+            if(isExist)
+            isUpdate = getaBooleanByTwoString(depid,oldDept.getDepcode(),newDept.getDepcode(),transactorusername,"部门编号");
+            if(isUpdate)respBoolean = true;
+        }
+        //判断部门名称并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,oldDept.getDepname(),newDept.getDepname(),transactorusername,"部门名称");
+        if(isUpdate)respBoolean = true;
+        //判断部门类型并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,oldDept.getDeptype(),newDept.getDeptype(),transactorusername,"部门类型");
+        if(isUpdate)respBoolean = true;
+        //判断职能类型并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,oldDept.getFunctionaltype(),newDept.getFunctionaltype(),transactorusername,"职能类型");
+        if(isUpdate)respBoolean = true;
+        //判断上级部门并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,getStringOfDepnameAndDepcode(oldDept.getParentdep()),getStringOfDepnameAndDepcode(newDept.getParentdep()),transactorusername,"上级部门");
+        if(isUpdate)respBoolean = true;
+        //判断公司名称并部门日志
+        isUpdate = getaBooleanByTwoString(depid,oldDept.getCompanyname(),newDept.getCompanyname(),transactorusername,"公司名称");
+        if(isUpdate)respBoolean = true;
+        //判断部门正职并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getPrincipaluser()),getStringOfTruenameAndEmployeenumber(newDept.getPrincipaluser()),transactorusername,"部门正职");
+        if(isUpdate)respBoolean = true;
+        //判断部门副职并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getDeputyuser()),getStringOfTruenameAndEmployeenumber(newDept.getDeputyuser()),transactorusername,"部门副职");
+        if(isUpdate)respBoolean = true;
+        //判断部门秘书并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getSecretaryuser()),getStringOfTruenameAndEmployeenumber(newDept.getSecretaryuser()),transactorusername,"部门秘书");
+        if(isUpdate)respBoolean = true;
+        //判断部门职责并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,oldDept.getDutydescription(),newDept.getDutydescription(),transactorusername,"部门职责");
+        if(isUpdate)respBoolean = true;
+        //判断部门概述并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,oldDept.getDepdescription(),newDept.getDepdescription(),transactorusername,"部门概述");
+        if(isUpdate)respBoolean = true;
+        return respBoolean;
+    }
+
+    //根据Dept获得部门名称+部门编号的字符串拼接
+    private String getStringOfDepnameAndDepcode(Dept dept){
+        if(null==dept)return null;
+        return dept.getDepname()+"--"+dept.getId();
+    }
+
+    //根据User获得姓名+员工号的字符串拼接
+    private String getStringOfTruenameAndEmployeenumber(User user){
+        if(null==user)return null;
+        return user.getTruename()+"--"+user.getEmployeenumber();
+    }
+
+    //判断部门编号是否存在
+    private Boolean getaBooleanByDepcode(String depcode){
+        if(StringUtils.isBlank(depcode))return null;
+        Dept dept = iDeptDao.selectDeptByDeptcode(depcode);
+        if(null==dept)return false;
+        return true;
+    }
+
+    //判断相应的两个字段是否相同并添加部门日志
+    private Boolean getaBooleanByTwoString(Integer depid,String beforeinformation,String afterinformation,String transactorusername,String changeinformationName){
+        if(StringUtils.isBlank(afterinformation))return false;
+        if(afterinformation.equals(beforeinformation))return false;
+        DeptLog deptLog = new DeptLog();
+        deptLog.setDeptid(depid);
+        deptLog.setChangeinformation(changeinformationName);
+        deptLog.setBeforeinformation(beforeinformation);
+        deptLog.setAfterinformation(afterinformation);
+        deptLog.setChangereason("业务需要");
+        deptLog.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        deptLog.setTransactoruserid(getUseridByUsername(transactorusername));
+        iDeptLogDao.insertOne(deptLog);
+        return true;
+    }
+
+    //根据登录ID获得账号ID
+    private Integer getUseridByUsername(String username){
+        if(StringUtils.isBlank(username))return null;
+        User user = iUserDao.selectByUsername(username);
+        if(null==user)return null;
+        return user.getId();
+    }
+
+    //根据部门粗略信息获取部门详细信息
+    private Dept getDetailDeptByDept(Dept dept){
+        if(null==dept)return null;
+        //获取部门类型信息
+        dept.setDeptype(getHRsetValueByHRsetID(dept.getDeptypeid()));
+        //获取职能类型
+        dept.setFunctionaltype(getHRsetValueByHRsetID(dept.getFunctionaltypeid()));
+        //获取上级部门粗略信息
+        dept.setParentdep(iDeptDao.selectDeptByDepid(dept.getParentdepid()));
+        //获取部门正职粗略信息
+        dept.setPrincipaluser(iUserDao.selectById(dept.getPrincipaluserid()));
+        //获取部门副职粗略信息
+        dept.setDeputyuser(iUserDao.selectById(dept.getDeputyuserid()));
+        //获取部门秘书粗略信息
+        dept.setSecretaryuser(iUserDao.selectById(dept.getSecretaryuserid()));
+        return dept;
+    }
+
+    //根据HRset的id获取HRset字段
+    private String getHRsetValueByHRsetID(Integer id){
+        if(null==id)return null;
+        HRset hRset = ihRsetDao.selectById(id);
+        if(null==hRset)return null;
+        return hRset.getDatavalue();
     }
 }
