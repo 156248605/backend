@@ -47,7 +47,7 @@ public interface IHRsetService {
      *@Description:分页
      *@Date: 11:35 2018\5\19 0019
      */
-    PageInfo queryByParam(HashMap<String, Object> paramMap);
+    PageInfo queryByParam(Map<String, Object> paramMap);
 
     /**
      *@Author:ShiYun;

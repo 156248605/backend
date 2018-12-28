@@ -69,10 +69,10 @@
 			dm.transactiondate,
 			dm.dimissiondirectionid
 		from tb_hr_dimission dm
-		    JOIN tb_id_user u ON dm.transactoruserid = u.id
-		    JOIN tb_hr_set dt ON dm.dimissiontypeid = dt.id
-		    JOIN tb_hr_set dd ON dm.dimissiondirectionid = dd.id
-		    JOIN tb_hr_set dr ON dm.dimissionreasonid = dr.id
+		LEFT JOIN tb_id_user u ON dm.transactoruserid = u.id
+		LEFT JOIN tb_hr_set dt ON dm.dimissiontypeid = dt.id
+		LEFT JOIN tb_hr_set dd ON dm.dimissiondirectionid = dd.id
+		LEFT JOIN tb_hr_set dr ON dm.dimissionreasonid = dr.id
 		<where>
 			<if test="userids!=null">
 				AND dm.dimissionuserid IN
@@ -142,6 +142,7 @@
 			<if test="transactiondatevalue1!=null and transactiondatevalue1!='' and transactiondatevalue2!=null and transactiondatevalue2!=''">
 				AND dm.transactiondate BETWEEN #{transactiondatevalue1} AND #{transactiondatevalue2}
 			</if>
+			and 1=1
 		</where>
 		ORDER BY dm.id DESC
 	</select>

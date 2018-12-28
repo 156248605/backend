@@ -66,7 +66,7 @@ public class HRsetServiceImpl implements IHRsetService {
     }
 
     @Override
-    public PageInfo queryByParam(HashMap<String, Object> paramMap) {
+    public PageInfo queryByParam(Map<String, Object> paramMap) {
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         HRset hRset = (HRset) paramMap.get("entity");
