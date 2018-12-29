@@ -4,8 +4,10 @@ import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostRelationshipDao;
 import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.service.hr_service.IHRsetService;
+import com.elex.oa.util.hr_util.HrUtilsTemp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,6 +28,8 @@ public class HRsetServiceImpl implements IHRsetService {
     private IHRsetDao ihRsetDao;
     @Resource
     private IPostRelationshipDao iPostRelationshipDao;
+    @Resource
+    HrUtilsTemp hrUtilsTemp;
 
     /**
      * @Author: shiyun
@@ -159,5 +163,24 @@ public class HRsetServiceImpl implements IHRsetService {
             }
         }
         return postgradeList.size()>0?postgradeList:null;
+    }
+
+    @Override
+    public Boolean updateDatacode() {
+        List<HRset> hRsetList = ihRsetDao.selectAll();
+        for (HRset hrset:hRsetList
+             ) {
+                String datacode = hrset.getDatatype()+"_"+System.currentTimeMillis();
+                hrset.setDatacode(datacode);
+                try {
+                    ihRsetDao.updateOne(hrset);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            /*if(StringUtils.isBlank(hrset.getDatacode())){
+            }*/
+        }
+        return true;
     }
 }

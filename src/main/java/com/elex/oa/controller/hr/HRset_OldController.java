@@ -157,4 +157,10 @@ public class HRset_OldController {
         return  iPostlevelrelationshipinfoService.queryPostgradeByPostfamilycode(postfamilycode);
     }
 
+    @RequestMapping("/updateDatacode")
+    @ResponseBody
+    public Object updateDatacode(){
+        Boolean aBoolean = ihRsetService.updateDatacode();
+        return aBoolean?RespUtil.successResp("200","更新成功！",null):RespUtil.successResp("500","更新失败！",null);
+    }
 }
