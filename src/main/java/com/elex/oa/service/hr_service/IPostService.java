@@ -17,6 +17,7 @@ public interface IPostService  {
      *@Date: 11:00 2018\3\20 0020
      */
     Post queryOneByPostid(Integer id);
+    Boolean updateOnePost(Post post,String transactorusername);
 
     /**
      *@Author:ShiYun;

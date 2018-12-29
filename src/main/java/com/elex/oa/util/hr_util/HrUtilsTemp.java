@@ -137,6 +137,14 @@ public class HrUtilsTemp {
         return hrdatadictionaryList.get(0).getDatavalue();
     }
 
+    //根据HRset的id获得相应的值（已过时）
+    public String getDatavalueByHrsetid(Integer id){
+        if(null==id)return null;
+        HRset hRset = ihRsetDao.selectById(id);
+        if(null==hRset)return null;
+        return hRset.getDatavalue();
+    }
+
     //根据部门编号获得部门信息（粗略的信息）
     public Depinfo getDepinfoByDepcode(String depcode){
         if(org.apache.commons.lang3.StringUtils.isEmpty(depcode))return null;
@@ -265,5 +273,13 @@ public class HrUtilsTemp {
         List<Postinfo> postinfoList = iPostinfoDao.select(new Postinfo(null, postname, null, null, null));
         if(null==postinfoList || postinfoList.size()==0)return null;
         return postinfoList.get(0).getPostcode();
+    }
+
+    //根据登录ID获得账号ID
+    public Integer getUseridByUsername(String username){
+        if(StringUtils.isBlank(username))return null;
+        User user = iUserDao.selectByUsername(username);
+        if(null==user)return null;
+        return user.getId();
     }
 }

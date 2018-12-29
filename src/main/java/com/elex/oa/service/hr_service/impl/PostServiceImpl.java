@@ -3,6 +3,7 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IPostService;
+import com.elex.oa.util.hr_util.HrUtilsTemp;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import org.apache.commons.lang.StringUtils;
@@ -31,7 +32,9 @@ public class PostServiceImpl implements IPostService {
     @Resource
     IPersonalInformationDao iPersonalInformationDao;
     @Resource
-    IHRsetDao ihRsetDao;
+    HrUtilsTemp hrUtilsTemp;
+    @Resource
+    IPostLogDao iPostLogDao;
 
     /**
      *@Author:ShiYun;
@@ -44,8 +47,6 @@ public class PostServiceImpl implements IPostService {
         if(null==post)return null;
         return getPostdetailByPost(post);
     }
-
-
 
 
     /**
@@ -193,39 +194,125 @@ public class PostServiceImpl implements IPostService {
         return RespUtil.successResp("200","提交成功！",postnames);
     }
 
-    private Post getPostdetailByPost(Post post) {
-        if (post!=null) {
-            if (null!=post.getFunctionaltypeid()) {
-                HRset hRset_functionaltype = ihRsetDao.selectById(post.getFunctionaltypeid());
-                if (null!=hRset_functionaltype) {
-                    post.setFunctionaltype(hRset_functionaltype.getDatavalue());
-                }
-            }
-            if (null!=post.getPostfamilyid()) {
-                HRset hRset_postfamily = ihRsetDao.selectById(post.getPostfamilyid());
-                if (null!=hRset_postfamily) {
-                    post.setPostfamily(hRset_postfamily.getDatavalue());
-                }
-            }
-            if (null!=post.getPostgradeid()) {
-                HRset hRset_postgrade = ihRsetDao.selectById(post.getPostgradeid());
-                if (null!=hRset_postgrade) {
-                    post.setPostgrade(hRset_postgrade.getDatavalue());
-                }
-            }
-            if (null!=post.getPostrankid()) {
-                HRset hRset_postrank = ihRsetDao.selectById(post.getPostrankid());
-                if (null!=hRset_postrank) {
-                    post.setPostrank(hRset_postrank.getDatavalue());
-                }
-            }
-            if (null!=post.getPostlevelid()) {
-                HRset hRset_postlevel = ihRsetDao.selectById(post.getPostlevelid());
-                if (null!=hRset_postlevel) {
-                    post.setPostlevel(hRset_postlevel.getDatavalue());
-                }
-            }
+    @Override
+    public Boolean updateOnePost(Post post, String transactorusername) {
+        //获得就岗位信息
+        Post oldPost = iPostDao.selectPostByPostid(post.getId());
+        oldPost = getPostdetailByPost(oldPost);
+        //获得新岗位信息
+        Post newPost = getPostdetailByPost(post);
+        //判断新旧两个对象并添加岗位日志信息
+        Boolean isUpdate = getaBooleanByOldpostAndNewpost(oldPost, newPost, transactorusername);
+        //修改岗位信息
+        if(isUpdate){
+            iPostDao.updateOne(newPost);
         }
+        return isUpdate;
+    }
+
+    //判断新旧两个对象并添加岗位日志信息
+    private Boolean getaBooleanByOldpostAndNewpost(Post oldPost,Post newPost,String transactorusername){
+        if(null==oldPost.getId())return false;
+        Boolean respBoolean = false;
+        Boolean isUpdate = false;
+        Integer postid = oldPost.getId();
+        String beforeinformation = "";
+        String afterinformation = "";
+        //判断岗位编号是否相同并添加岗位日志
+        Boolean isExist = getaBooleanByPostcode(newPost.getPostcode());
+        if(isExist){
+            //岗位编号存在
+            if(!newPost.getPostcode().equals(oldPost.getPostcode())){
+                //新旧岗位编号不一样则修改失败
+                return false;
+            }
+        }else if(null == isExist){
+            //编号为空不合规定
+            return false;
+        }else {
+            isUpdate = getaBooleanByBeforeAndAfterinfo(postid, oldPost.getPostcode(), newPost.getPostcode(), "岗位编号", transactorusername);
+            if(isUpdate)respBoolean = true;
+        }
+        //判断岗位名称并添加日志
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getPostname(),newPost.getPostname(),"岗位名称",transactorusername);
+        if(isUpdate)respBoolean = true;
+        //判断职能类型并添加日志
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,hrUtilsTemp.getDatavalueByHrsetid(oldPost.getFunctionaltypeid()),hrUtilsTemp.getDatacodeByHrsetid(newPost.getFunctionaltypeid()),"职能类型",transactorusername);
+        if(isUpdate)respBoolean = true;
+        //判断上级岗位并添加日志
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,getStringOfPostnameAndPostid(oldPost),getStringOfPostnameAndPostid(newPost),"岗位名称",transactorusername);
+        if(isUpdate)respBoolean = true;
+        //判断职级并添加日志
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,hrUtilsTemp.getDatavalueByHrsetid(oldPost.getPostrankid()),hrUtilsTemp.getDatacodeByHrsetid(newPost.getPostrankid()),"职级",transactorusername);
+        if(isUpdate)respBoolean = true;
+        //判断编制并添加日志
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getOrganization(),newPost.getOrganization(),"编制",transactorusername);
+        if(isUpdate)respBoolean = true;
+        //判断职责并添加日志
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getDuty(),newPost.getDuty(),"职责",transactorusername);
+        if(isUpdate)respBoolean = true;
+        //判断入职条件并添加日志
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getEntryrequirements(),newPost.getEntryrequirements(),"入职需求",transactorusername);
+        if(isUpdate)respBoolean = true;
+        //判断岗位概述并添加日志
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getJobdescription(),newPost.getJobdescription(),"岗位描述",transactorusername);
+        if(isUpdate)respBoolean = true;
+        //判断岗位说明书
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getDutyfile(),newPost.getDutyfile(),"岗位说明书",transactorusername);
+        if(isUpdate)respBoolean = true;
+        return respBoolean;
+    }
+
+    //获得岗位名称和岗位ID的字符串
+    private String getStringOfPostnameAndPostid(Post post){
+        if(null==post)return null;
+        return post.getPostname()+"--"+post.getId();
+    }
+
+    //判断岗位编号是否存在
+    private Boolean getaBooleanByPostcode(String postcode){
+        if(StringUtils.isBlank(postcode))return null;
+        Post post = iPostDao.selectPostByPostcode(postcode);
+        if(null==post)return false;
+        return true;
+    }
+
+    //判断新旧两个字段是否相同并添加相应的岗位日志信息
+    private Boolean getaBooleanByBeforeAndAfterinfo(Integer postid,String beforeinformation,String afterinformation,String changeinformationName,String transactorusername){
+        if(StringUtils.isBlank(beforeinformation))return false;
+        if(beforeinformation.equals(afterinformation))return false;
+        PostLog postLog = new PostLog();
+        postLog.setPostid(postid);
+        postLog.setChangeinformation(changeinformationName);
+        postLog.setBeforeinformation(beforeinformation);
+        postLog.setAfterinformation(afterinformation);
+        postLog.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        postLog.setTransactoruserid(hrUtilsTemp.getUseridByUsername(transactorusername));
+        postLog.setChangereason("业务需要");
+        iPostLogDao.insertOne(postLog);
+        return true;
+    }
+
+    //根据岗位对象获得详细岗位对象信息
+    private Post getPostdetailByPost(Post post) {
+        if(null==post)return null;
+        //获得职能类型
+        post.setFunctionaltype(hrUtilsTemp.getDatacodeByHrsetid(post.getFunctionaltypeid()));
+        //获得职系（已过时）
+        //获得职等（已过时）
+        //获得岗级（级别）
+        //获得职级
+        post.setPostrank(hrUtilsTemp.getDatacodeByHrsetid(post.getPostrankid()));
+        //获得上级岗位（粗略信息）
+        post.setParentpost(getCursoryPostByPostid(post.getParentpostid()));
+        return post;
+    }
+
+    //根据postid获得粗略的岗位信息
+    private Post getCursoryPostByPostid(Integer postid){
+        if(null==postid)return null;
+        Post post = iPostDao.selectPostByPostid(postid);
+        if(null==post)return null;
         return post;
     }
 }
