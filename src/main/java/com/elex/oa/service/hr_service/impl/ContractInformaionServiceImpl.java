@@ -9,6 +9,7 @@ import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.service.hr_service.IContractInformationService;
+import com.elex.oa.util.hr_util.HrUtilsTemp;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -35,6 +36,8 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     IHRsetDao ihRsetDao;
     @Resource
     IPersonalInformationDao iPersonalInformationDao;
+    @Resource
+    HrUtilsTemp hrUtilsTemp;
 
     /**
      *@Author:ShiYun;
@@ -72,38 +75,13 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      */
     @Override
     public ContractInformation queryById(Integer id) {
+        //获得合同的粗略信息
         ContractInformation contractInformation = iContractInformationDao.selectById(id);
         if(null == contractInformation)return null;
-        //获得姓名
-        if (contractInformation!=null && contractInformation.getUserid()!=null && iUserDao.selectById(contractInformation.getUserid())!=null) {
-            contractInformation.setTruename(iUserDao.selectById(contractInformation.getUserid()).getTruename());
-        }
-        //获得工号
-        Integer uid = contractInformation.getUserid();
-        System.out.println(uid);
-        PersonalInformation per = iPersonalInformationDao.selectByUserid(uid);
-        System.out.println(per);
-        System.out.println(per.getEmployeenumber());
-        contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
-        //获得合同类型
-        List<HRset> contractList = ihRsetDao.selectByConditions(new HRset(contractInformation.getContracttypeid()));
-        if ( contractList!=null && contractList.size()==1) {
-            contractInformation.setContracttype(contractList.get(0).getDatavalue());
-        }
-        //获得办理人姓名
-        contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
-        //获得合同期限
-        try {
-            contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        /*获得合同的详细信息*/
+        contractInformation = getDetailContractByContract(contractInformation);
         //获得续签合同集合
-        List<ContractInformation> contractInformationList = iContractInformationDao.selectByUserid(contractInformation.getUserid());
-        for(ContractInformation contractInformation1:contractInformationList){
-            contractInformation1.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
-        }
-        contractInformation.setHistoryContract(contractInformationList);
+        contractInformation.setHistoryContract(getChildrenContractInformationsByUserid(contractInformation.getUserid()));
         return contractInformation;
     }
 
@@ -230,5 +208,36 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
             contractInformation.setContractage("0");
         }
         iContractInformationDao.updateOne(contractInformation);
+    }
+
+    //获得详细合同信息
+    private ContractInformation getDetailContractByContract(ContractInformation contractInformation) {
+        if(null==contractInformation)return null;
+        //获得姓名
+        contractInformation.setTruename(hrUtilsTemp.getdTruenameByUserid(contractInformation.getUserid()));
+        //获得工号
+        contractInformation.setEmployeenumber(hrUtilsTemp.getEmployeenumberByUserid(contractInformation.getUserid()));
+        //获得合同类型
+        contractInformation.setContracttype(hrUtilsTemp.getDatavalueByHrsetid(contractInformation.getContracttypeid()));
+        //获得办理人姓名
+        contractInformation.setTransactortruename(hrUtilsTemp.getdTruenameByUserid(contractInformation.getTransactoruserid()));
+        //获得合同期限
+        try {
+            contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return contractInformation;
+    }
+
+    //获得合同续签信息
+    private List<ContractInformation> getChildrenContractInformationsByUserid(Integer userid){
+        if(null==userid)return null;
+        List<ContractInformation> contractInformationList = iContractInformationDao.selectByUserid(userid);
+        if(null==contractInformationList)return null;
+        for(ContractInformation contractInformation:contractInformationList){
+            contractInformation = getDetailContractByContract(contractInformation);
+        }
+        return contractInformationList;
     }
 }

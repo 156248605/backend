@@ -113,6 +113,14 @@ public class HrUtilsTemp {
         return user.getTruename();
     }
 
+    //根据账号ID获得姓名（已过时）
+    public String getdTruenameByUserid(Integer userid){
+        if(null==userid)return null;
+        User user = iUserDao.selectById(userid);
+        if(null==user)return null;
+        return user.getTruename();
+    }
+
     //根据跟踪线索id查询跟踪内容
     public String getTrackcontentByTrackid(String trackid){
         if(StringUtils.isEmpty(trackid))return null;
