@@ -4,8 +4,8 @@ import com.elex.oa.dao.objectives.GoalDao;
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.objectives.Goal;
 import com.elex.oa.entity.objectives.Goal2;
-import com.elex.oa.service.objectives.GoalService;
 import com.elex.oa.service.hr_service.IDeptService;
+import com.elex.oa.service.objectives.GoalService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,14 +109,27 @@ public class GoalImpl implements GoalService {
         }
         Goal patent = goalDao.obtainPatentCon(content); //查询某子公司的发明专利情况
         List<String> list3 = new ArrayList<>();
-        list3.add(patent.getAnnualTarget()+"");
-        list3.add(patent.getTheTotal());
-        list3.add(patent.getCompletion());
+        if(patent == null) {
+            list3.add("0");
+            list3.add("0");
+            list3.add("0.00%");
+        } else {
+            list3.add(patent.getAnnualTarget()+"");
+            list3.add(patent.getTheTotal());
+            list3.add(patent.getCompletion());
+        }
         Goal2 net = goalDao.obtainNetCon(content); //查询子公司的销售净利情况
         List<String> list2 = new ArrayList<>();
-        list2.add(new BigDecimal(net.getAnnualTarget() / 10000).setScale(2,RoundingMode.UP) + "");
-        list2.add(net.getTheTotal());
-        list2.add(net.getCompletion());
+        if(net == null) {
+            list2.add("0.00");
+            list2.add("0.00");
+            list2.add("0.00%");
+        } else {
+            list2.add(new BigDecimal(net.getAnnualTarget() / 10000).setScale(2,RoundingMode.UP) + "");
+            list2.add(net.getTheTotal());
+            list2.add(net.getCompletion());
+        }
+
         content.put("list",list);
         List<Goal2> grossList = goalDao.obtainGrossCon(content); //查询子公司的销售毛利情况
         List<Goal2> revenueList = goalDao.obtainRevenueCon(content); //查询子公司的销售收入情况
@@ -135,7 +148,7 @@ public class GoalImpl implements GoalService {
         list1.add(new BigDecimal(annual1 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
         list1.add(new BigDecimal(total1 / 10000).setScale(2,BigDecimal.ROUND_UP)+"");
         if(annual1 == 0){
-            list1.add("");
+            list1.add("0.00%");
         } else {
             String ratio1 = new BigDecimal( total1 / annual1 * 100).setScale(2,BigDecimal.ROUND_UP) + "%";
             list1.add(ratio1);

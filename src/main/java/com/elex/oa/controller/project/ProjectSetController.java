@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/hammer")
 @Controller
@@ -47,4 +48,10 @@ public class ProjectSetController {
     }
 
 
+    //查询所有项目属性类型
+    @RequestMapping("/query_various")
+    @ResponseBody
+    public Map<String,List<ProjectVarious>> queryVarious() {
+        return projectSetService.queryVarious();
+    }
 }

@@ -6,7 +6,9 @@ import com.elex.oa.service.project.ProjectSetService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProjectSetImpl implements ProjectSetService {
@@ -37,4 +39,18 @@ public class ProjectSetImpl implements ProjectSetService {
         return projectSetDao.queryPhase();
     }
 
+    //查询所有项目属性类型
+    @Override
+    public Map<String, List<ProjectVarious>> queryVarious() {
+        Map<String, List<ProjectVarious>> result = new HashMap<>();
+        List<ProjectVarious> typeList = projectSetDao.queryType();
+        List<ProjectVarious> sourceList = projectSetDao.querySource();
+        List<ProjectVarious> statusList = projectSetDao.queryStatus();
+        List<ProjectVarious> phaseList = projectSetDao.queryPhase();
+        result.put("type", typeList);
+        result.put("source", sourceList);
+        result.put("status", statusList);
+        result.put("phase", phaseList);
+        return result;
+    }
 }
