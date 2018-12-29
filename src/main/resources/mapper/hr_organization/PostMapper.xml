@@ -8,7 +8,7 @@
 		<result column="functionaltypeid" property="functionaltypeid" />
 		<result column="postfamilyid" property="postfamilyid" />
 		<result column="postgradeid" property="postgradeid" />
-		<result column="rankid" property="rankid" />
+		<result column="postrankid" property="postrankid" />
 		<result column="postlevelid" property="postlevelid" />
 		<result column="postcode" property="postcode" />
 		<result column="parentpostid" property="parentpostid" />
@@ -69,7 +69,7 @@
 		 functionaltypeid,
 		 postfamilyid,
 		 postgradeid,
-		 rankid,
+		 postrankid,
 		 postlevelid,
 		 postcode,
 		 parentpostid,
@@ -85,7 +85,7 @@
 		#{functionaltypeid},
 		#{postfamilyid},
 		#{postgradeid},
-		#{rankid},
+		#{postrankid},
 		#{postlevelid},
 		#{postcode},
 		#{parentpostid},
@@ -104,7 +104,7 @@
 			<if test="functionaltypeid==null or functionaltypeid==''" >functionaltypeid=NULL,</if>
 			<if test="postfamilyid!=null and postfamilyid!=''" >postfamilyid=#{postfamilyid},</if>
 			<if test="postgradeid!=null and postgradeid!=''" >postgradeid=#{postgradeid},</if>
-			<if test="rankid!=null and rankid!=''" >rankid=#{rankid},</if>
+			<if test="postrankid!=null and postrankid!=''" >postrankid=#{postrankid},</if>
 			<if test="postlevelid!=null and postlevelid!=''" >postlevelid=#{postlevelid},</if>
 			<if test="postcode!=null and postcode!=''" >postcode=#{postcode},</if>
 			<if test="parentpostid!=null and parentpostid!=''" >parentpostid=#{parentpostid},</if>

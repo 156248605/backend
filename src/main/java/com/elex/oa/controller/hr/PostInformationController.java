@@ -304,11 +304,11 @@ public class PostInformationController {
                 postLog.setBeforeinformation(post2.getPostgrade());
                 postLog.setAfterinformation(ihRsetService.queryById(post.getPostgradeid()).getDatavalue());
                 iPostLogService.addOne(postLog);
-            }if (null!=post.getRankid() && (null==post2.getRankid() || post.getRankid().intValue()!=post2.getRankid().intValue())){
+            }if (null!=post.getPostrankid() && (null==post2.getPostrankid() || post.getPostrankid().intValue()!=post2.getPostrankid().intValue())){
                 b = true;
                 postLog.setChangeinformation("职级");
-                postLog.setBeforeinformation(post2.getRank());
-                postLog.setAfterinformation(ihRsetService.queryById(post.getRankid()).getDatavalue());
+                postLog.setBeforeinformation(post2.getPostrank());
+                postLog.setAfterinformation(ihRsetService.queryById(post.getPostrankid()).getDatavalue());
                 iPostLogService.addOne(postLog);
             }if (null!=post.getPostlevelid() && (null==post2.getPostlevelid() || post.getPostlevelid().intValue()!=post2.getPostlevelid().intValue())){
                 b = true;

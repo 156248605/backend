@@ -450,7 +450,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
         postinfo.setFunctionaltypeid(new HrUtilsTemp().getDatacodeByHrsetid(p.getFunctionaltypeid()));
         postinfo.setPostfamilyid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostfamilyid()));
         postinfo.setPostgradeid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostgradeid()));
-        postinfo.setPostrankid(new HrUtilsTemp().getDatacodeByHrsetid(p.getRankid()));
+        postinfo.setPostrankid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostrankid()));
         postinfo.setPostlevelid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostlevelid()));
         postinfo.setOrganization(p.getOrganization());
         postinfo.setJobdescription(p.getJobdescription());

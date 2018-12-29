@@ -213,10 +213,10 @@ public class PostServiceImpl implements IPostService {
                     post.setPostgrade(hRset_postgrade.getDatavalue());
                 }
             }
-            if (null!=post.getRankid()) {
-                HRset hRset_postrank = ihRsetDao.selectById(post.getRankid());
+            if (null!=post.getPostrankid()) {
+                HRset hRset_postrank = ihRsetDao.selectById(post.getPostrankid());
                 if (null!=hRset_postrank) {
-                    post.setRank(hRset_postrank.getDatavalue());
+                    post.setPostrank(hRset_postrank.getDatavalue());
                 }
             }
             if (null!=post.getPostlevelid()) {
