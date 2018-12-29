@@ -5,6 +5,7 @@ import com.elex.oa.entity.eqpt.Linkman;
 import com.elex.oa.entity.eqpt.Partner;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -40,4 +41,6 @@ public interface PartnerMapper {
 
     List<Partner> getPart();
 
+    // 获取供应商评审表中信息
+    List<HashMap<String, Object>> partnerInfo(String instId);
 }

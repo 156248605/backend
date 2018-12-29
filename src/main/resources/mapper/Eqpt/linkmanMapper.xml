@@ -168,4 +168,8 @@
         </set>
         WHERE onlyIdL = #{onlyIdL}
     </update>
+
+    <select id="maxLinkId" resultType="string">
+        SELECT MAX(linkId) FROM eqpt_linkman
+    </select>
 </mapper>

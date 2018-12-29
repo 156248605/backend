@@ -96,4 +96,10 @@ public class PartnerController {
         List<Linkman> linkmanList = partnerImpl.authorizeInfo(request);
         return linkmanList;
     }
+
+    @RequestMapping("/insertPartnerAfterApprove")
+    @ResponseBody
+    public void insertPartnerAfterApprove (String instId) {
+        partnerImpl.insertPartnerAfterApprove(instId);
+    }
 }

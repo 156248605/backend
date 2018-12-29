@@ -1,6 +1,7 @@
 package com.elex.oa.service.eqptImpl;
 
 
+import com.elex.oa.dao.eqptDao.LinkmanMapper;
 import com.elex.oa.dao.eqptDao.PartnerMapper;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Linkman;
@@ -9,9 +10,11 @@ import com.elex.oa.service.eqptService.PartnerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -21,6 +24,9 @@ public class PartnerImpl implements PartnerService {
 
     @Resource
     private PartnerMapper partnerMapper;
+
+    @Resource
+    private LinkmanMapper linkmanMapper;
 
     @Override
     public PageInfo<Partner> showPartner(Page page) {
@@ -236,5 +242,37 @@ public class PartnerImpl implements PartnerService {
         linkman.setLinkId(request.getParameter("auId"));
         List<Linkman> list = partnerMapper.authorizeInfo(linkman);
         return list;
+    }
+
+    // 供应商评审表审批通过直接添加
+    @Override
+    public void insertPartnerAfterApprove(String instId) {
+        List<HashMap<String, Object>> listPartner = partnerMapper.partnerInfo(instId);
+        // 新建授权联系人
+        Linkman linkman = new Linkman();
+        String newLinkId = String.valueOf(parseInt(linkmanMapper.maxLinkId()) + 1);
+        linkman.setLinkId(newLinkId);
+        linkman.setName(listPartner.get(0).get("F_BSQLXR").toString());
+        linkman.setTel(listPartner.get(0).get("F_MRLXFS").toString());
+        linkman.setWorkPlace(listPartner.get(0).get("F_BGDZ").toString());
+        linkmanMapper.newLinkman(linkman);
+        // 获取该联系人其他相关信息
+        List<Linkman> authorizeLinkman = linkmanMapper.search(linkman);
+        // 新建供应商
+        Partner partner = new Partner();
+        partner.setPnId(instId);
+        partner.setPnCategory("供应商");
+        partner.setCompany(listPartner.get(0).get("F_QYMC").toString());
+        partner.setAuthorize(listPartner.get(0).get("F_BSQLXR").toString());
+        partner.setAuId(newLinkId);
+        partner.setAuJob(authorizeLinkman.get(0).getJob() == null ? " " : authorizeLinkman.get(0).getJob());
+        partner.setAuTel(authorizeLinkman.get(0).getTel() == null ? " " : authorizeLinkman.get(0).getTel());
+        partner.setAuMail(authorizeLinkman.get(0).getEmail() == null ? " " : authorizeLinkman.get(0).getEmail());
+        partner.setAuWechat(authorizeLinkman.get(0).getWechatNum() == null ? " " : authorizeLinkman.get(0).getWechatNum());
+        partner.setAuQq(authorizeLinkman.get(0).getQqNum() == null ? " " : authorizeLinkman.get(0).getQqNum());
+        partner.setAuAddr(authorizeLinkman.get(0).getWorkPlace() == null ? " " : authorizeLinkman.get(0).getWorkPlace());
+        partner.setOtherLink("");
+        partner.setComAddr(listPartner.get(0).get("F_BGDZ").toString());
+        partnerMapper.insertPartner(partner);
     }
 }

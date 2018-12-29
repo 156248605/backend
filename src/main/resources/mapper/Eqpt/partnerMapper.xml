@@ -343,4 +343,8 @@
     <select id="authorizeInfo" resultType="com.elex.oa.entity.eqpt.Linkman">
         SELECT * FROM eqpt_linkman WHERE name = #{name} AND linkId = #{linkId}
     </select>
+
+    <select id="partnerInfo" resultType="HashMap">
+        SELECT * FROM w_gyspsb WHERE INST_ID_ = #{instId} AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
 </mapper>

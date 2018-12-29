@@ -22,4 +22,7 @@ public interface LinkmanMapper {
     int importLinkman(Linkman linkman);
 
     void changeLinkman(Linkman linkman);
+
+    // 查询最大的联系人ID
+    String maxLinkId();
 }

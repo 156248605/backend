@@ -34,4 +34,7 @@ public interface PartnerService {
 
     //联系人信息
     List<Linkman> authorizeInfo(HttpServletRequest request);
+
+    // 供应商评审表审批通过直接添加
+    void insertPartnerAfterApprove(String instId);
 }
