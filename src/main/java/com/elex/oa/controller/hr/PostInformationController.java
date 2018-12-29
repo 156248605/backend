@@ -18,10 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -470,6 +468,15 @@ public class PostInformationController {
         }
         DeptTree newDepttree = getNewDepttree(deptTree1, title, list);
         return newDepttree;
+    }
+
+    @RequestMapping("/validateByPostcode")
+    @ResponseBody
+    public Object validateByPostcode(
+            @RequestParam("postcode")String postcode
+    ){
+        Boolean aBoolean = iPostService.validateByPostcode(postcode);
+        return aBoolean? RespUtil.successResp("200","岗位编号已存在！",null):RespUtil.successResp("500","岗位编号不存在",null);
     }
 
     /**

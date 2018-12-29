@@ -91,4 +91,6 @@ public interface IPostService  {
      *@Date: 13:47 2018\9\25 0025
      */
     Object queryPostnameByUsername(String username);
+
+    Boolean validateByPostcode(String postcode);
 }

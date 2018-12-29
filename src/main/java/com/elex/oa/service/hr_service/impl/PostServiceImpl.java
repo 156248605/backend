@@ -210,6 +210,14 @@ public class PostServiceImpl implements IPostService {
         return isUpdate;
     }
 
+    @Override
+    public Boolean validateByPostcode(String postcode) {
+        if(StringUtils.isBlank(postcode))return false;
+        Post post = iPostDao.selectPostByPostcode(postcode);
+        if(null==post)return false;
+        return true;
+    }
+
     //判断新旧两个对象并添加岗位日志信息
     private Boolean getaBooleanByOldpostAndNewpost(Post oldPost,Post newPost,String transactorusername){
         if(null==oldPost.getId())return false;
