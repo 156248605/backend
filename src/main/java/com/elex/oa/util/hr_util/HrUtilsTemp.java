@@ -114,7 +114,7 @@ public class HrUtilsTemp {
     }
 
     //根据账号ID获得姓名（已过时）
-    public String getdTruenameByUserid(Integer userid){
+    public String getTruenameByUserid(Integer userid){
         if(null==userid)return null;
         User user = iUserDao.selectById(userid);
         if(null==user)return null;
@@ -289,5 +289,26 @@ public class HrUtilsTemp {
         User user = iUserDao.selectByUsername(username);
         if(null==user)return null;
         return user.getId();
+    }
+
+    //根据首次参加工作时间获得工龄
+    public String getWorkingageByFirstworkingtime(String firstworkingtime){
+        if(StringUtils.isBlank(firstworkingtime))return null;
+        String workingage = null;
+        try {
+            workingage = IDcodeUtil.getWorkingage(firstworkingtime) + "年";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return workingage;
+    }
+
+    //根据数据字典值获得相应的HRsetID
+    public Integer getHrsetidByDatavalue(String datatype,String datavalue){
+        if(StringUtils.isBlank(datatype) || StringUtils.isBlank(datavalue))return null;
+        List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(datatype, datavalue));
+        if(null==hRsetList || hRsetList.size()==0)return null;
+        return hRsetList.get(0).getId();
     }
 }

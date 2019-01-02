@@ -88,9 +88,8 @@ public interface IPersonalInformationService{
 
     void removeAll();
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据人名查询部门经理
-     *@Date: 17:10 2018\8\31 0031
-     */
+    PersonalInformation queryPersonalInformationById(Integer personalInformationId);
+
+    Map<String,Object> updateManageInformation(PersonalInformation personalInformation,String transactorusername);
+
 }

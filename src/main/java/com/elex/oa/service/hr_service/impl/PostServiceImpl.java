@@ -305,12 +305,12 @@ public class PostServiceImpl implements IPostService {
     private Post getPostdetailByPost(Post post) {
         if(null==post)return null;
         //获得职能类型
-        post.setFunctionaltype(hrUtilsTemp.getDatacodeByHrsetid(post.getFunctionaltypeid()));
+        post.setFunctionaltype(hrUtilsTemp.getDatavalueByHrsetid(post.getFunctionaltypeid()));
         //获得职系（已过时）
         //获得职等（已过时）
         //获得岗级（级别）
         //获得职级
-        post.setPostrank(hrUtilsTemp.getDatacodeByHrsetid(post.getPostrankid()));
+        post.setPostrank(hrUtilsTemp.getDatavalueByHrsetid(post.getPostrankid()));
         //获得上级岗位（粗略信息）
         post.setParentpost(getCursoryPostByPostid(post.getParentpostid()));
         return post;

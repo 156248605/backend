@@ -214,13 +214,13 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     private ContractInformation getDetailContractByContract(ContractInformation contractInformation) {
         if(null==contractInformation)return null;
         //获得姓名
-        contractInformation.setTruename(hrUtilsTemp.getdTruenameByUserid(contractInformation.getUserid()));
+        contractInformation.setTruename(hrUtilsTemp.getTruenameByUserid(contractInformation.getUserid()));
         //获得工号
         contractInformation.setEmployeenumber(hrUtilsTemp.getEmployeenumberByUserid(contractInformation.getUserid()));
         //获得合同类型
         contractInformation.setContracttype(hrUtilsTemp.getDatavalueByHrsetid(contractInformation.getContracttypeid()));
         //获得办理人姓名
-        contractInformation.setTransactortruename(hrUtilsTemp.getdTruenameByUserid(contractInformation.getTransactoruserid()));
+        contractInformation.setTransactortruename(hrUtilsTemp.getTruenameByUserid(contractInformation.getTransactoruserid()));
         //获得合同期限
         try {
             contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));

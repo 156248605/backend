@@ -224,6 +224,7 @@ public class IDcodeUtil {
      *@Date: 19:56 2018\5\16 0016
      */
     public static String getArrayToString(List<String> strs,String s){
+        if(null==strs)return null;
         String str = "";
         for(int i=0;i<strs.size();i++){
             str = str + strs.get(i);

@@ -61,7 +61,7 @@ public class ManageInformationServiceImpl implements IManageInformationService {
     private Boolean validateEntityBeforeModifyOne(ManageInformation manageInformation) {
         Boolean valBoolean = true;
         if(manageInformation.getId()==null)valBoolean=false;
-        if(manageInformation.getRankid()==null)valBoolean=false;
+        if(manageInformation.getPostlevelid()==null)valBoolean=false;
         if(manageInformation.getEmployeetypeid()==null)valBoolean=false;
         if(manageInformation.getEntrydate()==null || "".equals(manageInformation.getEntrydate()))valBoolean=false;
         if(manageInformation.getZhuanzhengdate()==null || "".equals(manageInformation.getZhuanzhengdate()))valBoolean=false;

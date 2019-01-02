@@ -4,7 +4,7 @@
 
 	<resultMap id="ManageInformationResultMap" type="ManageInformation">
 		<id column="id" property="id" />
-		<result column="rankid" property="rankid" />
+		<result column="postlevelid" property="postlevelid" />
 		<result column="employeetypeid" property="employeetypeid" />
 		<result column="entrydate" property="entrydate" />
 		<result column="zhuanzhengdate" property="zhuanzhengdate" />
@@ -22,14 +22,14 @@
 	<insert id="insertOne" parameterType="ManageInformation" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_manageinformation (
 			id,
-			rankid,
+			postlevelid,
 			employeetypeid,
 			entrydate,
 			zhuanzhengdate
 			)
 		values (
 			null,
-			#{rankid},
+			#{postlevelid},
 			#{employeetypeid},
 			#{entrydate},
 			#{zhuanzhengdate}
@@ -39,8 +39,8 @@
 	<update id="updateOne" parameterType="ManageInformation">
 		update tb_id_manageinformation
 		<set>
-			<if test="rankid!=null and rankid!=''">
-				rankid=#{rankid},
+			<if test="postlevelid!=null and postlevelid!=''">
+				postlevelid=#{postlevelid},
 			</if>
 			<if test="employeetypeid!=null and employeetypeid!=''">
 				employeetypeid=#{employeetypeid},

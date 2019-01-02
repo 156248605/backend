@@ -227,21 +227,7 @@ public class PersonalInformationController {
     public PersonalInformation queryPersonalInformationById(
             @RequestParam("personalInformationId") int personalInformationId
     ) throws ParseException {
-        //清理数据per表中的数据
-        List<PersonalInformation> personalInformationList = iPersonalInformationService.queryAllByNull();
-        List<User> users = iUserService.selectAll();
-        List<Integer> userids = new ArrayList<>();
-        for (User u : users
-        ) {
-            userids.add(u.getId());
-        }
-        for (PersonalInformation per : personalInformationList
-        ) {
-            if (!userids.contains(per.getUserid())) {
-                iPersonalInformationService.removeOne(per.getId());
-            }
-        }
-        return getOnePersonalinformation(personalInformationId);
+        return iPersonalInformationService.queryPersonalInformationById(personalInformationId);
     }
 
     /**
@@ -447,8 +433,8 @@ public class PersonalInformationController {
             }
             personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs,";"));
             personalInformation.setPostids(postids);*/
-            if (ihRsetService.queryById(manageInformation.getRankid()) != null) {
-                personalInformation.setZj(ihRsetService.queryById(manageInformation.getRankid()).getDatavalue());
+            if (ihRsetService.queryById(manageInformation.getPostlevelid()) != null) {
+                personalInformation.setPostlevel(ihRsetService.queryById(manageInformation.getPostlevelid()).getDatavalue());
             }
             personalInformation.setEntrydate(manageInformation.getEntrydate());
             try {
@@ -626,6 +612,7 @@ public class PersonalInformationController {
             user.setUsername(SpellUtils.phoneticize(personalInformation.getTruename()));//如果没有人工输入，则自动将名字的汉字转换为汉语拼音
         }
         user.setTruename(personalInformation.getTruename());
+        user.setEmployeenumber(personalInformation.getEmployeenumber());
         Integer userid = iUserService.saveOne(user);
 
         // 在tb_id_baseinformation表中保存用户基本信息
@@ -781,9 +768,9 @@ public class PersonalInformationController {
         }
         // 保存人事信息的管理信息
         ManageInformation manageInformation = new ManageInformation();
-        List<HRset> hRsetRankList = ihRsetService.queryByConditions(new HRset("rank", personalInformation.getZj()));
-        if (hRsetRankList != null && hRsetRankList.size() == 1) {
-            manageInformation.setRankid(hRsetRankList.get(0).getId());
+        List<HRset> hRsetPostlevelList = ihRsetService.queryByConditions(new HRset("postlevel", personalInformation.getPostlevel()));
+        if (hRsetPostlevelList != null && hRsetPostlevelList.size() == 1) {
+            manageInformation.setPostlevelid(hRsetPostlevelList.get(0).getId());
         }
         List<HRset> hRsetEmployeetypeList = ihRsetService.queryByConditions(new HRset("employeetype", personalInformation.getEmployeetype()));
         if (hRsetEmployeetypeList != null && hRsetEmployeetypeList.size() == 1) {
@@ -1314,140 +1301,8 @@ public class PersonalInformationController {
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
     ) throws ParseException {
-        //修改信息痕迹的总标识
-        Boolean listBL = false;
-        //原来的信息
-        PersonalInformation personalInformation2 = getOnePersonalinformation(iPersonalInformationService.queryOneByUserid(personalInformation.getUserid()).getId());
-        //添加修改信息
-        ChangeInformation changeInformation = new ChangeInformation();
-        //1.姓名
-        changeInformation.setChangeduserid(personalInformation.getUserid());
-        //2.变更原因
-        changeInformation.setChangereason("正常修改信息");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        String changedate = simpleDateFormat.format(new Date());
-        //3.变更时间
-        changeInformation.setChangedate(changedate);
-        User transactor = new User();
-        transactor.setUsername(transactorusername);
-        //4.办理人
-        changeInformation.setTransactoruserid(iUserService.selectByCondition(transactor).get(0).getId());
-        //5.变更项目；6.变更前内容；7.变更后内容
-
-        if (personalInformation2.getDepid() != personalInformation.getDepid()) {
-            changeInformation.setChangeinformation("部门");
-            changeInformation.setBeforeinformation(personalInformation2.getDepname());
-            changeInformation.setAfterinformation(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getDepname());
-            personalInformation2.setDepid(personalInformation.getDepid());
-            iChangeInformationService.addOne(changeInformation);
-            listBL = true;
-        }
-
-        List<Integer> postids = personalInformation.getPostids();
-        //返回值
-        Boolean re = false;
-        List<String> strs = new ArrayList<>();
-        for (int i = 0; i < postids.size(); i++) {
-            strs.add(iPostService.queryOneByPostid(postids.get(i)).getPostname());
-        }
-        if (personalInformation2.getPostnames() != null && !personalInformation2.getPostnames().equals(IDcodeUtil.getArrayToString(strs, ";"))) {
-            re = true;
-            changeInformation.setChangeinformation("岗位");
-            changeInformation.setBeforeinformation(personalInformation2.getPostnames());
-            changeInformation.setAfterinformation(IDcodeUtil.getArrayToString(strs, ";"));
-            if (personalInformation2.getId() != null) {
-                iPerandpostrsService.removeByPerid(personalInformation2.getId());//先删除在添加（岗位）
-            }
-            for (int i = 0; i < postids.size(); i++) {
-                PerAndPostRs perAndPostRs = new PerAndPostRs();
-                perAndPostRs.setPostid(postids.get(i));
-                perAndPostRs.setPerid(personalInformation2.getId());
-                iPerandpostrsService.addOne(perAndPostRs);
-            }
-            iChangeInformationService.addOne(changeInformation);
-        }
-
-        //添加manageinformation标识
-        Boolean manBl = false;
-        ManageInformation manageInformation = iManageInformationService.queryOneById(personalInformation2.getManageinformationid());
-        if (manageInformation == null) {
-            manageInformation = new ManageInformation();//不存在则新建
-        }
-
-        List<HRset> hRsetRankList = ihRsetService.queryByConditions(new HRset("rank", personalInformation.getZj()));
-        if (hRsetRankList != null && hRsetRankList.size() == 1 && !personalInformation.getZj().equals(personalInformation2.getZj())) {
-            changeInformation.setChangeinformation("职级");
-            changeInformation.setBeforeinformation(personalInformation2.getZj());
-            changeInformation.setAfterinformation(personalInformation.getZj());
-            manageInformation.setRankid(hRsetRankList.get(0).getId());
-            iChangeInformationService.addOne(changeInformation);
-            manBl = true;
-        }
-
-        List<HRset> hRsetEmployeetypeList = ihRsetService.queryByConditions(new HRset("employeetype", personalInformation.getEmployeetype()));
-        if (hRsetEmployeetypeList != null && hRsetEmployeetypeList.size() == 1 && !personalInformation.getEmployeetype().equals(personalInformation2.getEmployeetype())) {
-            changeInformation.setChangeinformation("员工类型");
-            changeInformation.setBeforeinformation(personalInformation2.getEmployeetype());
-            changeInformation.setAfterinformation(personalInformation.getEmployeetype());
-            manageInformation.setEmployeetypeid(hRsetEmployeetypeList.get(0).getId());
-            iChangeInformationService.addOne(changeInformation);
-            manBl = true;
-        }
-
-        if (personalInformation2 != null && personalInformation2.getEntrydate() != null && !personalInformation2.getEntrydate().equals(personalInformation.getEntrydate())) {
-            changeInformation.setChangeinformation("入职时间");
-            changeInformation.setBeforeinformation(personalInformation2.getEntrydate());
-            changeInformation.setAfterinformation(personalInformation.getEntrydate());
-            manageInformation.setEntrydate(personalInformation.getEntrydate());
-            iChangeInformationService.addOne(changeInformation);
-            manBl = true;
-        } else if (personalInformation2 != null && personalInformation2.getEntrydate() == null) {
-            manageInformation.setEntrydate(personalInformation.getEntrydate());
-            manBl = true;
-        }
-
-        //入职时间存在的情况再设置转正时间
-        if (personalInformation.getEntrydate() != null && !"".equals(personalInformation.getEntrydate())) {
-            //转正时间不存在则自动向后两个月
-            if (personalInformation.getZhuanzhengdate() != null && !personalInformation.getZhuanzhengdate().equals("null") && !personalInformation.getZhuanzhengdate().equals(" ")) {
-                /* if(personalInformation.getZhuanzhengdate()!=null  && !"".equals(personalInformation.getZhuanzhengdate())){*/
-                if (!personalInformation.getZhuanzhengdate().equals(personalInformation2.getZhuanzhengdate())) {
-                    changeInformation.setChangeinformation("转正日期");
-                    changeInformation.setBeforeinformation(personalInformation2.getZhuanzhengdate());
-                    changeInformation.setAfterinformation(personalInformation.getZhuanzhengdate());
-                    manageInformation.setZhuanzhengdate(personalInformation.getZhuanzhengdate());
-                    iChangeInformationService.addOne(changeInformation);
-                    manBl = true;
-                }
-            } else {
-                if (!IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate().equals("null") ? null : personalInformation.getEntrydate()).equals(personalInformation2.getZhuanzhengdate())) {
-                    changeInformation.setChangeinformation("转正日期");
-                    changeInformation.setBeforeinformation(personalInformation2.getZhuanzhengdate());
-                    changeInformation.setAfterinformation(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
-                    manageInformation.setZhuanzhengdate(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
-                    iChangeInformationService.addOne(changeInformation);
-                    manBl = true;
-                }
-            }
-        }
-
-        if (manBl) {
-            if (manageInformation.getId() != null) {
-                iManageInformationService.modifyOne(manageInformation);
-            } else {
-                Integer manageinformationid = iManageInformationService.saveOne(manageInformation);
-                personalInformation2.setManageinformationid(manageinformationid);
-            }
-        }
-
-        iPersonalInformationService.modifyOne(personalInformation2);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("username", personalInformation2.getUsername());
-        map.put("isactive", personalInformation2.getIsactive());
-        map.put("truename", personalInformation2.getTruename());
-        map.put("postids", personalInformation.getPostids());
-
-        return RespUtil.successResp("200", "提交信息成功！", map);
+        Map<String, Object> map = iPersonalInformationService.updateManageInformation(personalInformation, transactorusername);
+        return null==map?RespUtil.successResp("200", "提交信息成功！", map):RespUtil.successResp("500","修改失败！",null);
     }
 
     /**
@@ -1909,8 +1764,8 @@ public class PersonalInformationController {
             //添加manageinformation的六个字段
             ManageInformation manageInformation = iManageInformationService.queryOneById(pi.getManageinformationid());
             if (manageInformation != null) {
-                if (ihRsetService.queryById(manageInformation.getRankid()) != null) {
-                    pi.setZj(ihRsetService.queryById(manageInformation.getRankid()).getDatavalue());
+                if (ihRsetService.queryById(manageInformation.getPostlevelid()) != null) {
+                    pi.setPostlevel(ihRsetService.queryById(manageInformation.getPostlevelid()).getDatavalue());
                 }
                 pi.setEntrydate(manageInformation.getEntrydate());
                 pi.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
@@ -2120,7 +1975,7 @@ public class PersonalInformationController {
         //3.添加管理信息表（tb_id_managerinformation）=============================================================================
         ManageInformation manageInformation = new ManageInformation();
         //HR14字段的添加或更新(职级)----------
-        manageInformation.setRankid(getHRsetidInPer(new HRset("rank", personalInformation.getZj())));
+        manageInformation.setPostlevelid(getHRsetidInPer(new HRset("postlevel", personalInformation.getPostlevel())));
         //HR15字段的添加或更新(员工类型)----------
         manageInformation.setEmployeetypeid(getHRsetidInPer(new HRset("employeetype", personalInformation.getEmployeetype())));
         //普通字段的添加或更新(入职日期)----------
@@ -2329,7 +2184,7 @@ public class PersonalInformationController {
             ManageInformation manageInformation = new ManageInformation();
             manageInformation.setId(personalInformation.getManageinformationid());
             //HR14字段的添加或更新(职级)----------
-            manageInformation.setRankid(getHRsetidInPer(new HRset("rank", personalInformation.getZj())));
+            manageInformation.setPostlevelid(getHRsetidInPer(new HRset("postlevel", personalInformation.getPostlevel())));
             //HR15字段的添加或更新(员工类型)----------
             manageInformation.setEmployeetypeid(getHRsetidInPer(new HRset("employeetype", personalInformation.getEmployeetype())));
             //普通字段的添加或更新(入职日期)----------

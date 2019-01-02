@@ -111,7 +111,7 @@ public class ReadPersonalinformationExcel extends ReadBaseExcel<PersonalInformat
                     personalInformation.setPostnames(str);
                 }else if ("职级".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setZj(str);
+                    personalInformation.setPostlevel(str);
                 }else if ("入职时间".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByDateCell(cell);
                     personalInformation.setEntrydate(str);

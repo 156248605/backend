@@ -1184,8 +1184,8 @@ public class DepartmentInformationController {
             }
             personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs,";"));
             personalInformation.setPostids(postids);
-            if (ihRsetService.queryById(manageInformation.getRankid())!=null) {
-                personalInformation.setZj(ihRsetService.queryById(manageInformation.getRankid()).getDatavalue());
+            if (ihRsetService.queryById(manageInformation.getPostlevelid())!=null) {
+                personalInformation.setPostlevel(ihRsetService.queryById(manageInformation.getPostlevelid()).getDatavalue());
             }
             personalInformation.setEntrydate(manageInformation.getEntrydate());
             try {

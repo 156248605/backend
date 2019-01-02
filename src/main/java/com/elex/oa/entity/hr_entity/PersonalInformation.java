@@ -128,7 +128,7 @@ public class  PersonalInformation implements Serializable{
     private List<Integer> baseinformationids;//条件查询用
     private String hj="";//户籍
 
-    private String zj="";//职级（管理信息表5）
+    private String postlevel="";//级别（管理信息表5）
     private String entrydate="";//入职日期
     private String sn="";//司龄（只显示）
     private String zhuanzhengdate="";//转正日期（默认入职日期后的两个月，可以修改）
@@ -1038,12 +1038,12 @@ public class  PersonalInformation implements Serializable{
         this.parentcompany = parentcompany;
     }
 
-    public String getZj() {
-        return zj;
+    public String getPostlevel() {
+        return postlevel;
     }
 
-    public void setZj(String zj) {
-        this.zj = zj;
+    public void setPostlevel(String postlevel) {
+        this.postlevel = postlevel;
     }
 
     public String getEntrydate() {
@@ -1295,7 +1295,7 @@ public class  PersonalInformation implements Serializable{
                 ", workingagevalue='" + workingagevalue + '\'' + "\n" +
                 ", parentcompany='" + parentcompany + '\'' + "\n" +
                 ", parentcompanyvalue='" + parentcompanyvalue + '\'' + "\n" +
-                ", zj='" + zj + '\'' + "\n" +
+                ", postlevel='" + postlevel + '\'' + "\n" +
                 ", entrydate='" + entrydate + '\'' + "\n" +
                 ", sn='" + sn + '\'' + "\n" +
                 ", zhuanzhengdate='" + zhuanzhengdate + '\'' + "\n" +
