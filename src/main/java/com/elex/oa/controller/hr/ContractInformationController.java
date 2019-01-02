@@ -151,29 +151,40 @@ public class ContractInformationController {
             @RequestParam("transactorusername") String transactorusername,
             HttpServletRequest request
     ) throws IOException, ParseException {
-        //获得办理人ID
-        User user = new User();
-        user.setUsername(transactorusername);
-        contractInformation.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());
-        //获得附件
-        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-        List<MultipartFile> files = multipartHttpServletRequest.getFiles("attfile");
-        if (files.size() != 0) {
-            String realPath = Commons.realpath + "/hr/file";
-            Long l = Calendar.getInstance().getTimeInMillis();
-            File file = new File(realPath + "/" + l);
-            file.mkdirs();
-            String attachment = "/hr/file/" + l + "/" + files.get(0).getOriginalFilename();
-            files.get(0).transferTo(new File(realPath + "/" + l, files.get(0).getOriginalFilename()));
-            contractInformation.setAttachment(attachment);
-        }
-        //获得办理日期
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        String transdate = simpleDateFormat.format(new Date());
-        contractInformation.setTransdate(transdate);
+        try {
+            //获得办理人ID
+            User user = new User();
+            user.setUsername(transactorusername);
+            contractInformation.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());
+            //获得附件
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+            List<MultipartFile> files = multipartHttpServletRequest.getFiles("attfile");
+            if (files.size() != 0) {
+                String realPath = Commons.realpath + "/hr/file";
+                Long l = Calendar.getInstance().getTimeInMillis();
+                File file = new File(realPath + "/" + l);
+                file.mkdirs();
+                String attachment = "/hr/file/" + l + "/" + files.get(0).getOriginalFilename();
+                files.get(0).transferTo(new File(realPath + "/" + l, files.get(0).getOriginalFilename()));
+                contractInformation.setAttachment(attachment);
+            }
+            //获得办理日期
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            String transdate = simpleDateFormat.format(new Date());
+            contractInformation.setTransdate(transdate);
 
-        //将合同添加到数据库中
-        Integer contractInformaionId = iContractInformationService.addOne(contractInformation);
+            //将合同添加到数据库中
+            Integer contractInformaionId = iContractInformationService.addOne(contractInformation);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "添加失败！";
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            return "添加失败！";
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "添加失败！";
+        }
         return "添加成功！";
     }
 
