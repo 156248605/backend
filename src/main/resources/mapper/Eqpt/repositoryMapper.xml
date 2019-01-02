@@ -13,10 +13,10 @@
             <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
                 AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
             </if>
-            <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
+            <if test="reptCategory != null and reptCategory != '' and reptCateC == 1">
                 AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
             </if>
-            <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
+            <if test="reptCategory != null and reptCategory != '' and reptCateC == 2">
                 AND reptCategory NOT LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
             </if>
             <if test="reptId != null and reptId != '' and reptIdC == ''">

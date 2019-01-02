@@ -82,7 +82,7 @@ public class InRepositoryImpl implements InRepositoryService {
         String projName = request.getParameter("projName");
         String projNameC = request.getParameter("projNameC");
         // 查询判断
-        if (projId.equals("") && projName.equals("") && reptId.equals("") && reptCategory.equals("") && postId.equals("") && inId.equals("") && sn.equals("") && bn.equals("") && inTime.equals("") && inNum.equals("") && materialId.equals("")){
+        if (projId == null && projName == null && reptId == null && reptCategory == null && postId == null && inId == null && sn == null && bn == null && inTime == null && inNum == null && materialId == null){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setAuthor(request.getParameter("author"));

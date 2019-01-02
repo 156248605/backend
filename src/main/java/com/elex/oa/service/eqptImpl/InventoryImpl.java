@@ -61,7 +61,11 @@ public class InventoryImpl implements InventoryService {
         String remark = request.getParameter("remark");
         String num = request.getParameter("num");
         String numC = request.getParameter("numC");
-        if ( !invTimeC.equals("") || !invIdC.equals("") || !positionC.equals("") || !materialIdC.equals("") || !numC.equals("") || materialNameC.equals("") || priceC.equals("") || numInvC.equals("") || palC.equals("") || remark.equals("")){
+        if ( invTime == null && invId == null && position == null && materialId == null && num == null && materialName == null && price == null && numInv == null && pal == null && remark == null){
+            PageHelper.startPage(page.getCurrentPage(),page.getRows());
+            List<Repository> listR = inventoryMapper.find();
+            return new PageInfo<>(listR);
+        } else {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setInvId(invId);
@@ -86,12 +90,7 @@ public class InventoryImpl implements InventoryService {
             repository.setPalC(palC);
             List<Repository> listR = inventoryMapper.search(repository);
             return new PageInfo<>(listR);
-        } else {
-            PageHelper.startPage(page.getCurrentPage(),page.getRows());
-            List<Repository> listR = inventoryMapper.find();
-            return new PageInfo<>(listR);
         }
-
     }
 
 

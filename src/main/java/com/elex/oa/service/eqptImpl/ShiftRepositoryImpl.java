@@ -80,7 +80,7 @@ public class ShiftRepositoryImpl implements ShiftRepositoryService {
         String projIdC = request.getParameter("projIdC");
         String projName = request.getParameter("projName");
         String projNameC = request.getParameter("projNameC");
-        if (shiftId.equals("") && shiftTime.equals("") && shiftNum.equals("") && outReptId.equals("") && outPostId.equals("") && inReptId.equals("") && inPostId.equals("") && materialId.equals("") && sn.equals("") && bn.equals("") && projId.equals("") && projName.equals("") ){
+        if (shiftId == null && shiftTime == null && shiftNum == null && outReptId == null && outPostId == null && inReptId == null && inPostId == null && materialId == null && sn == null && bn == null && projId == null && projName == null ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setAuthor(request.getParameter("author"));

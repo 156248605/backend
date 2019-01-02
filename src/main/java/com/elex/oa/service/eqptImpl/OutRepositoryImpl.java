@@ -74,7 +74,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
         String projIdC = request.getParameter("projIdC");
         String projName = request.getParameter("projName");
         String projNameC = request.getParameter("projNameC");
-        if (projId.equals("") && projName.equals("") && reptId.equals("") && reptCategory.equals("") && postId.equals("") && outId.equals("") && sn.equals("") && bn.equals("") && outTime.equals("")){
+        if (projId == null && projName == null && reptId == null && reptCategory == null && postId == null && outId == null && sn == null && bn == null && outTime == null){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             Repository repository = new Repository();
             repository.setAuthor(request.getParameter("author"));

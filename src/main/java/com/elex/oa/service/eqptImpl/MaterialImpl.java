@@ -76,7 +76,7 @@ public class MaterialImpl implements MaterialService {
         String SINGLEMANAGEC = request.getParameter("singleManageC");
         String NOTSINGLE = request.getParameter("notSingle");
         String NOTSINGLEC = request.getParameter("notSingleC");
-        if (ID.equals("") && NAME.equals("") && SPEC.equals("") && MAT.equals("") && BRAND.equals("") && CATEGORY.equals("") && MAXLIMIT.equals("") && MINLIMIT.equals("") && UNIT.equals("") && NUM.equals("") && PRICE.equals("") && REMARK.equals("") && SPEC.equals("") && NOTSINGLE.equals("") && SINGLEMANAGE.equals("") && BSMANAGE.equals("") && FIXPOSITION.equals("") && NEEDCHECK.equals("") && MATERIALSTATE.equals("")) {
+        if (ID == null && NAME == null && MAT == null && BRAND == null && CATEGORY == null && MAXLIMIT == null && MINLIMIT == null && UNIT == null && NUM == null && PRICE == null && REMARK == null && SPEC == null && NOTSINGLE == null && SINGLEMANAGE == null && BSMANAGE == null && FIXPOSITION == null && NEEDCHECK == null && MATERIALSTATE == null) {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
             List<Material> listM = materialMapper.MaterialList();
             return new PageInfo<>(listM);

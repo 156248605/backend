@@ -68,7 +68,7 @@ public class LinkmanImpl implements LinkmanService{
         linkman.setQqNumC(qqNumC);
         linkman.setWechatNum(wechatNum);
         linkman.setWechatNumC(wechatNumC);
-        if (linkId.equals("") && name.equals("") && tel.equals("") && job.equals("") && email.equals("") && qqNum.equals("") && wechatNum.equals("") && address.equals("") && workPlace.equals("")) {
+        if (linkId == null && name == null && tel == null && job == null && email == null && qqNum == null && wechatNum == null && address == null && workPlace == null) {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Linkman> listL = linkmanMapper.LinkmanList();
             return new PageInfo<>(listL);

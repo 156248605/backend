@@ -51,7 +51,7 @@ public class PositionServiceImpl implements PositionService {
         String POSTCAP = request.getParameter("postCap");
         String POSTCAPC = request.getParameter("postCapC");
         String REMARK = request.getParameter("remark");
-        if (  REPTID.equals("") && REPTNAME.equals("") && POSTID.equals("") && POSTNAME.equals("") && REMARK.equals("") && POSTCATE.equals("") && FIXPOSTMAT.equals("") && POSTCAP.equals("")  ){
+        if (  REPTID == null && REPTNAME == null && POSTID == null && POSTNAME == null && REMARK == null && POSTCATE == null && FIXPOSTMAT == null && POSTCAP == null  ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Repository> listP = positionMapper.PositionList();
             return new PageInfo<>(listP);

@@ -56,7 +56,7 @@ public class RepositoryImpl implements RepositoryService {
         String REPTADDR = request.getParameter("reptAddr");
         String REPTADDRC = request.getParameter("reptAddrC");
         String REMARK = request.getParameter("remark");
-        if (  REPTID.equals("") && REPTNAME.equals("") && REPTADMIN.equals("") && REPTSTATE.equals("") && REMARK.equals("") && POSTMANAGE.equals("") && REPTADDR.equals("") && REPTCATEGORY.equals("")  ){
+        if (  REPTID == null && REPTNAME == null && REPTADMIN == null && REPTSTATE == null && REMARK == null && POSTMANAGE == null && REPTADDR == null && REPTCATEGORY == null  ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Repository> listR = repositoryMapper.RepositoryList();
             return new PageInfo<>(listR);

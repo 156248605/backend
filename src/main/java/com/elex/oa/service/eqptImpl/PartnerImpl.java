@@ -85,7 +85,16 @@ public class PartnerImpl implements PartnerService {
         String industryC = request.getParameter("industryC");
         String area = request.getParameter("area");
         String areaC = request.getParameter("areaC");
-        if (pnCategory.equals("") && company.equals("") && authorize.equals("") && area.equals("") && pnId.equals("") && corp.equals("") && comAddr.equals("") && comTel.equals("") && capital.equals("") && staffNum.equals("") && sales.equals("") && brief.equals("") && industry.equals("") && authorize.equals("") && auId.equals("") && auJob.equals("") && auTel.equals("") && auMail.equals("") && auQq.equals("'") && auWechat.equals("") && auAddr.equals("") && otherLink.equals("")){
+        /*System.out.println(pnCategory);
+        System.out.println(pnId);
+        System.out.println(company);
+        System.out.println(authorize);
+        System.out.println(auAddr);
+        System.out.println(auId);
+        System.out.println(auJob);
+        System.out.println(auMail);
+        System.out.println(auQq);*/
+        if (pnCategory == null && company == null && authorize == null && area == null && pnId == null && corp == null && comAddr == null && comTel == null && capital == null && staffNum == null && sales == null && brief == null && industry == null && auId == null && auJob == null && auTel == null && auMail == null && auQq == null && auWechat == null && auAddr == null && otherLink == null){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
             List<Partner> listP = partnerMapper.PartnerList();
             return new PageInfo<>(listP);
@@ -255,6 +264,11 @@ public class PartnerImpl implements PartnerService {
         linkman.setName(listPartner.get(0).get("F_BSQLXR").toString());
         linkman.setTel(listPartner.get(0).get("F_MRLXFS").toString());
         linkman.setWorkPlace(listPartner.get(0).get("F_BGDZ").toString());
+        linkman.setJob(" ");
+        linkman.setAddress(" ");
+        linkman.setQqNum(" ");
+        linkman.setWechatNum(" ");
+        linkman.setEmail(" ");
         linkmanMapper.newLinkman(linkman);
         // 获取该联系人其他相关信息
         List<Linkman> authorizeLinkman = linkmanMapper.search(linkman);
@@ -273,6 +287,14 @@ public class PartnerImpl implements PartnerService {
         partner.setAuAddr(authorizeLinkman.get(0).getWorkPlace() == null ? " " : authorizeLinkman.get(0).getWorkPlace());
         partner.setOtherLink("");
         partner.setComAddr(listPartner.get(0).get("F_BGDZ").toString());
+        partner.setCorp(" ");
+        partner.setComTel(" ");
+        partner.setCapital(" ");
+        partner.setStaffNum(" ");
+        partner.setSales(" ");
+        partner.setBrief(" ");
+        partner.setIndustry(" ");
+        partner.setArea(" ");
         partnerMapper.insertPartner(partner);
     }
 }
