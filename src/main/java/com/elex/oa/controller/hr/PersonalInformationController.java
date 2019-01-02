@@ -1302,7 +1302,7 @@ public class PersonalInformationController {
             @RequestParam("transactorusername") String transactorusername
     ) throws ParseException {
         Map<String, Object> map = iPersonalInformationService.updateManageInformation(personalInformation, transactorusername);
-        return null==map?RespUtil.successResp("200", "提交信息成功！", map):RespUtil.successResp("500","修改失败！",null);
+        return null!=map?RespUtil.successResp("200", "提交信息成功！", map):RespUtil.successResp("500","修改失败(没有需要修改的信息)！",null);
     }
 
     /**

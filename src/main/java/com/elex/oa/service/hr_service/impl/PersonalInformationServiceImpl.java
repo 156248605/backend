@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author:ShiYun;
@@ -388,6 +385,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         iPerandpostrsDao.deleteByPerid(perid);
         for (Integer postid:postids
              ) {
+            System.out.println(perid);
+            System.out.println(postid);
             iPerandpostrsDao.insertOne(new PerAndPostRs(perid,postid));
         }
     }
@@ -430,6 +429,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         //获得岗位信息
         List<Integer> postids = personalInformation.getPostids();
         List<Post> postList = getPostListByPostids(postids);
+        postList = sortPostListByPostid(postList);
         List<String> postListInfo = getPostListInfoByPostList(postList);
         String postinfo = IDcodeUtil.getArrayToString(postListInfo, ";");
         if(null!=postinfo){
@@ -469,6 +469,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         }
         //获得岗位信息
         List<Post> postList = getPostListByPersonalinformationid(personalInformation.getId());
+        postList = sortPostListByPostid(postList);
         List<String> postListInfo = getPostListInfoByPostList(postList);
         String postinfo = IDcodeUtil.getArrayToString(postListInfo, ";");
         if(null!=postinfo){
@@ -482,6 +483,18 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         respMap.put("entrydate",manageInformation.getEntrydate());
         respMap.put("zhuanzhengdate",manageInformation.getZhuanzhengdate());
         return respMap;
+    }
+
+    //将PostList按照postid排序
+    private List<Post> sortPostListByPostid(List<Post> postList){
+        if(null==postList || postList.size()<=1)return postList;
+        postList.sort(new Comparator<Post>() {
+            @Override
+            public int compare(Post o1, Post o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });
+        return postList;
     }
 
     //获得postListInfo
