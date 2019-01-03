@@ -496,6 +496,52 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return isUpdate;
     }
 
+    @Override
+    public Map<String, Object> updateOtherInformation(PersonalInformation personalInformation, String transactorusername) {
+        if(null==personalInformation)return null;
+        if(StringUtils.isBlank(transactorusername))return null;
+        Map<String,Object> respMap = null;
+        PersonalInformation oldPer = iPersonalInformationDao.selectByUserid(personalInformation.getUserid());
+        Integer perid = oldPer.getId();//此处可能有空指针
+        personalInformation.setId(perid);
+        personalInformation.setOtherinformationid(oldPer.getOtherinformationid());
+        //获得原始的人事基本信息
+        oldPer = getDetailPersonalinformationByCursorPersonalinformation(oldPer);
+        //获得当前的人事基本信息（从页面获取）
+        //判断两个信息是否相同并添加相应的日志
+        Boolean isUpdate = getIsEqualForOtherinformation(personalInformation.getUserid(),oldPer,personalInformation,transactorusername);
+        //修改人事基本信息并返回相应的数据
+        if(isUpdate){
+            //修改人事基本信息
+            OtherInformation otherInformation = getOtherinformationByPersonalinformation(personalInformation);
+            iOtherInformationDao.updateOne(otherInformation);
+            //修改人事信息里面的办公电话、移动电话（已过时）
+            personalInformation.setTelphoneid(otherInformation.getTelphoneid());
+            iPersonalInformationDao.updateOne(personalInformation);
+            //下面的数据是为了同步赵宏钢的人事信息所准备的
+            respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), getPostidsByPerid(perid));
+        }
+        return respMap;
+    }
+
+    //根据per获得人事其它信息
+    private OtherInformation getOtherinformationByPersonalinformation(PersonalInformation personalInformation) {
+        if(null==personalInformation)return null;
+        if(null==personalInformation.getOtherinformationid())return null;
+        OtherInformation otherInformation = new OtherInformation();
+        otherInformation.setId(personalInformation.getOtherinformationid());
+        otherInformation.setTelphoneid(hrUtilsTemp.getHrsetidByDatavalue("telphone",personalInformation.getTelphone()));
+        otherInformation.setMobilephone(personalInformation.getMobilephone());
+        otherInformation.setCompanyemail(personalInformation.getCompanyemail());
+        otherInformation.setPrivateemail(personalInformation.getPrivateemail());
+        otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
+        otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
+        otherInformation.setAddress(personalInformation.getAddress());
+        otherInformation.setRemark(personalInformation.getRemark());
+        otherInformation.setEmergencyrpid(hrUtilsTemp.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
+        return otherInformation;
+    }
+
     //根据per获得人事成本信息
     private CostInformation getCostinformationByPersonalinformation(PersonalInformation personalInformation) {
         if(null==personalInformation)return null;
@@ -666,6 +712,40 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(isEqual)isUpdate=true;
         //判断上家雇主并添加相应的日志
         isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getParentcompany(),newPer.getParentcompany(),transactorusername,"上家雇主");
+        if(isEqual)isUpdate=true;
+        return isUpdate;
+    }
+
+    //根据两个人事其它信息判断是否修改并添加相应的变更日志
+    private Boolean getIsEqualForOtherinformation(Integer changeduserid, PersonalInformation oldPer, PersonalInformation newPer, String transactorusername) {
+        if(null==oldPer || null==newPer)return false;
+        Boolean isUpdate = false;
+        //判断办公电话并添加相应的日志
+        Boolean isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getTelphone(),newPer.getTelphone(),transactorusername,"办公电话");
+        if(isEqual)isUpdate=true;
+        //判断移动电话并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getMobilephone(),newPer.getMobilephone(),transactorusername,"移动电话");
+        if(isEqual)isUpdate=true;
+        //判断公司邮箱并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getCompanyemail(),newPer.getCompanyemail(),transactorusername,"公司邮箱");
+        if(isEqual)isUpdate=true;
+        //判断私人邮箱并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getPrivateemail(),newPer.getPrivateemail(),transactorusername,"私人邮箱");
+        if(isEqual)isUpdate=true;
+        //判断紧急联系人并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getEmergencycontract(),newPer.getEmergencycontract(),transactorusername,"紧急联系人");
+        if(isEqual)isUpdate=true;
+        //判断紧急联系电话并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getEmergencyphone(),newPer.getEmergencyphone(),transactorusername,"紧急联系电话");
+        if(isEqual)isUpdate=true;
+        //判断住址并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getAddress(),newPer.getAddress(),transactorusername,"住址");
+        if(isEqual)isUpdate=true;
+        //判断备注并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getRemark(),newPer.getRemark(),transactorusername,"备注");
+        if(isEqual)isUpdate=true;
+        //判断紧急联系人关系并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getEmergencyrp(),newPer.getEmergencyrp(),transactorusername,"紧急联系人关系");
         if(isEqual)isUpdate=true;
         return isUpdate;
     }

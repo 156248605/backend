@@ -21,8 +21,26 @@ public class OtherInformation implements Serializable{
     private String emergencyphone;//应急联系人电话
     private String address;//应急联系地址
     private String remark;//备注
+    private Integer telphoneid;//办公电话
+    private String mobilephone;//移动电话
 
     public OtherInformation() {
+    }
+
+    public Integer getTelphoneid() {
+        return telphoneid;
+    }
+
+    public void setTelphoneid(Integer telphoneid) {
+        this.telphoneid = telphoneid;
+    }
+
+    public String getMobilephone() {
+        return mobilephone;
+    }
+
+    public void setMobilephone(String mobilephone) {
+        this.mobilephone = mobilephone;
     }
 
     public Integer getId() {

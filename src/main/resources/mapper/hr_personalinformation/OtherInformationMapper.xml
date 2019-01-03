@@ -11,6 +11,8 @@
 		<result column="emergencyphone" property="emergencyphone" />
 		<result column="address" property="address" />
 		<result column="remark" property="remark" />
+		<result column="telphoneid" property="telphoneid" />
+		<result column="mobilephone" property="mobilephone" />
 	</resultMap>
 
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="OtherInformationResultMap">
@@ -31,7 +33,9 @@
 			emergencyrpid,
 			emergencyphone,
 			address,
-			remark)
+			remark,
+			telphoneid,
+			mobilephone)
 		values(
 			NULL ,
 			#{companyemail},
@@ -40,7 +44,9 @@
 			#{emergencyrpid},
 			#{emergencyphone},
 			#{address},
-			#{remark}
+			#{remark},
+			#{telphoneid},
+			#{mobilephone}
 			)
 	</insert>
 
@@ -51,6 +57,8 @@
 			<if test="privateemail!=null and privateemail!=''">privateemail=#{privateemail},</if>
 			<if test="emergencycontract!=null and emergencycontract!=''">emergencycontract=#{emergencycontract},</if>
 			<if test="emergencyrpid!=null and emergencyrpid!=''">emergencyrpid=#{emergencyrpid},</if>
+			<if test="telphoneid!=null and telphoneid!=''">telphoneid=#{telphoneid},</if>
+			<if test="mobilephone!=null and mobilephone!=''">mobilephone=#{mobilephone},</if>
 			<if test="emergencyphone!=null and emergencyphone!=''">emergencyphone=#{emergencyphone},</if>
 			<if test="address!=null and address!=''">address=#{address},</if>
 			<if test="remark!=null and remark!=''">remark=#{remark}</if>
