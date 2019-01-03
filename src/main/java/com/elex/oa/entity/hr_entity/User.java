@@ -1,5 +1,7 @@
 package com.elex.oa.entity.hr_entity;
 
+import com.elex.oa.common.hr.Commons;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -21,6 +23,16 @@ public class User implements Serializable{
     public User(Integer id, String employeenumber) {
         this.id = id;
         this.employeenumber = employeenumber;
+    }
+
+    public User(Integer id, String username, String truename, Integer isactive, String employeenumber) {
+        this.id = id;
+        this.username = username;
+        this.truename = truename;
+        this.isactive = isactive;
+        this.employeenumber = employeenumber;
+        this.password = "123456";
+        this.state = 1;
     }
 
     public String getEmployeenumber() {

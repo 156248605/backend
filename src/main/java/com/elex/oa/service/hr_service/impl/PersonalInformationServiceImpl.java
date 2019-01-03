@@ -300,7 +300,6 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return personalInformation;
     }
 
-
     /**
      *@Author:ShiYun;
      *@Description:添加人事信息
@@ -311,8 +310,6 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Integer personalInformationId = iPersonalInformationDao.insertOne(dosomethingBeforeSaveone(personalInformation));
         return personalInformation.getId();
     }
-
-
 
     /**
      *@Author:ShiYun;
@@ -433,7 +430,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Map<String, String> oldManageinformation = getOldManageinformationByUserid(personalInformation.getUserid());
         //获得当前的管理信息
         Map<String, String> newManageinformation = getNewManageinformationByPersonalinformation(personalInformation);
-        //判断部门是否相同并添加日志
+        //判断信息是否相同并添加日志
         Boolean isUpdate = getIsEqualForManageinformation(personalInformation.getUserid(), oldManageinformation, newManageinformation, transactorusername);
         //修改管理信息：部门、岗位、管理
         if (isUpdate) {
@@ -444,6 +441,147 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             respMap = getSynchronizeMapByUserid(personalInformation.getUserid(),personalInformation.getPostids());
         }
         return respMap;
+    }
+
+    @Override
+    public Map<String, Object> updateBaseInformation(PersonalInformation personalInformation, String transactorusername) {
+        if(null==personalInformation)return null;
+        if(StringUtils.isBlank(transactorusername))return null;
+        Map<String,Object> respMap = null;
+        PersonalInformation oldPer = iPersonalInformationDao.selectByUserid(personalInformation.getUserid());
+        Integer perid = oldPer.getId();//此处可能有空指针
+        personalInformation.setId(perid);
+        personalInformation.setBaseinformationid(oldPer.getBaseinformationid());
+        //获得原始的人事基本信息
+        oldPer = getDetailPersonalinformationByCursorPersonalinformation(oldPer);
+        //获得当前的人事基本信息（从页面获取）
+        //判断两个信息是否相同并添加相应的日志
+        Boolean isUpdate = getIsEqualForBaseinformation(personalInformation.getUserid(),oldPer,personalInformation,transactorusername);
+        //修改人事基本信息并返回相应的数据
+        if(isUpdate){
+            //修改账号信息
+            User user = new User(personalInformation.getUserid(),personalInformation.getUsername(),personalInformation.getTruename(),personalInformation.getIsactive(),personalInformation.getEmployeenumber());
+            iUserDao.updateUser(user);
+            //修改人事基本信息
+            BaseInformation baseinformation = getBaseinformationByPersonalinformation(personalInformation);
+            iBaseInformationDao.updateOne(baseinformation);
+            //修改人事信息里面的性别（已过时）
+            personalInformation.setSex(baseinformation.getSex());
+            iPersonalInformationDao.updateOne(personalInformation);
+            //下面的数据是为了同步赵宏钢的人事信息所准备的
+            respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), getPostidsByPerid(perid));
+        }
+        return respMap;
+    }
+
+    //根据per获得人事基本信息
+    private BaseInformation getBaseinformationByPersonalinformation(PersonalInformation personalInformation){
+        if(null==personalInformation)return null;
+        if(null==personalInformation.getBaseinformationid())return null;
+        BaseInformation baseInformation = new BaseInformation();
+        baseInformation.setId(personalInformation.getBaseinformationid());
+        baseInformation.setUserphoto(personalInformation.getUserphoto());
+        baseInformation.setIdphoto1(personalInformation.getIdphoto1());
+        baseInformation.setIdphoto2(personalInformation.getIdphoto2());
+        baseInformation.setEnglishname(personalInformation.getEnglishname());
+        baseInformation.setIdcode(personalInformation.getIdcode());
+        baseInformation.setRaceid(hrUtilsTemp.getHrsetidByDatavalue("race",personalInformation.getRace()));
+        baseInformation.setMarriage(personalInformation.getMarriage());
+        baseInformation.setChildrenid(hrUtilsTemp.getHrsetidByDatavalue("children",personalInformation.getChildren()));
+        baseInformation.setZzmmid(hrUtilsTemp.getHrsetidByDatavalue("zzmm",personalInformation.getZzmm()));
+        baseInformation.setZgxlid(hrUtilsTemp.getHrsetidByDatavalue("zgxl",personalInformation.getZgxl()));
+        baseInformation.setByyxid(hrUtilsTemp.getHrsetidByDatavalue("byyx",personalInformation.getByyx()));
+        baseInformation.setSxzyid(hrUtilsTemp.getHrsetidByDatavalue("sxzy",personalInformation.getSxzy()));
+        baseInformation.setPyfsid(hrUtilsTemp.getHrsetidByDatavalue("pyfs",personalInformation.getPyfs()));
+        baseInformation.setFirstlaid(hrUtilsTemp.getHrsetidByDatavalue("fla",personalInformation.getFirstla()));
+        baseInformation.setElselaid(hrUtilsTemp.getHrsetidByDatavalue("fla",personalInformation.getElsela()));
+        baseInformation.setPosttitleid(hrUtilsTemp.getHrsetidByDatavalue("posttitle",personalInformation.getPosttitle()));
+        baseInformation.setZyzstypeid(hrUtilsTemp.getHrsetidByDatavalue("zyzstype",personalInformation.getZyzstype()));
+        baseInformation.setZyzsnameid(hrUtilsTemp.getHrsetidByDatavalue("zyzsname",personalInformation.getZyzsname()));
+        baseInformation.setFirstworkingtime(personalInformation.getFirstworkingtime());
+        baseInformation.setParentcompanyid(hrUtilsTemp.getHrsetidByDatavalue("parentcompany",personalInformation.getParentcompany()));
+        return baseInformation;
+    }
+
+    //根据连个人事基本信息判断是否修改并添加相应的变更日志
+    private Boolean getIsEqualForBaseinformation(Integer changeduserid, PersonalInformation oldPer, PersonalInformation newPer, String transactorusername) {
+        if(null==oldPer || null==newPer)return false;
+        Boolean isUpdate = false;
+        //判断激活并添加相应的日志
+        String beforeinfo = (oldPer.getIsactive().compareTo(1)==0)?"已激活":"未激活";
+        String afterinfo = (newPer.getIsactive().compareTo(1)==0)?"已激活":"未激活";
+        Boolean isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,beforeinfo,afterinfo,transactorusername,"是否激活");
+        if(isEqual)isUpdate=true;
+        //判断登录ID并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getUsername(),newPer.getUsername(),transactorusername,"登录ID");
+        if(isEqual)isUpdate=true;
+        //判断姓名并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getTruename(),newPer.getTruename(),transactorusername,"姓名");
+        if(isEqual)isUpdate=true;
+        //判断员工号并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getEmployeenumber(),newPer.getEmployeenumber(),transactorusername,"员工号");
+        if(isEqual)isUpdate=true;
+        //判断免冠照片并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getUserphoto(),newPer.getUserphoto(),transactorusername,"免冠照片");
+        if(isEqual)isUpdate=true;
+        //判断身份证正面并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getIdphoto1(),newPer.getIdphoto1(),transactorusername,"身份证正面");
+        if(isEqual)isUpdate=true;
+        //判断身份证背面并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getIdphoto2(),newPer.getIdphoto2(),transactorusername,"身份证背面");
+        if(isEqual)isUpdate=true;
+        //判断英文名并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getEnglishname(),newPer.getEnglishname(),transactorusername,"英文名");
+        if(isEqual)isUpdate=true;
+        //判断身份证号码并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getIdcode(),newPer.getIdcode(),transactorusername,"身份证号码");
+        if(isEqual)isUpdate=true;
+        //判断民族并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getRace(),newPer.getRace(),transactorusername,"民族");
+        if(isEqual)isUpdate=true;
+        //判断婚姻并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getMarriage(),newPer.getMarriage(),transactorusername,"婚姻");
+        if(isEqual)isUpdate=true;
+        //判断生育并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getChildren(),newPer.getChildren(),transactorusername,"生育");
+        if(isEqual)isUpdate=true;
+        //判断政治面貌并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getZzmm(),newPer.getZzmm(),transactorusername,"政治面貌");
+        if(isEqual)isUpdate=true;
+        //判断最高学历并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getZgxl(),newPer.getZgxl(),transactorusername,"最高学历");
+        if(isEqual)isUpdate=true;
+        //判断毕业院校并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getByyx(),newPer.getByyx(),transactorusername,"毕业院校");
+        if(isEqual)isUpdate=true;
+        //判断所学专业并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSxzy(),newPer.getSxzy(),transactorusername,"所学专业");
+        if(isEqual)isUpdate=true;
+        //判断培养方式并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getPyfs(),newPer.getPyfs(),transactorusername,"培养方式");
+        if(isEqual)isUpdate=true;
+        //判断第一外语并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getFirstla(),newPer.getFirstla(),transactorusername,"第一外语");
+        if(isEqual)isUpdate=true;
+        //判断其它外语并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getElsela(),newPer.getElsela(),transactorusername,"其它外语");
+        if(isEqual)isUpdate=true;
+        //判断职称并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getPosttitle(),newPer.getPosttitle(),transactorusername,"职称");
+        if(isEqual)isUpdate=true;
+        //判断职业证书类型并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getZyzstype(),newPer.getZyzstype(),transactorusername,"职业证书类型");
+        if(isEqual)isUpdate=true;
+        //判断职业证书名称并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getZyzsname(),newPer.getZyzsname(),transactorusername,"职业证书名称");
+        if(isEqual)isUpdate=true;
+        //判断首次参加工作时间并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getFirstworkingtime(),newPer.getFirstworkingtime(),transactorusername,"首次参加工作时间");
+        if(isEqual)isUpdate=true;
+        //判断上家雇主并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getParentcompany(),newPer.getParentcompany(),transactorusername,"上家雇主");
+        if(isEqual)isUpdate=true;
+        return isUpdate;
     }
 
     //根据perid获得Postids
@@ -729,41 +867,51 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     //将管理信息塞入人事信息
     private PersonalInformation setManageinformationByPersonalinformation(PersonalInformation personalInformation,ManageInformation manageInformation){
         if(null==manageInformation)return personalInformation;
-        personalInformation.setPostlevel(hrUtilsTemp.getDatavalueByHrsetid(manageInformation.getPostlevelid()));
-        personalInformation.setEmployeetype(hrUtilsTemp.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
-        personalInformation.setEntrydate(manageInformation.getEntrydate());
-        personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
+        try {
+            personalInformation.setPostlevel(hrUtilsTemp.getDatavalueByHrsetid(manageInformation.getPostlevelid()));
+            personalInformation.setEmployeetype(hrUtilsTemp.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
+            personalInformation.setEntrydate(manageInformation.getEntrydate());
+            personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
+            personalInformation.setSn(IDcodeUtil.getWorkingage(personalInformation.getEntrydate()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return personalInformation;
     }
 
     //将基本信息塞入人事信息
     private PersonalInformation setBaseinformationByPersonalinformation(PersonalInformation personalInformation,BaseInformation baseInformation){
         if(null==baseInformation)return personalInformation;
-        personalInformation.setUserphoto(baseInformation.getUserphoto());
-        personalInformation.setIdphoto1(baseInformation.getIdphoto1());
-        personalInformation.setIdphoto2(baseInformation.getIdphoto2());
-        personalInformation.setEnglishname(baseInformation.getEnglishname());
-        personalInformation.setIdcode(baseInformation.getIdcode());
-        personalInformation.setBirthday(baseInformation.getBirthday());
-        personalInformation.setConstellation(baseInformation.getConstellation());
-        personalInformation.setChinesecs(baseInformation.getChinesecs());
-        personalInformation.setRace(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getRaceid()));
-        personalInformation.setMarriage(baseInformation.getMarriage());
-        personalInformation.setChildren(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getChildrenid()));
-        personalInformation.setZzmm(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZzmmid()));
-        personalInformation.setZgxl(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZgxlid()));
-        personalInformation.setByyx(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getByyxid()));
-        personalInformation.setSxzy(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getSxzyid()));
-        personalInformation.setPyfs(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getPyfsid()));
-        personalInformation.setFirstla(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getFirstlaid()));
-        personalInformation.setElsela(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getElselaid()));
-        personalInformation.setPosttitle(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getPosttitleid()));
-        personalInformation.setZyzstype(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZyzstypeid()));
-        personalInformation.setZyzsname(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZyzsnameid()));
-        personalInformation.setParentcompany(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getParentcompanyid()));
-        personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
-        personalInformation.setWorkingage(hrUtilsTemp.getWorkingageByFirstworkingtime(personalInformation.getFirstworkingtime()));
-        personalInformation.setHj(baseInformation.getHj());
+        try {
+            personalInformation.setUserphoto(baseInformation.getUserphoto());
+            personalInformation.setIdphoto1(baseInformation.getIdphoto1());
+            personalInformation.setIdphoto2(baseInformation.getIdphoto2());
+            personalInformation.setEnglishname(baseInformation.getEnglishname());
+            personalInformation.setIdcode(baseInformation.getIdcode());
+            personalInformation.setBirthday(baseInformation.getBirthday());
+            personalInformation.setConstellation(baseInformation.getConstellation());
+            personalInformation.setChinesecs(baseInformation.getChinesecs());
+            personalInformation.setAge(IDcodeUtil.getAge(personalInformation.getBirthday()));
+            personalInformation.setRace(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getRaceid()));
+            personalInformation.setMarriage(baseInformation.getMarriage());
+            personalInformation.setChildren(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getChildrenid()));
+            personalInformation.setZzmm(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZzmmid()));
+            personalInformation.setZgxl(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZgxlid()));
+            personalInformation.setByyx(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getByyxid()));
+            personalInformation.setSxzy(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getSxzyid()));
+            personalInformation.setPyfs(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getPyfsid()));
+            personalInformation.setFirstla(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getFirstlaid()));
+            personalInformation.setElsela(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getElselaid()));
+            personalInformation.setPosttitle(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getPosttitleid()));
+            personalInformation.setZyzstype(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZyzstypeid()));
+            personalInformation.setZyzsname(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZyzsnameid()));
+            personalInformation.setParentcompany(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getParentcompanyid()));
+            personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
+            personalInformation.setWorkingage(hrUtilsTemp.getWorkingageByFirstworkingtime(personalInformation.getFirstworkingtime()));
+            personalInformation.setHj(baseInformation.getHj());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return personalInformation;
     }
 

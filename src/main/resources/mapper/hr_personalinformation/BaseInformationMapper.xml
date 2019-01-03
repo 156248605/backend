@@ -9,6 +9,7 @@
 		<result column="idphoto2" property="idphoto2" />
 		<result column="englishname" property="englishname" />
 		<result column="idcode" property="idcode" />
+		<result column="sex" property="sex" />
 		<result column="birthday" property="birthday" />
 		<result column="constellation" property="constellation" />
 		<result column="chinesecs" property="chinesecs" />
@@ -47,6 +48,7 @@
 			idphoto2,
 			englishname,
 			idcode,
+			sex,
 			birthday,
 			constellation,
 			chinesecs,
@@ -73,6 +75,7 @@
 		 	#{idphoto2},
 		 	#{englishname},
 		 	#{idcode},
+		 	#{sex},
 		 	#{birthday},
 		 	#{constellation},
 		 	#{chinesecs},
@@ -102,6 +105,7 @@
 			<if test="idphoto2!=null and idphoto2!=''">idphoto2=#{idphoto2},</if>
 			<if test="englishname!=null and englishname!=''">englishname=#{englishname},</if>
 			<if test="idcode!=null and idcode!=''">idcode=#{idcode},</if>
+			<if test="sex!=null and sex!=''">sex=#{sex},</if>
 			<if test="birthday!=null and birthday!=''">birthday=#{birthday},</if>
 			<if test="constellation!=null and constellation!=''">constellation=#{constellation},</if>
 			<if test="chinesecs!=null and chinesecs!=''">chinesecs=#{chinesecs},</if>

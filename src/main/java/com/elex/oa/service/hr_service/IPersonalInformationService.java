@@ -91,4 +91,6 @@ public interface IPersonalInformationService{
 
     Map<String,Object> updateManageInformation(PersonalInformation personalInformation,String transactorusername);
 
+    Map<String,Object> updateBaseInformation(PersonalInformation personalInformation,String transactorusername);
+
 }

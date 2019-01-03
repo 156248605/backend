@@ -41,7 +41,7 @@ import java.util.List;
  * @Version 1.0
  **/
 @Service
-public class HrUtilsTemp {
+public class HrUtils {
     @Resource
     IHRsetDao ihRsetDao;
     @Resource
@@ -221,10 +221,10 @@ public class HrUtilsTemp {
             try {
                 String realPath = Commons.realpath + dirsPath;
                 Long l = Calendar.getInstance().getTimeInMillis();
-                File file = new File(realPath + "/" + l);
+                File file = new File(realPath  + l);
                 file.mkdirs();
                 fileAddress = dirsPath + l+ "/" + files.get(0).getOriginalFilename();
-                files.get(0).transferTo(new File(realPath + "/" + l,files.get(0).getOriginalFilename()));
+                files.get(0).transferTo(new File(realPath + l,files.get(0).getOriginalFilename()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -296,7 +296,7 @@ public class HrUtilsTemp {
         if(StringUtils.isBlank(firstworkingtime))return null;
         String workingage = null;
         try {
-            workingage = IDcodeUtil.getWorkingage(firstworkingtime) + "年";
+            workingage = IDcodeUtil.getWorkingage(firstworkingtime);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -310,5 +310,13 @@ public class HrUtilsTemp {
         List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(datatype, datavalue));
         if(null==hRsetList || hRsetList.size()==0)return null;
         return hRsetList.get(0).getId();
+    }
+
+    //判断是否需要录入并添加相应的HR设置信息
+    public void addHrsetByDatavalue(String datacode,String datatype,String datavalue){
+        Integer hrsetidTemp = getHrsetidByDatavalue(datatype, datavalue);
+        if(null!=hrsetidTemp)return;
+        if(StringUtils.isBlank(datacode)){datacode = datatype+"_"+System.currentTimeMillis();}
+        ihRsetDao.insertOne(new HRset(datatype,datacode,datavalue));
     }
 }

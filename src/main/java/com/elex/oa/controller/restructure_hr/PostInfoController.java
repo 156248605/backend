@@ -5,7 +5,7 @@ import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.entity.restructure_hrentity.Postloginfo;
 import com.elex.oa.service.restructure_hrService.IPostinfoService;
 import com.elex.oa.service.restructure_hrService.IPostloginfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class PostInfoController {
     @Autowired
     IPostloginfoService iPostloginfoService;
     @Autowired
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
 
     @RequestMapping("/listPosts")
     @ResponseBody
@@ -73,7 +73,7 @@ public class PostInfoController {
             Postinfo postinfo
     ){
         //获取岗位说明书的地址
-        String dutyfile = hrUtilsTemp.getSignalFileAddress(request, "df", "/org/file/");
+        String dutyfile = hrUtils.getSignalFileAddress(request, "df", "/org/file/");
         postinfo.setDutyfile(dutyfile);
         //调用服务层
         Boolean aBoolean = iPostinfoService.addOnePost(postinfo);
@@ -95,7 +95,7 @@ public class PostInfoController {
             HttpServletRequest request,
             @RequestParam("transactorusername") String transactorusername
     ){
-        String dutyfile = hrUtilsTemp.getSignalFileAddress(request, "df", "/org/file/");
+        String dutyfile = hrUtils.getSignalFileAddress(request, "df", "/org/file/");
         postinfo.setDutyfile(dutyfile);
         Boolean aBoolean = iPostinfoService.updateOnePost(postinfo,transactorusername);
         return aBoolean?RespUtil.successResp("200","修改成功！",null):RespUtil.successResp("500","修改失败！",null);

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.*;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class PostInformationController {
     @Autowired
     IHRsetService ihRsetService;
     @Autowired
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
 
 
     /**
@@ -252,7 +252,7 @@ public class PostInformationController {
             @RequestParam("transactorusername") String transactorusername
     ){
         //获得附件的地址
-        String dutyfile = hrUtilsTemp.getSignalFileAddress(request, "df", "/org/file/");
+        String dutyfile = hrUtils.getSignalFileAddress(request, "df", "/org/file/");
         post.setDutyfile(dutyfile);
         Boolean aBoolean = iPostService.updateOnePost(post, transactorusername);
         return aBoolean?RespUtil.successResp("200","提交成功！",post):RespUtil.successResp("500","提交失败！",null);

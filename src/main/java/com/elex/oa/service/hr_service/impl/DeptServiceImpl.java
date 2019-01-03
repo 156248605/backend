@@ -3,7 +3,7 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IDeptService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.PageHelper;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
@@ -35,7 +35,7 @@ public class DeptServiceImpl implements IDeptService {
     @Resource
     private IHRsetDao ihRsetDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     IDeptLogDao iDeptLogDao;
 
@@ -888,7 +888,7 @@ public class DeptServiceImpl implements IDeptService {
         deptLog.setBeforeinformation(beforeinformation);
         deptLog.setAfterinformation(afterinformation);
         deptLog.setChangereason("业务需要");
-        deptLog.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        deptLog.setChangedate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         deptLog.setTransactoruserid(getUseridByUsername(transactorusername));
         iDeptLogDao.insertOne(deptLog);
         return true;

@@ -4,10 +4,9 @@ import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostRelationshipDao;
 import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.service.hr_service.IHRsetService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,7 +28,7 @@ public class HRsetServiceImpl implements IHRsetService {
     @Resource
     private IPostRelationshipDao iPostRelationshipDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
 
     /**
      * @Author: shiyun

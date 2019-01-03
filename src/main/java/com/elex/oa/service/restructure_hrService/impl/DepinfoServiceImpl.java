@@ -13,7 +13,7 @@ import com.elex.oa.entity.restructure_hrentity.Deploginfo;
 import com.elex.oa.entity.restructure_hrentity.Personalinfo;
 import com.elex.oa.entity.restructure_hrentity.Personalloginfo;
 import com.elex.oa.service.restructure_hrService.IDepinfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
     @Resource
     IPersonalInformationDao iPersonalInformationDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     IPersonalinfoDao iPersonalinfoDao;
     @Resource
@@ -375,7 +375,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
         deploginfo.setAfterinformation(logMap.get("afterinformation"));
         //添加其它信息
         deploginfo.setChangereason("业务需要");
-        deploginfo.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        deploginfo.setChangedate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         deploginfo.setTransactoruserid(transactorusername);
         //添加部门日志
         iDeploginfoDao.insertSelective(deploginfo);//有选择的保存，Null属性不保存
@@ -393,7 +393,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
         personalloginfo.setAfterinformation(logMap.get("afterinformation"));
         //添加其它信息
         personalloginfo.setChangereason("业务需要");
-        personalloginfo.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        personalloginfo.setChangedate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         personalloginfo.setTransactoruserid(transactorusername);
         //添加人事日志
         iPersonalloginfoDao.insertSelective(personalloginfo);//有选择的保存，Null属性不保存
@@ -536,9 +536,9 @@ public class DepinfoServiceImpl implements IDepinfoService {
         depinfo.setDepcode(d.getDepcode());
         depinfo.setCompanyname(d.getCompanyname());
         depinfo.setDepname(d.getDepname());
-        depinfo.setFunctionaltypeid(new HrUtilsTemp().getDatacodeByHrsetid(d.getFunctionaltypeid()));
-        depinfo.setDeptypeid(new HrUtilsTemp().getDatacodeByHrsetid(d.getDeptypeid()));
-        depinfo.setParent_depcode(new HrUtilsTemp().getDepcodeByDepid(d.getParentdepid()));
+        depinfo.setFunctionaltypeid(new HrUtils().getDatacodeByHrsetid(d.getFunctionaltypeid()));
+        depinfo.setDeptypeid(new HrUtils().getDatacodeByHrsetid(d.getDeptypeid()));
+        depinfo.setParent_depcode(new HrUtils().getDepcodeByDepid(d.getParentdepid()));
         depinfo.setPrincipaluserid(getEmployeenumberByUserid(d.getPrincipaluserid()));
         depinfo.setDeputyuserid(getEmployeenumberByUserid(d.getDeputyuserid()));
         depinfo.setSecretaryuserid(getEmployeenumberByUserid(d.getSecretaryuserid()));
@@ -563,9 +563,9 @@ public class DepinfoServiceImpl implements IDepinfoService {
     private Depinfo getDepinfoDetailByDepinfo(Depinfo depinfo){
         if(null==depinfo)return depinfo;
         //获取职能类型
-          depinfo.setFunctionaltype(hrUtilsTemp.getDatavalueByDatacode(depinfo.getFunctionaltypeid()));
+          depinfo.setFunctionaltype(hrUtils.getDatavalueByDatacode(depinfo.getFunctionaltypeid()));
         //获取部门类型
-          depinfo.setDeptype(hrUtilsTemp.getDatavalueByDatacode(depinfo.getDeptypeid()));
+          depinfo.setDeptype(hrUtils.getDatavalueByDatacode(depinfo.getDeptypeid()));
         //获取上级部门
           depinfo.setParentdep(iDepinfoDao.selectByDepcode(depinfo.getParent_depcode()));
         //获取部门正职

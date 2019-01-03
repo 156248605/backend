@@ -1,16 +1,14 @@
 package com.elex.oa.service.restructure_hrService.impl;
 
 import com.elex.oa.common.hr.Commons;
-import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostDao;
-import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPostinfoDao;
 import com.elex.oa.dao.restructure_hr.IPostloginfoDao;
 import com.elex.oa.entity.hr_entity.Post;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.entity.restructure_hrentity.Postloginfo;
 import com.elex.oa.service.restructure_hrService.IPostinfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +28,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
     @Resource
     IPostinfoDao iPostinfoDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     IPostloginfoDao iPostloginfoDao;
 
@@ -99,7 +97,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
         //获取不足的数据
         postinfo.setState(Commons.POST_ON);
         postinfo.setOrdercode("0");
-        postinfo.setNode_level(hrUtilsTemp.getNodelevelByParentpostcode(postinfo.getParent_postcode()));
+        postinfo.setNode_level(hrUtils.getNodelevelByParentpostcode(postinfo.getParent_postcode()));
         //添加一条数据
         String postcode = getPostcodeByAddPostinfo(postinfo);
         if(null==postcode)return false;
@@ -197,8 +195,8 @@ public class PostinfoServiceImpl implements IPostinfoService {
         String changeinformationName = null;//6.变更项目//7.变更人已知transactorusername
         //上级岗位
         isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getParent_postcode(),newPostinfo.getParent_postcode());
-        beforeInfo = hrUtilsTemp.getPostnameByPostcode(oldPostinfo.getPostcode());
-        afterInfo = hrUtilsTemp.getPostnameByPostcode(newPostinfo.getPostcode());
+        beforeInfo = hrUtils.getPostnameByPostcode(oldPostinfo.getPostcode());
+        afterInfo = hrUtils.getPostnameByPostcode(newPostinfo.getPostcode());
         changeinformationName = "上级岗位";
         respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
         //岗位名称
@@ -209,14 +207,14 @@ public class PostinfoServiceImpl implements IPostinfoService {
         respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
         //职能类型
         isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getFunctionaltypeid(),newPostinfo.getFunctionaltypeid());
-        beforeInfo = hrUtilsTemp.getDatavalueByDatacode(oldPostinfo.getFunctionaltypeid());
-        afterInfo = hrUtilsTemp.getDatavalueByDatacode(newPostinfo.getFunctionaltypeid());
+        beforeInfo = hrUtils.getDatavalueByDatacode(oldPostinfo.getFunctionaltypeid());
+        afterInfo = hrUtils.getDatavalueByDatacode(newPostinfo.getFunctionaltypeid());
         changeinformationName = "职能类型";
         respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
         //职级
         isNotEqual = getaBooleanByOldAndNewInfo(oldPostinfo.getPostrankid(),newPostinfo.getPostrankid());
-        beforeInfo = hrUtilsTemp.getDatavalueByDatacode(oldPostinfo.getPostrankid());
-        afterInfo = hrUtilsTemp.getDatavalueByDatacode(newPostinfo.getPostrankid());
+        beforeInfo = hrUtils.getDatavalueByDatacode(oldPostinfo.getPostrankid());
+        afterInfo = hrUtils.getDatavalueByDatacode(newPostinfo.getPostrankid());
         changeinformationName = "职级";
         respBoolean = getaBooleanByAddPostloginfo(respBoolean,isNotEqual,postcode,beforeInfo,afterInfo,changeinformationName,transactorusername);
         //编制
@@ -269,7 +267,7 @@ public class PostinfoServiceImpl implements IPostinfoService {
         postloginfo.setAfterinformation(logMap.get("afterinformation"));
         //添加其它信息
         postloginfo.setChangereason("业务需要");
-        postloginfo.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        postloginfo.setChangedate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         postloginfo.setTransactoruserid(transactorusername);
         //添加部门日志
         iPostloginfoDao.insertSelective(postloginfo);//有选择的保存，Null属性不保存
@@ -360,11 +358,11 @@ public class PostinfoServiceImpl implements IPostinfoService {
     private Postinfo getPostinfoDetailByPostinfo(Postinfo postinfo) {
         if(null==postinfo)return postinfo;
         //获得职能类型
-        postinfo.setFunctionaltype(hrUtilsTemp.getDatavalueByDatacode(postinfo.getFunctionaltypeid()));
+        postinfo.setFunctionaltype(hrUtils.getDatavalueByDatacode(postinfo.getFunctionaltypeid()));
         //获取上级岗位
         postinfo.setParentpost(iPostinfoDao.selectByPrimaryKey(postinfo.getParent_postcode()));
         //获取职级
-        postinfo.setPostrank(hrUtilsTemp.getDatavalueByDatacode(postinfo.getPostrankid()));
+        postinfo.setPostrank(hrUtils.getDatavalueByDatacode(postinfo.getPostrankid()));
         //获取下级岗位
         postinfo.setChildrenPostnames(getChildrenPostnamesByParentpostcode(postinfo.getPostcode()));
         return postinfo;
@@ -447,11 +445,11 @@ public class PostinfoServiceImpl implements IPostinfoService {
         postinfo.setPostcode(p.getPostcode());
         postinfo.setParent_postcode(getPostcodeByPostid(p.getParentpostid()));
         postinfo.setPostname(p.getPostname());
-        postinfo.setFunctionaltypeid(new HrUtilsTemp().getDatacodeByHrsetid(p.getFunctionaltypeid()));
-        postinfo.setPostfamilyid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostfamilyid()));
-        postinfo.setPostgradeid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostgradeid()));
-        postinfo.setPostrankid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostrankid()));
-        postinfo.setPostlevelid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostlevelid()));
+        postinfo.setFunctionaltypeid(new HrUtils().getDatacodeByHrsetid(p.getFunctionaltypeid()));
+        postinfo.setPostfamilyid(new HrUtils().getDatacodeByHrsetid(p.getPostfamilyid()));
+        postinfo.setPostgradeid(new HrUtils().getDatacodeByHrsetid(p.getPostgradeid()));
+        postinfo.setPostrankid(new HrUtils().getDatacodeByHrsetid(p.getPostrankid()));
+        postinfo.setPostlevelid(new HrUtils().getDatacodeByHrsetid(p.getPostlevelid()));
         postinfo.setOrganization(p.getOrganization());
         postinfo.setJobdescription(p.getJobdescription());
         postinfo.setDuty(p.getDuty());

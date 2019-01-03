@@ -6,10 +6,9 @@ import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
 import com.elex.oa.entity.hr_entity.HRset;
-import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.service.hr_service.IContractInformationService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,7 +36,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     @Resource
     IPersonalInformationDao iPersonalInformationDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
 
     /**
      *@Author:ShiYun;
@@ -214,13 +213,13 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     private ContractInformation getDetailContractByContract(ContractInformation contractInformation) {
         if(null==contractInformation)return null;
         //获得姓名
-        contractInformation.setTruename(hrUtilsTemp.getTruenameByUserid(contractInformation.getUserid()));
+        contractInformation.setTruename(hrUtils.getTruenameByUserid(contractInformation.getUserid()));
         //获得工号
-        contractInformation.setEmployeenumber(hrUtilsTemp.getEmployeenumberByUserid(contractInformation.getUserid()));
+        contractInformation.setEmployeenumber(hrUtils.getEmployeenumberByUserid(contractInformation.getUserid()));
         //获得合同类型
-        contractInformation.setContracttype(hrUtilsTemp.getDatavalueByHrsetid(contractInformation.getContracttypeid()));
+        contractInformation.setContracttype(hrUtils.getDatavalueByHrsetid(contractInformation.getContracttypeid()));
         //获得办理人姓名
-        contractInformation.setTransactortruename(hrUtilsTemp.getTruenameByUserid(contractInformation.getTransactoruserid()));
+        contractInformation.setTransactortruename(hrUtils.getTruenameByUserid(contractInformation.getTransactoruserid()));
         //获得合同期限
         try {
             contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));

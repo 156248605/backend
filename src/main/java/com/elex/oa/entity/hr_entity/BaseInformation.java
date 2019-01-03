@@ -1,5 +1,8 @@
 package com.elex.oa.entity.hr_entity;
 
+import com.elex.oa.util.hr_util.IDcodeUtil;
+import org.apache.commons.lang.StringUtils;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -19,6 +22,7 @@ public class BaseInformation implements Serializable{
     private String idphoto2;//身份证背面
     private String englishname;//英文名
     private String idcode;//身份证号码
+    private String sex;//性别
     private String birthday;//出生日期
     private String constellation;//星座
     private String chinesecs;//属相
@@ -96,6 +100,25 @@ public class BaseInformation implements Serializable{
 
     public void setIdcode(String idcode) {
         this.idcode = idcode;
+        if(StringUtils.isNotBlank(idcode)){
+            try {
+                this.setSex(IDcodeUtil.getSex(idcode));
+                this.setBirthday(IDcodeUtil.getBirthday(idcode));
+                this.setConstellation(IDcodeUtil.getConstellation(idcode));
+                this.setChinesecs(IDcodeUtil.getChinesecs(idcode));
+                this.setHj(IDcodeUtil.getProvinceByIdcode(idcode));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getBirthday() {

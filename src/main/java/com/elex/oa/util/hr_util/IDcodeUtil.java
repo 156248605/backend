@@ -70,7 +70,7 @@ public class IDcodeUtil {
         Integer day_of_month = Integer.valueOf(idcard.substring(12,14));
         if(day_of_month<=0 || day_of_month>maxDayOfMonth)throw new Exception("身份证的号码输入不符合标准，出生日必须在[1,"+maxDayOfMonth+"]之间！");
         String birthday = idcard.substring(6,10) + "/" + idcard.substring(10,12) + "/" + idcard.substring(12,14);
-        Integer age = Integer.valueOf(IDcodeUtil.getAge(birthday));
+        Integer age = Integer.valueOf(IDcodeUtil.getAge(birthday).substring(0,IDcodeUtil.getAge(birthday).length()-1));
         if(age>65 || age<18)throw new Exception("身份证的号码输入不符合标准，年龄必须18-65周岁之间");
         return birthday;
     }
@@ -127,16 +127,11 @@ public class IDcodeUtil {
      *@Date: 19:15 2018\5\16 0016
      */
     public static String getAge(String birthday) throws Exception {
-        if(StringUtils.isBlank(birthday) || birthday.equals("null")){
-            //throw new Exception("出生日期有误！");
-            return  "";
-        }
-        Calendar curCal = IDcodeUtil.getCalendarByDate(birthday,null);
-        //定义年龄
-        Integer ny = null;
-        //获得年龄
-        ny = curCal.get(Calendar.YEAR);
-        return ny+"";
+        DateCompute curDateCompute = new DateCompute();
+        DateCompute entryDateCompute = new DateCompute(birthday);
+        DateCompute respDC = curDateCompute.getDateComputeByAnother(entryDateCompute);
+        String year = respDC.getYear().intValue()<=0?"":respDC.getYear() + "岁";
+        return year;
     }
 
     /**
@@ -196,7 +191,12 @@ public class IDcodeUtil {
      *@Date: 19:20 2018\5\16 0016
      */
     public static String getWorkingage(String firstworkingtime) throws Exception {
-        return  IDcodeUtil.getAge(firstworkingtime);
+        DateCompute curDateCompute = new DateCompute();
+        DateCompute entryDateCompute = new DateCompute(firstworkingtime);
+        DateCompute respDC = curDateCompute.getDateComputeByAnother(entryDateCompute);
+        String year = respDC.getYear().intValue()<=0?"":respDC.getYear() + "年";
+        String month = respDC.getMonth().intValue()<=0?"":respDC.getMonth() + "月";
+        return year + month;
     }
 
     /**
@@ -214,8 +214,12 @@ public class IDcodeUtil {
      *@Date: 15:11 2018\5\17 0017
      */
     public static String getCompanyAge(String entrydate) throws Exception {
-        Calendar curCal = IDcodeUtil.getCalendarByDate(entrydate,null);
-        return curCal.get(Calendar.YEAR) + "年" + curCal.get(Calendar.MONTH) + "月";
+        DateCompute curDateCompute = new DateCompute();
+        DateCompute entryDateCompute = new DateCompute(entrydate);
+        DateCompute respDC = curDateCompute.getDateComputeByAnother(entryDateCompute);
+        String year = respDC.getYear().intValue()<=0?"":respDC.getYear() + "年";
+        String month = respDC.getMonth().intValue()<=0?"":respDC.getMonth() + "月";
+        return year + month;
     }
 
     /**
@@ -373,5 +377,162 @@ public class IDcodeUtil {
         return provinceCode;
     }
 
+    private static class DateCompute{
+        private Integer year;
+        private Integer month;
+        private Integer day;
+        private String strDay="";
 
+        public DateCompute() {
+            Calendar curCal = Calendar.getInstance();
+            this.year = curCal.get(Calendar.YEAR);
+            this.month = curCal.get(Calendar.MONTH);
+            this.day = curCal.get(Calendar.DAY_OF_MONTH);
+        }
+
+        public DateCompute(Integer year, Integer month, Integer day) {
+            this.year = year;
+            this.month = month;
+            this.day = day;
+        }
+
+        public DateCompute(String strDay) {
+            this.strDay = strDay;
+            setByStringDate(strDay);
+        }
+
+        public String getStrDay() {
+            return strDay;
+        }
+
+        public void setStrDay(String strDay) {
+            this.strDay = strDay;
+        }
+
+        public Integer getYear() {
+            return year;
+        }
+
+        public void setYear(Integer year) {
+            this.year = year;
+        }
+
+        public Integer getMonth() {
+            return month;
+        }
+
+        public void setMonth(Integer month) {
+            this.month = month;
+        }
+
+        public Integer getDay() {
+            return day;
+        }
+
+        public void setDay(Integer day) {
+            this.day = day;
+        }
+
+        public DateCompute getDateComputeByAnother(DateCompute dateCompute){
+            DateCompute bigDC = null;
+            DateCompute smallDC = null;
+            Integer companParam = this.compareToAnother(dateCompute);
+            if(companParam==0)return new DateCompute(0,0,0);
+            if(companParam==-1){
+                bigDC = dateCompute;
+                smallDC = this;
+            }
+            if(companParam==1){
+                bigDC = this;
+                smallDC = dateCompute;
+            }
+            DateCompute respDateCompute = computeDateByTowObjs(bigDC, smallDC);
+            return respDateCompute;
+        }
+
+        private void setByStringDate(String date){
+            try {
+                //设置时间格式
+                SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
+                //获得出生日期
+                Date mydate= myFormatter.parse(date);
+                Calendar birCal = Calendar.getInstance();
+                birCal.setTime(mydate);
+                this.setYear(birCal.get(Calendar.YEAR));
+                this.setMonth(birCal.get(Calendar.MONTH));
+                this.setDay(birCal.get(Calendar.DAY_OF_MONTH));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private DateCompute computeDateByTowObjs(DateCompute bigDC,DateCompute smallDC){
+            DateCompute respDateCompute = new DateCompute();
+
+            int bigDC_year = bigDC.getYear();
+            int bigDC_month = bigDC.getMonth();
+            int bigDC_day = bigDC.getDay();
+
+            int smallDC_year = smallDC.getYear();
+            int smallDC_month = smallDC.getMonth();
+            int smallDC_day = smallDC.getDay();
+
+            //先计算天数
+            if(bigDC_day>=smallDC_day){
+                respDateCompute.setDay(bigDC_day-smallDC_day);
+            }else {
+                respDateCompute.setDay(bigDC_day+30-smallDC_day);
+                bigDC_month -=1;
+            }
+            //再计算月数
+            if(bigDC_month>=smallDC_month){
+                respDateCompute.setMonth(bigDC_month-smallDC_month);
+            }else {
+                respDateCompute.setMonth(bigDC_month+12-smallDC_month);
+                bigDC_year -=1;
+            }
+            respDateCompute.setYear(bigDC_year-smallDC_year);
+            return respDateCompute;
+        }
+
+        private Integer compareToAnother(DateCompute dateCompute){
+            Integer year = dateCompute.getYear();
+            Integer month = dateCompute.getMonth();
+            Integer day = dateCompute.getDay();
+            int absYear = this.year - year;
+            int absMonth = this.month - month;
+            int absDay = this.day - day;
+            //先比年
+            if(absYear>0){
+                return 1;
+            }else if(absYear<0){
+                return -1;
+            }else {
+                //再比月
+                if(absMonth>0){
+                    return 1;
+                }else if(absMonth<0){
+                    return -1;
+                }else {
+                    //再比天
+                    if(absDay>0){
+                        return 1;
+                    }else if(absDay<0){
+                        return -1;
+                    }else {
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "DateCompute{" +
+                    "year=" + year +
+                    ", month=" + month +
+                    ", day=" + day +
+                    '}';
+        }
+    }
 }

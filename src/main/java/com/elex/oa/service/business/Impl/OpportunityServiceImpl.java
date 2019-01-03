@@ -1,6 +1,5 @@
 package com.elex.oa.service.business.Impl;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.business.IBusinessAttachmentDao;
 import com.elex.oa.dao.business.IClueDao;
@@ -11,7 +10,7 @@ import com.elex.oa.entity.business.Clue;
 import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.service.business.IOpportunityService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +34,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
     @Resource
     IOpportunityDao iOpportunityDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     ITrackInfoDao iTrackInfoDao;
     @Resource
@@ -53,7 +52,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         opportunity.setTrackid(trackInfo_opportunity.getCode());
         opportunity.setState(Commons.OPPORTUNITY_ON);
         if (null==opportunity.getCreatetime() || StringUtils.isEmpty(opportunity.getCreatetime().trim()) || opportunity.getCreatetime().length()<19) {
-            opportunity.setCreatetime(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+            opportunity.setCreatetime(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         }
         iOpportunityDao.insertSelective(opportunity);
         //添加附件信息
@@ -167,11 +166,11 @@ public class OpportunityServiceImpl implements IOpportunityService {
     private Opportunity getOpportunityByOpportunity(Opportunity opportunity) {
         if(null==opportunity)return null;
         //获得最新的跟踪描述
-        opportunity.setTrackcontent(hrUtilsTemp.getTrackcontentByTrackid(opportunity.getTrackid()));
+        opportunity.setTrackcontent(hrUtils.getTrackcontentByTrackid(opportunity.getTrackid()));
         //获得销售人姓名
-        opportunity.setSale_truename(hrUtilsTemp.getTruenameByEmployeenumber(opportunity.getSale_employeenumber()));
+        opportunity.setSale_truename(hrUtils.getTruenameByEmployeenumber(opportunity.getSale_employeenumber()));
         //获得方案人姓名
-        opportunity.setScheme_truename(hrUtilsTemp.getTruenameByEmployeenumber(opportunity.getScheme_employeenumber()));
+        opportunity.setScheme_truename(hrUtils.getTruenameByEmployeenumber(opportunity.getScheme_employeenumber()));
         return opportunity;
     }
 
@@ -206,7 +205,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
             trackInfo.setTrack_content(((Clue)obj).getTrackcontent());
         }
         //获得时间
-        trackInfo.setTrack_date(hrUtilsTemp.getDateStringByTimeMillis(l));
+        trackInfo.setTrack_date(hrUtils.getDateStringByTimeMillis(l));
         return trackInfo;
     }
 

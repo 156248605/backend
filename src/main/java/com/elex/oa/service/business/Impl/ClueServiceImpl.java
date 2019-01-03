@@ -8,7 +8,7 @@ import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.business.Clue;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.service.business.IClueService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -32,7 +32,7 @@ public class ClueServiceImpl implements IClueService {
     @Resource
     ITrackInfoDao iTrackInfoDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     IBusinessAttachmentDao iBusinessAttachmentDao;
 
@@ -138,7 +138,7 @@ public class ClueServiceImpl implements IClueService {
         try {
             clue.setTrackid(trackCode);
             clue.setState(Commons.CLUE_ON);
-            if(StringUtils.isEmpty(clue.getCreatetime()) || clue.getCreatetime().length()<19)clue.setCreatetime(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+            if(StringUtils.isEmpty(clue.getCreatetime()) || clue.getCreatetime().length()<19)clue.setCreatetime(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
             iClueDao.insert(clue);
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,18 +184,18 @@ public class ClueServiceImpl implements IClueService {
         trackInfo.setDependence_code(clue.getCode());
         trackInfo.setTrack_content(clue.getTrackcontent());
         //获得时间
-        trackInfo.setTrack_date(hrUtilsTemp.getDateStringByTimeMillis(l));
+        trackInfo.setTrack_date(hrUtils.getDateStringByTimeMillis(l));
         return trackInfo;
     }
 
     private Clue getClueByClue(Clue c) {
         if(null==c)return null;
         //获得最新的跟踪描述
-        c.setTrackcontent(hrUtilsTemp.getTrackcontentByTrackid(c.getTrackid()));
+        c.setTrackcontent(hrUtils.getTrackcontentByTrackid(c.getTrackid()));
         //获得销售人姓名
-        c.setSale_truename(hrUtilsTemp.getTruenameByEmployeenumber(c.getSale_employeenumber()));
+        c.setSale_truename(hrUtils.getTruenameByEmployeenumber(c.getSale_employeenumber()));
         //获得方案人姓名
-        c.setScheme_truename(hrUtilsTemp.getTruenameByEmployeenumber(c.getScheme_employeenumber()));
+        c.setScheme_truename(hrUtils.getTruenameByEmployeenumber(c.getScheme_employeenumber()));
         return c;
     }
 }

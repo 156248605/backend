@@ -7,7 +7,7 @@ import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Deploginfo;
 import com.elex.oa.entity.restructure_hrentity.ReadDeploginfoExcel;
 import com.elex.oa.service.restructure_hrService.IDeploginfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +30,7 @@ public class DeploginfoServiceImpl implements IDeploginfoService {
     @Resource
     IDeploginfoDao iDeploginfoDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     IDepinfoDao iDepinfoDao;
 
@@ -91,7 +91,7 @@ public class DeploginfoServiceImpl implements IDeploginfoService {
         String depcode = deploginfo.getDepcode();
         if(StringUtils.isEmpty(depcode)){
             //部门号不存在则用部门名称
-            depcode = hrUtilsTemp.getDepcodeByDepname(deploginfo.getDepname());
+            depcode = hrUtils.getDepcodeByDepname(deploginfo.getDepname());
         }
         if(StringUtils.isEmpty(depcode)) return respMap;
         Depinfo depinfoTemp = iDepinfoDao.selectByPrimaryKey(depcode);
@@ -111,8 +111,8 @@ public class DeploginfoServiceImpl implements IDeploginfoService {
     }
 
     private Deploginfo  getDetailDeploginfoByDeploginfo(Deploginfo deploginfo){
-        deploginfo.setDepname(hrUtilsTemp.getDepnameByDepcode(deploginfo.getDepcode()));
-        deploginfo.setTransactortruename(hrUtilsTemp.getTruenameByEmployeenumberInnewtable(deploginfo.getTransactoruserid()));
+        deploginfo.setDepname(hrUtils.getDepnameByDepcode(deploginfo.getDepcode()));
+        deploginfo.setTransactortruename(hrUtils.getTruenameByEmployeenumberInnewtable(deploginfo.getTransactoruserid()));
         return deploginfo;
     }
 

@@ -7,7 +7,7 @@ import com.elex.oa.entity.hr_entity.ReadPostlogExcel;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.entity.restructure_hrentity.Postloginfo;
 import com.elex.oa.service.restructure_hrService.IPostloginfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +30,7 @@ public class PostloginfoServiceImpl implements IPostloginfoService {
     @Resource
     IPostloginfoDao iPostloginfoDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     IPostinfoDao iPostinfoDao;
 
@@ -90,7 +90,7 @@ public class PostloginfoServiceImpl implements IPostloginfoService {
         String postcode = postloginfo.getPostcode();
         if(StringUtils.isEmpty(postcode)){
             //岗位编号不存在则用岗位名称（不严谨）
-            postcode = hrUtilsTemp.getPostcodeByPostname(postloginfo.getPostname());
+            postcode = hrUtils.getPostcodeByPostname(postloginfo.getPostname());
         }
         if(StringUtils.isEmpty(postcode))return respMap;
         Postinfo postinfoTemp = iPostinfoDao.selectByPrimaryKey(postcode);
@@ -111,8 +111,8 @@ public class PostloginfoServiceImpl implements IPostloginfoService {
 
 
     private Postloginfo getDetailPostloginfoByPostloginfo(Postloginfo postloginfo) {
-        postloginfo.setPostname(hrUtilsTemp.getPostnameByPostcode(postloginfo.getPostcode()));
-        postloginfo.setTransactortruename(hrUtilsTemp.getTruenameByEmployeenumberInnewtable(postloginfo.getTransactoruserid()));
+        postloginfo.setPostname(hrUtils.getPostnameByPostcode(postloginfo.getPostcode()));
+        postloginfo.setTransactortruename(hrUtils.getTruenameByEmployeenumberInnewtable(postloginfo.getTransactoruserid()));
         return postloginfo;
     }
 }

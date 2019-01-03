@@ -1,6 +1,5 @@
 package com.elex.oa.service.restructure_hrService.impl;
 
-import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostRelationshipDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPostlevelrelationshipinfoDao;
@@ -8,7 +7,7 @@ import com.elex.oa.entity.hr_entity.PostRelationship;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Postlevelrelationshipinfo;
 import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -140,10 +139,10 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
 
     private Postlevelrelationshipinfo getNewBeanByOldBean(PostRelationship p) {
         Postlevelrelationshipinfo postlevelrelationshipinfo = new Postlevelrelationshipinfo();
-        postlevelrelationshipinfo.setPostfamilyid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostfamilyid()));
-        postlevelrelationshipinfo.setPostgradeid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostgradeid()));
-        postlevelrelationshipinfo.setPostrankid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostrankid()));
-        postlevelrelationshipinfo.setPostlevelid(new HrUtilsTemp().getDatacodeByHrsetid(p.getPostlevelid()));
+        postlevelrelationshipinfo.setPostfamilyid(new HrUtils().getDatacodeByHrsetid(p.getPostfamilyid()));
+        postlevelrelationshipinfo.setPostgradeid(new HrUtils().getDatacodeByHrsetid(p.getPostgradeid()));
+        postlevelrelationshipinfo.setPostrankid(new HrUtils().getDatacodeByHrsetid(p.getPostrankid()));
+        postlevelrelationshipinfo.setPostlevelid(new HrUtils().getDatacodeByHrsetid(p.getPostlevelid()));
         return postlevelrelationshipinfo;
     }
 

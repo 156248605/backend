@@ -5,7 +5,7 @@ import com.elex.oa.dao.restructure_hr.IPersonalinfoDao;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.restructure_hrentity.Personalinfo;
 import com.elex.oa.service.restructure_hrService.IPersonalinfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,7 +38,7 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
     @Resource
     IPersonalinfoDao iPersonalinfoDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
 
 
     @Override
@@ -88,10 +88,10 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         DimissionInformation dimissionInformation = iDimissionInformationDao.selectByUserid(u.getId());
         if(null==dimissionInformation)return personalinfo;
         personalinfo.setLastworkingdate(dimissionInformation.getLastworkingdate());
-        personalinfo.setDimissiontypeid(hrUtilsTemp.getDatacodeByHrsetid(dimissionInformation.getDimissiontypeid()));
-        personalinfo.setDimissiondirectionid(hrUtilsTemp.getDatacodeByHrsetid(dimissionInformation.getDimissiondirectionid()));
-        personalinfo.setDimissionreasonid(hrUtilsTemp.getDatacodeByHrsetid(dimissionInformation.getDimissionreasonid()));
-        personalinfo.setDimission_transaction_id(hrUtilsTemp.getEmployeenumberByUserid(u.getId()));
+        personalinfo.setDimissiontypeid(hrUtils.getDatacodeByHrsetid(dimissionInformation.getDimissiontypeid()));
+        personalinfo.setDimissiondirectionid(hrUtils.getDatacodeByHrsetid(dimissionInformation.getDimissiondirectionid()));
+        personalinfo.setDimissionreasonid(hrUtils.getDatacodeByHrsetid(dimissionInformation.getDimissionreasonid()));
+        personalinfo.setDimission_transaction_id(hrUtils.getEmployeenumberByUserid(u.getId()));
         personalinfo.setDimission_transaction_date(dimissionInformation.getTransactiondate());
         return personalinfo;
     }
@@ -100,9 +100,9 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         if(null==personalInformation)return personalinfo;
         personalinfo.setSex(personalInformation.getSex());
         //部门编号需转换
-        personalinfo.setDepcode(hrUtilsTemp.getDepcodeByDepid(personalInformation.getDepid()));
+        personalinfo.setDepcode(hrUtils.getDepcodeByDepid(personalInformation.getDepid()));
         //办公电话需转换
-        personalinfo.setTelphoneid(hrUtilsTemp.getDatacodeByHrsetid(personalInformation.getTelphoneid()));
+        personalinfo.setTelphoneid(hrUtils.getDatacodeByHrsetid(personalInformation.getTelphoneid()));
         personalinfo.setMobilephone(personalInformation.getMobilephone());
         //tb_id_baseinformation表数据的转移
         BaseInformation baseInformation = iBaseInformationDao.selectById(personalInformation.getBaseinformationid());
@@ -124,7 +124,7 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         personalinfo.setPrivateemail(otherInformation.getPrivateemail());
         personalinfo.setCompanyemail(otherInformation.getCompanyemail());
         personalinfo.setEmergencycontact(otherInformation.getEmergencycontract());
-        personalinfo.setEmergencyrpid(hrUtilsTemp.getDatacodeByHrsetid(otherInformation.getEmergencyrpid()));
+        personalinfo.setEmergencyrpid(hrUtils.getDatacodeByHrsetid(otherInformation.getEmergencyrpid()));
         personalinfo.setEmergencyphone(otherInformation.getEmergencyphone());
         personalinfo.setAddress(otherInformation.getAddress());
         personalinfo.setRemark(otherInformation.getRemark());
@@ -133,17 +133,17 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
 
     private Personalinfo getPersonalinfoByCostinformation(Personalinfo personalinfo, CostInformation costInformation) {
         if(null==costInformation)return personalinfo;
-        personalinfo.setSalarystandardid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getSalarystandardid()));
-        personalinfo.setSsbid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getSsbid()));
-        personalinfo.setSsbgscdid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getSsbgscdid()));
-        personalinfo.setSsbgrcdid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getSsbgrcdid()));
-        personalinfo.setGjjid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getGjjid()));
-        personalinfo.setGjjgscdid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getGjjgscdid()));
-        personalinfo.setGjjgrcdid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getGjjgrcdid()));
-        personalinfo.setKhhid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getKhhid()));
-        personalinfo.setSalaryaccount(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getKhhid()));
+        personalinfo.setSalarystandardid(hrUtils.getDatacodeByHrsetid(costInformation.getSalarystandardid()));
+        personalinfo.setSsbid(hrUtils.getDatacodeByHrsetid(costInformation.getSsbid()));
+        personalinfo.setSsbgscdid(hrUtils.getDatacodeByHrsetid(costInformation.getSsbgscdid()));
+        personalinfo.setSsbgrcdid(hrUtils.getDatacodeByHrsetid(costInformation.getSsbgrcdid()));
+        personalinfo.setGjjid(hrUtils.getDatacodeByHrsetid(costInformation.getGjjid()));
+        personalinfo.setGjjgscdid(hrUtils.getDatacodeByHrsetid(costInformation.getGjjgscdid()));
+        personalinfo.setGjjgrcdid(hrUtils.getDatacodeByHrsetid(costInformation.getGjjgrcdid()));
+        personalinfo.setKhhid(hrUtils.getDatacodeByHrsetid(costInformation.getKhhid()));
+        personalinfo.setSalaryaccount(hrUtils.getDatacodeByHrsetid(costInformation.getKhhid()));
         personalinfo.setSalaryaccount(costInformation.getSalaryaccount());
-        personalinfo.setSbjndid(hrUtilsTemp.getDatacodeByHrsetid(costInformation.getSbjndid()));
+        personalinfo.setSbjndid(hrUtils.getDatacodeByHrsetid(costInformation.getSbjndid()));
         personalinfo.setSbcode(costInformation.getSbcode());
         personalinfo.setGjjcode(costInformation.getGjjcode());
         return personalinfo;
@@ -151,7 +151,7 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
 
     private Personalinfo getPersonalinfoByManageinformation(Personalinfo personalinfo, ManageInformation manageInformation) {
         if(null==manageInformation)return personalinfo;
-        personalinfo.setEmployeetypeid(hrUtilsTemp.getDatacodeByHrsetid(manageInformation.getEmployeetypeid()));
+        personalinfo.setEmployeetypeid(hrUtils.getDatacodeByHrsetid(manageInformation.getEmployeetypeid()));
         personalinfo.setEntrydate(manageInformation.getEntrydate());
         personalinfo.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
         return personalinfo;
@@ -167,19 +167,19 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
         personalinfo.setBirthday(baseInformation.getBirthday());
         personalinfo.setConstellation(baseInformation.getConstellation());
         personalinfo.setChinesecs(baseInformation.getChinesecs());
-        personalinfo.setRaceid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getRaceid()));
+        personalinfo.setRaceid(hrUtils.getDatacodeByHrsetid(baseInformation.getRaceid()));
         personalinfo.setMarriage(baseInformation.getMarriage());
-        personalinfo.setChildrenid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getChildrenid()));
-        personalinfo.setZzmmid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getZzmmid()));
-        personalinfo.setZgxlid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getByyxid()));
-        personalinfo.setSxzyid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getSxzyid()));
-        personalinfo.setPyfsid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getPyfsid()));
-        personalinfo.setFirstlaid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getFirstlaid()));
-        personalinfo.setElselaid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getElselaid()));
-        personalinfo.setPosttitleid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getPosttitleid()));
-        personalinfo.setZyzstypeid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getZyzstypeid()));
-        personalinfo.setZyzsnameid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getZyzsnameid()));
-        personalinfo.setParentcompanyid(hrUtilsTemp.getDatacodeByHrsetid(baseInformation.getParentcompanyid()));
+        personalinfo.setChildrenid(hrUtils.getDatacodeByHrsetid(baseInformation.getChildrenid()));
+        personalinfo.setZzmmid(hrUtils.getDatacodeByHrsetid(baseInformation.getZzmmid()));
+        personalinfo.setZgxlid(hrUtils.getDatacodeByHrsetid(baseInformation.getByyxid()));
+        personalinfo.setSxzyid(hrUtils.getDatacodeByHrsetid(baseInformation.getSxzyid()));
+        personalinfo.setPyfsid(hrUtils.getDatacodeByHrsetid(baseInformation.getPyfsid()));
+        personalinfo.setFirstlaid(hrUtils.getDatacodeByHrsetid(baseInformation.getFirstlaid()));
+        personalinfo.setElselaid(hrUtils.getDatacodeByHrsetid(baseInformation.getElselaid()));
+        personalinfo.setPosttitleid(hrUtils.getDatacodeByHrsetid(baseInformation.getPosttitleid()));
+        personalinfo.setZyzstypeid(hrUtils.getDatacodeByHrsetid(baseInformation.getZyzstypeid()));
+        personalinfo.setZyzsnameid(hrUtils.getDatacodeByHrsetid(baseInformation.getZyzsnameid()));
+        personalinfo.setParentcompanyid(hrUtils.getDatacodeByHrsetid(baseInformation.getParentcompanyid()));
         personalinfo.setFirstworkingtime(baseInformation.getFirstworkingtime());
         personalinfo.setHousehold_register(baseInformation.getHj());
         return personalinfo;

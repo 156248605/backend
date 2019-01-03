@@ -3,11 +3,10 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IPostService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,7 +31,7 @@ public class PostServiceImpl implements IPostService {
     @Resource
     IPersonalInformationDao iPersonalInformationDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     IPostLogDao iPostLogDao;
 
@@ -245,13 +244,13 @@ public class PostServiceImpl implements IPostService {
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getPostname(),newPost.getPostname(),"岗位名称",transactorusername);
         if(isUpdate)respBoolean = true;
         //判断职能类型并添加日志
-        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,hrUtilsTemp.getDatavalueByHrsetid(oldPost.getFunctionaltypeid()),hrUtilsTemp.getDatacodeByHrsetid(newPost.getFunctionaltypeid()),"职能类型",transactorusername);
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid, hrUtils.getDatavalueByHrsetid(oldPost.getFunctionaltypeid()), hrUtils.getDatacodeByHrsetid(newPost.getFunctionaltypeid()),"职能类型",transactorusername);
         if(isUpdate)respBoolean = true;
         //判断上级岗位并添加日志
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid,getStringOfPostnameAndPostid(oldPost),getStringOfPostnameAndPostid(newPost),"岗位名称",transactorusername);
         if(isUpdate)respBoolean = true;
         //判断职级并添加日志
-        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,hrUtilsTemp.getDatavalueByHrsetid(oldPost.getPostrankid()),hrUtilsTemp.getDatacodeByHrsetid(newPost.getPostrankid()),"职级",transactorusername);
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid, hrUtils.getDatavalueByHrsetid(oldPost.getPostrankid()), hrUtils.getDatacodeByHrsetid(newPost.getPostrankid()),"职级",transactorusername);
         if(isUpdate)respBoolean = true;
         //判断编制并添加日志
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getOrganization(),newPost.getOrganization(),"编制",transactorusername);
@@ -294,8 +293,8 @@ public class PostServiceImpl implements IPostService {
         postLog.setChangeinformation(changeinformationName);
         postLog.setBeforeinformation(beforeinformation);
         postLog.setAfterinformation(afterinformation);
-        postLog.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
-        postLog.setTransactoruserid(hrUtilsTemp.getUseridByUsername(transactorusername));
+        postLog.setChangedate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
+        postLog.setTransactoruserid(hrUtils.getUseridByUsername(transactorusername));
         postLog.setChangereason("业务需要");
         iPostLogDao.insertOne(postLog);
         return true;
@@ -305,12 +304,12 @@ public class PostServiceImpl implements IPostService {
     private Post getPostdetailByPost(Post post) {
         if(null==post)return null;
         //获得职能类型
-        post.setFunctionaltype(hrUtilsTemp.getDatavalueByHrsetid(post.getFunctionaltypeid()));
+        post.setFunctionaltype(hrUtils.getDatavalueByHrsetid(post.getFunctionaltypeid()));
         //获得职系（已过时）
         //获得职等（已过时）
         //获得岗级（级别）
         //获得职级
-        post.setPostrank(hrUtilsTemp.getDatavalueByHrsetid(post.getPostrankid()));
+        post.setPostrank(hrUtils.getDatavalueByHrsetid(post.getPostrankid()));
         //获得上级岗位（粗略信息）
         post.setParentpost(getCursoryPostByPostid(post.getParentpostid()));
         return post;
