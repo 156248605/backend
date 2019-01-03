@@ -474,6 +474,49 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return respMap;
     }
 
+    @Override
+    public Boolean updateCostInformation(PersonalInformation personalInformation, String transactorusername) {
+        if(null==personalInformation)return false;
+        if(StringUtils.isBlank(transactorusername))return false;
+        PersonalInformation oldPer = iPersonalInformationDao.selectByUserid(personalInformation.getUserid());
+        Integer perid = oldPer.getId();//此处可能有空指针
+        personalInformation.setId(perid);
+        personalInformation.setCostinformationid(oldPer.getCostinformationid());
+        //获得原始的人事成本信息
+        oldPer = getDetailPersonalinformationByCursorPersonalinformation(oldPer);
+        //获得当前的人事成本信息（从页面获取）
+        //判断两个信息是否相同并添加相应的日志
+        Boolean isUpdate = getIsEqualForCostinformation(personalInformation.getUserid(),oldPer,personalInformation,transactorusername);
+        //修改人事成本并返回相应的数据
+        if(isUpdate){
+            //修改人事成本信息
+            CostInformation costInformation = getCostinformationByPersonalinformation(personalInformation);
+            iCostInformationDao.updateOne(costInformation);
+        }
+        return isUpdate;
+    }
+
+    //根据per获得人事成本信息
+    private CostInformation getCostinformationByPersonalinformation(PersonalInformation personalInformation) {
+        if(null==personalInformation)return null;
+        if(null==personalInformation.getCostinformationid())return null;
+        CostInformation costInformation = new CostInformation();
+        costInformation.setId(personalInformation.getCostinformationid());
+        costInformation.setSalarystandardid(hrUtilsTemp.getHrsetidByDatavalue("salary",personalInformation.getSalary()));
+        costInformation.setKhhid(hrUtilsTemp.getHrsetidByDatavalue("khh",personalInformation.getKhh()));
+        costInformation.setSalaryaccount(personalInformation.getSalaryaccount());
+        costInformation.setSbjndid(hrUtilsTemp.getHrsetidByDatavalue("sbjnd",personalInformation.getSbjnd()));
+        costInformation.setSbcode(personalInformation.getSbcode());
+        costInformation.setGjjcode(personalInformation.getGjjcode());
+        costInformation.setSsbid(hrUtilsTemp.getHrsetidByDatavalue("ssb",personalInformation.getSsb()));
+        costInformation.setSsbgscdid(hrUtilsTemp.getHrsetidByDatavalue("ssbgscd",personalInformation.getSsbgscd()));
+        costInformation.setSsbgrcdid(hrUtilsTemp.getHrsetidByDatavalue("ssbgrcd",personalInformation.getSsbgrcd()));
+        costInformation.setGjjid(hrUtilsTemp.getHrsetidByDatavalue("gjj",personalInformation.getGjj()));
+        costInformation.setGjjgscdid(hrUtilsTemp.getHrsetidByDatavalue("gjjgscd",personalInformation.getGjjgscd()));
+        costInformation.setGjjgrcdid(hrUtilsTemp.getHrsetidByDatavalue("gjjgrcd",personalInformation.getGjjgrcd()));
+        return costInformation;
+    }
+
     //根据per获得人事基本信息
     private BaseInformation getBaseinformationByPersonalinformation(PersonalInformation personalInformation){
         if(null==personalInformation)return null;
@@ -503,7 +546,50 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return baseInformation;
     }
 
-    //根据连个人事基本信息判断是否修改并添加相应的变更日志
+    //根据两个人事成本信息判断是否修改并添加相应的变更日志
+    private Boolean getIsEqualForCostinformation(Integer changeduserid, PersonalInformation oldPer, PersonalInformation newPer, String transactorusername) {
+        if(null==oldPer || null==newPer)return false;
+        Boolean isUpdate = false;
+        //判断工资标准并添加相应的日志
+        Boolean isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSalary(),newPer.getSalary(),transactorusername,"工资标准");
+        if(isEqual)isUpdate=true;
+        //判断开户行并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getKhh(),newPer.getKhh(),transactorusername,"开户行");
+        if(isEqual)isUpdate=true;
+        //判断工资账号并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSalaryaccount(),newPer.getSalaryaccount(),transactorusername,"工资账号");
+        if(isEqual)isUpdate=true;
+        //判断社保缴纳地并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSbjnd(),newPer.getSbjnd(),transactorusername,"社保缴纳地");
+        if(isEqual)isUpdate=true;
+        //判断社保账号并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSbcode(),newPer.getSbcode(),transactorusername,"社保账号");
+        if(isEqual)isUpdate=true;
+        //判断公积金账号并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getGjjcode(),newPer.getGjjcode(),transactorusername,"公积金账号");
+        if(isEqual)isUpdate=true;
+        //判断社保基数并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSsb(),newPer.getSsb(),transactorusername,"社保基数");
+        if(isEqual)isUpdate=true;
+        //判断社保公司缴费比例并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSsbgscd(),newPer.getSsbgscd(),transactorusername,"社保公司缴费比例");
+        if(isEqual)isUpdate=true;
+        //判断社保个人缴费比例并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSsbgrcd(),newPer.getSsbgrcd(),transactorusername,"社保个人缴费比例");
+        if(isEqual)isUpdate=true;
+        //判断公积金基数并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getGjj(),newPer.getGjj(),transactorusername,"公积金基数");
+        if(isEqual)isUpdate=true;
+        //判断公积金公司缴费比例并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getGjjgscd(),newPer.getGjjgscd(),transactorusername,"公积金公司缴费比例");
+        if(isEqual)isUpdate=true;
+        //判断公积金个人缴费比例并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getSsbgrcd(),newPer.getSsbgrcd(),transactorusername,"公积金个人缴费比例");
+        if(isEqual)isUpdate=true;
+        return isUpdate;
+    }
+
+    //根据两个人事基本信息判断是否修改并添加相应的变更日志
     private Boolean getIsEqualForBaseinformation(Integer changeduserid, PersonalInformation oldPer, PersonalInformation newPer, String transactorusername) {
         if(null==oldPer || null==newPer)return false;
         Boolean isUpdate = false;

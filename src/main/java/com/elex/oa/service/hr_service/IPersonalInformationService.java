@@ -93,4 +93,6 @@ public interface IPersonalInformationService{
 
     Map<String,Object> updateBaseInformation(PersonalInformation personalInformation,String transactorusername);
 
+    Boolean updateCostInformation(PersonalInformation personalInformation,String transactorusername);
+
 }
