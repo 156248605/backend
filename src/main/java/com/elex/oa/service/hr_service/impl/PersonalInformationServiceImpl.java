@@ -123,6 +123,12 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         com.github.pagehelper.PageHelper.startPage(pageNum,pageSize);
         List<PersonalInformation> list = iPersonalInformationDao.selectByConditions(personalInformation);
+        if (list != null) {
+            for (PersonalInformation pi : list
+            ) {
+                pi = getDetailPersonalinformationByCursorPersonalinformation(pi);
+            }
+        }
         return new PageInfo<PersonalInformation>(list);
     }
 
@@ -235,6 +241,66 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return personalInformation;
     }
 
+    @Override
+    public ArrayList<HashMap> queryByUseridForIOS(Integer userid) {
+        PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(userid);
+        personalInformation = getDetailPersonalinformationByCursorPersonalinformation(personalInformation);
+        ArrayList<HashMap> list = new ArrayList<>();
+        HashMap<String, String> map1 = new HashMap<>();
+        map1.put("title", "姓名");
+        map1.put("value", personalInformation.getTruename());
+        list.add(map1);
+        HashMap<String, String> map2 = new HashMap<>();
+        map2.put("title", "性别");
+        map2.put("value", personalInformation.getSex());
+        list.add(map2);
+        HashMap<String, String> map3 = new HashMap<>();
+        map3.put("title", "出生年月");
+        map3.put("value", personalInformation.getBirthday());
+        list.add(map3);
+        HashMap<String, String> map4 = new HashMap<>();
+        map4.put("title", "最高学历");
+        map4.put("value", personalInformation.getZgxl());
+        list.add(map4);
+        HashMap<String, String> map5 = new HashMap<>();
+        map5.put("title", "毕业院校");
+        map5.put("value", personalInformation.getByyx());
+        list.add(map5);
+        HashMap<String, String> map6 = new HashMap<>();
+        map6.put("title", "婚姻状态");
+        map6.put("value", personalInformation.getMarriage());
+        list.add(map6);
+        HashMap<String, String> map7 = new HashMap<>();
+        map7.put("title", "手机号");
+        map7.put("value", personalInformation.getMobilephone());
+        list.add(map7);
+        HashMap<String, String> map8 = new HashMap<>();
+        map8.put("title", "邮箱");
+        map8.put("value", personalInformation.getCompanyemail());
+        list.add(map8);
+        HashMap<String, String> map9 = new HashMap<>();
+        map9.put("title", "岗位");
+        map9.put("value", personalInformation.getPostnames());
+        list.add(map9);
+        HashMap<String, String> map10 = new HashMap<>();
+        map10.put("title", "住址");
+        map10.put("value", personalInformation.getAddress());
+        list.add(map10);
+        return list;
+    }
+
+    @Override
+    public PersonalInformation queryPersonalInformationByTruename(String truename) {
+        if(StringUtils.isBlank(truename))return null;
+        User user = iUserDao.selectByTruename(truename);
+        if(null==user)return null;
+        PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
+        if(null==personalInformation)return null;
+        personalInformation = getDetailPersonalinformationByCursorPersonalinformation(personalInformation);
+        return personalInformation;
+    }
+
+
     /**
      *@Author:ShiYun;
      *@Description:添加人事信息
@@ -328,6 +394,33 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     }
 
     @Override
+    public Map<String, Object> addOtherInformation(PersonalInformation personalInformation) {
+        //添加人事其它信息->然后将OtherinformationID塞入personal表中->获取返回值为同步数据而准备
+        if(null==personalInformation)return null;
+        if(null==personalInformation.getUserid())return null;
+        PersonalInformation personalInformationTemp = iPersonalInformationDao.selectByUserid(personalInformation.getUserid());
+        if(null==personalInformationTemp)return null;
+        Integer perid = personalInformationTemp.getId();
+        // 添加人事信息的其它信息
+        OtherInformation otherInformation = new OtherInformation();
+        otherInformation.setCompanyemail(personalInformation.getCompanyemail());
+        otherInformation.setPrivateemail(personalInformation.getPrivateemail());
+        otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
+        otherInformation.setEmergencyrpid(hrUtilsTemp.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
+        otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
+        otherInformation.setAddress(personalInformation.getAddress());
+        otherInformation.setRemark(personalInformation.getRemark());
+        Integer otherinformationid = iOtherInformationDao.insertOne(otherInformation);
+        // 将OtherinformationID塞入personal表中
+        personalInformation.setId(perid);
+        personalInformation.setTelphoneid(hrUtilsTemp.getHrsetidByDatavalue("telphone",personalInformation.getTelphone()));
+        iPersonalInformationDao.updateOne(personalInformation);
+        //下面的数据是为了同步赵宏钢的人事信息所准备的
+        Map<String, Object> respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), getPostidsByPerid(perid));
+        return respMap;
+    }
+
+    @Override
     public Map<String, Object> updateManageInformation(PersonalInformation personalInformation, String transactorusername) {
         if(null==personalInformation)return null;
         if(StringUtils.isBlank(transactorusername))return null;
@@ -351,6 +444,19 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             respMap = getSynchronizeMapByUserid(personalInformation.getUserid(),personalInformation.getPostids());
         }
         return respMap;
+    }
+
+    //根据perid获得Postids
+    private List<Integer> getPostidsByPerid(Integer perid){
+        if(null==perid)return null;
+        List<PerAndPostRs> perAndPostRsList = iPerandpostrsDao.selectPostidsByPerid(perid);
+        if(null==perAndPostRsList)return null;
+        List<Integer> postids = new ArrayList<>();
+        for (PerAndPostRs pp:perAndPostRsList
+             ) {
+            postids.add(pp.getPostid());
+        }
+        return postids;
     }
 
     //获取UpdateManage的返回值

@@ -4,6 +4,8 @@ import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.github.pagehelper.PageInfo;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +38,8 @@ public interface IPersonalInformationService{
      *@Date: 10:59 2018\4\9 0009
      */
     PersonalInformation queryOneByUserid(Integer userid);
+    ArrayList<HashMap> queryByUseridForIOS(Integer userid);
+    PersonalInformation queryPersonalInformationByTruename(String truename);
 
     /**
      *@Author:ShiYun;
@@ -67,13 +71,6 @@ public interface IPersonalInformationService{
 
     /**
      *@Author:ShiYun;
-     *@Description:根据部门ID查询人事信息
-     *@Date: 16:23 2018\5\28 0028
-     */
-    List<PersonalInformation> queryByDepid(Integer depid);
-
-    /**
-     *@Author:ShiYun;
      *@Description:根据员工号查询员工
      *@Date: 10:01 2018\8\9 0009
      */
@@ -89,6 +86,8 @@ public interface IPersonalInformationService{
     void removeAll();
 
     PersonalInformation queryPersonalInformationById(Integer personalInformationId);
+
+    Map<String,Object> addOtherInformation(PersonalInformation personalInformation);
 
     Map<String,Object> updateManageInformation(PersonalInformation personalInformation,String transactorusername);
 

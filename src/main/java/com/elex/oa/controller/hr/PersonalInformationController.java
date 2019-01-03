@@ -77,14 +77,6 @@ public class PersonalInformationController {
         paramMap.put("pageSize", rows);
         paramMap.put("entity", personalInformation);
         PageInfo<PersonalInformation> list = iPersonalInformationService.queryPIs(paramMap);
-        if (list != null) {
-            List<PersonalInformation> list1 = list.getList();
-            for (PersonalInformation pi : list1
-            ) {
-                pi = getPageinfoInstance(pi);
-            }
-            list.setList(list1);
-        }
         resp.put("pageData",list);
         Map<String, List<String>> paramsForFirstpage = iPersonalInformationService.getParamsForFirstpage();
         resp.put("selections",paramsForFirstpage);
@@ -107,114 +99,7 @@ public class PersonalInformationController {
         paramMap.put("pageSize", rows);
         paramMap.put("entity", personalInformation);
         PageInfo<PersonalInformation> list = iPersonalInformationService.queryPIs(paramMap);
-        if (list != null) {
-            List<PersonalInformation> list1 = list.getList();
-            for (PersonalInformation pi : list1
-            ) {
-                pi = getPageinfoInstance(pi);
-            }
-            list.setList(list1);
-        }
         return list;
-    }
-
-    private PersonalInformation getPageinfoInstance(PersonalInformation pi) {
-        //添加信息user的三个的字段
-        User user = iUserService.getById(pi.getUserid());
-        pi.setIsactive(user.getIsactive());
-        pi.setTruename(user.getTruename());
-        pi.setUsername(user.getUsername());
-        //添加信息personalinformation的六个字段
-        Dept dept = new Dept();
-        dept = iDeptService.queryOneDepByDepid(pi.getDepid());
-        if (dept != null) {
-            pi.setDepname(dept.getDepname());
-        } else {
-            pi.setDepname("部门信息还未添加");
-        }
-        //添加岗位信息
-        List<PerAndPostRs> perAndPostRss = iPerandpostrsService.queryPerAndPostRsByPerid(pi.getId());
-        List<String> strs = new ArrayList<>();
-        List<Post> postList = new ArrayList<>();
-        for (PerAndPostRs perAndPostRs : perAndPostRss) {
-            Post post = iPostService.queryOneByPostid(perAndPostRs.getPostid());
-            postList.add(post);
-            strs.add(iPostService.queryOneByPostid(perAndPostRs.getPostid()).getPostname());
-        }
-        pi.setPostList(postList);
-        pi.setPostnames(IDcodeUtil.getArrayToString(strs, ";"));
-        //添加办公电话
-        if (ihRsetService.queryById(pi.getTelphoneid()) != null) {
-            pi.setTelphone(ihRsetService.queryById(pi.getTelphoneid()).getDatavalue());
-        }
-        //添加baseinformation的28个字段
-        BaseInformation baseInformation = iBaseInformationService.queryOneById(pi.getBaseinformationid());
-        pi.setEnglishname(baseInformation.getEnglishname());
-        pi.setIdcode(baseInformation.getIdcode());
-        pi.setUserphoto(baseInformation.getUserphoto());
-        pi.setBirthday(baseInformation.getBirthday());
-        try {
-            pi.setAge(IDcodeUtil.getAge(pi.getBirthday()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        pi.setConstellation(baseInformation.getConstellation());
-        pi.setChinesecs(baseInformation.getChinesecs());
-        if (ihRsetService.queryById(baseInformation.getRaceid()) != null) {
-            pi.setRace(ihRsetService.queryById(baseInformation.getRaceid()).getDatavalue());
-        }
-        pi.setMarriage(baseInformation.getMarriage());
-        if (baseInformation.getChildrenid()!=null && ihRsetService.queryById(baseInformation.getChildrenid())!= null) {
-            pi.setChildren(ihRsetService.queryById(baseInformation.getChildrenid()).getDatavalue());
-        }
-        if (baseInformation.getZzmmid()!=null && ihRsetService.queryById(baseInformation.getZzmmid()) != null) {
-            pi.setZzmm(ihRsetService.queryById(baseInformation.getZzmmid()).getDatavalue());
-        }
-        if (baseInformation.getZgxlid()!=null && ihRsetService.queryById(baseInformation.getZgxlid()) != null) {
-            pi.setZgxl(ihRsetService.queryById(baseInformation.getZgxlid()).getDatavalue());
-        }
-        if (baseInformation.getByyxid()!=null && ihRsetService.queryById(baseInformation.getByyxid()) != null) {
-            pi.setByyx(ihRsetService.queryById(baseInformation.getByyxid()).getDatavalue());
-        }
-        if (baseInformation.getSxzyid()!=null && ihRsetService.queryById(baseInformation.getSxzyid()) != null) {
-            pi.setSxzy(ihRsetService.queryById(baseInformation.getSxzyid()).getDatavalue());
-        }
-        if (baseInformation.getPyfsid()!=null && ihRsetService.queryById(baseInformation.getPyfsid()) != null) {
-            pi.setPyfs(ihRsetService.queryById(baseInformation.getPyfsid()).getDatavalue());
-        }
-        if (baseInformation.getFirstlaid()!=null && ihRsetService.queryById(baseInformation.getFirstlaid()) != null) {
-            pi.setFirstla(ihRsetService.queryById(baseInformation.getFirstlaid()).getDatavalue());
-        }
-        if (baseInformation.getElselaid()!=null && ihRsetService.queryById(baseInformation.getElselaid()) != null) {
-            pi.setElsela(ihRsetService.queryById(baseInformation.getElselaid()).getDatavalue());
-        }
-        if (baseInformation.getPosttitleid()!=null && ihRsetService.queryById(baseInformation.getPosttitleid()) != null) {
-            pi.setPosttitle(ihRsetService.queryById(baseInformation.getPosttitleid()).getDatavalue());
-        }
-        if (baseInformation.getZyzstypeid()!=null && ihRsetService.queryById(baseInformation.getZyzstypeid()) != null) {
-            pi.setZyzstype(ihRsetService.queryById(baseInformation.getZyzstypeid()).getDatavalue());
-        }
-        if (baseInformation.getZyzsnameid()!=null && ihRsetService.queryById(baseInformation.getZyzsnameid()) != null) {
-            pi.setZyzsname(ihRsetService.queryById(baseInformation.getZyzsnameid()).getDatavalue());
-        }
-        pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
-        if (baseInformation.getFirstworkingtime() != null && !"".equals(baseInformation.getFirstworkingtime())) {
-            try {
-                pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (baseInformation.getParentcompanyid()!=null && ihRsetService.queryById(baseInformation.getParentcompanyid()) != null) {
-            pi.setParentcompany(ihRsetService.queryById(baseInformation.getParentcompanyid()).getDatavalue());
-        }
-        //添加manageinformation的六个字段
-        ManageInformation manageInformation = iManageInformationService.queryOneById(pi.getManageinformationid());
-        //添加costinformation的18个字段
-        CostInformation costInformation = iCostInformationService.queryOneById(pi.getCostinformationid());
-        //添加otherinformation的六个字段
-        OtherInformation otherInformation = iOtherInformationService.queryOneById(pi.getOtherinformationid());
-        return pi;
     }
 
     /**
@@ -232,7 +117,7 @@ public class PersonalInformationController {
 
     /**
      * @Author:ShiYun;
-     * @Description:人事信息查询（一条）
+     * @Description:人事信息查询（一条）(IOS端)
      * @Date: 18:02 2018\4\8 0008
      */
     @RequestMapping("/queryPersonalInformationByUserid")
@@ -240,50 +125,8 @@ public class PersonalInformationController {
     public ArrayList<HashMap> queryPersonalInformationByUserid(
             @RequestParam("userid") int userid
     ) throws ParseException {
-        PersonalInformation onePersonalinformation = iPersonalInformationService.queryOneByUserid(userid);
-        PersonalInformation personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
-        ArrayList<HashMap> list = new ArrayList<>();
-        HashMap<String, String> map1 = new HashMap<>();
-        map1.put("title", "姓名");
-        map1.put("value", personalInformation.getTruename());
-        list.add(map1);
-        HashMap<String, String> map2 = new HashMap<>();
-        map2.put("title", "性别");
-        map2.put("value", personalInformation.getSex());
-        list.add(map2);
-        HashMap<String, String> map3 = new HashMap<>();
-        map3.put("title", "出生年月");
-        map3.put("value", personalInformation.getBirthday());
-        list.add(map3);
-        HashMap<String, String> map4 = new HashMap<>();
-        map4.put("title", "最高学历");
-        map4.put("value", personalInformation.getZgxl());
-        list.add(map4);
-        HashMap<String, String> map5 = new HashMap<>();
-        map5.put("title", "毕业院校");
-        map5.put("value", personalInformation.getByyx());
-        list.add(map5);
-        HashMap<String, String> map6 = new HashMap<>();
-        map6.put("title", "婚姻状态");
-        map6.put("value", personalInformation.getMarriage());
-        list.add(map6);
-        HashMap<String, String> map7 = new HashMap<>();
-        map7.put("title", "手机号");
-        map7.put("value", personalInformation.getMobilephone());
-        list.add(map7);
-        HashMap<String, String> map8 = new HashMap<>();
-        map8.put("title", "邮箱");
-        map8.put("value", personalInformation.getCompanyemail());
-        list.add(map8);
-        HashMap<String, String> map9 = new HashMap<>();
-        map9.put("title", "岗位");
-        map9.put("value", personalInformation.getPostnames());
-        list.add(map9);
-        HashMap<String, String> map10 = new HashMap<>();
-        map10.put("title", "住址");
-        map10.put("value", personalInformation.getAddress());
-        list.add(map10);
-        return list;
+        ArrayList<HashMap> respMapList = iPersonalInformationService.queryByUseridForIOS(userid);
+        return respMapList;
     }
 
     /**
@@ -296,18 +139,7 @@ public class PersonalInformationController {
     public PersonalInformation queryPersonalInformationByTruename(
             @RequestParam("truename") String truename
     ) throws ParseException {
-        User user = iUserService.queryByTruename(truename);
-        PersonalInformation onePersonalinformation = null;
-        if (user.getId() != null) {
-            onePersonalinformation = iPersonalInformationService.queryOneByUserid(user.getId());
-        }
-        PersonalInformation personalInformation;
-        if (onePersonalinformation != null) {
-            personalInformation = getOnePersonalinformation(onePersonalinformation.getId());
-        } else {
-            return null;
-        }
-
+        PersonalInformation personalInformation = iPersonalInformationService.queryPersonalInformationByTruename(truename);
         return personalInformation;
     }
 
@@ -892,37 +724,8 @@ public class PersonalInformationController {
     public Object addOtherInformation(
             PersonalInformation personalInformation
     ) throws ParseException {
-        // 添加人事信息的其它信息
-        OtherInformation otherInformation = new OtherInformation();
-        otherInformation.setCompanyemail(personalInformation.getCompanyemail());
-        otherInformation.setPrivateemail(personalInformation.getPrivateemail());
-        otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
-        List<HRset> hRsetEmergencyrpList = ihRsetService.queryByConditions(new HRset("emergencyrp", personalInformation.getEmergencyrp()));
-        if (hRsetEmergencyrpList != null && hRsetEmergencyrpList.size() == 1) {
-            otherInformation.setEmergencyrpid(hRsetEmergencyrpList.get(0).getId());
-        }
-        otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
-        otherInformation.setAddress(personalInformation.getAddress());
-        otherInformation.setRemark(personalInformation.getRemark());
-        Integer otherInformationId = iOtherInformationService.saveOne(otherInformation);
-
-        // 修改人事信息
-        PersonalInformation personalInformation1 = getOnePersonalinformation(iPersonalInformationService.queryOneByUserid(personalInformation.getUserid()).getId());
-        personalInformation.setId(personalInformation1.getId());
-        List<HRset> hRsetTelphoneList = ihRsetService.queryByConditions(new HRset("telphone", personalInformation.getTelphone()));
-        if (hRsetTelphoneList != null && hRsetTelphoneList.size() == 1) {
-            personalInformation.setTelphoneid(hRsetTelphoneList.get(0).getId());
-        }
-        personalInformation.setOtherinformationid(otherInformationId);
-        iPersonalInformationService.modifyOne(personalInformation);
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("username", personalInformation1.getUsername());
-        map.put("isactive", personalInformation1.getIsactive());
-        map.put("truename", personalInformation1.getTruename());
-        map.put("postids", personalInformation1.getPostids());
-
-        return RespUtil.successResp("200", "添加其他信息成功！", map);
+        Map<String, Object> map = iPersonalInformationService.addOtherInformation(personalInformation);
+        return null!=map?RespUtil.successResp("200", "添加其他信息成功！", map):RespUtil.successResp("500","信息添加失败！",null);
     }
 
     /**
