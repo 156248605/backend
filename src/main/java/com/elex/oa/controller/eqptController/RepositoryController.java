@@ -6,6 +6,8 @@ import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.RepositoryImpl;
+import com.elex.oa.service.hr_service.IDeptService;
+import com.elex.oa.service.hr_service.impl.DeptServiceImpl;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +26,9 @@ public class RepositoryController {
 
     @Resource
     private RepositoryImpl repositoryImpl;
+
+    @Resource
+    private IDeptService iDeptService;
 
 
     @RequestMapping("/list")
@@ -158,6 +163,12 @@ public class RepositoryController {
     @ResponseBody
     public void deleteCate(HttpServletRequest request){
         repositoryImpl.deleteCate(request);
+    }
+
+    @RequestMapping("/queryByTruename")
+    @ResponseBody
+    public String queryByTruename (String name) {
+        return iDeptService.queryByTruename(name);
     }
 
     /*@RequestMapping("/matInRept")
