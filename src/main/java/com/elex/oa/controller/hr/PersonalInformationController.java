@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.*;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
@@ -63,7 +63,7 @@ public class PersonalInformationController {
     @Autowired
     IContractInformationService iContractInformationService;
     @Autowired
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
 
 
 
@@ -748,14 +748,14 @@ public class PersonalInformationController {
             HttpServletRequest request
     ) throws ParseException {
         //获取照片地址
-        personalInformation.setUserphoto(hrUtilsTemp.getSignalFileAddress(request,"userphoto2","/hr/image/"));
-        personalInformation.setIdphoto1(hrUtilsTemp.getSignalFileAddress(request,"idphoto11","/hr/image/"));
-        personalInformation.setIdphoto2(hrUtilsTemp.getSignalFileAddress(request,"idphoto22","/hr/image/"));
+        personalInformation.setUserphoto(hrUtils.getSignalFileAddress(request,"userphoto2","/hr/image/"));
+        personalInformation.setIdphoto1(hrUtils.getSignalFileAddress(request,"idphoto11","/hr/image/"));
+        personalInformation.setIdphoto2(hrUtils.getSignalFileAddress(request,"idphoto22","/hr/image/"));
         //判断是否需要录入并添加相应的HR设置信息
-        if(StringUtils.isNotBlank(byyxvalue) && byyxvalue.equals("选择录入"))hrUtilsTemp.addHrsetByDatavalue(null,"byyx",personalInformation.getByyx());
-        if(StringUtils.isNotBlank(sxzyvalue) && byyxvalue.equals("选择录入"))hrUtilsTemp.addHrsetByDatavalue(null,"syxz",personalInformation.getByyx());
-        if(StringUtils.isNotBlank(zyzsnamevalue) && byyxvalue.equals("选择录入"))hrUtilsTemp.addHrsetByDatavalue(null,"zyzsname",personalInformation.getByyx());
-        if(StringUtils.isNotBlank(parentcompanyvalue) && byyxvalue.equals("选择录入"))hrUtilsTemp.addHrsetByDatavalue(null,"parentcompany",personalInformation.getByyx());
+        if(StringUtils.isNotBlank(byyxvalue) && byyxvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"byyx",personalInformation.getByyx());
+        if(StringUtils.isNotBlank(sxzyvalue) && byyxvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"syxz",personalInformation.getByyx());
+        if(StringUtils.isNotBlank(zyzsnamevalue) && byyxvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"zyzsname",personalInformation.getByyx());
+        if(StringUtils.isNotBlank(parentcompanyvalue) && byyxvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"parentcompany",personalInformation.getByyx());
         Map<String, Object> map = iPersonalInformationService.updateBaseInformation(personalInformation, transactorusername);
         return RespUtil.successResp("200", "信息提交成功！", map.get("postids"));
     }
@@ -789,8 +789,8 @@ public class PersonalInformationController {
             @RequestParam("sbjndvalue") String sbjndvalue
     ) throws ParseException {
         //判断是否需要录入并添加相应的HR设置信息
-        if(StringUtils.isNotBlank(khhvalue) && khhvalue.equals("选择录入"))hrUtilsTemp.addHrsetByDatavalue(null,"khh",personalInformation.getKhh());
-        if(StringUtils.isNotBlank(sbjndvalue) && sbjndvalue.equals("选择录入"))hrUtilsTemp.addHrsetByDatavalue(null,"sbjnd",personalInformation.getSbjnd());
+        if(StringUtils.isNotBlank(khhvalue) && khhvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"khh",personalInformation.getKhh());
+        if(StringUtils.isNotBlank(sbjndvalue) && sbjndvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"sbjnd",personalInformation.getSbjnd());
         Boolean aBoolean = iPersonalInformationService.updateCostInformation(personalInformation, transactorusername);
         return aBoolean?"提交信息成功！":"提交失败！";
     }

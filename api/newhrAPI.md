@@ -152,7 +152,7 @@
    33  public class PostInfoController {
    34      @Autowired
    ..
-   37      HrUtilsTemp hrUtilsTemp;
+   37      HrUtils hrUtils;
    38  
 ## @RequestMapping("/listPosts")
    40      @ResponseBody

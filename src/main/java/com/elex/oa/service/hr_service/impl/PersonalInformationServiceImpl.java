@@ -3,7 +3,7 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +37,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     @Resource
     IHRsetDao ihRsetDao;
     @Resource
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
     @Resource
     IManageInformationDao iManageInformationDao;
     @Resource
@@ -403,14 +403,14 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         otherInformation.setCompanyemail(personalInformation.getCompanyemail());
         otherInformation.setPrivateemail(personalInformation.getPrivateemail());
         otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
-        otherInformation.setEmergencyrpid(hrUtilsTemp.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
+        otherInformation.setEmergencyrpid(hrUtils.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
         otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
         otherInformation.setAddress(personalInformation.getAddress());
         otherInformation.setRemark(personalInformation.getRemark());
         Integer otherinformationid = iOtherInformationDao.insertOne(otherInformation);
         // 将OtherinformationID塞入personal表中
         personalInformation.setId(perid);
-        personalInformation.setTelphoneid(hrUtilsTemp.getHrsetidByDatavalue("telphone",personalInformation.getTelphone()));
+        personalInformation.setTelphoneid(hrUtils.getHrsetidByDatavalue("telphone",personalInformation.getTelphone()));
         iPersonalInformationDao.updateOne(personalInformation);
         //下面的数据是为了同步赵宏钢的人事信息所准备的
         Map<String, Object> respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), getPostidsByPerid(perid));
@@ -530,7 +530,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(null==personalInformation.getOtherinformationid())return null;
         OtherInformation otherInformation = new OtherInformation();
         otherInformation.setId(personalInformation.getOtherinformationid());
-        otherInformation.setTelphoneid(hrUtilsTemp.getHrsetidByDatavalue("telphone",personalInformation.getTelphone()));
+        otherInformation.setTelphoneid(hrUtils.getHrsetidByDatavalue("telphone",personalInformation.getTelphone()));
         otherInformation.setMobilephone(personalInformation.getMobilephone());
         otherInformation.setCompanyemail(personalInformation.getCompanyemail());
         otherInformation.setPrivateemail(personalInformation.getPrivateemail());
@@ -538,7 +538,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
         otherInformation.setAddress(personalInformation.getAddress());
         otherInformation.setRemark(personalInformation.getRemark());
-        otherInformation.setEmergencyrpid(hrUtilsTemp.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
+        otherInformation.setEmergencyrpid(hrUtils.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
         return otherInformation;
     }
 
@@ -548,18 +548,18 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(null==personalInformation.getCostinformationid())return null;
         CostInformation costInformation = new CostInformation();
         costInformation.setId(personalInformation.getCostinformationid());
-        costInformation.setSalarystandardid(hrUtilsTemp.getHrsetidByDatavalue("salary",personalInformation.getSalary()));
-        costInformation.setKhhid(hrUtilsTemp.getHrsetidByDatavalue("khh",personalInformation.getKhh()));
+        costInformation.setSalarystandardid(hrUtils.getHrsetidByDatavalue("salary",personalInformation.getSalary()));
+        costInformation.setKhhid(hrUtils.getHrsetidByDatavalue("khh",personalInformation.getKhh()));
         costInformation.setSalaryaccount(personalInformation.getSalaryaccount());
-        costInformation.setSbjndid(hrUtilsTemp.getHrsetidByDatavalue("sbjnd",personalInformation.getSbjnd()));
+        costInformation.setSbjndid(hrUtils.getHrsetidByDatavalue("sbjnd",personalInformation.getSbjnd()));
         costInformation.setSbcode(personalInformation.getSbcode());
         costInformation.setGjjcode(personalInformation.getGjjcode());
-        costInformation.setSsbid(hrUtilsTemp.getHrsetidByDatavalue("ssb",personalInformation.getSsb()));
-        costInformation.setSsbgscdid(hrUtilsTemp.getHrsetidByDatavalue("ssbgscd",personalInformation.getSsbgscd()));
-        costInformation.setSsbgrcdid(hrUtilsTemp.getHrsetidByDatavalue("ssbgrcd",personalInformation.getSsbgrcd()));
-        costInformation.setGjjid(hrUtilsTemp.getHrsetidByDatavalue("gjj",personalInformation.getGjj()));
-        costInformation.setGjjgscdid(hrUtilsTemp.getHrsetidByDatavalue("gjjgscd",personalInformation.getGjjgscd()));
-        costInformation.setGjjgrcdid(hrUtilsTemp.getHrsetidByDatavalue("gjjgrcd",personalInformation.getGjjgrcd()));
+        costInformation.setSsbid(hrUtils.getHrsetidByDatavalue("ssb",personalInformation.getSsb()));
+        costInformation.setSsbgscdid(hrUtils.getHrsetidByDatavalue("ssbgscd",personalInformation.getSsbgscd()));
+        costInformation.setSsbgrcdid(hrUtils.getHrsetidByDatavalue("ssbgrcd",personalInformation.getSsbgrcd()));
+        costInformation.setGjjid(hrUtils.getHrsetidByDatavalue("gjj",personalInformation.getGjj()));
+        costInformation.setGjjgscdid(hrUtils.getHrsetidByDatavalue("gjjgscd",personalInformation.getGjjgscd()));
+        costInformation.setGjjgrcdid(hrUtils.getHrsetidByDatavalue("gjjgrcd",personalInformation.getGjjgrcd()));
         return costInformation;
     }
 
@@ -574,21 +574,21 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         baseInformation.setIdphoto2(personalInformation.getIdphoto2());
         baseInformation.setEnglishname(personalInformation.getEnglishname());
         baseInformation.setIdcode(personalInformation.getIdcode());
-        baseInformation.setRaceid(hrUtilsTemp.getHrsetidByDatavalue("race",personalInformation.getRace()));
+        baseInformation.setRaceid(hrUtils.getHrsetidByDatavalue("race",personalInformation.getRace()));
         baseInformation.setMarriage(personalInformation.getMarriage());
-        baseInformation.setChildrenid(hrUtilsTemp.getHrsetidByDatavalue("children",personalInformation.getChildren()));
-        baseInformation.setZzmmid(hrUtilsTemp.getHrsetidByDatavalue("zzmm",personalInformation.getZzmm()));
-        baseInformation.setZgxlid(hrUtilsTemp.getHrsetidByDatavalue("zgxl",personalInformation.getZgxl()));
-        baseInformation.setByyxid(hrUtilsTemp.getHrsetidByDatavalue("byyx",personalInformation.getByyx()));
-        baseInformation.setSxzyid(hrUtilsTemp.getHrsetidByDatavalue("sxzy",personalInformation.getSxzy()));
-        baseInformation.setPyfsid(hrUtilsTemp.getHrsetidByDatavalue("pyfs",personalInformation.getPyfs()));
-        baseInformation.setFirstlaid(hrUtilsTemp.getHrsetidByDatavalue("fla",personalInformation.getFirstla()));
-        baseInformation.setElselaid(hrUtilsTemp.getHrsetidByDatavalue("fla",personalInformation.getElsela()));
-        baseInformation.setPosttitleid(hrUtilsTemp.getHrsetidByDatavalue("posttitle",personalInformation.getPosttitle()));
-        baseInformation.setZyzstypeid(hrUtilsTemp.getHrsetidByDatavalue("zyzstype",personalInformation.getZyzstype()));
-        baseInformation.setZyzsnameid(hrUtilsTemp.getHrsetidByDatavalue("zyzsname",personalInformation.getZyzsname()));
+        baseInformation.setChildrenid(hrUtils.getHrsetidByDatavalue("children",personalInformation.getChildren()));
+        baseInformation.setZzmmid(hrUtils.getHrsetidByDatavalue("zzmm",personalInformation.getZzmm()));
+        baseInformation.setZgxlid(hrUtils.getHrsetidByDatavalue("zgxl",personalInformation.getZgxl()));
+        baseInformation.setByyxid(hrUtils.getHrsetidByDatavalue("byyx",personalInformation.getByyx()));
+        baseInformation.setSxzyid(hrUtils.getHrsetidByDatavalue("sxzy",personalInformation.getSxzy()));
+        baseInformation.setPyfsid(hrUtils.getHrsetidByDatavalue("pyfs",personalInformation.getPyfs()));
+        baseInformation.setFirstlaid(hrUtils.getHrsetidByDatavalue("fla",personalInformation.getFirstla()));
+        baseInformation.setElselaid(hrUtils.getHrsetidByDatavalue("fla",personalInformation.getElsela()));
+        baseInformation.setPosttitleid(hrUtils.getHrsetidByDatavalue("posttitle",personalInformation.getPosttitle()));
+        baseInformation.setZyzstypeid(hrUtils.getHrsetidByDatavalue("zyzstype",personalInformation.getZyzstype()));
+        baseInformation.setZyzsnameid(hrUtils.getHrsetidByDatavalue("zyzsname",personalInformation.getZyzsname()));
         baseInformation.setFirstworkingtime(personalInformation.getFirstworkingtime());
-        baseInformation.setParentcompanyid(hrUtilsTemp.getHrsetidByDatavalue("parentcompany",personalInformation.getParentcompany()));
+        baseInformation.setParentcompanyid(hrUtils.getHrsetidByDatavalue("parentcompany",personalInformation.getParentcompany()));
         return baseInformation;
     }
 
@@ -781,8 +781,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(null==personalInformation)return null;
         ManageInformation manageInformation = new ManageInformation();
         manageInformation.setId(personalInformation.getManageinformationid());
-        manageInformation.setPostlevelid(hrUtilsTemp.getHrsetidByDatavalue("postlevel",personalInformation.getPostlevel()));
-        manageInformation.setEmployeetypeid(hrUtilsTemp.getHrsetidByDatavalue("employeetype",personalInformation.getEmployeetype()));
+        manageInformation.setPostlevelid(hrUtils.getHrsetidByDatavalue("postlevel",personalInformation.getPostlevel()));
+        manageInformation.setEmployeetypeid(hrUtils.getHrsetidByDatavalue("employeetype",personalInformation.getEmployeetype()));
         manageInformation.setEntrydate(personalInformation.getEntrydate());
         manageInformation.setZhuanzhengdate(personalInformation.getZhuanzhengdate());
         return manageInformation;
@@ -888,8 +888,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         //获得管理信息
         ManageInformation manageInformation = iManageInformationDao.selectById(personalInformation.getManageinformationid());
         //获得级别、员工类型、入职时间、转正时间
-        respMap.put("postlevel",hrUtilsTemp.getDatavalueByHrsetid(manageInformation.getPostlevelid()));
-        respMap.put("employeetype",hrUtilsTemp.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
+        respMap.put("postlevel",hrUtils.getDatavalueByHrsetid(manageInformation.getPostlevelid()));
+        respMap.put("employeetype",hrUtils.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
         respMap.put("entrydate",manageInformation.getEntrydate());
         respMap.put("zhuanzhengdate",manageInformation.getZhuanzhengdate());
         return respMap;
@@ -928,8 +928,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         changeInformation.setChangeinformation(changeinformationName);
         changeInformation.setBeforeinformation(beforeinformation);
         changeInformation.setAfterinformation(afterinformation);
-        changeInformation.setChangedate(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
-        changeInformation.setTransactoruserid(hrUtilsTemp.getUseridByUsername(transactorusername));
+        changeInformation.setChangedate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
+        changeInformation.setTransactoruserid(hrUtils.getUseridByUsername(transactorusername));
         changeInformation.setChangereason("业务需要");
         iChangeInformaionDao.insertOne(changeInformation);
         return true;
@@ -948,7 +948,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         personalInformation.setPostList(postList);
         personalInformation.setPostids(getPostidsByPostList(postList));
         //获取办公电话
-        personalInformation.setTelphone(hrUtilsTemp.getDatavalueByHrsetid(personalInformation.getTelphoneid()));
+        personalInformation.setTelphone(hrUtils.getDatavalueByHrsetid(personalInformation.getTelphoneid()));
         //获取人事基本信息
         BaseInformation baseInformation = iBaseInformationDao.selectById(personalInformation.getBaseinformationid());
         personalInformation = setBaseinformationByPersonalinformation(personalInformation,baseInformation);
@@ -995,7 +995,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     private Post getDetailPostByCursoryPost(Post post){
         if(null==post)return null;
         //获得职级
-        post.setPostrank(hrUtilsTemp.getDatavalueByHrsetid(post.getPostrankid()));
+        post.setPostrank(hrUtils.getDatavalueByHrsetid(post.getPostrankid()));
         return post;
     }
 
@@ -1005,7 +1005,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         personalInformation.setPrivateemail(otherInformation.getPrivateemail());
         personalInformation.setCompanyemail(otherInformation.getCompanyemail());
         personalInformation.setEmergencycontract(otherInformation.getEmergencycontract());
-        personalInformation.setEmergencyrp(hrUtilsTemp.getDatavalueByHrsetid(otherInformation.getEmergencyrpid()));
+        personalInformation.setEmergencyrp(hrUtils.getDatavalueByHrsetid(otherInformation.getEmergencyrpid()));
         personalInformation.setEmergencyphone(otherInformation.getEmergencyphone());
         personalInformation.setAddress(otherInformation.getAddress());
         personalInformation.setRemark(otherInformation.getRemark());
@@ -1015,15 +1015,15 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     //将成本信息塞入人事信息
     private PersonalInformation setCostinformationByPersonalinformation(PersonalInformation personalInformation,CostInformation costInformation){
         if(null == costInformation)return personalInformation;
-        personalInformation.setSalary(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getSalarystandardid()));
-        personalInformation.setSsb(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getSsbid()));
-        personalInformation.setSsbgscd(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getSsbgscdid()));
-        personalInformation.setSsbgrcd(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getSsbgrcdid()));
-        personalInformation.setGjj(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getGjjid()));
-        personalInformation.setGjjgscd(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getGjjgscdid()));
-        personalInformation.setGjjgrcd(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getGjjgrcdid()));
-        personalInformation.setKhh(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getKhhid()));
-        personalInformation.setSbjnd(hrUtilsTemp.getDatavalueByHrsetid(costInformation.getSbjndid()));
+        personalInformation.setSalary(hrUtils.getDatavalueByHrsetid(costInformation.getSalarystandardid()));
+        personalInformation.setSsb(hrUtils.getDatavalueByHrsetid(costInformation.getSsbid()));
+        personalInformation.setSsbgscd(hrUtils.getDatavalueByHrsetid(costInformation.getSsbgscdid()));
+        personalInformation.setSsbgrcd(hrUtils.getDatavalueByHrsetid(costInformation.getSsbgrcdid()));
+        personalInformation.setGjj(hrUtils.getDatavalueByHrsetid(costInformation.getGjjid()));
+        personalInformation.setGjjgscd(hrUtils.getDatavalueByHrsetid(costInformation.getGjjgscdid()));
+        personalInformation.setGjjgrcd(hrUtils.getDatavalueByHrsetid(costInformation.getGjjgrcdid()));
+        personalInformation.setKhh(hrUtils.getDatavalueByHrsetid(costInformation.getKhhid()));
+        personalInformation.setSbjnd(hrUtils.getDatavalueByHrsetid(costInformation.getSbjndid()));
         personalInformation.setSalaryaccount(costInformation.getSalaryaccount());
         personalInformation.setSbcode(costInformation.getSbcode());
         personalInformation.setGjjcode(costInformation.getGjjcode());
@@ -1034,8 +1034,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     private PersonalInformation setManageinformationByPersonalinformation(PersonalInformation personalInformation,ManageInformation manageInformation){
         if(null==manageInformation)return personalInformation;
         try {
-            personalInformation.setPostlevel(hrUtilsTemp.getDatavalueByHrsetid(manageInformation.getPostlevelid()));
-            personalInformation.setEmployeetype(hrUtilsTemp.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
+            personalInformation.setPostlevel(hrUtils.getDatavalueByHrsetid(manageInformation.getPostlevelid()));
+            personalInformation.setEmployeetype(hrUtils.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
             personalInformation.setEntrydate(manageInformation.getEntrydate());
             personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
             personalInformation.setSn(IDcodeUtil.getWorkingage(personalInformation.getEntrydate()));
@@ -1058,22 +1058,22 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             personalInformation.setConstellation(baseInformation.getConstellation());
             personalInformation.setChinesecs(baseInformation.getChinesecs());
             personalInformation.setAge(IDcodeUtil.getAge(personalInformation.getBirthday()));
-            personalInformation.setRace(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getRaceid()));
+            personalInformation.setRace(hrUtils.getDatavalueByHrsetid(baseInformation.getRaceid()));
             personalInformation.setMarriage(baseInformation.getMarriage());
-            personalInformation.setChildren(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getChildrenid()));
-            personalInformation.setZzmm(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZzmmid()));
-            personalInformation.setZgxl(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZgxlid()));
-            personalInformation.setByyx(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getByyxid()));
-            personalInformation.setSxzy(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getSxzyid()));
-            personalInformation.setPyfs(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getPyfsid()));
-            personalInformation.setFirstla(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getFirstlaid()));
-            personalInformation.setElsela(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getElselaid()));
-            personalInformation.setPosttitle(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getPosttitleid()));
-            personalInformation.setZyzstype(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZyzstypeid()));
-            personalInformation.setZyzsname(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getZyzsnameid()));
-            personalInformation.setParentcompany(hrUtilsTemp.getDatavalueByHrsetid(baseInformation.getParentcompanyid()));
+            personalInformation.setChildren(hrUtils.getDatavalueByHrsetid(baseInformation.getChildrenid()));
+            personalInformation.setZzmm(hrUtils.getDatavalueByHrsetid(baseInformation.getZzmmid()));
+            personalInformation.setZgxl(hrUtils.getDatavalueByHrsetid(baseInformation.getZgxlid()));
+            personalInformation.setByyx(hrUtils.getDatavalueByHrsetid(baseInformation.getByyxid()));
+            personalInformation.setSxzy(hrUtils.getDatavalueByHrsetid(baseInformation.getSxzyid()));
+            personalInformation.setPyfs(hrUtils.getDatavalueByHrsetid(baseInformation.getPyfsid()));
+            personalInformation.setFirstla(hrUtils.getDatavalueByHrsetid(baseInformation.getFirstlaid()));
+            personalInformation.setElsela(hrUtils.getDatavalueByHrsetid(baseInformation.getElselaid()));
+            personalInformation.setPosttitle(hrUtils.getDatavalueByHrsetid(baseInformation.getPosttitleid()));
+            personalInformation.setZyzstype(hrUtils.getDatavalueByHrsetid(baseInformation.getZyzstypeid()));
+            personalInformation.setZyzsname(hrUtils.getDatavalueByHrsetid(baseInformation.getZyzsnameid()));
+            personalInformation.setParentcompany(hrUtils.getDatavalueByHrsetid(baseInformation.getParentcompanyid()));
             personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
-            personalInformation.setWorkingage(hrUtilsTemp.getWorkingageByFirstworkingtime(personalInformation.getFirstworkingtime()));
+            personalInformation.setWorkingage(hrUtils.getWorkingageByFirstworkingtime(personalInformation.getFirstworkingtime()));
             personalInformation.setHj(baseInformation.getHj());
         } catch (Exception e) {
             e.printStackTrace();
@@ -1086,8 +1086,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(null==dept)return personalInformation;
         personalInformation.setCompany(dept.getCompanyname());
         personalInformation.setDepname(dept.getDepname());
-        personalInformation.setPrincipaltruename(hrUtilsTemp.getTruenameByUserid(dept.getPrincipaluserid()));
-        personalInformation.setPrincipalemployeenumber(hrUtilsTemp.getEmployeenumberByUserid(dept.getPrincipaluserid()));
+        personalInformation.setPrincipaltruename(hrUtils.getTruenameByUserid(dept.getPrincipaluserid()));
+        personalInformation.setPrincipalemployeenumber(hrUtils.getEmployeenumberByUserid(dept.getPrincipaluserid()));
         return personalInformation;
     }
 
