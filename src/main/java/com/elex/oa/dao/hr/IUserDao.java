@@ -51,6 +51,7 @@ public interface IUserDao extends BaseDao<User> {
      *@Date: 16:48 2018\5\25 0025
      */
     User selectByTruename(String truename);
+    User selectByEmployeenumber(String employeenumber);
 
     /**
      *@Author:ShiYun;

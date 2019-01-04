@@ -44,6 +44,11 @@
 		WHERE truename=#{truename}
 	</select>
 
+	<select id="selectByEmployeenumber" resultType="java.lang.String" resultMap="UserMapper">
+		SELECT * FROM tb_id_user
+		WHERE employeenumber=#{employeenumber}
+	</select>
+
 	<select id="selectByUsername" resultType="java.lang.String" resultMap="UserMapper">
 		SELECT * FROM tb_id_user
 		WHERE username=#{username}
@@ -53,6 +58,7 @@
 		DELETE FROM tb_id_user
 		WHERE id=#{id}
 	</delete>
+
 	<delete id="deleteAll_admin">
 		DELETE FROM tb_id_user
 		WHERE id!=1

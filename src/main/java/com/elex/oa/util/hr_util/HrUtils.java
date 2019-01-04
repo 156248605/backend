@@ -242,9 +242,9 @@ public class HrUtils {
             if(attachments.size()!=0){
                 String realPath = Commons.realpath;
                 Long l = Calendar.getInstance().getTimeInMillis();
-                File file = new File(realPath + "/business/attachments/" + l);
+                File file = new File(realPath + "/attachments/" + l);
                 file.mkdirs();
-                String attachment_address = "/business/attachments/" + l + "/" + attachments.get(0).getOriginalFilename();
+                String attachment_address = "/attachments/" + l + "/" + attachments.get(0).getOriginalFilename();
                 try {
                     attachments.get(0).transferTo(new File(realPath + attachment_address));
                 } catch (IOException e) {

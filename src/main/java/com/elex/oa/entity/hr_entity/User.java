@@ -20,6 +20,10 @@ public class User implements Serializable{
     public User() {
     }
 
+    public User(Integer id) {
+        this.id = id;
+    }
+
     public User(Integer id, String employeenumber) {
         this.id = id;
         this.employeenumber = employeenumber;

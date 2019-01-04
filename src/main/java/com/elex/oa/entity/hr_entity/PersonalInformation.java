@@ -57,7 +57,7 @@ public class  PersonalInformation implements Serializable{
     private String truename="";//用户姓名
     private List<String> truenames;//
     private String truenamevalue="";//判断条件
-    private String state="";//用户状态
+    private Integer state;//用户状态
 
     private String userphoto="";//免冠照片（基础信息表4）
     private String idphoto1="";//身份证正面
@@ -182,11 +182,11 @@ public class  PersonalInformation implements Serializable{
         this.depcode = depcode;
     }
 
-    public String getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 

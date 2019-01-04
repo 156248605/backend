@@ -22,4 +22,6 @@ public interface Commons {
     String EMPLOYEE_OFF = "0";//员工离职状态
     String POST_ON = "1";//岗位在用状态
     String POST_OFF = "0";//岗位取消状态
+    String OBSTACLES_ON = "未处理";//报障未处理
+    String OBSTACLES_OFF = "已处理";//报障已经处理
 }

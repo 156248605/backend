@@ -2,6 +2,7 @@ package com.elex.oa.service.hr_service;
 
 import com.elex.oa.entity.hr_entity.PersonalInformation;
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -96,4 +97,6 @@ public interface IPersonalInformationService{
     Boolean updateCostInformation(PersonalInformation personalInformation,String transactorusername);
 
     Map<String,Object> updateOtherInformation(PersonalInformation personalInformation,String transactorusername);
+
+    Map<String,String> importPersonalInformations(MultipartFile multipartFile);
 }
