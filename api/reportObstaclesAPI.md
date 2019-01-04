@@ -4,15 +4,21 @@
 
 ## @RequestMapping("/addObstaclesInfo")
 添加报障信息
+attachment{
+    "code":String 附件编码
+    "attachment_address":String 附件地址
+}
 ObstaclesInfo{
-    "username":String 登录ID
+    "username":String 登录ID(必选项)
+    "operatingSystem":String 操作系统版本(必选项)
+    "browser":String 浏览器版本(必选项)
+    "description":String 报障信息描述,(可选项)
     "createtime":String 创建时间
-    "platform":String 环境平台
     "versionCore":String OAcore版本
     "versionBackend":String OAbackend版本
     "versionFront":String OAfront版本
-    "description":String 报障信息描述
-    "attachment"+i:binary 附件（可多选）
+    "state":String 报障状态
+    "attachmentList":[attachment]附件
 }
 RespUtil{
     "head":{
@@ -23,7 +29,9 @@ RespUtil{
 }
 ### Request.json
 {
-   ObstaclesInfo 
+   ObstaclesInfo ,
+   "attachment"+i:binary 附件（可多选）,
+   "attachmentSize":Integer 附件数量 
 }
 
 ### ResponseBody
