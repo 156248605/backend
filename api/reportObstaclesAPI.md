@@ -12,7 +12,7 @@ ObstaclesInfo{
     "versionBackend":String OAbackend版本
     "versionFront":String OAfront版本
     "description":String 报障信息描述
-    "attachment"+i:String 附件（可多选）
+    "attachment"+i:binary 附件（可多选）
 }
 RespUtil{
     "head":{
