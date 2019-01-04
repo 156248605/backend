@@ -13,6 +13,15 @@ ObstaclesInfo{
     "operatingSystem":String 操作系统版本(必选项)
     "browser":String 浏览器版本(必选项)
     "description":String 报障信息描述,(可选项)
+    "versionCore":String OAcore版本
+    "versionBackend":String OAbackend版本
+    "versionFront":String OAfront版本
+}
+RespObstaclesInfo{
+    "username":String 登录ID(必选项)
+    "operatingSystem":String 操作系统版本(必选项)
+    "browser":String 浏览器版本(必选项)
+    "description":String 报障信息描述,(可选项)
     "createtime":String 创建时间
     "versionCore":String OAcore版本
     "versionBackend":String OAbackend版本

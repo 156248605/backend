@@ -3,7 +3,7 @@ package com.elex.oa.controller.reportObstacles;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.service.reportObstacles.IObstaclesInfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class ObstaclesController {
     @Autowired
     IObstaclesInfoService iObstaclesInfoService;
     @Autowired
-    HrUtilsTemp hrUtilsTemp;
+    HrUtils hrUtils;
 
     @RequestMapping(value = "/addObstaclesInfo",consumes = "multipart/form-data")
     @ResponseBody
@@ -44,7 +44,7 @@ public class ObstaclesController {
         //保存附件
         List<String> multiFileAddress = null;
         if (null!=i) {
-            multiFileAddress = hrUtilsTemp.getMultiFileAddress(request, i);
+            multiFileAddress = hrUtils.getMultiFileAddress(request, i);
             List<BusinessAttachment> businessAttachmentList = new ArrayList<>();
             for (String attachmentAddress:multiFileAddress
                  ) {

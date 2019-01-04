@@ -1008,8 +1008,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         ManageInformation manageInformation = new ManageInformation();
         try {
             manageInformation.setId(personalInformation.getManageinformationid());
-            manageInformation.setPostlevelid(hrUtilsTemp.getHrsetidByDatavalue("postlevel",personalInformation.getPostlevel()));
-            manageInformation.setEmployeetypeid(hrUtilsTemp.getHrsetidByDatavalue("employeetype",personalInformation.getEmployeetype()));
+            manageInformation.setPostlevelid(hrUtils.getHrsetidByDatavalue("postlevel",personalInformation.getPostlevel()));
+            manageInformation.setEmployeetypeid(hrUtils.getHrsetidByDatavalue("employeetype",personalInformation.getEmployeetype()));
             manageInformation.setEntrydate(personalInformation.getEntrydate());
             manageInformation.setZhuanzhengdate(StringUtils.isBlank(personalInformation.getZhuanzhengdate())?IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()):personalInformation.getZhuanzhengdate());
         } catch (ParseException e) {

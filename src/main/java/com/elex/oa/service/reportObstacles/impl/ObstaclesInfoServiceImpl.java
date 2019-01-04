@@ -6,7 +6,7 @@ import com.elex.oa.dao.reportObstacles.IObstaclesInfoDao;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.service.reportObstacles.IObstaclesInfoService;
-import com.elex.oa.util.hr_util.HrUtilsTemp;
+import com.elex.oa.util.hr_util.HrUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +23,7 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
     @Resource
     private IObstaclesInfoDao iObstaclesInfoDao;
     @Resource
-    private HrUtilsTemp hrUtilsTemp;
+    private HrUtils hrUtils;
     @Resource
     IBusinessAttachmentDao iBusinessAttachmentDao;
 
@@ -45,7 +45,7 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
             }
         }
         //再添加报障信息
-        obstaclesInfo.setCreatetime(hrUtilsTemp.getDateStringByTimeMillis(System.currentTimeMillis()));
+        obstaclesInfo.setCreatetime(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         obstaclesInfo.setState(Commons.OBSTACLES_ON);
         try {
             iObstaclesInfoDao.insertSelective(obstaclesInfo);
