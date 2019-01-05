@@ -46,7 +46,7 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
         }
         //再添加报障信息
         obstaclesInfo.setCreatetime(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
-        obstaclesInfo.setState(Commons.OBSTACLES_ON);
+        obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_ON);
         try {
             iObstaclesInfoDao.insertSelective(obstaclesInfo);
         } catch (Exception e) {
