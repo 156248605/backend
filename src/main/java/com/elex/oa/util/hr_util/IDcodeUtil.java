@@ -194,6 +194,7 @@ public class IDcodeUtil {
         DateCompute curDateCompute = new DateCompute();
         DateCompute entryDateCompute = new DateCompute(firstworkingtime);
         DateCompute respDC = curDateCompute.getDateComputeByAnother(entryDateCompute);
+        if(null==respDC)return null;
         String year = respDC.getYear().intValue()<=0?"":respDC.getYear() + "年";
         String month = respDC.getMonth().intValue()<=0?"":respDC.getMonth() + "月";
         return year + month;
@@ -434,6 +435,7 @@ public class IDcodeUtil {
         }
 
         public DateCompute getDateComputeByAnother(DateCompute dateCompute){
+            if(null==dateCompute||null==dateCompute.getYear()||null==dateCompute.getMonth()||null==dateCompute.getDay())return null;//空值不做处理
             DateCompute bigDC = null;
             DateCompute smallDC = null;
             Integer companParam = this.compareToAnother(dateCompute);
@@ -451,6 +453,7 @@ public class IDcodeUtil {
         }
 
         private void setByStringDate(String date){
+            if(StringUtils.isBlank(date))return;
             try {
                 //设置时间格式
                 SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -467,12 +470,12 @@ public class IDcodeUtil {
         }
 
         private DateCompute computeDateByTowObjs(DateCompute bigDC,DateCompute smallDC){
+            if(null==bigDC||null==bigDC.getYear()||null==bigDC.getMonth()||null==bigDC.getDay()||null==smallDC||null==smallDC.getYear()||null==smallDC.getMonth()||null==smallDC.getDay())return null;
             DateCompute respDateCompute = new DateCompute();
 
             int bigDC_year = bigDC.getYear();
             int bigDC_month = bigDC.getMonth();
             int bigDC_day = bigDC.getDay();
-
             int smallDC_year = smallDC.getYear();
             int smallDC_month = smallDC.getMonth();
             int smallDC_day = smallDC.getDay();

@@ -28,11 +28,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: DOTO
@@ -318,5 +316,18 @@ public class HrUtils {
         if(null!=hrsetidTemp)return;
         if(StringUtils.isBlank(datacode)){datacode = datatype+"_"+System.currentTimeMillis();}
         ihRsetDao.insertOne(new HRset(datatype,datacode,datavalue));
+    }
+
+    public String getOaBackendVersion(){
+        InputStream is = HrUtils.class.getClassLoader().getResourceAsStream("application.properties");
+        Properties prop = new Properties();
+        try {
+            prop.load(is);
+            String versionbackend = prop.getProperty("versionbackend");
+            return versionbackend;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
