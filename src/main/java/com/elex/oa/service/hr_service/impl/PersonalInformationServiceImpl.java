@@ -437,7 +437,10 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if (isUpdate) {
             iPersonalInformationDao.updateOne(personalInformation);//更新部门信息
             updatePostandpersonalinformationByPostids(personalInformation.getPostids(),perid);//更新岗位信息
-            iManageInformationDao.updateOne(getManageinformationByPersonalinformation(personalInformation));//更新管理信息
+            Boolean isUdateForManageinformation = validateEntityBeforeModifyOne(getManageinformationByPersonalinformation(personalInformation));
+            if (isUdateForManageinformation) {
+                iManageInformationDao.updateOne(getManageinformationByPersonalinformation(personalInformation));//更新管理信息
+            }
             //下面的数据是为了同步赵宏钢的人事信息所准备的
             respMap = getSynchronizeMapByUserid(personalInformation.getUserid(),personalInformation.getPostids());
         }
@@ -587,7 +590,10 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             /*ManageInformation manageInformation = new ManageInformation();*/
             newPer.setManageinformationid(oldPer.getManageinformationid());
             ManageInformation manageInformation = getManageinformationByPersonalinformation(newPer);
-            iManageInformationDao.updateOne(manageInformation);
+            Boolean isUpdateForManageinformation = validateEntityBeforeModifyOne(manageInformation);
+            if (isUpdateForManageinformation) {
+                iManageInformationDao.updateOne(manageInformation);
+            }
 
             //4.更新成本信息表（tb_id_costinformation）=============================================================================
             newPer.setCostinformationid(oldPer.getCostinformationid());
@@ -1337,5 +1343,16 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(null!=personalInformation.getSex() && "null".equals(personalInformation.getSex()))personalInformation.setSex(null);
         if(null!=personalInformation.getMobilephone() && "null".equals(personalInformation.getMobilephone()))personalInformation.setMobilephone(null);
         return personalInformation;
+    }
+
+    //修改管理信息前先判断是否需要修改
+    private Boolean validateEntityBeforeModifyOne(ManageInformation manageInformation) {
+        Boolean valBoolean = true;
+        if(manageInformation.getId()==null)valBoolean=false;
+        if(manageInformation.getPostlevelid()==null)valBoolean=false;
+        if(manageInformation.getEmployeetypeid()==null)valBoolean=false;
+        if(org.apache.commons.lang.StringUtils.isBlank(manageInformation.getEntrydate()))valBoolean=false;
+        if(org.apache.commons.lang.StringUtils.isBlank(manageInformation.getZhuanzhengdate()))valBoolean=false;
+        return valBoolean;
     }
 }
