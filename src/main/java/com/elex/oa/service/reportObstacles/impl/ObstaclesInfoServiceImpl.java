@@ -55,4 +55,17 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
         }
         return true;
     }
+
+    @Override
+    public List<ObstaclesInfo> queryAllObstaclesInfo() {
+        List<ObstaclesInfo> obstaclesInfoList = iObstaclesInfoDao.selectAll();
+        //获取相应的附件信息
+        for (ObstaclesInfo obs:obstaclesInfoList
+             ) {
+            List<BusinessAttachment> attachmentList = iBusinessAttachmentDao.select(new BusinessAttachment(obs.getId()));
+            obs.setAttachmentList(attachmentList);
+        }
+        return obstaclesInfoList;
+    }
+
 }

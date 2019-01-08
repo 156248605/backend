@@ -21,6 +21,10 @@ public class BusinessAttachment implements Serializable {
     public BusinessAttachment() {
     }
 
+    public BusinessAttachment(String dependence_code) {
+        this.dependence_code = dependence_code;
+    }
+
     public String getCode() {
         return code;
     }

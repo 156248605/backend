@@ -65,4 +65,11 @@ public class ObstaclesController {
         String oaBackendVersion = hrUtils.getOaBackendVersion();
         return oaBackendVersion;
     }
+
+    @RequestMapping("/queryAllObstaclesInfo")
+    @ResponseBody
+    public Object queryAllObstaclesInfo(){
+        List<ObstaclesInfo> obstaclesInfoList = iObstaclesInfoService.queryAllObstaclesInfo();
+        return obstaclesInfoList;
+    }
 }
