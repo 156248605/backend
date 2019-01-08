@@ -130,57 +130,7 @@ public class DepartmentInformationController {
     public Dept queryOneDepByDepcode(
             @RequestParam("code")String code
     ){
-        Dept dept = null;
-        try {
-            dept = new Dept();
-            dept = iDeptService.queryOneByDepcode(code);
-            Dept parentdep = new Dept();
-            User principaluser = new User();
-            User deputyuser = new User();
-            User secretaryuser = new User();
-            if(dept.getParentdepid()!=null){
-                parentdep = iDeptService.queryOneDepByDepid(dept.getParentdepid());
-            }else{
-                parentdep.setDepname("");
-            }
-            if(dept.getPrincipaluserid()!=null){
-                principaluser = iUserService.queryServingUserByUserid(dept.getPrincipaluserid());
-            }else {
-                principaluser.setTruename("");
-            }
-            if(dept.getDeputyuserid()!=null){
-                deputyuser = iUserService.queryServingUserByUserid(dept.getDeputyuserid());
-            }else {
-                deputyuser.setTruename("");
-            }
-            if(dept.getSecretaryuserid()!=null){
-                secretaryuser = iUserService.queryServingUserByUserid(dept.getSecretaryuserid());
-            }else {
-                secretaryuser.setTruename("");
-            }
-            dept.setParentdep(parentdep);
-            dept.setPrincipaluser(principaluser);
-            dept.setDeputyuser(deputyuser);
-            dept.setSecretaryuser(secretaryuser);
-
-            PersonalInformation personalInformation = new PersonalInformation();
-            personalInformation.setDepid(dept.getId());
-            List<PersonalInformation> personalInformations = iPersonalInformationService.queryPIs(personalInformation);
-            dept.setNumbers(personalInformations.size());
-
-            HRset hRsetFunctionaltype = ihRsetService.queryById(dept.getFunctionaltypeid());
-            if (hRsetFunctionaltype!=null) {
-                dept.setFunctionaltype(hRsetFunctionaltype.getDatavalue());
-            }
-            HRset hRsetDeptype = ihRsetService.queryById(dept.getDeptypeid());
-            if(hRsetDeptype!=null){
-                dept.setDeptype(hRsetDeptype.getDatavalue());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dept;
+        return iDeptService.queryOneByDepcode(code);
     }
 
     /**

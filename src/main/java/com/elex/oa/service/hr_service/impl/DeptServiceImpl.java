@@ -68,7 +68,7 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public Dept queryOneByDepcode(String depcode) {
         Dept dept = iDeptDao.selectDeptByDeptcode(depcode);
-        return dept;
+        return getDetailDeptByDept(dept);
     }
 
     /**

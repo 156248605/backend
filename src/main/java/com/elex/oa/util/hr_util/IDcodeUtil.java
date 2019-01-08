@@ -390,6 +390,7 @@ public class IDcodeUtil {
     }
 
     public static List<String> getStringToListString(String post_list, String s) {
+        if(null==post_list)return null;
         String[] strArr = post_list.split(s);
         if(null==strArr || strArr.length==0)return null;
         List<String> strList = new ArrayList<>();
