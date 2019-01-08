@@ -80,22 +80,8 @@ public class PostInformationController {
     @RequestMapping("/queryOnePostByPostid")
     @ResponseBody
     public Post queryOnePostByPostid(@RequestParam("id") Integer id){
-        Post post = iPostService.queryOneByPostid(id);
-        Post parentpost = iPostService.queryOneByPostid(post.getParentpostid());
-        post.setParentpost(parentpost);
-        if(parentpost == null){
-            parentpost = new Post();
-            parentpost.setPostname("无上级岗位");
-        }
-        post.setParentpost(parentpost);
-        HRset hRsetFunctionalType = ihRsetService.queryById(post.getFunctionaltypeid());
-        if (hRsetFunctionalType!=null) {
-            post.setFunctionaltype(hRsetFunctionalType.getDatavalue());
-        }
-        HRset hRsetPostlevel = ihRsetService.queryById(post.getPostlevelid());
-        if (hRsetPostlevel!=null) {
-            post.setPostlevel(hRsetPostlevel.getDatavalue());
-        }
+
+        Post post = iPostService.queryOnePostByPostid(id);
         return post;
     }
 
@@ -109,9 +95,7 @@ public class PostInformationController {
     public Post queryOnePostByPostcode(
             @RequestParam("code")String code
     ){
-        Post post = iPostService.queryOneByPostcode(code);
-        Post parentpost = iPostService.queryOneByPostid(post.getParentpostid());
-        post.setParentpost(parentpost);
+        Post post = iPostService.queryOnePostByPostcode(code);
         return post;
     }
 

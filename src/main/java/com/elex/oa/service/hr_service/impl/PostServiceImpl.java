@@ -47,6 +47,15 @@ public class PostServiceImpl implements IPostService {
         return getPostdetailByPost(post);
     }
 
+    @Override
+    public Post queryOnePostByPostid(Integer id) {
+        if(null==id)return null;
+        Post post = iPostDao.selectPostByPostid(id);
+        if(null==post)return null;
+        post = getPostdetailByPost(post);
+        return post;
+    }
+
 
     /**
      *@Author:ShiYun;
@@ -69,6 +78,16 @@ public class PostServiceImpl implements IPostService {
         Post post = iPostDao.selectPostByPostcode(postcode);
         return getPostdetailByPost(post);
     }
+
+    @Override
+    public Post queryOnePostByPostcode(String postcode) {
+        if(StringUtils.isBlank(postcode))return null;
+        Post post = iPostDao.selectPostByPostcode(postcode);
+        if(null==post)return null;
+        post = getPostdetailByPost(post);
+        return post;
+    }
+
 
     /**
      *@Author:ShiYun;
@@ -218,6 +237,7 @@ public class PostServiceImpl implements IPostService {
     }
 
     //判断新旧两个对象并添加岗位日志信息
+
     private Boolean getaBooleanByOldpostAndNewpost(Post oldPost,Post newPost,String transactorusername){
         if(null==oldPost.getId())return false;
         Boolean respBoolean = false;
@@ -269,22 +289,22 @@ public class PostServiceImpl implements IPostService {
         if(isUpdate)respBoolean = true;
         return respBoolean;
     }
-
     //获得岗位名称和岗位ID的字符串
+
     private String getStringOfPostnameAndPostid(Post post){
         if(null==post)return null;
         return post.getPostname()+"--"+post.getId();
     }
-
     //判断岗位编号是否存在
+
     private Boolean getaBooleanByPostcode(String postcode){
         if(StringUtils.isBlank(postcode))return null;
         Post post = iPostDao.selectPostByPostcode(postcode);
         if(null==post)return false;
         return true;
     }
-
     //判断新旧两个字段是否相同并添加相应的岗位日志信息
+
     private Boolean getaBooleanByBeforeAndAfterinfo(Integer postid,String beforeinformation,String afterinformation,String changeinformationName,String transactorusername){
         if(StringUtils.isBlank(beforeinformation))return false;
         if(beforeinformation.equals(afterinformation))return false;
@@ -299,8 +319,8 @@ public class PostServiceImpl implements IPostService {
         iPostLogDao.insertOne(postLog);
         return true;
     }
-
     //根据岗位对象获得详细岗位对象信息
+
     private Post getPostdetailByPost(Post post) {
         if(null==post)return null;
         //获得职能类型
@@ -308,14 +328,15 @@ public class PostServiceImpl implements IPostService {
         //获得职系（已过时）
         //获得职等（已过时）
         //获得岗级（级别）
+        post.setPostlevel(hrUtils.getDatavalueByHrsetid(post.getPostlevelid()));
         //获得职级
         post.setPostrank(hrUtils.getDatavalueByHrsetid(post.getPostrankid()));
         //获得上级岗位（粗略信息）
         post.setParentpost(getCursoryPostByPostid(post.getParentpostid()));
         return post;
     }
-
     //根据postid获得粗略的岗位信息
+
     private Post getCursoryPostByPostid(Integer postid){
         if(null==postid)return null;
         Post post = iPostDao.selectPostByPostid(postid);

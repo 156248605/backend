@@ -128,7 +128,8 @@ public class  PersonalInformation implements Serializable{
     private List<Integer> baseinformationids;//条件查询用
     private String hj="";//户籍
 
-    private String postlevel="";//级别（管理信息表5）
+    private String postlevel="";//岗级（管理信息表5）
+    private String postrank="";//职级（管理信息表5）
     private String entrydate="";//入职日期
     private String sn="";//司龄（只显示）
     private String zhuanzhengdate="";//转正日期（默认入职日期后的两个月，可以修改）
@@ -188,6 +189,14 @@ public class  PersonalInformation implements Serializable{
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getPostrank() {
+        return postrank;
+    }
+
+    public void setPostrank(String postrank) {
+        this.postrank = postrank;
     }
 
     public Map<String, String> getAgeMap() {

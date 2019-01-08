@@ -7,6 +7,7 @@ import com.elex.oa.service.hr_service.IHRsetService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,6 +40,9 @@ public class HRsetServiceImpl implements IHRsetService {
      **/
     @Override
     public Integer addOne(HRset hRset) {
+        if(StringUtils.isBlank(hRset.getDatacode())){
+            hRset.setDatacode(hRset.getDatatype()+"_"+System.currentTimeMillis());
+        }
         ihRsetDao.insertOne(hRset);
         return hRset.getId();
     }
@@ -103,7 +107,9 @@ public class HRsetServiceImpl implements IHRsetService {
 
     @Override
     public Boolean modifyHRset(HRset hRset) {
-        System.out.println(hRset.toString());
+        if(StringUtils.isBlank(hRset.getDatacode())){
+            hRset.setDatacode(hRset.getDatatype()+"_"+System.currentTimeMillis());
+        }
         try {
             ihRsetDao.updateOne(hRset);
         } catch (Exception e) {

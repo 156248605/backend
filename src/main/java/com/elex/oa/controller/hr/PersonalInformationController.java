@@ -598,45 +598,8 @@ public class PersonalInformationController {
     public Object addManageInformation(
             PersonalInformation personalInformation
     ) {
-        if (personalInformation.getUserid() == null || iPersonalInformationService.queryOneByUserid(personalInformation.getUserid()) == null) {
-            return RespUtil.successResp("500", "系统正在忙，请稍后", null);
-        }
-        // 保存人事信息的管理信息
-        ManageInformation manageInformation = new ManageInformation();
-        List<HRset> hRsetPostlevelList = ihRsetService.queryByConditions(new HRset("postlevel", personalInformation.getPostlevel()));
-        if (hRsetPostlevelList != null && hRsetPostlevelList.size() == 1) {
-            manageInformation.setPostlevelid(hRsetPostlevelList.get(0).getId());
-        }
-        List<HRset> hRsetEmployeetypeList = ihRsetService.queryByConditions(new HRset("employeetype", personalInformation.getEmployeetype()));
-        if (hRsetEmployeetypeList != null && hRsetEmployeetypeList.size() == 1) {
-            manageInformation.setEmployeetypeid(hRsetEmployeetypeList.get(0).getId());
-        }
-        manageInformation.setEntrydate(personalInformation.getEntrydate());
-        if (null != personalInformation.getEntrydate() && !"".equals(personalInformation.getEntrydate())) {
-            try {
-                manageInformation.setZhuanzhengdate(IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        Integer manageInformationId = iManageInformationService.saveOne(manageInformation);
-
-        // 修改人事信息的主体信息
-        PersonalInformation personalInformation1 = iPersonalInformationService.queryOneByUserid(personalInformation.getUserid());
-        personalInformation.setId(personalInformation1.getId());
-        personalInformation.setManageinformationid(manageInformationId);
-        iPersonalInformationService.modifyOne(personalInformation);
-
-        //添加人事与岗位关系表的信息
-        List<Integer> postids = personalInformation.getPostids();
-        if (postids != null && postids.size() != 0) {
-            for (Integer postid : postids) {
-                PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformation.getId(), postid);
-                iPerandpostrsService.addOne(perAndPostRs);
-            }
-        }
-        User user = iUserService.getById(personalInformation.getUserid());
-        return RespUtil.successResp("200", "管理信息添加成功！", user);
+        Map<String, Object> respMap = iPersonalInformationService.addManageInformation(personalInformation);
+        return null!=respMap?RespUtil.successResp("200", "管理信息添加成功！", respMap):RespUtil.successResp("500","管理信息添加失败！",null);
     }
 
     /**

@@ -13,7 +13,8 @@ import javax.persistence.Table;
 public class ManageInformation {
     @Id
     private Integer id;//主键
-    private Integer postlevelid;//职级ID
+    private Integer postlevelid;//岗级ID
+    private Integer postrankid;//职级ID
     private String entrydate;//入职日期
     private String zhuanzhengdate;//转正日期
     private Integer employeetypeid;//员工类型ID
@@ -31,6 +32,14 @@ public class ManageInformation {
 
     public Integer getPostlevelid() {
         return postlevelid;
+    }
+
+    public Integer getPostrankid() {
+        return postrankid;
+    }
+
+    public void setPostrankid(Integer postrankid) {
+        this.postrankid = postrankid;
     }
 
     public void setPostlevelid(Integer postlevelid) {

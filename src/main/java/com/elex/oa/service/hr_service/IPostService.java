@@ -17,6 +17,7 @@ public interface IPostService  {
      *@Date: 11:00 2018\3\20 0020
      */
     Post queryOneByPostid(Integer id);
+    Post queryOnePostByPostid(Integer id);
     Boolean updateOnePost(Post post,String transactorusername);
 
     /**
@@ -32,6 +33,7 @@ public interface IPostService  {
      *@Date: 15:30 2018\8\11 0011
      */
     Post queryOneByPostcode(String postcode);
+    Post queryOnePostByPostcode(String postcode);
 
     /**
      *@Author:ShiYun;

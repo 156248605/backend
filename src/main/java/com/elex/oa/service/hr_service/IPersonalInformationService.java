@@ -99,4 +99,6 @@ public interface IPersonalInformationService{
     Map<String,Object> updateOtherInformation(PersonalInformation personalInformation,String transactorusername);
 
     Map<String,String> importPersonalInformations(MultipartFile multipartFile);
+
+    Map<String, Object> addManageInformation(PersonalInformation personalInformation);
 }

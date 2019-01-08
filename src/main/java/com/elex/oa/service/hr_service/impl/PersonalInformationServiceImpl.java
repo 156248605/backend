@@ -559,6 +559,32 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return goToPost;
     }
 
+    @Override
+    public Map<String, Object> addManageInformation(PersonalInformation personalInformation) {
+        //前期校验
+        if(null==personalInformation)return null;
+        if(null==personalInformation.getUserid())return null;
+        PersonalInformation personalInformationTemp = iPersonalInformationDao.selectByUserid(personalInformation.getUserid());
+        if(null==personalInformationTemp)return null;
+        //保存人事管理信息
+        ManageInformation manageInformation = getManageinformationByPersonalinformation(personalInformation);
+        iManageInformationDao.insertOne(manageInformation);
+        //修改人事的主体信息
+        personalInformationTemp.setManageinformationid(manageInformation.getId());
+        iPersonalInformationDao.updateOne(personalInformationTemp);
+        //添加人事、岗位关系表的信息
+        List<Integer> postids = personalInformation.getPostids();
+        if (postids != null && postids.size() != 0) {
+            for (Integer postid : postids) {
+                PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformationTemp.getId(), postid);
+                iPerandpostrsDao.insertOne(perAndPostRs);
+            }
+        }
+        //添加返回信息
+        Map<String, Object> respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), postids);
+        return respMap;
+    }
+
     //将导入的数据更新到数据库中
     private Map<String, String> importOnePersonalInformation_UPDATE(PersonalInformation newPer, Map<String, String> goToPost, PersonalInformation oldPer) {
         String truename = newPer.getTruename();
@@ -1014,7 +1040,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         ManageInformation manageInformation = new ManageInformation();
         try {
             manageInformation.setId(personalInformation.getManageinformationid());
-            manageInformation.setPostlevelid(hrUtils.getHrsetidByDatavalue("postlevel",personalInformation.getPostlevel()));
+            /*manageInformation.setPostlevelid(hrUtils.getHrsetidByDatavalue("postlevel",personalInformation.getPostlevel()));*/
+            manageInformation.setPostrankid(hrUtils.getHrsetidByDatavalue("rank",personalInformation.getPostrank()));
             manageInformation.setEmployeetypeid(hrUtils.getHrsetidByDatavalue("employeetype",personalInformation.getEmployeetype()));
             manageInformation.setEntrydate(personalInformation.getEntrydate());
             manageInformation.setZhuanzhengdate(StringUtils.isBlank(personalInformation.getZhuanzhengdate())?IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()):personalInformation.getZhuanzhengdate());
@@ -1048,7 +1075,10 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid, oldManageinformation.get("postinfo"), newManageinformation.get("postinfo"), transactorusername, "岗位信息");
         if(isEqual)isUpdate=true;
         //判断级别信息并添加相应的日志
-        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid, oldManageinformation.get("postlevel"), newManageinformation.get("postlevel"), transactorusername, "级别");
+        /*isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid, oldManageinformation.get("postlevel"), newManageinformation.get("postlevel"), transactorusername, "级别");
+        if(isEqual)isUpdate=true;*/
+        //判断职级信息并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid, oldManageinformation.get("postrank"), newManageinformation.get("postrank"), transactorusername, "职级");
         if(isEqual)isUpdate=true;
         //判断员工类型信息并添加相应的日志
         isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid, oldManageinformation.get("employeetype"), newManageinformation.get("employeetype"), transactorusername, "员工类型");
@@ -1082,7 +1112,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             respMap.put("postinfo",postinfo);
         }
         //获得级别、员工类型、入职时间、转正时间
-        respMap.put("postlevel",personalInformation.getPostlevel());
+        /*respMap.put("postlevel",personalInformation.getPostlevel());*/
+        respMap.put("postrank",personalInformation.getPostrank());
         respMap.put("employeetype",personalInformation.getEmployeetype());
         respMap.put("entrydate",personalInformation.getEntrydate());
         respMap.put("zhuanzhengdate",personalInformation.getZhuanzhengdate());
@@ -1124,7 +1155,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         //获得管理信息
         ManageInformation manageInformation = iManageInformationDao.selectById(personalInformation.getManageinformationid());
         //获得级别、员工类型、入职时间、转正时间
-        respMap.put("postlevel",hrUtils.getDatavalueByHrsetid(manageInformation.getPostlevelid()));
+        /*respMap.put("postlevel",hrUtils.getDatavalueByHrsetid(manageInformation.getPostlevelid()));*/ //岗级与岗位流程挂钩、职级与人事工资挂钩
+        respMap.put("postrank",hrUtils.getDatavalueByHrsetid(manageInformation.getPostrankid()));
         respMap.put("employeetype",hrUtils.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
         respMap.put("entrydate",manageInformation.getEntrydate());
         respMap.put("zhuanzhengdate",manageInformation.getZhuanzhengdate());
@@ -1232,6 +1264,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(null==post)return null;
         //获得职级
         post.setPostrank(hrUtils.getDatavalueByHrsetid(post.getPostrankid()));
+        post.setPostlevel(hrUtils.getDatavalueByHrsetid(post.getPostlevelid()));
         return post;
     }
 
@@ -1271,6 +1304,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(null==manageInformation)return personalInformation;
         try {
             personalInformation.setPostlevel(hrUtils.getDatavalueByHrsetid(manageInformation.getPostlevelid()));
+            personalInformation.setPostrank(hrUtils.getDatavalueByHrsetid(manageInformation.getPostrankid()));
             personalInformation.setEmployeetype(hrUtils.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
             personalInformation.setEntrydate(manageInformation.getEntrydate());
             personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
@@ -1349,7 +1383,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     private Boolean validateEntityBeforeModifyOne(ManageInformation manageInformation) {
         Boolean valBoolean = true;
         if(manageInformation.getId()==null)valBoolean=false;
-        if(manageInformation.getPostlevelid()==null)valBoolean=false;
+        /*if(manageInformation.getPostlevelid()==null)valBoolean=false;*/
+        if(manageInformation.getPostrankid()==null)valBoolean=false;
         if(manageInformation.getEmployeetypeid()==null)valBoolean=false;
         if(org.apache.commons.lang.StringUtils.isBlank(manageInformation.getEntrydate()))valBoolean=false;
         if(org.apache.commons.lang.StringUtils.isBlank(manageInformation.getZhuanzhengdate()))valBoolean=false;
