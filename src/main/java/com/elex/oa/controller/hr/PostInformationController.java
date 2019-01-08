@@ -80,7 +80,6 @@ public class PostInformationController {
     @RequestMapping("/queryOnePostByPostid")
     @ResponseBody
     public Post queryOnePostByPostid(@RequestParam("id") Integer id){
-
         Post post = iPostService.queryOnePostByPostid(id);
         return post;
     }
@@ -183,29 +182,15 @@ public class PostInformationController {
             Post post,
             HttpServletRequest request
     ){
+        System.out.println(post.toString());
         //校验岗位是否存在
-        Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
+        /*Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
         if(queryOneByPostname!=null){
             return RespUtil.successResp("500","岗位名称已存在，请重新输入!",null) ;
         }
-
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        List<MultipartFile> dfs= multipartRequest.getFiles("df");
-        if(dfs.size()!=0){
-            try {
-                String realPath = Commons.realpath + "/org/file";
-                Long l = Calendar.getInstance().getTimeInMillis();
-                File file = new File(realPath + "/" + l);
-                file.mkdirs();
-                String dutyfile = "/org/file/" + l+ "/" + dfs.get(0).getOriginalFilename();
-                dfs.get(0).transferTo(new File(realPath + "/" + l,dfs.get(0).getOriginalFilename()));
-                post.setDutyfile(dutyfile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        post.setDutyfile(hrUtils.getSignalFileAddress(request,"df","/org/file/"));
         Integer postid = iPostService.addOne(post);
-        post.setId(postid);
+        post.setId(postid);*/
         return RespUtil.successResp("200","提交成功!",post) ;
     }
 

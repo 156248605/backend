@@ -58,4 +58,11 @@ public class ObstaclesController {
         Boolean aBoolean = iObstaclesInfoService.addObstaclesInfo(obstaclesInfo);
         return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
     }
-}    
+
+    @RequestMapping("/queryOaBackendVersion")
+    @ResponseBody
+    public Object queryOaBackendVersion(){
+        String oaBackendVersion = hrUtils.getOaBackendVersion();
+        return oaBackendVersion;
+    }
+}
