@@ -1,6 +1,7 @@
 package com.elex.oa.service.hr_service;
 
 import com.elex.oa.entity.hr_entity.PersonalInformation;
+import com.elex.oa.entity.project.Staff;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import java.util.Map;
  * @Modify By:
  */
 public interface IPersonalInformationService{
+    List<Staff> queryUseridTruenameDepidDepnamePerid();
     /**
      *@Author:ShiYun;
      *@Description:根据条件查询人事信息

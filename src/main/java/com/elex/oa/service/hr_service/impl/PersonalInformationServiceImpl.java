@@ -2,9 +2,11 @@ package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.project.Staff;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
+import com.elex.oa.util.util_per.SpellUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -47,6 +49,26 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     IOtherInformationDao iOtherInformationDao;
     @Resource
     IChangeInformaionDao iChangeInformaionDao;
+
+    @Override
+    public List<Staff> queryUseridTruenameDepidDepnamePerid() {
+        List<Map<String, Object>> respList = iPersonalInformationDao.selectUseridTruenameDepidDepnamePerid();
+        if(null==respList)return null;
+        List<Staff> staffList = new ArrayList<>();
+        for (Map<String, Object> remp:respList
+             ) {
+            Staff staff = new Staff();
+            staff.setId((Integer) remp.get("userid"));
+            staff.setEmployeeName((String)remp.get("truename"));
+            staff.setPhoneticize(SpellUtils.phoneticize(staff.getEmployeeName()));
+            staff.setDeptId(remp.get("depid")+"");
+            staff.setDeptName((String)remp.get("depname"));
+            List<Map<String, Object>> post = iPersonalInformationDao.selectPostidPostname((Integer) remp.get("perid"));
+            staff.setPost(post);
+            staffList.add(staff);
+        }
+        return staffList;
+    }
 
     /**
      *@Author:ShiYun;
@@ -584,6 +606,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Map<String, Object> respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), postids);
         return respMap;
     }
+
+
 
     //将导入的数据更新到数据库中
     private Map<String, String> importOnePersonalInformation_UPDATE(PersonalInformation newPer, Map<String, String> goToPost, PersonalInformation oldPer) {

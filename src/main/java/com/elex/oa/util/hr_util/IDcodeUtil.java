@@ -239,6 +239,17 @@ public class IDcodeUtil {
         }
         return str;
     }
+    public static String getListIntegerToString(List<Integer> strs,String s){
+        if(null==strs)return null;
+        String str = "";
+        for(int i=0;i<strs.size();i++){
+            str = str + strs.get(i);
+            if(i<strs.size()-1){
+                str = str + s;
+            }
+        }
+        return str;
+    }
 
     /**
      *@Author:ShiYun;
@@ -376,6 +387,17 @@ public class IDcodeUtil {
             default:provinceCode="--";break;
         }
         return provinceCode;
+    }
+
+    public static List<String> getStringToListString(String post_list, String s) {
+        String[] strArr = post_list.split(s);
+        if(null==strArr || strArr.length==0)return null;
+        List<String> strList = new ArrayList<>();
+        for (String str:strArr
+             ) {
+            strList.add(str);
+        }
+        return strList;
     }
 
     private static class DateCompute{

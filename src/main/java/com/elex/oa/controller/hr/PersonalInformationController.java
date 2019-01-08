@@ -1390,4 +1390,10 @@ public class PersonalInformationController {
     public List<Lysqd> queryAllLysqd() {
         return iGzrzService.queryLyspd();
     }
+
+    @RequestMapping("/queryUseridTruenameDepidDepnamePerid")
+    @ResponseBody
+    public Object queryUseridTruenameDepidDepnamePerid(){
+        return iPersonalInformationService.queryUseridTruenameDepidDepnamePerid();
+    }
 }

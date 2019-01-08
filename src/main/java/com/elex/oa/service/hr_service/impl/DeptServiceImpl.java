@@ -1,9 +1,11 @@
 package com.elex.oa.service.hr_service.impl;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.IDeptService;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.elex.oa.util.hr_util.PageHelper;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
@@ -89,6 +91,16 @@ public class DeptServiceImpl implements IDeptService {
     public Dept queryOneDepByDepid(Integer id) {
         return iDeptDao.selectDeptByDepid(id);
     }
+
+    @Override
+    public Dept queryOneByDepid(Integer depid) {
+        Dept dept = iDeptDao.selectDeptByDepid(depid);
+        dept.setFunctionaltype(hrUtils.getDatavalueByHrsetid(dept.getFunctionaltypeid()));
+        dept.setDeptype(hrUtils.getDatacodeByHrsetid(dept.getDeptypeid()));
+        dept.setPostList(IDcodeUtil.getStringToListString(dept.getPost_list(),";"));
+        return dept;
+    }
+
 
     /**
      *@Author:ShiYun;
@@ -354,6 +366,7 @@ public class DeptServiceImpl implements IDeptService {
             return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
         }
     }
+
     //计算时间初期数和时间末期数的工具
     private Map<String,String> getTwoDate(String sdate,String edate){
         HashMap<String, String> map = new HashMap<>();
@@ -395,7 +408,6 @@ public class DeptServiceImpl implements IDeptService {
         map.put("edate",edate);
         return map;
     };
-
     /**
      *@Author:ShiYun;
      *@Description:获得总人数(edate时间点的在职总人数)
@@ -796,32 +808,49 @@ public class DeptServiceImpl implements IDeptService {
     }
 
     @Override
-    public Boolean updateOneDepartment(Dept dept, String transactorusername) {
+    public Map<String,String> updateOneDepartment(Dept dept, String transactorusername) {
+        Map<String,String> respMap = new HashMap<>();
         //获取旧部门信息
         Dept oldDept = iDeptDao.selectDeptByDepid(dept.getId());
         oldDept = getDetailDeptByDept(oldDept);
         //获取新部门信息
         Dept newDept = getDetailDeptByDept(dept);
         //比较新旧部门信息是否有修改并添加部门日志信息（返回布尔值）
-        Boolean aBoolean = getaBooleanByOlddeptAndNewdept(oldDept, newDept, transactorusername);
-        if(!aBoolean)return aBoolean;
+        respMap = getRespMapByOlddeptAndNewdept(oldDept, newDept, transactorusername, respMap);
+        if(respMap.size()!=0)return respMap;
         //修改部门信息
         iDeptDao.updateOne(newDept);
-        return aBoolean;
+        return respMap;
+    }
+
+    @Override
+    public Object addOneDepartment(Dept dept, String transactorusername) {
+        //先校验部门名称是否存在
+        if(StringUtils.isBlank(dept.getDepcode()))return RespUtil.successResp("500","部门编号不能为空！",null);
+        Dept deptTemp = iDeptDao.selectDeptByDeptcode(dept.getDepcode());
+        if(null!=deptTemp)return RespUtil.successResp("500","部门编号已存在，请重新输入部门编号！",null);
+        //添加新部门
+        dept.setPost_list(IDcodeUtil.getArrayToString(dept.getPostList(),";"));
+        iDeptDao.insertOne(dept);
+        return RespUtil.successResp("200","提交成功！",dept);
     }
 
     //比较新旧部门信息是否有修改并添加部门日志信息（返回布尔值）
-    private Boolean getaBooleanByOlddeptAndNewdept(Dept oldDept,Dept newDept,String transactorusername){
+    private Map<String, String> getRespMapByOlddeptAndNewdept(Dept oldDept, Dept newDept, String transactorusername, Map<String, String> respMap){
         Boolean isUpdate = false;
         Boolean respBoolean = false;
         Integer depid = oldDept.getId();
-        String beforeinformation = "";
-        String afterinformation = "";
         //判断部门编号（首先判断是否相等，如果不相等还要判断是否可用）
         if(!newDept.getDepcode().equals(oldDept.getDepcode())){
             Boolean isExist = getaBooleanByDepcode(newDept.getDepcode());
-            if(isExist==null)return false;
-            if(isExist)
+            if(isExist==null){
+                respMap.put(newDept.getDepcode(),"部门编号不能为空！");
+                return respMap;
+            }
+            if(isExist){
+                respMap.put(newDept.getDepcode(),"部门编号已存在！");
+                return respMap;
+            }
             isUpdate = getaBooleanByTwoString(depid,oldDept.getDepcode(),newDept.getDepcode(),transactorusername,"部门编号");
             if(isUpdate)respBoolean = true;
         }
@@ -855,7 +884,15 @@ public class DeptServiceImpl implements IDeptService {
         //判断部门概述并添加部门日志
         isUpdate = getaBooleanByTwoString(depid,oldDept.getDepdescription(),newDept.getDepdescription(),transactorusername,"部门概述");
         if(isUpdate)respBoolean = true;
-        return respBoolean;
+        //判断部门所含岗位并添加部门日志
+        isUpdate = getaBooleanByTwoString(depid,oldDept.getPost_list(),newDept.getPost_list(),transactorusername,"部门所含岗位");
+        if(isUpdate)respBoolean = true;
+        if(respBoolean){
+            return respMap;
+        }else {
+            respMap.put(newDept.getDepcode(),"没有需要修改的部门信息！");
+            return respMap;
+        }
     }
 
     //根据Dept获得部门名称+部门编号的字符串拼接
@@ -873,7 +910,7 @@ public class DeptServiceImpl implements IDeptService {
     //判断部门编号是否存在
     private Boolean getaBooleanByDepcode(String depcode){
         if(StringUtils.isBlank(depcode))return null;
-        Dept dept = iDeptDao.selectDeptByDeptcode(depcode);
+        Dept dept = iDeptDao.selectDeptByDeptcodeIgnoreState(depcode);
         if(null==dept)return false;
         return true;
     }
@@ -917,6 +954,13 @@ public class DeptServiceImpl implements IDeptService {
         dept.setDeputyuser(iUserDao.selectById(dept.getDeputyuserid()));
         //获取部门秘书粗略信息
         dept.setSecretaryuser(iUserDao.selectById(dept.getSecretaryuserid()));
+        //获取所含岗位信息
+        if(StringUtils.isBlank(dept.getPost_list())){
+            dept.setPost_list(IDcodeUtil.getArrayToString(dept.getPostList(),";"));
+        }
+        if(null==dept.getPostList()){
+            dept.setPostList(IDcodeUtil.getStringToListString(dept.getPost_list(),";"));
+        }
         return dept;
     }
 

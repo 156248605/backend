@@ -78,7 +78,8 @@ public interface IDeptDao{
      *@Description:根据部门编号查询部门信息
      *@Date: 17:04 2018\8\14 0014
      */
-    public Dept selectDeptByDeptcode(String depcode);
+    Dept selectDeptByDeptcode(String depcode);
+    Dept selectDeptByDeptcodeIgnoreState(String depcode);
 
     /**
      *@Author:ShiYun;

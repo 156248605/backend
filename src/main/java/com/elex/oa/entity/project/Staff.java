@@ -12,12 +12,12 @@ public class Staff {
     private String employeeName; // 员工姓名
     private String deptId; //部门id
     private String deptName; //部门名称
-    private List<Map<String,String>> post; //部门
+    private List<Map<String,Object>> post; //部门
 
     public Staff() {
     }
 
-    public Staff(int id, String phoneticize, String employeeName, String deptId, String deptName, List<Map<String, String>> post) {
+    public Staff(int id, String phoneticize, String employeeName, String deptId, String deptName, List<Map<String, Object>> post) {
         this.id = id;
         this.phoneticize = phoneticize;
         this.employeeName = employeeName;
@@ -66,11 +66,11 @@ public class Staff {
         this.deptName = deptName;
     }
 
-    public List<Map<String, String>> getPost() {
+    public List<Map<String, Object>> getPost() {
         return post;
     }
 
-    public void setPost(List<Map<String, String>> post) {
+    public void setPost(List<Map<String, Object>> post) {
         this.post = post;
     }
 

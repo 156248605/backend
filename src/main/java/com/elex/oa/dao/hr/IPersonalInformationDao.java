@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -16,6 +17,9 @@ import java.util.List;
  */
 @Mapper
 public interface IPersonalInformationDao {
+    List<Map<String,Object>> selectUseridTruenameDepidDepnamePerid();
+
+    List<Map<String,Object>> selectPostidPostname(Integer perid);
     /**
      *@Author:ShiYun;
      *@Description:根据条件查询人事信息

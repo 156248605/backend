@@ -12,6 +12,8 @@ public interface Commons {
     String HRSET_DIMISSION_TYPE = "dimissiontype";
     String HRSET_DIMISSION_DIRECTION = "dimissiondirection";
     String HRSET_DIMISSION_REASON = "dimissionreason";
+    String HRSET_FUNCTIONALTYPE = "functionaltype";
+    String HRSET_DEPTYPE = "deptype";
     String CLUE_ON = "线索开启状态";
     String CLUE_OFF = "线索关闭状态";
     String CLUE_TRANSFOR_OPPORTUNITY = "线索已转商机状态";

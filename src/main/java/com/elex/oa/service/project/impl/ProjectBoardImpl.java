@@ -508,7 +508,7 @@ public class ProjectBoardImpl implements ProjectBoardService {
     //数据库人员更新
     @Override
     public void informationUpdate() {
-        mongoTemplate.dropCollection(Staff.class);
+        /*mongoTemplate.dropCollection(Staff.class);
         List<PersonalInformation> personalInformationList = informationService.queryAllByNull();
         for(PersonalInformation per: personalInformationList) {
             PersonalInformation onePersonalInformation = null;
@@ -545,7 +545,8 @@ public class ProjectBoardImpl implements ProjectBoardService {
             }
             staff.setPost(postList);
             mongoTemplate.save(staff);
-        }
+        }*/
+        return;
     }
 
     //查询所有人员信息

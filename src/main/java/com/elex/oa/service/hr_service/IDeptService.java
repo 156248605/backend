@@ -5,6 +5,7 @@ import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.HRManageCard;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -24,6 +25,7 @@ public interface IDeptService {
      *@Date: 10:19 2018\7\16 0016
      */
     Dept queryOneByDepcode(String depcode);
+    Object addOneDepartment(Dept dept,String transactorusername);
 
     /**
      *@Author:ShiYun;
@@ -34,6 +36,7 @@ public interface IDeptService {
 
     //根据部门ID查询部门对象
     Dept queryOneDepByDepid(Integer id);
+    Dept queryOneByDepid(Integer depid);
 
     /**
      *@Author:ShiYun;
@@ -188,5 +191,5 @@ public interface IDeptService {
      */
     String queryCompanynameByUseridOrTruename(Integer userid,String truename) throws Exception;
 
-    Boolean updateOneDepartment(Dept dept,String transactorusername);
+    Map<String,String> updateOneDepartment(Dept dept, String transactorusername);
 }

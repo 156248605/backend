@@ -1,6 +1,7 @@
 package com.elex.oa.controller.project;
 
 import com.elex.oa.entity.project.Staff;
+import com.elex.oa.service.hr_service.IPersonalInformationService;
 import com.elex.oa.service.project.ProjectBoardService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ProjectBoardController {
 
     @Autowired
     private ProjectBoardService projectBoardService;
+
+    @Autowired
+    private IPersonalInformationService iPersonalInformationService;
 
     //列表总览
     @RequestMapping("/overview")
@@ -68,7 +72,8 @@ public class ProjectBoardController {
     @RequestMapping("/query_staff")
     @ResponseBody
     public List<Staff> queryStaff() {
-        return projectBoardService.queryStaff();
+        /*return projectBoardService.queryStaff();*/
+        return iPersonalInformationService.queryUseridTruenameDepidDepnamePerid();
     }
 
     //查看某类型的项目

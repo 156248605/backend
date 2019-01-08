@@ -3,6 +3,7 @@ package com.elex.oa.entity.hr_entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 
 @Table(name = "tb_id_department")
 public class Dept implements Serializable{
@@ -28,8 +29,27 @@ public class Dept implements Serializable{
     private Integer ordercode;//顺序码
     private Integer deptypeid;//部门类型ID
     private String deptype;//部门类型
+    private String post_list;//包含的岗位（岗位ID之间用','连接）
+
+    private List<String> postList;
 
     public Dept() {
+    }
+
+    public List<String> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(List<String> postList) {
+        this.postList = postList;
+    }
+
+    public String getPost_list() {
+        return post_list;
+    }
+
+    public void setPost_list(String post_list) {
+        this.post_list = post_list;
     }
 
     public String getDeptype() {

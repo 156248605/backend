@@ -17,6 +17,7 @@
 		<result column="state" property="state" />
 		<result column="ordercode" property="ordercode" />
 		<result column="deptypeid" property="deptypeid" />
+		<result column="post_list" property="post_list" />
 	</resultMap>
 
 	<select id="selectDeptByDeptname" parameterType="java.lang.String" resultMap="deptMapper">
@@ -36,6 +37,12 @@
 	<select id="selectDeptByDeptcode" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
 		where depcode = #{depcode} and state=1
+		ORDER BY ordercode
+	</select>
+
+	<select id="selectDeptByDeptcodeIgnoreState" parameterType="java.lang.String" resultMap="deptMapper">
+		select * from tb_id_department
+		where depcode = #{depcode}
 		ORDER BY ordercode
 	</select>
 
@@ -95,7 +102,8 @@
 		depdescription,
 		state,
 		ordercode,
-		deptypeid
+		deptypeid,
+		post_list
 		)
 		VALUES
 		(NULL ,
@@ -109,7 +117,7 @@
 		#{deputyuserid},
 		#{secretaryuserid},
 		#{depdescription},
-		1,0,#{deptypeid})
+		1,0,#{deptypeid},#{post_list})
 	</insert>
 
 	<update id="updateOne" parameterType="Dept" >
@@ -129,6 +137,7 @@
 			<if test="depdescription!=null and depdescription!=''">depdescription=#{depdescription},</if>
 			<if test="ordercode!=null and ordercode!=''">ordercode=#{ordercode},</if>
 			<if test="deptypeid!=null and deptypeid!=''">deptypeid=#{deptypeid},</if>
+			<if test="post_list!=null and post_list!=''">post_list=#{post_list},</if>
 		</set>
 		WHERE id=#{id}
 	</update>
