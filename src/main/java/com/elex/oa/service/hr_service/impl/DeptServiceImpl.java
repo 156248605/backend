@@ -839,7 +839,15 @@ public class DeptServiceImpl implements IDeptService {
 
     @Override
     public List<Map<String,Object>> queryPostListByDepidButIsNotNull(Integer depid) {
+        if(null==depid){
+            List<Map<String, Object>> mapList = iPostDao.selectAllPostOfIdPostcodePostnameStateON();
+            return mapList;
+        }
         Dept dept = iDeptDao.selectDeptByDepid(depid);
+        if(null==dept){
+            List<Map<String, Object>> mapList = iPostDao.selectAllPostOfIdPostcodePostnameStateON();
+            return mapList;
+        }
         if (StringUtils.isNotBlank(dept.getPost_list())) {
             List<Map<String, Object>> mapList = iPostDao.selectByPostlist(IDcodeUtil.getStringToListString(dept.getPost_list(), ","));
             return mapList;
