@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.*;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ public class ContractInformationController {
     IRenewContractRecordService iRenewContractRecordService;
     @Autowired
     IHRsetService ihRsetService;
+    @Autowired
+    HrUtils hrUtils;
 
     /**
      * @Author:ShiYun;
@@ -146,46 +150,20 @@ public class ContractInformationController {
      */
     @RequestMapping("/addContractInformation")
     @ResponseBody
-    public String addContractInformation(
+    public Object addContractInformation(
             ContractInformation contractInformation,
             @RequestParam("transactorusername") String transactorusername,
             HttpServletRequest request
-    ) throws IOException, ParseException {
-        try {
-            //获得办理人ID
-            User user = new User();
-            user.setUsername(transactorusername);
-            contractInformation.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());
-            //获得附件
-            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-            List<MultipartFile> files = multipartHttpServletRequest.getFiles("attfile");
-            if (files.size() != 0) {
-                String realPath = Commons.realpath + "/hr/file";
-                Long l = Calendar.getInstance().getTimeInMillis();
-                File file = new File(realPath + "/" + l);
-                file.mkdirs();
-                String attachment = "/hr/file/" + l + "/" + files.get(0).getOriginalFilename();
-                files.get(0).transferTo(new File(realPath + "/" + l, files.get(0).getOriginalFilename()));
-                contractInformation.setAttachment(attachment);
-            }
-            //获得办理日期
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            String transdate = simpleDateFormat.format(new Date());
-            contractInformation.setTransdate(transdate);
-
-            //将合同添加到数据库中
-            Integer contractInformaionId = iContractInformationService.addOne(contractInformation);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "添加失败！";
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return "添加失败！";
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "添加失败！";
-        }
-        return "添加成功！";
+    ) {
+        //获得办理人ID
+        contractInformation.setTransactoruserid(hrUtils.getUseridByUsername(transactorusername));
+        //获得附件
+        contractInformation.setAttachment(hrUtils.getSignalFileAddress(request,"attfile","/hr/file/"));
+        //获得办理日期
+        contractInformation.setTransdate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
+        //将合同添加到数据库中
+        Integer contractInformaionId = iContractInformationService.addOne(contractInformation);
+        return null == contractInformaionId ? RespUtil.successResp("500", "添加失败！", null) : RespUtil.successResp("200", "添加成功！", contractInformaionId);
     }
 
     /**
@@ -195,56 +173,19 @@ public class ContractInformationController {
      */
     @RequestMapping("/updateContractInformation")
     @ResponseBody
-    public String updateContractInformation(
+    public Object updateContractInformation(
             ContractInformation contractInformation,
             @RequestParam("transactorusername") String transactorusername,
             HttpServletRequest request
-    ) throws IOException, ParseException {
-        Boolean b = false;
-        ContractInformation c2 = iContractInformationService.queryById(contractInformation.getId());
+    ) {
         //获得办理人ID
-        User user = new User();
-        user.setUsername(transactorusername);
-        if (iUserService.selectByCondition(user).get(0) != null && iUserService.selectByCondition(user).get(0).getId() != c2.getTransactoruserid()) {
-            contractInformation.setTransactoruserid(iUserService.selectByCondition(user).get(0).getId());
-            b = true;
-        }
+        contractInformation.setTransactoruserid(hrUtils.getUseridByUsername(transactorusername));
         //获得附件
-        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-        List<MultipartFile> files = multipartHttpServletRequest.getFiles("attfile");
-        if (files.size() != 0) {
-            String realPath = Commons.realpath + "/hr/file";
-            Long l = Calendar.getInstance().getTimeInMillis();
-            File file = new File(realPath + "/" + l);
-            file.mkdirs();
-            String attachment = "/hr/file/" + l + "/" + files.get(0).getOriginalFilename();
-            files.get(0).transferTo(new File(realPath + "/" + l, files.get(0).getOriginalFilename()));
-            contractInformation.setAttachment(attachment);
-            b = true;
-        }
-        if (!c2.getContractcode().equals(contractInformation.getContractcode()) ||
-                !c2.getStartdate().equals(contractInformation.getStartdate()) ||
-                !c2.getEnddate().equals(contractInformation.getEnddate()) ||
-                c2.getContracttypeid() != contractInformation.getContracttypeid() ||
-                !c2.getRemark().equals(contractInformation.getRemark())) {
-            b = true;
-        }
+        contractInformation.setAttachment(hrUtils.getSignalFileAddress(request,"attfile","/hr/file/"));
         //获得办理日期
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        String transdate = simpleDateFormat.format(new Date());
-        if (b) {
-            contractInformation.setTransdate(transdate);
-        }
-
+        contractInformation.setTransdate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         //将合同提交到数据库中
-        if (b) {
-            iContractInformationService.modifyOne(contractInformation);
-        }
-        if (b) {
-            return "提交成功！";
-        } else {
-            return "请修改数据后再提交！";
-        }
+        return iContractInformationService.modifyOne(contractInformation);
     }
 
     /**

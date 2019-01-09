@@ -870,8 +870,10 @@ public class DeptServiceImpl implements IDeptService {
                 return respMap;
             }
             if(isExist){
-                respMap.put(newDept.getDepcode(),"部门编号已存在！");
-                return respMap;
+                if (!newDept.getDepcode().equals(oldDept.getDepcode())) {
+                    respMap.put(newDept.getDepcode(),"部门编号已存在！");
+                    return respMap;
+                }
             }
             isUpdate = getaBooleanByTwoString(depid,oldDept.getDepcode(),newDept.getDepcode(),transactorusername,"部门编号");
             if(isUpdate)respBoolean = true;

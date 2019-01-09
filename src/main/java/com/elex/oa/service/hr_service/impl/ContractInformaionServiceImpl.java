@@ -10,8 +10,10 @@ import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.service.hr_service.IContractInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -162,19 +164,14 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      *@Date: 14:28 2018\4\20 0020
      */
     @Override
-    public Integer addOne(ContractInformation contractInformation) throws ParseException {
-        String contractage = null;
+    public Integer addOne(ContractInformation contractInformation){
         try {
-            contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
+            contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate()));
+            iContractInformationDao.insertOne(contractInformation);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        if (contractage!=null && !contractage.equals("")) {
-            contractInformation.setContractage(contractage);
-        }else {
-            contractInformation.setContractage("0");
-        }
-        Integer integer = iContractInformationDao.insertOne(contractInformation);
         return contractInformation.getId();
     }
 
@@ -194,19 +191,37 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
      *@Date: 10:14 2018\5\29 0029
      */
     @Override
-    public void modifyOne(ContractInformation contractInformation) throws ParseException {
-        String contractage = null;
-        try {
-            contractage = IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate());
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Object modifyOne(ContractInformation contractInformation){
+        //获得合同新对象
+        ContractInformation newContract = getDetailContractByContract(contractInformation);
+        //获得合同旧对象
+        ContractInformation oldContract = iContractInformationDao.selectById(contractInformation.getId());
+        oldContract = getDetailContractByContract(oldContract);
+        //校验合同编号是否可用
+        if(StringUtils.isBlank(contractInformation.getContractcode()))return RespUtil.successResp("500","合同编号不能为空！",null);
+        ContractInformation contractInformationTemp = iContractInformationDao.selectOneByContractcode(contractInformation.getContractcode());
+        if(null!=contractInformationTemp && !oldContract.getContractcode().equals(newContract.getContractcode())){
+            return RespUtil.successResp("500","合同编号已存在！",null);
         }
-        if (contractage!=null && !contractage.equals("")) {
-            contractInformation.setContractage(contractage);
-        }else {
-            contractInformation.setContractage("0");
+        //判断是否需要修改合同信息
+        Boolean isUpdate = isUpdateForContractInformation(oldContract,newContract);
+        if (isUpdate) {
+            iContractInformationDao.updateOne(contractInformation);
+            return RespUtil.successResp("200","提交成功！",null);
         }
-        iContractInformationDao.updateOne(contractInformation);
+        return RespUtil.successResp("500","没有需要修改的信息！",null);
+    }
+
+    //判断是否需要修改合同信息
+    private Boolean isUpdateForContractInformation(ContractInformation oldContract, ContractInformation newContract) {
+        if(null==oldContract || null==newContract)return false;
+        if(!newContract.getContractcode().equals(oldContract.getContractcode()))return true;
+        if(!newContract.getStartdate().equals(oldContract.getStartdate()))return true;
+        if(!newContract.getEnddate().equals(oldContract.getEnddate()))return true;
+        if(newContract.getContracttypeid().intValue()!=oldContract.getContracttypeid().intValue())return true;
+        if(StringUtils.isNotBlank(newContract.getAttachment()))return true;
+        if(!newContract.getRemark().equals(oldContract.getRemark()))return true;
+        return false;
     }
 
     //获得详细合同信息
@@ -221,11 +236,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         //获得办理人姓名
         contractInformation.setTransactortruename(hrUtils.getTruenameByUserid(contractInformation.getTransactoruserid()));
         //获得合同期限
-        try {
-            contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
         return contractInformation;
     }
 

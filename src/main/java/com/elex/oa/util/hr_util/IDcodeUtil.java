@@ -255,15 +255,22 @@ public class IDcodeUtil {
      *@Description:获得合同年限
      *@Date: 10:06 2018\5\28 0028
      */
-    public static String getContractage(String startdate,String enddate) throws Exception {
-        Calendar cal = IDcodeUtil.getCalendarByDate(startdate, enddate);
-        Integer year = cal.get(Calendar.YEAR);
-        Integer month = cal.get(Calendar.MONTH)+1;
-        if(month>=12){
-            month -=12;
-            year +=1;
+    public static String getContractage(String startdate,String enddate){
+        DateCompute dateComputeStart = new DateCompute(startdate);
+        DateCompute dateComputeEnd = new DateCompute(enddate);
+        DateCompute respDateCompute = dateComputeStart.getDateComputeByAnother(dateComputeEnd);
+        if(null==respDateCompute)return null;
+        String respStr = "";
+        if(null != respDateCompute.getYear()){
+            respStr = respStr + respDateCompute.getYear() + "年";
         }
-        return (year>0?(year+"年"):"") + (month>0?(month+"月"):"");
+        if(null != respDateCompute.getMonth()){
+            respStr = respStr + respDateCompute.getMonth() + "月";
+        }
+        if(null != respDateCompute.getDay()){
+            respStr = respStr + respDateCompute.getDay() + "天";
+        }
+        return respStr;
     }
 
     /**
