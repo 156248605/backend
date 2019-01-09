@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -122,6 +124,28 @@ public class PostServiceImpl implements IPostService {
         return post.getId();
     }
 
+    @Override
+    public Object addOnePost(Post post) {
+        if(null==post){
+            return RespUtil.successResp("500","提交信息不能为空！",null);
+        }
+        if(StringUtils.isBlank(post.getPostcode())){
+            return RespUtil.successResp("500","岗位编号不能为空！",null);
+        }
+        if(StringUtils.isBlank(post.getPostname())){
+            return RespUtil.successResp("500","岗位名称不能为空！",null);
+        }
+        //先校验岗位编号
+        Post postTemp = iPostDao.selectPostByPostcode(post.getPostcode());
+        if(null!=postTemp){
+            return RespUtil.successResp("500","岗位编号已经存在！",null);
+        }
+        //再添加岗位信息
+        iPostDao.insertOne(post);
+        return RespUtil.successResp("200","添加成功！",post);
+    }
+
+
     /**
      *@Author:ShiYun;
      *@Description:修改岗位信息
@@ -213,19 +237,32 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public Boolean updateOnePost(Post post, String transactorusername) {
+    public Object updateOnePost(Post post, String transactorusername) {
         //获得就岗位信息
         Post oldPost = iPostDao.selectPostByPostid(post.getId());
         oldPost = getPostdetailByPost(oldPost);
         //获得新岗位信息
         Post newPost = getPostdetailByPost(post);
+        //校验岗位编号
+        Boolean isExist = getaBooleanByPostcode(newPost.getPostcode());
+        if(isExist){
+            //岗位编号存在
+            if(!newPost.getPostcode().equals(oldPost.getPostcode())){
+                //新旧岗位编号不一样则修改失败
+                return RespUtil.successResp("500","岗位编号已经存在！",null);
+            }
+        }else if(null == isExist){
+            //编号为空不合规定
+            return RespUtil.successResp("500","岗位编号不能为空！",null);
+        }
         //判断新旧两个对象并添加岗位日志信息
         Boolean isUpdate = getaBooleanByOldpostAndNewpost(oldPost, newPost, transactorusername);
         //修改岗位信息
         if(isUpdate){
             iPostDao.updateOne(newPost);
+            return RespUtil.successResp("200","修改成功！",newPost);
         }
-        return isUpdate;
+        return RespUtil.successResp("500","没有需要修改的信息（空值会被忽略）！",null);
     }
 
     @Override
@@ -243,10 +280,8 @@ public class PostServiceImpl implements IPostService {
         Boolean respBoolean = false;
         Boolean isUpdate = false;
         Integer postid = oldPost.getId();
-        String beforeinformation = "";
-        String afterinformation = "";
         //判断岗位编号是否相同并添加岗位日志
-        Boolean isExist = getaBooleanByPostcode(newPost.getPostcode());
+        /*Boolean isExist = getaBooleanByPostcode(newPost.getPostcode());
         if(isExist){
             //岗位编号存在
             if(!newPost.getPostcode().equals(oldPost.getPostcode())){
@@ -257,9 +292,9 @@ public class PostServiceImpl implements IPostService {
             //编号为空不合规定
             return false;
         }else {
-            isUpdate = getaBooleanByBeforeAndAfterinfo(postid, oldPost.getPostcode(), newPost.getPostcode(), "岗位编号", transactorusername);
-            if(isUpdate)respBoolean = true;
-        }
+        }*/
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid, oldPost.getPostcode(), newPost.getPostcode(), "岗位编号", transactorusername);
+        if(isUpdate)respBoolean = true;
         //判断岗位名称并添加日志
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getPostname(),newPost.getPostname(),"岗位名称",transactorusername);
         if(isUpdate)respBoolean = true;

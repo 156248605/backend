@@ -182,15 +182,8 @@ public class PostInformationController {
             Post post,
             HttpServletRequest request
     ){
-        //校验岗位是否存在
-        Post queryOneByPostname = iPostService.queryOneByPostname(post.getPostname());
-        if(queryOneByPostname!=null){
-            return RespUtil.successResp("500","岗位名称已存在，请重新输入!",null) ;
-        }
         post.setDutyfile(hrUtils.getSignalFileAddress(request,"df","/org/file/"));
-        Integer postid = iPostService.addOne(post);
-        post.setId(postid);
-        return RespUtil.successResp("200","提交成功!",post) ;
+        return iPostService.addOnePost(post);
     }
 
     /**
@@ -222,8 +215,7 @@ public class PostInformationController {
         //获得附件的地址
         String dutyfile = hrUtils.getSignalFileAddress(request, "df", "/org/file/");
         post.setDutyfile(dutyfile);
-        Boolean aBoolean = iPostService.updateOnePost(post, transactorusername);
-        return aBoolean?RespUtil.successResp("200","提交成功！",post):RespUtil.successResp("500","提交失败！",null);
+        return iPostService.updateOnePost(post, transactorusername);
     }
 
     /**
