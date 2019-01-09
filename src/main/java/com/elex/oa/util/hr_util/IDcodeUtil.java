@@ -36,8 +36,7 @@ public class IDcodeUtil {
      *@Date: 18:59 2018\5\12 0012
      */
     public static String getConstellation(String idcard){
-        System.out.println(123);
-        if(StringUtils.isEmpty(idcard) || "null".equals(idcard))return null;
+        if(StringUtils.isBlank(idcard) || "null".equals(idcard))return null;
         String ret = "";
         int month=Integer.parseInt(idcard.substring(10,12));
         int days=Integer.parseInt(idcard.substring(12,14));
@@ -62,7 +61,7 @@ public class IDcodeUtil {
      *@Date: 19:00 2018\5\12 0012
      */
     public static String getBirthday(String idcard) throws Exception {
-        if(StringUtils.isEmpty(idcard) || "null".equals(idcard))return null;
+        if(StringUtils.isBlank(idcard) || "null".equals(idcard))return null;
         Integer month = Integer.valueOf(idcard.substring(10,12));
         if(month<=0 || month>12)throw new Exception("身份证的号码输入不符合标准，出生月必须在[1,12]之间！");
         Integer year = Integer.valueOf(idcard.substring(6,10));
@@ -93,7 +92,7 @@ public class IDcodeUtil {
      *@Date: 19:08 2018\5\12 0012
      */
     public static String getChinesecs(String idcard) throws Exception {
-        if(StringUtils.isEmpty(idcard) || "null".equals(idcard))return null;
+        if(StringUtils.isBlank(idcard) || "null".equals(idcard))return null;
         int checkYear = Integer.parseInt(idcard.substring(6, 10));
         if(checkYear<=1899 || checkYear>=2050){
             throw new Exception("输入的身份证号码错误（年龄必须在1900到2049之间）！");
@@ -112,7 +111,7 @@ public class IDcodeUtil {
      *@Date: 20:01 2018\5\12 0012
      */
     public static String getSex(String idcard) {
-        if(StringUtils.isEmpty(idcard.trim()) || "null".equals(idcard))return null;
+        if(StringUtils.isBlank(idcard.trim()) || "null".equals(idcard))return null;
         try {
             return (Integer.parseInt(idcard.substring(16,17)) % 2)==0?"女":"男";
         } catch (NumberFormatException e) {

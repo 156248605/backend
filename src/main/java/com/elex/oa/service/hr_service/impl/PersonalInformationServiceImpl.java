@@ -607,6 +607,23 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return respMap;
     }
 
+    @Override
+    public Map<String, Object> queryIdcodeInfoByAnalyzeIdcode(String idcode) {
+        if(StringUtils.isBlank(idcode) || "null".equals(idcode))return null;
+        Map<String,Object> respMap = new HashMap<>();
+        try {
+            respMap.put("birthday",IDcodeUtil.getBirthday(idcode));
+            respMap.put("age",IDcodeUtil.getAge((String)respMap.get("birthday")));
+            respMap.put("chinesecs",IDcodeUtil.getChinesecs(idcode));
+            respMap.put("constellation",IDcodeUtil.getConstellation(idcode));
+            respMap.put("sex",IDcodeUtil.getSex(idcode));
+            respMap.put("household_register",IDcodeUtil.getProvinceByIdcode(idcode));
+        } catch (Exception e) {
+            e.printStackTrace();
+            respMap = null;
+        }
+        return respMap;
+    }
 
 
     //将导入的数据更新到数据库中

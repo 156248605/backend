@@ -103,4 +103,6 @@ public interface IPersonalInformationService{
     Map<String,String> importPersonalInformations(MultipartFile multipartFile);
 
     Map<String, Object> addManageInformation(PersonalInformation personalInformation);
+
+    Map<String,Object> queryIdcodeInfoByAnalyzeIdcode(String idcode);
 }

@@ -2628,7 +2628,7 @@ public class GetProvinceMethod {
                     case "30":countyName="盱眙县";break;
                     case "31":countyName="金湖县";break;
                     case "81":countyName="宿迁市";break;
-                    case "82":countyName="淮安市";break;
+                    case "82":countyName="淮安区";break;
                     default:countyName="身份证号码5-6位有误";break;
                 }
             }break;

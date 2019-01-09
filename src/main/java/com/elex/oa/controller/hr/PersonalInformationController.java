@@ -1396,4 +1396,13 @@ public class PersonalInformationController {
     public Object queryUseridTruenameDepidDepnamePerid(){
         return iPersonalInformationService.queryUseridTruenameDepidDepnamePerid();
     }
+
+    @RequestMapping("/queryIdcodeInfoByAnalyzeIdcode")
+    @ResponseBody
+    public Object queryIdcodeInfoByAnalyzeIdcode(
+            @RequestParam("idcode")String idcode
+    ){
+        Map<String, Object> respMap = iPersonalInformationService.queryIdcodeInfoByAnalyzeIdcode(idcode);
+        return null==respMap?RespUtil.successResp("500","身份证解析失败！",null):RespUtil.successResp("200","身份证解析成功！",respMap);
+    }
 }
