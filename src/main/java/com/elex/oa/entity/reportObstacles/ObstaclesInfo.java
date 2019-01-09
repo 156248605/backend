@@ -19,7 +19,7 @@ public class ObstaclesInfo {
     @Id
     private String id;//主键
     private String username;//登录ID
-    private String createtime;//创建时间
+    private String createtime;//创建时间（格式：yyyy/MM/dd HH:mm:ss）
     private String operatingSystem;//操作系统版本
     private String browser;//浏览器版本
     private String versionCore;//OAcore版本

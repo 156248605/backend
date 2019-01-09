@@ -1,48 +1,132 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao">
+<mapper namespace="com.elex.oa.dao.reportObstacles.IObstaclesInfoDao">
 
-	<resultMap id="HrdatadictionaryMapper" type="Hrdatadictionary">
-		<result column="datatype" property="datatype" />
-		<result column="datacode" property="datacode" />
-		<result column="datavalue" property="datavalue" />
+	<resultMap id="ObstaclesMapper" type="ObstaclesInfo">
+		<result column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="createtime" property="createtime" />
+		<result column="operating_system" property="operatingSystem" />
+		<result column="browser" property="browser" />
+		<result column="version_core" property="versionCore" />
+		<result column="version_backend" property="versionBackend" />
+		<result column="version_front" property="versionFront" />
+		<result column="description" property="description" />
+		<result column="state" property="state" />
 	</resultMap>
 
-	<insert id="insert" parameterType="Hrdatadictionary">
-		insert into tb_hr_data_dictionary (
-			datatype,
-			datacode,
-			datavalue)
-		values (
-			#{datatype},
-			#{datacode},
-			#{datavalue})
-	</insert>
-
-	<select id="selectByEntity" parameterType="Hrdatadictionary" resultMap="HrdatadictionaryMapper">
-		select datacode,datatype,datavalue
-		from tb_hr_data_dictionary
+	<select id="selectByConditions" resultType="ObstaclesQueryInfo" resultMap="ObstaclesMapper">
+		select id,username,createtime,operating_system,browser,version_core,version_backend,version_front,description,state
+		from tb_reportobstacles_info
 		<where>
-			<if test="datacode!=null and datacode!=''">AND datacode=#{datacode}</if>
-			<if test="datatype!=null and datatype!=''">AND datatype=#{datatype}</if>
-			<if test="datavalue!=null and datavalue!=''">AND datavalue=#{datavalue}</if>
+			<if test="(usernameValue!=null and usernameValue!='') or usernameList!=null">
+				<if test="usernameQueryMethod=='' and usernameList!=null and usernameList.size!=0">
+					AND username IN
+					<foreach collection="usernameList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="usernameQueryMethod=='包含'">
+					AND username LIKE CONCAT(CONCAT('%',#{usernameValue}),'%')
+				</if>
+				<if	test="usernameQueryMethod=='不包含'">
+					AND username NOT LIKE CONCAT(CONCAT('%',#{usernameValue}),'%')
+				</if>
+			</if>
+			<if test="createtimeStart!=null and createtimeStart!='' and createtimeEnd!=null and createtimeEnd!=''">
+				AND createtime BETWEEN #{createtimeStart} AND #{createtimeEnd}
+			</if>
+			<if test="(operatingSystemValue!=null and operatingSystemValue!='') or operatingSystemList!=null">
+				<if test="operatingSystemQueryMehod=='' and operatingSystemList!=null and operatingSystemList.size!=0">
+					AND operating_system IN
+					<foreach collection="operatingSystemList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="operatingSystemQueryMehod=='包含'">
+					AND operating_system LIKE CONCAT(CONCAT('%',#{operatingSystemValue}),'%')
+				</if>
+				<if	test="operatingSystemQueryMehod=='不包含'">
+					AND operating_system NOT LIKE CONCAT(CONCAT('%',#{operatingSystemValue}),'%')
+				</if>
+			</if>
+			<if test="(browserValue!=null and browserValue!='') or browserList!=null">
+				<if test="browserQueryMethod=='' and browserList!=null and browserList.size!=0">
+					AND browser IN
+					<foreach collection="browserList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="browserQueryMethod=='包含'">
+					AND browser LIKE CONCAT(CONCAT('%',#{browserValue}),'%')
+				</if>
+				<if	test="browserQueryMethod=='不包含'">
+					AND browser NOT LIKE CONCAT(CONCAT('%',#{browserValue}),'%')
+				</if>
+			</if>
+			<if test="(versionCoreValue!=null and versionCoreValue!='') or versionCoreList!=null">
+				<if test="versionCoreQueryMethod=='' and versionCoreList!=null and versionCoreList.size!=0">
+					AND version_core IN
+					<foreach collection="versionCoreList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="versionCoreQueryMethod=='包含'">
+					AND version_core LIKE CONCAT(CONCAT('%',#{versionCoreValue}),'%')
+				</if>
+				<if	test="versionCoreQueryMethod=='不包含'">
+					AND version_core NOT LIKE CONCAT(CONCAT('%',#{versionCoreValue}),'%')
+				</if>
+			</if>
+			<if test="(versionBackendValue!=null and versionBackendValue!='') or versionBackendList!=null">
+				<if test="versionBackendQueryMethod=='' and versionBackendList!=null and versionBackendList.size!=0">
+					AND version_backend IN
+					<foreach collection="versionBackendList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="versionBackendQueryMethod=='包含'">
+					AND version_backend LIKE CONCAT(CONCAT('%',#{versionBackendValue}),'%')
+				</if>
+				<if	test="versionBackendQueryMethod=='不包含'">
+					AND version_backend NOT LIKE CONCAT(CONCAT('%',#{versionBackendValue}),'%')
+				</if>
+			</if>
+			<if test="(versionFrontValue!=null and versionFrontValue!='') or versionFrontList!=null">
+				<if test="versionFrontQueryMethod=='' and versionFrontList!=null and versionFrontList.size!=0">
+					AND version_front IN
+					<foreach collection="versionFrontList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="versionFrontQueryMethod=='包含'">
+					AND version_front LIKE CONCAT(CONCAT('%',#{versionFrontValue}),'%')
+				</if>
+				<if	test="versionFrontQueryMethod=='不包含'">
+					AND version_front NOT LIKE CONCAT(CONCAT('%',#{versionFrontValue}),'%')
+				</if>
+			</if>
+			<if test="(descriptionValue!=null and descriptionValue!='') or descriptionList!=null">
+				<if test="descriptionQueryMethod=='' and descriptionList!=null and descriptionList.size!=0">
+					AND description IN
+					<foreach collection="descriptionList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="descriptionQueryMethod=='包含'">
+					AND description LIKE CONCAT(CONCAT('%',#{descriptionValue}),'%')
+				</if>
+				<if	test="descriptionQueryMethod=='不包含'">
+					AND description NOT LIKE CONCAT(CONCAT('%',#{descriptionValue}),'%')
+				</if>
+			</if>
+			<if test="stateList!=null and stateList.size!=0">
+				AND state IN
+				<foreach collection="stateList" item="param"  open="(" close=")" separator=",">
+					#{param}
+				</foreach>
+			</if>
 		</where>
 	</select>
 
-	<delete id="deleteByDatacode" parameterType="java.lang.String" >
-		delete from tb_hr_data_dictionary where datacode=#{datacode}
-	</delete>
-
-	<select id="selectAll" resultMap="HrdatadictionaryMapper">
-		select * from tb_hr_data_dictionary
-	</select>
-
-	<update id="update" parameterType="Hrdatadictionary" >
-		update tb_hr_data_dictionary
-		<set>
-			<if test="null!=datatype and ''!=datatype">datatype=#{datatype},</if>
-			<if test="null!=datavalue and ''!=datavalue">datavalue=#{datavalue}</if>
-		</set>
-		where datacode=#{datacode}
-	</update>
 </mapper>
