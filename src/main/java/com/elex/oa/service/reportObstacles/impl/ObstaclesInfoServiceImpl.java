@@ -5,8 +5,11 @@ import com.elex.oa.dao.business.IBusinessAttachmentDao;
 import com.elex.oa.dao.reportObstacles.IObstaclesInfoDao;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
+import com.elex.oa.entity.reportObstacles.ObstaclesQueryInfo;
 import com.elex.oa.service.reportObstacles.IObstaclesInfoService;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -66,6 +69,19 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
             obs.setAttachmentList(attachmentList);
         }
         return obstaclesInfoList;
+    }
+
+    @Override
+    public PageInfo<ObstaclesInfo> queryObstaclesByConditions(Integer pageNum, Integer pageSize, ObstaclesQueryInfo obstaclesQueryInfo) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<ObstaclesInfo> obstaclesInfoList = iObstaclesInfoDao.selectByConditions(obstaclesQueryInfo);
+        //获取相应的附件信息
+        for (ObstaclesInfo obs:obstaclesInfoList
+        ) {
+            List<BusinessAttachment> attachmentList = iBusinessAttachmentDao.select(new BusinessAttachment(obs.getId()));
+            obs.setAttachmentList(attachmentList);
+        }
+        return new PageInfo<>(obstaclesInfoList);
     }
 
 }
