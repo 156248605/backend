@@ -21,6 +21,18 @@
 		<result column="ordercode" property="ordercode" />
 	</resultMap>
 
+	<select id="selectByPostlist" parameterType="java.util.List" resultType="java.util.Map">
+		SELECT id,postcode,postname FROM tb_id_post
+		WHERE postcode IN
+		<foreach collection="postList" item="param" open="(" close=")" separator=",">
+			#{param}
+		</foreach>
+	</select>
+	<select id="selectAllPostOfIdPostcodePostnameStateON" resultType="java.util.Map">
+		SELECT id,postcode,postname FROM tb_id_post
+		WHERE state=1
+	</select>
+
 	<select id="getAllPostnames" resultType="java.lang.String">
 		select postname from tb_id_post where state=1
 	</select>

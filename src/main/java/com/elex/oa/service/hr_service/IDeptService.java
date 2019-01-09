@@ -3,6 +3,7 @@ package com.elex.oa.service.hr_service;
 
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.HRManageCard;
+import com.elex.oa.entity.hr_entity.Post;
 
 import java.util.List;
 import java.util.Map;
@@ -192,4 +193,6 @@ public interface IDeptService {
     String queryCompanynameByUseridOrTruename(Integer userid,String truename) throws Exception;
 
     Map<String,String> updateOneDepartment(Dept dept, String transactorusername);
+
+    List<Map<String,Object>> queryPostListByDepidButIsNotNull(Integer depid);
 }

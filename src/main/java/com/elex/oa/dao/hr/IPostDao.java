@@ -2,8 +2,10 @@ package com.elex.oa.dao.hr;
 
 import com.elex.oa.entity.hr_entity.Post;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -13,6 +15,8 @@ import java.util.List;
  */
 @Mapper
 public interface IPostDao  {
+    List<Map<String,Object>> selectByPostlist(@Param("postList") List<String> postList);
+    List<Map<String,Object>> selectAllPostOfIdPostcodePostnameStateON();
 
     //根据岗位ID查询岗位信息
     Post selectPostByPostid(Integer id);

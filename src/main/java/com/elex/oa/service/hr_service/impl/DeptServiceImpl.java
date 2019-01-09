@@ -40,6 +40,8 @@ public class DeptServiceImpl implements IDeptService {
     HrUtils hrUtils;
     @Resource
     IDeptLogDao iDeptLogDao;
+    @Resource
+    IPostDao iPostDao;
 
     /*@Resource
     private Logger logger = LoggerFactory.getLogger(this.getClass());*/
@@ -830,9 +832,21 @@ public class DeptServiceImpl implements IDeptService {
         Dept deptTemp = iDeptDao.selectDeptByDeptcode(dept.getDepcode());
         if(null!=deptTemp)return RespUtil.successResp("500","部门编号已存在，请重新输入部门编号！",null);
         //添加新部门
-        dept.setPost_list(IDcodeUtil.getArrayToString(dept.getPostList(),";"));
+        dept.setPost_list(IDcodeUtil.getArrayToString(dept.getPostList(),","));
         iDeptDao.insertOne(dept);
         return RespUtil.successResp("200","提交成功！",dept);
+    }
+
+    @Override
+    public List<Map<String,Object>> queryPostListByDepidButIsNotNull(Integer depid) {
+        Dept dept = iDeptDao.selectDeptByDepid(depid);
+        if (StringUtils.isNotBlank(dept.getPost_list())) {
+            List<Map<String, Object>> mapList = iPostDao.selectByPostlist(IDcodeUtil.getStringToListString(dept.getPost_list(), ","));
+            return mapList;
+        }else {
+            List<Map<String, Object>> mapList = iPostDao.selectAllPostOfIdPostcodePostnameStateON();
+            return mapList;
+        }
     }
 
     //比较新旧部门信息是否有修改并添加部门日志信息（返回布尔值）
@@ -956,10 +970,10 @@ public class DeptServiceImpl implements IDeptService {
         dept.setSecretaryuser(iUserDao.selectById(dept.getSecretaryuserid()));
         //获取所含岗位信息
         if(StringUtils.isBlank(dept.getPost_list())){
-            dept.setPost_list(IDcodeUtil.getArrayToString(dept.getPostList(),";"));
+            dept.setPost_list(IDcodeUtil.getArrayToString(dept.getPostList(),","));
         }
         if(null==dept.getPostList()){
-            dept.setPostList(IDcodeUtil.getStringToListString(dept.getPost_list(),";"));
+            dept.setPostList(IDcodeUtil.getStringToListString(dept.getPost_list(),","));
         }
         return dept;
     }

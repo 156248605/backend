@@ -973,4 +973,12 @@ public class DepartmentInformationController {
         }
         return personalInformation;
     }
+
+    @RequestMapping("/queryPostListByDepidButIsNotNull")
+    @ResponseBody
+    public List<Map<String,Object>> queryPostListByDepidButIsNotNull(
+            @RequestParam("depid")Integer depid
+    ){
+        return iDeptService.queryPostListByDepidButIsNotNull(depid);
+    }
 }
