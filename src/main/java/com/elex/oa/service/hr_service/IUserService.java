@@ -59,4 +59,6 @@ public interface IUserService extends BaseService<User> {
     void removeAll_admin();
 
     Boolean modifyUser(User user);
+
+    List<User> selectAllOrderByDictionary();
 }

@@ -116,9 +116,15 @@
 		ORDER BY u.id DESC
 	</select>
 
-	<select id="selectAllServings" resultMap="UserMapper">
-		SELECT * FROM tb_id_user
-		WHERE state=1
+	<select id="selectAllEmployeeON" resultMap="UserMapper">
+		SELECT
+			*
+		FROM
+			tb_id_user
+		WHERE
+			state = 1
+		ORDER BY
+			CONVERT (truename USING gbk) ASC
 	</select>
 
 	<update id="updateUser" parameterType="User" >

@@ -73,7 +73,7 @@ public class UserController {
     @RequestMapping("/queryAllUsers")
     @ResponseBody
     public List<User> queryAllUsers(){
-        List<User> users = iUserService.selectAll();
+        List<User> users = iUserService.selectAllOrderByDictionary();
         return users;
     }
 

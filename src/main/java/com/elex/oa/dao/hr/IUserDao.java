@@ -65,7 +65,7 @@ public interface IUserDao extends BaseDao<User> {
      *@Description:查询所有的在职人员
      *@Date: 9:59 2018\8\21 0021
      */
-    List<User> selectAllServings();
+    List<User> selectAllEmployeeON();
 
     /**
      *@Author:ShiYun;

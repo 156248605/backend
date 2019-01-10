@@ -76,7 +76,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
      */
     @Override
     public List<User> queryAllServings() {
-        List<User> users = iUserDao.selectAllServings();
+        List<User> users = iUserDao.selectAllEmployeeON();
         return users;
     }
 
@@ -106,5 +106,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<User> selectAllOrderByDictionary() {
+        return iUserDao.selectAllEmployeeON();
     }
 }
