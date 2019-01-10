@@ -4,11 +4,14 @@ import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IDimissionInformationService;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +44,10 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
     IPerandpostrsDao iPerandpostrsDao;
     @Resource
     IHRsetDao ihRsetDao;
+    @Resource
+    HrUtils hrUtils;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      *@Author:ShiYun;
@@ -223,16 +230,20 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
     @Override
     public Object modifyOne(DimissionInformation dimissionInformation) {
         if(dimissionInformation==null){
-            return RespUtil.successResp("501","请求的参数类型错误，参数不能为空！",null);
+            return RespUtil.successResp("500","参数不能为空！",null);
         }
         Boolean b = false;//判断是否需要进数据库修改数据
+        dimissionInformation.setTransactoruserid(hrUtils.getUseridByUsername(dimissionInformation.getTransactorusername()));
         //先根据ID获取原数据
         DimissionInformation selectOneById = iDimissionInformationDao.selectOneById(dimissionInformation.getId());
         if(dimissionInformation.getId()==null || selectOneById==null){
-            return RespUtil.successResp("502","数据请求有误！",null);
+            return RespUtil.successResp("500","离职ID为null或找不到！",null);
+        }
+        if(dimissionInformation.getTransactoruserid()==null ){
+            return RespUtil.successResp("500","获取登录ID失败！",null);
         }
         //判断处理人是否有变
-        if(dimissionInformation.getTransactoruserid()!=selectOneById.getTransactoruserid()){
+        if(dimissionInformation.getTransactoruserid().compareTo(selectOneById.getTransactoruserid())!=0){
             b = true;
         }
         //判断最后工作日期是否有变
@@ -247,9 +258,9 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         if(StringUtils.isNotEmpty(dimissionInformation.getTransactiondate()) && !dimissionInformation.getTransactiondate().equals(selectOneById.getTransactiondate()))b=true;
         if (b) {
             iDimissionInformationDao.updateOne(dimissionInformation);
-            return RespUtil.successResp("205","请求成功！",null);
+            return RespUtil.successResp("200","请求成功！",null);
         }
-        return RespUtil.successResp("508","没有需要修改的数据！",null);
+        return RespUtil.successResp("500","没有需要修改的数据！",null);
     }
 
     /**

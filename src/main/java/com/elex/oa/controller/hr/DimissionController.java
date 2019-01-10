@@ -126,8 +126,7 @@ public class DimissionController {
     public Object modifyDimissionInformationById(
            DimissionInformation dimissionInformation
     ){
-        Object o = iDimissionInformationService.modifyOne(dimissionInformation);
-        return o;
+        return iDimissionInformationService.modifyOne(dimissionInformation);
     }
 
     /**
