@@ -70,6 +70,7 @@ public interface IPostService  {
      *@Date: 14:51 2018\5\2 0002
      */
     void remove(Integer id);
+    Object deletePostsById(Integer id);
 
     /**
      *@Author:ShiYun;

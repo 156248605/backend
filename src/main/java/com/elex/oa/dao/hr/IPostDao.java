@@ -66,5 +66,7 @@ public interface IPostDao  {
      *@Description:根据岗位ID删除岗位信息
      *@Date: 14:49 2018\5\2 0002
      */
-    public void deleteOne(Integer id);
+    void deleteOne(Integer id);
+
+    void deleteByChangeStatePOST_OFF(Integer id);
 }

@@ -144,6 +144,7 @@ public class PostInformationController {
     public DeptTree listPosts(){
         List<Post> posts = iPostService.queryByParentpostid(null);
         DeptTree deptTree = new DeptTree();
+        if(null==posts || posts.size()==0)return deptTree;
         deptTree.setTitle(posts.get(0).getPostname());
         deptTree.setCode(posts.get(0).getPostcode());
         deptTree.setId(posts.get(0).getId());
@@ -226,31 +227,7 @@ public class PostInformationController {
     @RequestMapping("/deletePostsById")
     @ResponseBody
     public Object deletePostsById(@RequestParam("id") Integer id){
-        try {
-            List<Integer> postids = new ArrayList<Integer>();
-            postids.add(id);
-            postids = getPostids(id,postids);
-            if (postids.size()!=0) {
-                for (int i=0;i<postids.size();i++){
-                    iPostService.remove(postids.get(i));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.successResp("400","删除失败！",false) ;
-        }
-        return RespUtil.successResp("200","删除成功！",true) ;
-    }
-    // 通过递归获得需要删除的所有岗位ID
-    public List<Integer> getPostids(Integer parentpostid,List<Integer> list){
-        List<Post> posts = iPostService.queryByParentpostid(parentpostid);
-        if(posts.size()!=0){
-            for (Integer i = 0;i< posts.size();i++){
-                list.add(posts.get(i).getId());
-                list = getPostids(posts.get(i).getId(), list);
-            }
-        }
-        return list;
+        return iPostService.deletePostsById(id);
     }
 
     /**

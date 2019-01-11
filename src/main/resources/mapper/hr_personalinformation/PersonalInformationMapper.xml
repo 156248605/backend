@@ -46,6 +46,8 @@
 		FROM tb_id_user u
 		LEFT JOIN tb_id_personalinformation per ON per.userid=u.id
 		LEFT JOIN tb_id_department dep ON dep.id=per.depid
+		ORDER BY
+			CONVERT (u.truename USING gbk) ASC
 	</select>
 	<select id="selectPostidPostname" parameterType="java.lang.Integer" resultType="java.util.Map">
 		SELECT post.id,post.postname AS name
