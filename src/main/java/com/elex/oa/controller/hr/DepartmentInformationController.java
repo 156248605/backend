@@ -976,7 +976,7 @@ public class DepartmentInformationController {
 
     @RequestMapping("/queryPostListByDepidButIsNotNull")
     @ResponseBody
-    public List<Map<String,Object>> queryPostListByDepidButIsNotNull(
+    public Map<String,Object> queryPostListByDepidButIsNotNull(
             @RequestParam("depid")Integer depid
     ){
         return iDeptService.queryPostListByDepidButIsNotNull(depid);

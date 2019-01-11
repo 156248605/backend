@@ -194,5 +194,5 @@ public interface IDeptService {
 
     Map<String,String> updateOneDepartment(Dept dept, String transactorusername);
 
-    List<Map<String,Object>> queryPostListByDepidButIsNotNull(Integer depid);
+    Map<String,Object> queryPostListByDepidButIsNotNull(Integer depid);
 }

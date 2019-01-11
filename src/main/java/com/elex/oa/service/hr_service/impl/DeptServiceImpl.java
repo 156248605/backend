@@ -838,23 +838,32 @@ public class DeptServiceImpl implements IDeptService {
     }
 
     @Override
-    public List<Map<String,Object>> queryPostListByDepidButIsNotNull(Integer depid) {
-        if(null==depid){
-            List<Map<String, Object>> mapList = iPostDao.selectAllPostOfIdPostcodePostnameStateON();
-            return mapList;
+    public Map<String,Object> queryPostListByDepidButIsNotNull(Integer depid) {
+        Map<String,Object> respMap = new HashMap<>();
+        Dept dept = null;
+        //再获得部门主管姓名、工号
+        if (null!=depid) {
+            dept = iDeptDao.selectDeptByDepid(depid);
+            if(null!=dept){
+                Integer principaluserid = dept.getPrincipaluserid();
+                if(null!=principaluserid){
+                    User user = iUserDao.selectById(principaluserid);
+                    if(null!=user){
+                        respMap.put("principaltruename",user.getTruename());
+                        respMap.put("principalemployeenumber",user.getEmployeenumber());
+                    }
+                }
+            }
         }
-        Dept dept = iDeptDao.selectDeptByDepid(depid);
-        if(null==dept){
+        //先获得岗位集合
+        if(null==depid || null==dept || StringUtils.isBlank(dept.getPost_list())){
             List<Map<String, Object>> mapList = iPostDao.selectAllPostOfIdPostcodePostnameStateON();
-            return mapList;
-        }
-        if (StringUtils.isNotBlank(dept.getPost_list())) {
-            List<Map<String, Object>> mapList = iPostDao.selectByPostlist(IDcodeUtil.getStringToListString(dept.getPost_list(), ","));
-            return mapList;
+            respMap.put("postList",mapList);
         }else {
-            List<Map<String, Object>> mapList = iPostDao.selectAllPostOfIdPostcodePostnameStateON();
-            return mapList;
+            List<Map<String, Object>> mapList = iPostDao.selectByPostlist(IDcodeUtil.getStringToListString(dept.getPost_list(), ","));
+            respMap.put("postList",mapList);
         }
+        return respMap;
     }
 
     //比较新旧部门信息是否有修改并添加部门日志信息（返回布尔值）
