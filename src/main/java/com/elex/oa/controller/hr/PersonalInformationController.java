@@ -1,9 +1,10 @@
 package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSON;
-import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.service.hr_service.*;
+import com.elex.oa.util.hr_util.AppProperties;
+import com.elex.oa.util.hr_util.ConfigUtils;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
@@ -17,11 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -64,6 +62,14 @@ public class PersonalInformationController {
     IContractInformationService iContractInformationService;
     @Autowired
     HrUtils hrUtils;
+    @Autowired
+    AppProperties appProperties;
+
+    @RequestMapping("/getRealpath")
+    @ResponseBody
+    public String getRealpath(){
+       return appProperties.getAttachmentRealpath();
+    }
 
 
 
@@ -408,37 +414,10 @@ public class PersonalInformationController {
 
         User user = new User();
         BaseInformation baseInformation = new BaseInformation();
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        List<MultipartFile> idphoto2s = multipartRequest.getFiles("idphoto22");
-        List<MultipartFile> idphoto1s = multipartRequest.getFiles("idphoto11");
-        List<MultipartFile> userphoto2s = multipartRequest.getFiles("userphoto2");
-
         // 将三个文件在服务器中保存下来
-        try {
-            if (userphoto2s.size() != 0 || idphoto2s.size() != 0 || idphoto1s.size() != 0) {
-                String realPath = Commons.realpath + "/hr/image";
-                Long l = Calendar.getInstance().getTimeInMillis();
-                File file = new File(realPath + "/" + l);
-                file.mkdirs();
-                if (userphoto2s.size() != 0) {
-                    String userphoto = "/hr/image/" + l + "/" + userphoto2s.get(0).getOriginalFilename();
-                    userphoto2s.get(0).transferTo(new File(realPath + "/" + l, userphoto2s.get(0).getOriginalFilename()));
-                    baseInformation.setUserphoto(userphoto);
-                }
-                if (idphoto1s.size() != 0) {
-                    String idphoto1 = "/hr/image/" + l + "/" + idphoto1s.get(0).getOriginalFilename();
-                    idphoto1s.get(0).transferTo(new File(realPath + "/" + l, idphoto1s.get(0).getOriginalFilename()));
-                    baseInformation.setIdphoto1(idphoto1);
-                }
-                if (idphoto2s.size() != 0) {
-                    String idphoto2 = "/hr/image/" + l + "/" + idphoto2s.get(0).getOriginalFilename();
-                    idphoto2s.get(0).transferTo(new File(realPath + "/" + l, idphoto2s.get(0).getOriginalFilename()));
-                    baseInformation.setIdphoto2(idphoto2);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        baseInformation.setUserphoto(hrUtils.getSignalFileAddress(request,"userphoto2","/hr/image/"));
+        baseInformation.setIdphoto1(hrUtils.getSignalFileAddress(request,"idphoto11","/hr/image/"));
+        baseInformation.setIdphoto2(hrUtils.getSignalFileAddress(request,"idphoto22","/hr/image/"));
         // 在tb_id_user表中保存用户
         user.setIsactive(personalInformation.getIsactive());
         if (personalInformation.getUsername() != null && !"".equals(personalInformation.getUsername())) {

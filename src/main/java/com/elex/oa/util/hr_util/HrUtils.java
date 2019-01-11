@@ -20,6 +20,7 @@ import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Personalinfo;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -217,7 +218,7 @@ public class HrUtils {
         List<MultipartFile> files= multipartRequest.getFiles(filename);
         if(files.size()!=0){
             try {
-                String realPath = Commons.realpath + dirsPath;
+                String realPath = getInitFilesPosition() + dirsPath;
                 Long l = Calendar.getInstance().getTimeInMillis();
                 File file = new File(realPath  + l);
                 file.mkdirs();
@@ -238,7 +239,7 @@ public class HrUtils {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
             List<MultipartFile> attachments = multipartRequest.getFiles("attachment_"+(j+1));
             if(attachments.size()!=0){
-                String realPath = Commons.realpath;
+                String realPath = getInitFilesPosition();
                 Long l = Calendar.getInstance().getTimeInMillis();
                 File file = new File(realPath + "/attachments/" + l);
                 file.mkdirs();
@@ -318,6 +319,7 @@ public class HrUtils {
         ihRsetDao.insertOne(new HRset(datatype,datacode,datavalue));
     }
 
+    //获取后台版本号
     public String getOaBackendVersion(){
         InputStream is = HrUtils.class.getClassLoader().getResourceAsStream("application.properties");
         Properties prop = new Properties();
@@ -329,5 +331,10 @@ public class HrUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    //获取图片初始位置
+    public String getInitFilesPosition(){
+        return ConfigUtils.getProperty ("attachment.realpath");
     }
 }

@@ -6,6 +6,7 @@ import com.elex.oa.entity.business.Clue;
 import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.service.business.IClueService;
 import com.elex.oa.service.business.IOpportunityService;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -40,6 +41,8 @@ public class ClueController {
     IClueService iClueService;
     @Autowired
     IOpportunityService iOpportunityService;
+    @Autowired
+    HrUtils hrUtils;
 
     @RequestMapping("/getPageInfo")
     @ResponseBody
@@ -58,7 +61,6 @@ public class ClueController {
             HttpServletRequest request,
             @RequestParam(name = "attachmentSize", required = false)Integer i
     ){
-        System.out.println(clue);
         //获得附件地址
         if (null!=i) {
             List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
@@ -117,24 +119,13 @@ public class ClueController {
 
     private List<BusinessAttachment> getBusinessAttachmentList(MultipartHttpServletRequest request, int i) {
         List<BusinessAttachment> businessAttachmentList = new ArrayList<>();
-        for(int j=0;j<i;j++){
-            MultipartHttpServletRequest multipartRequest = request;
-            List<MultipartFile> attachments = multipartRequest.getFiles("attachment_"+(j+1));
-            if(attachments.size()!=0){
-                String realPath = Commons.realpath;
-                Long l = Calendar.getInstance().getTimeInMillis();
-                File file = new File(realPath + "/business/attachments/" + l);
-                file.mkdirs();
-                BusinessAttachment businessAttachment = new BusinessAttachment();
-                String attachment_address = "/business/attachments/" + l + "/" + attachments.get(0).getOriginalFilename();
-                try {
-                    attachments.get(0).transferTo(new File(realPath + attachment_address));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                businessAttachment.setAttachment_address(attachment_address);
-                businessAttachmentList.add(businessAttachment);
-            }
+        List<String> multiFileAddress = hrUtils.getMultiFileAddress(request, i);
+        if(null==multiFileAddress)return null;
+        for (String attachment_address:multiFileAddress
+             ) {
+            BusinessAttachment businessAttachment = new BusinessAttachment();
+            businessAttachment.setAttachment_address(attachment_address);
+            businessAttachmentList.add(businessAttachment);
         }
         return businessAttachmentList;
     }

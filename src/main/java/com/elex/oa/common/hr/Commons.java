@@ -7,7 +7,6 @@ package com.elex.oa.common.hr;
  * @Modify By:
  */
 public interface Commons {
-    String realpath = "D:/static";
     String HRSET_CONTRACTTYPE = "contracttype";
     String HRSET_DIMISSION_TYPE = "dimissiontype";
     String HRSET_DIMISSION_DIRECTION = "dimissiondirection";

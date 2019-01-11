@@ -8,6 +8,7 @@ import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class ObstaclesController {
     IObstaclesInfoService iObstaclesInfoService;
     @Autowired
     HrUtils hrUtils;
+
 
     @RequestMapping(value = "/addObstaclesInfo",consumes = "multipart/form-data")
     @ResponseBody
