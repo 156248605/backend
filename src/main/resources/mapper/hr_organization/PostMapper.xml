@@ -51,7 +51,19 @@
 
 	<select id="selectPostByPostcode" parameterType="java.lang.String" resultMap="postMapper">
 		select * from tb_id_post
+		where postcode = #{postcode}
+		ORDER BY ordercode
+	</select>
+
+	<select id="selectPostByPostcodePOST_ON" parameterType="java.lang.String" resultMap="postMapper">
+		select * from tb_id_post
 		where postcode = #{postcode} and state=1
+		ORDER BY ordercode
+	</select>
+
+	<select id="selectPostByPostcodePOST_OFF" parameterType="java.lang.String" resultMap="postMapper">
+		select * from tb_id_post
+		where postcode = #{postcode} and state=0
 		ORDER BY ordercode
 	</select>
 

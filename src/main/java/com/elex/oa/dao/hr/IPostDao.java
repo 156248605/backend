@@ -32,6 +32,8 @@ public interface IPostDao  {
      *@Date: 15:27 2018\8\11 0011
      */
     Post selectPostByPostcode(String postcode);
+    Post selectPostByPostcodePOST_ON(String postcode);
+    Post selectPostByPostcodePOST_OFF(String postcode);
 
     /**
      *@Author:ShiYun;
