@@ -1,7 +1,9 @@
 package com.elex.oa.entity.project;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +57,11 @@ public class Staff {
     }
 
     public void setDeptId(String deptId) {
-        this.deptId = deptId;
+        if (StringUtils.isBlank(deptId) || "null".equals(deptId)) {
+            this.deptId = "";
+        } else {
+            this.deptId = deptId;
+        }
     }
 
     public String getDeptName() {
@@ -63,7 +69,11 @@ public class Staff {
     }
 
     public void setDeptName(String deptName) {
-        this.deptName = deptName;
+        if (StringUtils.isBlank(deptName)) {
+            this.deptName = "";
+        } else {
+            this.deptName = deptName;
+        }
     }
 
     public List<Map<String, Object>> getPost() {
@@ -71,7 +81,11 @@ public class Staff {
     }
 
     public void setPost(List<Map<String, Object>> post) {
-        this.post = post;
+        if(null==post || post.size()==0 || (post.size()==1&& null==post.get(0))){
+            this.post = new ArrayList<>();
+        }else {
+            this.post = post;
+        }
     }
 
     @Override

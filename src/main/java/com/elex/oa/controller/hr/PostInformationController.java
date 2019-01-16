@@ -2,8 +2,8 @@ package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.readexcel.ReadPostlogExcel;
 import com.elex.oa.service.hr_service.*;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
@@ -15,11 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**

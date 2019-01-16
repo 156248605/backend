@@ -5,7 +5,7 @@ import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IPostDao;
 import com.elex.oa.dao.restructure_hr.IPostandpersonalrelationshipDao;
 import com.elex.oa.entity.hr_entity.PerAndPostRs;
-import com.elex.oa.entity.hr_entity.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.Post;
 import com.elex.oa.entity.restructure_hrentity.Postandpersonalrelationshipinfo;
 import com.elex.oa.service.restructure_hrService.IPostandpersonalrelationshipService;

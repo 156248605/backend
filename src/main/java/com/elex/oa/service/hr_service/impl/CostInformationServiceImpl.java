@@ -1,9 +1,8 @@
 package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.ICostInformationDao;
-import com.elex.oa.entity.hr_entity.CostInformation;
+import com.elex.oa.entity.hr_entity.costinformation.CostInformation;
 import com.elex.oa.service.hr_service.ICostInformationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

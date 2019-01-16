@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -75,8 +76,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
      *@Date: 10:01 2018\8\21 0021
      */
     @Override
-    public List<User> queryAllServings() {
-        List<User> users = iUserDao.selectAllEmployeeON();
+    public List<Map> queryAllServings() {
+        List<Map> users = iUserDao.queryAllServings();
         return users;
     }
 

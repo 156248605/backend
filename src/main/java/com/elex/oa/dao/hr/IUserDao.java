@@ -6,6 +6,7 @@ import com.elex.oa.entity.hr_entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -66,6 +67,7 @@ public interface IUserDao extends BaseDao<User> {
      *@Date: 9:59 2018\8\21 0021
      */
     List<User> selectAllEmployeeON();
+    List<String> selectAllEmployeeONOrderByEmployeenumber();
 
     /**
      *@Author:ShiYun;
@@ -77,4 +79,6 @@ public interface IUserDao extends BaseDao<User> {
     void deleteAll_admin();
 
     void updateUser(User user);
+
+    List<Map> queryAllServings();
 }

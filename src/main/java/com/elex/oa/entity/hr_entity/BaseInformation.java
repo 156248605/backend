@@ -1,8 +1,11 @@
 package com.elex.oa.entity.hr_entity;
 
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -100,17 +103,6 @@ public class BaseInformation implements Serializable{
 
     public void setIdcode(String idcode) {
         this.idcode = idcode;
-        if(StringUtils.isNotBlank(idcode)){
-            try {
-                this.setSex(IDcodeUtil.getSex(idcode));
-                this.setBirthday(IDcodeUtil.getBirthday(idcode));
-                this.setConstellation(IDcodeUtil.getConstellation(idcode));
-                this.setChinesecs(IDcodeUtil.getChinesecs(idcode));
-                this.setHj(IDcodeUtil.getProvinceByIdcode(idcode));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public String getSex() {

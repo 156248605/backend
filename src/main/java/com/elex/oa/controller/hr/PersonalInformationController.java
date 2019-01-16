@@ -2,15 +2,18 @@ package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.costinformation.CostInformationAddInfo;
+import com.elex.oa.entity.hr_entity.manageinformation.ManageInformationAddInfo;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
 import com.elex.oa.service.hr_service.*;
 import com.elex.oa.util.hr_util.AppProperties;
-import com.elex.oa.util.hr_util.ConfigUtils;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
-import com.elex.oa.util.util_per.SpellUtils;
-import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -65,11 +68,7 @@ public class PersonalInformationController {
     @Autowired
     AppProperties appProperties;
 
-    @RequestMapping("/getRealpath")
-    @ResponseBody
-    public String getRealpath(){
-       return appProperties.getAttachmentRealpath();
-    }
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
 
@@ -87,7 +86,7 @@ public class PersonalInformationController {
         paramMap.put("entity", personalInformation);
         PageInfo<PersonalInformation> list = iPersonalInformationService.queryPIs(paramMap);
         resp.put("pageData",list);
-        Map<String, List<String>> paramsForFirstpage = iPersonalInformationService.getParamsForFirstpage();
+        Map<String, Object> paramsForFirstpage = iPersonalInformationService.getParamsForFirstpage();
         resp.put("selections",paramsForFirstpage);
        return resp;
     }
@@ -120,7 +119,7 @@ public class PersonalInformationController {
     @ResponseBody
     public PersonalInformation queryPersonalInformationById(
             @RequestParam("personalInformationId") int personalInformationId
-    ) throws ParseException {
+    ) {
         return iPersonalInformationService.queryPersonalInformationById(personalInformationId);
     }
 
@@ -133,9 +132,8 @@ public class PersonalInformationController {
     @ResponseBody
     public ArrayList<HashMap> queryPersonalInformationByUserid(
             @RequestParam("userid") int userid
-    ) throws ParseException {
-        ArrayList<HashMap> respMapList = iPersonalInformationService.queryByUseridForIOS(userid);
-        return respMapList;
+    ) {
+        return iPersonalInformationService.queryByUseridForIOS(userid);
     }
 
     /**
@@ -147,198 +145,8 @@ public class PersonalInformationController {
     @ResponseBody
     public PersonalInformation queryPersonalInformationByTruename(
             @RequestParam("truename") String truename
-    ) throws ParseException {
-        PersonalInformation personalInformation = iPersonalInformationService.queryPersonalInformationByTruename(truename);
-        return personalInformation;
-    }
-
-    /**
-     * @Author:ShiYun;
-     * @Description:根据perid查询信息
-     * @Date: 17:36 2018\5\17 0017
-     */
-    public PersonalInformation getOnePersonalinformation(Integer personalInformationId) throws ParseException {
-        PersonalInformation personalInformation = iPersonalInformationService.queryOneById2(personalInformationId);
-        if (personalInformation == null) {
-            return null;
-        }
-        //1.获得User信息
-        User user = iUserService.getById(personalInformation.getUserid());
-        if (user != null) {
-            personalInformation.setIsactive(user.getIsactive());
-            personalInformation.setUsername(user.getUsername());
-            personalInformation.setTruename(user.getTruename());
-        }
-        //2.获得基本信息
-        BaseInformation baseInformation = iBaseInformationService.queryOneById(personalInformation.getBaseinformationid());
-        if (baseInformation != null) {
-            personalInformation.setUserphoto(baseInformation.getUserphoto());
-            personalInformation.setIdphoto1(baseInformation.getIdphoto1());
-            personalInformation.setIdphoto2(baseInformation.getIdphoto2());
-            personalInformation.setEnglishname(baseInformation.getEnglishname());
-            personalInformation.setIdcode(baseInformation.getIdcode());
-            personalInformation.setBirthday(baseInformation.getBirthday());
-            try {
-                personalInformation.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            personalInformation.setConstellation(baseInformation.getConstellation());
-            personalInformation.setChinesecs(baseInformation.getChinesecs());
-            if (ihRsetService.queryById(baseInformation.getRaceid()) != null) {
-                personalInformation.setRace(ihRsetService.queryById(baseInformation.getRaceid()).getDatavalue());
-            }
-            personalInformation.setMarriage(baseInformation.getMarriage());
-            if (ihRsetService.queryById(baseInformation.getChildrenid()) != null) {
-                personalInformation.setChildren(ihRsetService.queryById(baseInformation.getChildrenid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getZzmmid()) != null) {
-                personalInformation.setZzmm(ihRsetService.queryById(baseInformation.getZzmmid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getZgxlid()) != null) {
-                personalInformation.setZgxl(ihRsetService.queryById(baseInformation.getZgxlid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getByyxid()) != null) {
-                personalInformation.setByyx(ihRsetService.queryById(baseInformation.getByyxid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getSxzyid()) != null) {
-                personalInformation.setSxzy(ihRsetService.queryById(baseInformation.getSxzyid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getPyfsid()) != null) {
-                personalInformation.setPyfs(ihRsetService.queryById(baseInformation.getPyfsid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getFirstlaid()) != null) {
-                personalInformation.setFirstla(ihRsetService.queryById(baseInformation.getFirstlaid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getElselaid()) != null) {
-                personalInformation.setElsela(ihRsetService.queryById(baseInformation.getElselaid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getPosttitleid()) != null) {
-                personalInformation.setPosttitle(ihRsetService.queryById(baseInformation.getPosttitleid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getZyzstypeid()) != null) {
-                personalInformation.setZyzstype(ihRsetService.queryById(baseInformation.getZyzstypeid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getZyzsnameid()) != null) {
-                personalInformation.setZyzsname(ihRsetService.queryById(baseInformation.getZyzsnameid()).getDatavalue());
-            }
-            personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
-            if (baseInformation.getFirstworkingtime() != null && !"".equals(baseInformation.getFirstworkingtime())) {
-                try {
-                    personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (ihRsetService.queryById(baseInformation.getParentcompanyid()) != null) {
-                personalInformation.setParentcompany(ihRsetService.queryById(baseInformation.getParentcompanyid()).getDatavalue());
-            }
-        }
-        //先获得岗位信息
-        List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformationId);
-        List<String> strs = new ArrayList<>();
-        List<Integer> postids = new ArrayList<>();
-        List<Post> postList = new ArrayList<>();
-        if (perAndPostRs.size() != 0) {
-            for (PerAndPostRs perAndPost : perAndPostRs) {
-                Post post = iPostService.queryOneByPostid(perAndPost.getPostid());
-                postList.add(post);
-                strs.add(iPostService.queryOneByPostid(perAndPost.getPostid()).getPostname());
-                postids.add(perAndPost.getPostid());
-            }
-        }
-        personalInformation.setPostList(postList);
-        personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs, ";"));
-        personalInformation.setPostids(postids);
-        //3.获得管理信息
-        ManageInformation manageInformation = iManageInformationService.queryOneById(personalInformation.getManageinformationid());
-        if (manageInformation != null) {
-            if (iDeptService.queryOneDepByDepid(personalInformation.getDepid()) != null) {
-                personalInformation.setCompany(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getCompanyname());
-                personalInformation.setDepname(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getDepname());
-                if (iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()) != null) {
-                    personalInformation.setPrincipaltruename(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getTruename());
-                    if (iPersonalInformationService.queryOneByUserid(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getId()) != null) {
-                        personalInformation.setPrincipalemployeenumber(iPersonalInformationService.queryOneByUserid(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getId()).getEmployeenumber());
-                    }
-                }
-            }
-            /*List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformationId);
-            List<String> strs = new ArrayList<>();
-            List<Integer> postids = new ArrayList<>();
-            if (perAndPostRs.size()!=0) {
-                for(PerAndPostRs perAndPost:perAndPostRs){
-                    strs.add(iPostService.queryOneByPostid(perAndPost.getPostid()).getPostname());
-                    postids.add(perAndPost.getPostid());
-                }
-            }
-            personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs,";"));
-            personalInformation.setPostids(postids);*/
-            if (ihRsetService.queryById(manageInformation.getPostlevelid()) != null) {
-                personalInformation.setPostlevel(ihRsetService.queryById(manageInformation.getPostlevelid()).getDatavalue());
-            }
-            personalInformation.setEntrydate(manageInformation.getEntrydate());
-            try {
-                personalInformation.setSn(IDcodeUtil.getCompanyAge(manageInformation.getEntrydate()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
-            if (ihRsetService.queryById(manageInformation.getEmployeetypeid()) != null) {
-                personalInformation.setEmployeetype(ihRsetService.queryById(manageInformation.getEmployeetypeid()).getDatavalue());
-            }
-        }
-        //获得成本信息
-        CostInformation costInformation = iCostInformationService.queryOneById(personalInformation.getCostinformationid());
-        if (costInformation != null) {
-            if (ihRsetService.queryById(costInformation.getSalarystandardid()) != null) {
-                personalInformation.setSalary(ihRsetService.queryById(costInformation.getSalarystandardid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getSsbid()) != null) {
-                personalInformation.setSsb(ihRsetService.queryById(costInformation.getSsbid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getSsbgscdid()) != null) {
-                personalInformation.setSsbgscd(ihRsetService.queryById(costInformation.getSsbgscdid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getSsbgrcdid()) != null) {
-                personalInformation.setSsbgrcd(ihRsetService.queryById(costInformation.getSsbgrcdid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getGjjid()) != null) {
-                personalInformation.setGjj(ihRsetService.queryById(costInformation.getGjjid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getGjjgscdid()) != null) {
-                personalInformation.setGjjgscd(ihRsetService.queryById(costInformation.getGjjgscdid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getGjjgrcdid()) != null) {
-                personalInformation.setGjjgrcd(ihRsetService.queryById(costInformation.getGjjgrcdid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getKhhid()) != null) {
-                personalInformation.setKhh(ihRsetService.queryById(costInformation.getKhhid()).getDatavalue());
-            }
-            personalInformation.setSalaryaccount(costInformation.getSalaryaccount());
-            if (ihRsetService.queryById(costInformation.getSbjndid()) != null) {
-                personalInformation.setSbjnd(ihRsetService.queryById(costInformation.getSbjndid()).getDatavalue());
-            }
-            personalInformation.setSbcode(costInformation.getSbcode());
-            personalInformation.setGjjcode(costInformation.getGjjcode());
-        }
-        //获得其他信息
-        OtherInformation otherInformation = iOtherInformationService.queryOneById(personalInformation.getOtherinformationid());
-        if (otherInformation != null) {
-            if (personalInformation.getTelphoneid()!=null && ihRsetService.queryById(personalInformation.getTelphoneid()) != null) {
-                personalInformation.setTelphone(ihRsetService.queryById(personalInformation.getTelphoneid()).getDatavalue());
-            }
-            personalInformation.setPrivateemail(otherInformation.getPrivateemail());
-            personalInformation.setCompanyemail(otherInformation.getCompanyemail());
-            personalInformation.setEmergencycontract(otherInformation.getEmergencycontract());
-            if (otherInformation.getEmergencyrpid()!=null && ihRsetService.queryById(otherInformation.getEmergencyrpid()) != null) {
-                personalInformation.setEmergencyrp(ihRsetService.queryById(otherInformation.getEmergencyrpid()).getDatavalue());
-            }
-            personalInformation.setEmergencyphone(otherInformation.getEmergencyphone());
-            personalInformation.setAddress(otherInformation.getAddress());
-            personalInformation.setRemark(otherInformation.getRemark());
-        }
-        return personalInformation;
+    ) {
+        return iPersonalInformationService.queryPersonalInformationByTruename(truename);
     }
 
     /**
@@ -350,313 +158,28 @@ public class PersonalInformationController {
     @ResponseBody
     public Object addBaseInformation(
             PersonalInformation personalInformation,
-            @RequestParam("byyxvalue") String byyxvalue,
-            @RequestParam("sxzyvalue") String sxzyvalue,
-            @RequestParam("zyzsnamevalue") String zyzsnamevalue,
-            @RequestParam("parentcompanyvalue") String parentcompanyvalue,
             @RequestParam("lysqdid") String lysqdid,
             HttpServletRequest request
-    ) throws ParseException {
-        //工号校验
-        PersonalInformation perTemp = iPersonalInformationService.queryByEmployeenumber(personalInformation.getEmployeenumber());
-        if (null!=perTemp) {
-            return RespUtil.successResp("500", "工号已存在，请重新输入！", null);
-        }
-        //username校验
-        User u;
-        if (personalInformation.getUsername() != null && !personalInformation.getUsername().equals("")) {
-            u = iUserService.queryByUsername(personalInformation.getUsername());
-            if (u != null) {
-                return RespUtil.successResp("500", "登录ID已存在，请重新输入（不输入则默认为姓名）！", null);
-            }
-        } else {
-            u = iUserService.queryByUsername(personalInformation.getTruename());
-            int i = 2;
-            while (u != null) {
-                u = iUserService.queryByUsername(personalInformation.getTruename() + i);
-                i++;
-            }
-            if (i == 2) {
-                personalInformation.setUsername(personalInformation.getTruename());
-            } else {
-                i--;
-                personalInformation.setUsername(personalInformation.getTruename() + i);
-            }
-        }
-        //校验省份证号码
-        if (personalInformation.getIdcode() != null && !"".equals(personalInformation.getIdcode())) {
-            String birthday = null;
-            try {
-                birthday = IDcodeUtil.getBirthday(personalInformation.getIdcode());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            Date date = new Date();
-            String format = simpleDateFormat.format(date);
-            String[] split1 = format.split("/");
-            String[] split = birthday.split("/");
-            Integer year = Integer.parseInt(split[0]);
-            Integer year2 = Integer.parseInt(split1[0]) - 18;
-            Integer month = Integer.parseInt(split[1]);
-            Integer day = Integer.parseInt(split[2]);
-            Boolean b = false;
-            if (year > 1953 && year < year2 && month > 0 && month < 13) {
-                Integer daysByDate = IDcodeUtil.getDaysByDate(simpleDateFormat.parse(birthday));
-                if (day > 1 && day <= daysByDate) {
-                    b = true;
-                }
-            }
-            if (b == false) {
-                return RespUtil.successResp("500", "身份证号码输入有误请重新输入", null);
-            }
-        }
-
-        User user = new User();
-        BaseInformation baseInformation = new BaseInformation();
-        // 将三个文件在服务器中保存下来
-        baseInformation.setUserphoto(hrUtils.getSignalFileAddress(request,"userphoto2","/hr/image/"));
-        baseInformation.setIdphoto1(hrUtils.getSignalFileAddress(request,"idphoto11","/hr/image/"));
-        baseInformation.setIdphoto2(hrUtils.getSignalFileAddress(request,"idphoto22","/hr/image/"));
-        // 在tb_id_user表中保存用户
-        user.setIsactive(personalInformation.getIsactive());
-        if (personalInformation.getUsername() != null && !"".equals(personalInformation.getUsername())) {
-            user.setUsername(personalInformation.getUsername());
-        } else {
-            user.setUsername(SpellUtils.phoneticize(personalInformation.getTruename()));//如果没有人工输入，则自动将名字的汉字转换为汉语拼音
-        }
-        user.setTruename(personalInformation.getTruename());
-        user.setEmployeenumber(personalInformation.getEmployeenumber());
-        Integer userid = iUserService.saveOne(user);
-
-        // 在tb_id_baseinformation表中保存用户基本信息
-        baseInformation.setEnglishname(personalInformation.getEnglishname());
-        baseInformation.setIdcode(personalInformation.getIdcode());
-        if (personalInformation.getIdcode() != null && !"".equals(personalInformation.getIdcode())) {
-            try {
-                baseInformation.setBirthday(IDcodeUtil.getBirthday(personalInformation.getIdcode()));//出生日期
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                baseInformation.setHj(IDcodeUtil.getProvinceByIdcode(personalInformation.getIdcode()));//户籍
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            baseInformation.setConstellation(IDcodeUtil.getConstellation(personalInformation.getIdcode()));//星座
-            try {
-                baseInformation.setChinesecs(IDcodeUtil.getChinesecs(personalInformation.getIdcode()));//属相
-            } catch (Exception e) {
-                e.printStackTrace();
-                return RespUtil.successResp("500", e.getMessage(), null);
-            }
-            personalInformation.setSex(IDcodeUtil.getSex(personalInformation.getIdcode()));//性别
-        }
-        List<HRset> hRsetRaceList = ihRsetService.queryByConditions(new HRset("race", personalInformation.getRace()));
-        if (hRsetRaceList != null && hRsetRaceList.size() == 1) {
-            baseInformation.setRaceid(hRsetRaceList.get(0).getId());
-        }
-        baseInformation.setMarriage(personalInformation.getMarriage());
-        List<HRset> hRsetChildrenList = ihRsetService.queryByConditions(new HRset("children", personalInformation.getChildren()));
-        if (hRsetChildrenList != null && hRsetChildrenList.size() == 1) {
-            baseInformation.setChildrenid(hRsetChildrenList.get(0).getId());
-        }
-        List<HRset> hRsetZzmmList = ihRsetService.queryByConditions(new HRset("zzmm", personalInformation.getZzmm()));
-        if (hRsetZzmmList != null && hRsetZzmmList.size() == 1) {
-            baseInformation.setZzmmid(hRsetZzmmList.get(0).getId());
-        }
-        List<HRset> hRsetZgxlList = ihRsetService.queryByConditions(new HRset("zgxl", personalInformation.getZgxl()));
-        if (hRsetZgxlList != null && hRsetZgxlList.size() == 1) {
-            baseInformation.setZgxlid(hRsetZgxlList.get(0).getId());
-        }
-        List<HRset> hRsetByyxList = ihRsetService.queryByConditions(new HRset("byyx", personalInformation.getByyx()));
-        if ("选择录入".equals(byyxvalue) && (hRsetByyxList == null || hRsetByyxList.size() == 0)) {
-            if (!personalInformation.getByyx().equals("")) {
-                Integer byyxid = ihRsetService.addOne(new HRset("byyx", personalInformation.getByyx()));
-                baseInformation.setByyxid(byyxid);
-            }
-        } else {
-            if (hRsetByyxList != null && hRsetByyxList.size() == 1) {
-                baseInformation.setByyxid(hRsetByyxList.get(0).getId());
-            }
-        }
-        List<HRset> hRsetSxzyList = ihRsetService.queryByConditions(new HRset("sxzy", personalInformation.getSxzy()));
-        if ("选择录入".equals(sxzyvalue) && (hRsetSxzyList == null || hRsetSxzyList.size() == 0)) {
-            if (!personalInformation.getSxzy().equals("")) {
-                Integer sxzyid = ihRsetService.addOne(new HRset("sxzy", personalInformation.getSxzy()));
-                baseInformation.setSxzyid(sxzyid);
-            }
-        } else {
-            if (hRsetSxzyList != null && hRsetSxzyList.size() == 1) {
-                baseInformation.setSxzyid(hRsetSxzyList.get(0).getId());
-            }
-        }
-        List<HRset> hRsetPyfsList = ihRsetService.queryByConditions(new HRset("pyfs", personalInformation.getPyfs()));
-        if (hRsetPyfsList != null && hRsetPyfsList.size() == 1) {
-            baseInformation.setPyfsid(hRsetPyfsList.get(0).getId());
-        }
-        List<HRset> hRsetFirstlaList = ihRsetService.queryByConditions(new HRset("fla", personalInformation.getFirstla()));
-        if (hRsetFirstlaList != null && hRsetFirstlaList.size() == 1) {
-            baseInformation.setFirstlaid(hRsetFirstlaList.get(0).getId());
-        }
-        List<HRset> hRsetElselaList = ihRsetService.queryByConditions(new HRset("fla", personalInformation.getElsela()));
-        if (hRsetElselaList != null && hRsetElselaList.size() == 1) {
-            baseInformation.setElselaid(hRsetElselaList.get(0).getId());
-        }
-        List<HRset> hRsetPosttitleList = ihRsetService.queryByConditions(new HRset("posttitle", personalInformation.getPosttitle()));
-        if (hRsetPosttitleList != null && hRsetPosttitleList.size() == 1) {
-            baseInformation.setPosttitleid(hRsetPosttitleList.get(0).getId());
-        }
-        List<HRset> hRsetZyzstypeList = ihRsetService.queryByConditions(new HRset("zyzstype", personalInformation.getZyzstype()));
-        if (hRsetZyzstypeList != null && hRsetZyzstypeList.size() == 1) {
-            baseInformation.setZyzstypeid(hRsetZyzstypeList.get(0).getId());
-        }
-        List<HRset> hRsetZyzsnameList = ihRsetService.queryByConditions(new HRset("zyzsname", personalInformation.getZyzsname()));
-        if ("选择录入".equals(zyzsnamevalue) && (hRsetZyzsnameList == null || hRsetZyzsnameList.size() == 0)) {
-            if (!personalInformation.getZyzsname().equals("")) {
-                Integer zyzsnameid = ihRsetService.addOne(new HRset("zyzsname", personalInformation.getZyzsname()));
-                baseInformation.setZyzsnameid(zyzsnameid);
-            }
-        } else {
-            if (hRsetZyzsnameList != null && hRsetZyzsnameList.size() == 1) {
-                baseInformation.setZyzsnameid(hRsetZyzsnameList.get(0).getId());
-            }
-        }
-        baseInformation.setFirstworkingtime(personalInformation.getFirstworkingtime());
-        List<HRset> hRsetParentcompanyList = ihRsetService.queryByConditions(new HRset("parentcompany", personalInformation.getParentcompany()));
-        if ("选择录入".equals(parentcompanyvalue) && (hRsetParentcompanyList == null && hRsetParentcompanyList.size() == 0)) {
-            if (!personalInformation.getParentcompany().equals("")) {
-                Integer parentcompanyid = ihRsetService.addOne(new HRset("parentcompany", personalInformation.getParentcompany()));
-                baseInformation.setParentcompanyid(parentcompanyid);
-            }
-        } else {
-            if (hRsetParentcompanyList != null && hRsetParentcompanyList.size() == 1) {
-                baseInformation.setParentcompanyid(hRsetParentcompanyList.get(0).getId());
-            }
-        }
-        Integer baseInformationId = iBaseInformationService.saveOne(baseInformation);
-
-        // 在tb_id_personalinformation表中添加数据
-        personalInformation.setUserid(userid);
-        personalInformation.setBaseinformationid(baseInformationId);
-        Integer personalInformationId = iPersonalInformationService.saveOne(personalInformation);
-        personalInformation.setId(personalInformationId);
-        if (lysqdid != null && !"".equals(lysqdid)) {
-            //处理录用申请单（户籍、性别等信息时身份证号解析出来的）
-            //添加岗位信息
-            Lysqd lysqd = iGzrzService.queryLysqdById(lysqdid);
-            PerAndPostRs perAndPostRs = new PerAndPostRs();
-            perAndPostRs.setPerid(personalInformationId);
-            perAndPostRs.setPostid(Integer.valueOf(lysqd.getF_lygw().split("_")[1]));
-            iPerandpostrsService.addOne(perAndPostRs);
-            //部门信息没有对接好，不好操作
-            //添加合同信息(缺少合同编号等必填信息)，光有入职日期和合同期限是不够的
-            //添加人事成本信息(其中薪资是HR设置里面选择的信息，不好匹配)
-            //添加其它信息
-            OtherInformation otherInformation = new OtherInformation();
-            otherInformation.setAddress(lysqd.getF_jzdz());
-            personalInformation.setMobilephone(lysqd.getF_lxdh());
-            otherInformation.setEmergencycontract(lysqd.getF_yjlxr());
-            otherInformation.setEmergencyphone(lysqd.getF_yjlxfs());
-            Integer otherinformationid = iOtherInformationService.saveOne(otherInformation);
-            personalInformation.setOtherinformationid(otherinformationid);
-            iPersonalInformationService.modifyOne(personalInformation);
-            //将录用申请单中的状态改掉
-            iGzrzService.modifyLysqdById(lysqdid);
-        }
-        return RespUtil.successResp("200", "提交成功！", userid);
+    ) {
+        Map<String, Object> respMap = iPersonalInformationService.addBaseInformation(personalInformation, request, lysqdid);
+        return null!=respMap.get("userid")?RespUtil.successResp("200", "添加成功！", respMap.get("userid")):RespUtil.successResp("500","添加失败！",JSON.toJSONString(respMap));
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:添加人事信息的管理信息
-     * @Date: 11:36 2018\4\11 0011
-     */
     @RequestMapping("/addManageInformation")
     @ResponseBody
     public Object addManageInformation(
-            PersonalInformation personalInformation
-    ) {
-        Map<String, Object> respMap = iPersonalInformationService.addManageInformation(personalInformation);
-        return null!=respMap?RespUtil.successResp("200", "管理信息添加成功！", respMap):RespUtil.successResp("500","管理信息添加失败！",null);
+            ManageInformationAddInfo manageInformationAddInfo
+    ){
+        Map<String, Object> map = iPersonalInformationService.addManageInformation(manageInformationAddInfo);
+        return null==map?RespUtil.successResp("500","添加失败！",null):RespUtil.successResp("200","添加成功！",null);
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:添加人事信息的成本信息
-     * @Date: 17:41 2018\4\11 0011
-     */
     @RequestMapping("/addCostInformation")
     @ResponseBody
-    public String addCostInformation(
-            PersonalInformation personalInformation,
-            @RequestParam("khhvalue") String khhvalue,
-            @RequestParam("sbjndvalue") String sbjndvalue
-    ) {
-        // 保存人事信息的成本信息
-        CostInformation costInformation = new CostInformation();
-        List<HRset> hRsetSalaryList = ihRsetService.queryByConditions(new HRset("salary", personalInformation.getSalary()));
-        if (hRsetSalaryList != null && hRsetSalaryList.size() == 1) {
-            costInformation.setSalarystandardid(hRsetSalaryList.get(0).getId());
-        }
-        List<HRset> hRsetSsbList = ihRsetService.queryByConditions(new HRset("ssb", personalInformation.getSsb()));
-        if (hRsetSsbList != null && hRsetSsbList.size() == 1) {
-            costInformation.setSsbid(hRsetSsbList.get(0).getId());
-        }
-        List<HRset> hRsetSsbgscdList = ihRsetService.queryByConditions(new HRset("ssbgscd", personalInformation.getSsbgscd()));
-        if (hRsetSsbgscdList != null && hRsetSsbgscdList.size() == 1) {
-            costInformation.setSsbgscdid(hRsetSsbgscdList.get(0).getId());
-        }
-        List<HRset> hRsetSsbgrcdList = ihRsetService.queryByConditions(new HRset("ssbgrcd", personalInformation.getSsbgrcd()));
-        if (hRsetSsbgrcdList != null && hRsetSsbgrcdList.size() == 1) {
-            costInformation.setSsbgrcdid(hRsetSsbgrcdList.get(0).getId());
-        }
-        List<HRset> hRsetGjjList = ihRsetService.queryByConditions(new HRset("gjj", personalInformation.getGjj()));
-        if (hRsetGjjList != null && hRsetGjjList.size() == 1) {
-            costInformation.setGjjid(hRsetGjjList.get(0).getId());
-        }
-        List<HRset> hRsetGjjgscdList = ihRsetService.queryByConditions(new HRset("gjjgscd", personalInformation.getGjjgscd()));
-        if (hRsetGjjgscdList != null && hRsetGjjgscdList.size() == 1) {
-            costInformation.setGjjgscdid(hRsetGjjgscdList.get(0).getId());
-        }
-        List<HRset> hRsetGjjgrcdList = ihRsetService.queryByConditions(new HRset("gjjgrcd", personalInformation.getGjjgrcd()));
-        if (hRsetGjjgrcdList != null && hRsetGjjgrcdList.size() == 1) {
-            costInformation.setGjjgrcdid(hRsetGjjgrcdList.get(0).getId());
-        }
-        List<HRset> hRsetKhhList = ihRsetService.queryByConditions(new HRset("khh", personalInformation.getKhh()));
-        if (khhvalue.equals("选择录入") && (hRsetKhhList == null || hRsetKhhList.size() == 0)) {
-            if (!personalInformation.getKhh().equals("")) {
-                Integer khhid = ihRsetService.addOne(new HRset("khh", personalInformation.getKhh()));
-                costInformation.setKhhid(khhid);
-            }
-        } else {
-            if (hRsetKhhList != null && hRsetKhhList.size() == 1) {
-                costInformation.setKhhid(hRsetKhhList.get(0).getId());
-            }
-        }
-        costInformation.setSalaryaccount(personalInformation.getSalaryaccount());
-        List<HRset> hRsetSbjndList = ihRsetService.queryByConditions(new HRset("sbjnd", personalInformation.getSbjnd()));
-        if (sbjndvalue.equals("选择录入") && (hRsetSbjndList == null || hRsetSbjndList.size() == 0)) {
-            if (!personalInformation.getSbjnd().equals("")) {
-                Integer sbjndid = ihRsetService.addOne(new HRset("sbjnd", personalInformation.getSbjnd()));
-                costInformation.setSbjndid(sbjndid);
-            }
-        } else {
-            if (hRsetSbjndList != null && hRsetSbjndList.size() == 1) {
-                costInformation.setSbjndid(hRsetSbjndList.get(0).getId());
-            }
-        }
-        costInformation.setSbcode(personalInformation.getSbcode());
-        costInformation.setGjjcode(personalInformation.getGjjcode());
-        Integer costInformationId = iCostInformationService.saveOne(costInformation);
-
-        // 修改人事信息
-        PersonalInformation personalInformation1 = iPersonalInformationService.queryOneByUserid(personalInformation.getUserid());
-        personalInformation.setId(personalInformation1.getId());
-        personalInformation.setCostinformationid(costInformationId);
-        iPersonalInformationService.modifyOne(personalInformation);
-
-        return "添加成本信息成功！";
+    public Object addCostInformation(
+            CostInformationAddInfo costInformationAddInfo
+    ){
+        return iPersonalInformationService.addCostInformation(costInformationAddInfo);
     }
 
     /**
@@ -668,7 +191,7 @@ public class PersonalInformationController {
     @ResponseBody
     public Object addOtherInformation(
             PersonalInformation personalInformation
-    ) throws ParseException {
+    ) {
         Map<String, Object> map = iPersonalInformationService.addOtherInformation(personalInformation);
         return null!=map?RespUtil.successResp("200", "添加其他信息成功！", map):RespUtil.successResp("500","信息添加失败！",null);
     }
@@ -712,7 +235,7 @@ public class PersonalInformationController {
     public Object updateManageInformation(
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
-    ) throws ParseException {
+    ) {
         Map<String, Object> map = iPersonalInformationService.updateManageInformation(personalInformation, transactorusername);
         return null!=map?RespUtil.successResp("200", "提交信息成功！", map):RespUtil.successResp("500","修改失败(没有需要修改的信息)！",null);
     }
@@ -729,7 +252,7 @@ public class PersonalInformationController {
             @RequestParam("transactorusername") String transactorusername,
             @RequestParam("khhvalue") String khhvalue,
             @RequestParam("sbjndvalue") String sbjndvalue
-    ) throws ParseException {
+    ) {
         //判断是否需要录入并添加相应的HR设置信息
         if(StringUtils.isNotBlank(khhvalue) && khhvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"khh",personalInformation.getKhh());
         if(StringUtils.isNotBlank(sbjndvalue) && sbjndvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"sbjnd",personalInformation.getSbjnd());
@@ -747,7 +270,7 @@ public class PersonalInformationController {
     public Object updateOtherInformation(
             PersonalInformation personalInformation,
             @RequestParam("transactorusername") String transactorusername
-    ) throws ParseException {
+    ) {
         Map<String, Object> map = iPersonalInformationService.updateOtherInformation(personalInformation, transactorusername);
         return map!=null?RespUtil.successResp("200", "提交成功！", map):RespUtil.successResp("500","提交失败！",null);
     }
@@ -759,19 +282,10 @@ public class PersonalInformationController {
      */
     @RequestMapping("/queryPersonalInformationsByDepid")
     @ResponseBody
-    public List<PersonalInformation> queryPersonalInformationsByDepid(
+    public List<Map<String,Object>> queryPersonalInformationsByDepid(
             @RequestParam("depid") Integer depid
     ) {
-        PersonalInformation personalInformation = new PersonalInformation();
-        personalInformation.setDepid(depid);
-        List<PersonalInformation> personalInformations = iPersonalInformationService.queryPIs(personalInformation);
-        for (Integer i = 0; i < personalInformations.size(); i++) {
-            Dept dept = iDeptService.queryOneDepByDepid(personalInformations.get(i).getDepid());
-            personalInformations.get(i).setDepname(dept.getDepname());
-            User user = iUserService.getById(personalInformations.get(i).getUserid());
-            personalInformations.get(i).setTruename(user.getTruename());
-        }
-        return personalInformations;
+        return iPersonalInformationService.queryPersonalInformationsByDepid(depid);
     }
 
     /**
@@ -781,169 +295,9 @@ public class PersonalInformationController {
      */
     @RequestMapping("/queryPersonalInformationsByNull")
     @ResponseBody
-    public List<PersonalInformation> queryPersonalInformationsByNull() throws ParseException {
-        List<PersonalInformation> personalInformations = iPersonalInformationService.queryAllByNull();
-        for (PersonalInformation pi : personalInformations) {
-            //添加信息user的三个的字段
-            User user = iUserService.getById(pi.getUserid());
-            pi.setIsactive(user.getIsactive());
-            pi.setUsername(user.getUsername());
-            pi.setTruename(user.getTruename());
-            pi.setState(user.getState());
-
-            //添加信息personalinformation的六个字段
-            Dept dept = new Dept();
-            dept = iDeptService.queryOneDepByDepid(pi.getDepid());
-            if (dept != null) {
-                pi.setDepname(dept.getDepname());
-                pi.setDepcode(dept.getDepcode());
-            } else {
-                pi.setDepname("部门信息还未添加");
-                pi.setDepcode("部门编号还未添加");
-            }
-
-            //获得岗位信息
-            List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(pi.getId());
-            List<String> postnames = new ArrayList<>();
-            if (perAndPostRs.size() != 0) {
-                for (int i = 0; i < perAndPostRs.size(); i++) {
-                    if (iPostService.queryOneByPostid(perAndPostRs.get(i).getPostid()) != null) {
-                        postnames.add(iPostService.queryOneByPostid(perAndPostRs.get(i).getPostid()).getPostname());
-                    }
-                }
-            }
-            pi.setPostnames(IDcodeUtil.getArrayToString(postnames, ";"));
-
-            //获得办公电话
-            HRset hRsetTelphone = ihRsetService.queryById(pi.getTelphoneid());
-            if (hRsetTelphone != null) pi.setTelphone(hRsetTelphone.getDatavalue());
-
-            //添加baseinformation的28个字段
-            BaseInformation baseInformation = iBaseInformationService.queryOneById(pi.getBaseinformationid());
-            if (baseInformation != null) {
-                pi.setUserphoto(baseInformation.getUserphoto());
-                pi.setIdphoto1(baseInformation.getIdphoto1());
-                pi.setIdphoto2(baseInformation.getIdphoto2());
-                pi.setEnglishname(baseInformation.getEnglishname());
-                pi.setIdcode(baseInformation.getIdcode());
-                try {
-                    pi.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (ihRsetService.queryById(baseInformation.getRaceid()) != null) {
-                    pi.setRace(ihRsetService.queryById(baseInformation.getRaceid()).getDatavalue());
-                }
-                pi.setMarriage(baseInformation.getMarriage());
-                if (ihRsetService.queryById(baseInformation.getChildrenid()) != null) {
-                    pi.setChildren(ihRsetService.queryById(baseInformation.getChildrenid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getZzmmid()) != null) {
-                    pi.setZzmm(ihRsetService.queryById(baseInformation.getZzmmid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getZgxlid()) != null) {
-                    pi.setZgxl(ihRsetService.queryById(baseInformation.getZgxlid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getByyxid()) != null) {
-                    pi.setByyx(ihRsetService.queryById(baseInformation.getByyxid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getSxzyid()) != null) {
-                    pi.setSxzy(ihRsetService.queryById(baseInformation.getSxzyid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getPyfsid()) != null) {
-                    pi.setPyfs(ihRsetService.queryById(baseInformation.getPyfsid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getFirstlaid()) != null) {
-                    pi.setFirstla(ihRsetService.queryById(baseInformation.getFirstlaid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getElselaid()) != null) {
-                    pi.setElsela(ihRsetService.queryById(baseInformation.getElselaid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getPosttitleid()) != null) {
-                    pi.setPosttitle(ihRsetService.queryById(baseInformation.getPosttitleid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getZyzstypeid()) != null) {
-                    pi.setZyzstype(ihRsetService.queryById(baseInformation.getZyzstypeid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(baseInformation.getZyzsnameid()) != null) {
-                    pi.setZyzsname(ihRsetService.queryById(baseInformation.getZyzsnameid()).getDatavalue());
-                }
-                pi.setFirstworkingtime(baseInformation.getFirstworkingtime());
-                if (baseInformation.getFirstworkingtime() != null && !baseInformation.getFirstworkingtime().equals("")) {
-                    try {
-                        pi.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (ihRsetService.queryById(baseInformation.getParentcompanyid()) != null) {
-                    pi.setParentcompany(ihRsetService.queryById(baseInformation.getParentcompanyid()).getDatavalue());
-                }
-            }
-
-            //添加manageinformation的六个字段
-            ManageInformation manageInformation = iManageInformationService.queryOneById(pi.getManageinformationid());
-            if (manageInformation != null) {
-                if (ihRsetService.queryById(manageInformation.getPostlevelid()) != null) {
-                    pi.setPostlevel(ihRsetService.queryById(manageInformation.getPostlevelid()).getDatavalue());
-                }
-                pi.setEntrydate(manageInformation.getEntrydate());
-                pi.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
-                if (ihRsetService.queryById(manageInformation.getEmployeetypeid()) != null) {
-                    pi.setEmployeetype(ihRsetService.queryById(manageInformation.getEmployeetypeid()).getDatavalue());
-                }
-            }
-
-            //添加costinformation的18个字段
-            CostInformation costInformation = iCostInformationService.queryOneById(pi.getCostinformationid());
-            if (costInformation != null) {
-                if (ihRsetService.queryById(costInformation.getSalarystandardid()) != null) {
-                    pi.setSalary(ihRsetService.queryById(costInformation.getSalarystandardid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(costInformation.getSsbid()) != null) {
-                    pi.setSsb(ihRsetService.queryById(costInformation.getSsbid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(costInformation.getSsbgscdid()) != null) {
-                    pi.setSsbgscd(ihRsetService.queryById(costInformation.getSsbgscdid()).getDatatype());
-                }
-                if (ihRsetService.queryById(costInformation.getSsbgrcdid()) != null) {
-                    pi.setSsbgrcd(ihRsetService.queryById(costInformation.getSsbgrcdid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(costInformation.getGjjid()) != null) {
-                    pi.setGjj(ihRsetService.queryById(costInformation.getGjjid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(costInformation.getGjjgscdid()) != null) {
-                    pi.setGjjgscd(ihRsetService.queryById(costInformation.getGjjgscdid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(costInformation.getGjjgrcdid()) != null) {
-                    pi.setGjjgrcd(ihRsetService.queryById(costInformation.getGjjgrcdid()).getDatavalue());
-                }
-                if (ihRsetService.queryById(costInformation.getKhhid()) != null) {
-                    pi.setKhh(ihRsetService.queryById(costInformation.getKhhid()).getDatavalue());
-                }
-                pi.setSalaryaccount(costInformation.getSalaryaccount());
-                if (ihRsetService.queryById(costInformation.getSbjndid()) != null) {
-                    pi.setSbjnd(ihRsetService.queryById(costInformation.getSbjndid()).getDatavalue());
-                }
-                pi.setSbcode(costInformation.getSbcode());
-                pi.setGjjcode(costInformation.getGjjcode());
-            }
-
-            //添加otherinformation的六个字段
-            OtherInformation otherInformation = iOtherInformationService.queryOneById(pi.getOtherinformationid());
-            if (otherInformation != null) {
-                pi.setPrivateemail(otherInformation.getPrivateemail());
-                pi.setCompanyemail(otherInformation.getCompanyemail());
-                pi.setEmergencycontract(otherInformation.getEmergencycontract());
-                if (ihRsetService.queryById(otherInformation.getEmergencyrpid()) != null) {
-                    pi.setEmergencyrp(ihRsetService.queryById(otherInformation.getEmergencyrpid()).getDatavalue());
-                }
-                pi.setEmergencyphone(otherInformation.getEmergencyphone());
-                pi.setAddress(otherInformation.getAddress());
-                pi.setRemark(otherInformation.getRemark());
-            }
-        }
-        return personalInformations;
+    public Object queryPersonalInformationsByNull() {
+        List<PersonalInformationExport> respList = iPersonalInformationService.queryPersonalInformationsByNull();
+        return null!=respList?RespUtil.successResp("200","请求成功！",respList):RespUtil.successResp("500","请求失败！",null);
     }
 
     /**
@@ -1058,42 +412,6 @@ public class PersonalInformationController {
         iPersonalInformationService.removeAll();
         //10.最后再修改部门表
         return RespUtil.successResp("200", "删除成功！", null);
-    }
-
-    /**
-     * @Author:ShiYun;
-     * @Description:所有人员的工号、人名、部门（ID、名称）、岗位（ID、名称）
-     * @Date: 14:15 2018\7\9 0009
-     */
-    @RequestMapping("/queryGXF001")
-    @ResponseBody
-    public List<Object> queryGXF001() throws ParseException {
-        List<Object> list = new ArrayList<>();
-        List<PersonalInformation> personalInformationList = iPersonalInformationService.queryAllByNull();
-        for (PersonalInformation per : personalInformationList) {
-            PersonalInformation onePersonalinformation = getOnePersonalinformation(per.getId());
-            if (onePersonalinformation == null) {
-                continue;
-            }
-            Map<String, Object> map = new HashMap<String, Object>();
-            // HashMap<String, Object> deptMap = new HashMap<>();
-            ArrayList<Object> postList = new ArrayList<>();
-            map.put("employeeName", onePersonalinformation.getEmployeenumber());
-            map.put("id", onePersonalinformation.getTruename());
-            map.put("deptId", onePersonalinformation.getDepid());
-            map.put("deptName", iDeptService.queryOneDepByDepid(onePersonalinformation.getDepid()).getDepname());
-            //map.put("dept",deptMap);
-            List<PerAndPostRs> perAndPostRsList = iPerandpostrsService.queryPerAndPostRsByPerid(onePersonalinformation.getId());
-            for (PerAndPostRs perAndPostRs : perAndPostRsList) {
-                HashMap<String, Object> postMap = new HashMap<>();
-                postMap.put("postId", perAndPostRs.getPostid());
-                postMap.put("postName", iPostService.queryOneByPostid(perAndPostRs.getPostid()).getPostname());
-                postList.add(postMap);
-            }
-            map.put("post", postList);
-            list.add(map);
-        }
-        return list;
     }
 
     /**
@@ -1274,23 +592,8 @@ public class PersonalInformationController {
     public Object queryZHG001(
             @RequestParam("username") String username
     ) {
-        User user = iUserService.queryByUsername(username);
-        if (user == null) {
-            return RespUtil.successResp("205", "没有查到此用户信息", null);
-        } else {
-            PersonalInformation personalInformation = iPersonalInformationService.queryOneByUserid(user.getId());
-            try {
-                PersonalInformation onePersonalinformation;
-                if (personalInformation != null) {
-                    onePersonalinformation = this.getOnePersonalinformation(personalInformation.getId());
-                } else {
-                    return RespUtil.successResp("205", "没有查到此用户信息", null);
-                }
-                return RespUtil.successResp("205", "查询成功！", onePersonalinformation);
-            } catch (ParseException e) {
-                return RespUtil.successResp("205", "没有查到此用户信息", null);
-            }
-        }
+        PersonalInformation personalInformation = iPersonalInformationService.queryOneByUsername(username);
+        return null==personalInformation?RespUtil.successResp("500", "没有查到此用户信息", null):RespUtil.successResp("200", "查询成功！", personalInformation);
     }
 
     /**
@@ -1332,9 +635,11 @@ public class PersonalInformationController {
             Date date = simpleDateFormat.parse(year + "/" + month + "/01 00:00:00");
             o = iGzrzService.queryGzrzByTime(date);
         } catch (ParseException e) {
+            logger.error("==================================格式转换出错(1306)！==============================");
             System.out.println("格式转换出错！");
+            return RespUtil.successResp("500", "响应失败！", o);
         }
-        return RespUtil.successResp("205", "相应成功！", o);
+        return RespUtil.successResp("200", "响应成功！", o);
     }
 
     /**
@@ -1370,6 +675,7 @@ public class PersonalInformationController {
         return iGzrzService.queryLyspd();
     }
 
+    //所有人员的工号、人名、部门（ID、名称）、[岗位(ID、名称)]
     @RequestMapping("/queryUseridTruenameDepidDepnamePerid")
     @ResponseBody
     public Object queryUseridTruenameDepidDepnamePerid(){
@@ -1383,5 +689,20 @@ public class PersonalInformationController {
     ){
         Map<String, Object> respMap = iPersonalInformationService.queryIdcodeInfoByAnalyzeIdcode(idcode);
         return null==respMap?RespUtil.successResp("500","身份证解析失败！",null):RespUtil.successResp("200","身份证解析成功！",respMap);
+    }
+
+    @RequestMapping("/queryWorkingageincompanyByEntryDate")
+    @ResponseBody
+    public Object queryWorkingageincompanyByEntryDate(
+            @RequestParam("entrydate")String entrydate
+    ){
+        Long entryDateMillis = hrUtils.getTimeMillisByDateString(entrydate);
+        if(null==entryDateMillis){
+            return RespUtil.successResp("500","时间格式不对",null);
+        }
+        if(entryDateMillis>System.currentTimeMillis()){
+            return RespUtil.successResp("500","入职时间不能超过当前时间",null);
+        }
+        return RespUtil.successResp("200","司龄计算成功！",hrUtils.getWorkingageByFirstworkingtime(entrydate));
     }
 }

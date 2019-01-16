@@ -2,18 +2,16 @@ package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.service.hr_service.IPostService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
-import com.elex.oa.util.hr_util.IDcodeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -250,7 +248,7 @@ public class PostServiceImpl implements IPostService {
                 ) {
             strs.add(iPostDao.selectPostByPostid(p.getPostid()).getPostname());
         }
-        String postnames = IDcodeUtil.getArrayToString(strs, ";");
+        String postnames = hrUtils.getArrayToString(strs, ";");
         return RespUtil.successResp("200","提交成功！",postnames);
     }
 

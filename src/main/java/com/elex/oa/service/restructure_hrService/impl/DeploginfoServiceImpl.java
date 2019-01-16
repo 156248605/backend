@@ -2,7 +2,7 @@ package com.elex.oa.service.restructure_hrService.impl;
 
 import com.elex.oa.dao.restructure_hr.IDepinfoDao;
 import com.elex.oa.dao.restructure_hr.IDeploginfoDao;
-import com.elex.oa.entity.hr_entity.ReadBaseExcel;
+import com.elex.oa.entity.hr_entity.readexcel.ReadBaseExcel;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Deploginfo;
 import com.elex.oa.entity.restructure_hrentity.ReadDeploginfoExcel;

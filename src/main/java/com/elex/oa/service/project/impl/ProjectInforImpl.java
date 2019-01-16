@@ -65,13 +65,36 @@ public class ProjectInforImpl implements ProjectInforService {
             if(approvalList.getProjectManager()==null){
                 approvalList.setDepartmentManager("");
             }else {
-                User user = iUserDao.selectByTruename(approvalList.getProjectManager());
+                /*User user = iUserDao.selectByTruename(approvalList.getProjectManager());
+
                 if(iPersonalInformationDao.selectByUserid(user.getId()).getDepid()!=null){
                     Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
                     Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
                     User user1 = iUserDao.selectById(principaluserid);
                     String truename = user1.getTruename();
                     approvalList.setDepartmentManager(truename);
+                }else {
+                    approvalList.setDepartmentManager("");
+                }*/
+
+                User user = iUserDao.selectByTruename(approvalList.getProjectManager());
+                if(null==user){
+                    approvalList.setDepartmentManager("");
+                }else if(null==iPersonalInformationDao.selectByUserid(user.getId())){
+                    approvalList.setDepartmentManager("");
+                }else if(iPersonalInformationDao.selectByUserid(user.getId()).getDepid()!=null){
+                    Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
+                    if(depid == null) {
+                        approvalList.setDepartmentManager("");
+                    } else {
+                        Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
+                        User user1 = iUserDao.selectById(principaluserid);
+                        if(user1 == null) {
+                            approvalList.setDepartmentManager("");
+                        } else {
+                            approvalList.setDepartmentManager(user1.getTruename());
+                        }
+                    }
                 }else {
                     approvalList.setDepartmentManager("");
                 }

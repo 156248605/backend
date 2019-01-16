@@ -2,8 +2,8 @@ package com.elex.oa.service.restructure_hrService.impl;
 
 import com.elex.oa.dao.restructure_hr.IPostinfoDao;
 import com.elex.oa.dao.restructure_hr.IPostloginfoDao;
-import com.elex.oa.entity.hr_entity.ReadBaseExcel;
-import com.elex.oa.entity.hr_entity.ReadPostlogExcel;
+import com.elex.oa.entity.hr_entity.readexcel.ReadBaseExcel;
+import com.elex.oa.entity.hr_entity.readexcel.ReadPostlogExcel;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.entity.restructure_hrentity.Postloginfo;
 import com.elex.oa.service.restructure_hrService.IPostloginfoService;

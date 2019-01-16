@@ -1,9 +1,7 @@
 package com.elex.oa.dao.hr;
 
-import com.elex.oa.entity.hr_entity.ManageInformation;
+import com.elex.oa.entity.hr_entity.manageinformation.ManageInformation;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
 
 /**
  * @Author:ShiYun;

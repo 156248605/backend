@@ -1,11 +1,10 @@
 package com.elex.oa.service.hr_service.impl;
 
-import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.service.hr_service.IDeptService;
 import com.elex.oa.util.hr_util.HrUtils;
-import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.elex.oa.util.hr_util.PageHelper;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
@@ -99,7 +98,7 @@ public class DeptServiceImpl implements IDeptService {
         Dept dept = iDeptDao.selectDeptByDepid(depid);
         dept.setFunctionaltype(hrUtils.getDatavalueByHrsetid(dept.getFunctionaltypeid()));
         dept.setDeptype(hrUtils.getDatacodeByHrsetid(dept.getDeptypeid()));
-        dept.setPostList(IDcodeUtil.getStringToListString(dept.getPost_list(),";"));
+        dept.setPostList(hrUtils.getStringToListString(dept.getPost_list(),";"));
         return dept;
     }
 
@@ -832,7 +831,7 @@ public class DeptServiceImpl implements IDeptService {
         Dept deptTemp = iDeptDao.selectDeptByDeptcode(dept.getDepcode());
         if(null!=deptTemp)return RespUtil.successResp("500","部门编号已存在，请重新输入部门编号！",null);
         //添加新部门
-        dept.setPost_list(IDcodeUtil.getArrayToString(dept.getPostList(),","));
+        dept.setPost_list(hrUtils.getArrayToString(dept.getPostList(),","));
         iDeptDao.insertOne(dept);
         return RespUtil.successResp("200","提交成功！",dept);
     }
@@ -860,7 +859,7 @@ public class DeptServiceImpl implements IDeptService {
             List<Map<String, Object>> mapList = iPostDao.selectAllPostOfIdPostcodePostnameStateON();
             respMap.put("postList",mapList);
         }else {
-            List<Map<String, Object>> mapList = iPostDao.selectByPostlist(IDcodeUtil.getStringToListString(dept.getPost_list(), ","));
+            List<Map<String, Object>> mapList = iPostDao.selectByPostlist(hrUtils.getStringToListString(dept.getPost_list(), ","));
             respMap.put("postList",mapList);
         }
         return respMap;
@@ -989,10 +988,10 @@ public class DeptServiceImpl implements IDeptService {
         dept.setSecretaryuser(iUserDao.selectById(dept.getSecretaryuserid()));
         //获取所含岗位信息
         if(StringUtils.isBlank(dept.getPost_list())){
-            dept.setPost_list(IDcodeUtil.getArrayToString(dept.getPostList(),","));
+            dept.setPost_list(hrUtils.getArrayToString(dept.getPostList(),","));
         }
         if(null==dept.getPostList()){
-            dept.setPostList(IDcodeUtil.getStringToListString(dept.getPost_list(),","));
+            dept.setPostList(hrUtils.getStringToListString(dept.getPost_list(),","));
         }
         return dept;
     }

@@ -1,6 +1,6 @@
 package com.elex.oa.dao.hr;
 
-import com.elex.oa.entity.hr_entity.CostInformation;
+import com.elex.oa.entity.hr_entity.costinformation.CostInformation;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

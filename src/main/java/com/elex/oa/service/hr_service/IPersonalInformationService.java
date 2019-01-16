@@ -1,10 +1,14 @@
 package com.elex.oa.service.hr_service;
 
-import com.elex.oa.entity.hr_entity.PersonalInformation;
+import com.elex.oa.entity.hr_entity.costinformation.CostInformationAddInfo;
+import com.elex.oa.entity.hr_entity.manageinformation.ManageInformationAddInfo;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
 import com.elex.oa.entity.project.Staff;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +29,7 @@ public interface IPersonalInformationService{
      *@Date: 10:03 2018\4\8 0008
      */
     PageInfo<PersonalInformation> queryPIs(Map<String,Object> paramMap) throws ParseException;
-    Map<String,List<String>> getParamsForFirstpage();
+    Map<String,Object> getParamsForFirstpage();
 
     /**
      *@Author:ShiYun;
@@ -41,6 +45,7 @@ public interface IPersonalInformationService{
      *@Date: 10:59 2018\4\9 0009
      */
     PersonalInformation queryOneByUserid(Integer userid);
+    PersonalInformation queryOneByUsername(String username);
     ArrayList<HashMap> queryByUseridForIOS(Integer userid);
     PersonalInformation queryPersonalInformationByTruename(String truename);
 
@@ -90,8 +95,6 @@ public interface IPersonalInformationService{
 
     PersonalInformation queryPersonalInformationById(Integer personalInformationId);
 
-    Map<String,Object> addOtherInformation(PersonalInformation personalInformation);
-
     Map<String,Object> updateManageInformation(PersonalInformation personalInformation,String transactorusername);
 
     Map<String,Object> updateBaseInformation(PersonalInformation personalInformation,String transactorusername);
@@ -102,7 +105,17 @@ public interface IPersonalInformationService{
 
     Map<String,String> importPersonalInformations(MultipartFile multipartFile);
 
-    Map<String, Object> addManageInformation(PersonalInformation personalInformation);
+    Map<String,Object> addBaseInformation(PersonalInformation personalInformation,HttpServletRequest request,String lysqdid);
+
+    Map<String, Object> addManageInformation(ManageInformationAddInfo manageInformationAddInfo);
+
+    Map<String,Object> addOtherInformation(PersonalInformation personalInformation);
+
+    Object addCostInformation(CostInformationAddInfo costInformationAddInfo);
 
     Map<String,Object> queryIdcodeInfoByAnalyzeIdcode(String idcode);
+
+    List<Map<String,Object>> queryPersonalInformationsByDepid(Integer depid);
+
+    List<PersonalInformationExport> queryPersonalInformationsByNull();
 }

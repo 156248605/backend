@@ -1,6 +1,10 @@
 package com.elex.oa.util.hr_util;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -11,7 +15,10 @@ import java.util.*;
  * @Date:Created in  18:52 2018\5\12 0012
  * @Modify By:
  */
+@Service
 public class IDcodeUtil {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public IDcodeUtil() {
     }
 
@@ -20,10 +27,17 @@ public class IDcodeUtil {
      *@Description:获得转正日期
      *@Date: 17:45 2018\5\15 0015
      */
-    public static String getZhuanzhengdate(String entrydate) throws ParseException {
+    public String getZhuanzhengdate(String entrydate) {
         entrydate = entrydate.replace('-','/');
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Date entryDate = sdf.parse(entrydate);
+        Date entryDate = null;
+        try {
+            entryDate = sdf.parse(entrydate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            logger.error("时间格式不对！");
+            return null;
+        }
         Calendar entryCal = Calendar.getInstance();
         entryCal.setTime(entryDate);
         entryCal.add(Calendar.MONTH,2);
@@ -35,7 +49,7 @@ public class IDcodeUtil {
      *@Description:根据身份证号码获得星座
      *@Date: 18:59 2018\5\12 0012
      */
-    public static String getConstellation(String idcard){
+    public String getConstellation(String idcard){
         if(StringUtils.isBlank(idcard) || "null".equals(idcard))return null;
         String ret = "";
         int month=Integer.parseInt(idcard.substring(10,12));
@@ -60,17 +74,31 @@ public class IDcodeUtil {
      *@Description:获得出生日期（"yyyy/MM/dd"）
      *@Date: 19:00 2018\5\12 0012
      */
-    public static String getBirthday(String idcard) throws Exception {
+    public String getBirthday(String idcard) {
         if(StringUtils.isBlank(idcard) || "null".equals(idcard))return null;
         Integer month = Integer.valueOf(idcard.substring(10,12));
-        if(month<=0 || month>12)throw new Exception("身份证的号码输入不符合标准，出生月必须在[1,12]之间！");
+        if(month<=0 || month>12){
+            logger.error("身份证的号码输入不符合标准，出生月必须在[1,12]之间！");
+            return null;
+        }
         Integer year = Integer.valueOf(idcard.substring(6,10));
-        Integer maxDayOfMonth = IDcodeUtil.getMaxDayOfMonth(year, month);
+        Integer maxDayOfMonth = getMaxDayOfMonth(year, month);
         Integer day_of_month = Integer.valueOf(idcard.substring(12,14));
-        if(day_of_month<=0 || day_of_month>maxDayOfMonth)throw new Exception("身份证的号码输入不符合标准，出生日必须在[1,"+maxDayOfMonth+"]之间！");
+        if(day_of_month<=0 || day_of_month>maxDayOfMonth){
+            logger.error("身份证的号码输入不符合标准，出生日必须在[1,"+maxDayOfMonth+"]之间！");
+            return null;
+        }
         String birthday = idcard.substring(6,10) + "/" + idcard.substring(10,12) + "/" + idcard.substring(12,14);
-        Integer age = Integer.valueOf(IDcodeUtil.getAge(birthday).substring(0,IDcodeUtil.getAge(birthday).length()-1));
-        if(age>65 || age<18)throw new Exception("身份证的号码输入不符合标准，年龄必须18-65周岁之间");
+        String stringAge = getAge(birthday);
+        if(StringUtils.isBlank(stringAge)){
+            logger.error("年龄不能为0岁");
+            return null;
+        }
+        Integer age = Integer.valueOf(getAge(birthday).substring(0,getAge(birthday).length()-1));
+        if(age>65 || age<18) {
+            logger.error("身份证的号码输入不符合标准，年龄必须18-65周岁之间");
+            return null;
+        }
         return birthday;
     }
 
@@ -79,7 +107,7 @@ public class IDcodeUtil {
      *@Description:根据年和月获得当前月的最大天数
      *@Date: 15:08 2018\9\10 0010
      */
-    public static Integer getMaxDayOfMonth(Integer year,Integer month){
+    public Integer getMaxDayOfMonth(Integer year,Integer month){
         if(",1,3,5,7,8,10,12,".indexOf(","+month+",")!=-1)return 31;
         if(",4,6,9,11,".indexOf(","+month+",")!=-1)return 30;
         if(year%4!=0 || (year%4==0 && year%100==0 && year%400!=0))return 28;
@@ -91,13 +119,21 @@ public class IDcodeUtil {
      *@Description:获得属相
      *@Date: 19:08 2018\5\12 0012
      */
-    public static String getChinesecs(String idcard) throws Exception {
+    public String getChinesecs(String idcard){
         if(StringUtils.isBlank(idcard) || "null".equals(idcard))return null;
         int checkYear = Integer.parseInt(idcard.substring(6, 10));
         if(checkYear<=1899 || checkYear>=2050){
-            throw new Exception("输入的身份证号码错误（年龄必须在1900到2049之间）！");
+            logger.error("输入的身份证号码错误（年龄必须在1900到2049之间）！");
+            return null;
         }
-        String s = CalendarUtil.solarToLunar(idcard.substring(6, 14)).split(":")[1];
+        String s = null;
+        try {
+            s = CalendarUtil.solarToLunar(idcard.substring(6, 14)).split(":")[1];
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("日期转换错误！");
+            return null;
+        }
         Integer year = Integer.parseInt(s.substring(0,4));
         String zodia[]={"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"};
         int i=(year-1900)%12;//注：1900年是鼠年
@@ -110,7 +146,7 @@ public class IDcodeUtil {
      *@Description:获得性别
      *@Date: 20:01 2018\5\12 0012
      */
-    public static String getSex(String idcard) {
+    public String getSex(String idcard) {
         if(StringUtils.isBlank(idcard.trim()) || "null".equals(idcard))return null;
         try {
             return (Integer.parseInt(idcard.substring(16,17)) % 2)==0?"女":"男";
@@ -125,7 +161,7 @@ public class IDcodeUtil {
      *@Description:获得年龄
      *@Date: 19:15 2018\5\16 0016
      */
-    public static String getAge(String birthday) throws Exception {
+    public String getAge(String birthday){
         DateCompute curDateCompute = new DateCompute();
         DateCompute entryDateCompute = new DateCompute(birthday);
         DateCompute respDC = curDateCompute.getDateComputeByAnother(entryDateCompute);
@@ -138,7 +174,7 @@ public class IDcodeUtil {
      *@Description:根据时间推算出据现在是多长时间
      *@Date: 17:17 2018\9\10 0010
      */
-    private static Calendar getCalendarByDate(String birthday,String newday)throws Exception{
+    private Calendar getCalendarByDate(String birthday,String newday)throws Exception{
         //设置时间格式
         SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
         //获得当前时间
@@ -170,7 +206,7 @@ public class IDcodeUtil {
      *@Description:根据年龄获得出生日期
      *@Date: 16:30 2018\5\22 0022
      */
-    public static HashMap<String,String> getBirdayByAge(String age) throws ParseException {
+    public HashMap<String,String> getBirdayByAge(String age) {
         SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar curCal = Calendar.getInstance();
         curCal.add(Calendar.YEAR,-Integer.parseInt(age));
@@ -189,7 +225,7 @@ public class IDcodeUtil {
      *@Description:获得工龄
      *@Date: 19:20 2018\5\16 0016
      */
-    public static String getWorkingage(String firstworkingtime) throws Exception {
+    public String getWorkingage(String firstworkingtime) {
         DateCompute curDateCompute = new DateCompute();
         DateCompute entryDateCompute = new DateCompute(firstworkingtime);
         DateCompute respDC = curDateCompute.getDateComputeByAnother(entryDateCompute);
@@ -204,8 +240,8 @@ public class IDcodeUtil {
      *@Description:根据工龄获得首次工作时间
      *@Date: 16:43 2018\5\22 0022
      */
-    public static HashMap<String,String> getFwtByWorkingage(String workingage) throws ParseException {
-        return IDcodeUtil.getBirdayByAge(workingage);
+    public HashMap<String,String> getFwtByWorkingage(String workingage) throws ParseException {
+        return getBirdayByAge(workingage);
     }
 
     /**
@@ -213,7 +249,7 @@ public class IDcodeUtil {
      *@Description:获得司龄
      *@Date: 15:11 2018\5\17 0017
      */
-    public static String getCompanyAge(String entrydate) throws Exception {
+    public String getCompanyAge(String entrydate) {
         DateCompute curDateCompute = new DateCompute();
         DateCompute entryDateCompute = new DateCompute(entrydate);
         DateCompute respDC = curDateCompute.getDateComputeByAnother(entryDateCompute);
@@ -227,7 +263,7 @@ public class IDcodeUtil {
      *@Description:将数组转换成字符串
      *@Date: 19:56 2018\5\16 0016
      */
-    public static String getArrayToString(List<String> strs,String s){
+    public String getArrayToString(List<String> strs,String s){
         if(null==strs)return null;
         String str = "";
         for(int i=0;i<strs.size();i++){
@@ -238,7 +274,7 @@ public class IDcodeUtil {
         }
         return str;
     }
-    public static String getListIntegerToString(List<Integer> strs,String s){
+    public String getListIntegerToString(List<Integer> strs,String s){
         if(null==strs)return null;
         String str = "";
         for(int i=0;i<strs.size();i++){
@@ -255,7 +291,7 @@ public class IDcodeUtil {
      *@Description:获得合同年限
      *@Date: 10:06 2018\5\28 0028
      */
-    public static String getContractage(String startdate,String enddate){
+    public String getContractage(String startdate,String enddate){
         DateCompute dateComputeStart = new DateCompute(startdate);
         DateCompute dateComputeEnd = new DateCompute(enddate);
         DateCompute respDateCompute = dateComputeStart.getDateComputeByAnother(dateComputeEnd);
@@ -278,7 +314,7 @@ public class IDcodeUtil {
      *@Description:将后台年限转换成String(Integer)类型
      *@Date: 13:56 2018\5\28 0028
      */
-    public static String getContractage(String contractage){
+    public String getContractage(String contractage){
         return contractage;
     }
 
@@ -287,7 +323,7 @@ public class IDcodeUtil {
      *@Description:根据时间获得当月的头尾日期
      *@Date: 15:50 2018\8\2 0002
      */
-    public static Map getFirstAndLastDate(Date date) throws ParseException{
+    public Map getFirstAndLastDate(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         //获得某月的第一天
@@ -308,7 +344,7 @@ public class IDcodeUtil {
      *@Description:根据日期获得其最大时间(有问题已经不用这个方法了)
      *@Date: 9:29 2018\8\3 0003
      */
-    public static Date getMaxDate(Date date) throws ParseException {
+    public Date getMaxDate(Date date) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         String format = simpleDateFormat.format(date);
         String[] split = format.split("/");
@@ -322,10 +358,10 @@ public class IDcodeUtil {
      *@Description:根据日期获得某月的天数
      *@Date: 11:24 2018\8\3 0003
      */
-    public static Integer getDaysByDate(Date date){
+    public Integer getDaysByDate(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        return IDcodeUtil.getMaxDayOfMonth(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH));
+        return getMaxDayOfMonth(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH));
     }
 
     /**
@@ -333,7 +369,7 @@ public class IDcodeUtil {
      *@Description:根据时间获得天
      *@Date: 11:43 2018\8\3 0003
      */
-    public static Integer getMonthByDate(String str){
+    public Integer getMonthByDate(String str){
         String[] split = str.split("/|-");
         Integer day = Integer.parseInt(split[2].substring(0,2));
         return day;
@@ -344,7 +380,7 @@ public class IDcodeUtil {
      *@Description:根据身份证号码获得其所在的省份/城市/区县(因为会报Java代码太长错误，所以要分割方法)
      *@Date: 11:04 2018\9\18 0018
      */
-    public static String getProvinceByIdcode(String idcode){
+    public String getProvinceByIdcode(String idcode){
         String provinceCode = idcode.substring(0,2);
         String cityCode = idcode.substring(2,4);
         String countyCode = idcode.substring(4,6);
@@ -380,7 +416,7 @@ public class IDcodeUtil {
      *@Description:根据其所在的身份获得其身份证号码的前两位
      *@Date: 11:24 2018\9\18 0018
      */
-    public static String getIdcode1and2ByProvincename(String proviceName){
+    public String getIdcode1and2ByProvincename(String proviceName){
         String provinceCode = "";
         switch (proviceName){
             case "北京市":provinceCode="11";break;case "天津市":provinceCode="12";break;case "河北省":provinceCode="13";break;case "山西省":provinceCode="14";break;case "内蒙古自治区":provinceCode="15";break;
@@ -395,7 +431,7 @@ public class IDcodeUtil {
         return provinceCode;
     }
 
-    public static List<String> getStringToListString(String post_list, String s) {
+    public List<String> getStringToListString(String post_list, String s) {
         if(null==post_list)return null;
         String[] strArr = post_list.split(s);
         if(null==strArr || strArr.length==0)return null;
@@ -407,7 +443,8 @@ public class IDcodeUtil {
         return strList;
     }
 
-    private static class DateCompute{
+    //时间计算辅助类
+    private class DateCompute{
         private Integer year;
         private Integer month;
         private Integer day;

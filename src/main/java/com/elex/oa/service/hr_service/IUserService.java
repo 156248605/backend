@@ -5,6 +5,7 @@ import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.service.BaseService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -47,7 +48,7 @@ public interface IUserService extends BaseService<User> {
      *@Description:查询所有的在职人员
      *@Date: 10:00 2018\8\21 0021
      */
-    List<User> queryAllServings();
+    List<Map> queryAllServings();
 
     /**
      *@Author:ShiYun;

@@ -1,7 +1,6 @@
 package com.elex.oa.controller.hr;
 
-import com.elex.oa.entity.hr_entity.Dept;
-import com.elex.oa.entity.hr_entity.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.service.hr_service.IDeptService;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
@@ -13,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -84,29 +83,8 @@ public class UserController {
      */
     @RequestMapping("/queryAllServings")
     @ResponseBody
-    public List<PersonalInformation> queryAllServings(){
-        List<User> users = iUserService.queryAllServings();
-        List<PersonalInformation> personalInformationList = new ArrayList<>();
-        for (User user:users
-             ) {
-            PersonalInformation per = iPersonalInformationService.queryOneByUserid(user.getId());
-            if (per!=null) {
-                Dept dept;
-                if (per.getDepid()!=null) {
-                    dept = iDeptService.queryOneDepByDepid(per.getDepid());
-                    if (dept!=null) {
-                        per.setDepname(dept.getDepname());
-                    } else {
-                        per.setDepname("此员工没有员工！");
-                    }
-                }
-                per.setTruename(user.getTruename());
-                personalInformationList.add(per);
-            }else {
-                continue;
-            }
-        }
-        return personalInformationList;
+    public List<Map> queryAllServings(){
+        return iUserService.queryAllServings();
     }
 
 }

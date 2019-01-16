@@ -2,7 +2,7 @@ package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.entity.hr_entity.ChangeInformation;
-import com.elex.oa.entity.hr_entity.ReadChangeinformationExcel;
+import com.elex.oa.entity.hr_entity.readexcel.ReadChangeinformationExcel;
 import com.elex.oa.service.hr_service.IChangeInformationService;
 import com.elex.oa.service.hr_service.IUserService;
 import com.github.pagehelper.PageInfo;

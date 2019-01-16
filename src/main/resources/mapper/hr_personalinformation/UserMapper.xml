@@ -126,6 +126,21 @@
 		ORDER BY
 			CONVERT (truename USING gbk) ASC
 	</select>
+	
+	<select id="queryAllServings" resultType="java.util.Map">
+		SELECT IFNULL(dep.depname,"")AS depname,u.truename AS truename,u.id AS userid
+		FROM tb_id_user u
+		LEFT JOIN tb_id_personalinformation per ON per.userid=u.id
+		LEFT JOIN tb_id_department dep ON dep.id=per.depid
+		WHERE u.state=1
+		ORDER BY CONVERT (u.truename USING gbk) ASC
+	</select>
+
+	<select id="selectAllEmployeeONOrderByEmployeenumber" resultType="java.lang.String">
+		select employeenumber from tb_id_user
+		where state=1
+		order by employeenumber
+	</select>
 
 	<update id="updateUser" parameterType="User" >
 		UPDATE tb_id_user

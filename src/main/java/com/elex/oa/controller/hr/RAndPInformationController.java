@@ -1,7 +1,7 @@
 package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSONArray;
-import com.elex.oa.entity.hr_entity.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.RAndPInformation;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
 import com.elex.oa.service.hr_service.IRAndPInformationService;

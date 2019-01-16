@@ -33,7 +33,6 @@
 		<result property="f_xm" column="F_XM" />
 	</resultMap>
 
-
 	<select id="selectNamesByDateAndState" resultType="java.lang.String">
 		select distinct F_TBR_NAME from w_gzrz1
 		where F_TBRQ BETWEEN #{date1} and #{date2}
@@ -97,7 +96,7 @@
 					F_YJLXFS,
 					F_TXRQ
 				FROM
-					w_lyspd2
+					w_luysqd
 				WHERE
 					PARENT_ID_ IS NULL AND INST_STATUS_='SUCCESS_END'
 	</select>
@@ -125,14 +124,15 @@
 					F_YJLXFS,
 					F_TXRQ
 				FROM
-					w_lyspd2
+					w_luysqd
 				WHERE
 					ID_=#{id}
 	</select>
 
 	<update id="updateLysqd" parameterType="java.lang.String">
-		UPDATE w_lyspd2
+		UPDATE w_luysqd
 		SET PARENT_ID_='SUCCESS_END'
 		WHERE ID_=#{id}
 	</update>
+
 </mapper>

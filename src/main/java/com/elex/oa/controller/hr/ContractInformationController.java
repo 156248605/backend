@@ -3,9 +3,10 @@ package com.elex.oa.controller.hr;
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.readexcel.ReadContractExcel;
 import com.elex.oa.service.hr_service.*;
 import com.elex.oa.util.hr_util.HrUtils;
-import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -16,14 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -210,7 +206,7 @@ public class ContractInformationController {
                 contractInformation1.setContracttype(hRsetContracttype.getDatavalue());
             }
             try {
-                contractInformation1.setContractage(IDcodeUtil.getContractage(contractInformation1.getStartdate(), contractInformation1.getEnddate()));
+                contractInformation1.setContractage(hrUtils.getContractage(contractInformation1.getStartdate(), contractInformation1.getEnddate()));
             } catch (Exception e) {
                 e.printStackTrace();
             }

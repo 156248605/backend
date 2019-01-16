@@ -4,6 +4,7 @@ import com.elex.oa.dao.hr.IDimissionInformationDao;
 import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.entity.hr_entity.DimissionInformation;
 import com.elex.oa.service.hr_service.IHRsetService;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +25,8 @@ import java.util.Scanner;
 public class OaApplicationTests {
 	@Resource
 	IDimissionInformationDao iDimissionInformationDao;
+	@Resource
+	HrUtils hrUtils;
 
 
 	@Test
@@ -31,7 +34,7 @@ public class OaApplicationTests {
 		System.out.println("input:");
 		Scanner scanner = new Scanner(System.in);
 		String birthday = scanner.nextLine();
-		System.out.println(IDcodeUtil.getAge(birthday));
+		System.out.println(hrUtils.getAge(birthday));
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.elex.oa.service.hr_service;
 
 
-import com.elex.oa.entity.hr_entity.CostInformation;
+import com.elex.oa.entity.hr_entity.costinformation.CostInformation;
 
 /**
  * @Author:ShiYun;

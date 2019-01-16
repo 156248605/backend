@@ -1,7 +1,6 @@
 package com.elex.oa.entity.restructure_hrentity;
 
-import com.elex.oa.entity.hr_entity.DeptLog;
-import com.elex.oa.entity.hr_entity.ReadBaseExcel;
+import com.elex.oa.entity.hr_entity.readexcel.ReadBaseExcel;
 import com.elex.oa.util.hr_util.ExcelUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

@@ -16,8 +16,8 @@ public class AppProperties {
     @Autowired
     private Environment env;
 
-    public String getAttachmentRealpath(){
-        return env.getProperty("attachment.realpath");
+    public String getProperty(String paramName){
+        return env.getProperty(paramName);
     }
 
 

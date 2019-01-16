@@ -4,10 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.costinformation.CostInformation;
+import com.elex.oa.entity.hr_entity.manageinformation.ManageInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.readexcel.ReadDeplogExcel;
 import com.elex.oa.service.hr_service.*;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
-import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.elex.oa.util.hr_util.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -58,6 +61,8 @@ public class DepartmentInformationController {
 
     @Autowired
     IPerandpostrsService iPerandpostrsService;
+    @Autowired
+    HrUtils hrUtils;
 
     /**
      *@Author:ShiYun;
@@ -828,7 +833,7 @@ public class DepartmentInformationController {
             personalInformation.setIdcode(baseInformation.getIdcode());
             personalInformation.setBirthday(baseInformation.getBirthday());
             try {
-                personalInformation.setAge(IDcodeUtil.getAge(baseInformation.getBirthday()));
+                personalInformation.setAge(hrUtils.getAge(baseInformation.getBirthday()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -874,7 +879,7 @@ public class DepartmentInformationController {
             personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
             if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
                 try {
-                    personalInformation.setWorkingage(IDcodeUtil.getWorkingage(baseInformation.getFirstworkingtime()));
+                    personalInformation.setWorkingage(hrUtils.getWorkingage(baseInformation.getFirstworkingtime()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -905,14 +910,14 @@ public class DepartmentInformationController {
                     postids.add(perAndPost.getPostid());
                 }
             }
-            personalInformation.setPostnames(IDcodeUtil.getArrayToString(strs,";"));
+            personalInformation.setPostnames(hrUtils.getArrayToString(strs,";"));
             personalInformation.setPostids(postids);
             if (ihRsetService.queryById(manageInformation.getPostlevelid())!=null) {
                 personalInformation.setPostlevel(ihRsetService.queryById(manageInformation.getPostlevelid()).getDatavalue());
             }
             personalInformation.setEntrydate(manageInformation.getEntrydate());
             try {
-                personalInformation.setSn(IDcodeUtil.getCompanyAge(manageInformation.getEntrydate()));
+                personalInformation.setSn(hrUtils.getCompanyAge(manageInformation.getEntrydate()));
             } catch (Exception e) {
                 e.printStackTrace();
             }

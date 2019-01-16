@@ -1,8 +1,8 @@
 package com.elex.oa.dao.hr;
 
-import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.hr_entity.DimissionInformation;
-import com.elex.oa.entity.hr_entity.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,22 +25,22 @@ public interface IPersonalInformationDao {
      *@Description:根据条件查询人事信息
      *@Date: 18:07 2018\4\8 0008
      */
-    public List<PersonalInformation> selectByConditions(PersonalInformation personalInformation);
-    public List<PersonalInformation> selectByConditions2(DimissionInformation dimissionInformation);
+    List<PersonalInformation> selectByConditions(PersonalInformation personalInformation);
+    List<PersonalInformation> selectByConditions2(DimissionInformation dimissionInformation);
     /**
      *@Author:ShiYun;
      *@Description:根据ID查询人事信息
      *@Date: 18:08 2018\4\8 0008
      */
-    public PersonalInformation selectById(Integer id);//不包括离职的
+    PersonalInformation selectById(Integer id);//不包括离职的
 
-    public PersonalInformation selectById2(Integer id);//包括离职的
+    PersonalInformation selectById2(Integer id);//包括离职的
     /**
      *@Author:ShiYun;
      *@Description:根据员工ID查询人事信息
      *@Date: 11:03 2018\4\9 0009
      */
-    public PersonalInformation selectByUserid(Integer userid);
+    PersonalInformation selectByUserid(Integer userid);
 
     /**
      *@Author:ShiYun;
@@ -63,7 +63,7 @@ public interface IPersonalInformationDao {
      *@Description:修改人事信息的主要信息
      *@Date: 16:14 2018\4\11 0011
      */
-    public void updateOne(PersonalInformation personalInformation);
+    void updateOne(PersonalInformation personalInformation);
 
     /**
      *@Author:ShiYun;
@@ -103,4 +103,8 @@ public interface IPersonalInformationDao {
     List<String> selectAllidcodes();
     List<String> selectAllages();
     List<String> selectAllworkingages();
+
+    List<Map<String, Object>> selectUseridTruenameDepnameByDepid(Integer depid);
+
+    List<PersonalInformationExport> queryPersonalInformationsByNull();
 }

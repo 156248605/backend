@@ -8,8 +8,10 @@ import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.entity.reportObstacles.ObstaclesQueryInfo;
 import com.elex.oa.service.reportObstacles.IObstaclesInfoService;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -83,5 +85,29 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
         }
         return new PageInfo<>(obstaclesInfoList);
     }
+
+    @Override
+    public Object changeObstaclesState(String id, String flag) {
+        //过滤条件
+        if(StringUtils.isBlank(id) || StringUtils.isBlank(flag))return RespUtil.successResp("500","修改失败！","id,flag都不能为空");
+        ObstaclesInfo obstaclesInfo = iObstaclesInfoDao.selectByPrimaryKey(id);
+        if(null==obstaclesInfo)return RespUtil.successResp("500","修改失败！","id所在报障不存在！");
+        //修改状态
+        if(flag.equals(ReportObstaclesCommons.OBSTACLES_FIND)){
+            obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_FIND);
+        }else if(flag.equals(ReportObstaclesCommons.OBSTACLES_OFF)){
+            obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_OFF);
+        }else {
+            return RespUtil.successResp("500","修改失败！","flag报障状态错误！");
+        }
+        try {
+            iObstaclesInfoDao.updateByPrimaryKeySelective(obstaclesInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","修改失败！","报障状态修改失败！");
+        }
+        return RespUtil.successResp("200","修改成功！",null);
+    }
+
 
 }

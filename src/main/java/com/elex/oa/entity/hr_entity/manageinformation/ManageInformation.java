@@ -1,4 +1,4 @@
-package com.elex.oa.entity.hr_entity;
+package com.elex.oa.entity.hr_entity.manageinformation;
 
 import javax.persistence.Id;
 import javax.persistence.Table;

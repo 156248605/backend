@@ -59,7 +59,6 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
                 contractInformation.setUserids(userids);
             }
         }
-        contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getContractage()));
         int pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         int pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         PageHelper.startPage(pageNum,pageSize);
@@ -119,7 +118,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
             }
             //获得合同期限
             try {
-                contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
+                contractInformation.setContractage(hrUtils.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
             } catch (Exception e) {
                 System.out.println("获得合同期限失败！");
             }
@@ -166,7 +165,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     @Override
     public Integer addOne(ContractInformation contractInformation){
         try {
-            contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate()));
+            contractInformation.setContractage(hrUtils.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate()));
             iContractInformationDao.insertOne(contractInformation);
         } catch (Exception e) {
             e.printStackTrace();
@@ -236,7 +235,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         //获得办理人姓名
         contractInformation.setTransactortruename(hrUtils.getTruenameByUserid(contractInformation.getTransactoruserid()));
         //获得合同期限
-        contractInformation.setContractage(IDcodeUtil.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
+        contractInformation.setContractage(hrUtils.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
         return contractInformation;
     }
 

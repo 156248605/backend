@@ -1,5 +1,8 @@
 package com.elex.oa.util.hr_util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,7 +43,6 @@ public class CalendarUtil {
     private final static String START_DATE = "19000130";
     //阳历日期计算终点(2049腊月廿九)
     private final static String END_DATE = "20500122";
-
 
     /**
      * 计算阴历 {@code year}年闰哪个月 1-12 , 没闰传回 0
@@ -283,6 +285,7 @@ public class CalendarUtil {
         Date startDate = null;
         if(solarDate.compareTo(START_DATE)<0 || solarDate.compareTo(END_DATE)>0){
             throw new Exception("所传时间必须在1900/01/30和2050/01/22之间，超出范围只能等下期版本更新！");
+
         }
         try {
             myDate = formatter.parse(solarDate);

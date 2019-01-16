@@ -1,6 +1,5 @@
 package com.elex.oa.util.hr_util;
 
-import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.business.ITrackInfoDao;
 import com.elex.oa.dao.hr.IDeptDao;
 import com.elex.oa.dao.hr.IHRsetDao;
@@ -13,7 +12,7 @@ import com.elex.oa.dao.restructure_hr.IPostinfoDao;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.HRset;
-import com.elex.oa.entity.hr_entity.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -59,6 +59,10 @@ public class HrUtils {
     IPostinfoDao iPostinfoDao;
     @Resource
     IPersonalinfoDao iPersonalinfoDao;
+    @Resource
+    IDcodeUtil iDcodeUtil;
+    @Autowired
+    AppProperties appProperties;
 
     //根据tb_hr_set表中id查询tb_data_dictionary表中datacode字段（仅仅迁移数据用，已过时）
     public String getDatacodeByHrsetid(Integer hrsetid) {
@@ -134,6 +138,20 @@ public class HrUtils {
         Date date = new Date(l);
         String dateString = sdf.format(date);
         return dateString;
+    }
+
+    //根据格式为："yyyy/MM/dd HH:mm:ss"的日期字符串获得毫秒值
+    public Long getTimeMillisByDateString(String date){
+        if(StringUtils.isBlank(date))return null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(sdf.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return calendar.getTimeInMillis();
     }
 
     //根据数据字典的编号获得相应的值
@@ -295,7 +313,7 @@ public class HrUtils {
         if(StringUtils.isBlank(firstworkingtime))return null;
         String workingage = null;
         try {
-            workingage = IDcodeUtil.getWorkingage(firstworkingtime);
+            workingage = iDcodeUtil.getWorkingage(firstworkingtime);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -303,11 +321,27 @@ public class HrUtils {
         return workingage;
     }
 
-    //根据数据字典值获得相应的HRsetID
+    //根据数据字典值获得相应的HRsetID（没有则返回null）
     public Integer getHrsetidByDatavalue(String datatype,String datavalue){
         if(StringUtils.isBlank(datatype) || StringUtils.isBlank(datavalue))return null;
         List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(datatype, datavalue));
         if(null==hRsetList || hRsetList.size()==0)return null;
+        return hRsetList.get(0).getId();
+    }
+
+    //根据数据字典值获得相应的HRsetID（没有则添加）
+    public Integer getHrsetidByDatavalueOrInsert(String datatype,String datavalue){
+        if(StringUtils.isBlank(datatype) || StringUtils.isBlank(datavalue))return null;
+        List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(datatype, datavalue));
+        if(null==hRsetList || hRsetList.size()==0){
+            //没有则添加
+            HRset hRset = new HRset();
+            hRset.setDatatype(datatype);
+            hRset.setDatacode(datatype+"_"+System.currentTimeMillis());
+            hRset.setDatavalue(datavalue);
+            ihRsetDao.insertOne(hRset);
+            return hRset.getId();
+        }
         return hRsetList.get(0).getId();
     }
 
@@ -321,20 +355,91 @@ public class HrUtils {
 
     //获取后台版本号
     public String getOaBackendVersion(){
-        InputStream is = HrUtils.class.getClassLoader().getResourceAsStream("application.properties");
-        Properties prop = new Properties();
-        try {
-            prop.load(is);
-            String versionbackend = prop.getProperty("versionbackend");
-            return versionbackend;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return appProperties.getProperty("versionbackend");
     }
 
     //获取图片初始位置
     public String getInitFilesPosition(){
-        return ConfigUtils.getProperty ("attachment.realpath");
+        return appProperties.getProperty("attachment.realpath");
+    }
+
+    //根据身份证号码获得出生日期
+    public String getBirthday(String idcode) {
+        return iDcodeUtil.getBirthday(idcode);
+    }
+
+    //根据时间获得当月的头尾日期
+    public Map getFirstAndLastDate(Date date){
+        return iDcodeUtil.getFirstAndLastDate(date);
+    }
+
+    //根据日期获得某月的天数
+    public Integer getDaysByDate(Date date){
+       return iDcodeUtil.getDaysByDate(date);
+    }
+
+    //根据日期获得几号
+    public Integer getDaycodeByDate(String str){
+        return Integer.parseInt(str.split("/|-")[2].substring(0,2));
+    }
+
+    //根据年龄获得出生日期
+    public HashMap<String, String> getBirthdayByAge(String age) {
+        return iDcodeUtil.getBirdayByAge(age);
+    }
+
+    //获得年龄
+    public String getAge(String birthday){
+        return iDcodeUtil.getAge(birthday);
+    }
+
+    //获得生肖
+    public String getChinesecs(String idcode) {
+        return iDcodeUtil.getChinesecs(idcode);
+    }
+
+    //获得星座
+    public String getConstellation(String idcode) {
+        return iDcodeUtil.getConstellation(idcode);
+    }
+
+    //获得性别
+    public String getSex(String idcode) {
+        return iDcodeUtil.getSex(idcode);
+    }
+
+    //获得户籍
+    public String getProvinceByIdcode(String idcode) {
+        return iDcodeUtil.getProvinceByIdcode(idcode);
+    }
+
+    //获得合同期限
+    public String getContractage(String startdate,String enddate){
+        return iDcodeUtil.getContractage(startdate,enddate);
+    }
+
+    //将数组拼接成字符串
+    public String getArrayToString(List<String> strs, String s) {
+        return iDcodeUtil.getArrayToString(strs,s);
+    }
+
+    //获得工作年限
+    public String getWorkingage(String firstworkingtime) {
+        return iDcodeUtil.getWorkingage(firstworkingtime);
+    }
+
+    //获得司龄
+    public String getCompanyAge(String entrydate) {
+        return iDcodeUtil.getCompanyAge(entrydate);
+    }
+
+    //获得转正时间
+    public String getZhuanzhengdate(String entrydate) {
+        return iDcodeUtil.getZhuanzhengdate(entrydate);
+    }
+
+    //将字符串分割成字符串数组
+    public List<String> getStringToListString(String post_list, String s) {
+        return iDcodeUtil.getStringToListString(post_list,s);
     }
 }

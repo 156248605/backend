@@ -1,5 +1,6 @@
-package com.elex.oa.entity.hr_entity;
+package com.elex.oa.entity.hr_entity.readexcel;
 
+import com.elex.oa.entity.hr_entity.ContractInformation;
 import com.elex.oa.util.hr_util.ExcelUtil;
 import org.apache.poi.ss.usermodel.*;
 /**

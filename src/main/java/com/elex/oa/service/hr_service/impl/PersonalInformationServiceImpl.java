@@ -1,11 +1,19 @@
 package com.elex.oa.service.hr_service.impl;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.costinformation.CostInformation;
+import com.elex.oa.entity.hr_entity.costinformation.CostInformationAddInfo;
+import com.elex.oa.entity.hr_entity.manageinformation.ManageInformation;
+import com.elex.oa.entity.hr_entity.manageinformation.ManageInformationAddInfo;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
+import com.elex.oa.entity.hr_entity.readexcel.ReadPersonalinformationExcel;
 import com.elex.oa.entity.project.Staff;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
-import com.elex.oa.util.hr_util.IDcodeUtil;
+import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.util_per.SpellUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.*;
 
@@ -49,6 +58,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     IOtherInformationDao iOtherInformationDao;
     @Resource
     IChangeInformaionDao iChangeInformaionDao;
+    @Resource
+    IGzrzDao iGzrzDao;
 
     @Override
     public List<Staff> queryUseridTruenameDepidDepnamePerid() {
@@ -80,7 +91,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
 
         PersonalInformation personalInformation = (PersonalInformation) paramMap.get("entity");
         if (personalInformation.getAge()!=null && !"".equals(personalInformation.getAge())) {
-            HashMap<String, String> birdayByAge = IDcodeUtil.getBirdayByAge(personalInformation.getAge());
+            HashMap<String, String> birdayByAge = hrUtils.getBirthdayByAge(personalInformation.getAge());
             personalInformation.setSbir(birdayByAge.get("sbir"));
             personalInformation.setEbir(birdayByAge.get("ebir"));
         }//年龄转换成出生日期
@@ -88,13 +99,13 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             Map<String,String> ageMap = new HashMap<>();
             for (String age:personalInformation.getAges()
                  ) {
-                HashMap<String, String> birdayByAge = IDcodeUtil.getBirdayByAge(age);
+                HashMap<String, String> birdayByAge = hrUtils.getBirthdayByAge(age);
                 ageMap.put(birdayByAge.get("sbir"),birdayByAge.get("ebir"));
             }
             personalInformation.setAgeMap(ageMap);
         }//年龄数组转换成出生日期
         if (personalInformation.getWorkingage()!=null && !"".equals(personalInformation.getWorkingage())) {
-            HashMap<String, String> fwtByWorkingage = IDcodeUtil.getFwtByWorkingage(personalInformation.getWorkingage());
+            HashMap<String, String> fwtByWorkingage = hrUtils.getBirthdayByAge(personalInformation.getWorkingage());
             personalInformation.setSfwt(fwtByWorkingage.get("sfwt"));
             personalInformation.setEfwt(fwtByWorkingage.get("efwt"));
         }//工龄转换成首次工作时间
@@ -102,7 +113,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             Map<String,String> workingageMap = new HashMap<>();
             for (String workingage:personalInformation.getWorkingages()
                  ) {
-                HashMap<String, String> fwtByWorkingage = IDcodeUtil.getBirdayByAge(workingage);
+                HashMap<String, String> fwtByWorkingage = hrUtils.getBirthdayByAge(workingage);
                 workingageMap.put(fwtByWorkingage.get("sbir"),fwtByWorkingage.get("ebir"));
             }
             personalInformation.setWorkingageMap(workingageMap);
@@ -156,8 +167,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     }
 
     @Override
-    public Map<String, List<String>> getParamsForFirstpage() {
-        Map<String, List<String>> resp = new HashMap<>();
+    public Map<String, Object> getParamsForFirstpage() {
+        Map<String, Object> resp = new HashMap<>();
         //get depnames
         List<String> depnames = iDeptDao.selectAllDepnames();
         resp.put("depnames",depnames);
@@ -165,19 +176,17 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         List<String> postnames = iPostDao.getAllPostnames();
         resp.put("postnames",postnames);
         //get truenames and usernames
-        List<User> userList = iUserDao.selectAll();
+        List<User> userList = iUserDao.selectAllEmployeeON();
         List<String> truenames = new ArrayList<>();
         List<String> usernames = new ArrayList<>();
-        List<String> employeenumbers = new ArrayList<>();
         for (User u:userList
              ) {
             truenames.add(u.getTruename());
             usernames.add(u.getUsername());
-            employeenumbers.add(u.getEmployeenumber());
         }
         resp.put("truenames",truenames);
         resp.put("usernames",usernames);
-        resp.put("employeenumbers",employeenumbers);
+        resp.put("employeenumbers",iUserDao.selectAllEmployeeONOrderByEmployeenumber());
         //get hrsets
         List<HRset> hRsetList = ihRsetDao.selectAll();
         List<String> races = new ArrayList<>();
@@ -246,6 +255,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         PersonalInformation personalInformation = iPersonalInformationDao.selectById(id);
         return personalInformation;
     }
+
     //包括离职的
     @Override
     public PersonalInformation queryOneById2(Integer id) {
@@ -261,6 +271,17 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     @Override
     public PersonalInformation queryOneByUserid(Integer userid) {
         PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(userid);
+        return personalInformation;
+    }
+
+    @Override
+    public PersonalInformation queryOneByUsername(String username) {
+        if(StringUtils.isBlank(username))return null;
+        User user = iUserDao.selectByUsername(username);
+        if(null==user)return null;
+        PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
+        if(null==personalInformation)return null;
+        personalInformation = getDetailPersonalinformationByCursorPersonalinformation(personalInformation);
         return personalInformation;
     }
 
@@ -414,33 +435,6 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     }
 
     @Override
-    public Map<String, Object> addOtherInformation(PersonalInformation personalInformation) {
-        //添加人事其它信息->然后将OtherinformationID塞入personal表中->获取返回值为同步数据而准备
-        if(null==personalInformation)return null;
-        if(null==personalInformation.getUserid())return null;
-        PersonalInformation personalInformationTemp = iPersonalInformationDao.selectByUserid(personalInformation.getUserid());
-        if(null==personalInformationTemp)return null;
-        Integer perid = personalInformationTemp.getId();
-        // 添加人事信息的其它信息
-        OtherInformation otherInformation = new OtherInformation();
-        otherInformation.setCompanyemail(personalInformation.getCompanyemail());
-        otherInformation.setPrivateemail(personalInformation.getPrivateemail());
-        otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
-        otherInformation.setEmergencyrpid(hrUtils.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
-        otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
-        otherInformation.setAddress(personalInformation.getAddress());
-        otherInformation.setRemark(personalInformation.getRemark());
-        Integer otherinformationid = iOtherInformationDao.insertOne(otherInformation);
-        // 将OtherinformationID塞入personal表中
-        personalInformation.setId(perid);
-        personalInformation.setTelphoneid(hrUtils.getHrsetidByDatavalue("telphone",personalInformation.getTelphone()));
-        iPersonalInformationDao.updateOne(personalInformation);
-        //下面的数据是为了同步赵宏钢的人事信息所准备的
-        Map<String, Object> respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), getPostidsByPerid(perid));
-        return respMap;
-    }
-
-    @Override
     public Map<String, Object> updateManageInformation(PersonalInformation personalInformation, String transactorusername) {
         if(null==personalInformation)return null;
         if(StringUtils.isBlank(transactorusername))return null;
@@ -582,20 +576,108 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     }
 
     @Override
-    public Map<String, Object> addManageInformation(PersonalInformation personalInformation) {
+    public Map<String, Object> addBaseInformation(PersonalInformation personalInformation, HttpServletRequest request,String lysqdid) {
+        Map<String, Object> respMap = new HashMap<>();
+        //工号校验
+        Map<String, Object> respmapByEmployeenumber = getRespmapByEmployeenumber(personalInformation.getEmployeenumber(), respMap);
+        if(null != respmapByEmployeenumber)return respmapByEmployeenumber;
+        //登录ID的校验
+        Map<String, Object> respmapByUsername = getRespmapByUsername(personalInformation.getUsername(), respMap);
+        if(null!=respmapByUsername)return respmapByUsername;
+        //校验身份证号码
+        String birthday = hrUtils.getBirthday(personalInformation.getIdcode());
+        if(null==birthday){
+            respMap.put(personalInformation.getIdcode(),":身份证号码填写错误！");
+            return respMap;
+        }
+        //添加tb_id_user表
+        User user = getUserByPersonalinformation(personalInformation);
+        try {
+            iUserDao.insertOne(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            respMap.put(personalInformation.getUsername(),":添加账号信息失败！");
+            return respMap;
+        }
+        //添加tb_id_personalinformation表
+        personalInformation.setUserid(user.getId());
+        personalInformation.setSex(hrUtils.getSex(personalInformation.getIdcode()));
+        personalInformation.setDepid(personalInformation.getDepid());
+        try {
+            iPersonalInformationDao.insertOne(personalInformation);
+        } catch (Exception e) {
+            e.printStackTrace();//需要回滚
+            iUserDao.deleteById(user.getId());
+            respMap.put(personalInformation.getUsername(),":添加人事概要失败！");
+            return respMap;
+        }
+        //添加tb_id_baseinformation
+        // 将三个文件在服务器中保存下来
+        personalInformation.setUserphoto(hrUtils.getSignalFileAddress(request,"userphoto2","/hr/image/"));
+        personalInformation.setIdphoto1(hrUtils.getSignalFileAddress(request,"idphoto11","/hr/image/"));
+        personalInformation.setIdphoto2(hrUtils.getSignalFileAddress(request,"idphoto22","/hr/image/"));
+        BaseInformation baseInformation = getBaseinformationByPersonalinformation(personalInformation, false);
+        //四个需要'选择录入'的字段
+        if (StringUtils.isNotBlank(personalInformation.getByyxvalue()) && "选择录入".equals(personalInformation.getByyxvalue())) {
+            baseInformation.setByyxid(hrUtils.getHrsetidByDatavalueOrInsert("byyx",personalInformation.getByyx()));
+        }if (StringUtils.isNotBlank(personalInformation.getSxzyvalue()) && "选择录入".equals(personalInformation.getSxzyvalue())) {
+            baseInformation.setSxzyid(hrUtils.getHrsetidByDatavalueOrInsert("sxzy",personalInformation.getSxzy()));
+        }if (StringUtils.isNotBlank(personalInformation.getZyzsnamevalue()) && "选择录入".equals(personalInformation.getZyzsnamevalue())) {
+            baseInformation.setZyzsnameid(hrUtils.getHrsetidByDatavalueOrInsert("zyzsname",personalInformation.getZyzsname()));
+        }if (StringUtils.isNotBlank(personalInformation.getParentcompanyvalue()) && "选择录入".equals(personalInformation.getParentcompanyvalue())) {
+            baseInformation.setParentcompanyid(hrUtils.getHrsetidByDatavalueOrInsert("parentcompany",personalInformation.getParentcompany()));
+        }
+        try {
+            iBaseInformationDao.insertOne(baseInformation);
+        } catch (Exception e) {
+            e.printStackTrace();//需要回归
+            iUserDao.deleteById(user.getId());
+            iPersonalInformationDao.deleteById(personalInformation.getId());
+            respMap.put(personalInformation.getUsername(),":添加人事基本信息失败！");
+            return respMap;
+        }
+        //更新tb_id_personalinformation表
+        personalInformation.setBaseinformationid(baseInformation.getId());
+        try {
+            iPersonalInformationDao.updateOne(personalInformation);
+        } catch (Exception e) {
+            e.printStackTrace();//需要回归
+            iUserDao.deleteById(user.getId());
+            iPersonalInformationDao.deleteById(personalInformation.getId());
+            iBaseInformationDao.deleteById(baseInformation.getId());
+            respMap.put(personalInformation.getUsername(),":在人事概要中关联基本信息失败！");
+            return respMap;
+        }
+        //更新录用审批单
+        if(StringUtils.isNotBlank(lysqdid)){
+            try {
+                iGzrzDao.updateLysqd(lysqdid);
+            } catch (Exception e) {
+                e.printStackTrace();
+                respMap.put(personalInformation.getUsername(),":更新录用审批单失败！");
+                return respMap;
+            }
+        }
+        respMap.put("userid",user.getId());
+        return respMap;
+    }
+
+    @Override
+    public Map<String, Object> addManageInformation(ManageInformationAddInfo manageInformationAddInfo) {
         //前期校验
-        if(null==personalInformation)return null;
-        if(null==personalInformation.getUserid())return null;
-        PersonalInformation personalInformationTemp = iPersonalInformationDao.selectByUserid(personalInformation.getUserid());
+        if(null==manageInformationAddInfo)return null;
+        if(null==manageInformationAddInfo.getUserid())return null;
+        PersonalInformation personalInformationTemp = iPersonalInformationDao.selectByUserid(manageInformationAddInfo.getUserid());
         if(null==personalInformationTemp)return null;
         //保存人事管理信息
-        ManageInformation manageInformation = getManageinformationByPersonalinformation(personalInformation);
+        ManageInformation manageInformation = getManageinformationByManageinformationAddInfo(manageInformationAddInfo);
         iManageInformationDao.insertOne(manageInformation);
         //修改人事的主体信息
         personalInformationTemp.setManageinformationid(manageInformation.getId());
+        personalInformationTemp.setDepid(manageInformationAddInfo.getDepid());
         iPersonalInformationDao.updateOne(personalInformationTemp);
         //添加人事、岗位关系表的信息
-        List<Integer> postids = personalInformation.getPostids();
+        List<Integer> postids = manageInformationAddInfo.getPostids();
         if (postids != null && postids.size() != 0) {
             for (Integer postid : postids) {
                 PerAndPostRs perAndPostRs = new PerAndPostRs(personalInformationTemp.getId(), postid);
@@ -603,7 +685,63 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             }
         }
         //添加返回信息
-        Map<String, Object> respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), postids);
+        /*Map<String, Object> respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), postids);*/
+        return new HashMap<>();
+    }
+
+    @Override
+    public Object addCostInformation(CostInformationAddInfo costInformationAddInfo) {
+        //过滤信息
+        if(null==costInformationAddInfo)return RespUtil.successResp("500","信息全为空！",null);
+        if(null==costInformationAddInfo.getUserid())return RespUtil.successResp("500","登录ID为空！",null);
+        PersonalInformation personalInformationTemp = iPersonalInformationDao.selectByUserid(costInformationAddInfo.getUserid());
+        if(null==personalInformationTemp)return RespUtil.successResp("500","登录ID所在的人事信息不存在！",null);
+        //添加成本信息
+        CostInformation costInformation = getCostinformationByCostinformationAddInfo(costInformationAddInfo);
+        try {
+            iCostInformationDao.insertOne(costInformation);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","添加成本信息失败！",null);
+        }
+        //更新人事概要信息
+        personalInformationTemp.setCostinformationid(costInformation.getId());
+        try {
+            iPersonalInformationDao.updateOne(personalInformationTemp);
+        } catch (Exception e) {
+            e.printStackTrace();//需要回滚
+            iCostInformationDao.deleteById(costInformation.getId());
+            return RespUtil.successResp("500","更新概要信息失败！",null);
+        }
+        return RespUtil.successResp("200","添加成功！",null);
+    }
+
+    @Override
+    public Map<String, Object> addOtherInformation(PersonalInformation personalInformation) {
+        //添加人事其它信息->然后将OtherinformationID塞入personal表中->获取返回值为同步数据而准备
+        if(null==personalInformation)return null;
+        if(null==personalInformation.getUserid())return null;
+        PersonalInformation personalInformationTemp = iPersonalInformationDao.selectByUserid(personalInformation.getUserid());
+        if(null==personalInformationTemp)return null;
+        Integer perid = personalInformationTemp.getId();
+        // 添加人事信息的其它信息
+        OtherInformation otherInformation = new OtherInformation();
+        otherInformation.setMobilephone(personalInformation.getMobilephone());
+        otherInformation.setTelphoneid(hrUtils.getHrsetidByDatavalue(Commons.HRSET_TELPHONE,personalInformation.getTelphone()));
+        otherInformation.setCompanyemail(personalInformation.getCompanyemail());
+        otherInformation.setPrivateemail(personalInformation.getPrivateemail());
+        otherInformation.setEmergencycontract(personalInformation.getEmergencycontract());
+        otherInformation.setEmergencyrpid(hrUtils.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
+        otherInformation.setEmergencyphone(personalInformation.getEmergencyphone());
+        otherInformation.setAddress(personalInformation.getAddress());
+        otherInformation.setRemark(personalInformation.getRemark());
+        Integer otherinformationid = iOtherInformationDao.insertOne(otherInformation);
+        // 将OtherinformationID塞入personal表中
+        personalInformationTemp.setOtherinformationid(otherInformation.getId());
+        personalInformationTemp.setTelphoneid(otherInformation.getTelphoneid());
+        iPersonalInformationDao.updateOne(personalInformationTemp);
+        //下面的数据是为了同步赵宏钢的人事信息所准备的
+        Map<String, Object> respMap = getSynchronizeMapByUserid(personalInformation.getUserid(), getPostidsByPerid(perid));
         return respMap;
     }
 
@@ -612,12 +750,12 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(StringUtils.isBlank(idcode) || "null".equals(idcode))return null;
         Map<String,Object> respMap = new HashMap<>();
         try {
-            respMap.put("birthday",IDcodeUtil.getBirthday(idcode));
-            respMap.put("age",IDcodeUtil.getAge((String)respMap.get("birthday")));
-            respMap.put("chinesecs",IDcodeUtil.getChinesecs(idcode));
-            respMap.put("constellation",IDcodeUtil.getConstellation(idcode));
-            respMap.put("sex",IDcodeUtil.getSex(idcode));
-            respMap.put("household_register",IDcodeUtil.getProvinceByIdcode(idcode));
+            respMap.put("birthday",hrUtils.getBirthday(idcode));
+            respMap.put("age",hrUtils.getAge((String)respMap.get("birthday")));
+            respMap.put("chinesecs",hrUtils.getChinesecs(idcode));
+            respMap.put("constellation",hrUtils.getConstellation(idcode));
+            respMap.put("sex",hrUtils.getSex(idcode));
+            respMap.put("household_register",hrUtils.getProvinceByIdcode(idcode));
         } catch (Exception e) {
             e.printStackTrace();
             respMap = null;
@@ -625,6 +763,91 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return respMap;
     }
 
+    @Override
+    public List<Map<String,Object>> queryPersonalInformationsByDepid(Integer depid) {
+        if(null==depid)return null;
+        Dept depTemp = iDeptDao.selectDeptByDepid(depid);
+        if(null==depTemp)return null;
+        List<Map<String,Object>> respList = iPersonalInformationDao.selectUseridTruenameDepnameByDepid(depid);
+        return respList;
+    }
+
+    @Override
+    public List<PersonalInformationExport> queryPersonalInformationsByNull() {
+        return iPersonalInformationDao.queryPersonalInformationsByNull();
+    }
+
+    //获取添加成本信息
+    private CostInformation getCostinformationByCostinformationAddInfo(CostInformationAddInfo costInformationAddInfo){
+        if(null==costInformationAddInfo)return null;
+        CostInformation costInformation = new CostInformation();
+        costInformation.setSalarystandardid(hrUtils.getHrsetidByDatavalue(Commons.HRSET_SALARY,costInformationAddInfo.getSalary()));
+        costInformation.setKhhid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_KHH,costInformationAddInfo.getKhh()));
+        costInformation.setSalaryaccount(costInformationAddInfo.getSalaryaccount());
+        costInformation.setSbjndid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_SBJND,costInformationAddInfo.getSbjnd()));
+        costInformation.setSbcode(costInformationAddInfo.getSbcode());
+        costInformation.setGjjcode(costInformationAddInfo.getGjjcode());
+        costInformation.setSsbid(hrUtils.getHrsetidByDatavalue(Commons.HRSET_SSB,costInformationAddInfo.getSsb()));
+        costInformation.setSsbgscdid(hrUtils.getHrsetidByDatavalue(Commons.HRSET_SSBGSCD,costInformationAddInfo.getSsbgscd()));
+        costInformation.setSsbgrcdid(hrUtils.getHrsetidByDatavalue(Commons.HRSET_SSBGRCD,costInformationAddInfo.getSsbgrcd()));
+        costInformation.setGjjid(hrUtils.getHrsetidByDatavalue(Commons.HRSET_GJJ,costInformationAddInfo.getGjj()));
+        costInformation.setGjjgscdid(hrUtils.getHrsetidByDatavalue(Commons.HRSET_GJJGSCD,costInformationAddInfo.getGjjgscd()));
+        costInformation.setGjjgrcdid(hrUtils.getHrsetidByDatavalue(Commons.HRSET_GJJGRCD,costInformationAddInfo.getGjjgrcd()));
+        return costInformation;
+    }
+
+    //获取添加管理信息
+    private ManageInformation getManageinformationByManageinformationAddInfo(ManageInformationAddInfo manageInformationAddInfo) {
+        if(null==manageInformationAddInfo)return null;
+        ManageInformation manageInformation = new ManageInformation();
+        manageInformation.setPostrankid(hrUtils.getHrsetidByDatavalue("rank",manageInformationAddInfo.getPostrank()));
+        manageInformation.setEmployeetypeid(hrUtils.getHrsetidByDatavalue("employeetype",manageInformationAddInfo.getEmployeetype()));
+        manageInformation.setEntrydate(manageInformationAddInfo.getEntrydate());
+        manageInformation.setZhuanzhengdate(StringUtils.isBlank(manageInformationAddInfo.getZhuanzhengdate())?hrUtils.getZhuanzhengdate(manageInformationAddInfo.getEntrydate()):manageInformationAddInfo.getZhuanzhengdate());
+        return manageInformation;
+    }
+
+    //根据人事信息获得账号信息
+    private User getUserByPersonalinformation(PersonalInformation personalInformation) {
+        User user = new User();
+        user.setId(personalInformation.getId());
+        user.setIsactive(personalInformation.getIsactive());
+        user.setUsername(personalInformation.getUsername());
+        user.setTruename(personalInformation.getTruename());
+        user.setPassword(Commons.USER_INIT_PASSWORD);
+        user.setEmployeenumber(personalInformation.getEmployeenumber());
+        user.setState(Commons.EMPLOYEE_ON);
+        return user;
+    }
+
+    //登录ID校验(返回null正常)
+    private Map<String,Object> getRespmapByUsername(String username,Map<String,Object> respMap){
+        if(StringUtils.isBlank(username)){
+            respMap.put(username,"登录ID不能为空！");
+            return respMap;
+        }
+        User userByUsername = iUserDao.selectByUsername(username);
+        if(null!=userByUsername){
+            respMap.put(userByUsername.getEmployeenumber(),":登录ID已存在！");
+            return respMap;
+        }
+        return null;
+    }
+
+    //工号校验(返回null正常)
+    private Map<String, Object> getRespmapByEmployeenumber(String employeenumber,Map<String, Object> respMap){
+        //工号校验
+        if(StringUtils.isBlank(employeenumber)){
+            respMap.put("#","工号不能为空！");
+            return respMap;
+        }
+        User userByEmployeenumber = iUserDao.selectByEmployeenumber(employeenumber);
+        if(null!=userByEmployeenumber){
+            respMap.put(userByEmployeenumber.getEmployeenumber(),":工号已存在！");
+            return respMap;
+        }
+        return null;
+    }
 
     //将导入的数据更新到数据库中
     private Map<String, String> importOnePersonalInformation_UPDATE(PersonalInformation newPer, Map<String, String> goToPost, PersonalInformation oldPer) {
@@ -872,7 +1095,14 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         baseInformation.setIdphoto1(personalInformation.getIdphoto1());
         baseInformation.setIdphoto2(personalInformation.getIdphoto2());
         baseInformation.setEnglishname(personalInformation.getEnglishname());
-        baseInformation.setIdcode(personalInformation.getIdcode());
+
+        baseInformation.setIdcode(personalInformation.getIdcode());//设置身份证号码、性别、生日、生肖、星座、户籍
+        baseInformation.setSex(hrUtils.getSex(personalInformation.getIdcode()));
+        baseInformation.setBirthday(hrUtils.getBirthday(personalInformation.getIdcode()));
+        baseInformation.setConstellation(hrUtils.getConstellation(personalInformation.getIdcode()));
+        baseInformation.setChinesecs(hrUtils.getChinesecs(personalInformation.getIdcode()));
+        baseInformation.setHj(hrUtils.getProvinceByIdcode(personalInformation.getIdcode()));
+
         baseInformation.setRaceid(hrUtils.getHrsetidByDatavalue("race",personalInformation.getRace()));
         baseInformation.setMarriage(personalInformation.getMarriage());
         baseInformation.setChildrenid(hrUtils.getHrsetidByDatavalue("children",personalInformation.getChildren()));
@@ -1075,20 +1305,16 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return respMap;
     }
 
-    //将人事信息装换成管理信息
+    //将人事信息转换成管理信息
     private ManageInformation getManageinformationByPersonalinformation(PersonalInformation personalInformation){
         if(null==personalInformation)return null;
         ManageInformation manageInformation = new ManageInformation();
-        try {
-            manageInformation.setId(personalInformation.getManageinformationid());
-            /*manageInformation.setPostlevelid(hrUtils.getHrsetidByDatavalue("postlevel",personalInformation.getPostlevel()));*/
-            manageInformation.setPostrankid(hrUtils.getHrsetidByDatavalue("rank",personalInformation.getPostrank()));
-            manageInformation.setEmployeetypeid(hrUtils.getHrsetidByDatavalue("employeetype",personalInformation.getEmployeetype()));
-            manageInformation.setEntrydate(personalInformation.getEntrydate());
-            manageInformation.setZhuanzhengdate(StringUtils.isBlank(personalInformation.getZhuanzhengdate())?IDcodeUtil.getZhuanzhengdate(personalInformation.getEntrydate()):personalInformation.getZhuanzhengdate());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        manageInformation.setId(personalInformation.getManageinformationid());
+        /*manageInformation.setPostlevelid(hrUtils.getHrsetidByDatavalue("postlevel",personalInformation.getPostlevel()));*/
+        manageInformation.setPostrankid(hrUtils.getHrsetidByDatavalue("rank",personalInformation.getPostrank()));
+        manageInformation.setEmployeetypeid(hrUtils.getHrsetidByDatavalue("employeetype",personalInformation.getEmployeetype()));
+        manageInformation.setEntrydate(personalInformation.getEntrydate());
+        manageInformation.setZhuanzhengdate(StringUtils.isBlank(personalInformation.getZhuanzhengdate())?hrUtils.getZhuanzhengdate(personalInformation.getEntrydate()):personalInformation.getZhuanzhengdate());
         return manageInformation;
     }
 
@@ -1148,7 +1374,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         List<Post> postList = getPostListByPostids(postids);
         postList = sortPostListByPostid(postList);
         List<String> postListInfo = getPostListInfoByPostList(postList);
-        String postinfo = IDcodeUtil.getArrayToString(postListInfo, ";");
+        String postinfo = hrUtils.getArrayToString(postListInfo, ";");
         if(null!=postinfo){
             respMap.put("postinfo",postinfo);
         }
@@ -1189,7 +1415,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         List<Post> postList = getPostListByPersonalinformationid(personalInformation.getId());
         postList = sortPostListByPostid(postList);
         List<String> postListInfo = getPostListInfoByPostList(postList);
-        String postinfo = IDcodeUtil.getArrayToString(postListInfo, ";");
+        String postinfo = hrUtils.getArrayToString(postListInfo, ";");
         if(null!=postinfo){
             respMap.put("postinfo",postinfo);
         }
@@ -1349,7 +1575,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             personalInformation.setEmployeetype(hrUtils.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
             personalInformation.setEntrydate(manageInformation.getEntrydate());
             personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
-            personalInformation.setSn(IDcodeUtil.getWorkingage(personalInformation.getEntrydate()));
+            personalInformation.setSn(hrUtils.getWorkingage(personalInformation.getEntrydate()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1368,7 +1594,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             personalInformation.setBirthday(baseInformation.getBirthday());
             personalInformation.setConstellation(baseInformation.getConstellation());
             personalInformation.setChinesecs(baseInformation.getChinesecs());
-            personalInformation.setAge(IDcodeUtil.getAge(personalInformation.getBirthday()));
+            personalInformation.setAge(hrUtils.getAge(personalInformation.getBirthday()));
             personalInformation.setRace(hrUtils.getDatavalueByHrsetid(baseInformation.getRaceid()));
             personalInformation.setMarriage(baseInformation.getMarriage());
             personalInformation.setChildren(hrUtils.getDatavalueByHrsetid(baseInformation.getChildrenid()));

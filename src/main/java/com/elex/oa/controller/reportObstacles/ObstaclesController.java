@@ -4,6 +4,7 @@ import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.entity.reportObstacles.ObstaclesQueryInfo;
 import com.elex.oa.service.reportObstacles.IObstaclesInfoService;
+import com.elex.oa.util.hr_util.AppProperties;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
@@ -85,5 +86,14 @@ public class ObstaclesController {
             ObstaclesQueryInfo obstaclesQueryInfo
     ){
         return iObstaclesInfoService.queryObstaclesByConditions(pageNum,pageSize,obstaclesQueryInfo);
+    }
+
+    @RequestMapping("/changeObstaclesState")
+    @ResponseBody
+    public Object changeObstaclesState(
+            @RequestParam("id") String id,
+            @RequestParam("flag") String flag
+    ){
+        return iObstaclesInfoService.changeObstaclesState(id,flag);
     }
 }
