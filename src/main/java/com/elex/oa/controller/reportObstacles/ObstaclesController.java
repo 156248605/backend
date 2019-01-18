@@ -92,8 +92,10 @@ public class ObstaclesController {
     @ResponseBody
     public Object changeObstaclesState(
             @RequestParam("id") String id,
-            @RequestParam("flag") String flag
+            @RequestParam("flag") String flag,
+            @RequestParam(value = "location_description" ,required = false)String location_description,
+            @RequestParam(value = "process_description" ,required = false)String process_description
     ){
-        return iObstaclesInfoService.changeObstaclesState(id,flag);
+        return iObstaclesInfoService.changeObstaclesState(id,flag,location_description,process_description);
     }
 }

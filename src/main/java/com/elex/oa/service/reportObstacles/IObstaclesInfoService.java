@@ -13,5 +13,5 @@ public interface IObstaclesInfoService {
 
     PageInfo<ObstaclesInfo> queryObstaclesByConditions(Integer pageNum, Integer pageSize, ObstaclesQueryInfo obstaclesQueryInfo);
 
-    Object changeObstaclesState(String id,String flag);
+    Object changeObstaclesState(String id, String flag, String location_description, String process_description);
 }

@@ -87,7 +87,7 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
     }
 
     @Override
-    public Object changeObstaclesState(String id, String flag) {
+    public Object changeObstaclesState(String id, String flag, String location_description, String process_description) {
         //过滤条件
         if(StringUtils.isBlank(id) || StringUtils.isBlank(flag))return RespUtil.successResp("500","修改失败！","id,flag都不能为空");
         ObstaclesInfo obstaclesInfo = iObstaclesInfoDao.selectByPrimaryKey(id);
@@ -95,8 +95,10 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
         //修改状态
         if(flag.equals(ReportObstaclesCommons.OBSTACLES_FIND)){
             obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_FIND);
+            obstaclesInfo.setLocation_description(location_description);
         }else if(flag.equals(ReportObstaclesCommons.OBSTACLES_OFF)){
             obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_OFF);
+            obstaclesInfo.setProcess_description(process_description);
         }else {
             return RespUtil.successResp("500","修改失败！","flag报障状态错误！");
         }
