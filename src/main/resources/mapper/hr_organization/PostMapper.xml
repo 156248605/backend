@@ -149,7 +149,7 @@
 
 	<update id="deleteByChangeStatePOST_OFF" parameterType="java.lang.Integer">
 		UPDATE tb_id_post
-		SET state=1
+		SET state=0
 		WHERE id=#{id}
 	</update>
 
