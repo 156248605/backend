@@ -7,22 +7,37 @@ package com.elex.oa.common.hr;
  * @Modify By:
  */
 public interface Commons {
+    String HRSET_BYYX = "byyx";
+    String HRSET_CHILDREN = "children";
     String HRSET_CONTRACTTYPE = "contracttype";
     String HRSET_DIMISSION_TYPE = "dimissiontype";
     String HRSET_DIMISSION_DIRECTION = "dimissiondirection";
     String HRSET_DIMISSION_REASON = "dimissionreason";
     String HRSET_DEPTYPE = "deptype";
+    String HRSET_EMERGENCYRP = "emergencyrp";
+    String HRSET_EMPLOYEETYPE = "employeetype";
+    String HRSET_FLA = "fla";
     String HRSET_FUNCTIONALTYPE = "functionaltype";
     String HRSET_GJJ = "gjj";
     String HRSET_GJJGSCD = "gjjgscd";
     String HRSET_GJJGRCD = "gjjgrcd";
     String HRSET_KHH = "khh";
+    String HRSET_PARENTCOMPANY= "parentcompany";
+    String HRSET_POSTTITLE= "posttitle";
+    String HRSET_PYFS= "pyfs";
+    String HRSET_RACE = "race";
+    String HRSET_RANK = "rank";
     String HRSET_SALARY = "salary";
     String HRSET_SBJND = "sbjnd";
     String HRSET_SSB = "ssb";
     String HRSET_SSBGSCD = "ssbgscd";
     String HRSET_SSBGRCD = "ssbgrcd";
+    String HRSET_SXZY = "sxzy";
     String HRSET_TELPHONE = "telphone";
+    String HRSET_ZGXL = "zgxl";
+    String HRSET_ZYZSNAME = "zyzsname";
+    String HRSET_ZYZSTYPE = "zyzstype";
+    String HRSET_ZZMM = "zzmm";
     String CLUE_ON = "线索开启状态";
     String CLUE_OFF = "线索关闭状态";
     String CLUE_TRANSFOR_OPPORTUNITY = "线索已转商机状态";

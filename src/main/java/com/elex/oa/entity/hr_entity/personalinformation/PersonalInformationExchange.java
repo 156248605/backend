@@ -6,7 +6,7 @@ package com.elex.oa.entity.hr_entity.personalinformation;
  * @Date 2019\1\15 0015 15:24
  * @Version 1.0
  **/
-public class PersonalInformationExport {
+public class PersonalInformationExchange {
     private String employeenumber;//员工号
     private String username;//登录ID
     private String truename;//姓名
@@ -82,7 +82,7 @@ public class PersonalInformationExport {
     //格式为：(之间用英文分号相连)[合同编号-合同开始时间-合同结束时间-合同类型-合同附件地址-合同备注-变更人员工号-变更日期]
     private String contractlist;
 
-    public PersonalInformationExport() {
+    public PersonalInformationExchange() {
     }
 
     public String getEmployeenumber() {

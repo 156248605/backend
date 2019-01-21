@@ -5,7 +5,7 @@ import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.hr_entity.costinformation.CostInformationAddInfo;
 import com.elex.oa.entity.hr_entity.manageinformation.ManageInformationAddInfo;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
-import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange;
 import com.elex.oa.service.hr_service.*;
 import com.elex.oa.util.hr_util.AppProperties;
 import com.elex.oa.util.hr_util.HrUtils;
@@ -296,7 +296,7 @@ public class PersonalInformationController {
     @RequestMapping("/queryPersonalInformationsByNull")
     @ResponseBody
     public Object queryPersonalInformationsByNull() {
-        List<PersonalInformationExport> respList = iPersonalInformationService.queryPersonalInformationsByNull();
+        List<PersonalInformationExchange> respList = iPersonalInformationService.queryPersonalInformationsByNull();
         return null!=respList?RespUtil.successResp("200","请求成功！",respList):RespUtil.successResp("500","请求失败！",null);
     }
 

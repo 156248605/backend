@@ -442,4 +442,12 @@ public class HrUtils {
     public List<String> getStringToListString(String post_list, String s) {
         return iDcodeUtil.getStringToListString(post_list,s);
     }
+
+    //根据员工号获得账号ID
+    public Integer getUseridByEmployeenumber(String employeenumber) {
+        if(StringUtils.isBlank(employeenumber))return null;
+        User user = iUserDao.selectByEmployeenumber(employeenumber);
+        if(null==user)return null;
+        return user.getId();
+    }
 }

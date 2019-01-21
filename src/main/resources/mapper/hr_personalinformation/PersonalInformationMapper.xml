@@ -461,7 +461,7 @@
 		WHERE dep.id = #{depid}
 	</select>
 
-	<select id="queryPersonalInformationsByNull" resultType="com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport">
+	<select id="queryPersonalInformationsByNull" resultType="com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange">
 		SELECT
 			u.employeenumber AS employeenumber,
 			u.username AS username,

@@ -2,7 +2,7 @@ package com.elex.oa.dao.hr;
 
 import com.elex.oa.entity.hr_entity.DimissionInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
-import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -106,5 +106,5 @@ public interface IPersonalInformationDao {
 
     List<Map<String, Object>> selectUseridTruenameDepnameByDepid(Integer depid);
 
-    List<PersonalInformationExport> queryPersonalInformationsByNull();
+    List<PersonalInformationExchange> queryPersonalInformationsByNull();
 }

@@ -8,7 +8,7 @@ import com.elex.oa.entity.hr_entity.costinformation.CostInformationAddInfo;
 import com.elex.oa.entity.hr_entity.manageinformation.ManageInformation;
 import com.elex.oa.entity.hr_entity.manageinformation.ManageInformationAddInfo;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
-import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange;
 import com.elex.oa.entity.hr_entity.readexcel.ReadPersonalinformationExcel;
 import com.elex.oa.entity.project.Staff;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
@@ -60,6 +60,10 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     IChangeInformaionDao iChangeInformaionDao;
     @Resource
     IGzrzDao iGzrzDao;
+    @Resource
+    IDimissionInformationDao iDimissionInformationDao;
+    @Resource
+    IContractInformationDao iContractInformationDao;
 
     @Override
     public List<Staff> queryUseridTruenameDepidDepnamePerid() {
@@ -549,24 +553,24 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Map<String, String> goToPost = new HashMap<>();
         //先获取对象集合
         ReadPersonalinformationExcel readExcel = new ReadPersonalinformationExcel();
-        List<PersonalInformation> personalInformationList = readExcel.getExcelInfo(multipartFile);
+        List<PersonalInformationExchange> personalInformationExchangeList = readExcel.getExcelInfo(multipartFile);
 
         //对导入的数据进行处理
-        if (personalInformationList != null) {
-            for (PersonalInformation personalInformation:personalInformationList
+        if (personalInformationExchangeList != null) {
+            for (PersonalInformationExchange personalInformationExchange : personalInformationExchangeList
                  ) {
                 //先获得员工号和姓名
-                String employeenumber = personalInformation.getEmployeenumber();
-                String truename = personalInformation.getTruename();
-                if(StringUtils.isBlank(employeenumber) || StringUtils.isBlank(truename))continue;//员工号/姓名不存在则跳过（无效数据）
+                String employeenumber = personalInformationExchange.getEmployeenumber();
+                String truename = personalInformationExchange.getTruename();
+                if(StringUtils.isBlank(employeenumber) || StringUtils.isBlank(truename))continue;//员工号或姓名不存在则跳过（无效数据）
                 PersonalInformation per = iPersonalInformationDao.selectByEmployeenumber(employeenumber);
                 //判断是添加还是修改
                 if (null==per) {
                     //添加数据
-                    goToPost = importOnePersonalInformation_ADD(personalInformation, goToPost);
+                    goToPost = importOnePersonalInformation_ADD(personalInformationExchange, goToPost);
                 } else{
                     //说明信息已经存在，下面查询名字是否正确
-                    goToPost = importOnePersonalInformation_UPDATE(personalInformation, goToPost, per);
+                    goToPost = importOnePersonalInformation_UPDATE(personalInformationExchange, goToPost, per);
                 }
             }
         }
@@ -773,7 +777,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     }
 
     @Override
-    public List<PersonalInformationExport> queryPersonalInformationsByNull() {
+    public List<PersonalInformationExchange> queryPersonalInformationsByNull() {
         return iPersonalInformationDao.queryPersonalInformationsByNull();
     }
 
@@ -850,36 +854,42 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     }
 
     //将导入的数据更新到数据库中
-    private Map<String, String> importOnePersonalInformation_UPDATE(PersonalInformation newPer, Map<String, String> goToPost, PersonalInformation oldPer) {
-        String truename = newPer.getTruename();
+    private Map<String, String> importOnePersonalInformation_UPDATE(PersonalInformationExchange personalInformationExchange, Map<String, String> goToPost, PersonalInformation oldPer) {
+        PersonalInformation newPer = new PersonalInformation();
+        String truename = personalInformationExchange.getTruename();
         oldPer = getDetailPersonalinformationByCursorPersonalinformation(oldPer);
         newPer.setId(oldPer.getId());
         if (truename.equals(oldPer.getTruename())) {
+            newPer.setUserid(oldPer.getUserid());
+            newPer.setEmployeenumber(personalInformationExchange.getEmployeenumber());
             //名字正确，下面更新信息
-            //1.先更新User表的信息(tb_id_user)===========================================================
+            //1.先更新User表的信息(tb_id_user)==========================================================================
             Boolean userB = false;
-            User user = new User(oldPer.getUserid(),newPer.getUsername(),newPer.getTruename(),null,newPer.getEmployeenumber());
-            if (null!=newPer.getIsactive() && newPer.getIsactive().intValue() != oldPer.getIsactive().intValue()) {
-                user.setIsactive(newPer.getIsactive());
+            User user = new User(oldPer.getUserid(), personalInformationExchange.getUsername(), personalInformationExchange.getTruename(),null, personalInformationExchange.getEmployeenumber());
+            Integer newIsactive = "激活".equals(personalInformationExchange.getIsactive())?1:0;
+            Integer newState = "在职".equals(personalInformationExchange.getIsatwork())?1:0;
+            if (null!=newIsactive && newIsactive.intValue() != oldPer.getIsactive().intValue()) {
+                user.setIsactive(newIsactive);
                 userB = true;
             }
-            if (null!=newPer.getState() && newPer.getState().intValue()!=oldPer.getState().intValue()) {
-                user.setState(newPer.getState());
+            if (null!=newState && newState.intValue()!=oldPer.getState().intValue()) {
+                user.setState(newState);
                 userB = true;
             }
             if (userB) {
                 iUserDao.updateUser(user);
             }
 
-            //2.在更新Baseinformation表的信息(tb_id_baseinformation)==================================================
+            //2.在更新Baseinformation表的信息(tb_id_baseinformation)====================================================
             newPer.setBaseinformationid(oldPer.getBaseinformationid());
-            BaseInformation baseInformation = getBaseinformationByPersonalinformation(newPer, true);
+            BaseInformation baseInformation = getBaseinformationByPersonalinformationExport(personalInformationExchange);
+            baseInformation.setId(oldPer.getBaseinformationid());
             iBaseInformationDao.updateOne(baseInformation);
 
-            //3.更新管理信息表（tb_id_managerinformation）=============================================================================
-            /*ManageInformation manageInformation = new ManageInformation();*/
+            //3.更新管理信息表（tb_id_managerinformation）==============================================================
             newPer.setManageinformationid(oldPer.getManageinformationid());
-            ManageInformation manageInformation = getManageinformationByPersonalinformation(newPer);
+            ManageInformation manageInformation = getManageinformationByPersonalinformationExport(personalInformationExchange);
+            manageInformation.setId(oldPer.getManageinformationid());
             Boolean isUpdateForManageinformation = validateEntityBeforeModifyOne(manageInformation);
             if (isUpdateForManageinformation) {
                 iManageInformationDao.updateOne(manageInformation);
@@ -887,37 +897,41 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
 
             //4.更新成本信息表（tb_id_costinformation）=============================================================================
             newPer.setCostinformationid(oldPer.getCostinformationid());
-            CostInformation costInformation = getCostinformationByPersonalinformation(newPer, true);
+            CostInformation costInformation = getCostinformationByPersonalinformationExport(personalInformationExchange);
+            costInformation.setId(oldPer.getCostinformationid());
             iCostInformationDao.updateOne(costInformation);
 
             //5.更新其它信息表（tb_id_otherinformation）=============================================================================
             newPer.setOtherinformationid(oldPer.getOtherinformationid());
-            OtherInformation otherInformation = getOtherinformationByPersonalinformation(newPer,true);
+            OtherInformation otherInformation = getOtherinformationByPersonalinformationExport(personalInformationExchange);
+            otherInformation.setId(oldPer.getOtherinformationid());
             iOtherInformationDao.updateOne(otherInformation);
 
             //6.更新人事主要信息表（tb_id_personalinformation）=============================================================================
             newPer.setId(oldPer.getId());
             //普通字段的添加或更新(部门)----------
-            if(StringUtils.isNotBlank(newPer.getDepcode()) && !"部门编号还未添加".equals(newPer.getDepcode())){
-                Dept dept = iDeptDao.selectDeptByDeptcode(newPer.getDepcode());
+            if(StringUtils.isNotBlank(personalInformationExchange.getDepcode())){
+                Dept dept = iDeptDao.selectDeptByDeptcode(personalInformationExchange.getDepcode());
                 if(null==dept){
-                    goToPost.put(newPer.getUsername() + ":" + newPer.getDepcode(), "员工所在部门编号不存在，请手动添加/修改");
+                    goToPost.put(personalInformationExchange.getUsername() + ":" + personalInformationExchange.getDepcode(), "员工所在部门编号不存在，请手动添加/修改");
                 }else {
                     newPer.setDepid(dept.getId());
                 }
-            }else if(StringUtils.isNotBlank(newPer.getDepname())){
-                List<Dept> deptList = iDeptDao.selectDeptByDeptname(newPer.getDepname());
+            }else if(StringUtils.isNotBlank(personalInformationExchange.getDepname())){
+                List<Dept> deptList = iDeptDao.selectDeptByDeptname(personalInformationExchange.getDepname());
                 if(null==deptList || deptList.size()==0){
-                    goToPost.put(newPer.getUsername() + ":" + newPer.getDepname(), "员工所在部门名称不存在，请手动添加/修改");
+                    goToPost.put(personalInformationExchange.getUsername() + ":" + personalInformationExchange.getDepname(), "员工所在部门名称不存在，请手动添加/修改");
                 }else if(deptList.size()>1){
-                    goToPost.put(newPer.getUsername() + ":" + newPer.getDepname(), "员工所在部门名称存在多个，请手动添加/修改");
+                    goToPost.put(personalInformationExchange.getUsername() + ":" + personalInformationExchange.getDepname(), "员工所在部门名称存在多个，请手动添加/修改");
                 }else {
                     newPer.setDepid(deptList.get(0).getId());
                 }
             }
             //HR字段的添加或更新(办公电话)----------
             newPer.setTelphoneid(otherInformation.getTelphoneid());
-            //普通字段的添加或更新(移动电话/手机号)----------//不用特殊处理
+            //普通字段的添加或更新(移动电话/手机号)----------
+            newPer.setSex(baseInformation.getSex());
+            newPer.setMobilephone(personalInformationExchange.getMobilephone());
             iPersonalInformationDao.updateOne(newPer);
 
             //7.更新人事岗位关系表主要信息表（tb_hr_per_and_post_rs）=============================================================================
@@ -928,21 +942,23 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             ) {
                 oldMap.put(p.getPostid(), p.getPerid());
             }
+
             Map<Integer, Integer> newMap = new HashMap<>();
-            String[] postnames = newPer.getPostnames().split("[兼;]");
-            for (String postname : postnames
+            String[] postnameAndPostcodeArr = personalInformationExchange.getPostlist().split("[兼;]");
+            for (String postnameAndPostcode : postnameAndPostcodeArr
             ) {
-                Post post = iPostDao.selectPostByPostname(postname);
+                Post post = iPostDao.selectPostByPostcode(postnameAndPostcode.split("-")[1]);
+                /*Post post = iPostDao.selectPostByPostname(postname);*/
                 if (null!=post) {
                     newMap.put(post.getId(), oldPer.getId());
                 } else {
-                    goToPost.put(newPer.getEmployeenumber(),"所在的岗位不存在["+postname+"]");
+                    goToPost.put(newPer.getEmployeenumber(),"所在的岗位不存在["+postnameAndPostcode+"]");
                 }
             }
             //分两步：1)没有的添加上;2)多余的删除
             //1)没有的添加上;
             newMap.forEach((postid, perid) -> {
-                boolean postBoolean = oldMap.containsKey(postid) && oldMap.get(postid).equals(perid);
+                boolean postBoolean = oldMap.containsKey(postid) && oldMap.get(postid).intValue()==perid.intValue();
                 if (!postBoolean) {
                     iPerandpostrsDao.insertOne(new PerAndPostRs(perid, postid));
                 }
@@ -954,6 +970,38 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
                     iPerandpostrsDao.deleteOneByPeridAndPostid(perid, postid);
                 }
             });
+
+            //8.更新离职信息表
+            if(user.getState().intValue()==0){
+                //有则更新、没有则添加
+                DimissionInformation dimissionInformation = getDimissioninformationByPersonalinformationExport(personalInformationExchange);
+                DimissionInformation dimissionInformationTemp = iDimissionInformationDao.selectByUserid(dimissionInformation.getDimissionuserid());
+                if(null==dimissionInformationTemp){
+                    iDimissionInformationDao.insertOne(dimissionInformation);
+                }else {
+                    dimissionInformation.setId(dimissionInformationTemp.getId());
+                    iDimissionInformationDao.updateOne(dimissionInformation);
+                }
+            }
+
+            //9.添加合同信息
+            if(StringUtils.isNotBlank(personalInformationExchange.getContractlist())){
+                String[] strs = personalInformationExchange.getContractlist().split(";");
+                //合同编号--合同开始时间--合同结束时间--合同类型--合同附件地址--合同备注--变更人员工号--变更日期
+                if(strs.length>0){
+                    for (String str:strs
+                    ) {
+                        ContractInformation contractInformation = getContractinformationByPersonalinformationExport(str, user.getId());
+                        ContractInformation contractInformationTemp = iContractInformationDao.selectOneByContractcode(contractInformation.getContractcode());
+                        if(null==contractInformationTemp){
+                            iContractInformationDao.insertOne(contractInformation);
+                        }else {
+                            contractInformation.setId(contractInformationTemp.getId());
+                            iContractInformationDao.updateOne(contractInformation);
+                        }
+                    }
+                }
+            }
         } else {
             goToPost.put(newPer.getEmployeenumber() + ":" + newPer.getTruename() + ":" + oldPer.getTruename(), "此工号的员工姓名与数据库中的不一致！");
         }
@@ -961,47 +1009,49 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     }
 
     //将导入的数据添加到数据库中
-    private Map<String, String> importOnePersonalInformation_ADD(PersonalInformation personalInformation, Map<String, String> goToPost) {
+    private Map<String, String> importOnePersonalInformation_ADD(PersonalInformationExchange personalInformationExchange, Map<String, String> goToPost) {
+        PersonalInformation personalInformation = new PersonalInformation();
+        personalInformation.setEmployeenumber(personalInformationExchange.getEmployeenumber());
         //添加User表的信息(tb_id_user)===========================================================
-        User user = iUserDao.selectByEmployeenumber(personalInformation.getEmployeenumber());
+        User user = iUserDao.selectByEmployeenumber(personalInformationExchange.getEmployeenumber());
         if (user != null) {
             //先将脏数据清除
-            iUserDao.deleteById(user.getId());
-        } else {
-            user.setIsactive(personalInformation.getIsactive()==null?1:personalInformation.getIsactive());
-            user.setTruename(personalInformation.getTruename());
-            user.setUsername(StringUtils.isNotBlank(personalInformation.getUsername())?personalInformation.getUsername():personalInformation.getTruename());
-            user.setPassword("123456");
-            user.setState(1);
-            Integer userid = iUserDao.insertOne(user);
-            personalInformation.setUserid(userid);
+            iUserDao.deleteByPrimaryKey(user.getId());
         }
+        user.setIsactive("激活".equals(personalInformationExchange.getIsactive())?1:0);
+        user.setTruename(personalInformationExchange.getTruename());
+        user.setUsername(personalInformationExchange.getUsername());
+        user.setPassword("123456");
+        user.setState("在职".equals(personalInformationExchange.getIsatwork())?1:0);
+        iUserDao.insertOne(user);
+        personalInformation.setUserid(user.getId());
 
         //2.在添加Baseinformation表的信息(tb_id_baseinformation)==================================================
-        BaseInformation baseInformation = getBaseinformationByPersonalinformation(personalInformation,false);
-        Integer baseinformationid = iBaseInformationDao.insertOne(baseInformation);
+        BaseInformation baseInformation = getBaseinformationByPersonalinformationExport(personalInformationExchange);
+        iBaseInformationDao.insertOne(baseInformation);
         personalInformation.setSex(baseInformation.getSex());
-        personalInformation.setBaseinformationid(baseinformationid);
+        personalInformation.setBaseinformationid(baseInformation.getId());
 
         //3.添加管理信息表（tb_id_managerinformation）=============================================================================
-        ManageInformation manageInformation = getManageinformationByPersonalinformation(personalInformation);
-        Integer manageinformationid = iManageInformationDao.insertOne(manageInformation);
-        personalInformation.setManageinformationid(manageinformationid);
+        ManageInformation manageInformation = getManageinformationByPersonalinformationExport(personalInformationExchange);
+        iManageInformationDao.insertOne(manageInformation);
+        personalInformation.setManageinformationid(manageInformation.getId());
 
         //4.添加成本信息表（tb_id_costinformation）=============================================================================
-        CostInformation costInformation = getCostinformationByPersonalinformation(personalInformation,false);
-        Integer costinformationid = iCostInformationDao.insertOne(costInformation);
-        personalInformation.setCostinformationid(costinformationid);
+        CostInformation costInformation = getCostinformationByPersonalinformationExport(personalInformationExchange);
+        iCostInformationDao.insertOne(costInformation);
+        personalInformation.setCostinformationid(costInformation.getId());
 
         //5.添加其它信息表（tb_id_otherinformation）=============================================================================
-        /*OtherInformation otherInformation = new OtherInformation();*/
-        OtherInformation otherInformation = getOtherinformationByPersonalinformation(personalInformation,false);
-        Integer otherinformationid = iOtherInformationDao.insertOne(otherInformation);
-        personalInformation.setOtherinformationid(otherinformationid);
+        OtherInformation otherInformation = getOtherinformationByPersonalinformationExport(personalInformationExchange);
+        iOtherInformationDao.insertOne(otherInformation);
+        personalInformation.setOtherinformationid(otherInformation.getId());
+        personalInformation.setMobilephone(personalInformationExchange.getMobilephone());
+        personalInformation.setTelphoneid(otherInformation.getTelphoneid());
 
         //6.添加人事主要信息表（tb_id_personalinformation）=============================================================================
         //普通字段的添加或更新(部门)----------
-        if(StringUtils.isNotBlank(personalInformation.getDepcode()) && !"部门编号还未添加".equals(personalInformation.getDepcode())){
+        if(StringUtils.isNotBlank(personalInformation.getDepcode())){
             Dept dept = iDeptDao.selectDeptByDeptcode(personalInformation.getDepcode());
             if(null==dept){
                 goToPost.put(personalInformation.getUsername() + ":" + personalInformation.getDepcode(), "员工所在部门编号不存在，请手动添加/修改");
@@ -1019,23 +1069,23 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             }
         }
         //HR字段的添加或更新(办公电话)----------
-        personalInformation.setTelphoneid(otherInformation.getTelphoneid());
-        Integer personalinformationid = iPersonalInformationDao.insertOne(personalInformation);
+        iPersonalInformationDao.insertOne(personalInformation);
 
         //7.添加人事岗位关系表主要信息表（tb_hr_per_and_post_rs）=============================================================================
         Map<Integer, Integer> newMap = new HashMap<>();
         String[] postnames = new String[0];
-        if (personalInformation.getPostnames() != null && !"".equals(personalInformation.getPostnames())) {
-            postnames = personalInformation.getPostnames().split("[兼;]");
+        if (StringUtils.isNotBlank(personalInformationExchange.getPostlist())) {
+            postnames = personalInformationExchange.getPostlist().split("[兼;]");
         }
         if (postnames.length > 0) {
-            for (String postname : postnames
+            for (String postnameAndPostcode : postnames
             ) {
-                Post post = iPostDao.selectPostByPostname(postname);
+                /*Post post = iPostDao.selectPostByPostname(postnameAndPostcode);*/
+                Post post = iPostDao.selectPostByPostcode(postnameAndPostcode.split("-")[1]);
                 if (post != null) {
                     newMap.put(post.getId(), personalInformation.getId());
                 } else {
-                    goToPost.put(personalInformation.getEmployeenumber() + ":" + postname, "此岗位不存在，请联系管理员添加岗位或修改岗位信息！");
+                    goToPost.put(personalInformation.getEmployeenumber() + ":" + postnameAndPostcode, "此岗位不存在，请联系管理员添加岗位或修改岗位信息！");
                 }
             }
             newMap.forEach((postid, perid) -> {
@@ -1043,7 +1093,59 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
                 iPerandpostrsDao.insertOne(perAndPostRs);
             });
         }
+
+        //8.添加离职信息表
+        if(user.getState().intValue()==0){
+            DimissionInformation dimissionInformation = getDimissioninformationByPersonalinformationExport(personalInformationExchange);
+            iDimissionInformationDao.insertOne(dimissionInformation);
+        }
+
+        //9.添加合同信息
+        if(StringUtils.isNotBlank(personalInformationExchange.getContractlist())){
+            String[] strs = personalInformationExchange.getContractlist().split(";");
+            //合同编号--合同开始时间--合同结束时间--合同类型--合同附件地址--合同备注--变更人员工号--变更日期
+            if(strs.length>0){
+                for (String str:strs
+                     ) {
+                    ContractInformation contractInformation = getContractinformationByPersonalinformationExport(str, user.getId());
+                    iContractInformationDao.insertOne(contractInformation);
+                }
+            }
+        }
         return goToPost;
+    }
+
+    //根据per获得合同信息
+    private ContractInformation getContractinformationByPersonalinformationExport(String str, Integer userid) {
+        if(StringUtils.isBlank(str))return null;
+        String[] strList = str.split("--");
+        if(strList.length!=8)return null;
+        ContractInformation contractInformation = new ContractInformation();
+        contractInformation.setContractcode(strList[0]);
+        contractInformation.setUserid(userid);
+        contractInformation.setStartdate(strList[1]);
+        contractInformation.setEnddate(strList[2]);
+        contractInformation.setContracttypeid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_CONTRACTTYPE,strList[3]));
+        contractInformation.setAttachment(strList[4]);
+        contractInformation.setRemark(strList[5]);
+        contractInformation.setTransactoruserid(hrUtils.getUseridByEmployeenumber(strList[6]));
+        contractInformation.setTransdate(strList[7]);
+        contractInformation.setContractage(hrUtils.getContractage(strList[1],strList[2]));
+        return contractInformation;
+    }
+
+    //根据per获得离职信息
+    private DimissionInformation getDimissioninformationByPersonalinformationExport(PersonalInformationExchange personalInformationExchange) {
+        if(null== personalInformationExchange)return null;
+        DimissionInformation dimissionInformation = new DimissionInformation();
+        dimissionInformation.setDimissionuserid(hrUtils.getUseridByEmployeenumber(personalInformationExchange.getEmployeenumber()));
+        dimissionInformation.setLastworkingdate(personalInformationExchange.getLastworkingdate());
+        dimissionInformation.setDimissiontypeid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_DIMISSION_TYPE, personalInformationExchange.getDimissiontype()));
+        dimissionInformation.setDimissiondirectionid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_DIMISSION_DIRECTION, personalInformationExchange.getDimissiondirection()));
+        dimissionInformation.setDimissionreasonid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_DIMISSION_REASON, personalInformationExchange.getDimissionreason()));
+        dimissionInformation.setTransactoruserid(hrUtils.getUseridByEmployeenumber(personalInformationExchange.getDimission_transactoremployeenumber()));
+        dimissionInformation.setTransactiondate(personalInformationExchange.getDimission_transactiondate());
+        return dimissionInformation;
     }
 
     //根据per获得人事其它信息
@@ -1061,6 +1163,20 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         otherInformation.setAddress(personalInformation.getAddress());
         otherInformation.setRemark(personalInformation.getRemark());
         otherInformation.setEmergencyrpid(hrUtils.getHrsetidByDatavalue("emergencyrp",personalInformation.getEmergencyrp()));
+        return otherInformation;
+    }
+    private OtherInformation getOtherinformationByPersonalinformationExport(PersonalInformationExchange personalInformationExchange) {
+        if(null== personalInformationExchange)return null;
+        OtherInformation otherInformation = new OtherInformation();
+        otherInformation.setTelphoneid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_TELPHONE, personalInformationExchange.getTelphone()));
+        otherInformation.setMobilephone(personalInformationExchange.getMobilephone());
+        otherInformation.setCompanyemail(personalInformationExchange.getCompanyemail());
+        otherInformation.setPrivateemail(personalInformationExchange.getPrivateemail());
+        otherInformation.setEmergencycontract(personalInformationExchange.getEmergencycontract());
+        otherInformation.setEmergencyphone(personalInformationExchange.getEmergencyphone());
+        otherInformation.setAddress(personalInformationExchange.getAddress());
+        otherInformation.setRemark(personalInformationExchange.getRemark());
+        otherInformation.setEmergencyrpid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_EMERGENCYRP, personalInformationExchange.getEmergencyrp()));
         return otherInformation;
     }
 
@@ -1082,6 +1198,23 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         costInformation.setGjjid(hrUtils.getHrsetidByDatavalue("gjj",personalInformation.getGjj()));
         costInformation.setGjjgscdid(hrUtils.getHrsetidByDatavalue("gjjgscd",personalInformation.getGjjgscd()));
         costInformation.setGjjgrcdid(hrUtils.getHrsetidByDatavalue("gjjgrcd",personalInformation.getGjjgrcd()));
+        return costInformation;
+    }
+    private CostInformation getCostinformationByPersonalinformationExport(PersonalInformationExchange personalInformationExchange) {
+        if(null== personalInformationExchange)return null;
+        CostInformation costInformation = new CostInformation();
+        costInformation.setSalarystandardid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_SALARY, personalInformationExchange.getSalarystandard()));
+        costInformation.setKhhid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_KHH, personalInformationExchange.getKhh()));
+        costInformation.setSalaryaccount(personalInformationExchange.getSalaryaccount());
+        costInformation.setSbjndid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_SBJND, personalInformationExchange.getSbjnd()));
+        costInformation.setSbcode(personalInformationExchange.getSbcode());
+        costInformation.setGjjcode(personalInformationExchange.getGjjcode());
+        costInformation.setSsbid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_SSB, personalInformationExchange.getSsb()));
+        costInformation.setSsbgscdid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_SSBGSCD, personalInformationExchange.getSsbgscd()));
+        costInformation.setSsbgrcdid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_SSBGRCD, personalInformationExchange.getSsbgrcd()));
+        costInformation.setGjjid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_GJJ, personalInformationExchange.getGjj()));
+        costInformation.setGjjgscdid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_GJJGSCD, personalInformationExchange.getGjjgscd()));
+        costInformation.setGjjgrcdid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_GJJGRCD, personalInformationExchange.getGjjgrcd()));
         return costInformation;
     }
 
@@ -1118,6 +1251,58 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         baseInformation.setZyzsnameid(hrUtils.getHrsetidByDatavalue("zyzsname",personalInformation.getZyzsname()));
         baseInformation.setFirstworkingtime(personalInformation.getFirstworkingtime());
         baseInformation.setParentcompanyid(hrUtils.getHrsetidByDatavalue("parentcompany",personalInformation.getParentcompany()));
+        return baseInformation;
+    }
+    private BaseInformation getBaseinformationByPersonalinformationExport(PersonalInformationExchange personalInformationExchange){
+        if(null== personalInformationExchange)return null;
+        BaseInformation baseInformation = new BaseInformation();
+        baseInformation.setUserphoto(personalInformationExchange.getUserphoto());
+        baseInformation.setIdphoto1(personalInformationExchange.getIdphoto1());
+        baseInformation.setIdphoto2(personalInformationExchange.getIdphoto2());
+        baseInformation.setEnglishname(personalInformationExchange.getEnglishname());
+
+        baseInformation.setIdcode(personalInformationExchange.getIdcode());//设置身份证号码、性别、生日、生肖、星座、户籍(有则直接用没有则用身份证号解析)
+        if (StringUtils.isBlank(personalInformationExchange.getSex())) {
+            baseInformation.setSex(hrUtils.getSex(personalInformationExchange.getIdcode()));
+        } else {
+            baseInformation.setSex(personalInformationExchange.getSex());
+        }
+        if (StringUtils.isBlank(personalInformationExchange.getBirthday())) {
+            baseInformation.setBirthday(hrUtils.getBirthday(personalInformationExchange.getIdcode()));
+        } else {
+            baseInformation.setBirthday(personalInformationExchange.getBirthday());
+        }
+        if (StringUtils.isBlank(personalInformationExchange.getConstellation())) {
+            baseInformation.setConstellation(hrUtils.getConstellation(personalInformationExchange.getIdcode()));
+        } else {
+            baseInformation.setConstellation(personalInformationExchange.getConstellation());
+        }
+        if (StringUtils.isBlank(personalInformationExchange.getChinesecs())) {
+            baseInformation.setChinesecs(hrUtils.getChinesecs(personalInformationExchange.getIdcode()));
+        } else {
+            baseInformation.setChinesecs(personalInformationExchange.getChinesecs());
+        }
+        if (StringUtils.isBlank(personalInformationExchange.getHousehold_register())) {
+            baseInformation.setHj(hrUtils.getProvinceByIdcode(personalInformationExchange.getIdcode()));
+        } else {
+            baseInformation.setHj(personalInformationExchange.getHousehold_register());
+        }
+
+        baseInformation.setRaceid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_RACE, personalInformationExchange.getRace()));
+        baseInformation.setMarriage(personalInformationExchange.getMarriage());
+        baseInformation.setChildrenid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_CHILDREN, personalInformationExchange.getChildren()));
+        baseInformation.setZzmmid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_ZZMM, personalInformationExchange.getZzmm()));
+        baseInformation.setZgxlid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_ZGXL, personalInformationExchange.getZgxl()));
+        baseInformation.setByyxid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_BYYX, personalInformationExchange.getByyx()));
+        baseInformation.setSxzyid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_SXZY, personalInformationExchange.getSxzy()));
+        baseInformation.setPyfsid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_PYFS, personalInformationExchange.getPyfs()));
+        baseInformation.setFirstlaid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_FLA, personalInformationExchange.getFirstla()));
+        baseInformation.setElselaid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_FLA, personalInformationExchange.getElsela()));
+        baseInformation.setPosttitleid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_POSTTITLE, personalInformationExchange.getPosttitle()));
+        baseInformation.setZyzstypeid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_ZYZSTYPE, personalInformationExchange.getZyzstype()));
+        baseInformation.setZyzsnameid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_ZYZSNAME, personalInformationExchange.getZyzsname()));
+        baseInformation.setFirstworkingtime(personalInformationExchange.getFirstworkingtime());
+        baseInformation.setParentcompanyid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_PARENTCOMPANY, personalInformationExchange.getParentcompany()));
         return baseInformation;
     }
 
@@ -1315,6 +1500,15 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         manageInformation.setEmployeetypeid(hrUtils.getHrsetidByDatavalue("employeetype",personalInformation.getEmployeetype()));
         manageInformation.setEntrydate(personalInformation.getEntrydate());
         manageInformation.setZhuanzhengdate(StringUtils.isBlank(personalInformation.getZhuanzhengdate())?hrUtils.getZhuanzhengdate(personalInformation.getEntrydate()):personalInformation.getZhuanzhengdate());
+        return manageInformation;
+    }
+    private ManageInformation getManageinformationByPersonalinformationExport(PersonalInformationExchange personalInformationExchange){
+        if(null== personalInformationExchange)return null;
+        ManageInformation manageInformation = new ManageInformation();
+        manageInformation.setPostrankid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_RANK, personalInformationExchange.getPostrank()));
+        manageInformation.setEmployeetypeid(hrUtils.getHrsetidByDatavalueOrInsert(Commons.HRSET_EMPLOYEETYPE, personalInformationExchange.getEmployeetype()));
+        manageInformation.setEntrydate(personalInformationExchange.getEntrydate());
+        manageInformation.setZhuanzhengdate(StringUtils.isBlank(personalInformationExchange.getZhuanzhengdate())?hrUtils.getZhuanzhengdate(personalInformationExchange.getEntrydate()): personalInformationExchange.getZhuanzhengdate());
         return manageInformation;
     }
 
@@ -1648,13 +1842,12 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
 
     //修改管理信息前先判断是否需要修改
     private Boolean validateEntityBeforeModifyOne(ManageInformation manageInformation) {
-        Boolean valBoolean = true;
-        if(manageInformation.getId()==null)valBoolean=false;
-        /*if(manageInformation.getPostlevelid()==null)valBoolean=false;*/
-        if(manageInformation.getPostrankid()==null)valBoolean=false;
-        if(manageInformation.getEmployeetypeid()==null)valBoolean=false;
-        if(org.apache.commons.lang.StringUtils.isBlank(manageInformation.getEntrydate()))valBoolean=false;
-        if(org.apache.commons.lang.StringUtils.isBlank(manageInformation.getZhuanzhengdate()))valBoolean=false;
+        Boolean valBoolean = false;
+        if(manageInformation.getId()==null)return false;
+        if(manageInformation.getPostrankid()!=null)valBoolean=true;
+        if(manageInformation.getEmployeetypeid()!=null)valBoolean=true;
+        if(StringUtils.isNotBlank(manageInformation.getEntrydate()))valBoolean=true;
+        if(StringUtils.isNotBlank(manageInformation.getZhuanzhengdate()))valBoolean=true;
         return valBoolean;
     }
 }

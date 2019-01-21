@@ -3,7 +3,7 @@ package com.elex.oa.service.hr_service;
 import com.elex.oa.entity.hr_entity.costinformation.CostInformationAddInfo;
 import com.elex.oa.entity.hr_entity.manageinformation.ManageInformationAddInfo;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
-import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange;
 import com.elex.oa.entity.project.Staff;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
@@ -117,5 +117,5 @@ public interface IPersonalInformationService{
 
     List<Map<String,Object>> queryPersonalInformationsByDepid(Integer depid);
 
-    List<PersonalInformationExport> queryPersonalInformationsByNull();
+    List<PersonalInformationExchange> queryPersonalInformationsByNull();
 }

@@ -1,6 +1,6 @@
 package com.elex.oa.entity.hr_entity.readexcel;
 
-import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange;
 import com.elex.oa.util.hr_util.ExcelUtil;
 import org.apache.poi.ss.usermodel.*;
 /**
@@ -9,36 +9,18 @@ import org.apache.poi.ss.usermodel.*;
  * @Date:Created in  16:40 2018\5\7 0007
  * @Modify By:
  */
-public class ReadPersonalinformationExcel extends ReadBaseExcel<PersonalInformation>{
+public class ReadPersonalinformationExcel extends ReadBaseExcel<PersonalInformationExchange>{
     @Override
     public Object getObject(Sheet sheet, Row row) {
-        PersonalInformation personalInformation = new PersonalInformation();
+        PersonalInformationExchange personalInformationExchange = new PersonalInformationExchange();
         // 循环Excel的列
         for (int c = 0; c < this.totalCells; c++) {
             Cell cell = row.getCell(c);
             Cell cell2 = sheet.getRow(0).getCell(c);
             String columnname = String.valueOf(cell2.getStringCellValue());
             if (null != cell) {
-                if ("账号激活状态".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByNumberCell(cell);
-                    Integer isactive = (str == null ? 1 : Integer.parseInt(str));
-                    personalInformation.setIsactive(isactive);
-                }else if ("登录ID".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setUsername(str);
-                }else if ("姓名".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setTruename(str);
-                }else if ("免冠照片".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setUserphoto(str);
-                }else if ("身份证扫描件正面".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setIdphoto1(str);
-                }else if ("身份证扫描件背面".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setIdphoto2(str);
-                }else if ("工号".equals(columnname.replace(" ",""))) {
+                if ("工号".equals(columnname.replace(" ",""))) {
+                    //tb_id_user表======================================================================================
                     String str = ExcelUtil.getStringByNumberCell(cell);
                     if(str.indexOf("admin")==-1 && str.length()<6){//工号不足补0
                         switch (str.length()){
@@ -49,145 +31,210 @@ public class ReadPersonalinformationExcel extends ReadBaseExcel<PersonalInformat
                             case 5:str = "0"+str;break;
                         }
                     }
-                    personalInformation.setEmployeenumber(str);
+                    personalInformationExchange.setEmployeenumber(str);
+                }else if ("登录ID".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setUsername(str);
+                }else if ("姓名".equals(columnname.replace(" ",""))) {
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setTruename(str);
+                }else if ("是否激活".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setIsactive(str);
+                }else if("是否在职".equals(columnname)){
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setIsatwork(str);
+                }else if("最后工作时间".equals(columnname)){
+                    //tb_hr_dimission表=================================================================================
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setLastworkingdate(str);
+                }else if("离职类型".equals(columnname)){
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setDimissiontype(str);
+                }else if("离职方向".equals(columnname)){
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setDimissiondirection(str);
+                }else if("离职原因".equals(columnname)){
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setDimissionreason(str);
+                }else if("离职办理人工号".equals(columnname)){
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setDimission_transactoremployeenumber(str);
+                }else if("离职办理日期".equals(columnname)){
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setDimission_transactiondate(str);
+                }else if ("部门编号".equals(columnname.replace(" ",""))) {
+                    //tb_id_department表================================================================================
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setDepcode(str);
+                }else if ("部门名称".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setDepname(str);
+                }else if ("岗位名称-岗位编号".equals(columnname.replace(" ",""))) {
+                    //tb_id_post表======================================================================================
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setPostlist(str);
+                }else if ("免冠照片".equals(columnname.replace(" ",""))) {
+                    //tb_id_baseinformation表===========================================================================
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setUserphoto(str);
+                }else if ("身份证正面".equals(columnname.replace(" ",""))) {
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setIdphoto1(str);
+                }else if ("身份证背面".equals(columnname.replace(" ",""))) {
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setIdphoto2(str);
                 }else if ("英文名".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setEnglishname(str);
+                    personalInformationExchange.setEnglishname(str);
                 }else if ("身份证号码".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setIdcode(str);
+                    personalInformationExchange.setIdcode(str);
+                }else if ("性别".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setSex(str);
+                }else if ("出生日期".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setBirthday(str);
+                }else if ("星座".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setConstellation(str);
+                }else if ("生肖".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setChinesecs(str);
+                }else if ("户籍".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setHousehold_register(str);
                 }else if ("民族".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setRace(str);
+                    personalInformationExchange.setRace(str);
                 }else if ("婚姻".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setMarriage(str);
+                    personalInformationExchange.setMarriage(str);
                 }else if ("生育".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setChildren(str);
+                    personalInformationExchange.setChildren(str);
                 }else if ("政治面貌".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setZzmm(str);
+                    personalInformationExchange.setZzmm(str);
                 }else if ("最高学历".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setZgxl(str);
+                    personalInformationExchange.setZgxl(str);
                 }else if ("毕业院校".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setByyx(str);
+                    personalInformationExchange.setByyx(str);
                 }else if ("所学专业".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setSxzy(str);
+                    personalInformationExchange.setSxzy(str);
                 }else if ("培养方式".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setPyfs(str);
+                    personalInformationExchange.setPyfs(str);
                 }else if ("第一外语".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setFirstla(str);
+                    personalInformationExchange.setFirstla(str);
                 }else if ("其它外语".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setElsela(str);
+                    personalInformationExchange.setElsela(str);
                 }else if ("职称".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setPosttitle(str);
+                    personalInformationExchange.setPosttitle(str);
                 }else if ("职业证书类型".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setZyzstype(str);
+                    personalInformationExchange.setZyzstype(str);
                 }else if ("职业证书名称".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setZyzsname(str);
-                }else if ("首次参加工作时间".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByDateCell(cell);
-                    personalInformation.setFirstworkingtime(str);
+                    personalInformationExchange.setZyzsname(str);
                 }else if ("上家雇主".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setParentcompany(str);
-                }else if ("部门编号".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setDepcode(str);
-                }else if ("部门".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setDepname(str);
-                }else if ("岗位".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setPostnames(str);
+                    personalInformationExchange.setParentcompany(str);
+                }else if ("首次参加工作时间".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setFirstworkingtime(str);
                 }else if ("职级".equals(columnname.replace(" ",""))) {
+                    //tb_id_manageinformation表=========================================================================
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setPostlevel(str);
-                }else if ("入职时间".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByDateCell(cell);
-                    personalInformation.setEntrydate(str);
-                }else if ("转正时间".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByDateCell(cell);
-                    personalInformation.setZhuanzhengdate(str);
+                    personalInformationExchange.setPostrank(str);
                 }else if ("员工类型".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setEmployeetype(str);
-                }else if ("薪资标准".equals(columnname.replace(" ",""))) {
+                    personalInformationExchange.setEmployeetype(str);
+                }else if ("入职时间".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setEntrydate(str);
+                }else if ("转正时间".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByDateCell(cell);
+                    personalInformationExchange.setZhuanzhengdate(str);
+                }else if ("工资标准".equals(columnname.replace(" ",""))) {
+                    //tb_id_costinformation表===========================================================================
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setSalary(str);
+                    personalInformationExchange.setSalarystandard(str);
                 }else if ("社保基数".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setSsb(str);
+                    personalInformationExchange.setSsb(str);
                 }else if ("社保公司缴费比例".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setSsbgscd(str);
+                    personalInformationExchange.setSsbgscd(str);
                 }else if ("社保个人缴费比例".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setSsbgrcd(str);
+                    personalInformationExchange.setSsbgrcd(str);
                 }else if ("公积金基数".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setGjj(str);
+                    personalInformationExchange.setGjj(str);
                 }else if ("公积金公司缴费比例".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setGjjgscd(str);
+                    personalInformationExchange.setGjjgscd(str);
                 }else if ("公积金个人缴费比例".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setGjjgrcd(str);
+                    personalInformationExchange.setGjjgrcd(str);
                 }else if ("开户行".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setKhh(str);
-                }else if ("工资账号".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setSalaryaccount(str);
+                    personalInformationExchange.setKhh(str);
                 }else if ("社保缴纳地".equals(columnname.replace(" ",""))) {
                     String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setSbjnd(str);
+                    personalInformationExchange.setSbjnd(str);
+                }else if ("工资账号".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setSalaryaccount(str);
                 }else if ("社保账号".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setSbcode(str);
+                    personalInformationExchange.setSbcode(str);
                 }else if ("公积金账号".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setGjjcode(str);
+                    personalInformationExchange.setGjjcode(str);
+                }else if ("私人邮箱".equals(columnname.replace(" ",""))) {
+                    //tb_id_otherinformation表==========================================================================
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setPrivateemail(str);
+                }else if ("公司邮箱".equals(columnname.replace(" ",""))) {
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setCompanyemail(str);
+                }else if ("紧急联系人".equals(columnname.replace(" ",""))) {
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setEmergencycontract(str);
+                }else if ("紧急联系人关系".equals(columnname.replace(" ",""))) {
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setEmergencyrp(str);
+                }else if ("紧急联系电话".equals(columnname.replace(" ",""))) {
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setEmergencyphone(str);
+                }else if ("住址".equals(columnname.replace(" ",""))) {
+                    String str = String.valueOf(cell.getStringCellValue());
+                    personalInformationExchange.setAddress(str);
                 }else if ("移动电话".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setMobilephone(str);
+                    personalInformationExchange.setMobilephone(str);
                 }else if ("办公电话".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setTelphone(str);
-                }else if ("私人邮件".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setPrivateemail(str);
-                }else if ("公司邮件".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setCompanyemail(str);
-                }else if ("应急联系人".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setEmergencycontract(str);
-                }else if ("应急联系人关系".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setEmergencyrp(str);
-                }else if ("应急联系电话".equals(columnname.replace(" ",""))) {
-                    String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setEmergencyphone(str);
-                }else if ("应急联系地址".equals(columnname.replace(" ",""))) {
-                    String str = String.valueOf(cell.getStringCellValue());
-                    personalInformation.setAddress(str);
+                    personalInformationExchange.setTelphone(str);
                 }else if ("备注".equals(columnname.replace(" ",""))) {
                     String str = ExcelUtil.getStringByNumberCell(cell);
-                    personalInformation.setRemark(str);
+                    personalInformationExchange.setRemark(str);
+                }else if ("合同编号--合同开始时间--合同结束时间--合同类型--合同附件地址--合同备注--变更人员工号--变更日期".equals(columnname.replace(" ",""))){
+                    //tb_hr_contractinformation表=======================================================================
+                    String str = ExcelUtil.getStringByNumberCell(cell);
+                    personalInformationExchange.setContractlist(str);
                 }
             }
         }
-        return personalInformation;
+        return personalInformationExchange;
     }
 }
