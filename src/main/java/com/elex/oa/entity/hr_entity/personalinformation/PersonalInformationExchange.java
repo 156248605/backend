@@ -18,6 +18,7 @@ public class PersonalInformationExchange {
     private String dimissiondirection;//离职方向
     private String dimissionreason;//离职原因
     private String dimission_transactoremployeenumber;//离职办理人员工号
+    private String dimission_transactortruename;//离职办理人员姓名
     private String dimission_transactiondate;//离职办理日期
 
     private String depcode;//部门编号
@@ -163,6 +164,14 @@ public class PersonalInformationExchange {
 
     public void setDimission_transactoremployeenumber(String dimission_transactoremployeenumber) {
         this.dimission_transactoremployeenumber = dimission_transactoremployeenumber;
+    }
+
+    public String getDimission_transactortruename() {
+        return dimission_transactortruename;
+    }
+
+    public void setDimission_transactortruename(String dimission_transactortruename) {
+        this.dimission_transactortruename = dimission_transactortruename;
     }
 
     public String getDimission_transactiondate() {

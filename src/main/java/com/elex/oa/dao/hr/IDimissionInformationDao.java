@@ -2,6 +2,7 @@ package com.elex.oa.dao.hr;
 
 import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.hr_entity.DimissionInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -52,4 +53,6 @@ public interface IDimissionInformationDao extends BaseDao<DimissionInformation> 
      *@Date: 13:53 2018\5\30 0030
      */
      void deleteOne(Integer id);
+
+    List<PersonalInformationExport> queryAllDimissionInformations();
 }

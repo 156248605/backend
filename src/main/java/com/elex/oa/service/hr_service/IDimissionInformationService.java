@@ -1,6 +1,7 @@
 package com.elex.oa.service.hr_service;
 
 import com.elex.oa.entity.hr_entity.DimissionInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
 import com.elex.oa.service.BaseService;
 import com.github.pagehelper.PageInfo;
 
@@ -57,4 +58,6 @@ public interface IDimissionInformationService extends BaseService<DimissionInfor
      *@Date: 13:48 2018\5\30 0030
      */
     void removeOne(Integer id);
+
+    List<PersonalInformationExport> queryAllDimissionInformations();
 }

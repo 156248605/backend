@@ -193,4 +193,170 @@
 		WHERE id=#{id}
 	</delete>
 
+	<select id="queryAllDimissionInformations" resultType="com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport">
+		SELECT
+			u.employeenumber AS employeenumber,
+			u.username AS username,
+			u.truename AS truename,
+			(
+				CASE
+				WHEN u.isactive = 1 THEN
+					"激活"
+				ELSE
+					"未激活"
+				END
+			) AS isactive,
+			(
+				CASE
+				WHEN u.state = 1 THEN
+					"在职"
+				ELSE
+					"离职"
+				END
+			) AS isatwork,
+			IFNULL(dim.lastworkingdate, "") AS lastworkingdate,
+			IFNULL(dimissiontype.datavalue, "") AS dimissiontype,
+			IFNULL(dimissiondirection.datavalue,"") AS dimissiondirection,
+			IFNULL(dimissionreason.datavalue,"") AS dimissionreason,
+			IFNULL(transactoruser.employeenumber,"") AS dimission_transactoremployeenumber,
+			IFNULL(transactoruser.truename,"") AS dimission_transactortruename,
+			IFNULL(dim.transactiondate, "") AS dimission_transactiondate,
+			IFNULL(dep.depcode, "") AS depcode,
+			IFNULL(dep.depname, "") AS depname,
+			IFNULL(postinfo.postlist, "") AS postlist,
+			IFNULL(base.userphoto, "") AS userphoto,
+			IFNULL(base.idphoto1, "") AS idphoto1,
+			IFNULL(base.idphoto2, "") AS idphoto2,
+			IFNULL(base.englishname, "") AS englishname,
+			IFNULL(base.idcode, "") AS idcode,
+			IFNULL(base.sex, "") AS sex,
+			IFNULL(base.birthday, "") AS birthday,
+			IFNULL(base.constellation, "") AS constellation,
+			IFNULL(base.chinesecs, "") AS chinesecs,
+			IFNULL(race.datavalue, "") AS race,
+			IFNULL(base.marriage, "") AS marriage,
+			IFNULL(children.datavalue, "") AS children,
+			IFNULL(zzmm.datavalue, "") AS zzmm,
+			IFNULL(zgxl.datavalue, "") AS zgxl,
+			IFNULL(byyx.datavalue, "") AS byyx,
+			IFNULL(sxzy.datavalue, "") AS sxzy,
+			IFNULL(pyfs.datavalue, "") AS pyfs,
+			IFNULL(firstla.datavalue, "") AS firstla,
+			IFNULL(elsela.datavalue, "") AS elsela,
+			IFNULL(posttitle.datavalue, "") AS posttitle,
+			IFNULL(zyzstype.datavalue, "") AS zyzstype,
+			IFNULL(zyzsname.datavalue, "") AS zyzsname,
+			IFNULL(parentcompany.datavalue, "") AS parentcompany,
+			IFNULL(base.firstworkingtime, "") AS firstworkingtime,
+			IFNULL(base.household_register, "") AS household_register,
+			IFNULL(postrank.datavalue, "") AS postrank,
+			IFNULL(employeetype.datavalue, "") AS employeetype,
+			IFNULL(manage.entrydate, "") AS entrydate,
+			IFNULL(manage.zhuanzhengdate, "") AS zhuanzhengdate,
+			IFNULL(salarystandard.datavalue, "") AS salarystandard,
+			IFNULL(ssb.datavalue, "") AS ssb,
+			IFNULL(ssbgscd.datavalue, "") AS ssbgscd,
+			IFNULL(ssbgrcd.datavalue, "") AS ssbgrcd,
+			IFNULL(gjj.datavalue, "") AS gjj,
+			IFNULL(gjjgscd.datavalue, "") AS gjjgscd,
+			IFNULL(gjjgscd.datavalue, "") AS gjjgrcd,
+			IFNULL(khh.datavalue, "") AS khh,
+			IFNULL(sbjnd.datavalue, "") AS sbjnd,
+			IFNULL(cost.salaryaccount, "") AS salaryaccount,
+			IFNULL(cost.sbcode, "") AS sbcode,
+			IFNULL(cost.gjjcode, "") AS gjjcode,
+			IFNULL(other.privateemail, "") AS privateemail,
+			IFNULL(other.companyemail, "") AS companyemail,
+			IFNULL(other.emergencycontract, "") AS emergencycontract,
+			IFNULL(emergencyrp.datavalue, "") AS emergencyrp,
+			IFNULL(other.emergencyphone, "") AS emergencyphone,
+			IFNULL(other.address, "") AS address,
+			IFNULL(other.mobilephone, "") AS mobilephone,
+			IFNULL(telphone.datavalue, "") AS telphone,
+			IFNULL(other.remark, "") AS remark,
+			IFNULL(contractinfo.contractlist, "") AS contractlist
+
+		FROM
+			tb_id_user u
+		LEFT JOIN tb_hr_dimission dim ON dim.dimissionuserid = u.id
+		LEFT JOIN tb_hr_set dimissiontype ON dimissiontype.id = dim.dimissiontypeid
+		LEFT JOIN tb_hr_set dimissiondirection ON dimissiondirection.id = dim.dimissiondirectionid
+		LEFT JOIN tb_hr_set dimissionreason ON dimissionreason.id = dim.dimissionreasonid
+		LEFT JOIN tb_id_user transactoruser ON transactoruser.id = dim.transactoruserid
+		LEFT JOIN tb_id_personalinformation per ON per.userid = u.id
+		LEFT JOIN tb_id_department dep ON dep.id = per.depid
+		LEFT JOIN (
+			SELECT
+				rs.perid AS perid,
+				GROUP_CONCAT(
+					CONCAT_WS(
+						'-',
+						post.postname,
+						post.postcode
+					) SEPARATOR ';'
+				) AS postlist
+			FROM
+				tb_id_personalinformation per
+			JOIN tb_hr_per_and_post_rs rs ON rs.perid = per.id
+			JOIN tb_id_post post ON post.id = rs.postid
+			GROUP BY
+					rs.perid
+		) postinfo ON postinfo.perid = per.id
+		LEFT JOIN tb_id_baseinformation base ON base.id = per.baseinformationid
+		LEFT JOIN tb_hr_set race ON race.id = base.raceid
+		LEFT JOIN tb_hr_set children ON children.id=base.childrenid
+		LEFT JOIN tb_hr_set zzmm ON zzmm.id=base.zzmmid
+		LEFT JOIN tb_hr_set zgxl ON zgxl.id=base.zgxlid
+		LEFT JOIN tb_hr_set byyx ON byyx.id=base.byyxid
+		LEFT JOIN tb_hr_set sxzy ON sxzy.id=base.sxzyid
+		LEFT JOIN tb_hr_set pyfs ON pyfs.id=base.pyfsid
+		LEFT JOIN tb_hr_set firstla ON firstla.id=base.firstlaid
+		LEFT JOIN tb_hr_set elsela ON elsela.id=base.elselaid
+		LEFT JOIN tb_hr_set posttitle ON posttitle.id=base.posttitleid
+		LEFT JOIN tb_hr_set zyzstype ON zyzstype.id=base.zyzstypeid
+		LEFT JOIN tb_hr_set zyzsname ON zyzsname.id=base.zyzsnameid
+		LEFT JOIN tb_hr_set parentcompany ON parentcompany.id=base.parentcompanyid
+		LEFT JOIN tb_id_manageinformation manage ON manage.id=per.manageinformationid
+		LEFT JOIN tb_hr_set postrank ON postrank.id=manage.postrankid
+		LEFT JOIN tb_hr_set employeetype ON employeetype.id=manage.employeetypeid
+		LEFT JOIN tb_id_costinformation cost ON cost.id=per.costinformationid
+		LEFT JOIN tb_hr_set salarystandard ON salarystandard.id=cost.salarystandardid
+		LEFT JOIN tb_hr_set ssb ON ssb.id=cost.ssbid
+		LEFT JOIN tb_hr_set ssbgscd ON ssbgscd.id=cost.ssbgscdid
+		LEFT JOIN tb_hr_set ssbgrcd ON ssbgrcd.id=cost.ssbgrcdid
+		LEFT JOIN tb_hr_set gjj ON gjj.id=cost.gjjid
+		LEFT JOIN tb_hr_set gjjgscd ON gjjgscd.id=cost.gjjgscdid
+		LEFT JOIN tb_hr_set gjjgrcd ON gjjgrcd.id=cost.gjjgrcdid
+		LEFT JOIN tb_hr_set khh ON khh.id=cost.khhid
+		LEFT JOIN tb_hr_set sbjnd ON sbjnd.id=cost.sbjndid
+		LEFT JOIN tb_id_otherinformation other ON other.id=per.otherinformationid
+		LEFT JOIN tb_hr_set emergencyrp ON emergencyrp.id=other.emergencyrpid
+		LEFT JOIN tb_hr_set telphone ON telphone.id=other.telphoneid
+		LEFT JOIN (
+			SELECT
+				contract.userid AS userid,
+				GROUP_CONCAT(
+					CONCAT_WS(
+						'--',
+						contract.contractcode,
+						contract.startdate,
+						contract.enddate,
+						contracttype.datavalue,
+						contract.attachment,
+						contract.remark,
+						contracttransactoruser.employeenumber,
+						contract.transdate --
+					) SEPARATOR ';'
+				) AS contractlist
+			FROM
+				tb_hr_contractinformation contract
+			LEFT JOIN tb_hr_set contracttype ON contracttype.id = contract.contracttypeid
+			LEFT JOIN tb_id_user contracttransactoruser ON contracttransactoruser.id = contract.transactoruserid
+			GROUP BY
+				contract.userid
+		) contractinfo ON contractinfo.userid = u.id
+		where u.state=0
+		ORDER BY
+			u.employeenumber ASC
+	</select>
 </mapper>

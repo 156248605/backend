@@ -487,6 +487,7 @@
 			IFNULL(dimissiondirection.datavalue,"") AS dimissiondirection,
 			IFNULL(dimissionreason.datavalue,"") AS dimissionreason,
 			IFNULL(transactoruser.employeenumber,"") AS dimission_transactoremployeenumber,
+			IFNULL(transactoruser.truename,"") AS dimission_transactortruename,
 			IFNULL(dim.transactiondate, "") AS dimission_transactiondate,
 			IFNULL(dep.depcode, "") AS depcode,
 			IFNULL(dep.depname, "") AS depname,
@@ -567,7 +568,7 @@
 			JOIN tb_hr_per_and_post_rs rs ON rs.perid = per.id
 			JOIN tb_id_post post ON post.id = rs.postid
 			GROUP BY
-				rs.perid
+					rs.perid
 		) postinfo ON postinfo.perid = per.id
 		LEFT JOIN tb_id_baseinformation base ON base.id = per.baseinformationid
 		LEFT JOIN tb_hr_set race ON race.id = base.raceid
@@ -601,28 +602,28 @@
 		LEFT JOIN tb_hr_set telphone ON telphone.id=other.telphoneid
 		LEFT JOIN (
 			SELECT
-			contract.userid AS userid,
-			GROUP_CONCAT(
-				CONCAT_WS(
-					'--',
-					contract.contractcode,
-					contract.startdate,
-					contract.enddate,
-					contracttype.datavalue,
-					contract.attachment,
-					contract.remark,
-					contracttransactoruser.employeenumber,
-					contract.transdate --
-				) SEPARATOR ';'
-			) AS contractlist
-		FROM
-			tb_hr_contractinformation contract
-		LEFT JOIN tb_hr_set contracttype ON contracttype.id = contract.contracttypeid
-		LEFT JOIN tb_id_user contracttransactoruser ON contracttransactoruser.id = contract.transactoruserid
-		GROUP BY
-			contract.userid
+				contract.userid AS userid,
+				GROUP_CONCAT(
+					CONCAT_WS(
+						'--',
+						contract.contractcode,
+						contract.startdate,
+						contract.enddate,
+						contracttype.datavalue,
+						contract.attachment,
+						contract.remark,
+						contracttransactoruser.employeenumber,
+						contract.transdate --
+					) SEPARATOR ';'
+				) AS contractlist
+			FROM
+				tb_hr_contractinformation contract
+			LEFT JOIN tb_hr_set contracttype ON contracttype.id = contract.contracttypeid
+			LEFT JOIN tb_id_user contracttransactoruser ON contracttransactoruser.id = contract.transactoruserid
+			GROUP BY
+				contract.userid
 		) contractinfo ON contractinfo.userid = u.id
-
+		where u.state=1
 		ORDER BY
 			u.employeenumber ASC
 	</select>
@@ -706,6 +707,5 @@
 	<delete id="deleteAll" parameterType="java.lang.Integer">
 		DELETE FROM tb_id_personalinformation
 	</delete>
-
 
 </mapper>

@@ -3,6 +3,7 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IDimissionInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
@@ -45,8 +46,6 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
     IHRsetDao ihRsetDao;
     @Resource
     HrUtils hrUtils;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      *@Author:ShiYun;
@@ -330,4 +329,11 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         //再讲离职信息删除
         iDimissionInformationDao.deleteOne(id);
     }
+
+    @Override
+    public List<PersonalInformationExport> queryAllDimissionInformations() {
+        return iDimissionInformationDao.queryAllDimissionInformations();
+    }
+
+
 }
