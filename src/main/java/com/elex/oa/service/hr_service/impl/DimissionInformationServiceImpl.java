@@ -3,7 +3,7 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
-import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExport;
+import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IDimissionInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
@@ -331,7 +331,7 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
     }
 
     @Override
-    public List<PersonalInformationExport> queryAllDimissionInformations() {
+    public List<PersonalInformationExchange> queryAllDimissionInformations() {
         return iDimissionInformationDao.queryAllDimissionInformations();
     }
 

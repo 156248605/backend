@@ -117,7 +117,7 @@
 		#{duty},
 		#{entryrequirements},
 		#{jobdescription},
-		#{dutyfile},1,0)
+		#{dutyfile},1,#{ordercode})
 	</insert>
 
 	<update id="updateOne" parameterType="Post">
