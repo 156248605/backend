@@ -95,10 +95,10 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
         //修改状态
         if(flag.equals(ReportObstaclesCommons.OBSTACLES_FIND)){
             obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_FIND);
-            obstaclesInfo.setLocation_description(location_description);
+            obstaclesInfo.setLocationDescription(location_description);
         }else if(flag.equals(ReportObstaclesCommons.OBSTACLES_OFF)){
             obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_OFF);
-            obstaclesInfo.setProcess_description(process_description);
+            obstaclesInfo.setProcessDescription(process_description);
         }else {
             return RespUtil.successResp("500","修改失败！","flag报障状态错误！");
         }

@@ -40,6 +40,14 @@ public class ObstaclesQueryInfo {
     private String descriptionValue;//报障描述值（模糊查询）
     private List<String> descriptionList;//报障描述值（多选查询）
 
+    private String locationDescriptionQueryMethod;//定位描述查询方式
+    private String locationDescriptionValue;//定位描述值（模糊查询）
+    private List<String> locationDescriptionList;//定位描述值（多选查询）
+
+    private String processDescriptionQueryMethod;//处理描述查询方式
+    private String processDescriptionValue;//处理描述值（模糊查询）
+    private List<String> processDescriptionList;//处理描述值（多选查询）
+
     private List<String> stateList;//报障状态（多选查询）
 
     public ObstaclesQueryInfo() {
@@ -229,6 +237,54 @@ public class ObstaclesQueryInfo {
         this.descriptionList = descriptionList;
     }
 
+    public String getLocationDescriptionQueryMethod() {
+        return locationDescriptionQueryMethod;
+    }
+
+    public void setLocationDescriptionQueryMethod(String locationDescriptionQueryMethod) {
+        this.locationDescriptionQueryMethod = locationDescriptionQueryMethod;
+    }
+
+    public String getLocationDescriptionValue() {
+        return locationDescriptionValue;
+    }
+
+    public void setLocationDescriptionValue(String locationDescriptionValue) {
+        this.locationDescriptionValue = locationDescriptionValue;
+    }
+
+    public List<String> getLocationDescriptionList() {
+        return locationDescriptionList;
+    }
+
+    public void setLocationDescriptionList(List<String> locationDescriptionList) {
+        this.locationDescriptionList = locationDescriptionList;
+    }
+
+    public String getProcessDescriptionQueryMethod() {
+        return processDescriptionQueryMethod;
+    }
+
+    public void setProcessDescriptionQueryMethod(String processDescriptionQueryMethod) {
+        this.processDescriptionQueryMethod = processDescriptionQueryMethod;
+    }
+
+    public String getProcessDescriptionValue() {
+        return processDescriptionValue;
+    }
+
+    public void setProcessDescriptionValue(String processDescriptionValue) {
+        this.processDescriptionValue = processDescriptionValue;
+    }
+
+    public List<String> getProcessDescriptionList() {
+        return processDescriptionList;
+    }
+
+    public void setProcessDescriptionList(List<String> processDescriptionList) {
+        this.processDescriptionList = processDescriptionList;
+    }
+
     public List<String> getStateList() {
         return stateList;
     }
@@ -263,6 +319,12 @@ public class ObstaclesQueryInfo {
                 ", descriptionQueryMethod='" + descriptionQueryMethod + '\'' +
                 ", descriptionValue='" + descriptionValue + '\'' +
                 ", descriptionList=" + descriptionList +
+                ", locationDescriptionQueryMethod='" + locationDescriptionQueryMethod + '\'' +
+                ", locationDescriptionValue='" + locationDescriptionValue + '\'' +
+                ", locationDescriptionList=" + locationDescriptionList +
+                ", processDescriptionQueryMethod='" + processDescriptionQueryMethod + '\'' +
+                ", processDescriptionValue='" + processDescriptionValue + '\'' +
+                ", processDescriptionList=" + processDescriptionList +
                 ", stateList=" + stateList +
                 '}';
     }

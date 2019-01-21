@@ -12,11 +12,13 @@
 		<result column="version_backend" property="versionBackend" />
 		<result column="version_front" property="versionFront" />
 		<result column="description" property="description" />
+		<result column="location_description" property="locationDescription" />
+		<result column="process_description" property="processDescription" />
 		<result column="state" property="state" />
 	</resultMap>
 
 	<select id="selectByConditions" resultType="ObstaclesQueryInfo" resultMap="ObstaclesMapper">
-		select id,username,createtime,operating_system,browser,version_core,version_backend,version_front,description,state
+		select id,username,createtime,operating_system,browser,version_core,version_backend,version_front,description,state,location_description,process_description
 		from tb_reportobstacles_info
 		<where>
 			<if test="(usernameValue!=null and usernameValue!='') or usernameList!=null">
@@ -118,6 +120,34 @@
 				</if>
 				<if	test="descriptionQueryMethod=='不包含'">
 					AND description NOT LIKE CONCAT(CONCAT('%',#{descriptionValue}),'%')
+				</if>
+			</if>
+			<if test="(locationDescriptionValue!=null and locationDescriptionValue!='') or locationDescriptionList!=null">
+				<if test="locationDescriptionQueryMethod=='' and locationDescriptionList!=null and locationDescriptionList.size!=0">
+					AND description IN
+					<foreach collection="locationDescriptionList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="locationDescriptionQueryMethod=='包含'">
+					AND description LIKE CONCAT(CONCAT('%',#{locationDescriptionValue}),'%')
+				</if>
+				<if	test="locationDescriptionQueryMethod=='不包含'">
+					AND description NOT LIKE CONCAT(CONCAT('%',#{locationDescriptionValue}),'%')
+				</if>
+			</if>
+			<if test="(processDescriptionValue!=null and processDescriptionValue!='') or processDescriptionList!=null">
+				<if test="processDescriptionQueryMethod=='' and processDescriptionList!=null and processDescriptionList.size!=0">
+					AND description IN
+					<foreach collection="processDescriptionList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="processDescriptionQueryMethod=='包含'">
+					AND description LIKE CONCAT(CONCAT('%',#{processDescriptionValue}),'%')
+				</if>
+				<if	test="processDescriptionQueryMethod=='不包含'">
+					AND description NOT LIKE CONCAT(CONCAT('%',#{processDescriptionValue}),'%')
 				</if>
 			</if>
 			<if test="stateList!=null and stateList.size!=0">

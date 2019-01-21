@@ -27,28 +27,28 @@ public class ObstaclesInfo {
     private String versionFront;//OAfront版本
     private String description;//描述
     private String state;//报障显示状态
-    private String location_description;//报障定位描述
-    private String process_description;//报障处理描述
+    private String locationDescription;//报障定位描述
+    private String processDescription;//报障处理描述
     @Transient
     private List<BusinessAttachment> attachmentList = new ArrayList<>();//附件
 
     public ObstaclesInfo() {
     }
 
-    public String getLocation_description() {
-        return location_description;
+    public String getLocationDescription() {
+        return locationDescription;
     }
 
-    public void setLocation_description(String location_description) {
-        this.location_description = location_description;
+    public void setLocationDescription(String locationDescription) {
+        this.locationDescription = locationDescription;
     }
 
-    public String getProcess_description() {
-        return process_description;
+    public String getProcessDescription() {
+        return processDescription;
     }
 
-    public void setProcess_description(String process_description) {
-        this.process_description = process_description;
+    public void setProcessDescription(String processDescription) {
+        this.processDescription = processDescription;
     }
 
     public String getId() {
