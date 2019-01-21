@@ -636,7 +636,6 @@ public class PersonalInformationController {
             o = iGzrzService.queryGzrzByTime(date);
         } catch (ParseException e) {
             logger.error("==================================格式转换出错(1306)！==============================");
-            System.out.println("格式转换出错！");
             return RespUtil.successResp("500", "响应失败！", o);
         }
         return RespUtil.successResp("200", "响应成功！", o);

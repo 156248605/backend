@@ -413,6 +413,12 @@ public class PostInformationController {
         return aBoolean? RespUtil.successResp("200","岗位编号已存在！",null):RespUtil.successResp("500","岗位编号不存在",null);
     }
 
+    @RequestMapping("/getRecommendedPostcode")
+    @ResponseBody
+    public String getRecommendedPostcode(){
+        return iPostService.getRecommendedPostcode();
+    }
+
     /**
      *@Author:ShiYun;
      *@Description:同级排序

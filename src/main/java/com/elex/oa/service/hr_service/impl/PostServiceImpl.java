@@ -139,6 +139,7 @@ public class PostServiceImpl implements IPostService {
             return RespUtil.successResp("500","岗位编号已经存在！",null);
         }
         //再添加岗位信息
+        post.setOrdercode(Integer.parseInt(post.getPostcode()));//默认排序码为岗位编号
         iPostDao.insertOne(post);
         return RespUtil.successResp("200","添加成功！",post);
     }
@@ -287,6 +288,30 @@ public class PostServiceImpl implements IPostService {
         Post post = iPostDao.selectPostByPostcode(postcode);
         if(null==post)return false;
         return true;
+    }
+
+    @Override
+    public String getRecommendedPostcode() {
+        int i=1;
+        while (true){
+            String postcode = getPostcodeByInteger(i);
+            Post post = iPostDao.selectPostByPostcode(postcode);
+            if(null==post)return postcode;
+            i = i + 1;
+        }
+    }
+
+    //根据Integer生成岗位编号
+    private String getPostcodeByInteger(int i) {
+        String str = i + "";
+        switch (str.length()){
+            case 1:return "00000"+str;
+            case 2:return "0000"+str;
+            case 3:return "000"+str;
+            case 4:return "00"+str;
+            case 5:return "0"+str;
+            default:return str;
+        }
     }
 
     //判断新旧两个对象并添加岗位日志信息

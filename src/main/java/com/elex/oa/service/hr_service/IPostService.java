@@ -97,4 +97,6 @@ public interface IPostService  {
     Object queryPostnameByUsername(String username);
 
     Boolean validateByPostcode(String postcode);
+
+    String getRecommendedPostcode();
 }

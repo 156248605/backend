@@ -361,7 +361,7 @@ public class IDcodeUtil {
     public Integer getDaysByDate(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        return getMaxDayOfMonth(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH));
+        return getMaxDayOfMonth(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH)+1);
     }
 
     /**
