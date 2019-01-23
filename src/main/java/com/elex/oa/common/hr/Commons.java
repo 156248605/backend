@@ -48,5 +48,7 @@ public interface Commons {
     Integer EMPLOYEE_OFF = 0;//员工离职状态
     String POST_ON = "1";//岗位在用状态
     String POST_OFF = "0";//岗位取消状态
+    String DEP_ON = "1";//部门在用状态
+    String DEP_OFF = "0";//部门取消状态
     String USER_INIT_PASSWORD = "123456";//初始密码
 }
