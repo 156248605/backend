@@ -344,6 +344,7 @@ public class PostInformationController {
             TitleAndCode titleAndCode = new TitleAndCode();
             titleAndCode.setTitle(posts.get(i).getPostname());
             titleAndCode.setCode(posts.get(i).getOrdercode());
+            titleAndCode.setPostcode(posts.get(i).getPostcode());
             titleAndCode.setId(posts.get(i).getId());
             list.add(titleAndCode);
         }
@@ -359,49 +360,9 @@ public class PostInformationController {
     @ResponseBody
     public DeptTree submitSortdata2(
             @RequestParam("sortdata") String sortdata,
-            @RequestParam("title") String title,
-            @RequestParam("deptTree") String deptTree
+            @RequestParam("code") String code
     ){
-        List<TitleAndCode> list = JSONObject.parseArray(sortdata, TitleAndCode.class);
-        //先将树形结构数据查出来
-        List<Post> posts = iPostService.queryByParentpostid(null);
-        DeptTree deptTree1 = JSONObject.parseObject(deptTree,new TypeReference<DeptTree>(){});
-        //先排序
-        if(title!=null && !"".equals(title) && list.size()>=2){
-            list.sort(new Comparator<TitleAndCode>() {
-                @Override
-                public int compare(TitleAndCode o1, TitleAndCode o2) {
-                    return o1.getCode().compareTo(o2.getCode());
-                }
-            });
-        }
-        for (TitleAndCode t:list
-             ) {
-            Post post = iPostService.queryOneByPostname(t.getTitle());
-            Post post1 = new Post();
-            post1.setId(post.getId());
-            post1.setOrdercode(t.getCode());
-            iPostService.modifyOne(post1);
-        }
-        //再换节点
-        //首先将父节点是定点的情况去除
-        if(deptTree1.getTitle().equals(title)){
-            List<DeptTree> old = deptTree1.getChildren();
-            List<DeptTree> renew = new ArrayList<>();
-            for (TitleAndCode titleAndCode:list
-                    ) {
-                for (DeptTree dtt:old
-                        ) {
-                    if(dtt.getTitle().equals(titleAndCode.getTitle())){
-                        renew.add(dtt);
-                    }
-                }
-            }
-            deptTree1.setChildren(renew);
-            return deptTree1;
-        }
-        DeptTree newDepttree = getNewDepttree(deptTree1, title, list);
-        return newDepttree;
+        return iPostService.submitSortdata2(sortdata,code);
     }
 
     @RequestMapping("/validateByPostcode")

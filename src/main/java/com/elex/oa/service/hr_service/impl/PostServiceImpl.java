@@ -1,5 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
@@ -299,6 +300,36 @@ public class PostServiceImpl implements IPostService {
             if(null==post)return postcode;
             i = i + 1;
         }
+    }
+
+    @Override
+    public DeptTree submitSortdata2(String sortdata, String code) {
+        List<TitleAndCode> titleAndCodeList = JSONObject.parseArray(sortdata, TitleAndCode.class);
+        //先更新排序码
+        for (TitleAndCode titleAndCode:titleAndCodeList
+             ) {
+            iPostDao.updateOne(new Post(titleAndCode.getId(),titleAndCode.getTitle(),titleAndCode.getCode()));
+        }
+        //获得返回值DeptTree
+        Post topPost = iPostDao.selectPostsByParentpostid(null).get(0);
+        DeptTree deptTree = new DeptTree(topPost.getPostname(),topPost.getPostname(),topPost.getPostcode(),topPost.getId(),true);
+        deptTree = getChildrenOfDeptTreeByDeptTree(deptTree);
+        return deptTree;
+    }
+
+    //获得返回值DeptTree
+    public DeptTree getChildrenOfDeptTreeByDeptTree(DeptTree deptTree){
+        List<Post> postList = iPostDao.selectPostsByParentpostid(deptTree.getId());
+        if(null==postList || postList.size()==0)return deptTree;
+        List<DeptTree> children = new ArrayList<>();
+        for (Post p:postList
+             ) {
+            DeptTree deptTreeTemp = new DeptTree(p.getPostname(),p.getPostname(),p.getPostcode(),p.getId(),true);
+            deptTreeTemp = getChildrenOfDeptTreeByDeptTree(deptTreeTemp);
+            children.add(deptTreeTemp);
+        }
+        deptTree.setChildren(children);
+        return deptTree;
     }
 
     //根据Integer生成岗位编号

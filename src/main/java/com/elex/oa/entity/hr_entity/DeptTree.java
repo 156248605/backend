@@ -20,6 +20,14 @@ public class DeptTree {
     public DeptTree() {
     }
 
+    public DeptTree(String title, String name, String code, Integer id, Boolean expand) {
+        this.title = title;
+        this.name = name;
+        this.code = code;
+        this.id = id;
+        this.expand = expand;
+    }
+
     public Integer getId() {
         return id;
     }

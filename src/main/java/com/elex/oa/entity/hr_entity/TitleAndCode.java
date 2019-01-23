@@ -11,10 +11,19 @@ import java.io.Serializable;
 public class TitleAndCode implements Serializable{
     private static final long serialVersionUID = 49954826452669337L;
     private String title;
-    private Integer code;
+    private Integer code;//排序吗
+    private String postcode;
     private Integer id;
 
     public TitleAndCode() {
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
 
     public Integer getId() {

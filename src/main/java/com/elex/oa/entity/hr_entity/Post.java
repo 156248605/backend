@@ -33,6 +33,12 @@ public class Post implements Serializable{
     public Post() {
     }
 
+    public Post(Integer id, String postname, Integer ordercode) {
+        this.id = id;
+        this.postname = postname;
+        this.ordercode = ordercode;
+    }
+
     public String getPostfamily() {
         return postfamily;
     }

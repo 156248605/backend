@@ -1,5 +1,6 @@
 package com.elex.oa.service.hr_service;
 
+import com.elex.oa.entity.hr_entity.DeptTree;
 import com.elex.oa.entity.hr_entity.Post;
 
 import java.util.List;
@@ -99,4 +100,6 @@ public interface IPostService  {
     Boolean validateByPostcode(String postcode);
 
     String getRecommendedPostcode();
+
+    DeptTree submitSortdata2(String sortdata, String code);
 }
