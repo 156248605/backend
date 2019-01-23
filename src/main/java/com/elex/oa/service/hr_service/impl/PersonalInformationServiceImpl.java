@@ -78,6 +78,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             staff.setPhoneticize(SpellUtils.phoneticize(staff.getEmployeeName()));
             staff.setDeptId(remp.get("depid")+"");
             staff.setDeptName((String)remp.get("depname"));
+            staff.setEmployeeNumber(String.valueOf(remp.get("employeenumber")));
             List<Map<String, Object>> post = iPersonalInformationDao.selectPostidPostname((Integer) remp.get("perid"));
             staff.setPost(post);
             staffList.add(staff);

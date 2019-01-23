@@ -11,4 +11,18 @@ public interface ProjectInforService {
     PageInfo queryList(OperationQuery operationQuery, Integer pageNum);
     //修改项目信息
     String amendInfor(ProjectInfor projectInfor);
+    //修改商务经理的编号信息
+    String businessManager();
+    //修改项目成员的编号信息
+    String projectMembers();
+    //修改相关成员的编号信息
+    String relatedMembers();
+    //修改交付经理的编号信息
+    String projectManager();
+    //修改项目状态的编号信息
+    String projectStatus();
+    //修改项目来源的编号信息
+    String projectSource();
+    //修改项目类型的编号信息
+    String projectType();
 }

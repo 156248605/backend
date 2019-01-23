@@ -56,6 +56,15 @@
         <result column="FULLNAME_" javaType="string" property="fullName"></result>
     </resultMap>
 
+    <resultMap id="memberInfor" type="com.elex.oa.entity.project.ProjectInfor">
+        <id column="id" javaType="int" property="id"></id>
+        <result column="project_code" javaType="string" property="projectCode"></result>
+        <result column="business_manager" javaType="string" property="businessManager"></result>
+        <result column="project_members" javaType="string" property="projectMembers"></result>
+        <result column="related_members" javaType="string" property="relatedMembers"></result>
+        <result column="project_manager" javaType="string" property="projectManager"></result>
+    </resultMap>
+
     <select id="queryCodes" resultType="string">
         SELECT project_code FROM pro_pro_infor
     </select>
@@ -73,11 +82,11 @@
 
     <select id="addInfor" parameterType="java.util.List">
         INSERT INTO pro_pro_infor(id, project_code, project_name, project_status, in_department, dept_manager, proposer, write_date, business_manager, business_manager_id, business_manager_code, project_source,
-        project_manager, project_manager_id, project_manager_code, project_type, general_situation, department_manager)
+        project_manager, project_manager_id, project_manager_code, project_type, general_situation)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (NULL, #{item.projectCode}, #{item.projectName}, #{item.projectStatus}, #{item.inDepartment}, #{item.deptManager}, #{item.proposer}, #{item.writeDate}, #{item.businessManager}, #{item.businessManagerId},
-            #{item.businessManagerId}, #{item.projectSource}, #{item.projectManager}, #{item.projectManagerId}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation}, #{item.departmentManager})
+            #{item.businessManagerId}, #{item.projectSource}, #{item.projectManager}, #{item.projectManagerId}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation})
         </foreach>
     </select>
 
@@ -163,4 +172,80 @@
     <select id="queryOsUser" resultMap="osUser">
         SELECT USER_ID_ , FULLNAME_ FROM os_user
     </select>
+
+    <select id="queryBusiness" resultMap="memberInfor">
+        SELECT id,project_code, business_manager FROM pro_pro_infor WHERE business_manager IS NOT NULL AND business_manager != ''
+    </select>
+
+    <update id="updateBusinessId" parameterType="java.util.List">
+        UPDATE pro_pro_infor SET business_manager_id =
+        <foreach collection="list" item="item" index="index" separator="" close="end" open="case ID">
+            WHEN #{item.id} THEN #{item.businessManagerId}
+        </foreach>
+        ,business_manager_code =
+        <foreach collection="list" item="item" index="index" separator="" close="end" open="case ID">
+            WHEN #{item.id} THEN #{item.businessManagerCode}
+        </foreach>
+    </update>
+
+    <select id="queryProjectMembers" resultMap="memberInfor">
+        SELECT id, project_code, project_members FROM pro_pro_infor WHERE project_members IS NOT NULL AND project_members != ''
+    </select>
+
+    <update id="updateProjectMembers" parameterType="java.util.List">
+        UPDATE pro_pro_infor SET project_member_code =
+        <foreach collection="list" item="item" index="index" separator="" close="end" open="case ID">
+            WHEN #{item.id} THEN #{item.projectMemberCode}
+        </foreach>
+        , project_member_id =
+        <foreach collection="list" item="item" index="index" separator="" close="end" open="case ID">
+            WHEN #{item.id} THEN #{item.projectMemberId}
+        </foreach>
+    </update>
+
+    <select id="queryRelatedMembers" resultMap="memberInfor">
+        SELECT id, project_code, related_members FROM pro_pro_infor WHERE related_members IS NOT NULL AND related_members != ''
+    </select>
+
+    <update id="updateRelatedMembers" parameterType="java.util.List">
+        UPDATE pro_pro_infor SET related_member_code =
+        <foreach collection="list" item="item" index="index" separator="" close="end" open="case ID">
+            WHEN #{item.id} THEN #{item.relatedMemberCode}
+        </foreach>
+        , related_member_id =
+        <foreach collection="list" item="item" index="index" separator="" close="end" open="case ID">
+            WHEN #{item.id} THEN #{item.relatedMemberId}
+        </foreach>
+    </update>
+
+    <select id="queryProjects" resultMap="memberInfor">
+        SELECT id, project_code, project_manager FROM pro_pro_infor WHERE project_manager IS NOT NULL AND project_manager != ''
+    </select>
+
+    <update id="updateProjects" parameterType="java.util.List">
+        UPDATE pro_pro_infor SET project_manager_code =
+        <foreach collection="list" item="item" index="index" separator="" open="case ID" close="end">
+            WHEN #{item.id} THEN #{item.projectManagerCode}
+        </foreach>
+        ,project_manager_id =
+        <foreach collection="list" item="item" index="index" separator="" open="case ID" close="end">
+            WHEN #{item.id} THEN #{item.projectManagerId}
+        </foreach>
+        ,department_manager =
+        <foreach collection="list" item="item" index="index" separator="" open="case ID" close="end">
+            WHEN #{item.id} THEN #{item.departmentManager}
+        </foreach>
+    </update>
+
+    <update id="projectStatus" parameterType="com.elex.oa.entity.project.ProjectVarious">
+        UPDATE pro_pro_infor SET project_status = #{code} WHERE project_status = #{name}
+    </update>
+
+    <update id="projectSource" parameterType="com.elex.oa.entity.project.ProjectVarious">
+        UPDATE pro_pro_infor SET project_source = #{code} WHERE project_source = #{name}
+    </update>
+
+    <update id="projectType" parameterType="com.elex.oa.entity.project.ProjectVarious">
+        UPDATE pro_pro_infor SET project_type = #{code} WHERE project_type LIKE CONCAT('%',#{name},'%')
+    </update>
 </mapper>

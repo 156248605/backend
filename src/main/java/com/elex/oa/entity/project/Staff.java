@@ -1,9 +1,7 @@
 package com.elex.oa.entity.project;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,17 +9,19 @@ public class Staff {
     @Id
     private int id;
     private String phoneticize; //英文名
+    private String employeeNumber; //员工编号
     private String employeeName; // 员工姓名
     private String deptId; //部门id
     private String deptName; //部门名称
-    private List<Map<String,Object>> post; //部门
+    private List<Map<String,Object>> post; //岗位信息
 
     public Staff() {
     }
 
-    public Staff(int id, String phoneticize, String employeeName, String deptId, String deptName, List<Map<String, Object>> post) {
+    public Staff(int id, String phoneticize, String employeeNumber, String employeeName, String deptId, String deptName, List<Map<String, Object>> post) {
         this.id = id;
         this.phoneticize = phoneticize;
+        this.employeeNumber = employeeNumber;
         this.employeeName = employeeName;
         this.deptId = deptId;
         this.deptName = deptName;
@@ -44,6 +44,14 @@ public class Staff {
         this.phoneticize = phoneticize;
     }
 
+    public String getEmployeeNumber() {
+        return employeeNumber;
+    }
+
+    public void setEmployeeNumber(String employeeNumber) {
+        this.employeeNumber = employeeNumber;
+    }
+
     public String getEmployeeName() {
         return employeeName;
     }
@@ -57,11 +65,7 @@ public class Staff {
     }
 
     public void setDeptId(String deptId) {
-        if (StringUtils.isBlank(deptId) || "null".equals(deptId)) {
-            this.deptId = "";
-        } else {
-            this.deptId = deptId;
-        }
+        this.deptId = deptId;
     }
 
     public String getDeptName() {
@@ -69,11 +73,7 @@ public class Staff {
     }
 
     public void setDeptName(String deptName) {
-        if (StringUtils.isBlank(deptName)) {
-            this.deptName = "";
-        } else {
-            this.deptName = deptName;
-        }
+        this.deptName = deptName;
     }
 
     public List<Map<String, Object>> getPost() {
@@ -81,11 +81,7 @@ public class Staff {
     }
 
     public void setPost(List<Map<String, Object>> post) {
-        if(null==post || post.size()==0 || (post.size()==1&& null==post.get(0))){
-            this.post = new ArrayList<>();
-        }else {
-            this.post = post;
-        }
+        this.post = post;
     }
 
     @Override
@@ -93,6 +89,7 @@ public class Staff {
         return "Staff{" +
                 "id=" + id +
                 ", phoneticize='" + phoneticize + '\'' +
+                ", employeeNumber='" + employeeNumber + '\'' +
                 ", employeeName='" + employeeName + '\'' +
                 ", deptId='" + deptId + '\'' +
                 ", deptName='" + deptName + '\'' +

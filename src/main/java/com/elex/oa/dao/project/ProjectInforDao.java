@@ -1,9 +1,6 @@
 package com.elex.oa.dao.project;
 
-import com.elex.oa.entity.project.ApprovalList;
-import com.elex.oa.entity.project.OperationQuery;
-import com.elex.oa.entity.project.OsUser;
-import com.elex.oa.entity.project.ProjectInfor;
+import com.elex.oa.entity.project.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,4 +20,26 @@ public interface ProjectInforDao {
     void amendInfor(ProjectInfor projectInfor);
     //查询os_user表所有用户信息
     List<OsUser> queryOsUser();
+
+    List<ProjectInfor> queryBusiness();
+
+    void updateBusinessId(List<ProjectInfor> infors);
+
+    List<ProjectInfor> queryProjectMembers();
+
+    void updateProjectMembers(List<ProjectInfor> infors);
+
+    List<ProjectInfor> queryRelatedMembers();
+
+    void updateRelatedMembers(List<ProjectInfor> infors);
+
+    List<ProjectInfor> queryProjects();
+
+    void updateProjects(List<ProjectInfor> infors);
+
+    void projectStatus(ProjectVarious various);
+
+    void projectSource(ProjectVarious various);
+
+    void projectType(ProjectVarious various);
 }

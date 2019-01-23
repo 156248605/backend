@@ -11,9 +11,11 @@ import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,43 +64,6 @@ public class ProjectInforImpl implements ProjectInforService {
         for(ApprovalList approvalList: approvalLists) {
             approvalList.setWriteDate(approvalList.getWriteDate().substring(0,10));
             approvalList.setProjectStatus(code);
-            if(approvalList.getProjectManager()==null){
-                approvalList.setDepartmentManager("");
-            }else {
-                /*User user = iUserDao.selectByTruename(approvalList.getProjectManager());
-
-                if(iPersonalInformationDao.selectByUserid(user.getId()).getDepid()!=null){
-                    Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
-                    Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
-                    User user1 = iUserDao.selectById(principaluserid);
-                    String truename = user1.getTruename();
-                    approvalList.setDepartmentManager(truename);
-                }else {
-                    approvalList.setDepartmentManager("");
-                }*/
-
-                User user = iUserDao.selectByTruename(approvalList.getProjectManager());
-                if(null==user){
-                    approvalList.setDepartmentManager("");
-                }else if(null==iPersonalInformationDao.selectByUserid(user.getId())){
-                    approvalList.setDepartmentManager("");
-                }else if(iPersonalInformationDao.selectByUserid(user.getId()).getDepid()!=null){
-                    Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
-                    if(depid == null) {
-                        approvalList.setDepartmentManager("");
-                    } else {
-                        Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
-                        User user1 = iUserDao.selectById(principaluserid);
-                        if(user1 == null) {
-                            approvalList.setDepartmentManager("");
-                        } else {
-                            approvalList.setDepartmentManager(user1.getTruename());
-                        }
-                    }
-                }else {
-                    approvalList.setDepartmentManager("");
-                }
-            }
         }
         projectInforDao.addInfor(approvalLists); //添加项目详情信息
     }
@@ -129,39 +94,158 @@ public class ProjectInforImpl implements ProjectInforService {
         List<OsUser> osUsers = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
         StringBuilder stringBuilder1 = new StringBuilder(), stringBuilder2 = new StringBuilder();
         for(OsUser osUser:osUsers) {
-            if(projectInfor.getBusinessManager().equals(osUser.getFullName())) {
-                projectInfor.setBusinessManagerCode(osUser.getUserId());
+            if(StringUtils.isNotBlank(projectInfor.getBusinessManager())) {
+                if(projectInfor.getBusinessManager().equals(osUser.getFullName())) {
+                    projectInfor.setBusinessManagerCode(osUser.getUserId());
+                }
             }
-            if(projectInfor.getProjectManager().equals(osUser.getFullName())) {
-                projectInfor.setProjectManagerCode(osUser.getUserId());
+            if(StringUtils.isNotBlank(projectInfor.getProjectManager())) {
+                if(projectInfor.getProjectManager().equals(osUser.getFullName())) {
+                    projectInfor.setProjectManagerCode(osUser.getUserId());
+                }
             }
-            if(projectInfor.getProjectMembers().contains(osUser.getFullName())) {
-                stringBuilder1.append(osUser.getUserId());
-                stringBuilder1.append(";");
+            if(StringUtils.isNotBlank(projectInfor.getProjectMembers())) {
+                if(projectInfor.getProjectMembers().contains(osUser.getFullName())) {
+                    stringBuilder1.append(osUser.getUserId());
+                    stringBuilder1.append(";");
+                }
             }
-            if(projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
-                stringBuilder2.append(osUser.getUserId());
-                stringBuilder2.append(";");
+            if(StringUtils.isNotBlank(projectInfor.getRelatedMembers())) {
+                if(projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
+                    stringBuilder2.append(osUser.getUserId());
+                    stringBuilder2.append(";");
+                }
             }
         }
         projectInfor.setProjectMemberCode(stringBuilder1.toString());
         projectInfor.setRelatedMemberCode(stringBuilder2.toString());
-
-        User user = iUserDao.selectByTruename(projectInfor.getProjectManager());
-        Integer depid = iPersonalInformationDao.selectByUserid(user.getId()).getDepid();
-        if(depid!=null){
-            Integer principaluserid = iDeptDao.selectDeptByDepid(depid).getPrincipaluserid();
-            if(principaluserid!=null){
-                User user1 = iUserDao.selectById(principaluserid);
-                String truename = user1.getTruename()==null?"":user1.getTruename();
-                projectInfor.setDepartmentManager(truename);
-            }else {
-                projectInfor.setDepartmentManager("");
-            }
-        }else {
-            projectInfor.setDepartmentManager("");
-        }
         projectInforDao.amendInfor(projectInfor);
         return "1";
+    }
+
+    @Override
+    public String businessManager() {
+        List<OsUser> osUsers = projectInforDao.queryOsUser();
+        List<ProjectInfor> infors = projectInforDao.queryBusiness();
+        List<User> staffList = iUserDao.selectAllEmployeeON();
+        for(ProjectInfor infor:infors){
+            for(User staff:staffList){
+                if(staff.getTruename().equals(infor.getBusinessManager())){
+                    infor.setBusinessManagerId(staff.getEmployeenumber()+"");
+                }
+            }
+            for(OsUser osUser:osUsers){
+                if(osUser.getFullName().equals(infor.getBusinessManager())){
+                    infor.setBusinessManagerCode(osUser.getUserId());
+                }
+            }
+        }
+        projectInforDao.updateBusinessId(infors);
+        return "business";
+    }
+
+    @Override
+    public String projectMembers() {
+        List<OsUser> osUsers = projectInforDao.queryOsUser();
+        List<ProjectInfor> infors = projectInforDao.queryProjectMembers();
+        List<User> userList = iUserDao.selectAllEmployeeON();
+        StringBuilder stringBuilder;
+        List<String> list;
+        for(ProjectInfor infor:infors){
+            list = new ArrayList<>();
+            for(User staff:userList){
+                if(infor.getProjectMembers().contains(staff.getTruename())){
+                    list.add(staff.getEmployeenumber());
+                }
+            }
+            infor.setProjectMemberId(list.toString());
+            stringBuilder = new StringBuilder();
+            for(OsUser osUser:osUsers){
+                if(infor.getProjectMembers().contains(osUser.getFullName())){
+                    stringBuilder.append(osUser.getUserId());
+                    stringBuilder.append(";");
+                }
+            }
+            infor.setProjectMemberCode(stringBuilder.toString());
+        }
+        projectInforDao.updateProjectMembers(infors);
+        return "projectMemberCode";
+    }
+
+    @Override
+    public String relatedMembers() {
+        List<ProjectInfor> infors = projectInforDao.queryRelatedMembers();
+        List<OsUser> osUsers = projectInforDao.queryOsUser();
+        List<User> staffList = iUserDao.selectAllEmployeeON();
+        StringBuilder  stringBuilder;
+        List<String> list;
+        for(ProjectInfor infor:infors){
+            list = new ArrayList<>();
+            for(User staff:staffList){
+                if(infor.getRelatedMembers().contains(staff.getTruename())){
+                    list.add(staff.getEmployeenumber());
+                }
+            }
+            infor.setRelatedMemberId(list.toString());
+            stringBuilder = new StringBuilder();
+            for(OsUser osUser:osUsers){
+                if(infor.getRelatedMembers().contains(osUser.getFullName())){
+                    stringBuilder.append(osUser.getUserId());
+                    stringBuilder.append(";");
+                }
+            }
+            infor.setRelatedMemberCode(stringBuilder.toString());
+        }
+        projectInforDao.updateRelatedMembers(infors);
+        return "relatedMemberCode";
+    }
+
+    @Override
+    public String projectManager() {
+        List<OsUser> osUsers = projectInforDao.queryOsUser();
+        List<ProjectInfor> infors = projectInforDao.queryProjects();
+        List<User> staffList = iUserDao.selectAllEmployeeON();
+        for(ProjectInfor projectInfor:infors){
+            for(User staff:staffList){
+                if(projectInfor.getProjectManager().equals(staff.getTruename())){
+                    projectInfor.setProjectManagerId(staff.getEmployeenumber()+"");
+                    for(OsUser osUser:osUsers){
+                        if(osUser.getFullName().equals(projectInfor.getProjectManager())){
+                            projectInfor.setProjectManagerCode(osUser.getUserId());
+                        }
+                    }
+                    continue;
+                }
+            }
+        }
+        projectInforDao.updateProjects(infors);
+        return "projectManagerCode";
+    }
+
+    @Override
+    public String projectStatus() {
+        List<ProjectVarious> statusList = projectSetDao.queryStatus();
+        for(ProjectVarious various:statusList){
+            projectInforDao.projectStatus(various);
+        }
+        return "projectStatus";
+    }
+
+    @Override
+    public String projectSource() {
+        List<ProjectVarious> sourceList = projectSetDao.querySource();
+        for(ProjectVarious various:sourceList){
+            projectInforDao.projectSource(various);
+        }
+        return "projectSource";
+    }
+
+    @Override
+    public String projectType() {
+        List<ProjectVarious> typeList = projectSetDao.queryType();
+        for(ProjectVarious various:typeList){
+            projectInforDao.projectType(various);
+        }
+        return "projectType";
     }
 }

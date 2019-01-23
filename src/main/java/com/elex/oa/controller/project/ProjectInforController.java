@@ -41,4 +41,46 @@ public class ProjectInforController {
         return "1";
     }
 
+    @RequestMapping("/business_manager")
+    @ResponseBody
+    public String businessManager(){
+        return projectInforService.businessManager();
+    }
+    //修改项目成员的编号信息
+    @RequestMapping("/project_members")
+    @ResponseBody
+    public String projectMembers(){
+        return projectInforService.projectMembers();
+    }
+    //修改相关成员的编号信息
+    @RequestMapping("/related_members")
+    @ResponseBody
+    public String relatedMembers(){
+        return projectInforService.relatedMembers();
+    }
+    //修改交付经理的编号信息
+    @RequestMapping("/project_manager")
+    @ResponseBody
+    public String projectManager(){
+        return projectInforService.projectManager();
+    }
+    //修改项目状态的编号信息
+    @RequestMapping("/project_status")
+    @ResponseBody
+    public String projectStatus() {
+        return projectInforService.projectStatus();
+    }
+    //修改项目来源的编号信息
+    @RequestMapping("/project_source")
+    @ResponseBody
+    public String projectSource() {
+        return projectInforService.projectSource();
+    }
+    //修改项目类型的编号信息
+    @RequestMapping("/project_type")
+    @ResponseBody
+    public String projectType() {
+        return projectInforService.projectType();
+    }
+
 }

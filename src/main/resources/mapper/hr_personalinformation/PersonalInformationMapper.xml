@@ -42,7 +42,7 @@
 			firstworkingtime is NOT NULL
 	</select>
 	<select id="selectUseridTruenameDepidDepnamePerid" resultType="java.util.Map">
-		SELECT u.id AS userid,u.truename,dep.id AS depid,dep.depname,per.id AS perid
+		SELECT u.id AS userid,u.truename,dep.id AS depid,dep.depname,per.id AS perid, u.employeenumber AS employeenumber
 		FROM tb_id_user u
 		LEFT JOIN tb_id_personalinformation per ON per.userid=u.id
 		LEFT JOIN tb_id_department dep ON dep.id=per.depid
