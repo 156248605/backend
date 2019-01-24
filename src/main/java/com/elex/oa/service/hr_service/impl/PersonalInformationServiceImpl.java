@@ -1271,6 +1271,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(isUpdate && null==personalInformation.getBaseinformationid())return null;
         BaseInformation baseInformation = new BaseInformation();
         baseInformation.setId(personalInformation.getBaseinformationid());
+        baseInformation.setPostCardTitle(personalInformation.getPostCardTitle());
         baseInformation.setUserphoto(personalInformation.getUserphoto());
         baseInformation.setIdphoto1(personalInformation.getIdphoto1());
         baseInformation.setIdphoto2(personalInformation.getIdphoto2());
@@ -1303,6 +1304,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     private BaseInformation getBaseinformationByPersonalinformationExport(PersonalInformationExchange personalInformationExchange){
         if(null== personalInformationExchange)return null;
         BaseInformation baseInformation = new BaseInformation();
+        baseInformation.setPostCardTitle(personalInformationExchange.getPostCardTitle());
         baseInformation.setUserphoto(personalInformationExchange.getUserphoto());
         baseInformation.setIdphoto1(personalInformationExchange.getIdphoto1());
         baseInformation.setIdphoto2(personalInformationExchange.getIdphoto2());
@@ -1413,6 +1415,9 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if(isEqual)isUpdate=true;
         //判断员工号并添加相应的日志
         isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getEmployeenumber(),newPer.getEmployeenumber(),transactorusername,"员工号");
+        if(isEqual)isUpdate=true;
+        //判断名片称谓并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getPostCardTitle(),newPer.getPostCardTitle(),transactorusername,"名片称谓");
         if(isEqual)isUpdate=true;
         //判断免冠照片并添加相应的日志
         isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid,oldPer.getUserphoto(),newPer.getUserphoto(),transactorusername,"免冠照片");
@@ -1827,6 +1832,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     private PersonalInformation setBaseinformationByPersonalinformation(PersonalInformation personalInformation,BaseInformation baseInformation){
         if(null==baseInformation)return personalInformation;
         try {
+            personalInformation.setPostCardTitle(baseInformation.getPostCardTitle());
             personalInformation.setUserphoto(baseInformation.getUserphoto());
             personalInformation.setIdphoto1(baseInformation.getIdphoto1());
             personalInformation.setIdphoto2(baseInformation.getIdphoto2());

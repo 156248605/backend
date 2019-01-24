@@ -61,6 +61,7 @@ public class  PersonalInformation implements Serializable{
     private String truenamevalue="";//判断条件
     private Integer state;//用户状态
 
+    private String postCardTitle;//名片称谓
     private String userphoto="";//免冠照片（基础信息表4）
     private String idphoto1="";//身份证正面
     private String idphoto2="";//身份证背面
@@ -159,6 +160,14 @@ public class  PersonalInformation implements Serializable{
     private String remark="";//备注
 
     public PersonalInformation() {
+    }
+
+    public String getPostCardTitle() {
+        return postCardTitle;
+    }
+
+    public void setPostCardTitle(String postCardTitle) {
+        this.postCardTitle = postCardTitle;
     }
 
     public List<Post> getPostList() {

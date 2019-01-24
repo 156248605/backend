@@ -20,6 +20,7 @@ import java.io.Serializable;
 public class BaseInformation implements Serializable{
     @Id
     private Integer id;//主键
+    private String postCardTitle;//名片称谓
     private String userphoto;//免冠照片
     private String idphoto1;//身份证正面
     private String idphoto2;//身份证背面
@@ -47,6 +48,14 @@ public class BaseInformation implements Serializable{
     private String hj;//户籍
 
     public BaseInformation() {
+    }
+
+    public String getPostCardTitle() {
+        return postCardTitle;
+    }
+
+    public void setPostCardTitle(String postCardTitle) {
+        this.postCardTitle = postCardTitle;
     }
 
     public String getHj() {

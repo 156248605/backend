@@ -4,6 +4,7 @@
 
 	<resultMap id="BaseInformationResultMap" type="BaseInformation">
 		<id column="id" property="id" />
+		<id column="postCardTitle" property="postCardTitle" />
 		<result column="userphoto" property="userphoto" />
 		<result column="idphoto1" property="idphoto1" />
 		<result column="idphoto2" property="idphoto2" />
@@ -43,6 +44,7 @@
 	<insert id="insertOne" parameterType="BaseInformation" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_baseinformation (
 			id,
+			postCardTitle,
 			userphoto,
 			idphoto1,
 			idphoto2,
@@ -70,6 +72,7 @@
 			household_register)
 		values (
 			null,
+		 	#{postCardTitle},
 		 	#{userphoto},
 		 	#{idphoto1},
 		 	#{idphoto2},
@@ -100,6 +103,7 @@
 	<update id="updateOne" parameterType="BaseInformation" >
 		update tb_id_baseinformation
 		<set>
+			<if test="postCardTitle!=null and postCardTitle!=''">postCardTitle=#{postCardTitle},</if>
 			<if test="userphoto!=null and userphoto!=''">userphoto=#{userphoto},</if>
 			<if test="idphoto1!=null and idphoto1!=''">idphoto1=#{idphoto1},</if>
 			<if test="idphoto2!=null and idphoto2!=''">idphoto2=#{idphoto2},</if>

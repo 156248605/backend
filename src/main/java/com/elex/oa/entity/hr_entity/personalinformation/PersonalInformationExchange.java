@@ -26,6 +26,7 @@ public class PersonalInformationExchange {
 
     private String postlist;//格式：(之间用英文分号相连)[岗位名称-岗位编号]
 
+    private String postCardTitle;//名片称谓
     private String userphoto;//免冠照片
     private String idphoto1;//身份证正面
     private String idphoto2;//身份证背面
@@ -84,6 +85,14 @@ public class PersonalInformationExchange {
     private String contractlist;
 
     public PersonalInformationExchange() {
+    }
+
+    public String getPostCardTitle() {
+        return postCardTitle;
+    }
+
+    public void setPostCardTitle(String postCardTitle) {
+        this.postCardTitle = postCardTitle;
     }
 
     public String getEmployeenumber() {
