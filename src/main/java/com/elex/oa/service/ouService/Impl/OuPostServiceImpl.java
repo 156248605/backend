@@ -4,8 +4,11 @@ import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.ou.OuDepDao;
 import com.elex.oa.dao.ou.OuPostDao;
 import com.elex.oa.entity.ou.OuPost;
+import com.elex.oa.entity.ou.OuPostConditionInfo;
 import com.elex.oa.service.ouService.IOuPostService;
 import com.elex.oa.util.resp.RespUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -41,4 +44,13 @@ public class OuPostServiceImpl implements IOuPostService {
         }
         return RespUtil.successResp("200","岗位添加成功",null);
     }
+
+    @Override
+    public PageInfo<OuPost> getPageOuPostList(Integer pageNum, Integer pageSize, OuPostConditionInfo ouPostConditionInfo) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<OuPost> ouPostList = ouPostDao.selectPageOuPostList(ouPostConditionInfo);
+        return new PageInfo<>(ouPostList);
+    }
+
+
 }

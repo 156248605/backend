@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.ou.OuPostDao">
+
+	<resultMap id="OuPostMapper" type="OuPost">
+		<id column="id" property="id" />
+		<result column="postcode" property="postcode" />
+		<result column="postname" property="postname" />
+		<result column="postlevelid" property="postlevelid" />
+		<result column="state" property="state" />
+	</resultMap>
+
+	<select id="selectPageOuPostList" parameterType="com.elex.oa.entity.ou.OuPostConditionInfo" resultMap="OuPostMapper">
+		select oup.id,oup.postcode,oup.postname,oup.postlevelid,oup.state
+		from tb_ou_post oup
+		join tb_hr_set postlevel on postlevel.id=oup.postlevelid
+		<where>
+			<if test="(postcodeValue!=null and postcodeValue!='') or postcodeList!=null">
+				<if test="postcodeQueryMethod=='' and postcodeList!=null and postcodeList.size!=0">
+					AND oup.postcode IN
+					<foreach collection="postcodeList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="postcodeQueryMethod=='包含'">
+					AND oup.postcode LIKE CONCAT(CONCAT('%',#{postcodeValue}),'%')
+				</if>
+				<if	test="postcodeQueryMethod=='不包含'">
+					AND oup.postcode NOT LIKE CONCAT(CONCAT('%',#{postcodeValue}),'%')
+				</if>
+			</if>
+			<if test="(postnameValue!=null and postnameValue!='') or postnameList!=null">
+				<if test="postnameQueryMethod=='' and postnameList!=null and postnameList.size!=0">
+					AND oup.postname IN
+					<foreach collection="postnameList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="postnameQueryMethod=='包含'">
+					AND oup.postname LIKE CONCAT(CONCAT('%',#{postnameValue}),'%')
+				</if>
+				<if	test="postnameQueryMethod=='不包含'">
+					AND oup.postname NOT LIKE CONCAT(CONCAT('%',#{postnameValue}),'%')
+				</if>
+			</if>
+			<if test="(postlevelValue!=null and postlevelValue!='') or postlevelList!=null">
+				<if test="postlevelQueryMethod=='' and postlevelList!=null and postlevelList.size!=0">
+					AND postlevel.datavalue IN
+					<foreach collection="postlevelList" item="param"  open="(" close=")" separator=",">
+						#{param}
+					</foreach>
+				</if>
+				<if test="postlevelQueryMethod=='包含'">
+					AND postlevel.datavalue LIKE CONCAT(CONCAT('%',#{postlevelValue}),'%')
+				</if>
+				<if	test="postlevelQueryMethod=='不包含'">
+					AND postlevel.datavalue NOT LIKE CONCAT(CONCAT('%',#{postlevelValue}),'%')
+				</if>
+			</if>
+			<if test="stateList!=null and stateList.size!=0">
+				AND oup.state IN
+				<foreach collection="stateList" item="param"  open="(" close=")" separator=",">
+					#{param}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+</mapper>
