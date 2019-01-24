@@ -190,9 +190,17 @@ public interface IDeptService {
      *@Description:根据人名或UserID查询所在的公司名称
      *@Date: 14:08 2018\9\8 0008
      */
-    String queryCompanynameByUseridOrTruename(Integer userid,String truename) throws Exception;
+    String queryCompanynameByUseridOrTruename(Integer userid,String truename);
 
     Map<String,String> updateOneDepartment(Dept dept, String transactorusername);
 
     Map<String,Object> queryPostListByDepidButIsNotNull(Integer depid);
+
+    List<Map<String,Object>> getAllDepidAndDepnameByDEP_ON();
+
+    String getPrincipalTruenameByDepid(Integer depid);
+
+    List<String> getAllCompanyNames();
+
+    Object getAllDepidAndDepnameByRemoveCompany();
 }

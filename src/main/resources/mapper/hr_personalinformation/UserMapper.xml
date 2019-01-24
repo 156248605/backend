@@ -12,23 +12,6 @@
 		<result column="employeenumber" property="employeenumber" />
 	</resultMap>
 
-	<insert id="insertOne" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-		insert into tb_id_user (
-			id,
-			username,
-			truename,
-			isactive,
-			state,
-			employeenumber)
-		values (
-			NULL,
-			#{username},
-			#{truename},
-			#{isactive},
-			1,
-			#{employeenumber})
-	</insert>
-
 	<select id="selectById" parameterType="java.lang.Integer" resultMap="UserMapper">
 		select * from tb_id_user
 		where id=#{id}
@@ -53,22 +36,6 @@
 		SELECT * FROM tb_id_user
 		WHERE username=#{username}
 	</select>
-
-	<delete id="deleteById" parameterType="java.lang.Integer">
-		DELETE FROM tb_id_user
-		WHERE id=#{id}
-	</delete>
-
-	<delete id="deleteAll_admin">
-		DELETE FROM tb_id_user
-		WHERE id!=1
-	</delete>
-
-	<update id="deleteDimissionById" parameterType="java.lang.Integer" >
-		UPDATE tb_id_user
-		SET state=1
-		WHERE id=#{id}
-	</update>
 
 	<select id="selectByConditions" parameterType="ContractInformation" resultMap="UserMapper">
 		SELECT
@@ -135,6 +102,51 @@
 		where state=1
 		order by employeenumber
 	</select>
+
+	<select id="selectUserListByPostname" parameterType="java.lang.String" resultMap="UserMapper">
+		SELECT u.id,u.truename,u.username,u.isactive,u.employeenumber,u.state
+		FROM tb_id_user u
+		JOIN tb_id_personalinformation per ON per.userid=u.id
+		WHERE per.id IN (
+			SELECT rs.perid
+			FROM tb_hr_per_and_post_rs rs
+			JOIN tb_id_post post ON post.id=rs.postid
+			WHERE post.postname=#{postname}
+		)
+	</select>
+
+	<insert id="insertOne" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_id_user (
+			id,
+			username,
+			truename,
+			isactive,
+			state,
+			employeenumber)
+		values (
+			NULL,
+			#{username},
+			#{truename},
+			#{isactive},
+			1,
+			#{employeenumber})
+	</insert>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM tb_id_user
+		WHERE id=#{id}
+	</delete>
+
+	<delete id="deleteAll_admin">
+		DELETE FROM tb_id_user
+		WHERE id!=1
+	</delete>
+
+	<update id="deleteDimissionById" parameterType="java.lang.Integer" >
+		UPDATE tb_id_user
+		SET state=1
+		WHERE id=#{id}
+	</update>
 
 	<update id="updateUser" parameterType="User" >
 		UPDATE tb_id_user

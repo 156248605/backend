@@ -102,4 +102,6 @@ public interface IPostService  {
     String getRecommendedPostcode();
 
     DeptTree submitSortdata2(String sortdata, String code);
+
+    Object getAllPostidAndPostnameByPOST_ON();
 }

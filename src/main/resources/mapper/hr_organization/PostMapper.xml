@@ -86,6 +86,12 @@
 		ORDER BY ordercode
 	</select>
 
+	<select id="getAllPostidAndPostnameByPOST_ON" resultType="java.util.Map">
+		SELECT post.id AS postId,post.postname AS postName
+		FROM tb_id_post post
+		WHERE state=1
+	</select>
+
 	<insert id="insertOne" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_post
 		(id,

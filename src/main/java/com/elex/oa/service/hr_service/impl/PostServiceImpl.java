@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -315,6 +316,11 @@ public class PostServiceImpl implements IPostService {
         DeptTree deptTree = new DeptTree(topPost.getPostname(),topPost.getPostname(),topPost.getPostcode(),topPost.getId(),true);
         deptTree = getChildrenOfDeptTreeByDeptTree(deptTree);
         return deptTree;
+    }
+
+    @Override
+    public Object getAllPostidAndPostnameByPOST_ON() {
+        return iPostDao.getAllPostidAndPostnameByPOST_ON();
     }
 
     //获得返回值DeptTree

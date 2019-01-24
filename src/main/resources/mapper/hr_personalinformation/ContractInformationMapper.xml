@@ -195,6 +195,10 @@
 		WHERE id=#{id}
 	</delete>
 
+	<delete id="deleteAll" >
+		DELETE FROM tb_hr_contractinformation
+	</delete>
+
 	<update id="updateOne" parameterType="ContractInformation" >
 		UPDATE tb_hr_contractinformation
 		<set>

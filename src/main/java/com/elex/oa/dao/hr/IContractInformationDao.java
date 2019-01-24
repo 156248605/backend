@@ -1,5 +1,6 @@
 package com.elex.oa.dao.hr;
 
+import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -71,4 +72,6 @@ public interface IContractInformationDao {
      *@Date: 10:15 2018\5\29 0029
      */
     void updateOne(ContractInformation contractInformation);
+
+    void deleteAll();
 }

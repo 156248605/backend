@@ -71,4 +71,6 @@ public interface IPostDao  {
     void deleteOne(Integer id);
 
     void deleteByChangeStatePOST_OFF(Integer id);
+
+    List<Map<String, Object>> getAllPostidAndPostnameByPOST_ON();
 }

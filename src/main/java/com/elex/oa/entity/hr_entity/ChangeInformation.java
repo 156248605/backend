@@ -53,6 +53,10 @@ public class ChangeInformation implements Serializable{
     public ChangeInformation() {
     }
 
+    public ChangeInformation(Integer changeduserid) {
+        this.changeduserid = changeduserid;
+    }
+
     public List<String> getChangeinformations() {
         return changeinformations;
     }

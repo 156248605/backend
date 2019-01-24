@@ -113,4 +113,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     public List<User> selectAllOrderByDictionary() {
         return iUserDao.selectAllEmployeeON();
     }
+
+    @Override
+    public List<User> getUserListByPostname(String postname) {
+        return iUserDao.selectUserListByPostname(postname);
+    }
 }

@@ -48,4 +48,6 @@ public interface IChangeInformaionDao extends BaseDao<ChangeInformation> {
      *@Date: 15:45 2018\8\20 0020
      */
     public List<ChangeInformation> selectByUserid(Integer changeduserid);
+
+    void deleteAll();
 }

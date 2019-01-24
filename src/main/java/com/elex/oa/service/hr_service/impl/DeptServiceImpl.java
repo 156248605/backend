@@ -42,9 +42,6 @@ public class DeptServiceImpl implements IDeptService {
     @Resource
     IPostDao iPostDao;
 
-    /*@Resource
-    private Logger logger = LoggerFactory.getLogger(this.getClass());*/
-
     /**
      *@Author:ShiYun;
      *@Description:根据部门名称获得部门
@@ -101,7 +98,6 @@ public class DeptServiceImpl implements IDeptService {
         dept.setPostList(hrUtils.getStringToListString(dept.getPost_list(),";"));
         return dept;
     }
-
 
     /**
      *@Author:ShiYun;
@@ -706,15 +702,7 @@ public class DeptServiceImpl implements IDeptService {
      */
     @Override
     public List<Dept> queryByCompanyname(String companyname) {
-        List<Dept> depts = iDeptDao.selectDeptByCompanyname(companyname);
-        for (Dept d:depts
-             ) {
-            if(d.getDepname().equals(companyname)){
-                depts.remove(d);
-                break;
-            }
-        }
-        return depts;
+        return iDeptDao.selectDeptByCompanyname(companyname);
     }
 
     /**
@@ -770,42 +758,16 @@ public class DeptServiceImpl implements IDeptService {
      *@Date: 14:12 2018\9\8 0008
      */
     @Override
-    public String queryCompanynameByUseridOrTruename(Integer userid, String truename) throws Exception {
-        String companyname = null;
-        String depname = null;
-        User user = null;
-        PersonalInformation personalInformation = null;
+    public String queryCompanynameByUseridOrTruename(Integer userid, String truename){
         Dept dept = null;
-        if(userid==null && truename==null){
-            throw new Exception("传入的参数不能全为空！");
+        if(null==userid){
+            if(StringUtils.isBlank(truename))return null;
+            dept = iDeptDao.selectCompanynameAndDepnameByTruename(truename);
+        }else {
+            dept = iDeptDao.selectCompanynameAndDepnameByUserid(userid);
         }
-        if(userid!=null && truename==null){
-            user = iUserDao.selectById(userid);
-        }
-        if(userid==null && truename!=null){
-            user = iUserDao.selectByTruename(truename);
-        }
-        if(userid!=null && truename!=null){
-            user = iUserDao.selectById(userid);
-            if(user==null){
-                user = iUserDao.selectByTruename(truename);
-            }
-        }
-
-        if(user==null){
-            throw new Exception("所查员工不存在！");
-        }
-        personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
-        if(personalInformation==null){
-            throw new Exception("所查员工基本信息不存在！");
-        }
-        dept = iDeptDao.selectDeptByDepid(personalInformation.getDepid());
-        if(dept==null){
-            throw new Exception("所查员工所在部门不存在！");
-        }
-        companyname = dept.getCompanyname()==null?"":dept.getCompanyname();
-        depname = dept.getDepname()==null?"":dept.getDepname();
-        return companyname + "--" +depname;
+        if(null==dept || StringUtils.isBlank(dept.getDepname()))return null;
+        return dept.getCompanyname() + "--" +dept.getDepname();
     }
 
     @Override
@@ -864,6 +826,27 @@ public class DeptServiceImpl implements IDeptService {
         }
         return respMap;
     }
+
+    @Override
+    public List<Map<String,Object>> getAllDepidAndDepnameByDEP_ON() {
+        return iDeptDao.getAllDepidAndDepnameByDEP_ON();
+    }
+
+    @Override
+    public String getPrincipalTruenameByDepid(Integer depid) {
+        return iDeptDao.getPrincipalTruenameByDepid(depid);
+    }
+
+    @Override
+    public List<String> getAllCompanyNames() {
+        return iDeptDao.getAllCompanyNamesByDEP_ON();
+    }
+
+    @Override
+    public Object getAllDepidAndDepnameByRemoveCompany() {
+        return iDeptDao.getAllDepidAndDepnameByRemoveCompany();
+    }
+
 
     //比较新旧部门信息是否有修改并添加部门日志信息（返回布尔值）
     private Map<String, String> getRespMapByOlddeptAndNewdept(Dept oldDept, Dept newDept, String transactorusername, Map<String, String> respMap){

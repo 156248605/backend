@@ -81,4 +81,6 @@ public interface IUserDao extends BaseDao<User> {
     void updateUser(User user);
 
     List<Map> queryAllServings();
+
+    List<User> selectUserListByPostname(String postname);
 }

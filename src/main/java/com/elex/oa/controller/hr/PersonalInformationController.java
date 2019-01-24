@@ -1,6 +1,7 @@
 package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSON;
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.hr_entity.costinformation.CostInformationAddInfo;
 import com.elex.oa.entity.hr_entity.manageinformation.ManageInformationAddInfo;
@@ -324,63 +325,7 @@ public class PersonalInformationController {
     public Object deleteInformationsByIds(
             @RequestParam("personalInformationIds") List<Integer> personalInformationIds
     ) {
-        List<String> usernames = new ArrayList<>();
-        if (personalInformationIds.size() <= 0) {
-            return RespUtil.successResp("500", "删除失败！", null);
-        }
-        for (int i = 0; i < personalInformationIds.size(); i++) {
-            PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationIds.get(i));
-            if (personalInformation == null) {
-                return RespUtil.successResp("500", "删除失败！", null);
-            }
-            if (iUserService.getById(personalInformation.getUserid()) != null) {
-                usernames.add(iUserService.getById(personalInformation.getUserid()).getUsername());
-            } else {
-                return RespUtil.successResp("500", "删除失败！", null);
-            }
-
-
-            //1.先删除用户表（直接删除）
-            iUserService.removeOne(personalInformation.getUserid());
-            //2.再删除相应的基本信息表（直接删除）
-            if (personalInformation.getBaseinformationid() != null) {
-                iBaseInformationService.removeOne(personalInformation.getBaseinformationid());
-            }
-            //3.再删除相应的管理信息表（直接删除）
-            if (personalInformation.getManageinformationid() != null) {
-                iManageInformationService.removeOne(personalInformation.getManageinformationid());
-            }
-            //4.再删除相应的成本信息表（直接删除）
-            if (personalInformation.getCostinformationid() != null) {
-                iCostInformationService.remvoeOne(personalInformation.getCostinformationid());
-            }
-            //5.再删除相应的人事岗位关系表（直接删除）
-            iPerandpostrsService.removeByPerid(personalInformationIds.get(i));
-            //6.再删除相应的其他信息表（直接删除）
-            if (personalInformation.getOtherinformationid() != null) {
-                iOtherInformationService.removeOne(personalInformation.getOtherinformationid());
-            }
-            //7.再删除相应的合同信息表（直接删除）
-            List<ContractInformation> contractInformationList = iContractInformationService.queryByUserid(personalInformation.getUserid());
-            for (ContractInformation c : contractInformationList
-            ) {
-                iContractInformationService.removeOne(c.getId());
-            }
-            //8.再删除相应的人事变更表（直接删除）
-            List<ChangeInformation> changeInformationList = iChangeInformationService.queryByUserid(personalInformation.getUserid());
-            for (ChangeInformation c : changeInformationList
-            ) {
-                iChangeInformationService.removeOne(c.getId());
-            }
-            //9.再删除人事信息主表（直接删除）
-            iPersonalInformationService.removeOne(personalInformation.getId());
-            //10.最后再修改部门表
-            //注：如果将要删除的员工是某部门的正职、副职、秘书则需要修改该字段
-            iDeptService.modifyOne(personalInformation.getUserid());
-
-
-        }
-        return RespUtil.successResp("200", "删除成功！", usernames);
+        return iPersonalInformationService.deleteInformationsByIds(personalInformationIds);
     }
 
     /**
@@ -394,24 +339,7 @@ public class PersonalInformationController {
     @ResponseBody
     public Object deleteAllInformations(
     ) {
-        //1.先删除用户表（直接删除）
-        iUserService.removeAll_admin();
-        //2.再删除相应的基本信息表（直接删除）
-        iBaseInformationService.removeAll();
-        //3.再删除相应的管理信息表（直接删除）
-        iManageInformationService.removeAll();
-        //4.再删除相应的成本信息表（直接删除）
-        iCostInformationService.remvoeAll();
-        //5.再删除相应的人事岗位关系表（直接删除）
-        iPerandpostrsService.removeAll();
-        //6.再删除相应的其他信息表（直接删除）
-        iOtherInformationService.removeAll();
-        //7.再删除相应的合同信息表（直接删除）
-        //8.再删除相应的人事变更表（直接删除）
-        //9.再删除人事信息主表（直接删除）
-        iPersonalInformationService.removeAll();
-        //10.最后再修改部门表
-        return RespUtil.successResp("200", "删除成功！", null);
+        return iPersonalInformationService.deleteAllInformations();
     }
 
     /**
@@ -421,16 +349,8 @@ public class PersonalInformationController {
      */
     @RequestMapping("/queryGXF002")
     @ResponseBody
-    public List<Object> queryGXF002() {
-        List<Object> list = new ArrayList<>();
-        List<Dept> depts = iDeptService.queryAllDepts();
-        for (Dept dept : depts) {
-            Map<String, Object> deptMap = new HashMap<>();
-            deptMap.put("deptId", dept.getId());
-            deptMap.put("deptName", dept.getDepname());
-            list.add(deptMap);
-        }
-        return list;
+    public Object queryGXF002() {
+        return iDeptService.getAllDepidAndDepnameByDEP_ON();
     }
 
     /**
@@ -440,16 +360,8 @@ public class PersonalInformationController {
      */
     @RequestMapping("/queryGXF003")
     @ResponseBody
-    public List<Object> queryGXF003() {
-        ArrayList<Object> list = new ArrayList<>();
-        List<Post> posts = iPostService.queryAllPosts();
-        for (Post post : posts) {
-            Map<String, Object> postMap = new HashMap<>();
-            postMap.put("postId", post.getId());
-            postMap.put("postName", post.getPostname());
-            list.add(postMap);
-        }
-        return list;
+    public Object queryGXF003() {
+       return iPostService.getAllPostidAndPostnameByPOST_ON();
     }
 
     /**
@@ -462,26 +374,7 @@ public class PersonalInformationController {
     public String queryGXF004(
             @RequestParam("depid") Integer depid
     ) {
-        Dept dept = iDeptService.queryOneDepByDepid(depid);
-        if (dept != null) {
-            if (dept.getPrincipaluserid() != null) {
-                if (iUserService.getById(dept.getPrincipaluserid()) != null) {
-                    iUserService.getById(dept.getPrincipaluserid()).getTruename();
-                } else {
-                    return null;
-                }
-                return iUserService.getById(dept.getPrincipaluserid()).getTruename();
-            } else {
-                return "此部门没有部门正职！";
-            }
-        } else {
-            return "此部门不存在！";
-        }
-        /*if(dept!=null){
-            return RespUtil.successResp("205","查询信息成功！",dept);
-        }else{
-            return RespUtil.successResp("503","部门信息不存在！",null);
-        }*/
+        return iDeptService.getPrincipalTruenameByDepid(depid);
     }
 
     /**
@@ -492,23 +385,12 @@ public class PersonalInformationController {
     @RequestMapping("/queryGXF005")
     @ResponseBody
     public Object queryGXF005() {
-        List<Dept> depts = iDeptService.queryAllCompany1and2();
-        ArrayList<String> strs = new ArrayList<>();
-
-        if(null == depts || depts.size()==0){
-            strs.add("公司类型不存在，请先到人力资源-部门信息-设置部门的职能类型");
-            return strs;
-        }
-        for (Dept d : depts
-        ) {
-            strs.add(d.getDepname());
-        }
-        return strs;
+        return iDeptService.getAllCompanyNames();
     }
 
     /**
      * @Author:ShiYun;
-     * @Description:根据公司名称查询其下属所有部门（不管是级的）
+     * @Description:根据公司名称查询其下属所有部门（不管是几级的）
      * @Date: 11:08 2018\8\21 0021
      */
     @RequestMapping("/queryGXF006")
@@ -532,20 +414,8 @@ public class PersonalInformationController {
      */
     @RequestMapping("/queryGXF007")
     @ResponseBody
-    public List<Object> queryGXF007() {
-        List<Object> list = new ArrayList<>();
-        List<Dept> depts = iDeptService.queryAllDepts();
-        if(null==depts)return null;
-        for (Dept dept : depts) {
-            if(null==dept.getDeptypeid())continue;
-            if (dept.getDeptypeid() != 1 && dept.getDeptypeid() != 3) {
-                Map<String, Object> deptMap = new HashMap<>();
-                deptMap.put("deptId", dept.getId());
-                deptMap.put("deptName", dept.getDepname());
-                list.add(deptMap);
-            }
-        }
-        return list;
+    public Object queryGXF007() {
+        return iDeptService.getAllDepidAndDepnameByRemoveCompany();
     }
 
     /**
@@ -558,15 +428,7 @@ public class PersonalInformationController {
     public Object queryGXF008(
             @RequestParam("truename") String truename
     ) {
-        String companyname = null;
-        try {
-            companyname = iDeptService.queryCompanynameByUseridOrTruename(null, truename);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.successResp("500", e.getMessage(), companyname);
-        }
-        /*return RespUtil.successResp("200","提交成功！",companyname);*/
-        return companyname;
+        return iDeptService.queryCompanynameByUseridOrTruename(null, truename);
     }
 
     /**
@@ -606,16 +468,8 @@ public class PersonalInformationController {
     public Object queryZHG002(
             @RequestParam("postname") String postname
     ) {
-        Post post = iPostService.queryOneByPostname(postname);
-        List<PerAndPostRs> perAndPostRsList = iPerandpostrsService.queryPerAndPostRsByPostid(post.getId());
-        List<User> list = new ArrayList<>();
-        for (PerAndPostRs p : perAndPostRsList
-        ) {
-            PersonalInformation personalInformation = iPersonalInformationService.queryOneById(p.getPerid());
-            User byId = iUserService.getById(personalInformation.getUserid());
-            list.add(byId);
-        }
-        return RespUtil.successResp("205", "请求成功！", list);
+        List<User> userList = iUserService.getUserListByPostname(postname);
+        return RespUtil.successResp("200", "请求成功！", userList);
     }
 
     /**
@@ -674,7 +528,7 @@ public class PersonalInformationController {
         return iGzrzService.queryLyspd();
     }
 
-    //所有人员的工号、人名、部门（ID、名称）、[岗位(ID、名称)]
+    //所有人员的工号、人名、部门（ID、名称）、[岗位(ID、名称)](在职)
     @RequestMapping("/queryUseridTruenameDepidDepnamePerid")
     @ResponseBody
     public Object queryUseridTruenameDepidDepnamePerid(){

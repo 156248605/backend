@@ -118,4 +118,8 @@ public interface IPersonalInformationService{
     List<Map<String,Object>> queryPersonalInformationsByDepid(Integer depid);
 
     List<PersonalInformationExchange> queryPersonalInformationsByNull();
+
+    Object deleteInformationsByIds(List<Integer> personalInformationIds);
+
+    Object deleteAllInformations();
 }

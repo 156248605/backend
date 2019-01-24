@@ -782,6 +782,52 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         return iPersonalInformationDao.queryPersonalInformationsByNull();
     }
 
+    @Override
+    public Object deleteInformationsByIds(List<Integer> personalInformationIds) {
+        List<String> usernameList = new ArrayList<>();
+        if(null==personalInformationIds || personalInformationIds.size()==0)return RespUtil.successResp("500", "没有需要删除的perid！", null);
+        for (Integer perid:personalInformationIds
+             ) {
+            PersonalInformation personalInformationTemp = iPersonalInformationDao.selectById(perid);
+            if(null==personalInformationTemp)return RespUtil.successResp("500", "需要删除的perid不存在！", null);
+            //删除tb_id_user表
+            iUserDao.deleteByPrimaryKey(personalInformationTemp.getUserid());
+            //删除tb_id_baseinformation表
+            iBaseInformationDao.deleteById(personalInformationTemp.getBaseinformationid());
+            //删除tb_id_manageinformation表
+            iManageInformationDao.deleteById(personalInformationTemp.getManageinformationid());
+            //删除tb_id_costinformation表
+            iCostInformationDao.deleteById(personalInformationTemp.getCostinformationid());
+            //删除tb_id_otherinformation表
+            iOtherInformationDao.deleteById(personalInformationTemp.getOtherinformationid());
+            //删除tb_hr_per_and_post_rs表
+            iPerandpostrsDao.deleteByPerid(perid);
+            //删除tb_hr_contractinformation表
+            iContractInformationDao.deleteOne(personalInformationTemp.getUserid());
+            //删除tb_hr_changeinformation表
+            iChangeInformaionDao.delete(new ChangeInformation(personalInformationTemp.getUserid()));
+            //删除tb_id_personalinformation表
+            iPersonalInformationDao.deleteById(perid);
+            usernameList.add(hrUtils.getTruenameByUserid(personalInformationTemp.getUserid()));
+        }
+        return RespUtil.successResp("200", "删除成功！", usernameList);
+    }
+
+    @Override
+    public Object deleteAllInformations() {
+        iUserDao.deleteAll_admin();
+        iBaseInformationDao.deleteAll();
+        iManageInformationDao.deleteAll();
+        iCostInformationDao.deleteAll();
+        iOtherInformationDao.deleteAll();
+        iPerandpostrsDao.deleteAll();
+        iContractInformationDao.deleteAll();
+        iChangeInformaionDao.deleteAll();
+        iPersonalInformationDao.deleteAll();
+        return RespUtil.successResp("200", "删除成功！", null);
+    }
+
+
     //获取添加成本信息
     private CostInformation getCostinformationByCostinformationAddInfo(CostInformationAddInfo costInformationAddInfo){
         if(null==costInformationAddInfo)return null;

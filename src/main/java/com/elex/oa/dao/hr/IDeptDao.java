@@ -4,6 +4,7 @@ import com.elex.oa.entity.hr_entity.Dept;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -93,12 +94,23 @@ public interface IDeptDao{
      *@Description:根据部门类型查询部门信息
      *@Date: 10:54 2018\8\21 0021
      */
-    public List<Dept> selectDeptByDeptypeid(Integer deptypeid);
+    List<Dept> selectDeptByDeptypeid(Integer deptypeid);
 
     /**
      *@Author:ShiYun;
      *@Description:根据公司名称查询公司的部门
      *@Date: 11:20 2018\8\21 0021
      */
-    public List<Dept> selectDeptByCompanyname(String companyname);
+    List<Dept> selectDeptByCompanyname(String companyname);
+
+    List<Map<String, Object>> getAllDepidAndDepnameByDEP_ON();
+    List<Map<String, Object>> getAllDepidAndDepnameByRemoveCompany();
+
+    String getPrincipalTruenameByDepid(Integer depid);
+
+    List<String> getAllCompanyNamesByDEP_ON();
+
+    Dept selectCompanynameAndDepnameByTruename(String truename);
+
+    Dept selectCompanynameAndDepnameByUserid(Integer userid);
 }

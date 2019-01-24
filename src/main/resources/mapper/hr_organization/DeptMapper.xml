@@ -58,7 +58,7 @@
 
 	<select id="selectDeptByCompanyname" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
-		where companyname =#{companyname} and state=1
+		where companyname =#{companyname} AND state=1 AND companyname &lt;=&gt; depname=0
 	</select>
 
 	<select id="selectDeptByDepid" parameterType="java.lang.Integer" resultMap="deptMapper">
@@ -85,6 +85,69 @@
 			and state=1
 		</where>
 		ORDER BY ordercode
+	</select>
+
+	<select id="selectDeptsByDept" parameterType="Dept" resultMap="deptMapper">
+		select * from tb_id_department
+		<where>
+			<if test="depname!=null and depname!=''"> and depname=#{depname}</if>
+			<if test="depcode!=null and depcode!=''"> and depcode=#{depcode}</if>
+			<if test="functionaltypeid!=null and functionaltypeid!=''"> and functionaltypeid=#{functionaltypeid}</if>
+			<if test="dutydescription!=null and dutydescription!=''"> and dutydescription=#{dutydescription}</if>
+			<if test="parentdepid!=null and parentdepid!=''"> and parentdepid=#{parentdepid}</if>
+			<if test="principaluserid!=null and principaluserid!=''"> and principaluserid=#{principaluserid}</if>
+			<if test="deputyuserid!=null and deputyuserid!=''"> and deputyuserid=#{deputyuserid}</if>
+			<if test="secretaryuserid!=null and secretaryuserid!=''"> and secretaryuserid=#{secretaryuserid}</if>
+			<if test="deptypeid!=null and deptypeid!=''"> and deptypeid=#{deptypeid}</if>
+			and state=1
+		</where>
+		ORDER BY ordercode
+	</select>
+
+	<select id="getAllDepidAndDepnameByDEP_ON" resultType="java.util.Map">
+		SELECT dep.id AS deptId,dep.depname AS deptName
+		FROM tb_id_department dep
+		WHERE state=1
+	</select>
+
+	<select id="getAllDepidAndDepnameByRemoveCompany" resultType="java.util.Map">
+		SELECT
+		dep.id AS deptId,
+		dep.depname AS deptName
+		FROM
+		tb_id_department dep
+		WHERE
+		dep.state = 1 AND dep.companyname&lt;=&gt;dep.depname=0
+	</select>
+
+	<select id="getPrincipalTruenameByDepid" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT IFNULL(u.truename,'') AS principalTruename
+		FROM tb_id_department dep
+		LEFT JOIN tb_id_user u ON u.id=dep.principaluserid
+		WHERE dep.state=1 AND dep.id=#{depid}
+	</select>
+
+	<select id="getAllCompanyNamesByDEP_ON" resultType="java.lang.String">
+		SELECT dep.depname
+		FROM tb_id_department dep
+		JOIN tb_hr_set deptype ON deptype.id=dep.deptypeid
+		WHERE deptype.datavalue LIKE '%公司%' AND dep.state=1
+	</select>
+
+	<select id="selectCompanynameAndDepnameByTruename" parameterType="java.lang.String" resultMap="deptMapper">
+		SELECT dep.companyname,dep.depname
+		FROM tb_id_user u
+		JOIN tb_id_personalinformation per ON per.userid=u.id
+		JOIN tb_id_department dep ON dep.id=per.depid
+		WHERE u.truename=#{truename}
+	</select>
+
+	<select id="selectCompanynameAndDepnameByUserid" parameterType="java.lang.Integer" resultMap="deptMapper">
+		SELECT dep.companyname,dep.depname
+		FROM tb_id_user u
+		JOIN tb_id_personalinformation per ON per.userid=u.id
+		JOIN tb_id_department dep ON dep.id=per.depid
+		WHERE u.id=#{userid}
 	</select>
 
 	<insert id="insertOne" parameterType="Dept" useGeneratedKeys="true" keyProperty="id">
@@ -158,20 +221,4 @@
 		WHERE id=#{_parameter,jdbcType=NUMERIC}
 	</update>
 
-	<select id="selectDeptsByDept" parameterType="Dept" resultMap="deptMapper">
-		select * from tb_id_department
-		<where>
-			<if test="depname!=null and depname!=''"> and depname=#{depname}</if>
-			<if test="depcode!=null and depcode!=''"> and depcode=#{depcode}</if>
-			<if test="functionaltypeid!=null and functionaltypeid!=''"> and functionaltypeid=#{functionaltypeid}</if>
-			<if test="dutydescription!=null and dutydescription!=''"> and dutydescription=#{dutydescription}</if>
-			<if test="parentdepid!=null and parentdepid!=''"> and parentdepid=#{parentdepid}</if>
-			<if test="principaluserid!=null and principaluserid!=''"> and principaluserid=#{principaluserid}</if>
-			<if test="deputyuserid!=null and deputyuserid!=''"> and deputyuserid=#{deputyuserid}</if>
-			<if test="secretaryuserid!=null and secretaryuserid!=''"> and secretaryuserid=#{secretaryuserid}</if>
-			<if test="deptypeid!=null and deptypeid!=''"> and deptypeid=#{deptypeid}</if>
-			and state=1
-		</where>
-		ORDER BY ordercode
-	</select>
 </mapper>

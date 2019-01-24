@@ -62,4 +62,6 @@ public interface IUserService extends BaseService<User> {
     Boolean modifyUser(User user);
 
     List<User> selectAllOrderByDictionary();
+
+    List<User> getUserListByPostname(String postname);
 }
