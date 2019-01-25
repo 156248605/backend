@@ -358,18 +358,6 @@ public class PostServiceImpl implements IPostService {
         Boolean isUpdate = false;
         Integer postid = oldPost.getId();
         //判断岗位编号是否相同并添加岗位日志
-        /*Boolean isExist = getaBooleanByPostcode(newPost.getPostcode());
-        if(isExist){
-            //岗位编号存在
-            if(!newPost.getPostcode().equals(oldPost.getPostcode())){
-                //新旧岗位编号不一样则修改失败
-                return false;
-            }
-        }else if(null == isExist){
-            //编号为空不合规定
-            return false;
-        }else {
-        }*/
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid, oldPost.getPostcode(), newPost.getPostcode(), "岗位编号", transactorusername);
         if(isUpdate)respBoolean = true;
         //判断岗位名称并添加日志
@@ -418,8 +406,8 @@ public class PostServiceImpl implements IPostService {
 
     //判断新旧两个字段是否相同并添加相应的岗位日志信息
     private Boolean getaBooleanByBeforeAndAfterinfo(Integer postid,String beforeinformation,String afterinformation,String changeinformationName,String transactorusername){
-        if(StringUtils.isBlank(beforeinformation))return false;
-        if(beforeinformation.equals(afterinformation))return false;
+        if(StringUtils.isBlank(afterinformation))return false;
+        if(StringUtils.isNotBlank(beforeinformation) && beforeinformation.equals(afterinformation))return false;
         PostLog postLog = new PostLog();
         postLog.setPostid(postid);
         postLog.setChangeinformation(changeinformationName);
@@ -442,7 +430,7 @@ public class PostServiceImpl implements IPostService {
         //获得岗级（级别）
         post.setPostlevel(hrUtils.getDatavalueByHrsetid(post.getPostlevelid()));
         //获得职级
-        post.setPostrank(hrUtils.getDatavalueByHrsetid(post.getPostrankid()));
+        //post.setPostrank(hrUtils.getDatavalueByHrsetid(post.getPostrankid()));
         //获得上级岗位（粗略信息）
         post.setParentpost(getCursoryPostByPostid(post.getParentpostid()));
         return post;
