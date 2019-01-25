@@ -266,13 +266,13 @@
             <!--<if test="position != null and position != ''">-->
                 <!--position = #{position},-->
             <!--</if>-->
-            <if test="partner != null and partner != ''">
+            <if test="partner != null">
                 partner = #{partner},
             </if>
-            <if test="price != null and price != ''">
+            <if test="price != null">
                 price = #{price},
             </if>
-            <if test="unit != null and unit != ''">
+            <if test="unit != null">
                 unit = #{unit},
             </if>
             <if test="num != null and num != ''">

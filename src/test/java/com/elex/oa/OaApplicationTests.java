@@ -31,10 +31,10 @@ public class OaApplicationTests {
 
 	@Test
 	public void contextLoads() throws Exception {
-		System.out.println("input:");
+		/*System.out.println("input:");
 		Scanner scanner = new Scanner(System.in);
 		String birthday = scanner.nextLine();
-		System.out.println(hrUtils.getAge(birthday));
+		System.out.println(hrUtils.getAge(birthday));*/
 	}
 
 }
