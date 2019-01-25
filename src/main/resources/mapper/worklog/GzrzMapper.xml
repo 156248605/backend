@@ -34,14 +34,14 @@
 	</resultMap>
 
 	<select id="selectNamesByDateAndState" resultType="java.lang.String">
-		select distinct F_TBR_NAME from w_gzrz1
+		select  distinct F_TBR_NAME from w_gzrz1
 		where F_TBRQ BETWEEN #{date1} and #{date2}
 		AND (INST_STATUS_="SUCCESS_END" OR INST_STATUS_="RUNNING")
 		ORDER BY ID_ DESC
 	</select>
 
 	<select id="selectDepnameByTruename" resultType="java.lang.String">
-		select distinct F_TBBM_NAME from w_gzrz1
+		select GROUP_CONCAT(DISTINCT IFNULL(F_TBBM_NAME,'')) AS F_TBBM_NAME from w_gzrz1
 		where F_TBR_NAME =#{truename}
 		AND (INST_STATUS_="SUCCESS_END" OR INST_STATUS_="INST_STATUS_")
 	</select>
