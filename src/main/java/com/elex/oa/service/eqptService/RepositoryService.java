@@ -60,4 +60,6 @@ public interface RepositoryService {
 
     // 删除仓库类型
     void deleteCate(HttpServletRequest request);
+
+    String reptCanChangeState(HttpServletRequest request);
 }

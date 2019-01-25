@@ -110,4 +110,7 @@ public interface RepositoryMapper {
 
     // 根据仓库Id查询name
     String searchReptName(Material material);
+
+    // 查询仓库是否有物料
+    List reptCanChangeState(Repository repository);
 }

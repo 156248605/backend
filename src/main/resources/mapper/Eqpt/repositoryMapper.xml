@@ -687,4 +687,8 @@
     <select id="searchReptName" resultType="string">
         SELECT reptName FROM eqpt_repository WHERE reptId = #{reptId}
     </select>
+
+    <select id="reptCanChangeState" resultType="java.lang.String">
+        SELECT id FROM eqpt_detail WHERE reptId = #{reptId}
+    </select>
 </mapper>

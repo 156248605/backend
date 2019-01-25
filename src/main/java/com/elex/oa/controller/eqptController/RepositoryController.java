@@ -171,6 +171,12 @@ public class RepositoryController {
         return iDeptService.queryByTruename(name);
     }
 
+    @RequestMapping("/reptCanChangeState")
+    @ResponseBody
+    public String reptCanChangeState (HttpServletRequest request) {
+        return repositoryImpl.reptCanChangeState(request);
+    }
+
     /*@RequestMapping("/matInRept")
     @ResponseBody
     public List<Repository> matInRept(HttpServletRequest request){

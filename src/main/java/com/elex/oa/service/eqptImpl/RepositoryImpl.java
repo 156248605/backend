@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -321,6 +322,17 @@ public class RepositoryImpl implements RepositoryService {
         repositoryMapper.deleteCate(onlyId);
     }
 
+    @Override
+    public String reptCanChangeState (HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setReptId(request.getParameter("reptId"));
+        List list = repositoryMapper.reptCanChangeState(repository);
+        if (list.size() > 0) {
+            return "0";
+        }else {
+            return "1";
+        }
+    }
    /* @Override
     public List<Repository> matInPost(HttpServletRequest request) {
         List<Repository> postList = null;
