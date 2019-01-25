@@ -58,7 +58,7 @@
 	</select>
 
 	<select id="selectByConditions" parameterType="PersonalInformation" resultMap="PersonalInformationResultMap">
-		SELECT
+		SELECT DISTINCT
 			per.id,
 			per.userid,
 			per.employeenumber,
