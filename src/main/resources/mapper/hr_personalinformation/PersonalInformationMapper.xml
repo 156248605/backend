@@ -185,7 +185,7 @@
 			</if>
 			and u.state = 1
 		</where>
-		GROUP BY per.id DESC
+		ORDER BY CONVERT (u.truename USING gbk) ASC
 	</select>
 
 	<select id="selectByConditions2" parameterType="DimissionInformation" resultMap="PersonalInformationResultMap">
