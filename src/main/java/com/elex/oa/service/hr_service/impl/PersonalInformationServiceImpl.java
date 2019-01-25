@@ -448,6 +448,15 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Integer perid = personalInformationTemp.getId();//此处可能有空指针
         personalInformation.setId(perid);
         personalInformation.setManageinformationid(personalInformationTemp.getManageinformationid());
+        //没有管理信息表则添加
+        if(null==personalInformationTemp.getManageinformationid()){
+            //没有则新建并更新tb_id_personalinformation表
+            ManageInformation manageInformation = new ManageInformation();
+            iManageInformationDao.insertOne(manageInformation);
+            personalInformationTemp.setManageinformationid(manageInformation.getId());
+            iPersonalInformationDao.updateOne(personalInformationTemp);
+            personalInformation.setManageinformationid(manageInformation.getId());
+        }
         //获得原始的管理信息
         Map<String, String> oldManageinformation = getOldManageinformationByUserid(personalInformation.getUserid());
         //获得当前的管理信息
@@ -507,6 +516,14 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Integer perid = oldPer.getId();//此处可能有空指针
         personalInformation.setId(perid);
         personalInformation.setCostinformationid(oldPer.getCostinformationid());
+        //没有则添加
+        if(null==oldPer.getCostinformationid()){
+            CostInformation costInformation = new CostInformation();
+            iCostInformationDao.insertOne(costInformation);
+            oldPer.setCostinformationid(costInformation.getId());
+            iPersonalInformationDao.updateOne(oldPer);
+            personalInformation.setCostinformationid(costInformation.getId());
+        }
         //获得原始的人事成本信息
         oldPer = getDetailPersonalinformationByCursorPersonalinformation(oldPer);
         //获得当前的人事成本信息（从页面获取）
@@ -530,6 +547,14 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         Integer perid = oldPer.getId();//此处可能有空指针
         personalInformation.setId(perid);
         personalInformation.setOtherinformationid(oldPer.getOtherinformationid());
+        //没有则新建
+        if(null==oldPer.getOtherinformationid()){
+            OtherInformation otherInformation = new OtherInformation();
+            iOtherInformationDao.insertOne(otherInformation);
+            oldPer.setOtherinformationid(otherInformation.getId());
+            iPersonalInformationDao.updateOne(oldPer);
+            personalInformation.setOtherinformationid(otherInformation.getId());
+        }
         //获得原始的人事基本信息
         oldPer = getDetailPersonalinformationByCursorPersonalinformation(oldPer);
         //获得当前的人事基本信息（从页面获取）
@@ -1667,6 +1692,12 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         }
         //获得管理信息
         ManageInformation manageInformation = iManageInformationDao.selectById(personalInformation.getManageinformationid());
+        if(null==manageInformation){
+            //没有则新建并更新tb_id_personalinformation表
+            iManageInformationDao.insertOne(manageInformation = new ManageInformation());
+            personalInformation.setManageinformationid(manageInformation.getId());
+            iPersonalInformationDao.updateOne(personalInformation);
+        }
         //获得级别、员工类型、入职时间、转正时间
         /*respMap.put("postlevel",hrUtils.getDatavalueByHrsetid(manageInformation.getPostlevelid()));*/ //岗级与岗位流程挂钩、职级与人事工资挂钩
         respMap.put("postrank",hrUtils.getDatavalueByHrsetid(manageInformation.getPostrankid()));
