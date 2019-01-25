@@ -95,7 +95,7 @@ public class DeptServiceImpl implements IDeptService {
         Dept dept = iDeptDao.selectDeptByDepid(depid);
         dept.setFunctionaltype(hrUtils.getDatavalueByHrsetid(dept.getFunctionaltypeid()));
         dept.setDeptype(hrUtils.getDatacodeByHrsetid(dept.getDeptypeid()));
-        dept.setPostList(hrUtils.getStringToListString(dept.getPost_list(),";"));
+        dept.setPostList(hrUtils.getStringToListString(dept.getPost_list(),","));
         return dept;
     }
 
