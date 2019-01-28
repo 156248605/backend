@@ -58,7 +58,6 @@ public class PostServiceImpl implements IPostService {
         return post;
     }
 
-
     /**
      *@Author:ShiYun;
      *@Description:根据岗位名称查询岗位信息
@@ -89,7 +88,6 @@ public class PostServiceImpl implements IPostService {
         post = getPostdetailByPost(post);
         return post;
     }
-
 
     /**
      *@Author:ShiYun;
@@ -146,7 +144,6 @@ public class PostServiceImpl implements IPostService {
         return RespUtil.successResp("200","添加成功！",post);
     }
 
-
     /**
      *@Author:ShiYun;
      *@Description:修改岗位信息
@@ -186,7 +183,6 @@ public class PostServiceImpl implements IPostService {
         }
         return RespUtil.successResp("200","删除成功！",true) ;
     }
-
 
     /**
      *@Author:ShiYun;

@@ -40,7 +40,6 @@ public class ContractinfoServiceImpl implements IContractinfoService {
     public Boolean changeTable() {
         Boolean valBoolean = true;
         List<ContractInformation> contractInformationList = iContractInformationDao.selectAll();
-        List<Contractinfo> contractInfoList = new ArrayList<>();
         for (ContractInformation con:contractInformationList
              ) {
             Contractinfo temContractInfo = getContractInfoByContractcode(con.getContractcode());

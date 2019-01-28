@@ -131,16 +131,10 @@ public class HRsetServiceImpl implements IHRsetService {
     public Map<Integer, String> removeMultiple(List<Integer> ids) {
         Map<Integer,String> map = new HashMap<>();
         for(Integer i=0;i<ids.size();i++){
-            Boolean aBoolean = true;
             try {
                 ihRsetDao.deleteOne(ids.get(i));
             } catch (Exception e) {
                 e.printStackTrace();
-                aBoolean = false;
-            }
-            if(aBoolean){
-                map.put(ids.get(i),"删除成功！");
-            }else {
                 map.put(ids.get(i),"删除失败！");
             }
         }

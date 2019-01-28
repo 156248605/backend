@@ -536,9 +536,14 @@ public class DepinfoServiceImpl implements IDepinfoService {
         depinfo.setDepcode(d.getDepcode());
         depinfo.setCompanyname(d.getCompanyname());
         depinfo.setDepname(d.getDepname());
-        depinfo.setFunctionaltypeid(new HrUtils().getDatacodeByHrsetid(d.getFunctionaltypeid()));
-        depinfo.setDeptypeid(new HrUtils().getDatacodeByHrsetid(d.getDeptypeid()));
-        depinfo.setParent_depcode(new HrUtils().getDepcodeByDepid(d.getParentdepid()));
+        depinfo.setFunctionaltypeid(hrUtils.getDatacodeByHrsetid(d.getFunctionaltypeid()));
+        depinfo.setDeptypeid(hrUtils.getDatacodeByHrsetid(d.getDeptypeid()));
+        String parentpostcode = hrUtils.getDepcodeByDepid(d.getParentdepid());
+        if (null==parentpostcode) {
+            depinfo.setParent_depcode("top");
+        } else {
+            depinfo.setParent_depcode(parentpostcode);
+        }
         depinfo.setPrincipaluserid(getEmployeenumberByUserid(d.getPrincipaluserid()));
         depinfo.setDeputyuserid(getEmployeenumberByUserid(d.getDeputyuserid()));
         depinfo.setSecretaryuserid(getEmployeenumberByUserid(d.getSecretaryuserid()));

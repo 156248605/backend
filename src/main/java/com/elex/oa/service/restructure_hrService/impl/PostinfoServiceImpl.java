@@ -445,11 +445,11 @@ public class PostinfoServiceImpl implements IPostinfoService {
         postinfo.setPostcode(p.getPostcode());
         postinfo.setParent_postcode(getPostcodeByPostid(p.getParentpostid()));
         postinfo.setPostname(p.getPostname());
-        postinfo.setFunctionaltypeid(new HrUtils().getDatacodeByHrsetid(p.getFunctionaltypeid()));
-        postinfo.setPostfamilyid(new HrUtils().getDatacodeByHrsetid(p.getPostfamilyid()));
-        postinfo.setPostgradeid(new HrUtils().getDatacodeByHrsetid(p.getPostgradeid()));
-        postinfo.setPostrankid(new HrUtils().getDatacodeByHrsetid(p.getPostrankid()));
-        postinfo.setPostlevelid(new HrUtils().getDatacodeByHrsetid(p.getPostlevelid()));
+        postinfo.setFunctionaltypeid(hrUtils.getDatacodeByHrsetid(p.getFunctionaltypeid()));
+        postinfo.setPostfamilyid(hrUtils.getDatacodeByHrsetid(p.getPostfamilyid()));
+        postinfo.setPostgradeid(hrUtils.getDatacodeByHrsetid(p.getPostgradeid()));
+        postinfo.setPostrankid(hrUtils.getDatacodeByHrsetid(p.getPostrankid()));
+        postinfo.setPostlevelid(hrUtils.getDatacodeByHrsetid(p.getPostlevelid()));
         postinfo.setOrganization(p.getOrganization());
         postinfo.setJobdescription(p.getJobdescription());
         postinfo.setDuty(p.getDuty());

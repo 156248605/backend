@@ -20,6 +20,7 @@ import com.elex.oa.entity.restructure_hrentity.Personalinfo;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -39,7 +40,7 @@ import java.util.*;
  * @Date 2018\11\29 0029 19:23
  * @Version 1.0
  **/
-@Service
+@Component
 public class HrUtils {
     @Resource
     IHRsetDao ihRsetDao;

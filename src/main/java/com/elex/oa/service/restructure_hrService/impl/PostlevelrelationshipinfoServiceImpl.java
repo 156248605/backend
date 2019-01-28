@@ -29,6 +29,8 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
     IPostlevelrelationshipinfoDao iPostlevelrelationshipinfoDao;
     @Resource
     IHrdatadictionaryDao iHrdatadictionaryDao;
+    @Resource
+    HrUtils hrUtils;
 
     @Override
     public Boolean changeTable() {
@@ -139,10 +141,10 @@ public class PostlevelrelationshipinfoServiceImpl implements IPostlevelrelations
 
     private Postlevelrelationshipinfo getNewBeanByOldBean(PostRelationship p) {
         Postlevelrelationshipinfo postlevelrelationshipinfo = new Postlevelrelationshipinfo();
-        postlevelrelationshipinfo.setPostfamilyid(new HrUtils().getDatacodeByHrsetid(p.getPostfamilyid()));
-        postlevelrelationshipinfo.setPostgradeid(new HrUtils().getDatacodeByHrsetid(p.getPostgradeid()));
-        postlevelrelationshipinfo.setPostrankid(new HrUtils().getDatacodeByHrsetid(p.getPostrankid()));
-        postlevelrelationshipinfo.setPostlevelid(new HrUtils().getDatacodeByHrsetid(p.getPostlevelid()));
+        postlevelrelationshipinfo.setPostfamilyid(hrUtils.getDatacodeByHrsetid(p.getPostfamilyid()));
+        postlevelrelationshipinfo.setPostgradeid(hrUtils.getDatacodeByHrsetid(p.getPostgradeid()));
+        postlevelrelationshipinfo.setPostrankid(hrUtils.getDatacodeByHrsetid(p.getPostrankid()));
+        postlevelrelationshipinfo.setPostlevelid(hrUtils.getDatacodeByHrsetid(p.getPostlevelid()));
         return postlevelrelationshipinfo;
     }
 

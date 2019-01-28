@@ -1,5 +1,6 @@
 package com.elex.oa.controller.hr;
 
+import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.hr_service.IHRsetService;
@@ -123,7 +124,7 @@ public class HRset_OldController {
     ){
         Map<Integer, String> map = ihRsetService.removeMultiple(ids);
         Boolean aBoolean = map.size()==0?true:false;
-        return aBoolean? RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",map);
+        return aBoolean? RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！", JSONObject.toJSONString(map));
     }
 
     /**
