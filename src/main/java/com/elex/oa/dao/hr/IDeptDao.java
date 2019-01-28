@@ -113,4 +113,6 @@ public interface IDeptDao{
     Dept selectCompanynameAndDepnameByTruename(String truename);
 
     Dept selectCompanynameAndDepnameByUserid(Integer userid);
+
+    Dept selectDeptByUsername(String username);
 }

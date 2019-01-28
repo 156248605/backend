@@ -51,4 +51,6 @@ public interface Commons {
     String DEP_ON = "1";//部门在用状态
     String DEP_OFF = "0";//部门取消状态
     String USER_INIT_PASSWORD = "123456";//初始密码
+    String CLUE_SEQUENCE_NAME="clue_sequence";//线索索引名称
+    String OPPORTUNITY_SEQUENCE_NAME="opportunity_sequence";//线索索引名称
 }

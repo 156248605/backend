@@ -44,7 +44,8 @@ public class OpportunityController {
     public Object opportunity_ADD(
             Opportunity opportunity,
             HttpServletRequest request,
-            @RequestParam(name = "attachmentSize", required = false)Integer i
+            @RequestParam(name = "attachmentSize", required = false)Integer i,
+            @RequestParam("username")String username
     ){
         //获得附件地址
         if (null!=i) {
@@ -52,7 +53,8 @@ public class OpportunityController {
             opportunity.setBusinessAttachmentList(businessAttachmentList);
         }
         //自动生成商机编码（主键）
-        String opportunityCode = "opportunity_"+System.currentTimeMillis();
+        //商机编号的格式暂定为：ELEX-BIZ-UN-YYYY-MMNNNN
+        String opportunityCode = hrUtils.getOpportunityCode(username);
         opportunity.setCode(opportunityCode);
         //调用业务层方法
         Boolean aBoolean = iOpportunityService.transforClueToOpportunity(opportunity);

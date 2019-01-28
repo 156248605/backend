@@ -1,5 +1,9 @@
 package com.elex.oa.util.hr_util;
 
+import com.elex.oa.common.hr.Commons;
+import com.elex.oa.dao.business.IClueDao;
+import com.elex.oa.dao.business.IOpportunityDao;
+import com.elex.oa.dao.business.ISequenceDao;
 import com.elex.oa.dao.business.ITrackInfoDao;
 import com.elex.oa.dao.hr.IDeptDao;
 import com.elex.oa.dao.hr.IHRsetDao;
@@ -9,6 +13,9 @@ import com.elex.oa.dao.restructure_hr.IDepinfoDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPersonalinfoDao;
 import com.elex.oa.dao.restructure_hr.IPostinfoDao;
+import com.elex.oa.entity.business.Clue;
+import com.elex.oa.entity.business.Opportunity;
+import com.elex.oa.entity.business.Sequence;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.entity.hr_entity.Dept;
 import com.elex.oa.entity.hr_entity.HRset;
@@ -62,8 +69,14 @@ public class HrUtils {
     IPersonalinfoDao iPersonalinfoDao;
     @Resource
     IDcodeUtil iDcodeUtil;
+    @Resource
+    IClueDao iClueDao;
+    @Resource
+    IOpportunityDao iOpportunityDao;
     @Autowired
     AppProperties appProperties;
+    @Resource
+    ISequenceDao iSequenceDao;
 
     //根据tb_hr_set表中id查询tb_data_dictionary表中datacode字段（仅仅迁移数据用，已过时）
     public String getDatacodeByHrsetid(Integer hrsetid) {
@@ -450,5 +463,90 @@ public class HrUtils {
         User user = iUserDao.selectByEmployeenumber(employeenumber);
         if(null==user)return null;
         return user.getId();
+    }
+
+    //获取线索编号
+    //线索编号的格式暂定为：ELEX-CLU-UN-YYYY-MMNNNN
+    public String getClueCode(String username) {
+        //获得UN编号
+        String strUN = getCompanyCodeByUsername(username);
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssss");
+        String format = sdf.format(date);
+        String currentTime = format.substring(0,4)+"-"+format.substring(5,7);
+        String clueCodePrefix = "ELEX-CLU-"+strUN+"-"+currentTime;
+        String clueCode = clueCodePrefix+getSequenceCode(currentTime,Commons.CLUE_SEQUENCE_NAME);
+        return clueCode;
+    }
+
+    //获得商机编号
+    //商机编号的格式暂定为：ELEX-BIZ-UN-YYYY-MMNNNN
+    public String getOpportunityCode(String username){
+        //获得UN编号
+        String strUN = getCompanyCodeByUsername(username);
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssss");
+        String format = sdf.format(date);
+        String currentTime = format.substring(0,4)+"-"+format.substring(5,7);
+        String opportunityCodePrefix = "ELEX-BIZ-"+strUN+"-"+currentTime;
+        String opportunityCode = opportunityCodePrefix+getSequenceCode(currentTime, Commons.OPPORTUNITY_SEQUENCE_NAME);
+        return opportunityCode;
+    }
+
+    //字符串数组去重
+    public List<String> removeDeplication(List<String> list) {
+        LinkedHashSet<String> set = new LinkedHashSet<>();
+        set.addAll(list);
+        list.clear();
+        list.addAll(set);
+        return list;
+    }
+
+    //获得公司编码99、13、11（根据登录ID）
+    public String getCompanyCodeByUsername(String username){
+        if(StringUtils.isBlank(username))return null;
+        Dept dept = iDeptDao.selectDeptByUsername(username);
+        if(null==dept || null==dept.getId())return null;
+        return getCompanyCodeByDept(dept);
+    }
+
+    //获得公司编码99、13、11（根据部门对象）
+    private String getCompanyCodeByDept(Dept dept){
+        String depcode = dept.getDepcode();
+        if(depcode.indexOf("ELEX")!=-1)return depcode.substring(4,depcode.length());
+        Dept parentdept = iDeptDao.selectDeptByDepid(dept.getParentdepid());
+        if(null==parentdept || null==parentdept.getId())return null;//防止出现死循环
+        return getCompanyCodeByDept(parentdept);
+    }
+
+    //根据YYYY-MM获得索引号
+    public String getSequenceCode(String currentTime,String sequenceName){
+        List<Sequence> sequenceList = iSequenceDao.select(new Sequence(sequenceName));
+        if(null==sequenceList || sequenceList.size()==0){
+            //没有则创建，且返还"0001"
+            iSequenceDao.insert(new Sequence("sequence_"+System.currentTimeMillis(),sequenceName,1,currentTime));
+            return "00001";
+        }else {
+            //有则需要判断是否为同一个月份
+            Sequence sequence = sequenceList.get(0);
+            if(sequence.getCurrent_time().equals(currentTime)){
+                //同一个月份则加一并返回
+                Integer numberCode = sequence.getSequence_value()+1;
+                sequence.setSequence_value(numberCode);
+                iSequenceDao.updateByPrimaryKey(sequence);
+                int numberCodeLength = String.valueOf(numberCode).length();
+                if(numberCodeLength==1)return "000"+String.valueOf(numberCode);
+                if(numberCodeLength==2)return "00"+String.valueOf(numberCode);
+                if(numberCodeLength==3)return "0"+String.valueOf(numberCode);
+                if(numberCodeLength>=4)return String.valueOf(numberCode);
+            }else {
+                //不是同一个月份则返回"00001"
+                sequence.setSequence_value(1);
+                sequence.setCurrent_time(currentTime);
+                iSequenceDao.updateByPrimaryKeySelective(sequence);
+                return "0001";
+            }
+        }
+        return "NNNN";
     }
 }

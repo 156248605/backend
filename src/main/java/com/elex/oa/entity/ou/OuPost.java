@@ -2,6 +2,7 @@ package com.elex.oa.entity.ou;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @Description: DOTO
@@ -16,9 +17,19 @@ public class OuPost {
     private String postcode;//岗位编号
     private String postname;//岗位名称
     private Integer postlevelid;//岗级ID
+    @Transient
+    private String postlevel;//岗级
     private String state;//状态
 
     public OuPost() {
+    }
+
+    public String getPostlevel() {
+        return postlevel;
+    }
+
+    public void setPostlevel(String postlevel) {
+        this.postlevel = postlevel;
     }
 
     public OuPost(String postcode) {

@@ -22,10 +22,8 @@ import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequ
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Description: DOTO
@@ -59,7 +57,8 @@ public class ClueController {
     public Object clue_ADD(
             Clue clue,
             HttpServletRequest request,
-            @RequestParam(name = "attachmentSize", required = false)Integer i
+            @RequestParam(name = "attachmentSize", required = false)Integer i,
+            @RequestParam("username")String username
     ){
         //获得附件地址
         if (null!=i) {
@@ -67,7 +66,8 @@ public class ClueController {
             clue.setBusinessAttachmentList(businessAttachmentList);
         }
         //自动生成线索编码（主键）
-        String clueCode = "clue_"+System.currentTimeMillis();
+        //线索编号的格式暂定为：ELEX-CLU-UN-YYYY-MMNNNN
+        String clueCode = hrUtils.getClueCode(username);
         clue.setCode(clueCode);
         //调用业务层方法
         Boolean aBoolean = iClueService.addClueInfo(clue);

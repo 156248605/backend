@@ -11,9 +11,9 @@
 	</resultMap>
 
 	<select id="selectPageOuPostList" parameterType="com.elex.oa.entity.ou.OuPostConditionInfo" resultMap="OuPostMapper">
-		select oup.id,oup.postcode,oup.postname,oup.postlevelid,oup.state
+		select oup.id,oup.postcode,oup.postname,oup.postlevelid,oup.state,postlevel.datavalue AS postlevel
 		from tb_ou_post oup
-		join tb_hr_set postlevel on postlevel.id=oup.postlevelid
+		left join tb_hr_set postlevel on postlevel.id=oup.postlevelid
 		<where>
 			<if test="(postcodeValue!=null and postcodeValue!='') or postcodeList!=null">
 				<if test="postcodeQueryMethod=='' and postcodeList!=null and postcodeList.size!=0">
@@ -66,4 +66,21 @@
 		</where>
 	</select>
 
+	<select id="selectParamsOfOuPost" resultType="java.util.Map">
+		SELECT
+			post.postcode,
+			post.postname,
+			postlevel.datavalue AS postlevel,
+			(
+				CASE post.state
+				WHEN '1' THEN
+					'可用'
+				ELSE
+					'不可用'
+				END
+			) AS state
+		FROM
+			tb_ou_post post
+		LEFT JOIN tb_hr_set postlevel ON postlevel.id = post.postlevelid
+	</select>
 </mapper>

@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @Description: DOTO
  * @Author shiyun
@@ -53,5 +57,12 @@ public class OuController {
             OuPostConditionInfo ouPostConditionInfo
     ){
         return iOuPostService.getPageOuPostList(pageNum,pageSize,ouPostConditionInfo);
+    }
+
+    @RequestMapping("/post/getParamsOfOuPost")
+    @ResponseBody
+    public Object getParamsOfOuPost(){
+        Map<String,Object> respMap = iOuPostService.getParamsOfOuPost();
+        return respMap;
     }
 }    

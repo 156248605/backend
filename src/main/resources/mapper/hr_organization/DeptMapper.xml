@@ -20,6 +20,14 @@
 		<result column="post_list" property="post_list" />
 	</resultMap>
 
+	<select id="selectDeptByUsername" parameterType="java.lang.String" resultMap="deptMapper">
+		SELECT dep.id,dep.depcode,dep.depname,dep.parentdepid
+		FROM tb_id_user u
+		LEFT JOIN tb_id_personalinformation per ON per.userid=u.id
+		LEFT JOIN tb_id_department dep ON dep.id=per.depid
+		WHERE u.username=#{username} AND u.state=1 AND dep.state=1
+	</select>
+
 	<select id="selectDeptByDeptname" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
 		where depname = #{depname} and state=1

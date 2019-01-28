@@ -6,6 +6,7 @@ import com.elex.oa.dao.ou.OuPostDao;
 import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.entity.ou.OuPostConditionInfo;
 import com.elex.oa.service.ouService.IOuPostService;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,7 +14,10 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: DOTO
@@ -25,6 +29,8 @@ import java.util.List;
 public class OuPostServiceImpl implements IOuPostService {
     @Resource
     private OuPostDao ouPostDao;
+    @Resource
+    private HrUtils hrUtils;
 
     @Override
     public Object addOuPost(OuPost ouPost) {
@@ -52,5 +58,30 @@ public class OuPostServiceImpl implements IOuPostService {
         return new PageInfo<>(ouPostList);
     }
 
+    @Override
+    public Map<String,Object> getParamsOfOuPost() {
+        List<Map<String, Object>> postList = ouPostDao.selectParamsOfOuPost();
+        List<String> postcodeList = new ArrayList<>();
+        List<String> postnameList = new ArrayList<>();
+        List<String> postlevelList = new ArrayList<>();
+        List<String> stateList = new ArrayList<>();
+        Map<String,Object> respMap = new HashMap<>();
+        for (Map<String,Object> post:postList
+             ) {
+            postcodeList.add((String) post.get("postcode"));
+            postnameList.add((String) post.get("postname"));
+            postlevelList.add((String) post.get("postlevel"));
+            stateList.add((String) post.get("state"));
+        }
+        postcodeList = hrUtils.removeDeplication(postcodeList);
+        postnameList = hrUtils.removeDeplication(postnameList);
+        postlevelList = hrUtils.removeDeplication(postlevelList);
+        stateList = hrUtils.removeDeplication(stateList);
+        respMap.put("postcodeList",postcodeList);
+        respMap.put("postnameList",postnameList);
+        respMap.put("postlevelList",postlevelList);
+        respMap.put("stateList",stateList);
+        return respMap;
+    }
 
 }
