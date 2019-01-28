@@ -24,14 +24,14 @@
         <result column="F_TXRQ" javaType="string" property="writeDate"></result>
         <result column="F_XMLY" javaType="string" property="projectSource"></result>
         <result column="F_XMLX" javaType="string" property="projectType"></result>
-        <result column="F_SZBM_NAME" javaType="string" property="inDepartment"></result>
+        <result column="F_LXBM_NAME" javaType="string" property="inDepartment"></result>
         <result column="F_SWJL_NAME" javaType="string" property="businessManager"></result>
         <result column="F_XMJL_NAME" javaType="string" property="projectManager"></result>
     </resultMap>
 
 
     <select id="listQuery" parameterType="com.elex.oa.entity.project.AListQuery" resultMap="approvalList1">
-        SELECT w.F_XMBH, w.F_XMMC, w.F_TXRQ, w.F_XMLY, w.F_XMLX, w.F_SZBM_NAME, w.F_SWJL_NAME, w.F_XMJL_NAME FROM w_lxsqb w
+        SELECT w.F_XMBH, w.F_XMMC, w.F_TXRQ, w.F_XMLY, w.F_XMLX, w.F_LXBM_NAME, w.F_SWJL_NAME, w.F_XMJL_NAME FROM w_lxsqb w
         <where>
             <if test="select1 == 1 and input1 != ''">
                 AND w.F_XMBH LIKE CONCAT('%',#{input1},'%')
@@ -61,10 +61,10 @@
                 </foreach>
             </if>
             <if test="select6 == 1 and input6 != ''">
-                AND w.F_SZBM_NAME LIKE CONCAT('%',#{input6},'%')
+                AND w.F_LXBM_NAME LIKE CONCAT('%',#{input6},'%')
             </if>
             <if test="select6 == 2 and input6 != ''">
-                AND w.F_SZBM_NAME LIKE CONCAT('%',#{input6},'%')
+                AND w.F_LXBM_NAME LIKE CONCAT('%',#{input6},'%')
             </if>
             <if test="select7 == 1 and input7 != ''">
                 AND w.F_SWJL_NAME LIKE CONCAT('%',#{input7},'%')

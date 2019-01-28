@@ -149,24 +149,24 @@ public class ProjectInforImpl implements ProjectInforService {
         List<OsUser> osUsers = projectInforDao.queryOsUser();
         List<ProjectInfor> infors = projectInforDao.queryProjectMembers();
         List<User> userList = iUserDao.selectAllEmployeeON();
-        StringBuilder stringBuilder;
-        List<String> list;
+        StringBuilder memberId, memberCode;
         for(ProjectInfor infor:infors){
-            list = new ArrayList<>();
+            memberId = new StringBuilder();
             for(User staff:userList){
                 if(infor.getProjectMembers().contains(staff.getTruename())){
-                    list.add(staff.getEmployeenumber());
+                    memberId.append(staff.getEmployeenumber());
+                    memberId.append(";");
                 }
             }
-            infor.setProjectMemberId(list.toString());
-            stringBuilder = new StringBuilder();
+            infor.setProjectMemberId(memberId.toString());
+            memberCode = new StringBuilder();
             for(OsUser osUser:osUsers){
                 if(infor.getProjectMembers().contains(osUser.getFullName())){
-                    stringBuilder.append(osUser.getUserId());
-                    stringBuilder.append(";");
+                    memberCode.append(osUser.getUserId());
+                    memberCode.append(";");
                 }
             }
-            infor.setProjectMemberCode(stringBuilder.toString());
+            infor.setProjectMemberCode(memberCode.toString());
         }
         projectInforDao.updateProjectMembers(infors);
         return "projectMemberCode";
@@ -177,24 +177,24 @@ public class ProjectInforImpl implements ProjectInforService {
         List<ProjectInfor> infors = projectInforDao.queryRelatedMembers();
         List<OsUser> osUsers = projectInforDao.queryOsUser();
         List<User> staffList = iUserDao.selectAllEmployeeON();
-        StringBuilder  stringBuilder;
-        List<String> list;
+        StringBuilder  memberId, memberCode;
         for(ProjectInfor infor:infors){
-            list = new ArrayList<>();
+            memberId = new StringBuilder();
             for(User staff:staffList){
                 if(infor.getRelatedMembers().contains(staff.getTruename())){
-                    list.add(staff.getEmployeenumber());
+                    memberId.append(staff.getEmployeenumber());
+                    memberId.append(";");
                 }
             }
-            infor.setRelatedMemberId(list.toString());
-            stringBuilder = new StringBuilder();
+            infor.setRelatedMemberId(memberId.toString());
+            memberCode = new StringBuilder();
             for(OsUser osUser:osUsers){
                 if(infor.getRelatedMembers().contains(osUser.getFullName())){
-                    stringBuilder.append(osUser.getUserId());
-                    stringBuilder.append(";");
+                    memberCode.append(osUser.getUserId());
+                    memberCode.append(";");
                 }
             }
-            infor.setRelatedMemberCode(stringBuilder.toString());
+            infor.setRelatedMemberCode(memberCode.toString());
         }
         projectInforDao.updateRelatedMembers(infors);
         return "relatedMemberCode";

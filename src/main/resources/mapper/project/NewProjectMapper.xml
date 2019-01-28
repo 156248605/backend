@@ -24,7 +24,7 @@
     <resultMap id="newProject1" type="com.elex.oa.entity.project.NewProject">
         <result column="F_XMBH" javaType="string" property="projectCode"></result>
         <result column="F_XMMC" javaType="string" property="projectName"></result>
-        <result column="F_SZBM_NAME" javaType="string" property="inDepartment"></result>
+        <result column="F_LXBM_NAME" javaType="string" property="inDepartment"></result>
         <result column="F_TXRQ" javaType="string" property="writeDate"></result>
         <result column="F_XMJL_NAME" javaType="string" property="projectManager"></result>
         <result column="F_XMLY" javaType="string" property="projectSource"></result>
@@ -33,7 +33,7 @@
     </resultMap>
 
     <select id="listQuery" parameterType="com.elex.oa.entity.project.NProjectQuery" resultMap="newProject1">
-        SELECT F_XMBH, F_XMMC, F_TXRQ, F_XMLY, F_XMLX, F_SZBM_NAME, F_SWJL_NAME, F_XMJL_NAME FROM w_lxsqb
+        SELECT F_XMBH, F_XMMC, F_TXRQ, F_XMLY, F_XMLX, F_LXBM_NAME, F_SWJL_NAME, F_XMJL_NAME FROM w_lxsqb
         <where>
             <if test="name != ''">
                 AND F_SQR_NAME = #{name}

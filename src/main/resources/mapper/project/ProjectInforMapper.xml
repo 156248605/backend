@@ -7,7 +7,7 @@
         <result column="F_XMMC" javaType="string" property="projectName"></result>
         <result column="F_TXRQ" javaType="string" property="writeDate"></result>
         <result column="F_BMJL_NAME" javaType="string" property="deptManager"></result>
-        <result column="F_SZBM_NAME" javaType="string" property="inDepartment"></result>
+        <result column="F_LXBM_NAME" javaType="string" property="inDepartment"></result>
         <result column="F_XMJL" javaType="string" property="projectManagerId"></result>
         <result column="F_XMJL_NAME" javaType="string" property="projectManager"></result>
         <result column="F_XMLY" javaType="string" property="projectSource"></result>
@@ -70,7 +70,7 @@
     </select>
 
     <select id="queryApproval" parameterType="java.util.Map" resultMap="approvalList">
-        SELECT F_XMBH, F_XMMC, F_TXRQ, F_BMJL_NAME, F_SZBM_NAME, F_XMJL, F_XMJL_NAME, F_XMLY, F_SWJL, F_SWJL_NAME, F_XMLX, F_XMGK, F_SQR_NAME FROM w_lxsqb
+        SELECT F_XMBH, F_XMMC, F_TXRQ, F_BMJL_NAME, F_LXBM_NAME, F_XMJL, F_XMJL_NAME, F_XMLY, F_SWJL, F_SWJL_NAME, F_XMLX, F_XMGK, F_SQR_NAME FROM w_lxsqb
         WHERE INST_STATUS_ = 'SUCCESS_END'
         <if test="marker == 1">
             AND F_XMBH NOT IN
