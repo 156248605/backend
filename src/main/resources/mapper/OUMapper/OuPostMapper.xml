@@ -64,6 +64,7 @@
 				</foreach>
 			</if>
 		</where>
+		ORDER BY oup.state DESC
 	</select>
 
 	<select id="selectParamsOfOuPost" resultType="java.util.Map">

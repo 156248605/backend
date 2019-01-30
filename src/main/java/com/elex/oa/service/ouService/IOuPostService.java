@@ -13,4 +13,8 @@ public interface IOuPostService {
     PageInfo<OuPost> getPageOuPostList(Integer pageNum, Integer pageSize, OuPostConditionInfo ouPostConditionInfo);
 
     Map<String,Object> getParamsOfOuPost();
+
+    Object validateByPostcode(String postcode);
+
+    Object getRecommendedOuPostcode();
 }

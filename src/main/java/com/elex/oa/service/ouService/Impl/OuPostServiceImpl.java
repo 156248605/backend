@@ -84,4 +84,42 @@ public class OuPostServiceImpl implements IOuPostService {
         return respMap;
     }
 
+    @Override
+    public Object validateByPostcode(String postcode) {
+        List<OuPost> ouPostList = ouPostDao.select(new OuPost(postcode));
+        if(null==ouPostList || ouPostList.size()==0)return RespUtil.successResp("500","根据岗位编号查询岗位失败！",null);
+        return RespUtil.successResp("200","根据岗位编号查询岗位成功！",getDetailOuPostByCursoryOuPost(ouPostList.get(0)));
+    }
+
+    @Override
+    public Object getRecommendedOuPostcode() {
+        int i =1;
+        String postcode = "";
+        while (true){
+            if(i<10)postcode="00000"+i;
+            if(i>9 && i<100)postcode="0000"+i;
+            if(i>99 && i<1000)postcode="000"+i;
+            if(i>999 && i<10000)postcode= "00"+i;
+            if(i>9999 && i<100000)postcode= "0"+i;
+            if(i>99999)postcode= ""+i;
+            List<OuPost> ouPostList = null;
+            try {
+                ouPostList = ouPostDao.select(new OuPost(postcode));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return RespUtil.successResp("500","查询失败",e.getStackTrace());
+            }
+            if(null==ouPostList || ouPostList.size()==0)return RespUtil.successResp("200","查询成功！",postcode);
+            i++;
+        }
+    }
+
+
+    //根据摘要信息获得详细信息
+    private OuPost getDetailOuPostByCursoryOuPost(OuPost ouPost){
+        if(null==ouPost)return null;
+        ouPost.setPostlevel(hrUtils.getDatavalueByHrsetid(ouPost.getPostlevelid()));
+        return ouPost;
+    }
+
 }

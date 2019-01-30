@@ -1,5 +1,7 @@
 package com.elex.oa.controller.ouController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.entity.ou.OuDep;
 import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.entity.ou.OuPostConditionInfo;
@@ -8,11 +10,9 @@ import com.elex.oa.service.ouService.IOuPostService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -65,4 +65,18 @@ public class OuController {
         Map<String,Object> respMap = iOuPostService.getParamsOfOuPost();
         return respMap;
     }
-}    
+
+    @RequestMapping("/post/validateByPostcode")
+    @ResponseBody
+    public Object validateByPostcode(
+            String postcode
+    ){
+        return iOuPostService.validateByPostcode(postcode);
+    }
+
+    @RequestMapping("/post/getRecommendedOuPostcode")
+    @ResponseBody
+    public Object getRecommendedOuPostcode(){
+        return iOuPostService.getRecommendedOuPostcode();
+    }
+}

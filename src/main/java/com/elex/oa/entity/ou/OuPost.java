@@ -24,16 +24,16 @@ public class OuPost {
     public OuPost() {
     }
 
+    public OuPost(String postcode) {
+        this.postcode = postcode;
+    }
+
     public String getPostlevel() {
         return postlevel;
     }
 
     public void setPostlevel(String postlevel) {
         this.postlevel = postlevel;
-    }
-
-    public OuPost(String postcode) {
-        this.postcode = postcode;
     }
 
     public String getId() {
