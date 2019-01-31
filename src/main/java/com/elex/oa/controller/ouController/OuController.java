@@ -63,6 +63,14 @@ public class OuController {
         return iOuPostService.addOuPost(ouPost);
     }
 
+    @RequestMapping("/post/updatePost")
+    @ResponseBody
+    public Object updatePost(
+            OuPost ouPost
+    ){
+        return iOuPostService.updatePost(ouPost);
+    }
+
     @RequestMapping("/post/getPageOuPostList")
     @ResponseBody
     public PageInfo<OuPost> getPageOuPostList(
@@ -86,6 +94,15 @@ public class OuController {
             String postcode
     ){
         return iOuPostService.validateByPostcode(postcode);
+    }
+
+    @RequestMapping("/post/validateByPostcodeButSelf")
+    @ResponseBody
+    public Object validateByPostcodeButSelf(
+            String postcode,
+            String postid
+    ){
+        return iOuPostService.validateByPostcodeButSelf(postcode,postid);
     }
 
     @RequestMapping("/post/getRecommendedOuPostcode")

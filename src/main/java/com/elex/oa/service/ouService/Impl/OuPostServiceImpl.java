@@ -1,7 +1,6 @@
 package com.elex.oa.service.ouService.Impl;
 
 import com.elex.oa.common.hr.Commons;
-import com.elex.oa.dao.ou.OuDepDao;
 import com.elex.oa.dao.ou.OuPostDao;
 import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.entity.ou.OuPostConditionInfo;
@@ -52,6 +51,18 @@ public class OuPostServiceImpl implements IOuPostService {
     }
 
     @Override
+    public Object updatePost(OuPost ouPost) {
+        if(null==ouPost)return RespUtil.successResp("500","岗位不存在！","");
+        try {
+            ouPostDao.updateByPrimaryKey(ouPost);//注：此修改为空值或NULL值也会去覆盖原有值（导入时不用此方法）
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","岗位不存在！",e.getStackTrace());
+        }
+        return RespUtil.successResp("200","修改成功！","");
+    }
+
+    @Override
     public PageInfo<OuPost> getPageOuPostList(Integer pageNum, Integer pageSize, OuPostConditionInfo ouPostConditionInfo) {
         PageHelper.startPage(pageNum,pageSize);
         List<OuPost> ouPostList = ouPostDao.selectPageOuPostList(ouPostConditionInfo);
@@ -92,6 +103,13 @@ public class OuPostServiceImpl implements IOuPostService {
     }
 
     @Override
+    public Object validateByPostcodeButSelf(String postcode, String postid) {
+        OuPost ouPost = ouPostDao.selectByPrimaryKey(postid);
+        if(ouPost.getPostcode().equals(postcode))return RespUtil.successResp("500","使用原岗位编号可以！",null);
+        return validateByPostcode(postcode);
+    }
+
+    @Override
     public Object getRecommendedOuPostcode() {
         int i =1;
         String postcode = "";
@@ -113,7 +131,6 @@ public class OuPostServiceImpl implements IOuPostService {
             i++;
         }
     }
-
 
     //根据摘要信息获得详细信息
     private OuPost getDetailOuPostByCursoryOuPost(OuPost ouPost){

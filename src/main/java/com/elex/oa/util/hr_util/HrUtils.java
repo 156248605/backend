@@ -86,7 +86,8 @@ public class HrUtils {
         List<Hrdatadictionary> hrdatadictionaryList = iHrdatadictionaryDao.selectByEntity(new Hrdatadictionary(hRset.getDatatype(), hRset.getDatavalue()));
         if(null==hrdatadictionaryList || hrdatadictionaryList.size()==0){
             //没有则添加
-            String datacode = hRset.getDatatype() + "_" + System.currentTimeMillis();
+            /*String datacode = hRset.getDatatype() + "_" + System.currentTimeMillis();*/
+            String datacode = new StringBuilder(hRset.getDatatype()).append("-").append(System.currentTimeMillis()).toString();
             iHrdatadictionaryDao.insert(new Hrdatadictionary(datacode,hRset.getDatatype(),hRset.getDatavalue()));
             return datacode;
         }else if(hrdatadictionaryList.size()==1){
@@ -245,7 +246,8 @@ public class HrUtils {
     //获取文件地址（单个文件）
     //fielname="df",dirsPath="/org/file/"
     public String getSignalFileAddress(HttpServletRequest request, String filename, String dirsPath) {
-        String fileAddress = "";
+        /*String fileAddress = "";*/
+        StringBuilder fileAddress = new StringBuilder();
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
         List<MultipartFile> files= multipartRequest.getFiles(filename);
         if(files.size()!=0){
@@ -254,14 +256,15 @@ public class HrUtils {
                 Long l = Calendar.getInstance().getTimeInMillis();
                 File file = new File(realPath  + l);
                 file.mkdirs();
-                fileAddress = dirsPath + l+ "/" + files.get(0).getOriginalFilename();
+                /*fileAddress = dirsPath + l+ "/" + files.get(0).getOriginalFilename();*/
+                fileAddress.append(dirsPath).append("/").append(files.get(0).getOriginalFilename());
                 files.get(0).transferTo(new File(realPath + l,files.get(0).getOriginalFilename()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if(StringUtils.isEmpty(fileAddress))return null;
-        return fileAddress;
+        if(StringUtils.isEmpty(fileAddress.toString()))return null;
+        return fileAddress.toString();
     }
 
     //获取多个文件
@@ -273,9 +276,11 @@ public class HrUtils {
             if(attachments.size()!=0){
                 String realPath = getInitFilesPosition();
                 Long l = Calendar.getInstance().getTimeInMillis();
-                File file = new File(realPath + "/attachments/" + l);
+                /*File file = new File(realPath + "/attachments/" + l);*/
+                File file = new File(new StringBuilder(realPath).append("/attachments/").append(l).toString());
                 file.mkdirs();
-                String attachment_address = "/attachments/" + l + "/" + attachments.get(0).getOriginalFilename();
+                /*String attachment_address = "/attachments/" + l + "/" + attachments.get(0).getOriginalFilename();*/
+                String attachment_address = new StringBuilder("/attachments").append(l).append("/").append(attachments.get(0).getOriginalFilename()).toString();
                 try {
                     attachments.get(0).transferTo(new File(realPath + attachment_address));
                 } catch (IOException e) {
@@ -294,7 +299,8 @@ public class HrUtils {
         if(null == parent_postinfo)return null;
         String parent_nodelevel = parent_postinfo.getNode_level();
         int i = Integer.parseInt(parent_nodelevel) + 1;
-        String node_level = i + "";
+        /*String node_level = i + "";*/
+        String node_level = new StringBuilder(i).toString();
         return node_level;
     }
 
@@ -351,7 +357,8 @@ public class HrUtils {
             //没有则添加
             HRset hRset = new HRset();
             hRset.setDatatype(datatype);
-            hRset.setDatacode(datatype+"_"+System.currentTimeMillis());
+            /*hRset.setDatacode(datatype+"_"+System.currentTimeMillis());*/
+            hRset.setDatacode(new StringBuilder(datatype).append("-").append(System.currentTimeMillis()).toString());
             hRset.setDatavalue(datavalue);
             ihRsetDao.insertOne(hRset);
             return hRset.getId();
