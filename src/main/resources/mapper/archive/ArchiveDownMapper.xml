@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.archive.ArchiveDownDao">
+
+    <resultMap id="archiveDown" type="com.elex.oa.entity.archive.ArchiveDown">
+        <result column="archive_name" javaType="string" property="archiveName"></result>
+        <result column="taddy" javaType="string" property="taddy"></result>
+        <result column="post_time" javaType="string" property="postTime"></result>
+    </resultMap>
+
+    <select id="obtainList" parameterType="com.elex.oa.entity.archive.ArchiveDownQuery" resultMap="archiveDown">
+        SELECT archive_name, taddy, post_time FROM arc_down
+        <where>
+            <if test="archiveName != null">
+                AND archive_name LIKE CONCAT('%', #{archiveName}, '%')
+            </if>
+            <if test="taddy != null">
+                AND taddy LIKE CONCAT('%', #{taddy}, '%')
+            </if>
+            <if test="postTimeA != null">
+                AND post_time BETWEEN #{postTimeA} AND #{postTimeB}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addArchive" parameterType="com.elex.oa.entity.archive.ArchiveDown">
+        INSERT INTO arc_down (id, archive_name, taddy, post_time) VALUES (NULL, #{archiveName}, #{taddy}, #{postTime})
+    </insert>
+
+    <delete id="deleteArchive" parameterType="string">
+        DELETE FROM arc_down WHERE archive_name = #{fileName}
+    </delete>
+</mapper>
