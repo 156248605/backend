@@ -9,12 +9,16 @@ import com.elex.oa.dao.project.ProjectSetDao;
 import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
+import com.elex.oa.util.project.InforUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -247,5 +251,76 @@ public class ProjectInforImpl implements ProjectInforService {
             projectInforDao.projectType(various);
         }
         return "projectType";
+    }
+
+    //项目信息导入
+    @Override
+    public Map<String, String> importData(MultipartFile file) {
+        Map<String,String> map = new HashMap<>();
+        String fileName = file.getOriginalFilename();
+        boolean marker = fileName.contains(".xls");
+        boolean amend = false;
+        if(marker) {
+            try {
+                List<ProjectInfor> list = InforUtils.obtainList(file);
+                int lastId = projectInforDao.queryLastId(); //查询导入前最后一条的id
+                int number = projectInforDao.importData(list);
+                if(number == 0) {
+                    map.put("result","undone");
+                    map.put("message","因项目编号重复，无法导入！");
+                } else if(number < list.size()) {
+                    List<String> codeList = projectInforDao.queryCodeList(lastId); //查询导入的项目编号
+                    List<String> unList = new ArrayList<>(); //未导入的项目编号信息
+                    for(ProjectInfor infor: list) {
+                        if(codeList.contains(infor.getProjectCode())) {
+
+                        } else {
+                            unList.add(infor.getProjectCode());
+                        }
+                    }
+                    map.put("result", "unfinished");
+                    map.put("message","总数："+list.size()+"，导入："+number+",原因：项目编号重复!未导入的项目编号如下：");
+                    map.put("details",unList.toString());
+                    amend = true;
+                } else {
+                    map.put("result","success");
+                    map.put("message","已全部导入！");
+                    amend = true;
+                }
+                if(amend) {
+                    this.businessManager();
+                    this.projectMembers();
+                    this.projectSource();
+                    this.projectStatus();
+                    this.projectType();
+                    this.businessManager();
+                    this.projectManager();
+                }
+                return map;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            map.put("result","failure");
+            map.put("message","上传文件格式不对！");
+            return map;
+        }
+        return null;
+    }
+
+    //信息导出时查询数据
+    @Override
+    public String queryExport(OperationQuery operationQuery, HttpServletResponse response) {
+        List<ProjectInfor> list = projectInforDao.queryExport(operationQuery);//查询导出的数据
+        List<ProjectVarious> statusList = projectSetDao.queryStatus(); //项目状态
+        List<ProjectVarious> sourceList = projectSetDao.querySource(); //项目来源
+        List<ProjectVarious> typeList = projectSetDao.queryType(); //项目类型
+        try {
+            InforUtils.exportExcel(response, "项目信息.xlsx", list, statusList, sourceList, typeList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "export";
     }
 }

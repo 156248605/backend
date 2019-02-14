@@ -9,6 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Controller
 @CrossOrigin
@@ -81,6 +85,19 @@ public class ProjectInforController {
     @ResponseBody
     public String projectType() {
         return projectInforService.projectType();
+    }
+
+    //项目信息导入
+    @RequestMapping("/import_data")
+    @ResponseBody
+    public Map<String,String> importData(MultipartFile file) {
+        return projectInforService.importData(file);
+    }
+
+    //信息导出时查询数据
+    @RequestMapping("/query_export")
+    public String queryExport(OperationQuery operationQuery, HttpServletResponse response) {
+        return projectInforService.queryExport(operationQuery, response);
     }
 
 }

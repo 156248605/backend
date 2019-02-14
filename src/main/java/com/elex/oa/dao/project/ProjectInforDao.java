@@ -42,4 +42,12 @@ public interface ProjectInforDao {
     void projectSource(ProjectVarious various);
 
     void projectType(ProjectVarious various);
+    //查询导入前最后一条的id
+    int queryLastId();
+    //导入操作
+    int importData(List<ProjectInfor> list);
+    //查询导入的项目编号
+    List<String> queryCodeList(int lastId);
+    //查询导出的数据
+    List<ProjectInfor> queryExport(OperationQuery operationQuery);
 }

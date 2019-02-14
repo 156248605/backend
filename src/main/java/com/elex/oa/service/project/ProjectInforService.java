@@ -3,6 +3,10 @@ package com.elex.oa.service.project;
 import com.elex.oa.entity.project.OperationQuery;
 import com.elex.oa.entity.project.ProjectInfor;
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 public interface ProjectInforService {
     //查询已立项成功的项目，添加到项目信息中
@@ -25,4 +29,8 @@ public interface ProjectInforService {
     String projectSource();
     //修改项目类型的编号信息
     String projectType();
+    //项目信息导入
+    Map<String,String> importData(MultipartFile file);
+    //信息导出时查询数据
+    String queryExport(OperationQuery operationQuery, HttpServletResponse response);
 }

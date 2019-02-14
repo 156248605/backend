@@ -248,4 +248,86 @@
     <update id="projectType" parameterType="com.elex.oa.entity.project.ProjectVarious">
         UPDATE pro_pro_infor SET project_type = #{code} WHERE project_type LIKE CONCAT('%',#{name},'%')
     </update>
+
+    <select id="queryLastId" resultType="int">
+        SELECT MAX(id) FROM pro_pro_infor
+    </select>
+
+    <insert id="importData" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pro_pro_infor (id, project_code, project_name, in_department, project_status, dept_manager, proposer, write_date, business_manager,
+        project_source, project_manager, project_type, general_situation, project_members, related_members, party_name, party_address, party_phone, party_fax,
+        head_name, head_position, head_mobile, head_email, contact_name, contact_position, contact_mobile, contact_email)
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            ( SELECT NULL, #{item.projectCode}, #{item.projectName}, #{item.inDepartment}, #{item.projectStatus}, #{item.deptManager}, #{item.proposer},
+            #{item.writeDate}, #{item.businessManager}, #{item.projectSource}, #{item.projectManager}, #{item.projectType}, #{item.generalSituation},
+            #{item.projectMembers}, #{item.relatedMembers}, #{item.partyName}, #{item.partyAddress}, #{item.partyPhone}, #{item.partyFax}, #{item.headName},
+            #{item.headPosition}, #{item.headMobile}, #{item.headEmail}, #{item.contactName}, #{item.contactPosition}, #{item.contactMobile}, #{item.contactEmail}
+            FROM DUAL WHERE NOT EXISTS (
+            SELECT project_code FROM pro_pro_infor WHERE project_code = #{item.projectCode}
+            )
+            )
+        </foreach>
+    </insert>
+
+    <select id="queryCodeList" parameterType="int" resultType="string">
+        SELECT project_code FROM pro_pro_infor WHERE id > #{id}
+    </select>
+
+    <select id="queryExport" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+        SELECT project_code, project_name, in_department, project_status, dept_manager, proposer, write_date, business_manager,
+        project_source, project_manager, project_type, general_situation, project_members, project_member_id, related_members,
+        related_member_id, party_name, party_address, party_phone, party_fax, head_name, head_position, head_mobile, head_email,
+        contact_name, contact_position, contact_mobile, contact_email
+        FROM pro_pro_infor infor
+        <!--<where>
+            <if test="select1 == 1 and input1 != ''">
+                AND project_code LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select1 == 2 and input1 != ''">
+                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+            </if>
+            <if test="select2 == 1 and input2 != ''">
+                AND project_name LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select2 == 2 and input2 != ''">
+                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+            </if>
+            <if test="select3 == 1 and input3 != ''">
+                AND in_department LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="select3 == 2 and input3 != ''">
+                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            </if>
+            <if test="list4 != null">
+                AND project_source IN
+                <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="type != 2 and select5 == 1 and input5 != ''">
+                AND business_manager LIKE CONCAT('%',#{input5},'%')
+            </if>
+            <if test="type != 2 and select5 == 2 and input5 != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{input5},'%')
+            </if>
+            <if test="list6 != null">
+                AND project_type IN
+                <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="select7 == 1 and input7 != ''">
+                AND project_manager LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="select7 == 2 and input7 != ''">
+                AND project_manager NOT LIKE CONCAT('%',#{input7},'%')
+            </if>
+            <if test="list8 != null">
+                AND project_status IN
+                <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>-->
+    </select>
 </mapper>
