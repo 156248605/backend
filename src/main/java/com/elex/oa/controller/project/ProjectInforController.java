@@ -96,6 +96,7 @@ public class ProjectInforController {
 
     //信息导出时查询数据
     @RequestMapping("/query_export")
+    @ResponseBody
     public String queryExport(OperationQuery operationQuery, HttpServletResponse response) {
         return projectInforService.queryExport(operationQuery, response);
     }

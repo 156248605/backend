@@ -339,6 +339,10 @@ public class InforUtils {
             int orgWidth = sheet.getColumnWidth(i);
             sheet.autoSizeColumn(i, true);
             int newWidth = (int) (sheet.getColumnWidth(i) + 100);
+            if(orgWidth > 255) {
+                sheet.setColumnWidth(i,254);
+                continue;
+            }
             if (newWidth > orgWidth) {
                 sheet.setColumnWidth(i, newWidth);
             } else {
