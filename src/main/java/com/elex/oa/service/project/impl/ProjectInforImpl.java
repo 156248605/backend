@@ -150,8 +150,14 @@ public class ProjectInforImpl implements ProjectInforService {
 
     @Override
     public String projectMembers() {
-        List<OsUser> osUsers = projectInforDao.queryOsUser();
         List<ProjectInfor> infors = projectInforDao.queryProjectMembers();
+        if(infors == null) {
+            return "projectMembers failure";
+        }
+        if(infors.size() == 0) {
+            return "projectMembers failure";
+        }
+        List<OsUser> osUsers = projectInforDao.queryOsUser();
         List<User> userList = iUserDao.selectAllEmployeeON();
         StringBuilder memberId, memberCode;
         for(ProjectInfor infor:infors){
@@ -179,6 +185,12 @@ public class ProjectInforImpl implements ProjectInforService {
     @Override
     public String relatedMembers() {
         List<ProjectInfor> infors = projectInforDao.queryRelatedMembers();
+        if(infors == null) {
+            return "relatedMembers failure";
+        }
+        if(infors.size() == 0) {
+            return "relatedMembers failure";
+        }
         List<OsUser> osUsers = projectInforDao.queryOsUser();
         List<User> staffList = iUserDao.selectAllEmployeeON();
         StringBuilder  memberId, memberCode;
@@ -263,13 +275,13 @@ public class ProjectInforImpl implements ProjectInforService {
         if(marker) {
             try {
                 List<ProjectInfor> list = InforUtils.obtainList(file);
-                int lastId = projectInforDao.queryLastId(); //查询导入前最后一条的id
+                String lastId = projectInforDao.queryLastId(); //查询导入前最后一条的id
                 int number = projectInforDao.importData(list);
                 if(number == 0) {
                     map.put("result","undone");
                     map.put("message","因项目编号重复，无法导入！");
                 } else if(number < list.size()) {
-                    List<String> codeList = projectInforDao.queryCodeList(lastId); //查询导入的项目编号
+                    List<String> codeList = projectInforDao.queryCodeList(Integer.parseInt(lastId)); //查询导入的项目编号
                     List<String> unList = new ArrayList<>(); //未导入的项目编号信息
                     for(ProjectInfor infor: list) {
                         if(codeList.contains(infor.getProjectCode())) {
@@ -295,6 +307,7 @@ public class ProjectInforImpl implements ProjectInforService {
                     this.projectType();
                     this.businessManager();
                     this.projectManager();
+                    this.relatedMembers();
                 }
                 return map;
             } catch (IOException e) {

@@ -43,7 +43,7 @@ public interface ProjectInforDao {
 
     void projectType(ProjectVarious various);
     //查询导入前最后一条的id
-    int queryLastId();
+    String queryLastId();
     //导入操作
     int importData(List<ProjectInfor> list);
     //查询导入的项目编号

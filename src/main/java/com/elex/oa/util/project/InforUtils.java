@@ -91,7 +91,7 @@ public class InforUtils {
                             projectInfor.setWriteDate(cellValue);
                             break;
                         }
-                        case "项目经理" : {
+                        case "交付经理" : {
                             projectInfor.setProjectManager(cellValue);
                             break;
                         }

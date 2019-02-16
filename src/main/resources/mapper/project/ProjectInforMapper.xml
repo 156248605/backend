@@ -249,7 +249,7 @@
         UPDATE pro_pro_infor SET project_type = #{code} WHERE project_type LIKE CONCAT('%',#{name},'%')
     </update>
 
-    <select id="queryLastId" resultType="int">
+    <select id="queryLastId" resultType="string">
         SELECT MAX(id) FROM pro_pro_infor
     </select>
 
