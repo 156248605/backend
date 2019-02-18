@@ -794,6 +794,11 @@ public class DeptServiceImpl implements IDeptService {
         if(null!=deptTemp)return RespUtil.successResp("500","部门编号已存在，请重新输入部门编号！",null);
         //添加新部门
         dept.setPost_list(hrUtils.getArrayToString(dept.getPostList(),","));
+        //判断是否为顶点部门
+        if(null==dept.getParentdepid()){
+            List<Map<String, Object>> allDepidAndDepnameByDEP_on = iDeptDao.getAllDepidAndDepnameByDEP_ON();
+            if(null!=allDepidAndDepnameByDEP_on || allDepidAndDepnameByDEP_on.size()!=0)return RespUtil.successResp("500","非顶级部门必须选择上级部门！",null);
+        }
         iDeptDao.insertOne(dept);
         return RespUtil.successResp("200","提交成功！",dept);
     }
