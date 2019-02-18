@@ -138,10 +138,10 @@
 			<if test="postlevelid!=null and postlevelid!=''" >postlevelid=#{postlevelid},</if>
 			<if test="postcode!=null and postcode!=''" >postcode=#{postcode},</if>
 			<if test="parentpostid!=null and parentpostid!=''" >parentpostid=#{parentpostid},</if>
-			<if test="organization!=null and organization!=''" >organization=#{organization},</if>
-			<if test="duty!=null and duty!=''" >duty=#{duty},</if>
-			<if test="entryrequirements!=null and entryrequirements!=''" >entryrequirements=#{entryrequirements},</if>
-			<if test="jobdescription!=null and jobdescription!=''" >jobdescription=#{jobdescription},</if>
+			<if test="organization!=null " >organization=#{organization},</if>
+			<if test="duty!=null " >duty=#{duty},</if>
+			<if test="entryrequirements!=null " >entryrequirements=#{entryrequirements},</if>
+			<if test="jobdescription!=null " >jobdescription=#{jobdescription},</if>
 			<if test="dutyfile!=null and dutyfile!=''" >dutyfile=#{dutyfile}</if>
 			<if test="ordercode!=null and ordercode!=''" >ordercode=#{ordercode}</if>
 		</set>
