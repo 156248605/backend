@@ -85,7 +85,11 @@ public class ArchiveDownImpl implements ArchiveDownService {
             File file = new File("/usr/local/static/archive/", fileName);
             if(file.exists()) {
                 response.setContentType("application/force-download");// 设置强制下载不打开
-                response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
+                try {
+                    response.addHeader("Content-Disposition", "attachment;fileName=" + new String(fileName.getBytes(), "iso-8859-1"));// 设置文件名
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
