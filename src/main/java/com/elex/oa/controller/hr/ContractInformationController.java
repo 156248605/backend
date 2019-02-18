@@ -7,6 +7,7 @@ import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.readexcel.ReadContractExcel;
 import com.elex.oa.service.hr_service.*;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -283,7 +284,11 @@ public class ContractInformationController {
         if (null != hRsetContracttypeList && hRsetContracttypeList.size() == 1) {
             contracttypeid = hRsetContracttypeList.get(0).getId();
         }else if(null==hRsetContracttypeList || hRsetContracttypeList.size()==0){
-            contracttypeid = ihRsetService.addOne(new HRset(Commons.HRSET_CONTRACTTYPE, contractInformation.getContracttype()));
+            Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_CONTRACTTYPE, contractInformation.getContracttype()));
+            String rspCode = resp.getHead().getRspCode();
+            if("200".equals(rspCode)){
+                contracttypeid = (Integer) resp.getBody();
+            }
         }
         contractInformation.setContracttypeid(contracttypeid);
         //办理人不存在则添加默认值（管理员-->实际情况不能这么搞）
@@ -306,7 +311,11 @@ public class ContractInformationController {
         if (null != hRsetContracttypeList && hRsetContracttypeList.size() == 1) {
             contracttypeid = hRsetContracttypeList.get(0).getId();
         }else if(null==hRsetContracttypeList || hRsetContracttypeList.size()==0){
-            contracttypeid = ihRsetService.addOne(new HRset(Commons.HRSET_CONTRACTTYPE, contractInformation.getContracttype()));
+            Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_CONTRACTTYPE, contractInformation.getContracttype()));
+            String rspCode = resp.getHead().getRspCode();
+            if("200".equals(rspCode)){
+                contracttypeid = (Integer) resp.getBody();
+            }
         }
         contractInformation.setContracttypeid(contracttypeid);
         //办理人不存在则添加默认值（管理员-->实际情况不能这么搞）

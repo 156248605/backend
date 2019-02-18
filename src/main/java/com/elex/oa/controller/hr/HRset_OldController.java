@@ -41,11 +41,10 @@ public class HRset_OldController {
      */
     @RequestMapping("/addOneHRset")
     @ResponseBody
-    public String addOneHRset(
+    public Object addOneHRset(
           HRset hRset
     ){
-        Integer integer = ihRsetService.addOne(hRset);
-        return null!=integer?"添加成功！":"添加失败！";
+        return ihRsetService.addOne(hRset);
     }
 
     /**
@@ -136,11 +135,10 @@ public class HRset_OldController {
      **/
     @RequestMapping("/modifyHRset")
     @ResponseBody
-    public String modifyHRset(
+    public Object modifyHRset(
             HRset hRset
     ){
-        Boolean aBoolean = ihRsetService.modifyHRset(hRset);
-        return aBoolean?"修改成功！":"修改失败！";
+        return ihRsetService.modifyHRset(hRset);
     }
 
     /**

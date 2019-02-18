@@ -8,6 +8,7 @@ import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange;
 import com.elex.oa.entity.hr_entity.readexcel.ReadDimissioninformationExcel;
 import com.elex.oa.service.hr_service.*;
+import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -234,7 +235,11 @@ public class DimissionController {
             if (hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1) {
                 dimissiontypeid = hRsetDimissiontypeList.get(0).getId();
             }else if(hRsetDimissiontypeList==null || hRsetDimissiontypeList.size()==0) {
-                dimissiontypeid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_TYPE, dimissionInformation.getDimissiontype()));
+                Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_TYPE, dimissionInformation.getDimissiontype()));
+                String rspCode = resp.getHead().getRspCode();
+                if("200".equals(rspCode)){
+                    dimissiontypeid = (Integer)resp.getBody();
+                }
             }
             dimissionInformation.setDimissiontypeid(dimissiontypeid);
         }
@@ -245,7 +250,11 @@ public class DimissionController {
             if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
                 dimissiondirectionid = hRsetDimissiondirectionList.get(0).getId();
             }else if(null == hRsetDimissiondirectionList || hRsetDimissiondirectionList.size()==0){
-                dimissiondirectionid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_DIRECTION,dimissionInformation.getDimissiondirection()));
+                Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_DIRECTION, dimissionInformation.getDimissiondirection()));
+                String rspCode = resp.getHead().getRspCode();
+                if("200".equals(rspCode)){
+                    dimissiondirectionid = (Integer)resp.getBody();
+                }
             }
             dimissionInformation.setDimissiondirectionid(dimissiondirectionid);
         }
@@ -256,7 +265,11 @@ public class DimissionController {
             if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
                 dimissionreasonid = hRsetDimissionreasonList.get(0).getId();
             }else if(null==hRsetDimissionreasonList || hRsetDimissionreasonList.size()==0){
-                dimissionreasonid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_REASON,dimissionInformation.getDimissionreason()));
+                Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_REASON, dimissionInformation.getDimissionreason()));
+                String rspCode = resp.getHead().getRspCode();
+                if("200".equals(rspCode)){
+                    dimissionreasonid = (Integer)resp.getBody();
+                }
             }
             dimissionInformation.setDimissionreasonid(dimissionreasonid);
         }
@@ -275,7 +288,11 @@ public class DimissionController {
             if (hRsetDimissiontypeList!=null && hRsetDimissiontypeList.size()==1) {
                 dimissiontypeid = hRsetDimissiontypeList.get(0).getId();
             }else if(hRsetDimissiontypeList==null || hRsetDimissiontypeList.size()==0) {
-                dimissiontypeid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_TYPE, dimissionInformation.getDimissiontype()));
+                Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_TYPE, dimissionInformation.getDimissiontype()));
+                String rspCode = resp.getHead().getRspCode();
+                if("200".equals(rspCode)){
+                    dimissiontypeid = (Integer)resp.getBody();
+                }
             }
             dimissionInformation.setDimissiontypeid(dimissiontypeid);
         }
@@ -286,7 +303,11 @@ public class DimissionController {
             if (hRsetDimissiondirectionList!=null && hRsetDimissiondirectionList.size()==1) {
                 dimissiondirectionid = hRsetDimissiondirectionList.get(0).getId();
             }else if(null == hRsetDimissiondirectionList || hRsetDimissiondirectionList.size()==0){
-                dimissiondirectionid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_DIRECTION,dimissionInformation.getDimissiondirection()));
+                Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_DIRECTION, dimissionInformation.getDimissiondirection()));
+                String rspCode = resp.getHead().getRspCode();
+                if("200".equals(rspCode)){
+                    dimissiondirectionid = (Integer)resp.getBody();
+                }
             }
             dimissionInformation.setDimissiondirectionid(dimissiondirectionid);
         }
@@ -297,7 +318,11 @@ public class DimissionController {
             if (hRsetDimissionreasonList!=null && hRsetDimissionreasonList.size()==1) {
                 dimissionreasonid = hRsetDimissionreasonList.get(0).getId();
             }else if(null==hRsetDimissionreasonList || hRsetDimissionreasonList.size()==0){
-                dimissionreasonid = ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_REASON,dimissionInformation.getDimissionreason()));
+                Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_DIMISSION_REASON, dimissionInformation.getDimissionreason()));
+                String rspCode = resp.getHead().getRspCode();
+                if("200".equals(rspCode)){
+                    dimissionreasonid = (Integer)resp.getBody();
+                }
             }
             dimissionInformation.setDimissionreasonid(dimissionreasonid);
         }

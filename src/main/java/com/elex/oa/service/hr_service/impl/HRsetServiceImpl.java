@@ -5,6 +5,8 @@ import com.elex.oa.dao.hr.IPostRelationshipDao;
 import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.service.hr_service.IHRsetService;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.elex.oa.util.resp.Resp;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -39,12 +41,16 @@ public class HRsetServiceImpl implements IHRsetService {
      * @return java.lang.Object
      **/
     @Override
-    public Integer addOne(HRset hRset) {
+    public Object addOne(HRset hRset) {
         if(StringUtils.isBlank(hRset.getDatacode())){
             hRset.setDatacode(hRset.getDatatype()+"_"+System.currentTimeMillis());
+        }else {
+            List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset( null,null, hRset.getDatacode(), null));
+            if(hRsetList!=null || hRsetList.size()!=0)return RespUtil.successResp("500","编号已经存在！",null);
         }
         ihRsetDao.insertOne(hRset);
-        return hRset.getId();
+        Resp<Integer> integerResp = RespUtil.successResp("200", "添加成功！", hRset.getId());
+        return RespUtil.successResp("200","添加成功！",hRset.getId());
     }
 
     /**
@@ -106,18 +112,21 @@ public class HRsetServiceImpl implements IHRsetService {
     }
 
     @Override
-    public Boolean modifyHRset(HRset hRset) {
+    public Object modifyHRset(HRset hRset) {
         if(StringUtils.isBlank(hRset.getDatacode())){
             hRset.setDatacode(hRset.getDatatype()+"_"+System.currentTimeMillis());
+        }else {
+            List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset( null,null, hRset.getDatacode(), null));
+            if(hRsetList!=null || hRsetList.size()!=0)return RespUtil.successResp("500","编号已经存在！",null);
         }
         try {
             ihRsetDao.updateOne(hRset);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return RespUtil.successResp("500","修改失败！",e.getStackTrace());
         }
         List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(hRset.getId()));
-        return hRsetList.size()==0?false:true;
+        return RespUtil.successResp("200","修改成功！",null);
     }
 
     /**

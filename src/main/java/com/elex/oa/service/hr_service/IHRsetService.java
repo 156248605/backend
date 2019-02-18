@@ -19,7 +19,7 @@ public interface IHRsetService {
      *@Description:添加一条信息
      *@Date: 18:38 2018\5\11 0011
      */
-    Integer addOne(HRset hRset);
+    Object addOne(HRset hRset);
 
     /**
      *@Author:ShiYun;
@@ -63,7 +63,7 @@ public interface IHRsetService {
      */
     HRset modifyOne(HRset hRset);
 
-    Boolean modifyHRset(HRset hRset);
+    Object modifyHRset(HRset hRset);
 
     /**
      * @Author: shiyun
