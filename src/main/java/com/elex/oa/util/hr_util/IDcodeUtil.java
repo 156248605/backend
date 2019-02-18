@@ -162,6 +162,7 @@ public class IDcodeUtil {
      *@Date: 19:15 2018\5\16 0016
      */
     public String getAge(String birthday){
+        if(StringUtils.isBlank(birthday))return null;
         DateCompute curDateCompute = new DateCompute();
         DateCompute entryDateCompute = new DateCompute(birthday);
         DateCompute respDC = curDateCompute.getDateComputeByAnother(entryDateCompute);

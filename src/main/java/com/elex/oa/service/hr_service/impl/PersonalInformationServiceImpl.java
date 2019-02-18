@@ -1778,7 +1778,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
 
     //根据PostList获取postids
     private List<Integer> getPostidsByPostList(List<Post> postList){
-        if(null==postList)return null;
+        if(null==postList || postList.size()==0)return null;
         List<Integer> postids = new ArrayList<>();
         for (Post p:postList
              ) {
