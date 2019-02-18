@@ -360,7 +360,7 @@ public class PostServiceImpl implements IPostService {
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid,oldPost.getPostname(),newPost.getPostname(),"岗位名称",transactorusername);
         if(isUpdate)respBoolean = true;
         //判断职能类型并添加日志
-        isUpdate = getaBooleanByBeforeAndAfterinfo(postid, hrUtils.getDatavalueByHrsetid(oldPost.getFunctionaltypeid()), hrUtils.getDatacodeByHrsetid(newPost.getFunctionaltypeid()),"职能类型",transactorusername);
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid, hrUtils.getDatavalueByHrsetid(oldPost.getFunctionaltypeid()), hrUtils.getDatavalueByHrsetid(newPost.getFunctionaltypeid()),"职能类型",transactorusername);
         if(isUpdate)respBoolean = true;
         //判断上级岗位并添加日志
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid,getStringOfPostnameAndPostid(oldPost),getStringOfPostnameAndPostid(newPost),"上级岗位",transactorusername);
