@@ -363,7 +363,7 @@ public class PostServiceImpl implements IPostService {
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid, hrUtils.getDatavalueByHrsetid(oldPost.getFunctionaltypeid()), hrUtils.getDatacodeByHrsetid(newPost.getFunctionaltypeid()),"职能类型",transactorusername);
         if(isUpdate)respBoolean = true;
         //判断上级岗位并添加日志
-        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,getStringOfPostnameAndPostid(oldPost),getStringOfPostnameAndPostid(newPost),"岗位名称",transactorusername);
+        isUpdate = getaBooleanByBeforeAndAfterinfo(postid,getStringOfPostnameAndPostid(oldPost),getStringOfPostnameAndPostid(newPost),"上级岗位",transactorusername);
         if(isUpdate)respBoolean = true;
         //判断职级并添加日志
         isUpdate = getaBooleanByBeforeAndAfterinfo(postid, hrUtils.getDatavalueByHrsetid(oldPost.getPostrankid()), hrUtils.getDatacodeByHrsetid(newPost.getPostrankid()),"职级",transactorusername);
@@ -389,7 +389,8 @@ public class PostServiceImpl implements IPostService {
     //获得岗位名称和岗位ID的字符串
     private String getStringOfPostnameAndPostid(Post post){
         if(null==post)return null;
-        return post.getPostname()+"--"+post.getId();
+        Post parentPost = iPostDao.selectPostByPostid(post.getParentpostid());
+        return parentPost.getPostname()+"--"+parentPost.getId();
     }
 
     //判断岗位编号是否存在

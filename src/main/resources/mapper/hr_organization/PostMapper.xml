@@ -75,10 +75,10 @@
 	<select id="selectPostsByParentpostid" parameterType="java.lang.Integer" resultMap="postMapper">
 		select * from tb_id_post
 		<where>
-			<if test="_parameter!=null and _parameter!=''">
-				parentpostid = #{_parameter,jdbcType=INTEGER}
+			<if test="parentpostid!=null">
+				parentpostid = #{parentpostid}
 			</if>
-			<if test="_parameter==null or _parameter==''">
+			<if test="parentpostid==null">
 				parentpostid is null
 			</if>
 			and state=1

@@ -47,7 +47,7 @@ public interface IPostDao  {
      *@Description:根据parentpostid
      *@Date: 9:41 2018\4\23 0023
      */
-    public List<Post> selectPostsByParentpostid(Integer parentpostid);
+    public List<Post> selectPostsByParentpostid(@Param("parentpostid") Integer parentpostid);
 
     /**
      *@Author:ShiYun;
