@@ -8,7 +8,7 @@ import java.util.Map;
 public interface IOpportunityService {
     Boolean transforClueToOpportunity(Opportunity opportunity);
 
-    PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum,Integer pageSize,Opportunity opportunity);
+    PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag);
 
     Opportunity getDetailOpportunityinfo(String opportunitycode);
 

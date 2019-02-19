@@ -56,19 +56,19 @@
 			FROM
 				tb_business_clue clue
 		<where>
-			<if	test="null!=code and ''!=code">AND code=#{code}</if>
-			<if	test="null!=cluename and ''!=cluename">AND cluename=#{cluename}</if>
-			<if	test="null!=trackid and ''!=trackid">AND trackid=#{trackid}</if>
-			<if	test="null!=resource and ''!=resource">AND resource=#{resource}</if>
-			<if	test="null!=createtime and ''!=createtime">AND createtime=#{createtime}</if>
-			<if	test="null!=custom and ''!=custom">AND custom=#{custom}</if>
-			<if	test="null!=contact and ''!=contact">AND contact=#{contact}</if>
-			<if	test="null!=contactphone and ''!=contactphone">AND contactphone=#{contactphone}</if>
-			<if	test="null!=owner and ''!=owner">AND owner=#{owner}</if>
-			<if	test="null!=sale_employeenumber and ''!=sale_employeenumber">AND sale_employeenumber=#{sale_employeenumber}</if>
-			<if	test="null!=scheme_employeenumber and ''!=scheme_employeenumber">AND scheme_employeenumber=#{scheme_employeenumber}</if>
-			<if	test="null!=state and ''!=state">AND state=#{state}</if>
-			<if	test="null!=clue_price and ''!=clue_price">AND clue_price=#{clue_price}</if>
+			<if	test="null!=code and ''!=code">AND clue.code=#{code}</if>
+			<if	test="null!=cluename and ''!=cluename">AND clue.cluename=#{cluename}</if>
+			<if	test="null!=trackid and ''!=trackid">AND clue.trackid=#{trackid}</if>
+			<if	test="null!=resource and ''!=resource">AND clue.resource=#{resource}</if>
+			<if	test="null!=createtime and ''!=createtime">AND clue.createtime=#{createtime}</if>
+			<if	test="null!=custom and ''!=custom">AND clue.custom=#{custom}</if>
+			<if	test="null!=contact and ''!=contact">AND clue.contact=#{contact}</if>
+			<if	test="null!=contactphone and ''!=contactphone">AND clue.contactphone=#{contactphone}</if>
+			<if	test="null!=owner and ''!=owner">AND clue.owner=#{owner}</if>
+			<if	test="null!=sale_employeenumber and ''!=sale_employeenumber">AND clue.sale_employeenumber=#{sale_employeenumber}</if>
+			<if	test="null!=scheme_employeenumber and ''!=scheme_employeenumber">AND clue.scheme_employeenumber=#{scheme_employeenumber}</if>
+			<if	test="null!=state and ''!=state">AND clue.state=#{state}</if>
+			<if	test="null!=clue_price and ''!=clue_price">AND clue.clue_price=#{clue_price}</if>
 			#{username} in	(
 				SELECT
 					principaluser.username

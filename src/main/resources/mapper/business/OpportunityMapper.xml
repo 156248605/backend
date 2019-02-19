@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.business.IOpportunityDao">
+
+	<resultMap id="OpportunityMapper" type="Opportunity">
+		<result column="code" property="code" />
+		<result column="clueid" property="clueid" />
+		<result column="opportunityname" property="opportunityname" />
+		<result column="trackid" property="trackid" />
+		<result column="resource" property="resource" />
+		<result column="createtime" property="createtime" />
+		<result column="custom" property="custom" />
+		<result column="contact" property="contact" />
+		<result column="contactphone" property="contactphone" />
+		<result column="owner" property="owner" />
+		<result column="custom_decisionmaker" property="custom_decisionmaker" />
+		<result column="custom_budget" property="custom_budget" />
+		<result column="opportunity_budget" property="opportunity_budget" />
+		<result column="sale_employeenumber" property="sale_employeenumber" />
+		<result column="scheme_employeenumber" property="scheme_employeenumber" />
+		<result column="state" property="state" />
+		<result column="opportunity_price" property="opportunity_price" />
+	</resultMap>
+
+	<select id="selectByOpportunityAndPrincipalUsername" parameterType="Opportunity" resultMap="OpportunityMapper">
+		SELECT
+			opportunity.`code`,
+			opportunity.clueid,
+			opportunity.opportunityname,
+			opportunity.trackid,
+			opportunity.resource,
+			opportunity.createtime,
+			opportunity.custom,
+			opportunity.contact,
+			opportunity.contactphone,
+			opportunity.`owner`,
+			opportunity.custom_decisionmaker,
+			opportunity.custom_budget,
+			opportunity.opportunity_budget,
+			opportunity.sale_employeenumber,
+			opportunity.scheme_employeenumber,
+			opportunity.state,
+			opportunity.opportunity_price
+		FROM
+			tb_business_opportunity opportunity
+		<where>
+			<if	test="null!=code and ''!=code">AND opportunity.code=#{code}</if>
+			<if	test="null!=clueid and ''!=clueid">AND opportunity.clueid=#{clueid}</if>
+			<if	test="null!=opportunityname and ''!=opportunityname">AND opportunity.opportunityname=#{opportunityname}</if>
+			<if	test="null!=trackid and ''!=trackid">AND opportunity.trackid=#{trackid}</if>
+			<if	test="null!=resource and ''!=resource">AND opportunity.resource=#{resource}</if>
+			<if	test="null!=createtime and ''!=createtime">AND opportunity.createtime=#{createtime}</if>
+			<if	test="null!=custom and ''!=custom">AND opportunity.custom=#{custom}</if>
+			<if	test="null!=contact and ''!=contact">AND opportunity.contact=#{contact}</if>
+			<if	test="null!=contactphone and ''!=contactphone">AND opportunity.contactphone=#{contactphone}</if>
+			<if	test="null!=owner and ''!=owner">AND opportunity.owner=#{owner}</if>
+			<if	test="null!=custom_decisionmaker and ''!=custom_decisionmaker">AND opportunity.custom_decisionmaker=#{custom_decisionmaker}</if>
+			<if	test="null!=custom_budget and ''!=custom_budget">AND opportunity.custom_budget=#{custom_budget}</if>
+			<if	test="null!=opportunity_budget and ''!=opportunity_budget">AND opportunity.opportunity_budget=#{opportunity_budget}</if>
+			<if	test="null!=sale_employeenumber and ''!=sale_employeenumber">AND opportunity.sale_employeenumber=#{sale_employeenumber}</if>
+			<if	test="null!=scheme_employeenumber and ''!=scheme_employeenumber">AND opportunity.scheme_employeenumber=#{scheme_employeenumber}</if>
+			<if	test="null!=state and ''!=state">AND opportunity.state=#{state}</if>
+			<if	test="null!=opportunity_price and ''!=opportunity_price">AND opportunity.opportunity_price=#{opportunity_price}</if>
+			#{username} in	(
+				SELECT
+					principaluser.username
+				FROM
+					tb_id_user u
+					JOIN tb_id_personalinformation per ON per.userid = u.id
+					JOIN tb_id_department dep ON dep.id = per.depid
+					JOIN tb_id_user principaluser ON principaluser.id = dep.principaluserid
+				WHERE
+					u.employeenumber = opportunity.sale_employeenumber
+			)
+		</where>
+	</select>
+</mapper>

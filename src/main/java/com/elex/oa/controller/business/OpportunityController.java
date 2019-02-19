@@ -66,9 +66,10 @@ public class OpportunityController {
     public PageInfo<Opportunity> getPageInfo(
             @RequestParam("page") int page,
             @RequestParam("rows") int rows,
-            Opportunity opportunity
+            Opportunity opportunity,
+            @RequestParam("flag") String flag
     ){
-        return iOpportunityService.getPageInfoByCondition(page,rows,opportunity);
+        return iOpportunityService.getPageInfoByCondition(page,rows,opportunity,flag);
     }
 
     @RequestMapping("/getDetailOpportunityinfo")
