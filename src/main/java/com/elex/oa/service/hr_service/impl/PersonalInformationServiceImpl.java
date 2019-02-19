@@ -1089,6 +1089,8 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         if (user != null) {
             //先将脏数据清除
             iUserDao.deleteByPrimaryKey(user.getId());
+        }else {
+            user = new User();
         }
         user.setIsactive("激活".equals(personalInformationExchange.getIsactive())?1:0);
         user.setTruename(personalInformationExchange.getTruename());
@@ -1123,19 +1125,19 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
 
         //6.添加人事主要信息表（tb_id_personalinformation）=============================================================================
         //普通字段的添加或更新(部门)----------
-        if(StringUtils.isNotBlank(personalInformation.getDepcode())){
-            Dept dept = iDeptDao.selectDeptByDeptcode(personalInformation.getDepcode());
+        if(StringUtils.isNotBlank(personalInformationExchange.getDepcode())){
+            Dept dept = iDeptDao.selectDeptByDeptcode(personalInformationExchange.getDepcode());
             if(null==dept){
-                goToPost.put(personalInformation.getUsername() + ":" + personalInformation.getDepcode(), "员工所在部门编号不存在，请手动添加/修改");
+                goToPost.put(personalInformationExchange.getUsername() + ":" + personalInformationExchange.getDepcode(), "员工所在部门编号不存在，请手动添加/修改");
             }else {
                 personalInformation.setDepid(dept.getId());
             }
-        }else if(StringUtils.isNotBlank(personalInformation.getDepname())){
-            List<Dept> deptList = iDeptDao.selectDeptByDeptname(personalInformation.getDepname());
+        }else if(StringUtils.isNotBlank(personalInformationExchange.getDepname())){
+            List<Dept> deptList = iDeptDao.selectDeptByDeptname(personalInformationExchange.getDepname());
             if(null==deptList || deptList.size()==0){
-                goToPost.put(personalInformation.getUsername() + ":" + personalInformation.getDepname(), "员工所在部门名称不存在，请手动添加/修改");
+                goToPost.put(personalInformationExchange.getUsername() + ":" + personalInformationExchange.getDepname(), "员工所在部门名称不存在，请手动添加/修改");
             }else if(deptList.size()>1){
-                goToPost.put(personalInformation.getUsername() + ":" + personalInformation.getDepname(), "员工所在部门名称存在多个，请手动添加/修改");
+                goToPost.put(personalInformationExchange.getUsername() + ":" + personalInformationExchange.getDepname(), "员工所在部门名称存在多个，请手动添加/修改");
             }else {
                 personalInformation.setDepid(deptList.get(0).getId());
             }

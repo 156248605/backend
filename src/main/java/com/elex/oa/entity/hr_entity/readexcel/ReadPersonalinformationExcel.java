@@ -19,7 +19,7 @@ public class ReadPersonalinformationExcel extends ReadBaseExcel<PersonalInformat
             Cell cell2 = sheet.getRow(0).getCell(c);
             String columnname = String.valueOf(cell2.getStringCellValue());
             if (null != cell) {
-                if ("工号".equals(columnname.replace(" ",""))) {
+                if ("员工号".equals(columnname.replace(" ",""))) {
                     //tb_id_user表======================================================================================
                     String str = ExcelUtil.getStringByNumberCell(cell);
                     if(str.indexOf("admin")==-1 && str.length()<6){//工号不足补0
