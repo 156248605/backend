@@ -37,4 +37,49 @@
 			<if	test="null!=clue_price and ''!=clue_price">AND clue_price=#{clue_price}</if>
 		</where>
 	</select>
+
+	<select id="selectByClueAndPrincipalUsername" parameterType="Clue" resultMap="ClueMapper">
+			SELECT
+				clue.`code`,
+				clue.cluename,
+				clue.trackid,
+				clue.resource,
+				clue.createtime,
+				clue.custom,
+				clue.contact,
+				clue.contactphone,
+				clue.`owner`,
+				clue.sale_employeenumber,
+				clue.scheme_employeenumber,
+				clue.state,
+				clue.clue_price
+			FROM
+				tb_business_clue clue
+		<where>
+			<if	test="null!=code and ''!=code">AND code=#{code}</if>
+			<if	test="null!=cluename and ''!=cluename">AND cluename=#{cluename}</if>
+			<if	test="null!=trackid and ''!=trackid">AND trackid=#{trackid}</if>
+			<if	test="null!=resource and ''!=resource">AND resource=#{resource}</if>
+			<if	test="null!=createtime and ''!=createtime">AND createtime=#{createtime}</if>
+			<if	test="null!=custom and ''!=custom">AND custom=#{custom}</if>
+			<if	test="null!=contact and ''!=contact">AND contact=#{contact}</if>
+			<if	test="null!=contactphone and ''!=contactphone">AND contactphone=#{contactphone}</if>
+			<if	test="null!=owner and ''!=owner">AND owner=#{owner}</if>
+			<if	test="null!=sale_employeenumber and ''!=sale_employeenumber">AND sale_employeenumber=#{sale_employeenumber}</if>
+			<if	test="null!=scheme_employeenumber and ''!=scheme_employeenumber">AND scheme_employeenumber=#{scheme_employeenumber}</if>
+			<if	test="null!=state and ''!=state">AND state=#{state}</if>
+			<if	test="null!=clue_price and ''!=clue_price">AND clue_price=#{clue_price}</if>
+			#{username} in	(
+				SELECT
+					principaluser.username
+				FROM
+					tb_id_user u
+					JOIN tb_id_personalinformation per ON per.userid = u.id
+					JOIN tb_id_department dep ON dep.id = per.depid
+					JOIN tb_id_user principaluser ON principaluser.id = dep.principaluserid
+				WHERE
+					u.employeenumber = clue.sale_employeenumber
+			)
+		</where>
+	</select>
 </mapper>

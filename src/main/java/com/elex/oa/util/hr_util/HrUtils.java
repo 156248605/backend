@@ -522,24 +522,24 @@ public class HrUtils {
     //根据YYYY-MM获得索引号
     public String getSequenceCode(String currentTime,String sequenceName){
         List<Sequence> sequenceList = iSequenceDao.select(new Sequence(sequenceName));
-        if(null==sequenceList || sequenceList.size()==0){
+        if (null == sequenceList || sequenceList.size() == 0) {
             //没有则创建，且返还"0001"
-            iSequenceDao.insert(new Sequence("sequence_"+System.currentTimeMillis(),sequenceName,1,currentTime));
+            iSequenceDao.insert(new Sequence("sequence_" + System.currentTimeMillis(), sequenceName, 1, currentTime));
             return "00001";
-        }else {
+        } else {
             //有则需要判断是否为同一个月份
             Sequence sequence = sequenceList.get(0);
-            if(sequence.getCurrent_time().equals(currentTime)){
+            if (sequence.getCurrent_time().equals(currentTime)) {
                 //同一个月份则加一并返回
-                Integer numberCode = sequence.getSequence_value()+1;
+                Integer numberCode = sequence.getSequence_value() + 1;
                 sequence.setSequence_value(numberCode);
                 iSequenceDao.updateByPrimaryKey(sequence);
                 int numberCodeLength = String.valueOf(numberCode).length();
-                if(numberCodeLength==1)return "000"+String.valueOf(numberCode);
-                if(numberCodeLength==2)return "00"+String.valueOf(numberCode);
-                if(numberCodeLength==3)return "0"+String.valueOf(numberCode);
-                if(numberCodeLength>=4)return String.valueOf(numberCode);
-            }else {
+                if (numberCodeLength == 1) return "000" + String.valueOf(numberCode);
+                if (numberCodeLength == 2) return "00" + String.valueOf(numberCode);
+                if (numberCodeLength == 3) return "0" + String.valueOf(numberCode);
+                if (numberCodeLength >= 4) return String.valueOf(numberCode);
+            } else {
                 //不是同一个月份则返回"00001"
                 sequence.setSequence_value(1);
                 sequence.setCurrent_time(currentTime);
@@ -548,5 +548,27 @@ public class HrUtils {
             }
         }
         return "NNNN";
+    }
+
+    //根据登录ID查询所在的部门正职登录ID
+    public String getPrincipalUsernameByUsername(String username){
+        User principalUser = getPrincipalUserByUsername(username);
+        if(null==principalUser)return null;
+        return principalUser.getUsername();
+    }
+
+    //根据登录ID查询所在的部门正职
+    public User getPrincipalUserByUsername(String username){
+        if(StringUtils.isBlank(username))return null;
+        User user = iDeptDao.selectPrincipalUserByUsername(username);
+        if(null==user)return null;
+        return user;
+    }
+
+    //根据登录ID获得员工号
+    public String getEmployeenumberByUsername(String username) {
+        User user = iUserDao.selectUserByUsername(username);
+        if(null==user)return null;
+        return user.getEmployeenumber();
     }
 }

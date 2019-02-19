@@ -1,6 +1,7 @@
 package com.elex.oa.dao.hr;
 
 import com.elex.oa.entity.hr_entity.Dept;
+import com.elex.oa.entity.hr_entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -115,4 +116,6 @@ public interface IDeptDao{
     Dept selectCompanynameAndDepnameByUserid(Integer userid);
 
     Dept selectDeptByUsername(String username);
+
+    User selectPrincipalUserByUsername(String username);
 }

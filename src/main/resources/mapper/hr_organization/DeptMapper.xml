@@ -20,6 +20,16 @@
 		<result column="post_list" property="post_list" />
 	</resultMap>
 
+	<resultMap id="UserMapper" type="User">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="truename" property="truename" />
+		<result column="isactive" property="isactive" />
+		<result column="state" property="state" />
+		<result column="employeenumber" property="employeenumber" />
+	</resultMap>
+
 	<select id="selectDeptByUsername" parameterType="java.lang.String" resultMap="deptMapper">
 		SELECT dep.id,dep.depcode,dep.depname,dep.parentdepid
 		FROM tb_id_user u
@@ -133,6 +143,23 @@
 		FROM tb_id_department dep
 		LEFT JOIN tb_id_user u ON u.id=dep.principaluserid
 		WHERE dep.state=1 AND dep.id=#{depid}
+	</select>
+
+	<select id="selectPrincipalUserByUsername" parameterType="java.lang.String" resultMap="UserMapper">
+		SELECT
+			principaluser.id,
+			principaluser.username,
+			principaluser.truename,
+			principaluser.employeenumber,
+			principaluser.state,
+			principaluser.isactive
+		FROM
+			tb_id_user u
+		JOIN tb_id_personalinformation per ON per.userid = u.id
+		JOIN tb_id_department dep ON dep.id = per.depid
+		JOIN tb_id_user principaluser ON principaluser.id = dep.principaluserid
+		WHERE
+			u.username = #{username}
 	</select>
 
 	<select id="getAllCompanyNamesByDEP_ON" resultType="java.lang.String">

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,9 +38,17 @@ public class ClueServiceImpl implements IClueService {
     IBusinessAttachmentDao iBusinessAttachmentDao;
 
     @Override
-    public PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue) {
+    public PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag) {
         PageHelper.startPage(pageNum,pageSize);
-        List<Clue> clueList = iClueDao.select(clue);
+        List<Clue> clueList = new ArrayList<>();
+        if ("ALL".equals(flag)) {//大领导可以查看全部的
+            clueList = iClueDao.select(clue);
+        } else if("DEP".equals(flag)) {//部门领导只能查看本部门的
+            clueList = iClueDao.selectByClueAndPrincipalUsername(clue);
+        } else if("PRIVATE".equals(flag)) {//普通员工只能查看自己的
+            clue.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(clue.getUsername()));
+            clueList = iClueDao.select(clue);
+        }
         for (Clue c:clueList
              ) {
             c = getClueByClue(c);

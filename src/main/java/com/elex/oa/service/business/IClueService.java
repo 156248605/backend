@@ -4,7 +4,7 @@ import com.elex.oa.entity.business.Clue;
 import com.github.pagehelper.PageInfo;
 
 public interface IClueService {
-    PageInfo<Clue> getPageInfoByCondition(Integer pageNum,Integer pageSize,Clue clue);
+    PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag);
 
     Boolean addClueInfo(Clue clue);
 

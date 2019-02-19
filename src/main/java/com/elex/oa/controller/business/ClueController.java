@@ -47,9 +47,10 @@ public class ClueController {
     public PageInfo<Clue> getPageInfo(
             @RequestParam("page") int page,
             @RequestParam("rows") int rows,
-            Clue clue
+            Clue clue,
+            @RequestParam("flag") String flag
     ){
-        return iClueService.getPageInfoByCondition(page,rows,clue);
+        return iClueService.getPageInfoByCondition(page,rows,clue,flag);
     }
 
     @RequestMapping(value = "/clue_ADD",consumes = "multipart/form-data")
