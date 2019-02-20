@@ -17,8 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -291,8 +292,30 @@ public class ProjectInforImpl implements ProjectInforService {
                         }
                     }
                     map.put("result", "unfinished");
-                    map.put("message","总数："+list.size()+"，导入："+number+",原因：项目编号重复!未导入的项目编号如下：");
-                    map.put("details",unList.toString());
+                    map.put("message","总数："+list.size()+"，导入："+number+",原因：项目编号重复!");
+                    /*map.put("details",unList.toString());*/
+                    File filePath = new File("/usr/local/static/infor/");
+                    if(filePath.exists()) {
+
+                    } else {
+                        filePath.mkdirs();
+                    }
+                    File unfile = new File("/usr/local/static/infor/", "unfinished.txt");
+                    if(unfile.exists()) {
+
+                    } else {
+                        unfile.createNewFile();
+                    }
+                    FileWriter fileWriter = new FileWriter(unfile);
+                    fileWriter.flush();
+                    fileWriter.close();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(unfile));
+                    for(String str : unList) {
+                        bufferedWriter.write(str);
+                        bufferedWriter.newLine();
+                    }
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
                     amend = true;
                 } else {
                     map.put("result","success");
@@ -335,5 +358,48 @@ public class ProjectInforImpl implements ProjectInforService {
         }
 
         return "export";
+    }
+
+
+    //项目导入未导入的信息下载
+    @Override
+    public String importUnfinished(HttpServletResponse response) {
+        String path = "/usr/local/static/infor/unfinished.txt";
+
+        File file = new File(path);
+        if(file.exists()) {
+            try {
+                InputStreamReader isr = new InputStreamReader(new FileInputStream(path), "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+                String val = "";
+
+                String fileName = new String("未导入项目编号".getBytes(), "iso-8859-1");
+                response.setContentType("text/plain");
+                response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".txt");
+
+                String enter = "\r\n";
+                ServletOutputStream outSs = response.getOutputStream();
+                BufferedOutputStream bos = new BufferedOutputStream(outSs);
+
+                while ((val = br.readLine()) != null) {
+                    bos.write(val.getBytes("UTF-8"));
+                    bos.write(enter.getBytes());
+                }
+
+                bos.flush();
+                bos.close();
+                outSs.close();
+                br.close();
+                isr.close();
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "start txt";
     }
 }

@@ -33,4 +33,6 @@ public interface ProjectInforService {
     Map<String,String> importData(MultipartFile file);
     //信息导出时查询数据
     String queryExport(OperationQuery operationQuery, HttpServletResponse response);
+    //项目导入未导入的信息下载
+    String importUnfinished(HttpServletResponse response);
 }

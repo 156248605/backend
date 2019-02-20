@@ -101,4 +101,11 @@ public class ProjectInforController {
         return projectInforService.queryExport(operationQuery, response);
     }
 
+
+    //项目导入未导入的信息下载
+    @RequestMapping("/import_unfinished")
+    @ResponseBody
+    public String importUnfinished(HttpServletResponse response) {
+        return projectInforService.importUnfinished(response);
+    }
 }
