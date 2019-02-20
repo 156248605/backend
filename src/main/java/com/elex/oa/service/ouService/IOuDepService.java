@@ -12,4 +12,6 @@ public interface IOuDepService {
     Object addOuDep(OuDep ouDep);
 
     Object listDepts();
-}    
+
+    Object queryOneDepByDepcode(String code);
+}

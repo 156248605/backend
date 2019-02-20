@@ -2,8 +2,11 @@ package com.elex.oa.service.ouService.Impl;
 
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.ou.OuDepDao;
+import com.elex.oa.dao.ou.OuPostDao;
 import com.elex.oa.entity.ou.OuDep;
+import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.service.ouService.IOuDepService;
+import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,10 @@ import java.util.*;
 public class OuDepServiceImpl implements IOuDepService {
     @Resource
     private OuDepDao ouDepDao;
+    @Resource
+    private OuPostDao ouPostDao;
+    @Resource
+    private HrUtils hrUtils;
 
     @Override
     public Object addOuDep(OuDep ouDep) {
@@ -105,6 +112,56 @@ public class OuDepServiceImpl implements IOuDepService {
         treeData.put("order",topOuDep.getOrder());
         treeData = getTreeData(treeData);
         return RespUtil.successResp("200","获取树结构数据成功",treeData);
+    }
+
+    @Override
+    public Object queryOneDepByDepcode(String code) {
+        if(StringUtils.isBlank(code))return RespUtil.successResp("500","部门编号不能为空",null);
+        OuDep ouDep = ouDepDao.selectOne(new OuDep(code,null,Commons.DEP_ON));
+        if(null==ouDep)return RespUtil.successResp("500","部门编号所在部门不存在或已经删除",code);
+        //获得子部门名称
+        String[] depcodeList = ouDep.getSubdepartments().split(";");
+        if(depcodeList.length==0 || depcodeList[0].length()==0){
+            ouDep.setSubdepartmentnames("");
+        }else {
+            String subdepartmentnames = "";
+            for (String depcode : depcodeList
+            ) {
+                OuDep ouDepTemp = ouDepDao.selectOne(new OuDep(depcode, null, Commons.DEP_ON));
+                if (null != ouDepTemp) subdepartmentnames += ouDepTemp.getName() + ";";
+            }
+            subdepartmentnames = subdepartmentnames.substring(0, subdepartmentnames.length() - 1);
+            ouDep.setSubdepartmentnames(subdepartmentnames);
+        }
+        //获得岗位详情[岗位名称:姓名1,姓名2]和岗位编号
+        String[] postcodeAndEmployeenumberArray = ouDep.getPosts().split(";");
+        if(postcodeAndEmployeenumberArray.length>0 && postcodeAndEmployeenumberArray[0].length()>0){
+            List<String> postListDetail = new ArrayList<>();
+            List<String> postcodeList = new ArrayList<>();
+            for (String postcodeAndEmployeenumber:postcodeAndEmployeenumberArray
+                 ) {
+                //获得岗位编号
+                String[] arrayTemp = postcodeAndEmployeenumber.split(":");
+                String postcode = arrayTemp[0];
+                postcodeList.add(postcode);
+                //获得岗位详情
+                String postName = ouPostDao.selectOne(new OuPost(postcode)).getPostname();
+                String postNameAndTruename = postName;
+                if(arrayTemp.length==2 && StringUtils.isNotBlank(arrayTemp[1])){
+                    postNameAndTruename +=":";
+                    String[] employeenumberArray = arrayTemp[1].split(",");
+                    for (String employeenumber:employeenumberArray
+                         ) {
+                        postNameAndTruename +=hrUtils.getTruenameByEmployeenumber(employeenumber)+",";
+                    }
+                    postNameAndTruename = postNameAndTruename.substring(0,postNameAndTruename.length()-1);
+                }
+                postListDetail.add(postNameAndTruename);
+            }
+            ouDep.setPostListDetail(postListDetail);
+            ouDep.setPostcodeList(postcodeList);
+        }
+        return RespUtil.successResp("200","查询成功",ouDep);
     }
 
     //获得树结构数据

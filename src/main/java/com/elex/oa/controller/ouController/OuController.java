@@ -47,6 +47,14 @@ public class OuController {
         return iOuDepService.listDepts();
     }
 
+    @RequestMapping("/dep/queryOneDepByDepcode")
+    @ResponseBody
+    public Object queryOneDepByDepcode(
+            @RequestParam("code") String code
+    ){
+        return iOuDepService.queryOneDepByDepcode(code);
+    }
+
     @RequestMapping("/post/createPost")
     @ResponseBody
     public Object createPost(

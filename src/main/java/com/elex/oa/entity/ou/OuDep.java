@@ -3,6 +3,8 @@ package com.elex.oa.entity.ou;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * @Description: DOTO
@@ -31,11 +33,21 @@ public class OuDep {
     @Column(name = "deputyuserEmployeenumber")
     private String deputyuserEmployeenumber;//部门副职工号
     private String subdepartments;//子部门[子部门编号1;子部门编号2]
+    @Transient
+    private String subdepartmentnames;//子部门名称[子部门名称1;子部门名称2]
     private String posts;//岗位[岗位编号1:工号1,工号2;岗位编号2:工号3,工号4]
+    @Transient
+    private List<String> postListDetail;//[岗位名称:姓名1,姓名2]
+    @Transient
+    private List<String> postcodeList;//岗位编号
     @Column(name = "managerEmployeenumber")
     private String managerEmployeenumber;//分管领导工号
     private String companyname;//公司名称
     private String state;//状态
+    @Column(name = "depDescription")
+    private String depDescription;//部门概述
+    @Column(name = "dutyDescription")
+    private String dutyDescription;//部门职责
 
     public OuDep() {
     }
@@ -173,6 +185,46 @@ public class OuDep {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getDepDescription() {
+        return depDescription;
+    }
+
+    public void setDepDescription(String depDescription) {
+        this.depDescription = depDescription;
+    }
+
+    public String getDutyDescription() {
+        return dutyDescription;
+    }
+
+    public void setDutyDescription(String dutyDescription) {
+        this.dutyDescription = dutyDescription;
+    }
+
+    public String getSubdepartmentnames() {
+        return subdepartmentnames;
+    }
+
+    public void setSubdepartmentnames(String subdepartmentnames) {
+        this.subdepartmentnames = subdepartmentnames;
+    }
+
+    public List<String> getPostListDetail() {
+        return postListDetail;
+    }
+
+    public void setPostListDetail(List<String> postListDetail) {
+        this.postListDetail = postListDetail;
+    }
+
+    public List<String> getPostcodeList() {
+        return postcodeList;
+    }
+
+    public void setPostcodeList(List<String> postcodeList) {
+        this.postcodeList = postcodeList;
     }
 
     @Override
