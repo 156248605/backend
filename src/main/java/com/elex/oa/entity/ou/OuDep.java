@@ -44,6 +44,17 @@ public class OuDep {
         this.code = code;
     }
 
+    public OuDep(String code, String parentDepcode) {
+        this.code = code;
+        this.parentDepcode = parentDepcode;
+    }
+
+    public OuDep(String code, String parentDepcode, String state) {
+        this.code = code;
+        this.parentDepcode = parentDepcode;
+        this.state = state;
+    }
+
     public String getId() {
         return id;
     }

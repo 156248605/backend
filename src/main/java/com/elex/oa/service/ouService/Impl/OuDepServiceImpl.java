@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: DOTO
@@ -93,4 +93,49 @@ public class OuDepServiceImpl implements IOuDepService {
         }
         return RespUtil.successResp("200","添加部门成功",null);
     }
+
+    @Override
+    public Object listDepts() {
+        OuDep topOuDep = ouDepDao.selectOne(new OuDep(null, "top",Commons.DEP_ON));
+        if(null==topOuDep)return RespUtil.successResp("500","没有顶级节点",null);
+        Map<String, Object> treeData = new HashMap<>();
+        treeData.put("title",topOuDep.getName());
+        treeData.put("code",topOuDep.getCode());
+        treeData.put("expand",true);
+        treeData.put("order",topOuDep.getOrder());
+        treeData = getTreeData(treeData);
+        return RespUtil.successResp("200","获取树结构数据成功",treeData);
+    }
+
+    //获得树结构数据
+    private Map<String,Object> getTreeData(Map<String,Object> treeData){
+        String parentDepcode = (String) treeData.get("code");
+        List<OuDep> ouDepList = ouDepDao.select(new OuDep(null, parentDepcode, Commons.DEP_ON));
+        if(null==ouDepList || ouDepList.size()==0)return treeData;
+        List<Map<String,Object>> children = new ArrayList<>();
+        for (OuDep ouDep:ouDepList
+             ) {
+            Map<String, Object> mapTemp = new HashMap<>();
+            mapTemp.put("title",ouDep.getName());
+            mapTemp.put("code",ouDep.getCode());
+            mapTemp.put("expand",true);
+            mapTemp.put("order",ouDep.getOrder());
+            mapTemp = getTreeData(mapTemp);
+            children.add(mapTemp);
+        }
+        //按照排序码同级排序
+        if (children.size()>1) {
+            children.sort(new Comparator<Map<String, Object>>() {
+                @Override
+                public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                    Integer order1 = Integer.parseInt((String) o1.get("order"));
+                    Integer order2 = Integer.parseInt((String) o2.get("order"));
+                    return order1.compareTo(order2);
+                }
+            });
+        }
+        treeData.put("children",children);
+        return treeData;
+    }
+
 }

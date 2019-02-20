@@ -41,6 +41,12 @@ public class OuController {
         return iOuDepService.addOuDep(ouDep);
     }
 
+    @RequestMapping("/dep/listDepts")
+    @ResponseBody
+    public Object listDepts(){
+        return iOuDepService.listDepts();
+    }
+
     @RequestMapping("/post/createPost")
     @ResponseBody
     public Object createPost(

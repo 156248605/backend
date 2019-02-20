@@ -10,4 +10,6 @@ import com.elex.oa.entity.ou.OuDep;
  **/
 public interface IOuDepService {
     Object addOuDep(OuDep ouDep);
+
+    Object listDepts();
 }    
