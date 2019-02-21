@@ -20,10 +20,8 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class ProjectInforImpl implements ProjectInforService {
@@ -351,8 +349,11 @@ public class ProjectInforImpl implements ProjectInforService {
         List<ProjectVarious> statusList = projectSetDao.queryStatus(); //项目状态
         List<ProjectVarious> sourceList = projectSetDao.querySource(); //项目来源
         List<ProjectVarious> typeList = projectSetDao.queryType(); //项目类型
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = simpleDateFormat.format(new Date());
+        String fileName = "项目信息" + date + ".xlsx";
         try {
-            InforUtils.exportExcel(response, "项目信息.xlsx", list, statusList, sourceList, typeList);
+            InforUtils.exportExcel(response, fileName, list, statusList, sourceList, typeList);
         } catch (Exception e) {
             e.printStackTrace();
         }
