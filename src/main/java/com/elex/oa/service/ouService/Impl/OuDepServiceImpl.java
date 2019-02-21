@@ -164,6 +164,35 @@ public class OuDepServiceImpl implements IOuDepService {
         return RespUtil.successResp("200","查询成功",ouDep);
     }
 
+    @Override
+    public Object queryAllDepinfoButSelf(String depcode) {
+        List<OuDep> respDepList = null;
+        try {
+            //根据部门编号获得所有的子部门及本部门
+            OuDep ouDep = ouDepDao.selectOne(new OuDep(depcode, null, Commons.DEP_ON));
+            List<OuDep> removeDepList = new ArrayList<>();
+            removeDepList.add(ouDep);
+            removeDepList = getSubdepList(depcode,removeDepList);
+            String removeDepcode = "";
+            for (OuDep removeSignal:removeDepList
+                 ) {
+                removeDepcode += removeSignal.getCode()+";";
+            }
+            //获得所有部门
+            List<OuDep> allDepList = ouDepDao.select(new OuDep(null, null, Commons.DEP_ON));
+            //获得可能的上级部门
+            respDepList = new ArrayList<>();
+            for (OuDep allSignal:allDepList
+                 ) {
+                if(removeDepcode.indexOf(allSignal.getCode())==-1)respDepList.add(allSignal);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","查询失败！",e.getStackTrace());
+        }
+        return RespUtil.successResp("200","查询成功！",respDepList);
+    }
+
     //获得树结构数据
     private Map<String,Object> getTreeData(Map<String,Object> treeData){
         String parentDepcode = (String) treeData.get("code");
@@ -195,4 +224,15 @@ public class OuDepServiceImpl implements IOuDepService {
         return treeData;
     }
 
+    //根据部门编号获得所有的子部门
+    private List<OuDep> getSubdepList(String depcode,List<OuDep> depList){
+        List<OuDep> children = ouDepDao.select(new OuDep(null, depcode, Commons.DEP_ON));
+        if(null==children || children.size()==0)return depList;
+        for (OuDep ouDep:children
+             ) {
+            depList.add(ouDep);
+            depList = getSubdepList(ouDep.getCode(),depList);
+        }
+        return depList;
+    }
 }

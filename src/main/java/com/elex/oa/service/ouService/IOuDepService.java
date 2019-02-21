@@ -14,4 +14,6 @@ public interface IOuDepService {
     Object listDepts();
 
     Object queryOneDepByDepcode(String code);
+
+    Object queryAllDepinfoButSelf(String depcode);
 }

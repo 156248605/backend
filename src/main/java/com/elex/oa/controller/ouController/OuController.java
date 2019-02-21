@@ -55,6 +55,14 @@ public class OuController {
         return iOuDepService.queryOneDepByDepcode(code);
     }
 
+    @RequestMapping("/dep/queryAllDepinfoButSelf")
+    @ResponseBody
+    public Object queryAllDepinfoButSelf(
+            @RequestParam("depcode")String depcode
+    ){
+        return iOuDepService.queryAllDepinfoButSelf(depcode);
+    }
+
     @RequestMapping("/post/createPost")
     @ResponseBody
     public Object createPost(
