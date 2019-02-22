@@ -32,6 +32,11 @@ public class OuController {
     @Autowired
     private IOuPostService iOuPostService;
 
+    @RequestMapping("/dep/queryAllDepByDep_ON")
+    @ResponseBody
+    public Object queryAllDepByDep_ON(){
+        return iOuDepService.queryAllDepByDep_ON();
+    }
 
     @RequestMapping("/dep/createDep")
     @ResponseBody

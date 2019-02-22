@@ -67,6 +67,13 @@ public class OuDep {
         this.state = state;
     }
 
+    public OuDep(String parentDepcode, String level, String order, String companyname) {
+        this.parentDepcode = parentDepcode;
+        this.level = level;
+        this.order = order;
+        this.companyname = companyname;
+    }
+
     public String getId() {
         return id;
     }

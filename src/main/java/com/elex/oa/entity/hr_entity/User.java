@@ -10,12 +10,12 @@ import java.io.Serializable;
 public class User implements Serializable{
     @Id
     private Integer id;//主键
+    private String employeenumber;//员工号
     private String username;//用户名
     private String password;//密码
     private String truename;//姓名
     private Integer isactive;//是否激活
     private Integer state;//状态
-    private String employeenumber;//员工号
 
     public User() {
     }

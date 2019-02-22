@@ -7,6 +7,7 @@ import com.elex.oa.entity.ou.OuDep;
 import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.service.ouService.IOuDepService;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -191,6 +192,18 @@ public class OuDepServiceImpl implements IOuDepService {
             return RespUtil.successResp("500","查询失败！",e.getStackTrace());
         }
         return RespUtil.successResp("200","查询成功！",respDepList);
+    }
+
+    @Override
+    public Object queryAllDepByDep_ON() {
+        List<OuDep> ouDepList = null;
+        try {
+            ouDepList = ouDepDao.select(new OuDep(null, null, Commons.DEP_ON));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","查询失败",e.getStackTrace());
+        }
+        return RespUtil.successResp("200","查询成功",ouDepList);
     }
 
     //获得树结构数据

@@ -16,4 +16,6 @@ public interface IOuDepService {
     Object queryOneDepByDepcode(String code);
 
     Object queryAllDepinfoButSelf(String depcode);
+
+    Object queryAllDepByDep_ON();
 }
