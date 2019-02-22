@@ -336,9 +336,10 @@ public class InforUtils {
     private static void autoSizeColumns(Sheet sheet, int columnNumber) {
 
         for (int i = 0; i < columnNumber; i++) {
-            int orgWidth = sheet.getColumnWidth(i);
+            /*int orgWidth = sheet.getColumnWidth(i);*/
             sheet.autoSizeColumn(i, true);
-            int newWidth = (int) (sheet.getColumnWidth(i) + 100);
+            sheet.setColumnWidth(i, 2000);
+            /*int newWidth = (int) (sheet.getColumnWidth(i) + 100);
             if(orgWidth > 255) {
                 sheet.setColumnWidth(i,254);
                 continue;
@@ -347,7 +348,7 @@ public class InforUtils {
                 sheet.setColumnWidth(i, newWidth);
             } else {
                 sheet.setColumnWidth(i, orgWidth);
-            }
+            }*/
         }
     }
 }
