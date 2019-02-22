@@ -28,6 +28,11 @@ public class OuPost {
         this.postcode = postcode;
     }
 
+    public OuPost(String postcode, String state) {
+        this.postcode = postcode;
+        this.state = state;
+    }
+
     public String getPostlevel() {
         return postlevel;
     }

@@ -41,7 +41,8 @@ public class OuController {
     @RequestMapping("/dep/createDep")
     @ResponseBody
     public Object createDep(
-            OuDep ouDep
+            OuDep ouDep,
+            @RequestParam("username")String username
     ){
         return iOuDepService.addOuDep(ouDep);
     }
@@ -122,5 +123,11 @@ public class OuController {
     @ResponseBody
     public Object getRecommendedOuPostcode(){
         return iOuPostService.getRecommendedOuPostcode();
+    }
+
+    @RequestMapping("/post/queryAllPostcode_ON")
+    @ResponseBody
+    public Object queryAllPostcode_ON(){
+        return iOuPostService.queryAllPostcode_ON();
     }
 }

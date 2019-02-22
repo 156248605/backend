@@ -246,25 +246,23 @@ public class HrUtils {
     //获取文件地址（单个文件）
     //fielname="df",dirsPath="/org/file/"
     public String getSignalFileAddress(HttpServletRequest request, String filename, String dirsPath) {
-        /*String fileAddress = "";*/
-        StringBuilder fileAddress = new StringBuilder();
+        String fileAddress = "";
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
         List<MultipartFile> files= multipartRequest.getFiles(filename);
         if(files.size()!=0){
             try {
                 String realPath = getInitFilesPosition() + dirsPath;
-                Long l = Calendar.getInstance().getTimeInMillis();
+                Long l = System.currentTimeMillis();
                 File file = new File(realPath  + l);
                 file.mkdirs();
-                /*fileAddress = dirsPath + l+ "/" + files.get(0).getOriginalFilename();*/
-                fileAddress.append(dirsPath).append("/").append(files.get(0).getOriginalFilename());
+                fileAddress = dirsPath + l+ "/" + files.get(0).getOriginalFilename();
                 files.get(0).transferTo(new File(realPath + l,files.get(0).getOriginalFilename()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if(StringUtils.isEmpty(fileAddress.toString()))return null;
-        return fileAddress.toString();
+        if(StringUtils.isEmpty(fileAddress))return null;
+        return fileAddress;
     }
 
     //获取多个文件
@@ -276,11 +274,9 @@ public class HrUtils {
             if(attachments.size()!=0){
                 String realPath = getInitFilesPosition();
                 Long l = Calendar.getInstance().getTimeInMillis();
-                /*File file = new File(realPath + "/attachments/" + l);*/
-                File file = new File(new StringBuilder(realPath).append("/attachments/").append(l).toString());
+                File file = new File(realPath + "/attachments/" + l);
                 file.mkdirs();
-                /*String attachment_address = "/attachments/" + l + "/" + attachments.get(0).getOriginalFilename();*/
-                String attachment_address = new StringBuilder("/attachments").append(l).append("/").append(attachments.get(0).getOriginalFilename()).toString();
+                String attachment_address = "/attachments/" + l + "/" + attachments.get(0).getOriginalFilename();
                 try {
                     attachments.get(0).transferTo(new File(realPath + attachment_address));
                 } catch (IOException e) {

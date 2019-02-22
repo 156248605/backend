@@ -20,4 +20,6 @@ public interface IOuPostService {
     Object validateByPostcodeButSelf(String postcode, String postid);
 
     Object getRecommendedOuPostcode();
+
+    Object queryAllPostcode_ON();
 }

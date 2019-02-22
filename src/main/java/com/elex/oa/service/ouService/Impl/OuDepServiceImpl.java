@@ -47,7 +47,7 @@ public class OuDepServiceImpl implements IOuDepService {
         if(StringUtils.isBlank(ouDep.getParentDepcode()))return RespUtil.successResp("500","上级部门编号不能为空",null);
         OuDep parentOuDep = null;
         if (allOuDepList.size()>0) {
-            List<OuDep> parentDepListTemp = ouDepDao.select(new OuDep(ouDep.getParentDepcode()));
+            List<OuDep> parentDepListTemp = ouDepDao.select(new OuDep(ouDep.getParentDepcode(),null,Commons.DEP_ON));
             if(parentDepListTemp.size()==0)return RespUtil.successResp("500","上级部门编号所在的部门不存在",null);
             parentOuDep = parentDepListTemp.get(0);
         }
@@ -75,8 +75,19 @@ public class OuDepServiceImpl implements IOuDepService {
         //添加部门信息
         ouDep.setId("dep_"+System.currentTimeMillis());
         ouDep.setState(Commons.DEP_ON);
+        //添加包含的岗位
+        List<String> postcodeList = ouDep.getPostcodeList();
+        String posts = "";
+        if (null!=postcodeList && postcodeList.size()>0) {
+            for (String postcode:postcodeList
+                 ) {
+                posts += postcode+";";
+            }
+            posts = posts.substring(0,posts.length()-1);
+        }
+        ouDep.setPosts(posts);
         try {
-            ouDepDao.insertSelective(ouDep);
+            ouDepDao.insert(ouDep);
         } catch (Exception e) {
             e.printStackTrace();
             return RespUtil.successResp("500","添加部门信息失败",null);
@@ -121,46 +132,50 @@ public class OuDepServiceImpl implements IOuDepService {
         OuDep ouDep = ouDepDao.selectOne(new OuDep(code,null,Commons.DEP_ON));
         if(null==ouDep)return RespUtil.successResp("500","部门编号所在部门不存在或已经删除",code);
         //获得子部门名称
-        String[] depcodeList = ouDep.getSubdepartments().split(";");
-        if(depcodeList.length==0 || depcodeList[0].length()==0){
-            ouDep.setSubdepartmentnames("");
-        }else {
-            String subdepartmentnames = "";
-            for (String depcode : depcodeList
-            ) {
-                OuDep ouDepTemp = ouDepDao.selectOne(new OuDep(depcode, null, Commons.DEP_ON));
-                if (null != ouDepTemp) subdepartmentnames += ouDepTemp.getName() + ";";
+        if (null!=ouDep.getSubdepartments()) {
+            String[] depcodeList = ouDep.getSubdepartments().split(";");
+            if(depcodeList.length==0 || depcodeList[0].length()==0){
+                ouDep.setSubdepartmentnames("");
+            }else {
+                String subdepartmentnames = "";
+                for (String depcode : depcodeList
+                ) {
+                    OuDep ouDepTemp = ouDepDao.selectOne(new OuDep(depcode, null, Commons.DEP_ON));
+                    if (null != ouDepTemp) subdepartmentnames += ouDepTemp.getName() + ";";
+                }
+                subdepartmentnames = subdepartmentnames.substring(0, subdepartmentnames.length() - 1);
+                ouDep.setSubdepartmentnames(subdepartmentnames);
             }
-            subdepartmentnames = subdepartmentnames.substring(0, subdepartmentnames.length() - 1);
-            ouDep.setSubdepartmentnames(subdepartmentnames);
         }
         //获得岗位详情[岗位名称:姓名1,姓名2]和岗位编号
-        String[] postcodeAndEmployeenumberArray = ouDep.getPosts().split(";");
-        if(postcodeAndEmployeenumberArray.length>0 && postcodeAndEmployeenumberArray[0].length()>0){
-            List<String> postListDetail = new ArrayList<>();
-            List<String> postcodeList = new ArrayList<>();
-            for (String postcodeAndEmployeenumber:postcodeAndEmployeenumberArray
-                 ) {
-                //获得岗位编号
-                String[] arrayTemp = postcodeAndEmployeenumber.split(":");
-                String postcode = arrayTemp[0];
-                postcodeList.add(postcode);
-                //获得岗位详情
-                String postName = ouPostDao.selectOne(new OuPost(postcode)).getPostname();
-                String postNameAndTruename = postName;
-                if(arrayTemp.length==2 && StringUtils.isNotBlank(arrayTemp[1])){
-                    postNameAndTruename +=":";
-                    String[] employeenumberArray = arrayTemp[1].split(",");
-                    for (String employeenumber:employeenumberArray
-                         ) {
-                        postNameAndTruename +=hrUtils.getTruenameByEmployeenumber(employeenumber)+",";
+        if (null!=ouDep.getPosts()) {
+            String[] postcodeAndEmployeenumberArray = ouDep.getPosts().split(";");
+            if(postcodeAndEmployeenumberArray.length>0 && postcodeAndEmployeenumberArray[0].length()>0){
+                List<String> postListDetail = new ArrayList<>();
+                List<String> postcodeList = new ArrayList<>();
+                for (String postcodeAndEmployeenumber:postcodeAndEmployeenumberArray
+                     ) {
+                    //获得岗位编号
+                    String[] arrayTemp = postcodeAndEmployeenumber.split(":");
+                    String postcode = arrayTemp[0];
+                    postcodeList.add(postcode);
+                    //获得岗位详情
+                    String postName = ouPostDao.selectOne(new OuPost(postcode)).getPostname();
+                    String postNameAndTruename = postName;
+                    if(arrayTemp.length==2 && StringUtils.isNotBlank(arrayTemp[1])){
+                        postNameAndTruename +=":";
+                        String[] employeenumberArray = arrayTemp[1].split(",");
+                        for (String employeenumber:employeenumberArray
+                             ) {
+                            postNameAndTruename +=hrUtils.getTruenameByEmployeenumber(employeenumber)+",";
+                        }
+                        postNameAndTruename = postNameAndTruename.substring(0,postNameAndTruename.length()-1);
                     }
-                    postNameAndTruename = postNameAndTruename.substring(0,postNameAndTruename.length()-1);
+                    postListDetail.add(postNameAndTruename);
                 }
-                postListDetail.add(postNameAndTruename);
+                ouDep.setPostListDetail(postListDetail);
+                ouDep.setPostcodeList(postcodeList);
             }
-            ouDep.setPostListDetail(postListDetail);
-            ouDep.setPostcodeList(postcodeList);
         }
         return RespUtil.successResp("200","查询成功",ouDep);
     }

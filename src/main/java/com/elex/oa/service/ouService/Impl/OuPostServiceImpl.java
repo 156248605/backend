@@ -132,6 +132,18 @@ public class OuPostServiceImpl implements IOuPostService {
         }
     }
 
+    @Override
+    public Object queryAllPostcode_ON() {
+        List<OuPost> ouPostList = null;
+        try {
+            ouPostList = ouPostDao.select(new OuPost(null, Commons.POST_ON));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","查询失败",e.getStackTrace());
+        }
+        return RespUtil.successResp("200","查询成功",ouPostList);
+    }
+
     //根据摘要信息获得详细信息
     private OuPost getDetailOuPostByCursoryOuPost(OuPost ouPost){
         if(null==ouPost)return null;
