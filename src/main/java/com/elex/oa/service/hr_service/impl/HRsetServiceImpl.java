@@ -116,8 +116,11 @@ public class HRsetServiceImpl implements IHRsetService {
         if(StringUtils.isBlank(hRset.getDatacode())){
             hRset.setDatacode(hRset.getDatatype()+"_"+System.currentTimeMillis());
         }else {
-            List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset( null,null, hRset.getDatacode(), null));
-            if(hRsetList!=null || hRsetList.size()!=0)return RespUtil.successResp("500","编号已经存在！",null);
+            HRset oldHRset = ihRsetDao.selectById(hRset.getId());
+            if(!hRset.getDatacode().equals(oldHRset.getDatacode())){
+                List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset( null,null, hRset.getDatacode(), null));
+                if(hRsetList!=null || hRsetList.size()!=0)return RespUtil.successResp("500","编号已经存在！",null);
+            }
         }
         try {
             ihRsetDao.updateOne(hRset);
