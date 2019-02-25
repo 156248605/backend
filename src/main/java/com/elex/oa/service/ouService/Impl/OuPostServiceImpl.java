@@ -144,6 +144,40 @@ public class OuPostServiceImpl implements IOuPostService {
         return RespUtil.successResp("200","查询成功",ouPostList);
     }
 
+    @Override
+    public Object changeOuPostState(String flag, List<String> postIdList) {
+        if(null==postIdList || postIdList.size()==0 || (postIdList.size()==1 && "null".equals(postIdList.get(0))))return RespUtil.successResp("500","没有选中操作的选项",null);
+        for (String postid:postIdList
+             ) {
+            OuPost ouPostTemp = null;
+            try {
+                ouPostTemp = ouPostDao.selectByPrimaryKey(postid);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return RespUtil.successResp("500","操作失败",e.getStackTrace());
+            }
+            if(null==ouPostTemp)return RespUtil.successResp("500","所选的岗位编号不存在",postid);
+            if("POST_OFF".equals(flag)){
+                try {
+                    ouPostDao.updateByPrimaryKeySelective(new OuPost(postid,null,Commons.POST_OFF));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return RespUtil.successResp("500","操作失败",e.getStackTrace());
+                }
+            }else if("POST_ON".equals(flag)){
+                try {
+                    ouPostDao.updateByPrimaryKeySelective(new OuPost(postid,null,Commons.POST_ON));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return RespUtil.successResp("500","操作失败",e.getStackTrace());
+                }
+            }else {
+                return RespUtil.successResp("500","请求参数错误",flag);
+            }
+        }
+        return RespUtil.successResp("200","请求成功",postIdList);
+    }
+
     //根据摘要信息获得详细信息
     private OuPost getDetailOuPostByCursoryOuPost(OuPost ouPost){
         if(null==ouPost)return null;

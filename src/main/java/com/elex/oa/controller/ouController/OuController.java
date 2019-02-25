@@ -147,4 +147,14 @@ public class OuController {
     public Object queryAllPostcode_ON(){
         return iOuPostService.queryAllPostcode_ON();
     }
+
+    @RequestMapping("/post/changeOuPostState")
+    @ResponseBody
+    public Object changeOuPostState(
+            @RequestParam("flag")String flag,
+            @RequestParam("postIdList")String postIdListOfString
+    ){
+        List<String> postIdList = JSON.parseArray(postIdListOfString, String.class);
+        return iOuPostService.changeOuPostState(flag,postIdList);
+    }
 }

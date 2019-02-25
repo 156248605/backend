@@ -4,6 +4,7 @@ import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.entity.ou.OuPostConditionInfo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IOuPostService {
@@ -22,4 +23,6 @@ public interface IOuPostService {
     Object getRecommendedOuPostcode();
 
     Object queryAllPostcode_ON();
+
+    Object changeOuPostState(String flag, List<String> postIdList);
 }

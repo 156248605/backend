@@ -33,6 +33,12 @@ public class OuPost {
         this.state = state;
     }
 
+    public OuPost(String id, String postcode, String state) {
+        this.id = id;
+        this.postcode = postcode;
+        this.state = state;
+    }
+
     public String getPostlevel() {
         return postlevel;
     }
