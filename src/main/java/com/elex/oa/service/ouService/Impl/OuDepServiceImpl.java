@@ -304,6 +304,55 @@ public class OuDepServiceImpl implements IOuDepService {
         return RespUtil.successResp("200","修改成功",ouDep);
     }
 
+    @Override
+    public Object removeDeptsByDepcode(String depcode) {
+        if(StringUtils.isBlank(depcode))return RespUtil.successResp("500","选择的部门编号不能为空",depcode);
+        OuDep parentOuDep = ouDepDao.selectOne(new OuDep(depcode, null, Commons.DEP_ON));
+        if(null==parentOuDep)return RespUtil.successResp("500","选择的部门编号不存在",depcode);
+        //获得子部门
+        List<OuDep> depList = new ArrayList<>();
+        depList.add(parentOuDep);
+        depList = getSubdepList(depcode,depList);
+        //判断是否有外部引用
+        for (OuDep ouDep:depList
+             ) {
+            String posts = ouDep.getPosts();
+            if(posts.indexOf(":")!=-1){
+                return RespUtil.successResp("500","要删除的部门有外部引用",ouDep);
+            }
+        }
+        //遍历删除部门
+        for (OuDep ouDep:depList
+             ) {
+            try {
+                ouDep.setState(Commons.DEP_OFF);
+                ouDepDao.updateByPrimaryKeySelective(ouDep);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return RespUtil.successResp("500","删除失败",e.getStackTrace());
+            }
+        }
+        //删除完之后上级部门的子部门信息需要改变
+        String subdepartments = parentOuDep.getSubdepartments();
+        String[] subs = subdepartments.split(";");
+        String subStrs = "";
+        for (String str:subs
+             ) {
+            if(!str.equals(depcode)){
+                subStrs += str+";";
+            }
+        }
+        subdepartments = subStrs.substring(0,subStrs.length()-1);
+        parentOuDep.setSubdepartments(subdepartments);
+        try {
+            ouDepDao.updateByPrimaryKeySelective(parentOuDep);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","更新上级部门的子部门信息失败",e.getStackTrace());
+        }
+        return RespUtil.successResp("200","删除成功",depcode);
+    }
+
     //获得树结构数据
     private Map<String,Object> getTreeData(Map<String,Object> treeData){
         String parentDepcode = (String) treeData.get("code");

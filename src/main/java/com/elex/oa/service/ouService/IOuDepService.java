@@ -20,4 +20,6 @@ public interface IOuDepService {
     Object queryAllDepByDep_ON();
 
     Object modifyOuDep(OuDep ouDep, String username);
+
+    Object removeDeptsByDepcode(String depcode);
 }

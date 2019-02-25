@@ -47,6 +47,14 @@ public class OuController {
         return iOuDepService.addOuDep(ouDep);
     }
 
+    @RequestMapping("/dep/deleteDeptsByDepcode")
+    @ResponseBody
+    public Object deleteDeptsByDepcode(
+            @RequestParam("depcode")String depcode
+    ){
+        return iOuDepService.removeDeptsByDepcode(depcode);
+    }
+
     @RequestMapping("/dep/updateOuDep")
     @ResponseBody
     public Object updateOuDep(
