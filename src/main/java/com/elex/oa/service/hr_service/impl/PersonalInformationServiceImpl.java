@@ -79,8 +79,12 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             staff.setDeptId(remp.get("depid")+"");
             staff.setDeptName((String)remp.get("depname"));
             staff.setEmployeeNumber(String.valueOf(remp.get("employeenumber")));
-            List<Map<String, Object>> post = iPersonalInformationDao.selectPostidPostname((Integer) remp.get("perid"));
-            staff.setPost(post);
+            if(StringUtils.isNotBlank(remp.get("perid").toString())){
+                List<Map<String, Object>> post = iPersonalInformationDao.selectPostidPostname(Integer.parseInt(remp.get("perid").toString()));
+                staff.setPost(post);
+            }else {
+                staff.setPost(new ArrayList<>());
+            }
             staffList.add(staff);
         }
         return staffList;
