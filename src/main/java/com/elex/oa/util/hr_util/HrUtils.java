@@ -460,6 +460,18 @@ public class HrUtils {
         return iDcodeUtil.getStringToListString(post_list,s);
     }
 
+    //根据集合获得字符串
+    public String getListStringFromString(List<String> list,String s){
+        if(null==list || list.size()==0)return null;
+        if(StringUtils.isBlank(s))s = "@";
+        String resp = "";
+        for (String str:list
+             ) {
+            resp += str+s;
+        }
+        return resp.substring(0,resp.length()-s.length());
+    }
+
     //根据员工号获得账号ID
     public Integer getUseridByEmployeenumber(String employeenumber) {
         if(StringUtils.isBlank(employeenumber))return null;

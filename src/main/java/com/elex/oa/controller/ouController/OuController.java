@@ -47,6 +47,15 @@ public class OuController {
         return iOuDepService.addOuDep(ouDep);
     }
 
+    @RequestMapping("/dep/updateOuDep")
+    @ResponseBody
+    public Object updateOuDep(
+            OuDep ouDep,
+            @RequestParam("username")String username
+    ){
+        return iOuDepService.modifyOuDep(ouDep,username);
+    }
+
     @RequestMapping("/dep/listDepts")
     @ResponseBody
     public Object listDepts(){

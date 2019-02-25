@@ -18,4 +18,6 @@ public interface IOuDepService {
     Object queryAllDepinfoButSelf(String depcode);
 
     Object queryAllDepByDep_ON();
+
+    Object modifyOuDep(OuDep ouDep, String username);
 }

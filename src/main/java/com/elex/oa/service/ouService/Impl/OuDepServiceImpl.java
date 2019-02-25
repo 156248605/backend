@@ -221,6 +221,89 @@ public class OuDepServiceImpl implements IOuDepService {
         return RespUtil.successResp("200","查询成功",ouDepList);
     }
 
+    @Override
+    public Object modifyOuDep(OuDep ouDep, String username) {
+        //处理脏数据
+        if(null!=ouDep.getPostListDetail() && ouDep.getPostListDetail().size()==1 && "null".equals(ouDep.getPostListDetail().get(0))){
+            ouDep.setPostListDetail(null);
+        }
+        if("null".equals(ouDep.getPosts())){
+            ouDep.setPosts(null);
+        }
+        OuDep oldOuDep = ouDepDao.selectByPrimaryKey(ouDep.getId());
+        //判断岗位编号
+        if(StringUtils.isBlank(ouDep.getCode()))return RespUtil.successResp("500","部门编号不能为空",null);
+        if(!oldOuDep.getCode().equals(ouDep.getCode())){
+            OuDep ouDepTemp = ouDepDao.selectOne(new OuDep(ouDep.getCode()));
+            if(null!=ouDepTemp)return RespUtil.successResp("500","部门编号已经存在",ouDep.getCode());
+        }
+        //公司判断
+        if(StringUtils.isBlank(ouDep.getCompanyname()))return RespUtil.successResp("500","公司名称不能为空",ouDep.getCode());
+        //部门类型
+        if(null==ouDep.getDepTypeid())return RespUtil.successResp("500","部门类型不能为空",ouDep.getCode());
+        //判断部门名称
+        if(StringUtils.isBlank(ouDep.getName()))return RespUtil.successResp("500","部门名称不能为空",ouDep.getCode());
+        //判断上级部门
+        if(StringUtils.isBlank(ouDep.getParentDepcode()))return RespUtil.successResp("500","上级部门编号不能为空",ouDep.getCode());
+        //判断包含岗位
+        String postnameListOfString = "";
+
+        if(null==ouDep.getPostListDetail() || ouDep.getPostListDetail().size()==0){
+            //几乎没有影响
+        }else {
+            //将返回岗位编号换成岗位名称串成字符串
+            if (null!=ouDep.getPostcodeList() && ouDep.getPostcodeList().size()>0) {
+                List<String> ouPostnameList = new ArrayList<>();
+                for (String ouPostCode:ouDep.getPostcodeList()
+                ) {
+                    OuPost ouPostTemp = ouPostDao.selectOne(new OuPost(ouPostCode, Commons.POST_ON));
+                    ouPostnameList.add(ouPostTemp.getPostname());
+                }
+                postnameListOfString = hrUtils.getListStringFromString(ouPostnameList, "@");
+            }
+            //判断是否有外部引用的岗位
+            for (String postNameAndTruenmaes:ouDep.getPostListDetail()
+                 ) {
+                if(postNameAndTruenmaes.indexOf(":")!=1 && postnameListOfString.indexOf(postNameAndTruenmaes.split(":")[0])==-1){
+                    return RespUtil.successResp("500",postNameAndTruenmaes.split(":")[0]+"有外部引用的岗位不能移除",postNameAndTruenmaes);
+                }
+            }
+        }
+
+        if(null==ouDep.getPosts() || StringUtils.isBlank(ouDep.getPosts())){
+            String posts = "";
+            for (String postcode:ouDep.getPostcodeList()
+                 ) {
+                posts += postcode+";";
+            }
+            ouDep.setPosts(posts);
+        }else {
+            String[] postcodeAndEmployeenumbersArray = ouDep.getPosts().split(";");
+            List<String> postcodeList = ouDep.getPostcodeList();
+            String posts = "";
+            for (String postcodeAndEmployeenumbers:postcodeAndEmployeenumbersArray
+                 ) {
+                if(postcodeAndEmployeenumbers.indexOf(":")!=-1){
+                    posts += postcodeAndEmployeenumbers+";";
+                    postcodeList.remove(postcodeAndEmployeenumbers.split(":")[0]);
+                }
+            }
+            for (String postcode:postcodeList
+                 ) {
+                posts += postcode+";";
+            }
+            posts = posts.substring(0,posts.length()-1);
+            ouDep.setPosts(posts);
+        }
+        try {
+            ouDepDao.updateByPrimaryKeySelective(ouDep);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","修改失败",e.getStackTrace());
+        }
+        return RespUtil.successResp("200","修改成功",ouDep);
+    }
+
     //获得树结构数据
     private Map<String,Object> getTreeData(Map<String,Object> treeData){
         String parentDepcode = (String) treeData.get("code");
