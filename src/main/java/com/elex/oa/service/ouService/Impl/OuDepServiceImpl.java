@@ -353,6 +353,26 @@ public class OuDepServiceImpl implements IOuDepService {
         return RespUtil.successResp("200","删除成功",depcode);
     }
 
+    @Override
+    public Object querySortdataByParentDepcode(String parentDepcode) {
+        if(StringUtils.isBlank(parentDepcode))return RespUtil.successResp("500","上级部门不能为空",null);
+        OuDep parentOuDep = ouDepDao.selectOne(new OuDep(parentDepcode, null, Commons.DEP_ON));
+        if(null==parentOuDep)return RespUtil.successResp("500","上级部门查不到",parentDepcode);
+        List<OuDep> subDepList = ouDepDao.select(new OuDep(null, parentDepcode, Commons.DEP_ON));
+        if(null==subDepList || subDepList.size()==0)return RespUtil.successResp("500","没有需要排序的子部门",parentDepcode);
+        if(subDepList.size()==1)return RespUtil.successResp("500","同级部门只有一个，不需要排序",parentDepcode);
+        List<Map<String,Object>> respList = new ArrayList<>();
+        for (OuDep ouDep:subDepList
+             ) {
+            Map<String,Object> depObj = new HashMap<>();
+            depObj.put("depName",ouDep.getName());
+            depObj.put("depCode",ouDep.getCode());
+            depObj.put("depOrder",ouDep.getOrder());
+            respList.add(depObj);
+        }
+        return RespUtil.successResp("200","请求成功",respList);
+    }
+
     //获得树结构数据
     private Map<String,Object> getTreeData(Map<String,Object> treeData){
         String parentDepcode = (String) treeData.get("code");

@@ -86,6 +86,14 @@ public class OuController {
         return iOuDepService.queryAllDepinfoButSelf(depcode);
     }
 
+    @RequestMapping("/dep/querySortdataByParentDepcode")
+    @ResponseBody
+    public Object querySortdataByParentDepcode(
+            @RequestParam("parentDepcode")String parentDepcode
+    ){
+        return iOuDepService.querySortdataByParentDepcode(parentDepcode);
+    }
+
     @RequestMapping("/post/createPost")
     @ResponseBody
     public Object createPost(

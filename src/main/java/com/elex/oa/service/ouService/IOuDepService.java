@@ -22,4 +22,6 @@ public interface IOuDepService {
     Object modifyOuDep(OuDep ouDep, String username);
 
     Object removeDeptsByDepcode(String depcode);
+
+    Object querySortdataByParentDepcode(String parentDepcode);
 }
