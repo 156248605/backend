@@ -11,6 +11,7 @@ import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -372,6 +373,28 @@ public class OuDepServiceImpl implements IOuDepService {
         }
         return RespUtil.successResp("200","请求成功",respList);
     }
+
+    @Override
+    public Object submitSortdata(List<Map> sortData) {
+        if(null==sortData || sortData.size()==0)return RespUtil.successResp("500","没有需要更新的排序信息",null);
+        if(sortData.size()==1)return RespUtil.successResp("500","需要更新的排序信息只有一条",sortData);
+        for (Map map:sortData
+             ) {
+            Example example = new Example(OuDep.class);
+            example.createCriteria().andEqualTo("code", map.get("depCode"));
+            example.createCriteria().andEqualTo("state", Commons.DEP_ON);
+            OuDep ouDep = new OuDep();
+            ouDep.setOrder((String) map.get("depOrder"));
+            try {
+                ouDepDao.updateByExampleSelective(ouDep,example);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return RespUtil.successResp("500","排序码更新失败",e.getStackTrace());
+            }
+        }
+        return RespUtil.successResp("200","提交成功",null);
+    }
+
 
     //获得树结构数据
     private Map<String,Object> getTreeData(Map<String,Object> treeData){

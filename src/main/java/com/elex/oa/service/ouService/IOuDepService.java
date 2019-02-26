@@ -2,6 +2,9 @@ package com.elex.oa.service.ouService;
 
 import com.elex.oa.entity.ou.OuDep;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @Description: DOTO
  * @Author shiyun
@@ -24,4 +27,6 @@ public interface IOuDepService {
     Object removeDeptsByDepcode(String depcode);
 
     Object querySortdataByParentDepcode(String parentDepcode);
+
+    Object submitSortdata(List<Map> sortData);
 }

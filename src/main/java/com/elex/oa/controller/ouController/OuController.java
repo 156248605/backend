@@ -1,7 +1,6 @@
 package com.elex.oa.controller.ouController;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.entity.ou.OuDep;
 import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.entity.ou.OuPostConditionInfo;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +89,15 @@ public class OuController {
             @RequestParam("parentDepcode")String parentDepcode
     ){
         return iOuDepService.querySortdataByParentDepcode(parentDepcode);
+    }
+
+    @RequestMapping("/dep/submitSortdata")
+    @ResponseBody
+    public Object submitSortdata(
+            @RequestParam("sortdata")String jsonStr
+    ){
+        List<Map> sortData = JSON.parseArray(jsonStr, Map.class);
+        return iOuDepService.submitSortdata(sortData);
     }
 
     @RequestMapping("/post/createPost")
