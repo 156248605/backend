@@ -46,11 +46,14 @@ public class ContractInformationController {
     @Autowired
     HrUtils hrUtils;
 
-    /**
-     * @Author:ShiYun;
-     * @Description:合同信息的查询
-     * @Date: 16:08 2018\4\9 0009
-     */
+    @RequestMapping("/queryContractInformationByUseridAndCurTime")
+    @ResponseBody
+    public Object queryContractInformationByUseridAndCurTime(
+            @RequestParam("userid")Integer userid
+    ){
+        return iContractInformationService.queryContractInformationByUseridAndCurTime(userid);
+    }
+
     @RequestMapping("/queryContractInformations")
     @ResponseBody
     public PageInfo<ContractInformation> queryContractInformations(
@@ -89,11 +92,6 @@ public class ContractInformationController {
         return contractInformationPageInfo;
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:根据userid查询合同信息
-     * @Date: 16:05 2018\5\30 0030
-     */
     @RequestMapping("/queryContractsByUserid")
     @ResponseBody
     public List<ContractInformation> queryContractsByUserid(
@@ -108,11 +106,6 @@ public class ContractInformationController {
         return contractInformationList;
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:查询合同续签记录
-     * @Date: 13:29 2018\4\10 0010
-     */
     @RequestMapping("/queryOneContractInformation")
     @ResponseBody
     public List<RenewContractRecord> queryOneContractInformation(@RequestParam("contractId") int contractId) {
@@ -126,11 +119,6 @@ public class ContractInformationController {
         return renewContractRecords;
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:根据ID查询合同信息
-     * @Date: 17:21 2018\4\12 0012
-     */
     @RequestMapping("/queryContractsById")
     @ResponseBody
     public ContractInformation queryContractsById(
@@ -140,11 +128,6 @@ public class ContractInformationController {
         return contractInformation;
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:添加合同信息
-     * @Date: 14:16 2018\4\20 0020
-     */
     @RequestMapping("/addContractInformation")
     @ResponseBody
     public Object addContractInformation(
@@ -163,11 +146,6 @@ public class ContractInformationController {
         return null == contractInformaionId ? RespUtil.successResp("500", "添加失败！", null) : RespUtil.successResp("200", "添加成功！", contractInformaionId);
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:修改合同信息
-     * @Date: 9:59 2018\5\29 0029
-     */
     @RequestMapping("/updateContractInformation")
     @ResponseBody
     public Object updateContractInformation(
@@ -185,11 +163,6 @@ public class ContractInformationController {
         return iContractInformationService.modifyOne(contractInformation);
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:查询所有合同信息（不分页）
-     * @Date: 16:01 2018\5\25 0025
-     */
     @RequestMapping("/queryAllContractInformations")
     @ResponseBody
     public List<ContractInformation> queryAllContractInformations() throws ParseException {
@@ -218,11 +191,6 @@ public class ContractInformationController {
         return contractInformationList;
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:根据ID删除合同信息
-     * @Date: 10:40 2018\5\29 0029
-     */
     @RequestMapping("/deleteContractsByIds")
     @ResponseBody
     public String deleteContractsByIds(
@@ -234,11 +202,6 @@ public class ContractInformationController {
         return "删除成功！";
     }
 
-    /**
-     * @Author:ShiYun;
-     * @Description:导入合同信息
-     * @Date: 11:04 2018\5\29 0029
-     */
     @RequestMapping("/importContractinformations")
     @ResponseBody
     public String importContractinformations(

@@ -10,6 +10,7 @@ import com.elex.oa.entity.hr_entity.User;
 import com.elex.oa.service.hr_service.IContractInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;
+import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -40,11 +42,6 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     @Resource
     HrUtils hrUtils;
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据条件查询合同信息
-     *@Date: 16:55 2018\4\9 0009
-     */
     @Override
     public PageInfo<ContractInformation> queryByConditions(Map<String, Object> paramMap) {
 
@@ -68,11 +65,6 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         return new PageInfo<ContractInformation>(contractInformationList);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据ID查询合同信息
-     *@Date: 16:55 2018\4\9 0009
-     */
     @Override
     public ContractInformation queryById(Integer id) {
         //获得合同的粗略信息
@@ -90,11 +82,6 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         return iContractInformationDao.selectOneByContractcode(contractcode);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据userid查询合同信息
-     *@Date: 16:12 2018\5\30 0030
-     */
     @Override
     public List<ContractInformation> queryByUserid(Integer userid) {
         List<ContractInformation> contractInformationList = iContractInformationDao.selectByUserid(userid);
@@ -126,22 +113,12 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         return contractInformationList;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据条件（不分页）查询合同信息
-     *@Date: 17:37 2018\4\12 0012
-     */
     @Override
     public List<ContractInformation> queryByEntity(ContractInformation contractInformation) {
         List<ContractInformation> contractInformations = iContractInformationDao.selectByConditions(contractInformation);
         return contractInformations;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有信息
-     *@Date: 17:51 2018\5\25 0025
-     */
     public List<ContractInformation> queryAll(ContractInformation contractInformation){
         List<ContractInformation> contractInformationList = iContractInformationDao.selectAll();
         for (ContractInformation con:contractInformationList
@@ -157,14 +134,12 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         return contractInformationList;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:添加合同信息并返回主键
-     *@Date: 14:28 2018\4\20 0020
-     */
     @Override
     public Integer addOne(ContractInformation contractInformation){
         try {
+            Resp resp = (Resp) queryContractInformationByUseridAndCurTime(contractInformation.getUserid());
+            String rspCode = resp.getHead().getRspCode();
+            if(rspCode.equals("200"))return null;//有则退出
             contractInformation.setContractage(hrUtils.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate()));
             iContractInformationDao.insertOne(contractInformation);
         } catch (Exception e) {
@@ -174,21 +149,11 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         return contractInformation.getId();
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据ID删除合同信息
-     *@Date: 17:50 2018\5\25 0025
-     */
     @Override
     public void removeOne(Integer id) {
         iContractInformationDao.deleteOne(id);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:修改合同信息
-     *@Date: 10:14 2018\5\29 0029
-     */
     @Override
     public Object modifyOne(ContractInformation contractInformation){
         //获得合同新对象
@@ -210,6 +175,28 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         }
         return RespUtil.successResp("500","没有需要修改的信息！",null);
     }
+
+    @Override
+    public Object queryContractInformationByUseridAndCurTime(Integer userid) {
+        //目的：根据userid和curtime查出还在有效期中的合同
+        if(null==userid)return RespUtil.successResp("500","合同人userid不能为空",null);
+        User user = iUserDao.selectByPrimaryKey(userid);
+        if(null==user)return RespUtil.successResp("500","合同人不存在",userid);
+        //获得当前时间（格式：YYYY/MM/dd）
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String curtime = sdf.format(new Date());
+        //获得合同信息
+        ContractInformation contractInformation = null;
+        try {
+            contractInformation = iContractInformationDao.selectContractInformationByUseridAndCurTime(userid,curtime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","查询失败",e.getStackTrace());
+        }
+        if(null==contractInformation)return RespUtil.successResp("500","合同信息不存在",userid);
+        return RespUtil.successResp("200","查询成功",contractInformation);
+    }
+
 
     //判断是否需要修改合同信息
     private Boolean isUpdateForContractInformation(ContractInformation oldContract, ContractInformation newContract) {

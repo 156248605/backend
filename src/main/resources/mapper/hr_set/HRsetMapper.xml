@@ -43,6 +43,12 @@
 		</where>
 	</select>
 
+	<select id="selectByDatacodeIsNull" resultMap="HRsetMapper">
+		SELECT id,datatype,datacode,datavalue
+		FROM tb_hr_set
+		WHERE datacode is NULL
+	</select>
+
 	<delete id="deleteOne" parameterType="java.lang.Integer">
 		DELETE FROM tb_hr_set WHERE id=#{id}
 	</delete>

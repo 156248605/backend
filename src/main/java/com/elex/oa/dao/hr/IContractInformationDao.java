@@ -3,6 +3,7 @@ package com.elex.oa.dao.hr;
 import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -74,4 +75,6 @@ public interface IContractInformationDao {
     void updateOne(ContractInformation contractInformation);
 
     void deleteAll();
+
+    ContractInformation selectContractInformationByUseridAndCurTime(@Param("userid") Integer userid,@Param("curtime") String curtime);
 }

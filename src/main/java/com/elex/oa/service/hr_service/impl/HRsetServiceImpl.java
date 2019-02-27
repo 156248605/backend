@@ -33,13 +33,7 @@ public class HRsetServiceImpl implements IHRsetService {
     @Resource
     HrUtils hrUtils;
 
-    /**
-     * @Author: shiyun
-     * @Description: TODO
-     * @Date  2018\11\6 0006 17:29
-     * @Param [hRset]
-     * @return java.lang.Object
-     **/
+
     @Override
     public Object addOne(HRset hRset) {
         if(StringUtils.isBlank(hRset.getDatacode())){
@@ -53,13 +47,6 @@ public class HRsetServiceImpl implements IHRsetService {
         return RespUtil.successResp("200","添加成功！",hRset.getId());
     }
 
-    /**
-     * @Author: shiyun
-     * @Description: TODO
-     * @Date  2018\11\6 0006 17:42
-     * @Param []
-     * @return java.lang.Object
-     **/
     @Override
     public List<HRset> queryAll() {
         List<HRset> hRsetList = ihRsetDao.selectAll();
@@ -132,13 +119,6 @@ public class HRsetServiceImpl implements IHRsetService {
         return RespUtil.successResp("200","修改成功！",null);
     }
 
-    /**
-     * @Author: shiyun
-     * @Description: 删除多个
-     * @Date  2018\11\9 0009 13:34
-     * @Param [ids]
-     * @return java.util.Map<java.lang.Integer,java.lang.String>
-     **/
     @Override
     public Map<Integer, String> removeMultiple(List<Integer> ids) {
         Map<Integer,String> map = new HashMap<>();
@@ -194,4 +174,22 @@ public class HRsetServiceImpl implements IHRsetService {
         }
         return true;
     }
+
+    @Override
+    public Object supplyDatacode() {
+        List<HRset> hRsetList = ihRsetDao.selectByDatacodeIsNull();
+        if(null==hRsetList || hRsetList.size()==0)return RespUtil.successResp("500","没有需要补充的字段编码",null);
+        for (HRset hRset:hRsetList
+             ) {
+            hRset.setDatacode(hRset.getDatatype()+"_"+System.currentTimeMillis());
+            try {
+                ihRsetDao.updateOne(hRset);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return RespUtil.successResp("500","补充失败",e.getStackTrace());
+            }
+        }
+        return RespUtil.successResp("200","补充成功",null);
+    }
+
 }

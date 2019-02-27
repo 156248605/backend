@@ -86,4 +86,6 @@ public interface IHRsetService {
     List<HRset> queryPostgradeByPostfamilyid(Integer postfamilyid);
 
     Boolean updateDatacode();
+
+    Object supplyDatacode();
 }

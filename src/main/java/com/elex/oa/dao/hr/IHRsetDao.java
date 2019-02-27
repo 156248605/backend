@@ -49,4 +49,6 @@ public interface IHRsetDao {
      *@Date: 17:31 2018\5\19 0019
      */
     void updateOne(HRset hRset);
+
+    List<HRset> selectByDatacodeIsNull();
 }
