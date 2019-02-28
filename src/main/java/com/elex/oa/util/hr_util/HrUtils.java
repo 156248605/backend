@@ -578,7 +578,7 @@ public class HrUtils {
 
     //根据登录ID获得员工号
     public String getEmployeenumberByUsername(String username) {
-        User user = iUserDao.selectUserByUsername(username);
+        User user = iUserDao.selectUserByUsername_ON(username);
         if(null==user)return null;
         return user.getEmployeenumber();
     }

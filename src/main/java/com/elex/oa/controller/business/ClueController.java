@@ -50,6 +50,9 @@ public class ClueController {
             Clue clue,
             @RequestParam("flag") String flag
     ){
+        if("PRIVATE".equals(flag)){
+            clue.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(clue.getUsername()));
+        }
         return iClueService.getPageInfoByCondition(page,rows,clue,flag);
     }
 

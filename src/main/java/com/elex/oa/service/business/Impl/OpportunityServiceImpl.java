@@ -67,20 +67,25 @@ public class OpportunityServiceImpl implements IOpportunityService {
     @Override
     public PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag) {
         PageHelper.startPage(pageNum,pageSize);
-        List<Opportunity> opportunityList = new ArrayList<>();
+        List<Opportunity> opportunityList = null;
+        PageInfo<Opportunity> opportunityPageInfo = null;
         if ("ALL".equals(flag)) {
             opportunityList = iOpportunityDao.select(opportunity);
+            opportunityPageInfo = new PageInfo<Opportunity>(opportunityList);
         } else if("DEP".equals(flag)){
             opportunityList = iOpportunityDao.selectByOpportunityAndPrincipalUsername(opportunity);
+            opportunityPageInfo = new PageInfo<Opportunity>(opportunityList);
         }else if("PRIVATE".equals(flag)){
-            opportunity.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(opportunity.getUsername()));
             opportunityList = iOpportunityDao.select(opportunity);
+            opportunityPageInfo = new PageInfo<Opportunity>(opportunityList);
         }
-        for (Opportunity o:opportunityList
+        List<Opportunity> opportunityListTemp = opportunityPageInfo.getList();
+        for (Opportunity o:opportunityListTemp
         ) {
             o = getOpportunityByOpportunity(o);
         }
-        return new PageInfo<Opportunity>(opportunityList);
+        opportunityPageInfo.setList(opportunityListTemp);
+        return opportunityPageInfo;
     }
 
     @Override

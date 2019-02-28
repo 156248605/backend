@@ -69,6 +69,9 @@ public class OpportunityController {
             Opportunity opportunity,
             @RequestParam("flag") String flag
     ){
+        if("PRIVATE".equals(flag)){
+            opportunity.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(opportunity.getUsername()));
+        }
         return iOpportunityService.getPageInfoByCondition(page,rows,opportunity,flag);
     }
 
