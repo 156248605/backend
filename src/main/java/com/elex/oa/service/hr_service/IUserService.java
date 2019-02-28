@@ -64,4 +64,6 @@ public interface IUserService extends BaseService<User> {
     List<User> selectAllOrderByDictionary();
 
     List<User> getUserListByPostname(String postname);
+
+    Object queryEmployeenumberByUsername_ON(String username);
 }

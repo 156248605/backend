@@ -85,4 +85,6 @@ public interface IUserDao extends BaseDao<User> {
     List<User> selectUserListByPostname(String postname);
 
     User selectUserByUsername(String username);
+
+    User selectUserByUsername_ON(String username);
 }

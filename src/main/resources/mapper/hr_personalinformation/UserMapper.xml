@@ -121,6 +121,12 @@
 		WHERE username=#{username}
 	</select>
 
+	<select id="selectUserByUsername_ON" parameterType="java.lang.String" resultMap="UserMapper">
+		SELECT id,username,`password`,truename,employeenumber,isactive,state
+		FROM tb_id_user
+		WHERE username=#{username} and state=1
+	</select>
+
 	<insert id="insertOne" parameterType="User" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_user (
 			id,

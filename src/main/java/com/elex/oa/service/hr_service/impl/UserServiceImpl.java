@@ -4,6 +4,8 @@ import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IUserService;
+import com.elex.oa.util.resp.RespUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,11 +24,6 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     @Resource
     IUserDao iUserDao;
 
-    /**
-     *@Author:ShiYun;
-     *@Description:添加用户
-     *@Date: 9:05 2018\4\11 0011
-     */
     @Override
     public Integer saveOne(User user) {
         /*
@@ -37,54 +34,29 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         return user.getId();
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:删除用户
-     *@Date: 14:53 2018\5\10 0010
-     */
     @Override
     public void removeOne(Integer id) {
         iUserDao.deleteById(id);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据姓名查询用户
-     *@Date: 11:17 2018\5\25 0025
-     */
     @Override
     public User queryByTruename(String truename) {
         User user = iUserDao.selectByTruename(truename);
         return user;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据登录ID查询用户信息
-     *@Date: 10:16 2018\8\9 0009
-     */
     @Override
     public User queryByUsername(String username) {
         User user = iUserDao.selectByUsername(username);
         return user;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有的在职人员
-     *@Date: 10:01 2018\8\21 0021
-     */
     @Override
     public List<Map> queryAllServings() {
         List<Map> users = iUserDao.queryAllServings();
         return users;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据userid查询在职用户
-     *@Date: 19:17 2018\8\21 0021
-     */
     @Override
     public User queryServingUserByUserid(Integer userid) {
         User user = iUserDao.selectServingUserByUserid(userid);
@@ -117,4 +89,14 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     public List<User> getUserListByPostname(String postname) {
         return iUserDao.selectUserListByPostname(postname);
     }
+
+    @Override
+    public Object queryEmployeenumberByUsername_ON(String username) {
+        if(StringUtils.isBlank(username))return RespUtil.successResp("500","登录ID不能为空",null);
+        User user = iUserDao.selectUserByUsername_ON(username);
+        if(null==user)return RespUtil.successResp("500","员工不存在或离职",user);
+        return RespUtil.successResp("200","请求成功",user.getEmployeenumber());
+    }
+
+
 }

@@ -31,14 +31,6 @@ public class UserController {
     @Autowired
     IDeptService iDeptService;
 
-    /**
-     * @Author: shiyun
-     * @Description: 将tb_hr_personalinformation表中employeenumber字段添加到tb_id_user表中
-     * @Date  2018\11\26 0026 17:10
-     * @Param
-     * @return
-     **/
-
     @RequestMapping("/updateEmployeenumber")
     @ResponseBody
     public String updateEmployeenumber(){
@@ -50,11 +42,6 @@ public class UserController {
         return aBoolean?"Success":"Error";
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询一个用户信息
-     *@Date: 11:58 2018\4\12 0012
-     */
     @RequestMapping("/queryUserByUserId")
     @ResponseBody
     public User queryUserByUserId(
@@ -64,11 +51,6 @@ public class UserController {
         return user;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有用户信息
-     *@Date: 15:38 2018\4\16 0016
-     */
     @RequestMapping("/queryAllUsers")
     @ResponseBody
     public List<User> queryAllUsers(){
@@ -76,15 +58,18 @@ public class UserController {
         return users;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有的在职用户
-     *@Date: 10:03 2018\8\21 0021
-     */
     @RequestMapping("/queryAllServings")
     @ResponseBody
     public List<Map> queryAllServings(){
         return iUserService.queryAllServings();
+    }
+
+    @RequestMapping("/user/queryEmployeenumberByUsername_ON")
+    @ResponseBody
+    public Object queryEmployeenumberByUsername_ON(
+            @RequestParam("usernmae")String username
+    ){
+        return iUserService.queryEmployeenumberByUsername_ON(username);
     }
 
 }

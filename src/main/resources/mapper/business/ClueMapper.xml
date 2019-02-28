@@ -69,16 +69,23 @@
 			<if	test="null!=scheme_employeenumber and ''!=scheme_employeenumber">AND clue.scheme_employeenumber=#{scheme_employeenumber}</if>
 			<if	test="null!=state and ''!=state">AND clue.state=#{state}</if>
 			<if	test="null!=clue_price and ''!=clue_price">AND clue.clue_price=#{clue_price}</if>
-			#{username} in	(
+			clue.sale_employeenumber IN (
 				SELECT
-					principaluser.username
+					u.employeenumber
 				FROM
 					tb_id_user u
-					JOIN tb_id_personalinformation per ON per.userid = u.id
-					JOIN tb_id_department dep ON dep.id = per.depid
-					JOIN tb_id_user principaluser ON principaluser.id = dep.principaluserid
+				JOIN tb_id_personalinformation per ON per.userid = u.id
+				JOIN tb_id_department dep ON dep.id = per.depid
 				WHERE
-					u.employeenumber = clue.sale_employeenumber
+					dep.id IN (
+						SELECT
+							per2.depid
+						FROM
+							tb_id_personalinformation per2
+						JOIN tb_id_user u2 ON u2.id = per2.userid
+						WHERE
+							u2.username = #{username}
+					)
 			)
 		</where>
 	</select>
