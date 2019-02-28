@@ -5,7 +5,7 @@ import com.elex.oa.dao.project.OperationDao;
 import com.elex.oa.dao.project.ProjectBoardDao;
 import com.elex.oa.dao.project.ProjectSetDao;
 import com.elex.oa.dao.project.WeeklyPlanDao;
-import com.elex.oa.entity.hr_entity.Dept;
+import com.elex.oa.entity.hr_entity.department.Dept;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectBoardService;
 import com.elex.oa.service.hr_service.IDeptService;

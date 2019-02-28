@@ -1,9 +1,8 @@
 package com.elex.oa.service.hr_service;
 
 
-import com.elex.oa.entity.hr_entity.Dept;
+import com.elex.oa.entity.hr_entity.department.Dept;
 import com.elex.oa.entity.hr_entity.HRManageCard;
-import com.elex.oa.entity.hr_entity.Post;
 
 import java.util.List;
 import java.util.Map;

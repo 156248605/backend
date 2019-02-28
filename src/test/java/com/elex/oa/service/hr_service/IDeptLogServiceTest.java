@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service;
 
-import com.elex.oa.entity.hr_entity.DeptLog;
+import com.elex.oa.entity.hr_entity.department.DeptLog;
 import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;

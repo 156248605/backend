@@ -1,7 +1,7 @@
 package com.elex.oa.dao.hr;
 
-import com.elex.oa.entity.hr_entity.Dept;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.department.Dept;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

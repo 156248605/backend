@@ -1,6 +1,6 @@
 package com.elex.oa.dao.hr;
 
-import com.elex.oa.entity.hr_entity.PostRelationship;
+import com.elex.oa.entity.hr_entity.hr_set.PostRelationship;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

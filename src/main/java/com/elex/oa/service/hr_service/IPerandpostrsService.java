@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service;
 
-import com.elex.oa.entity.hr_entity.PerAndPostRs;
+import com.elex.oa.entity.hr_entity.post.PerAndPostRs;
 import java.util.List;
 
 /**

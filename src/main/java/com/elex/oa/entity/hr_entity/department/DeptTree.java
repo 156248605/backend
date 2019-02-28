@@ -1,4 +1,4 @@
-package com.elex.oa.entity.hr_entity;
+package com.elex.oa.entity.hr_entity.department;
 
 import java.util.ArrayList;
 import java.util.List;

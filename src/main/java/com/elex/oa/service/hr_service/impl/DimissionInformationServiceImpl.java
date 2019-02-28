@@ -2,8 +2,10 @@ package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange;
+import com.elex.oa.entity.hr_entity.post.PerAndPostRs;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IDimissionInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
@@ -11,8 +13,6 @@ import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,8 +1,11 @@
 package com.elex.oa.controller.hr;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
-import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.department.DeptTree;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
+import com.elex.oa.entity.hr_entity.post.Post;
+import com.elex.oa.entity.hr_entity.post.PostLog;
+import com.elex.oa.entity.hr_entity.post.TitleAndCode;
 import com.elex.oa.entity.hr_entity.readexcel.ReadPostlogExcel;
 import com.elex.oa.service.hr_service.*;
 import com.elex.oa.util.hr_util.HrUtils;

@@ -6,7 +6,7 @@ import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.eqptDao.PositionMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.RepositoryService;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

@@ -1,18 +1,14 @@
 package com.elex.oa.controller.restructure_hr;
 
-import com.elex.oa.common.hr.Commons;
-import com.elex.oa.entity.hr_entity.HRset;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.hr_service.IHRsetService;
 import com.elex.oa.service.restructure_hrService.IHrdatadictionaryService;
 import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

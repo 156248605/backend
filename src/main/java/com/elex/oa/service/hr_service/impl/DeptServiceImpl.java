@@ -2,7 +2,11 @@ package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.department.Dept;
+import com.elex.oa.entity.hr_entity.department.DeptLog;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.hr_service.IDeptService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.PageHelper;

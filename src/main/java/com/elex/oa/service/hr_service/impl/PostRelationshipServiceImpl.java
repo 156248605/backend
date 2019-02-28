@@ -2,14 +2,13 @@ package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPostRelationshipDao;
-import com.elex.oa.entity.hr_entity.HRset;
-import com.elex.oa.entity.hr_entity.PostRelationship;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
+import com.elex.oa.entity.hr_entity.hr_set.PostRelationship;
 import com.elex.oa.service.hr_service.IPostRelationshipService;
 import com.elex.oa.util.resp.RespUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

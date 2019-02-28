@@ -1,8 +1,10 @@
 package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.IHRsetDao;
+import com.elex.oa.dao.hr.IHRsetPostfamilyDao;
 import com.elex.oa.dao.hr.IPostRelationshipDao;
-import com.elex.oa.entity.hr_entity.HRset;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
+import com.elex.oa.entity.hr_entity.hr_set.PostfamilyAndPostgrade;
 import com.elex.oa.service.hr_service.IHRsetService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.Resp;
@@ -31,8 +33,7 @@ public class HRsetServiceImpl implements IHRsetService {
     @Resource
     private IPostRelationshipDao iPostRelationshipDao;
     @Resource
-    HrUtils hrUtils;
-
+    private IHRsetPostfamilyDao ihRsetPostfamilyDao;
 
     @Override
     public Object addOne(HRset hRset) {
@@ -190,6 +191,23 @@ public class HRsetServiceImpl implements IHRsetService {
             }
         }
         return RespUtil.successResp("200","补充成功",null);
+    }
+
+    @Override
+    public Object addPostfamilyAndPostgrade(Integer postfamilyid, Integer postgradeid) {
+        if(null==postfamilyid || null==postgradeid)return RespUtil.successResp("500","职系和职等都不能为空",null);
+        try {
+            HRset postfamily = ihRsetDao.selectById(postfamilyid);
+            if(null==postfamily)return RespUtil.successResp("500","职系不存在",postfamily);
+            HRset postgrade = ihRsetDao.selectById(postgradeid);
+            if(null==postgrade)return RespUtil.successResp("500","职等不存在",postgradeid);
+            PostfamilyAndPostgrade postfamilyAndPostgrade = new PostfamilyAndPostgrade("family_" + System.currentTimeMillis(), postfamilyid, postgradeid);
+            ihRsetPostfamilyDao.insert(postfamilyAndPostgrade);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespUtil.successResp("500","请求失败",e.getCause());
+        }
+        return RespUtil.successResp("200","请求成功",null);
     }
 
 }

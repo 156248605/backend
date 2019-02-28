@@ -2,8 +2,13 @@ package com.elex.oa.service.hr_service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.dao.hr.*;
-import com.elex.oa.entity.hr_entity.*;
+import com.elex.oa.entity.hr_entity.department.DeptTree;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
+import com.elex.oa.entity.hr_entity.post.PerAndPostRs;
+import com.elex.oa.entity.hr_entity.post.Post;
+import com.elex.oa.entity.hr_entity.post.PostLog;
+import com.elex.oa.entity.hr_entity.post.TitleAndCode;
 import com.elex.oa.service.hr_service.IPostService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
@@ -13,7 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author:ShiYun;

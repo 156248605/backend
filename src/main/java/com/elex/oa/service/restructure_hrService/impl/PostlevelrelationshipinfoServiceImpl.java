@@ -3,7 +3,7 @@ package com.elex.oa.service.restructure_hrService.impl;
 import com.elex.oa.dao.hr.IPostRelationshipDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPostlevelrelationshipinfoDao;
-import com.elex.oa.entity.hr_entity.PostRelationship;
+import com.elex.oa.entity.hr_entity.hr_set.PostRelationship;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Postlevelrelationshipinfo;
 import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;

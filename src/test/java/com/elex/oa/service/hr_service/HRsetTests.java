@@ -1,9 +1,5 @@
 package com.elex.oa.service.hr_service;
 
-import com.elex.oa.entity.hr_entity.HRset;
-import com.github.pagehelper.PageInfo;
-import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,11 +7,6 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Description: HRsetService测试

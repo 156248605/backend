@@ -1,4 +1,4 @@
-package com.elex.oa.entity.hr_entity;
+package com.elex.oa.entity.hr_entity.personalinformation;
 
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.IDcodeUtil;

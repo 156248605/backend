@@ -4,7 +4,7 @@ import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMtMapper;
 import com.elex.oa.entity.Page;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.RepositoryMtService;

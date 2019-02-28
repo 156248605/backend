@@ -1,6 +1,6 @@
 package com.elex.oa.entity.hr_entity.readexcel;
 
-import com.elex.oa.entity.hr_entity.PostLog;
+import com.elex.oa.entity.hr_entity.post.PostLog;
 import com.elex.oa.util.hr_util.ExcelUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

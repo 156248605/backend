@@ -1,7 +1,7 @@
 package com.elex.oa.service.hr_service;
 
 
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.BaseService;
 
 import java.util.List;

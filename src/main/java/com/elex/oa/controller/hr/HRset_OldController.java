@@ -1,10 +1,9 @@
 package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSONObject;
-import com.elex.oa.entity.hr_entity.HRset;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.hr_service.IHRsetService;
-import com.elex.oa.service.restructure_hrService.IHrdatadictionaryService;
 import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
@@ -167,5 +166,14 @@ public class HRset_OldController {
     @ResponseBody
     public Object supplyDatacode(){
         return ihRsetService.supplyDatacode();
+    }
+
+    @RequestMapping("/oldHrset/addPostfamilyAndPostgrade")
+    @ResponseBody
+    public Object addPostfamilyAndPostgrade(
+            @RequestParam("postfamilyid")Integer postfamilyid,
+            @RequestParam("postgradeid")Integer postgradeid
+    ){
+        return ihRsetService.addPostfamilyAndPostgrade(postfamilyid,postgradeid);
     }
 }

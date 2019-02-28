@@ -6,7 +6,7 @@ import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.dao.project.ProjectSetDao;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
 import com.elex.oa.util.project.InforUtils;

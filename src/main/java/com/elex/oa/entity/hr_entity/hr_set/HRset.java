@@ -1,4 +1,4 @@
-package com.elex.oa.entity.hr_entity;
+package com.elex.oa.entity.hr_entity.hr_set;
 
 import java.io.Serializable;
 

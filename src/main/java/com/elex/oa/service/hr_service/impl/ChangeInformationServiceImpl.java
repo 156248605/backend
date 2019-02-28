@@ -3,7 +3,7 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.IChangeInformaionDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.ChangeInformation;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IChangeInformationService;
 import com.github.pagehelper.PageHelper;

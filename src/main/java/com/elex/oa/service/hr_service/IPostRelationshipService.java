@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service;
 
-import com.elex.oa.entity.hr_entity.PostRelationship;
+import com.elex.oa.entity.hr_entity.hr_set.PostRelationship;
 
 import java.util.List;
 

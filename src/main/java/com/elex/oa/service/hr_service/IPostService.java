@@ -1,7 +1,7 @@
 package com.elex.oa.service.hr_service;
 
-import com.elex.oa.entity.hr_entity.DeptTree;
-import com.elex.oa.entity.hr_entity.Post;
+import com.elex.oa.entity.hr_entity.department.DeptTree;
+import com.elex.oa.entity.hr_entity.post.Post;
 
 import java.util.List;
 

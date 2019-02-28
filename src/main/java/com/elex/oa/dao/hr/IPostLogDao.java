@@ -1,6 +1,6 @@
 package com.elex.oa.dao.hr;
 
-import com.elex.oa.entity.hr_entity.PostLog;
+import com.elex.oa.entity.hr_entity.post.PostLog;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

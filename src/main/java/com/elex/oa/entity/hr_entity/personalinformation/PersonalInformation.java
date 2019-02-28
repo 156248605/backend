@@ -1,6 +1,6 @@
 package com.elex.oa.entity.hr_entity.personalinformation;
 
-import com.elex.oa.entity.hr_entity.Post;
+import com.elex.oa.entity.hr_entity.post.Post;
 
 import javax.persistence.Id;
 import javax.persistence.Table;

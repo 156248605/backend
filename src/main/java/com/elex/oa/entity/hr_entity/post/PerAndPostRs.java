@@ -1,4 +1,4 @@
-package com.elex.oa.entity.hr_entity;
+package com.elex.oa.entity.hr_entity.post;
 
 import javax.persistence.Table;
 import java.io.Serializable;

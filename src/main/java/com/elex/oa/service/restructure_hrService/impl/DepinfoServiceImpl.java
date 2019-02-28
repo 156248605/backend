@@ -6,7 +6,7 @@ import com.elex.oa.dao.restructure_hr.IDeploginfoDao;
 import com.elex.oa.dao.restructure_hr.IDepinfoDao;
 import com.elex.oa.dao.restructure_hr.IPersonalinfoDao;
 import com.elex.oa.dao.restructure_hr.IPersonalloginfoDao;
-import com.elex.oa.entity.hr_entity.Dept;
+import com.elex.oa.entity.hr_entity.department.Dept;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Deploginfo;

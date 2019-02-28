@@ -2,7 +2,7 @@ package com.elex.oa.service.restructure_hrService.impl;
 
 import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
-import com.elex.oa.entity.hr_entity.HRset;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.restructure_hrService.IHrdatadictionaryService;
 import com.github.pagehelper.PageHelper;

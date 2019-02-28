@@ -1,7 +1,7 @@
 package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.IBaseInformationDao;
-import com.elex.oa.entity.hr_entity.BaseInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.BaseInformation;
 import com.elex.oa.service.hr_service.IBaseInformationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;

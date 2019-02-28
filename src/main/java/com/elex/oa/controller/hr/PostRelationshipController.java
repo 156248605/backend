@@ -1,21 +1,14 @@
 package com.elex.oa.controller.hr;
 
-import com.alibaba.fastjson.JSON;
-import com.elex.oa.entity.hr_entity.HRset;
-import com.elex.oa.entity.hr_entity.PostRelationship;
 import com.elex.oa.entity.restructure_hrentity.Postlevelrelationshipinfo;
-import com.elex.oa.service.hr_service.IHRsetService;
 import com.elex.oa.service.hr_service.IPostRelationshipService;
 import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
 import com.elex.oa.util.resp.RespUtil;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: shiyun

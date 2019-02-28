@@ -1,7 +1,6 @@
 package com.elex.oa.controller.restructure_hr;
 
 import com.alibaba.fastjson.JSONObject;
-import com.elex.oa.entity.hr_entity.TitleAndCode;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Deploginfo;
 import com.elex.oa.service.restructure_hrService.IDepinfoService;

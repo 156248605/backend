@@ -5,8 +5,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.hr_entity.costinformation.CostInformation;
+import com.elex.oa.entity.hr_entity.department.Dept;
+import com.elex.oa.entity.hr_entity.department.DeptLog;
+import com.elex.oa.entity.hr_entity.department.DeptTree;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.hr_entity.manageinformation.ManageInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.BaseInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.OtherInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
+import com.elex.oa.entity.hr_entity.post.PerAndPostRs;
+import com.elex.oa.entity.hr_entity.post.TitleAndCode;
 import com.elex.oa.entity.hr_entity.readexcel.ReadDeplogExcel;
 import com.elex.oa.service.hr_service.*;
 import com.elex.oa.util.hr_util.HrUtils;
@@ -64,11 +73,6 @@ public class DepartmentInformationController {
     @Autowired
     HrUtils hrUtils;
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据部门名称获取部门对象(此方法已经过时)
-     *@Date: 13:20 2018\3\16 0016
-     */
     @RequestMapping("/queryOneDepByDepname")
     @ResponseBody
     public Dept queryOneDepByDepname(@RequestParam("title") String depname){
@@ -125,11 +129,6 @@ public class DepartmentInformationController {
         return dept;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据部门编号获取部门对象
-     *@Date: 19:37 2018\8\11 0011
-     */
     @RequestMapping("/queryOneDepByDepcode")
     @ResponseBody
     public Dept queryOneDepByDepcode(
@@ -138,11 +137,6 @@ public class DepartmentInformationController {
         return iDeptService.queryOneByDepcode(code);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有部门
-     *@Date: 11:00 2018\4\11 0011
-     */
     @RequestMapping("/queryDepartments")
     @ResponseBody
     public List<Dept> queryDepartments(){
@@ -160,11 +154,6 @@ public class DepartmentInformationController {
         return depts;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有部门（去除下级部门和自身）
-     *@Date: 17:49 2018\8\30 0030
-     */
     @RequestMapping("/queryDepartmentsRemoveChilren")
     @ResponseBody
     public List<Dept> queryDepartmentsRemoveChilren(
@@ -174,11 +163,6 @@ public class DepartmentInformationController {
         return depts;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:将部门树列出来=>已转（见DepartmentInfoController的"/listDepts"）
-     *@Date: 10:43 2018\4\16 0016
-     */
     @RequestMapping("/listDepts")
     @ResponseBody
     public DeptTree listDepts(){
@@ -214,11 +198,6 @@ public class DepartmentInformationController {
         return deptTree;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:添加部门信息
-     *@Date: 10:50 2018\4\23 0023
-     */
     @RequestMapping("/addOneDepartment")
     @ResponseBody
     public Object addOneDepartment(
@@ -228,22 +207,12 @@ public class DepartmentInformationController {
         return iDeptService.addOneDepartment(dept,transactorusername);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据部门ID查询部门信息
-     *@Date: 9:30 2018\5\2 0002
-     */
     @RequestMapping("/queryOneByDepid")
     @ResponseBody
     public Dept queryOneByDepid(@RequestParam("depid") Integer id){
         return iDeptService.queryOneByDepid(id);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:修改部门信息
-     *@Date: 9:55 2018\5\2 0002
-     */
     @RequestMapping("/updateOneDepartment")
     @ResponseBody
     public Object updateOneDepartment(
@@ -254,11 +223,6 @@ public class DepartmentInformationController {
         return respMap.size()==0?RespUtil.successResp("200","修改成功！",null):RespUtil.successResp("500","修改失败！", JSON.toJSONString(respMap));
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:删除部门信息
-     *@Date: 13:39 2018\5\2 0002
-     */
     @RequestMapping("/deleteDeptsById")
     @ResponseBody
     public String deleteDeptsById(@RequestParam("id") Integer id){
@@ -289,11 +253,6 @@ public class DepartmentInformationController {
         return list;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据条件查询部门日志信息
-     *@Date: 17:13 2018\5\2 0002
-     */
     @RequestMapping("/queryDeptLogInformations")
     @ResponseBody
     public PageInfo<DeptLog> queryDeptLogInformations(
@@ -325,11 +284,6 @@ public class DepartmentInformationController {
         return deptLogPageInfo;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询部门日志（不分页）
-     *@Date: 9:18 2018\5\24 0024
-     */
     @RequestMapping("/queryAllDeptLogInformations")
     @ResponseBody
     public List<DeptLog> queryAllDeptLogInformations(){
@@ -345,11 +299,6 @@ public class DepartmentInformationController {
         return deptLogs;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:删除部门日志信息
-     *@Date: 10:50 2018\5\24 0024
-     */
     @RequestMapping("/deleteDeplogByIds")
     @ResponseBody
     public String deleteDeplogByIds(
@@ -365,11 +314,6 @@ public class DepartmentInformationController {
        return "删除成功！";
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:数据的导入(日志)
-     *@Date: 15:09 2018\5\7 0007
-     */
     @RequestMapping("/importDeploginformations")
     @ResponseBody
     public String importDeploginformations(
@@ -396,11 +340,6 @@ public class DepartmentInformationController {
         return "数据导入成功！";
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:部门排序--》根据父节点查询所有的同级数据
-     *@Date: 11:15 2018\6\15 0015
-     */
     @RequestMapping("/sortDepinformation")
     @ResponseBody
     public List<TitleAndCode> sortDepinformation(
@@ -422,11 +361,6 @@ public class DepartmentInformationController {
         return list;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:对数据进行排序
-     *@Date: 14:52 2018\6\15 0015
-     */
     @RequestMapping("/submitSortdata")
     @ResponseBody
     public DeptTree submitSortdata(
@@ -482,11 +416,7 @@ public class DepartmentInformationController {
         return newDepttree;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:同级排序
-     *@Date: 18:41 2018\6\15 0015
-     */
+    /*同级排序*/
     public DeptTree getNewDepttree(DeptTree deptTree,String title,List<TitleAndCode> list){
         for(int i = 0;i<deptTree.getChildren().size();i++){
             if(deptTree.getChildren().get(i).getTitle().equals(title)){
@@ -516,11 +446,7 @@ public class DepartmentInformationController {
         return null;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:人事的管理看板
-     *@Date: 14:16 2018\6\28 0028
-     */
+    //人事的管理看板
     @RequestMapping("/queryHRManageCard")
     @ResponseBody
     public Object queryHRManageCard(
@@ -540,11 +466,7 @@ public class DepartmentInformationController {
         return hrManageCard;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:获得总人数(edate时间点的在职总人数)
-     *@Date: 15:53 2018\8\15 0015
-     */
+    //获得总人数(edate时间点的在职总人数)
     @RequestMapping("/queryHRManageCard2")
     @ResponseBody
     public Object queryHRManageCard2(
@@ -580,11 +502,7 @@ public class DepartmentInformationController {
         return resp;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:获得入职总人数(edate时间点的入职总人数)
-     *@Date: 15:55 2018\8\15 0015
-     */
+    //获得入职总人数(edate时间点的入职总人数)
     @RequestMapping("/queryHRManageCard3")
     @ResponseBody
     public Object queryHRManageCard3(
@@ -620,11 +538,7 @@ public class DepartmentInformationController {
         return resp;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:获得离职总人数(edate时间点的离职总人数)
-     *@Date: 15:56 2018\8\15 0015
-     */
+    //获得离职总人数(edate时间点的离职总人数)
     @RequestMapping("/queryHRManageCard4")
     @ResponseBody
     public Object queryHRManageCard4(
@@ -660,11 +574,7 @@ public class DepartmentInformationController {
         return resp;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
-     *@Date: 15:57 2018\8\15 0015
-     */
+    //获得所在部门在职人数(edate时间点的在职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
     @RequestMapping("/queryHRManageCard5")
     @ResponseBody
     public Object queryHRManageCard5(
@@ -692,11 +602,7 @@ public class DepartmentInformationController {
         return resp;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
-     *@Date: 15:58 2018\8\15 0015
-     */
+    //获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
     @RequestMapping("/queryHRManageCard6")
     @ResponseBody
     public Object queryHRManageCard6(
@@ -724,11 +630,7 @@ public class DepartmentInformationController {
         return resp;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:获得所在部门离职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
-     *@Date: 15:59 2018\8\15 0015
-     */
+    //获得所在部门离职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
     @RequestMapping("/queryHRManageCard7")
     @ResponseBody
     public Object queryHRManageCard7(
@@ -756,11 +658,7 @@ public class DepartmentInformationController {
         return resp;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:IOS的通讯录数据
-     *@Date: 10:52 2018\6\29 0029
-     */
+    //IOS的通讯录数据
     @RequestMapping("/queryIOSData")
     @ResponseBody
     public HRManageCard queryIOSData(
@@ -770,11 +668,7 @@ public class DepartmentInformationController {
         return paramMap1;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:添加部门的时候校验部门名称
-     *@Date: 10:08 2018\7\16 0016
-     */
+    //添加部门的时候校验部门名称
     @RequestMapping("/validateDeptnameForAddDept")
     @ResponseBody
     public Boolean validateDeptnameForAddDept(
@@ -788,11 +682,7 @@ public class DepartmentInformationController {
         }
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:添加部门的时候校验部门编号
-     *@Date: 10:12 2018\7\16 0016
-     */
+    //添加部门的时候校验部门编号
     @RequestMapping("/validateDeptcodeForAddDept")
     @ResponseBody
     public Boolean validateDeptcodeForAddDept(
@@ -806,11 +696,7 @@ public class DepartmentInformationController {
         }
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据perid查询信息
-     *@Date: 17:36 2018\5\17 0017
-     */
+    //根据perid查询信息
     public  PersonalInformation getOnePersonalinformation(Integer personalInformationId) throws ParseException {
         PersonalInformation personalInformation = iPersonalInformationService.queryOneById2(personalInformationId);
         if(personalInformation==null){

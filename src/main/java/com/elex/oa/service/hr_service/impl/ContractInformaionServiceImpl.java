@@ -5,11 +5,10 @@ import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
-import com.elex.oa.entity.hr_entity.HRset;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.hr_service.IContractInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
-import com.elex.oa.util.hr_util.IDcodeUtil;
 import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
@@ -18,7 +17,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

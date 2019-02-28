@@ -1,7 +1,7 @@
 package com.elex.oa.service.objectives.impl;
 
 import com.elex.oa.dao.objectives.GoalDao;
-import com.elex.oa.entity.hr_entity.Dept;
+import com.elex.oa.entity.hr_entity.department.Dept;
 import com.elex.oa.entity.objectives.Goal;
 import com.elex.oa.entity.objectives.Goal2;
 import com.elex.oa.service.hr_service.IDeptService;

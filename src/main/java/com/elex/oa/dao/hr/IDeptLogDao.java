@@ -1,6 +1,6 @@
 package com.elex.oa.dao.hr;
 
-import com.elex.oa.entity.hr_entity.DeptLog;
+import com.elex.oa.entity.hr_entity.department.DeptLog;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

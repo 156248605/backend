@@ -6,7 +6,7 @@ import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.restructure_hr.IContractinfoDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
-import com.elex.oa.entity.hr_entity.HRset;
+import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.restructure_hrentity.Contractinfo;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.restructure_hrService.IContractinfoService;
@@ -14,7 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

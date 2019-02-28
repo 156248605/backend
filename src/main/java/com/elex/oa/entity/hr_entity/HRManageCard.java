@@ -1,5 +1,7 @@
 package com.elex.oa.entity.hr_entity;
 
+import com.elex.oa.entity.hr_entity.department.Dept;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;

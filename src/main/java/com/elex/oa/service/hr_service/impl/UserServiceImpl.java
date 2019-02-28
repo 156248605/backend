@@ -1,10 +1,9 @@
 package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.IUserDao;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

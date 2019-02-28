@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service;
 
-import com.elex.oa.entity.hr_entity.PostLog;
+import com.elex.oa.entity.hr_entity.post.PostLog;
 import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;

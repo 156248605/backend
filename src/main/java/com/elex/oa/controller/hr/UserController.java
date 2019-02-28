@@ -1,7 +1,7 @@
 package com.elex.oa.controller.hr;
 
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
-import com.elex.oa.entity.hr_entity.User;
+import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.hr_service.IDeptService;
 import com.elex.oa.service.hr_service.IPersonalInformationService;
 import com.elex.oa.service.hr_service.IUserService;

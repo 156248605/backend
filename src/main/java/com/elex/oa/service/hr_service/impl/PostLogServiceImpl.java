@@ -1,7 +1,7 @@
 package com.elex.oa.service.hr_service.impl;
 
 import com.elex.oa.dao.hr.IPostLogDao;
-import com.elex.oa.entity.hr_entity.PostLog;
+import com.elex.oa.entity.hr_entity.post.PostLog;
 import com.elex.oa.service.hr_service.IPostLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

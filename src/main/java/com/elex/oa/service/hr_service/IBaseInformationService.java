@@ -1,6 +1,6 @@
 package com.elex.oa.service.hr_service;
 
-import com.elex.oa.entity.hr_entity.BaseInformation;
+import com.elex.oa.entity.hr_entity.personalinformation.BaseInformation;
 
 /**
  * @Author:ShiYun;
