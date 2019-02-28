@@ -71,8 +71,7 @@ public class ClueController {
         String clueCode = hrUtils.getClueCode(username);
         clue.setCode(clueCode);
         //调用业务层方法
-        Boolean aBoolean = iClueService.addClueInfo(clue);
-        return true?RespUtil.successResp("200","添加成功！",clueCode):RespUtil.successResp("500","添加失败！",null);
+        return iClueService.addClueInfo(clue);
     }
 
     @RequestMapping("/getDetailClueinfo")

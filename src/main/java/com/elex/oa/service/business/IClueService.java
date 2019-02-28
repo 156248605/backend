@@ -6,7 +6,7 @@ import com.github.pagehelper.PageInfo;
 public interface IClueService {
     PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag);
 
-    Boolean addClueInfo(Clue clue);
+    Object addClueInfo(Clue clue);
 
     Clue getDetailClueinfo(String cluecode);
 

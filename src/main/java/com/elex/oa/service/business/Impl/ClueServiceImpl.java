@@ -9,6 +9,7 @@ import com.elex.oa.entity.business.Clue;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.service.business.IClueService;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -57,12 +58,23 @@ public class ClueServiceImpl implements IClueService {
     }
 
     @Override
-    public Boolean addClueInfo(Clue clue) {
+    public Object addClueInfo(Clue clue) {
+        if(StringUtils.isBlank(clue.getCluename())){
+            return RespUtil.successResp("500","内容不能为空",null);
+        }if(StringUtils.isBlank(clue.getTrackcontent())){
+            return RespUtil.successResp("500","进展不能为空",null);
+        }if(StringUtils.isBlank(clue.getSale_employeenumber()) || "undefined".equals(clue.getSale_employeenumber())){
+            return RespUtil.successResp("500","跟踪人不能为空",null);
+        }
         Boolean aBoolean = true;
         //步骤：1.跟踪-->2.线索-->3.附件
         //添加跟踪信息
         aBoolean = getaBooleanByAddTrackInfo(clue,aBoolean);
-        return aBoolean;
+        if(aBoolean){
+            return RespUtil.successResp("200","请求成功",clue.getCode());
+        }else {
+            return RespUtil.successResp("500","请求失败",null);
+        }
     }
 
     @Override

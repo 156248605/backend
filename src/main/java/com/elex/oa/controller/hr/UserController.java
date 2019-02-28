@@ -67,7 +67,7 @@ public class UserController {
     @RequestMapping("/user/queryEmployeenumberByUsername_ON")
     @ResponseBody
     public Object queryEmployeenumberByUsername_ON(
-            @RequestParam("usernmae")String username
+            @RequestParam("username")String username
     ){
         return iUserService.queryEmployeenumberByUsername_ON(username);
     }
