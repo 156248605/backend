@@ -34,25 +34,25 @@ public class OuDepServiceImpl implements IOuDepService {
     @Override
     public Object addOuDep(OuDep ouDep) {
         //先判断部门编号
-        if(StringUtils.isBlank(ouDep.getCode()))return RespUtil.successResp("500","部门编号不能为空",null);
+        if(StringUtils.isBlank(ouDep.getCode()))return RespUtil.response("500","部门编号不能为空",null);
         List<OuDep> allOuDepList = ouDepDao.selectAll();
         if(allOuDepList.size()>0){
             List<OuDep> ouDepListTemp = ouDepDao.select(new OuDep(ouDep.getCode()));
-            if(ouDepListTemp.size()!=0)return RespUtil.successResp("500","部门编号已存在",null);
+            if(ouDepListTemp.size()!=0)return RespUtil.response("500","部门编号已存在",null);
         }else {
             ouDep.setParentDepcode("top");//如果是首次添加部门则提前补充上级部门编号
         }
         //判断其它值
-        if(StringUtils.isBlank(ouDep.getName()))return RespUtil.successResp("500","部门名称不能为空",null);
-        if(null==ouDep.getFunctionalTypeid())return RespUtil.successResp("500","职能类型不能为空",null);
-        if(StringUtils.isBlank(ouDep.getParentDepcode()))return RespUtil.successResp("500","上级部门编号不能为空",null);
+        if(StringUtils.isBlank(ouDep.getName()))return RespUtil.response("500","部门名称不能为空",null);
+        if(null==ouDep.getFunctionalTypeid())return RespUtil.response("500","职能类型不能为空",null);
+        if(StringUtils.isBlank(ouDep.getParentDepcode()))return RespUtil.response("500","上级部门编号不能为空",null);
         OuDep parentOuDep = null;
         if (allOuDepList.size()>0) {
             List<OuDep> parentDepListTemp = ouDepDao.select(new OuDep(ouDep.getParentDepcode(),null,Commons.DEP_ON));
-            if(parentDepListTemp.size()==0)return RespUtil.successResp("500","上级部门编号所在的部门不存在",null);
+            if(parentDepListTemp.size()==0)return RespUtil.response("500","上级部门编号所在的部门不存在",null);
             parentOuDep = parentDepListTemp.get(0);
         }
-        if(null==ouDep.getDepTypeid())return RespUtil.successResp("500","部门类型不能为空",null);
+        if(null==ouDep.getDepTypeid())return RespUtil.response("500","部门类型不能为空",null);
         if(StringUtils.isBlank(ouDep.getOrder())){
             //如果排序号不存在则1.用部门编号代替;2.随机数;
             //1.总公司
@@ -61,17 +61,17 @@ public class OuDepServiceImpl implements IOuDepService {
             if(ouDep.getCode().indexOf("ELEX")==-1)ouDep.setOrder(ouDep.getCode());
         }
         //判断部门层级
-        if(StringUtils.isBlank(ouDep.getLevel()))return RespUtil.successResp("500","部门层级不能为空",null);
+        if(StringUtils.isBlank(ouDep.getLevel()))return RespUtil.response("500","部门层级不能为空",null);
         try {
             Integer curLevelNumber = Integer.parseInt(ouDep.getLevel());
             if(allOuDepList.size()>0){
                 //有上级部门则当前部门层级必须大于上级部门层级数字
                 Integer parentLevelNumber = Integer.parseInt(parentOuDep.getLevel());
-                if(curLevelNumber.intValue()<=parentLevelNumber.intValue())return RespUtil.successResp("500","当前部门层级必须大于上级部门层级",null);
+                if(curLevelNumber.intValue()<=parentLevelNumber.intValue())return RespUtil.response("500","当前部门层级必须大于上级部门层级",null);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","部门层级必须为数字类型",null);
+            return RespUtil.response("500","部门层级必须为数字类型",null);
         }
         //添加部门信息
         ouDep.setId("dep_"+System.currentTimeMillis());
@@ -91,7 +91,7 @@ public class OuDepServiceImpl implements IOuDepService {
             ouDepDao.insert(ouDep);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","添加部门信息失败",null);
+            return RespUtil.response("500","添加部门信息失败",null);
         }
         //刷新上级部门的子部门信息
         if(allOuDepList.size()>0){
@@ -108,30 +108,30 @@ public class OuDepServiceImpl implements IOuDepService {
             } catch (Exception e) {
                 e.printStackTrace();//需要回滚
                 ouDepDao.deleteByPrimaryKey(ouDep.getId());
-                return RespUtil.successResp("500","更新上级部门的子部门信息时失败导致添加部门失败",null);
+                return RespUtil.response("500","更新上级部门的子部门信息时失败导致添加部门失败",null);
             }
         }
-        return RespUtil.successResp("200","添加部门成功",null);
+        return RespUtil.response("200","添加部门成功",null);
     }
 
     @Override
     public Object listDepts() {
         OuDep topOuDep = ouDepDao.selectOne(new OuDep(null, "top",Commons.DEP_ON));
-        if(null==topOuDep)return RespUtil.successResp("500","没有顶级节点",null);
+        if(null==topOuDep)return RespUtil.response("500","没有顶级节点",null);
         Map<String, Object> treeData = new HashMap<>();
         treeData.put("title",topOuDep.getName());
         treeData.put("code",topOuDep.getCode());
         treeData.put("expand",true);
         treeData.put("order",topOuDep.getOrder());
         treeData = getTreeData(treeData);
-        return RespUtil.successResp("200","获取树结构数据成功",treeData);
+        return RespUtil.response("200","获取树结构数据成功",treeData);
     }
 
     @Override
     public Object queryOneDepByDepcode(String code) {
-        if(StringUtils.isBlank(code))return RespUtil.successResp("500","部门编号不能为空",null);
+        if(StringUtils.isBlank(code))return RespUtil.response("500","部门编号不能为空",null);
         OuDep ouDep = ouDepDao.selectOne(new OuDep(code,null,Commons.DEP_ON));
-        if(null==ouDep)return RespUtil.successResp("500","部门编号所在部门不存在或已经删除",code);
+        if(null==ouDep)return RespUtil.response("500","部门编号所在部门不存在或已经删除",code);
         //获得子部门名称
         if (null!=ouDep.getSubdepartments()) {
             String[] depcodeList = ouDep.getSubdepartments().split(";");
@@ -178,7 +178,7 @@ public class OuDepServiceImpl implements IOuDepService {
                 ouDep.setPostcodeList(postcodeList);
             }
         }
-        return RespUtil.successResp("200","查询成功",ouDep);
+        return RespUtil.response("200","查询成功",ouDep);
     }
 
     @Override
@@ -205,9 +205,9 @@ public class OuDepServiceImpl implements IOuDepService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","查询失败！",e.getStackTrace());
+            return RespUtil.response("500","查询失败！",e.getStackTrace());
         }
-        return RespUtil.successResp("200","查询成功！",respDepList);
+        return RespUtil.response("200","查询成功！",respDepList);
     }
 
     @Override
@@ -217,9 +217,9 @@ public class OuDepServiceImpl implements IOuDepService {
             ouDepList = ouDepDao.select(new OuDep(null, null, Commons.DEP_ON));
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","查询失败",e.getStackTrace());
+            return RespUtil.response("500","查询失败",e.getStackTrace());
         }
-        return RespUtil.successResp("200","查询成功",ouDepList);
+        return RespUtil.response("200","查询成功",ouDepList);
     }
 
     @Override
@@ -233,19 +233,19 @@ public class OuDepServiceImpl implements IOuDepService {
         }
         OuDep oldOuDep = ouDepDao.selectByPrimaryKey(ouDep.getId());
         //判断岗位编号
-        if(StringUtils.isBlank(ouDep.getCode()))return RespUtil.successResp("500","部门编号不能为空",null);
+        if(StringUtils.isBlank(ouDep.getCode()))return RespUtil.response("500","部门编号不能为空",null);
         if(!oldOuDep.getCode().equals(ouDep.getCode())){
             OuDep ouDepTemp = ouDepDao.selectOne(new OuDep(ouDep.getCode()));
-            if(null!=ouDepTemp)return RespUtil.successResp("500","部门编号已经存在",ouDep.getCode());
+            if(null!=ouDepTemp)return RespUtil.response("500","部门编号已经存在",ouDep.getCode());
         }
         //公司判断
-        if(StringUtils.isBlank(ouDep.getCompanyname()))return RespUtil.successResp("500","公司名称不能为空",ouDep.getCode());
+        if(StringUtils.isBlank(ouDep.getCompanyname()))return RespUtil.response("500","公司名称不能为空",ouDep.getCode());
         //部门类型
-        if(null==ouDep.getDepTypeid())return RespUtil.successResp("500","部门类型不能为空",ouDep.getCode());
+        if(null==ouDep.getDepTypeid())return RespUtil.response("500","部门类型不能为空",ouDep.getCode());
         //判断部门名称
-        if(StringUtils.isBlank(ouDep.getName()))return RespUtil.successResp("500","部门名称不能为空",ouDep.getCode());
+        if(StringUtils.isBlank(ouDep.getName()))return RespUtil.response("500","部门名称不能为空",ouDep.getCode());
         //判断上级部门
-        if(StringUtils.isBlank(ouDep.getParentDepcode()))return RespUtil.successResp("500","上级部门编号不能为空",ouDep.getCode());
+        if(StringUtils.isBlank(ouDep.getParentDepcode()))return RespUtil.response("500","上级部门编号不能为空",ouDep.getCode());
         //判断包含岗位
         String postnameListOfString = "";
 
@@ -266,7 +266,7 @@ public class OuDepServiceImpl implements IOuDepService {
             for (String postNameAndTruenmaes:ouDep.getPostListDetail()
                  ) {
                 if(postNameAndTruenmaes.indexOf(":")!=1 && postnameListOfString.indexOf(postNameAndTruenmaes.split(":")[0])==-1){
-                    return RespUtil.successResp("500",postNameAndTruenmaes.split(":")[0]+"有外部引用的岗位不能移除",postNameAndTruenmaes);
+                    return RespUtil.response("500",postNameAndTruenmaes.split(":")[0]+"有外部引用的岗位不能移除",postNameAndTruenmaes);
                 }
             }
         }
@@ -300,16 +300,16 @@ public class OuDepServiceImpl implements IOuDepService {
             ouDepDao.updateByPrimaryKeySelective(ouDep);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","修改失败",e.getStackTrace());
+            return RespUtil.response("500","修改失败",e.getStackTrace());
         }
-        return RespUtil.successResp("200","修改成功",ouDep);
+        return RespUtil.response("200","修改成功",ouDep);
     }
 
     @Override
     public Object removeDeptsByDepcode(String depcode) {
-        if(StringUtils.isBlank(depcode))return RespUtil.successResp("500","选择的部门编号不能为空",depcode);
+        if(StringUtils.isBlank(depcode))return RespUtil.response("500","选择的部门编号不能为空",depcode);
         OuDep parentOuDep = ouDepDao.selectOne(new OuDep(depcode, null, Commons.DEP_ON));
-        if(null==parentOuDep)return RespUtil.successResp("500","选择的部门编号不存在",depcode);
+        if(null==parentOuDep)return RespUtil.response("500","选择的部门编号不存在",depcode);
         //获得子部门
         List<OuDep> depList = new ArrayList<>();
         depList.add(parentOuDep);
@@ -319,7 +319,7 @@ public class OuDepServiceImpl implements IOuDepService {
              ) {
             String posts = ouDep.getPosts();
             if(posts.indexOf(":")!=-1){
-                return RespUtil.successResp("500","要删除的部门有外部引用",ouDep);
+                return RespUtil.response("500","要删除的部门有外部引用",ouDep);
             }
         }
         //遍历删除部门
@@ -330,7 +330,7 @@ public class OuDepServiceImpl implements IOuDepService {
                 ouDepDao.updateByPrimaryKeySelective(ouDep);
             } catch (Exception e) {
                 e.printStackTrace();
-                return RespUtil.successResp("500","删除失败",e.getStackTrace());
+                return RespUtil.response("500","删除失败",e.getStackTrace());
             }
         }
         //删除完之后上级部门的子部门信息需要改变
@@ -349,19 +349,19 @@ public class OuDepServiceImpl implements IOuDepService {
             ouDepDao.updateByPrimaryKeySelective(parentOuDep);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","更新上级部门的子部门信息失败",e.getStackTrace());
+            return RespUtil.response("500","更新上级部门的子部门信息失败",e.getStackTrace());
         }
-        return RespUtil.successResp("200","删除成功",depcode);
+        return RespUtil.response("200","删除成功",depcode);
     }
 
     @Override
     public Object querySortdataByParentDepcode(String parentDepcode) {
-        if(StringUtils.isBlank(parentDepcode))return RespUtil.successResp("500","上级部门不能为空",null);
+        if(StringUtils.isBlank(parentDepcode))return RespUtil.response("500","上级部门不能为空",null);
         OuDep parentOuDep = ouDepDao.selectOne(new OuDep(parentDepcode, null, Commons.DEP_ON));
-        if(null==parentOuDep)return RespUtil.successResp("500","上级部门查不到",parentDepcode);
+        if(null==parentOuDep)return RespUtil.response("500","上级部门查不到",parentDepcode);
         List<OuDep> subDepList = ouDepDao.select(new OuDep(null, parentDepcode, Commons.DEP_ON));
-        if(null==subDepList || subDepList.size()==0)return RespUtil.successResp("500","没有需要排序的子部门",parentDepcode);
-        if(subDepList.size()==1)return RespUtil.successResp("500","同级部门只有一个，不需要排序",parentDepcode);
+        if(null==subDepList || subDepList.size()==0)return RespUtil.response("500","没有需要排序的子部门",parentDepcode);
+        if(subDepList.size()==1)return RespUtil.response("500","同级部门只有一个，不需要排序",parentDepcode);
         List<Map<String,Object>> respList = new ArrayList<>();
         for (OuDep ouDep:subDepList
              ) {
@@ -371,13 +371,13 @@ public class OuDepServiceImpl implements IOuDepService {
             depObj.put("depOrder",ouDep.getOrder());
             respList.add(depObj);
         }
-        return RespUtil.successResp("200","请求成功",respList);
+        return RespUtil.response("200","请求成功",respList);
     }
 
     @Override
     public Object submitSortdata(List<Map> sortData) {
-        if(null==sortData || sortData.size()==0)return RespUtil.successResp("500","没有需要更新的排序信息",null);
-        if(sortData.size()==1)return RespUtil.successResp("500","需要更新的排序信息只有一条",sortData);
+        if(null==sortData || sortData.size()==0)return RespUtil.response("500","没有需要更新的排序信息",null);
+        if(sortData.size()==1)return RespUtil.response("500","需要更新的排序信息只有一条",sortData);
         for (Map map:sortData
              ) {
             Example example = new Example(OuDep.class);
@@ -389,10 +389,10 @@ public class OuDepServiceImpl implements IOuDepService {
                 ouDepDao.updateByExampleSelective(ouDep,example);
             } catch (Exception e) {
                 e.printStackTrace();
-                return RespUtil.successResp("500","排序码更新失败",e.getStackTrace());
+                return RespUtil.response("500","排序码更新失败",e.getStackTrace());
             }
         }
-        return RespUtil.successResp("200","提交成功",null);
+        return RespUtil.response("200","提交成功",null);
     }
 
 

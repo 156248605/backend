@@ -145,7 +145,7 @@ public class ContractInformationController {
         contractInformation.setTransdate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         //将合同添加到数据库中
         Integer contractInformaionId = iContractInformationService.addOne(contractInformation);
-        return null == contractInformaionId ? RespUtil.successResp("500", "添加失败！", null) : RespUtil.successResp("200", "添加成功！", contractInformaionId);
+        return null == contractInformaionId ? RespUtil.response("500", "添加失败！", null) : RespUtil.response("200", "添加成功！", contractInformaionId);
     }
 
     @RequestMapping("/updateContractInformation")

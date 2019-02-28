@@ -54,7 +54,7 @@ public class DepartmentInfoController {
             @RequestParam("transactorusername") String transactorusername
     ){
         Boolean aBoolean = iDepinfoService.addOneDepartment(depinfo, transactorusername);
-        return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
+        return aBoolean? RespUtil.response("200","添加成功！",null):RespUtil.response("500","添加失败！",null);
     }
 
     @RequestMapping("/queryDepartments")
@@ -79,7 +79,7 @@ public class DepartmentInfoController {
             @RequestParam("oldDepcode") String oldDepcode
     ){
         Boolean aBoolean = iDepinfoService.updateOneDepartment(depinfo, transactorusername,oldDepcode);
-        return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
+        return aBoolean? RespUtil.response("200","添加成功！",null):RespUtil.response("500","添加失败！",null);
     }
 
     @RequestMapping("/sortDepinformation")
@@ -106,7 +106,7 @@ public class DepartmentInfoController {
             @RequestParam("depcode") String depcode
     ){
         Boolean aBoolean = iDepinfoService.deleteDeptsByDepcode(depcode);
-        return aBoolean? RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",null);
+        return aBoolean? RespUtil.response("200","删除成功！",null):RespUtil.response("500","删除失败！",null);
     }
 
     @RequestMapping("/queryDeptLogInformations")
@@ -131,7 +131,7 @@ public class DepartmentInfoController {
             @RequestParam("deplogids")List<String> deplogids
     ){
         Map<String, String> respMap = iDeploginfoService.removeDeplogByIds(deplogids);
-        return null==respMap?RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",respMap);
+        return null==respMap?RespUtil.response("200","删除成功！",null):RespUtil.response("500","删除失败！",respMap);
     }
 
     @RequestMapping("/importDeploginformations")
@@ -140,6 +140,6 @@ public class DepartmentInfoController {
             @RequestParam("file") MultipartFile multipartFile
     ){
         Map<String, String> respMap = iDeploginfoService.importDeploginformations(multipartFile);
-        return respMap.size()==0?RespUtil.successResp("200","导入成功！",null):RespUtil.successResp("500","导入失败！",respMap);
+        return respMap.size()==0?RespUtil.response("200","导入成功！",null):RespUtil.response("500","导入失败！",respMap);
     }
 }    

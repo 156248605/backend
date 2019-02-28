@@ -56,19 +56,19 @@ public class PostRelationshipServiceImpl implements IPostRelationshipService {
 
     @Override
     public Object removeById(List<Integer> postrp_ids) {
-        if(null==postrp_ids || postrp_ids.size()==0)return RespUtil.successResp("400","没有要删除的选项",null);
+        if(null==postrp_ids || postrp_ids.size()==0)return RespUtil.response("400","没有要删除的选项",null);
         for (Integer id:postrp_ids
         ) {
             PostRelationship postRelationship = iPostRelationshipDao.selectOneById(id);
-            if (null==postRelationship)return RespUtil.successResp("500","服务器忙，请稍后再试",id);
+            if (null==postRelationship)return RespUtil.response("500","服务器忙，请稍后再试",id);
             try {
                 iPostRelationshipDao.deleteById(id);
             } catch (Exception e) {
                 e.printStackTrace();
-                return RespUtil.successResp("500","服务器忙，请稍后再试",null);
+                return RespUtil.response("500","服务器忙，请稍后再试",null);
             }
         }
-        return RespUtil.successResp("200","删除成功！",null);
+        return RespUtil.response("200","删除成功！",null);
     }
 
     private String getHRsetValue(Integer id,PostRelationship p){

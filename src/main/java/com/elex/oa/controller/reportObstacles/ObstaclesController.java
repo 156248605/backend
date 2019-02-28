@@ -61,7 +61,7 @@ public class ObstaclesController {
             obstaclesInfo.setAttachmentList(businessAttachmentList);
         }
         Boolean aBoolean = iObstaclesInfoService.addObstaclesInfo(obstaclesInfo);
-        return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
+        return aBoolean? RespUtil.response("200","添加成功！",null):RespUtil.response("500","添加失败！",null);
     }
 
     @RequestMapping("/queryOaBackendVersion")

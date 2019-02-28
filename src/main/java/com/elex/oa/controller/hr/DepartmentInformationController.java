@@ -220,7 +220,7 @@ public class DepartmentInformationController {
             @RequestParam("transactorusername") String transactorusername
     ) {
         Map<String, String> respMap = iDeptService.updateOneDepartment(dept, transactorusername);
-        return respMap.size()==0?RespUtil.successResp("200","修改成功！",null):RespUtil.successResp("500","修改失败！", JSON.toJSONString(respMap));
+        return respMap.size()==0?RespUtil.response("200","修改成功！",null):RespUtil.response("500","修改失败！", JSON.toJSONString(respMap));
     }
 
     @RequestMapping("/deleteDeptsById")

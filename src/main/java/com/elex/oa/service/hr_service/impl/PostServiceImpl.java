@@ -129,23 +129,23 @@ public class PostServiceImpl implements IPostService {
     @Override
     public Object addOnePost(Post post) {
         if(null==post){
-            return RespUtil.successResp("500","提交信息不能为空！",null);
+            return RespUtil.response("500","提交信息不能为空！",null);
         }
         if(StringUtils.isBlank(post.getPostcode())){
-            return RespUtil.successResp("500","岗位编号不能为空！",null);
+            return RespUtil.response("500","岗位编号不能为空！",null);
         }
         if(StringUtils.isBlank(post.getPostname())){
-            return RespUtil.successResp("500","岗位名称不能为空！",null);
+            return RespUtil.response("500","岗位名称不能为空！",null);
         }
         //先校验岗位编号
         Post postTemp = iPostDao.selectPostByPostcode(post.getPostcode());
         if(null!=postTemp){
-            return RespUtil.successResp("500","岗位编号已经存在！",null);
+            return RespUtil.response("500","岗位编号已经存在！",null);
         }
         //再添加岗位信息
         post.setOrdercode(Integer.parseInt(post.getPostcode()));//默认排序码为岗位编号
         iPostDao.insertOne(post);
-        return RespUtil.successResp("200","添加成功！",post);
+        return RespUtil.response("200","添加成功！",post);
     }
 
     /**
@@ -174,7 +174,7 @@ public class PostServiceImpl implements IPostService {
     @Override
     public Object deletePostsById(Integer id) {
         if(null==id || null == iPostDao.selectPostByPostid(id)){
-            return RespUtil.successResp("500","岗位ID为空或不存在！",false) ;
+            return RespUtil.response("500","岗位ID为空或不存在！",false) ;
         }
         //获得需要删除的ID
         List<Integer> postList = new ArrayList<>();
@@ -185,7 +185,7 @@ public class PostServiceImpl implements IPostService {
              ) {
             iPostDao.deleteByChangeStatePOST_OFF(postid);
         }
-        return RespUtil.successResp("200","删除成功！",true) ;
+        return RespUtil.response("200","删除成功！",true) ;
     }
 
     /**
@@ -239,20 +239,20 @@ public class PostServiceImpl implements IPostService {
      */
     @Override
     public Object queryPostnameByUsername(String username) {
-        if(StringUtils.isBlank(username))return RespUtil.successResp("500","登录名为空",null);
+        if(StringUtils.isBlank(username))return RespUtil.response("500","登录名为空",null);
         User user = iUserDao.selectByUsername(username);
-        if(user==null)return RespUtil.successResp("500","登录名不存在",null);
+        if(user==null)return RespUtil.response("500","登录名不存在",null);
         PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
-        if(personalInformation==null)return RespUtil.successResp("500","登录名的岗位信息不存在",null);
+        if(personalInformation==null)return RespUtil.response("500","登录名的岗位信息不存在",null);
         List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectPostidsByPerid(personalInformation.getId());
-        if(perAndPostRs==null ||perAndPostRs.size()==0)return RespUtil.successResp("500","登录名的岗位信息不存在",null);
+        if(perAndPostRs==null ||perAndPostRs.size()==0)return RespUtil.response("500","登录名的岗位信息不存在",null);
         List<String> strs = new ArrayList<>();
         for (PerAndPostRs p :perAndPostRs
                 ) {
             strs.add(iPostDao.selectPostByPostid(p.getPostid()).getPostname());
         }
         String postnames = hrUtils.getArrayToString(strs, ";");
-        return RespUtil.successResp("200","提交成功！",postnames);
+        return RespUtil.response("200","提交成功！",postnames);
     }
 
     @Override
@@ -268,20 +268,20 @@ public class PostServiceImpl implements IPostService {
             //岗位编号存在
             if(!newPost.getPostcode().equals(oldPost.getPostcode())){
                 //新旧岗位编号不一样则修改失败
-                return RespUtil.successResp("500","岗位编号已经存在！",null);
+                return RespUtil.response("500","岗位编号已经存在！",null);
             }
         }else if(null == isExist){
             //编号为空不合规定
-            return RespUtil.successResp("500","岗位编号不能为空！",null);
+            return RespUtil.response("500","岗位编号不能为空！",null);
         }
         //判断新旧两个对象并添加岗位日志信息
         Boolean isUpdate = getaBooleanByOldpostAndNewpost(oldPost, newPost, transactorusername);
         //修改岗位信息
         if(isUpdate){
             iPostDao.updateOne(newPost);
-            return RespUtil.successResp("200","修改成功！",newPost);
+            return RespUtil.response("200","修改成功！",newPost);
         }
-        return RespUtil.successResp("500","没有需要修改的信息（空值会被忽略）！",null);
+        return RespUtil.response("500","没有需要修改的信息（空值会被忽略）！",null);
     }
 
     @Override

@@ -122,7 +122,7 @@ public class HRset_OldController {
     ){
         Map<Integer, String> map = ihRsetService.removeMultiple(ids);
         Boolean aBoolean = map.size()==0?true:false;
-        return aBoolean? RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！", JSONObject.toJSONString(map));
+        return aBoolean? RespUtil.response("200","删除成功！",null):RespUtil.response("500","删除失败！", JSONObject.toJSONString(map));
     }
 
     /**
@@ -159,7 +159,7 @@ public class HRset_OldController {
     @ResponseBody
     public Object updateDatacode(){
         Boolean aBoolean = ihRsetService.updateDatacode();
-        return aBoolean?RespUtil.successResp("200","更新成功！",null):RespUtil.successResp("500","更新失败！",null);
+        return aBoolean?RespUtil.response("200","更新成功！",null):RespUtil.response("500","更新失败！",null);
     }
 
     @RequestMapping("/oldHrset/supplyDatacode")

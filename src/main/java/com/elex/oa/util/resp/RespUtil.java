@@ -3,7 +3,7 @@ package com.elex.oa.util.resp;
 
 public class RespUtil {
 	
-	public static <T> Resp<T> successResp(String code,String msg,T t)
+	public static <T> Resp<T> response(String code,String msg,T t)
 	{
 		Resp<T> resp = new Resp<T>();
 		Head head = new Head();

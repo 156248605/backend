@@ -58,7 +58,7 @@ public class OpportunityController {
         opportunity.setCode(opportunityCode);
         //调用业务层方法
         Boolean aBoolean = iOpportunityService.transforClueToOpportunity(opportunity);
-        return aBoolean? RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
+        return aBoolean? RespUtil.response("200","添加成功！",null):RespUtil.response("500","添加失败！",null);
     }
 
     @RequestMapping("/getPageInfo")
@@ -94,7 +94,7 @@ public class OpportunityController {
             opportunity.setBusinessAttachmentList(businessAttachmentList);
         }
         Boolean aBoolean = iOpportunityService.modifyOpportunityInfo(opportunity);
-        return aBoolean?RespUtil.successResp("200","更新成功！",opportunity.getCode()):RespUtil.successResp("500","更新失败！",null);
+        return aBoolean?RespUtil.response("200","更新成功！",opportunity.getCode()):RespUtil.response("500","更新失败！",null);
     }
 
     @RequestMapping("/closeOpportunityinfo")
@@ -103,7 +103,7 @@ public class OpportunityController {
             @RequestParam("opportunitycode")String opportunitycode
     ){
         Boolean aBoolean = iOpportunityService.closeOpportunityInfo(opportunitycode);
-        return aBoolean?RespUtil.successResp("200","关闭成功！",null):RespUtil.successResp("500","关闭失败！",null);
+        return aBoolean?RespUtil.response("200","关闭成功！",null):RespUtil.response("500","关闭失败！",null);
     }
 
     @RequestMapping("/getBusinessInfoByState_OFF")

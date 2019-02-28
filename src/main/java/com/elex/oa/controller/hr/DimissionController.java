@@ -88,7 +88,7 @@ public class DimissionController {
         re.put("truename",user.getTruename());
         re.put("state",user.getState());
         re.put("postids",postids);
-        return RespUtil.successResp("200","添加成功！",re);
+        return RespUtil.response("200","添加成功！",re);
     }
 
     /**
@@ -185,7 +185,7 @@ public class DimissionController {
             iGzrzDao.updateOS_USERWenDeleteDimission(username);
             iGzrzDao.updateOS_USERWenDeleteDimission2(username);
         }
-        return RespUtil.successResp("200","提交成功！",null) ;
+        return RespUtil.response("200","提交成功！",null) ;
     }
 
     /**

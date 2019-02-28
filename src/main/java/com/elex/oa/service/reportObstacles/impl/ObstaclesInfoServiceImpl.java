@@ -89,9 +89,9 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
     @Override
     public Object changeObstaclesState(String id, String flag, String location_description, String process_description) {
         //过滤条件
-        if(StringUtils.isBlank(id) || StringUtils.isBlank(flag))return RespUtil.successResp("500","修改失败！","id,flag都不能为空");
+        if(StringUtils.isBlank(id) || StringUtils.isBlank(flag))return RespUtil.response("500","修改失败！","id,flag都不能为空");
         ObstaclesInfo obstaclesInfo = iObstaclesInfoDao.selectByPrimaryKey(id);
-        if(null==obstaclesInfo)return RespUtil.successResp("500","修改失败！","id所在报障不存在！");
+        if(null==obstaclesInfo)return RespUtil.response("500","修改失败！","id所在报障不存在！");
         //修改状态
         if(flag.equals(ReportObstaclesCommons.OBSTACLES_FIND)){
             obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_FIND);
@@ -100,15 +100,15 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
             obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_OFF);
             obstaclesInfo.setProcessDescription(process_description);
         }else {
-            return RespUtil.successResp("500","修改失败！","flag报障状态错误！");
+            return RespUtil.response("500","修改失败！","flag报障状态错误！");
         }
         try {
             iObstaclesInfoDao.updateByPrimaryKeySelective(obstaclesInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","修改失败！","报障状态修改失败！");
+            return RespUtil.response("500","修改失败！","报障状态修改失败！");
         }
-        return RespUtil.successResp("200","修改成功！",null);
+        return RespUtil.response("200","修改成功！",null);
     }
 
 

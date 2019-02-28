@@ -105,7 +105,7 @@ public class ClueController {
             clue.setBusinessAttachmentList(businessAttachmentList);
         }
         Boolean aBoolean = iClueService.modifyClueInfo(clue);
-        return aBoolean?RespUtil.successResp("200","更新成功！",clue.getCode()):RespUtil.successResp("500","更新失败！",null);
+        return aBoolean?RespUtil.response("200","更新成功！",clue.getCode()):RespUtil.response("500","更新失败！",null);
     }
 
     @RequestMapping("/closeClueinfo")
@@ -114,7 +114,7 @@ public class ClueController {
             @RequestParam("cluecode")String cluecode
     ){
         Boolean aBoolean = iClueService.closeClueInfo(cluecode);
-        return aBoolean?RespUtil.successResp("200","关闭成功！",null):RespUtil.successResp("500","关闭失败！",null);
+        return aBoolean?RespUtil.response("200","关闭成功！",null):RespUtil.response("500","关闭失败！",null);
     }
 
     private List<BusinessAttachment> getBusinessAttachmentList(MultipartHttpServletRequest request, int i) {

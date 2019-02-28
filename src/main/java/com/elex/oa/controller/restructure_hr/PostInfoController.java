@@ -63,7 +63,7 @@ public class PostInfoController {
             @RequestParam("postcode")String postcode
     ){
         Boolean aBoolean = iPostinfoService.validateByPostcode(postcode);
-        return aBoolean? RespUtil.successResp("200","岗位编号已存在！",null):RespUtil.successResp("500","岗位编号不存在",null);
+        return aBoolean? RespUtil.response("200","岗位编号已存在！",null):RespUtil.response("500","岗位编号不存在",null);
     }
 
     @RequestMapping("/addOnePost")
@@ -77,7 +77,7 @@ public class PostInfoController {
         postinfo.setDutyfile(dutyfile);
         //调用服务层
         Boolean aBoolean = iPostinfoService.addOnePost(postinfo);
-        return aBoolean?RespUtil.successResp("200","添加成功！",null):RespUtil.successResp("500","添加失败！",null);
+        return aBoolean?RespUtil.response("200","添加成功！",null):RespUtil.response("500","添加失败！",null);
     }
 
     @RequestMapping("/queryPostsRemoveChilren")
@@ -98,7 +98,7 @@ public class PostInfoController {
         String dutyfile = hrUtils.getSignalFileAddress(request, "df", "/org/file/");
         postinfo.setDutyfile(dutyfile);
         Boolean aBoolean = iPostinfoService.updateOnePost(postinfo,transactorusername);
-        return aBoolean?RespUtil.successResp("200","修改成功！",null):RespUtil.successResp("500","修改失败！",null);
+        return aBoolean?RespUtil.response("200","修改成功！",null):RespUtil.response("500","修改失败！",null);
     }
 
     @RequestMapping("/deletePostsByPostcode")
@@ -107,7 +107,7 @@ public class PostInfoController {
             @RequestParam("postcode")String postcode
     ){
         Boolean aBoolean = iPostinfoService.deletePostsByPostcode(postcode);
-        return aBoolean?RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",null);
+        return aBoolean?RespUtil.response("200","删除成功！",null):RespUtil.response("500","删除失败！",null);
     }
 
     @RequestMapping("/sortPostinformation")
@@ -151,7 +151,7 @@ public class PostInfoController {
             @RequestParam("postlogids")List<String> postlogids
     ){
         Map<String, String> respMap = iPostloginfoService.removePostlogByIds(postlogids);
-        return null==respMap?RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",respMap);
+        return null==respMap?RespUtil.response("200","删除成功！",null):RespUtil.response("500","删除失败！",respMap);
     }
 
     @RequestMapping("/importPostloginformations")
@@ -160,6 +160,6 @@ public class PostInfoController {
             @RequestParam("file")MultipartFile multipartFile
             ){
         Map<String, String> respMap = iPostloginfoService.importPostloginformations(multipartFile);
-        return respMap.size()==0?RespUtil.successResp("200","导入成功！",null):RespUtil.successResp("500","导入失败！",respMap);
+        return respMap.size()==0?RespUtil.response("200","导入成功！",null):RespUtil.response("500","导入失败！",respMap);
     }
 }

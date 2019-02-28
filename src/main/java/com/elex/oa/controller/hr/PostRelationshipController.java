@@ -68,6 +68,6 @@ public class PostRelationshipController {
             @RequestParam(value = "postrpids") List<String> ids
     ){
         Boolean aBoolean = iPostlevelrelationshipinfoService.removeByIds(ids);
-        return aBoolean? RespUtil.successResp("200","删除成功！",null):RespUtil.successResp("500","删除失败！",null);
+        return aBoolean? RespUtil.response("200","删除成功！",null):RespUtil.response("500","删除失败！",null);
     }
 }

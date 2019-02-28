@@ -164,7 +164,7 @@ public class PersonalInformationController {
             HttpServletRequest request
     ) {
         Map<String, Object> respMap = iPersonalInformationService.addBaseInformation(personalInformation, request, lysqdid);
-        return null!=respMap.get("userid")?RespUtil.successResp("200", "添加成功！", respMap.get("userid")):RespUtil.successResp("500","添加失败！",JSON.toJSONString(respMap));
+        return null!=respMap.get("userid")?RespUtil.response("200", "添加成功！", respMap.get("userid")):RespUtil.response("500","添加失败！",JSON.toJSONString(respMap));
     }
 
     @RequestMapping("/addManageInformation")
@@ -173,7 +173,7 @@ public class PersonalInformationController {
             ManageInformationAddInfo manageInformationAddInfo
     ){
         Map<String, Object> map = iPersonalInformationService.addManageInformation(manageInformationAddInfo);
-        return null==map?RespUtil.successResp("500","添加失败！",null):RespUtil.successResp("200","添加成功！",null);
+        return null==map?RespUtil.response("500","添加失败！",null):RespUtil.response("200","添加成功！",null);
     }
 
     @RequestMapping("/addCostInformation")
@@ -195,7 +195,7 @@ public class PersonalInformationController {
             PersonalInformation personalInformation
     ) {
         Map<String, Object> map = iPersonalInformationService.addOtherInformation(personalInformation);
-        return null!=map?RespUtil.successResp("200", "添加其他信息成功！", map):RespUtil.successResp("500","信息添加失败！",null);
+        return null!=map?RespUtil.response("200", "添加其他信息成功！", map):RespUtil.response("500","信息添加失败！",null);
     }
 
     /**
@@ -224,7 +224,7 @@ public class PersonalInformationController {
         if(StringUtils.isNotBlank(zyzsnamevalue) && byyxvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"zyzsname",personalInformation.getByyx());
         if(StringUtils.isNotBlank(parentcompanyvalue) && byyxvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"parentcompany",personalInformation.getByyx());
         Map<String, Object> map = iPersonalInformationService.updateBaseInformation(personalInformation, transactorusername);
-        return RespUtil.successResp("200", "信息提交成功！", map.get("postids"));
+        return RespUtil.response("200", "信息提交成功！", map.get("postids"));
     }
 
     /**
@@ -239,7 +239,7 @@ public class PersonalInformationController {
             @RequestParam("transactorusername") String transactorusername
     ) {
         Map<String, Object> map = iPersonalInformationService.updateManageInformation(personalInformation, transactorusername);
-        return null!=map?RespUtil.successResp("200", "提交信息成功！", map):RespUtil.successResp("500","修改失败(没有需要修改的信息)！",null);
+        return null!=map?RespUtil.response("200", "提交信息成功！", map):RespUtil.response("500","修改失败(没有需要修改的信息)！",null);
     }
 
     /**
@@ -274,7 +274,7 @@ public class PersonalInformationController {
             @RequestParam("transactorusername") String transactorusername
     ) {
         Map<String, Object> map = iPersonalInformationService.updateOtherInformation(personalInformation, transactorusername);
-        return map!=null?RespUtil.successResp("200", "提交成功！", map):RespUtil.successResp("500","提交失败！",null);
+        return map!=null?RespUtil.response("200", "提交成功！", map):RespUtil.response("500","提交失败！",null);
     }
 
     /**
@@ -299,7 +299,7 @@ public class PersonalInformationController {
     @ResponseBody
     public Object queryPersonalInformationsByNull() {
         List<PersonalInformationExchange> respList = iPersonalInformationService.queryPersonalInformationsByNull();
-        return null!=respList?RespUtil.successResp("200","请求成功！",respList):RespUtil.successResp("500","请求失败！",null);
+        return null!=respList?RespUtil.response("200","请求成功！",respList):RespUtil.response("500","请求失败！",null);
     }
 
     /**
@@ -313,7 +313,7 @@ public class PersonalInformationController {
             @RequestParam("file") MultipartFile multipartFile
     ) {
         Map<String, String> map = iPersonalInformationService.importPersonalInformations(multipartFile);
-        return map.size()==0?RespUtil.successResp("200", "请求成功", null):RespUtil.successResp("500","导入部分失败！",JSON.toJSONString(map));
+        return map.size()==0?RespUtil.response("200", "请求成功", null):RespUtil.response("500","导入部分失败！",JSON.toJSONString(map));
     }
 
     /**
@@ -456,7 +456,7 @@ public class PersonalInformationController {
             @RequestParam("username") String username
     ) {
         PersonalInformation personalInformation = iPersonalInformationService.queryOneByUsername(username);
-        return null==personalInformation?RespUtil.successResp("500", "没有查到此用户信息", null):RespUtil.successResp("200", "查询成功！", personalInformation);
+        return null==personalInformation?RespUtil.response("500", "没有查到此用户信息", null):RespUtil.response("200", "查询成功！", personalInformation);
     }
 
     /**
@@ -470,7 +470,7 @@ public class PersonalInformationController {
             @RequestParam("postname") String postname
     ) {
         List<User> userList = iUserService.getUserListByPostname(postname);
-        return RespUtil.successResp("200", "请求成功！", userList);
+        return RespUtil.response("200", "请求成功！", userList);
     }
 
     /**
@@ -490,10 +490,10 @@ public class PersonalInformationController {
             Date date = simpleDateFormat.parse(year + "/" + month + "/01 00:00:00");
             o = iGzrzService.queryGzrzByTime(date);
         } catch (ParseException e) {
-            logger.error("==================================格式转换出错(1306)！==============================");
-            return RespUtil.successResp("500", "响应失败！", o);
+            logger.error("==================================格式转换出错(493)！==============================");
+            return RespUtil.response("500", "响应失败！", o);
         }
-        return RespUtil.successResp("200", "响应成功！", o);
+        return RespUtil.response("200", "响应成功！", o);
     }
 
     /**
@@ -515,7 +515,7 @@ public class PersonalInformationController {
         } catch (ParseException e) {
             System.out.println("格式转换出错！");
         }
-        return RespUtil.successResp("205", "相应成功！", o);
+        return RespUtil.response("205", "相应成功！", o);
     }
 
     /**
@@ -542,7 +542,7 @@ public class PersonalInformationController {
             @RequestParam("idcode")String idcode
     ){
         Map<String, Object> respMap = iPersonalInformationService.queryIdcodeInfoByAnalyzeIdcode(idcode);
-        return null==respMap?RespUtil.successResp("500","身份证解析失败！",null):RespUtil.successResp("200","身份证解析成功！",respMap);
+        return null==respMap?RespUtil.response("500","身份证解析失败！",null):RespUtil.response("200","身份证解析成功！",respMap);
     }
 
     @RequestMapping("/queryWorkingageincompanyByEntryDate")
@@ -552,11 +552,11 @@ public class PersonalInformationController {
     ){
         Long entryDateMillis = hrUtils.getTimeMillisByDateString(entrydate);
         if(null==entryDateMillis){
-            return RespUtil.successResp("500","时间格式不对",null);
+            return RespUtil.response("500","时间格式不对",null);
         }
         if(entryDateMillis>System.currentTimeMillis()){
-            return RespUtil.successResp("500","入职时间不能超过当前时间",null);
+            return RespUtil.response("500","入职时间不能超过当前时间",null);
         }
-        return RespUtil.successResp("200","司龄计算成功！",hrUtils.getWorkingageByFirstworkingtime(entrydate));
+        return RespUtil.response("200","司龄计算成功！",hrUtils.getWorkingageByFirstworkingtime(entrydate));
     }
 }

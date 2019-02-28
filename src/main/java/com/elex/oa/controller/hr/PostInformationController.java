@@ -374,7 +374,7 @@ public class PostInformationController {
             @RequestParam("postcode")String postcode
     ){
         Boolean aBoolean = iPostService.validateByPostcode(postcode);
-        return aBoolean? RespUtil.successResp("200","岗位编号已存在！",null):RespUtil.successResp("500","岗位编号不存在",null);
+        return aBoolean? RespUtil.response("200","岗位编号已存在！",null):RespUtil.response("500","岗位编号不存在",null);
     }
 
     @RequestMapping("/getRecommendedPostcode")

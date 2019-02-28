@@ -228,17 +228,17 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
     @Override
     public Object modifyOne(DimissionInformation dimissionInformation) {
         if(dimissionInformation==null){
-            return RespUtil.successResp("500","参数不能为空！",null);
+            return RespUtil.response("500","参数不能为空！",null);
         }
         Boolean b = false;//判断是否需要进数据库修改数据
         dimissionInformation.setTransactoruserid(hrUtils.getUseridByUsername(dimissionInformation.getTransactorusername()));
         //先根据ID获取原数据
         DimissionInformation selectOneById = iDimissionInformationDao.selectOneById(dimissionInformation.getId());
         if(dimissionInformation.getId()==null || selectOneById==null){
-            return RespUtil.successResp("500","离职ID为null或找不到！",null);
+            return RespUtil.response("500","离职ID为null或找不到！",null);
         }
         if(dimissionInformation.getTransactoruserid()==null ){
-            return RespUtil.successResp("500","获取登录ID失败！",null);
+            return RespUtil.response("500","获取登录ID失败！",null);
         }
         //判断处理人是否有变
         if(dimissionInformation.getTransactoruserid().compareTo(selectOneById.getTransactoruserid())!=0){
@@ -256,9 +256,9 @@ public class DimissionInformationServiceImpl extends BaseServiceImpl<DimissionIn
         if(StringUtils.isNotEmpty(dimissionInformation.getTransactiondate()) && !dimissionInformation.getTransactiondate().equals(selectOneById.getTransactiondate()))b=true;
         if (b) {
             iDimissionInformationDao.updateOne(dimissionInformation);
-            return RespUtil.successResp("200","请求成功！",null);
+            return RespUtil.response("200","请求成功！",null);
         }
-        return RespUtil.successResp("500","没有需要修改的数据！",null);
+        return RespUtil.response("500","没有需要修改的数据！",null);
     }
 
     /**

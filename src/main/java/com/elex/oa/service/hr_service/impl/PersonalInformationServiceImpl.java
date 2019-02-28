@@ -729,17 +729,17 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     @Override
     public Object addCostInformation(CostInformationAddInfo costInformationAddInfo) {
         //过滤信息
-        if(null==costInformationAddInfo)return RespUtil.successResp("500","信息全为空！",null);
-        if(null==costInformationAddInfo.getUserid())return RespUtil.successResp("500","登录ID为空！",null);
+        if(null==costInformationAddInfo)return RespUtil.response("500","信息全为空！",null);
+        if(null==costInformationAddInfo.getUserid())return RespUtil.response("500","登录ID为空！",null);
         PersonalInformation personalInformationTemp = iPersonalInformationDao.selectByUserid(costInformationAddInfo.getUserid());
-        if(null==personalInformationTemp)return RespUtil.successResp("500","登录ID所在的人事信息不存在！",null);
+        if(null==personalInformationTemp)return RespUtil.response("500","登录ID所在的人事信息不存在！",null);
         //添加成本信息
         CostInformation costInformation = getCostinformationByCostinformationAddInfo(costInformationAddInfo);
         try {
             iCostInformationDao.insertOne(costInformation);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","添加成本信息失败！",null);
+            return RespUtil.response("500","添加成本信息失败！",null);
         }
         //更新人事概要信息
         personalInformationTemp.setCostinformationid(costInformation.getId());
@@ -748,9 +748,9 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         } catch (Exception e) {
             e.printStackTrace();//需要回滚
             iCostInformationDao.deleteById(costInformation.getId());
-            return RespUtil.successResp("500","更新概要信息失败！",null);
+            return RespUtil.response("500","更新概要信息失败！",null);
         }
-        return RespUtil.successResp("200","添加成功！",null);
+        return RespUtil.response("200","添加成功！",null);
     }
 
     @Override
@@ -817,11 +817,11 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
     @Override
     public Object deleteInformationsByIds(List<Integer> personalInformationIds) {
         List<String> usernameList = new ArrayList<>();
-        if(null==personalInformationIds || personalInformationIds.size()==0)return RespUtil.successResp("500", "没有需要删除的perid！", null);
+        if(null==personalInformationIds || personalInformationIds.size()==0)return RespUtil.response("500", "没有需要删除的perid！", null);
         for (Integer perid:personalInformationIds
              ) {
             PersonalInformation personalInformationTemp = iPersonalInformationDao.selectById(perid);
-            if(null==personalInformationTemp)return RespUtil.successResp("500", "需要删除的perid不存在！", null);
+            if(null==personalInformationTemp)return RespUtil.response("500", "需要删除的perid不存在！", null);
             //删除tb_id_user表
             iUserDao.deleteByPrimaryKey(personalInformationTemp.getUserid());
             //删除tb_id_baseinformation表
@@ -842,7 +842,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             iPersonalInformationDao.deleteById(perid);
             usernameList.add(hrUtils.getTruenameByUserid(personalInformationTemp.getUserid()));
         }
-        return RespUtil.successResp("200", "删除成功！", usernameList);
+        return RespUtil.response("200", "删除成功！", usernameList);
     }
 
     @Override
@@ -856,7 +856,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         iContractInformationDao.deleteAll();
         iChangeInformaionDao.deleteAll();
         iPersonalInformationDao.deleteAll();
-        return RespUtil.successResp("200", "删除成功！", null);
+        return RespUtil.response("200", "删除成功！", null);
     }
 
 

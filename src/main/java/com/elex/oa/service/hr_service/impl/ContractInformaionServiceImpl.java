@@ -160,26 +160,26 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         ContractInformation oldContract = iContractInformationDao.selectById(contractInformation.getId());
         oldContract = getDetailContractByContract(oldContract);
         //校验合同编号是否可用
-        if(StringUtils.isBlank(contractInformation.getContractcode()))return RespUtil.successResp("500","合同编号不能为空！",null);
+        if(StringUtils.isBlank(contractInformation.getContractcode()))return RespUtil.response("500","合同编号不能为空！",null);
         ContractInformation contractInformationTemp = iContractInformationDao.selectOneByContractcode(contractInformation.getContractcode());
         if(null!=contractInformationTemp && !oldContract.getContractcode().equals(newContract.getContractcode())){
-            return RespUtil.successResp("500","合同编号已存在！",null);
+            return RespUtil.response("500","合同编号已存在！",null);
         }
         //判断是否需要修改合同信息
         Boolean isUpdate = isUpdateForContractInformation(oldContract,newContract);
         if (isUpdate) {
             iContractInformationDao.updateOne(contractInformation);
-            return RespUtil.successResp("200","提交成功！",null);
+            return RespUtil.response("200","提交成功！",null);
         }
-        return RespUtil.successResp("500","没有需要修改的信息！",null);
+        return RespUtil.response("500","没有需要修改的信息！",null);
     }
 
     @Override
     public Object queryContractInformationByUseridAndCurTime(Integer userid) {
         //目的：根据userid和curtime查出还在有效期中的合同
-        if(null==userid)return RespUtil.successResp("500","合同人userid不能为空",null);
+        if(null==userid)return RespUtil.response("500","合同人userid不能为空",null);
         User user = iUserDao.selectByPrimaryKey(userid);
-        if(null==user)return RespUtil.successResp("500","合同人不存在",userid);
+        if(null==user)return RespUtil.response("500","合同人不存在",userid);
         //获得当前时间（格式：YYYY/MM/dd）
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         String curtime = sdf.format(new Date());
@@ -189,10 +189,10 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
             contractInformation = iContractInformationDao.selectContractInformationByUseridAndCurTime(userid,curtime);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","查询失败",e.getStackTrace());
+            return RespUtil.response("500","查询失败",e.getStackTrace());
         }
-        if(null==contractInformation)return RespUtil.successResp("500","合同信息不存在",userid);
-        return RespUtil.successResp("200","查询成功",contractInformation);
+        if(null==contractInformation)return RespUtil.response("500","合同信息不存在",userid);
+        return RespUtil.response("200","查询成功",contractInformation);
     }
 
 

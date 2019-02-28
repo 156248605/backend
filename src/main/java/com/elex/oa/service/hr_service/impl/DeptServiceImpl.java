@@ -260,7 +260,7 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","时间选择错误！",null);
+                return RespUtil.response("505","时间选择错误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
@@ -361,10 +361,10 @@ public class DeptServiceImpl implements IDeptService {
                 hrManageCardList.add(hrManageCard);
             }
             paramMap.put("HRManageCards",hrManageCardList);
-            return RespUtil.successResp("205","返回成功！",paramMap);
+            return RespUtil.response("205","返回成功！",paramMap);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
         }
     }
 
@@ -419,7 +419,7 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","时间选择错误！",null);
+                return RespUtil.response("505","时间选择错误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
@@ -447,10 +447,10 @@ public class DeptServiceImpl implements IDeptService {
                 }
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
-            return RespUtil.successResp("205","提交成功！",pageHelper);
+            return RespUtil.response("205","提交成功！",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
         }
     }
 
@@ -464,7 +464,7 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","时间选择错误！",null);
+                return RespUtil.response("505","时间选择错误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
@@ -489,10 +489,10 @@ public class DeptServiceImpl implements IDeptService {
                 }
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.successResp("205","提交成功！",pageHelper);
+            return RespUtil.response("205","提交成功！",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
         }
     }
 
@@ -506,7 +506,7 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","时间选择错误！",null);
+                return RespUtil.response("505","时间选择错误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
@@ -531,10 +531,10 @@ public class DeptServiceImpl implements IDeptService {
                 }
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.successResp("205","提交成功！",pageHelper);
+            return RespUtil.response("205","提交成功！",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
         }
     }
 
@@ -548,7 +548,7 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","时间选择错误！",null);
+                return RespUtil.response("505","时间选择错误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
@@ -566,10 +566,10 @@ public class DeptServiceImpl implements IDeptService {
                 personalInformationList = personalInformationList1;
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
-            return RespUtil.successResp("205","提交成功！",pageHelper);
+            return RespUtil.response("205","提交成功！",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
         }
     }
 
@@ -583,16 +583,16 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","时间选择错误！",null);
+                return RespUtil.response("505","时间选择错误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
             List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid2(depid, sdate, edate);
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.successResp("205","提交成功！",pageHelper);
+            return RespUtil.response("205","提交成功！",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
         }
     }
 
@@ -606,16 +606,16 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.successResp("505","时间选择错误！",null);
+                return RespUtil.response("505","时间选择错误！",null);
             }
             sdate = twoDate.get("sdate");
             edate = twoDate.get("edate");
             List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid3(depid, sdate, edate);
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.successResp("205","提交成功！",pageHelper);
+            return RespUtil.response("205","提交成功！",pageHelper);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("405","系统正在忙，请稍后再试！",null);
+            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
         }
     }
 
@@ -793,18 +793,18 @@ public class DeptServiceImpl implements IDeptService {
     @Override
     public Object addOneDepartment(Dept dept, String transactorusername) {
         //先校验部门名称是否存在
-        if(StringUtils.isBlank(dept.getDepcode()))return RespUtil.successResp("500","部门编号不能为空！",null);
+        if(StringUtils.isBlank(dept.getDepcode()))return RespUtil.response("500","部门编号不能为空！",null);
         Dept deptTemp = iDeptDao.selectDeptByDeptcode(dept.getDepcode());
-        if(null!=deptTemp)return RespUtil.successResp("500","部门编号已存在，请重新输入部门编号！",null);
+        if(null!=deptTemp)return RespUtil.response("500","部门编号已存在，请重新输入部门编号！",null);
         //添加新部门
         dept.setPost_list(hrUtils.getArrayToString(dept.getPostList(),","));
         //判断是否为顶点部门
         if(null==dept.getParentdepid()){
             List<Map<String, Object>> allDepidAndDepnameByDEP_on = iDeptDao.getAllDepidAndDepnameByDEP_ON();
-            if(null!=allDepidAndDepnameByDEP_on || allDepidAndDepnameByDEP_on.size()!=0)return RespUtil.successResp("500","非顶级部门必须选择上级部门！",null);
+            if(null!=allDepidAndDepnameByDEP_on || allDepidAndDepnameByDEP_on.size()!=0)return RespUtil.response("500","非顶级部门必须选择上级部门！",null);
         }
         iDeptDao.insertOne(dept);
-        return RespUtil.successResp("200","提交成功！",dept);
+        return RespUtil.response("200","提交成功！",dept);
     }
 
     @Override

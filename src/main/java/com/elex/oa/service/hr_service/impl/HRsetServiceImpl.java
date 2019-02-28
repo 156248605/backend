@@ -41,11 +41,11 @@ public class HRsetServiceImpl implements IHRsetService {
             hRset.setDatacode(hRset.getDatatype()+"_"+System.currentTimeMillis());
         }else {
             List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset( null,null, hRset.getDatacode(), null));
-            if(hRsetList!=null || hRsetList.size()!=0)return RespUtil.successResp("500","编号已经存在！",null);
+            if(hRsetList!=null || hRsetList.size()!=0)return RespUtil.response("500","编号已经存在！",null);
         }
         ihRsetDao.insertOne(hRset);
-        Resp<Integer> integerResp = RespUtil.successResp("200", "添加成功！", hRset.getId());
-        return RespUtil.successResp("200","添加成功！",hRset.getId());
+        Resp<Integer> integerResp = RespUtil.response("200", "添加成功！", hRset.getId());
+        return RespUtil.response("200","添加成功！",hRset.getId());
     }
 
     @Override
@@ -107,17 +107,16 @@ public class HRsetServiceImpl implements IHRsetService {
             HRset oldHRset = ihRsetDao.selectById(hRset.getId());
             if(!hRset.getDatacode().equals(oldHRset.getDatacode())){
                 List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset( null,null, hRset.getDatacode(), null));
-                if(hRsetList!=null || hRsetList.size()!=0)return RespUtil.successResp("500","编号已经存在！",null);
+                if(hRsetList!=null || hRsetList.size()!=0)return RespUtil.response("500","编号已经存在！",null);
             }
         }
         try {
             ihRsetDao.updateOne(hRset);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","修改失败！",e.getStackTrace());
+            return RespUtil.response("500","修改失败！",e.getStackTrace());
         }
-        List<HRset> hRsetList = ihRsetDao.selectByConditions(new HRset(hRset.getId()));
-        return RespUtil.successResp("200","修改成功！",null);
+        return RespUtil.response("200","修改成功！",null);
     }
 
     @Override
@@ -179,7 +178,7 @@ public class HRsetServiceImpl implements IHRsetService {
     @Override
     public Object supplyDatacode() {
         List<HRset> hRsetList = ihRsetDao.selectByDatacodeIsNull();
-        if(null==hRsetList || hRsetList.size()==0)return RespUtil.successResp("500","没有需要补充的字段编码",null);
+        if(null==hRsetList || hRsetList.size()==0)return RespUtil.response("500","没有需要补充的字段编码",null);
         for (HRset hRset:hRsetList
              ) {
             hRset.setDatacode(hRset.getDatatype()+"_"+System.currentTimeMillis());
@@ -187,27 +186,27 @@ public class HRsetServiceImpl implements IHRsetService {
                 ihRsetDao.updateOne(hRset);
             } catch (Exception e) {
                 e.printStackTrace();
-                return RespUtil.successResp("500","补充失败",e.getStackTrace());
+                return RespUtil.response("500","补充失败",e.getStackTrace());
             }
         }
-        return RespUtil.successResp("200","补充成功",null);
+        return RespUtil.response("200","补充成功",null);
     }
 
     @Override
     public Object addPostfamilyAndPostgrade(Integer postfamilyid, Integer postgradeid) {
-        if(null==postfamilyid || null==postgradeid)return RespUtil.successResp("500","职系和职等都不能为空",null);
+        if(null==postfamilyid || null==postgradeid)return RespUtil.response("500","职系和职等都不能为空",null);
         try {
             HRset postfamily = ihRsetDao.selectById(postfamilyid);
-            if(null==postfamily)return RespUtil.successResp("500","职系不存在",postfamily);
+            if(null==postfamily)return RespUtil.response("500","职系不存在",postfamily);
             HRset postgrade = ihRsetDao.selectById(postgradeid);
-            if(null==postgrade)return RespUtil.successResp("500","职等不存在",postgradeid);
+            if(null==postgrade)return RespUtil.response("500","职等不存在",postgradeid);
             PostfamilyAndPostgrade postfamilyAndPostgrade = new PostfamilyAndPostgrade("family_" + System.currentTimeMillis(), postfamilyid, postgradeid);
             ihRsetPostfamilyDao.insert(postfamilyAndPostgrade);
         } catch (Exception e) {
             e.printStackTrace();
-            return RespUtil.successResp("500","请求失败",e.getCause());
+            return RespUtil.response("500","请求失败",e.getCause());
         }
-        return RespUtil.successResp("200","请求成功",null);
+        return RespUtil.response("200","请求成功",null);
     }
 
 }
