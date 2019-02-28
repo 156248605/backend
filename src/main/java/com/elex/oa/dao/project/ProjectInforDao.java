@@ -49,5 +49,11 @@ public interface ProjectInforDao {
     //查询导入的项目编号
     List<String> queryCodeList(int lastId);
     //查询导出的数据
-    List<ProjectInfor> queryExport(OperationQuery operationQuery);
+    List<ProjectInfor> queryExport(InforQuery inforQuery);
+    //获取项目信息列表
+    List<ProjectInfor> obtainList(InforQuery inforQuery);
+    //根据项目编号获取项目信息
+    ProjectInfor queryInforByCode(String projectCode);
+    //修改项目信息
+    void amendPro(ProjectInfor projectInfor);
 }

@@ -1,5 +1,6 @@
 package com.elex.oa.service.project;
 
+import com.elex.oa.entity.project.InforQuery;
 import com.elex.oa.entity.project.OperationQuery;
 import com.elex.oa.entity.project.ProjectInfor;
 import com.github.pagehelper.PageInfo;
@@ -32,7 +33,11 @@ public interface ProjectInforService {
     //项目信息导入
     Map<String,String> importData(MultipartFile file);
     //信息导出时查询数据
-    String queryExport(OperationQuery operationQuery, HttpServletResponse response);
+    String queryExport(InforQuery inforQuery, HttpServletResponse response);
     //项目导入未导入的信息下载
     String importUnfinished(HttpServletResponse response);
+    //获取项目信息列表
+    PageInfo obtainList(InforQuery inforQuery, Integer pageNum);
+    //修改项目信息
+    String amendPro(ProjectInfor projectInfor, String updateBy);
 }

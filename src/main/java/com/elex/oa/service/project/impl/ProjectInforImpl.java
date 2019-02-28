@@ -1,13 +1,12 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
-import com.elex.oa.dao.hr.IDeptDao;
-import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.dao.project.ProjectSetDao;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.entity.project.*;
+import com.elex.oa.mongo.project.ProjectRecordMongo;
 import com.elex.oa.service.project.ProjectInforService;
 import com.elex.oa.util.project.InforUtils;
 import com.github.pagehelper.PageHelper;
@@ -34,11 +33,9 @@ public class ProjectInforImpl implements ProjectInforService {
 
     @Resource
     private IUserDao iUserDao;
-    @Resource
-    private IPersonalInformationDao iPersonalInformationDao;
-    @Resource
-    private IDeptDao iDeptDao;
 
+    @Resource
+    private ProjectRecordMongo projectRecordMongo;
 
     //查询已立项成功的项目，添加到项目信息中
     @Override
@@ -344,8 +341,20 @@ public class ProjectInforImpl implements ProjectInforService {
 
     //信息导出时查询数据
     @Override
-    public String queryExport(OperationQuery operationQuery, HttpServletResponse response) {
-        List<ProjectInfor> list = projectInforDao.queryExport(operationQuery);//查询导出的数据
+    public String queryExport(InforQuery inforQuery, HttpServletResponse response) {
+        List<String> source = JSONArray.parseArray(inforQuery.getSourceSelect(), String.class);
+        if(source.size() > 0) {
+            inforQuery.setSourceList(source);
+        }
+        List<String> type = JSONArray.parseArray(inforQuery.getTypeSelect(), String.class);
+        if(type.size() > 0) {
+            inforQuery.setTypeList(type);
+        }
+        List<String> status = JSONArray.parseArray(inforQuery.getStatusSelect(), String.class);
+        if(status.size() > 0) {
+            inforQuery.setStatusList(status);
+        }
+        List<ProjectInfor> list = projectInforDao.queryExport(inforQuery);//查询导出的数据
         List<ProjectVarious> statusList = projectSetDao.queryStatus(); //项目状态
         List<ProjectVarious> sourceList = projectSetDao.querySource(); //项目来源
         List<ProjectVarious> typeList = projectSetDao.queryType(); //项目类型
@@ -402,5 +411,201 @@ public class ProjectInforImpl implements ProjectInforService {
             }
         }
         return "start txt";
+    }
+
+    //获取项目信息列表
+    @Override
+    public PageInfo obtainList(InforQuery inforQuery, Integer pageNum) {
+        List<String> sourceList = JSONArray.parseArray(inforQuery.getSourceSelect(), String.class);
+        if(sourceList.size() > 0) {
+            inforQuery.setSourceList(sourceList);
+        }
+        List<String> typeList = JSONArray.parseArray(inforQuery.getTypeSelect(), String.class);
+        if(typeList.size() > 0) {
+            inforQuery.setTypeList(typeList);
+        }
+        List<String> statusList = JSONArray.parseArray(inforQuery.getStatusSelect(), String.class);
+        if(statusList.size() > 0) {
+            inforQuery.setStatusList(statusList);
+        }
+        PageHelper.startPage(pageNum, 10);
+        List<ProjectInfor> list = projectInforDao.obtainList(inforQuery); //获取项目信息列表
+        return new PageInfo(list);
+    }
+
+    //修改项目信息
+    @Override
+    public String amendPro(ProjectInfor projectInfor, String updateBy) {
+        ProjectInfor infor = projectInforDao.queryInforByCode(projectInfor.getProjectCode()); //根据项目编号获取项目信息
+        List<OsUser> osUsers = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
+        StringBuilder stringBuilder1 = new StringBuilder(), stringBuilder2 = new StringBuilder();
+        for(OsUser osUser:osUsers) {
+            if(StringUtils.isNotBlank(projectInfor.getProjectMembers())) {
+                if(projectInfor.getProjectMembers().contains(osUser.getFullName())) {
+                    stringBuilder1.append(osUser.getUserId());
+                    stringBuilder1.append(";");
+                }
+            }
+            if(StringUtils.isNotBlank(projectInfor.getRelatedMembers())) {
+                if(projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
+                    stringBuilder2.append(osUser.getUserId());
+                    stringBuilder2.append(";");
+                }
+            }
+        }
+        projectInfor.setProjectMemberCode(stringBuilder1.toString());
+        projectInfor.setRelatedMemberCode(stringBuilder2.toString());
+        projectInforDao.amendPro(projectInfor); //修改项目信息
+
+        List<Map<String, String>> record = generateRecord(projectInfor, infor);
+        if(record.size() > 0) {
+            ProjectRecord projectRecord = new ProjectRecord();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = simpleDateFormat.format(new Date());
+            projectRecord.setUpdateTime(date);
+            projectRecord.setUpdateBy(updateBy);
+            projectRecord.setProjectCode(projectInfor.getProjectCode());
+            projectRecord.setRecord(record);
+            projectRecordMongo.addRecord(projectRecord); //添加记录
+        }
+        return "success";
+    }
+
+    private List<Map<String,String>> generateRecord(ProjectInfor projectInfor, ProjectInfor infor) {
+        boolean marker = false;
+        List<Map<String, String>> list = new ArrayList<>();
+        Map<String, String> map;
+        marker = columnValidate(projectInfor.getGeneralSituation(), infor.getGeneralSituation());
+        System.out.println("....");
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "项目概况");
+            map.put("prefix", infor.getGeneralSituation());
+            map.put("suffix", projectInfor.getGeneralSituation());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getProjectMembers(), infor.getProjectMembers());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "项目成员");
+            map.put("prefix", infor.getProjectMembers());
+            map.put("suffix", projectInfor.getProjectMembers());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getRelatedMembers(), infor.getRelatedMembers());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "相关成员");
+            map.put("prefix", infor.getRelatedMembers());
+            map.put("suffix", projectInfor.getRelatedMembers());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getPartyName(), infor.getPartyName());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "甲方名称");
+            map.put("prefix", infor.getPartyName());
+            map.put("suffix", projectInfor.getPartyName());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getPartyAddress(), infor.getPartyAddress());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "甲方地址");
+            map.put("prefix", infor.getPartyAddress());
+            map.put("suffix", projectInfor.getPartyAddress());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getPartyPhone(), infor.getPartyPhone());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "甲方电话");
+            map.put("prefix", infor.getPartyPhone());
+            map.put("suffix", projectInfor.getPartyPhone());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getPartyFax(), infor.getPartyFax());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "甲方传真");
+            map.put("prefix", infor.getPartyFax());
+            map.put("suffix", projectInfor.getPartyFax());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getHeadName(), infor.getHeadName());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "负责人姓名");
+            map.put("prefix", infor.getHeadName());
+            map.put("suffix", projectInfor.getHeadName());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getHeadPosition(), infor.getHeadPosition());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "负责人职务");
+            map.put("prefix", infor.getHeadPosition());
+            map.put("suffix", projectInfor.getHeadPosition());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getHeadMobile(), infor.getHeadMobile());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "负责人手机");
+            map.put("prefix", infor.getHeadMobile());
+            map.put("suffix", projectInfor.getHeadMobile());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getHeadEmail(), infor.getHeadEmail());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "负责人邮件");
+            map.put("prefix", infor.getHeadEmail());
+            map.put("suffix", projectInfor.getHeadEmail());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getContactName(), infor.getContactName());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "联系人姓名");
+            map.put("prefix", infor.getContactName());
+            map.put("suffix", projectInfor.getContactName());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getContactPosition(), infor.getContactPosition());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "联系人职务");
+            map.put("prefix", infor.getContactPosition());
+            map.put("suffix", projectInfor.getContactPosition());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getContactMobile(), infor.getContactMobile());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "联系人手机");
+            map.put("prefix", infor.getContactMobile());
+            map.put("suffix", projectInfor.getContactMobile());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getContactEmail(), infor.getContactEmail());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "联系人邮件");
+            map.put("prefix", infor.getContactEmail());
+            map.put("suffix", projectInfor.getContactEmail());
+            list.add(map);
+        }
+        return list;
+    }
+
+    private boolean columnValidate(String a, String b) {
+        if(StringUtils.isBlank(a) && StringUtils.isBlank(b)) {
+            return false;
+        }
+        if(a.equals(b)) {
+            return false;
+        }
+        return true;
     }
 }

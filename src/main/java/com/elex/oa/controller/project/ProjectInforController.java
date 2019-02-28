@@ -1,5 +1,6 @@
 package com.elex.oa.controller.project;
 
+import com.elex.oa.entity.project.InforQuery;
 import com.elex.oa.entity.project.OperationQuery;
 import com.elex.oa.entity.project.ProjectInfor;
 import com.elex.oa.service.project.ProjectInforService;
@@ -97,8 +98,8 @@ public class ProjectInforController {
     //信息导出时查询数据
     @RequestMapping("/query_export")
     @ResponseBody
-    public String queryExport(OperationQuery operationQuery, HttpServletResponse response) {
-        return projectInforService.queryExport(operationQuery, response);
+    public String queryExport(InforQuery inforQuery, HttpServletResponse response) {
+        return projectInforService.queryExport(inforQuery, response);
     }
 
 
@@ -107,5 +108,19 @@ public class ProjectInforController {
     @ResponseBody
     public String importUnfinished(HttpServletResponse response) {
         return projectInforService.importUnfinished(response);
+    }
+
+    //获取项目信息列表
+    @RequestMapping("/obtain_list")
+    @ResponseBody
+    public PageInfo obtainList(InforQuery inforQuery, Integer pageNum) {
+        return projectInforService.obtainList(inforQuery, pageNum);
+    }
+
+    //项目信息修改
+    @RequestMapping("/amend_pro")
+    @ResponseBody
+    public String amendPro(ProjectInfor projectInfor, String updateBy) {
+        return projectInforService.amendPro(projectInfor, updateBy);
     }
 }
