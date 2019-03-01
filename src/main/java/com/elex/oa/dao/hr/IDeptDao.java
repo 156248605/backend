@@ -118,4 +118,6 @@ public interface IDeptDao{
     Dept selectDeptByUsername(String username);
 
     User selectPrincipalUserByUsername(String username);
+
+    String selectDepnameByUsername(String employeenumber);
 }

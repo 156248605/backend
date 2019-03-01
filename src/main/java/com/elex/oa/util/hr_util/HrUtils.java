@@ -582,4 +582,10 @@ public class HrUtils {
         if(null==user)return null;
         return user.getEmployeenumber();
     }
+
+    //根据员工号或所在的部门名称
+    public String getDepnameByEmployeenumber(String sale_employeenumber) {
+        String depname = iDeptDao.selectDepnameByUsername(sale_employeenumber);
+        return depname;
+    }
 }

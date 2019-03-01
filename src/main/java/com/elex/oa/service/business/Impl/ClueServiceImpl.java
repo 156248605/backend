@@ -40,6 +40,7 @@ public class ClueServiceImpl implements IClueService {
 
     @Override
     public PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag) {
+        String orderBy = "createtime DESC";
         PageHelper.startPage(pageNum,pageSize);
         List<Clue> clueList = null;
         PageInfo<Clue> cluePageInfo = null;
@@ -222,6 +223,8 @@ public class ClueServiceImpl implements IClueService {
         c.setSale_truename(hrUtils.getTruenameByEmployeenumber(c.getSale_employeenumber()));
         //获得方案人姓名
         c.setScheme_truename(hrUtils.getTruenameByEmployeenumber(c.getScheme_employeenumber()));
+        //获得部门名称
+        c.setDepname(hrUtils.getDepnameByEmployeenumber(c.getSale_employeenumber()));
         return c;
     }
 }

@@ -185,6 +185,14 @@
 		WHERE u.id=#{userid}
 	</select>
 
+	<select id="selectDepnameByUsername" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT dep.depname
+		FROM tb_id_user u
+		JOIN tb_id_personalinformation per ON per.userid=u.id
+		JOIN tb_id_department dep ON dep.id=per.depid
+		WHERE u.employeenumber=#{depname}
+	</select>
+
 	<insert id="insertOne" parameterType="Dept" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_department
 		(id,
