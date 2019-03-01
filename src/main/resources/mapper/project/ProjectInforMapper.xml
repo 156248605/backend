@@ -273,61 +273,142 @@
         SELECT project_code FROM pro_pro_infor WHERE id > #{id}
     </select>
 
-    <select id="queryExport" parameterType="com.elex.oa.entity.project.OperationQuery" resultMap="projectInfor">
+    <select id="queryExport" parameterType="com.elex.oa.entity.project.InforQuery" resultMap="projectInfor">
         SELECT project_code, project_name, in_department, project_status, dept_manager, proposer, write_date, business_manager,
         project_source, project_manager, project_type, general_situation, project_members, project_member_id, related_members,
         related_member_id, party_name, party_address, party_phone, party_fax, head_name, head_position, head_mobile, head_email,
         contact_name, contact_position, contact_mobile, contact_email
         FROM pro_pro_infor infor
-        <!--<where>
-            <if test="select1 == 1 and input1 != ''">
-                AND project_code LIKE CONCAT('%',#{input1},'%')
+        <where>
+            <if test="codeSelect == 1 and codeInput != ''">
+                AND project_code LIKE CONCAT('%',#{codeInput},'%')
             </if>
-            <if test="select1 == 2 and input1 != ''">
-                AND project_code NOT LIKE CONCAT('%',#{input1},'%')
+            <if test="codeSelect == 2 and codeInput != ''">
+                AND project_code NOT LIKE CONCAT('%',#{codeInput},'%')
             </if>
-            <if test="select2 == 1 and input2 != ''">
-                AND project_name LIKE CONCAT('%',#{input2},'%')
+            <if test="nameSelect == 1 and nameInput != ''">
+                AND project_name LIKE CONCAT('%',#{nameInput},'%')
             </if>
-            <if test="select2 == 2 and input2 != ''">
-                AND project_name NOT LIKE CONCAT('%',#{input2},'%')
+            <if test="nameSelect == 2 and nameInput != ''">
+                AND project_name NOT LIKE CONCAT('%',#{nameInput},'%')
             </if>
-            <if test="select3 == 1 and input3 != ''">
-                AND in_department LIKE CONCAT('%',#{input3},'%')
+            <if test="deptSelect == 1 and deptInput != ''">
+                AND in_department LIKE CONCAT('%',#{deptInput},'%')
             </if>
-            <if test="select3 == 2 and input3 != ''">
-                AND in_department NOT LIKE CONCAT('%',#{input3},'%')
+            <if test="deptSelect == 2 and deptInput != ''">
+                AND in_department NOT LIKE CONCAT('%',#{deptInput},'%')
             </if>
-            <if test="list4 != null">
+            <if test="sourceList != null">
                 AND project_source IN
-                <foreach collection="list4" item="item" index="index" separator="," open="(" close=")">
+                <foreach collection="sourceList" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
-            <if test="type != 2 and select5 == 1 and input5 != ''">
-                AND business_manager LIKE CONCAT('%',#{input5},'%')
+            <if test="businessSelect == 1 and businessInput != ''">
+                AND business_manager LIKE CONCAT('%',#{businessInput},'%')
             </if>
-            <if test="type != 2 and select5 == 2 and input5 != ''">
-                AND business_manager NOT LIKE CONCAT('%',#{input5},'%')
+            <if test="businessSelect == 2 and businessInput != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{businessInput},'%')
             </if>
-            <if test="list6 != null">
+            <if test="typeList != null">
                 AND project_type IN
-                <foreach collection="list6" item="item" index="index" separator="," open="(" close=")">
+                <foreach collection="typeList" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
-            <if test="select7 == 1 and input7 != ''">
-                AND project_manager LIKE CONCAT('%',#{input7},'%')
+            <if test="deliverySelect == 1 and deliveryInput != ''">
+                AND project_manager LIKE CONCAT('%',#{deliveryInput},'%')
             </if>
-            <if test="select7 == 2 and input7 != ''">
-                AND project_manager NOT LIKE CONCAT('%',#{input7},'%')
+            <if test="deliverySelect == 2 and deliveryInput != ''">
+                AND project_manager NOT LIKE CONCAT('%',#{deliveryInput},'%')
             </if>
-            <if test="list8 != null">
+            <if test="statusList != null">
                 AND project_status IN
-                <foreach collection="list8" item="item" index="index" separator="," open="(" close=")">
+                <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
                     #{item}
                 </foreach>
             </if>
-        </where>-->
+        </where>
     </select>
+
+    <select id="obtainList" parameterType="com.elex.oa.entity.project.InforQuery" resultMap="projectInfor">
+        SELECT project_code, project_name, in_department, project_status, dept_manager, proposer, write_date, business_manager,
+        project_source, project_manager, project_type, general_situation, project_members, related_members, party_name, party_address,
+        party_phone, party_fax, head_name, head_position, head_email, contact_name, contact_position, contact_mobile, contact_email
+        FROM pro_pro_infor
+        <where>
+            <if test="codeSelect == 1 and codeInput != ''">
+                AND project_code LIKE CONCAT('%',#{codeInput},'%')
+            </if>
+            <if test="codeSelect == 2 and codeInput != ''">
+                AND project_code NOT LIKE CONCAT('%', #{codeInput}, '%')
+            </if>
+            <if test="nameSelect == 1 and nameInput != ''">
+                AND project_name LIKE CONCAT('%',#{nameInput},'%')
+            </if>
+            <if test="nameSelect == 2 and nameInput != ''">
+                AND project_name NOT LIKE CONCAT('%',#{nameInput},'%')
+            </if>
+            <if test="deptSelect == 1 and deptInput != ''">
+                AND in_department LIKE CONCAT('%',#{deptInput},'%')
+            </if>
+            <if test="deptSelect == 2 and deptInput != ''">
+                AND in_department NOT LIKE CONCAT('%',#{deptInput},'%')
+            </if>
+            <if test="sourceList != null">
+                AND project_source IN
+                <foreach collection="sourceList" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="type != 2 and businessSelect == 1 and businessInput != ''">
+                AND business_manager LIKE CONCAT('%',#{businessInput},'%')
+            </if>
+            <if test="type != 2 and businessSelect == 2 and businessInput != ''">
+                AND business_manager NOT LIKE CONCAT('%',#{businessInput},'%')
+            </if>
+            <if test="typeList != null">
+                AND project_type IN
+                <foreach collection="typeList" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="type != 2 and deliverySelect == 1 and deliveryInput != ''">
+                AND project_manager LIKE CONCAT('%',#{deliveryInput},'%')
+            </if>
+            <if test="type != 2 and deliverySelect == 2 and deliveryInput != ''">
+                AND project_manager NOT LIKE CONCAT('%',#{deliveryInput},'%')
+            </if>
+            <if test="statusList != null">
+                AND project_status IN
+                <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="type == 2">
+                AND (project_manager = #{name} OR business_manager = #{name})
+            </if>
+            <if test="type == 3">
+                AND project_members LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="type == 4">
+                AND related_members LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryInforByCode" parameterType="string" resultMap="projectInfor">
+        SELECT general_situation, project_members, related_members, party_name, party_address, party_phone, party_fax,
+        head_name, head_position, head_mobile, head_email, contact_name, contact_position, contact_mobile, contact_email
+        FROM pro_pro_infor WHERE project_code = #{projectCode}
+    </select>
+
+    <update id="amendPro" parameterType="com.elex.oa.entity.project.ProjectInfor">
+        UPDATE pro_pro_infor SET general_situation = #{generalSituation}, project_members = #{projectMembers}, project_member_id =
+        #{projectMemberId}, related_members = #{relatedMembers}, related_member_id = #{relatedMemberId}, party_name = #{partyName},
+        party_address = #{partyAddress}, party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position =
+        #{headPosition}, head_mobile = #{headMobile}, head_email = #{headEmail}, contact_name = #{contactName}, contact_position =
+        #{contactPosition}, contact_mobile = #{contactMobile}, contact_email = #{contactEmail}, project_member_code = #{projectMemberCode},
+        related_member_code = #{relatedMemberCode} WHERE project_code = #{projectCode}
+    </update>
 </mapper>
