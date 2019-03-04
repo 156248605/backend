@@ -5,11 +5,19 @@
 <mapper namespace="com.elex.oa.dao.eqptDao.RepositoryMapper">
     <select id="RepositoryList" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT * FROM eqpt_repository
+        <where>
+            <if test="reptAdmin != '管理员'">
+                reptAdmin = #{reptAdmin}
+            </if>
+        </where>
     </select>
 
     <select id="searchRepository" resultType="com.elex.oa.entity.eqpt.Repository" parameterType="com.elex.oa.entity.eqpt.Repository">
         SELECT * FROM eqpt_repository
         <where>
+            <if test="reptAdmin != null and reptAdmin != '' and reptAdmin != '管理员'">
+                AND reptAdmin = #{reptAdmin}
+            </if>
             <if test="reptCategory != null and reptCategory != '' and reptCateC == ''">
                 AND reptCategory LIKE CONCAT(CONCAT('%', #{reptCategory}), '%')
             </if>
@@ -37,7 +45,7 @@
             <if test="reptName != null and reptName != '' and reptNameC == 2">
                 AND reptName NOT LIKE CONCAT(CONCAT('%', #{reptName}), '%')
             </if>
-            <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == ''">
+            <!--<if test="reptAdmin != null and reptAdmin != '' and reptAdminC == ''">
                 AND reptAdmin LIKE CONCAT(CONCAT('%', #{reptAdmin}), '%')
             </if>
             <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == 1">
@@ -45,7 +53,7 @@
             </if>
             <if test="reptAdmin != null and reptAdmin != '' and reptAdminC == 2">
                 AND reptAdmin NOT LIKE CONCAT(CONCAT('%', #{reptAdmin}), '%')
-            </if>
+            </if>-->
             <if test="reptState != null and reptState != '' and reptStateC == ''">
                 AND reptState LIKE CONCAT(CONCAT('%', #{reptState}), '%')
             </if>

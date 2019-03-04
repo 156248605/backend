@@ -32,9 +32,11 @@ public class RepositoryImpl implements RepositoryService {
     private IUserDao iUserDao;
     // 显示所有仓库
     @Override
-    public PageInfo<Repository> showRepository(Page page){
+    public PageInfo<Repository> showRepository(Page page,HttpServletRequest request){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Repository> listR = repositoryMapper.RepositoryList();
+        Repository repository = new Repository();
+        repository.setReptAdmin(request.getParameter("username"));
+        List<Repository> listR = repositoryMapper.RepositoryList(repository);
         return new PageInfo<>(listR);
     }
 
@@ -58,7 +60,9 @@ public class RepositoryImpl implements RepositoryService {
         String REMARK = request.getParameter("remark");
         if (  REPTID == null && REPTNAME == null && REPTADMIN == null && REPTSTATE == null && REMARK == null && POSTMANAGE == null && REPTADDR == null && REPTCATEGORY == null  ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
-            List<Repository> listR = repositoryMapper.RepositoryList();
+            Repository repository = new Repository();
+            repository.setReptAdmin(request.getParameter("username"));
+            List<Repository> listR = repositoryMapper.RepositoryList(repository);
             return new PageInfo<>(listR);
         } else {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());

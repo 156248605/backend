@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PositionService {
     // 显示所有库位
-    PageInfo<Repository> showPosition(Page page);
+    PageInfo<Repository> showPosition(Page page,HttpServletRequest request);
 
     // 查寻库位
     PageInfo<Repository> searchPosition(Page page, HttpServletRequest request);
@@ -26,7 +26,7 @@ public interface PositionService {
     // 删除库位
     void deleteRepository(Repository repository, HttpServletRequest request);
 
-    List<Repository> ReptList();
+    List<Repository> ReptList(HttpServletRequest request);
 
     List<Repository> ReptName(HttpServletRequest request);
 }

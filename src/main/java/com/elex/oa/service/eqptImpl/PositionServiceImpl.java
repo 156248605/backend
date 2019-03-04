@@ -27,9 +27,11 @@ public class PositionServiceImpl implements PositionService {
 
     // 显示所有库位
     @Override
-    public PageInfo<Repository> showPosition(Page page){
+    public PageInfo<Repository> showPosition(Page page,HttpServletRequest request){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Repository> listP = positionMapper.PositionList();
+        Repository repository = new Repository();
+        repository.setReptAdmin(request.getParameter("username"));
+        List<Repository> listP = positionMapper.PositionList(repository);
         return new PageInfo<>(listP);
     }
 
@@ -51,9 +53,12 @@ public class PositionServiceImpl implements PositionService {
         String POSTCAP = request.getParameter("postCap");
         String POSTCAPC = request.getParameter("postCapC");
         String REMARK = request.getParameter("remark");
+        String REPTADMIN = request.getParameter("reptAdmin");
         if (  REPTID == null && REPTNAME == null && POSTID == null && POSTNAME == null && REMARK == null && POSTCATE == null && FIXPOSTMAT == null && POSTCAP == null  ){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
-            List<Repository> listP = positionMapper.PositionList();
+            Repository repository = new Repository();
+            repository.setReptAdmin(request.getParameter("username"));
+            List<Repository> listP = positionMapper.PositionList(repository);
             return new PageInfo<>(listP);
         } else {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
@@ -73,6 +78,7 @@ public class PositionServiceImpl implements PositionService {
             repository.setPostCap(POSTCAP);
             repository.setPostCapC(POSTCAPC);
             repository.setRemark(REMARK);
+            repository.setReptAdmin(REPTADMIN);
             List<Repository> listP = positionMapper.searchPosition(repository);
             return new PageInfo<>(listP);
         }
@@ -165,8 +171,10 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public List<Repository> ReptList() {
-        List<Repository> reptlist = positionMapper.reptlist();
+    public List<Repository> ReptList(HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setReptAdmin(request.getParameter("username"));
+        List<Repository> reptlist = positionMapper.reptlist(repository);
         return reptlist;
     }
 

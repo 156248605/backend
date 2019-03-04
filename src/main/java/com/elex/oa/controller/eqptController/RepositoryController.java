@@ -32,8 +32,8 @@ public class RepositoryController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public PageInfo<Repository> repositoryList(Page page){
-        PageInfo<Repository> list = repositoryImpl.showRepository(page);
+    public PageInfo<Repository> repositoryList(Page page, HttpServletRequest request){
+        PageInfo<Repository> list = repositoryImpl.showRepository(page,request);
         return list;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface PositionMapper {
-    List<Repository> PositionList();
+    List<Repository> PositionList(Repository repository);
 
     List<Repository> searchPosition(Repository repository);
 
@@ -21,7 +21,7 @@ public interface PositionMapper {
 
     void deletePosition(Repository repository);
 
-    List<Repository> reptlist();
+    List<Repository> reptlist(Repository repository);
 
     List<Repository> reptname(Repository repository);
 

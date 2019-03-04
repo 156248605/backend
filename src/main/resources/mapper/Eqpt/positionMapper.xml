@@ -5,7 +5,14 @@
 <mapper namespace="com.elex.oa.dao.eqptDao.PositionMapper">
 
     <select id="PositionList" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT * FROM eqpt_position WHERE reptState = '是'
+        SELECT * FROM eqpt_position WHERE reptState = '是' AND reptId in (
+            SELECT reptId FROM eqpt_repository
+                <where>
+                    <if test="reptAdmin != '管理员'">
+                      reptAdmin = #{reptAdmin}
+                    </if>
+                </where>
+        )
     </select>
 
     <select id="searchPosition" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -17,7 +24,7 @@
             <if test="reptId != null and reptId != '' and reptIdC == 1">
                 AND reptId LIKE CONCAT(CONCAT('%', #{reptId}), '%')
             </if>
-            <if test="reptId != null and id != '' and reptIdC == 2">
+            <if test="reptId != null and reptId != '' and reptIdC == 2">
                 AND reptId NOT LIKE CONCAT(CONCAT('%', #{reptId}), '%')
             </if>
             <if test="reptName != null and reptName != '' and reptNameC == ''">
@@ -76,6 +83,9 @@
             </if>
             <if test="remark != null and remark != ''">
                 AND remark LIKE CONCAT(CONCAT('%', #{remark}), '%')
+            </if>
+            <if test="reptAdmin != '管理员'">
+                AND reptId in (SELECT reptId FROM eqpt_repository WHERE reptAdmin in (#{reptAdmin}) )
             </if>
         </where>
     </select>
@@ -151,6 +161,9 @@
 
     <select id="reptlist" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT DISTINCT reptId FROM eqpt_repository WHERE reptState = '是' AND postManage = '是'
+        <if test="reptAdmin != '管理员'">
+            AND reptAdmin = #{reptAdmin}
+        </if>
     </select>
 
     <select id="reptname" resultType="com.elex.oa.entity.eqpt.Repository">

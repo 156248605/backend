@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface RepositoryMapper {
     // 显示所有
-    List<Repository> RepositoryList();
+    List<Repository> RepositoryList(Repository repository);
 
     // 搜索
     List<Repository> searchRepository(Repository repository);

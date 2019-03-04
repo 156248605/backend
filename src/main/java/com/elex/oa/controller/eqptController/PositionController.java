@@ -3,6 +3,7 @@ package com.elex.oa.controller.eqptController;
 
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
+import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.eqptImpl.PositionServiceImpl;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,8 @@ public class PositionController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public PageInfo<Repository> positionList(Page page){
-        PageInfo<Repository> listP = positionServiceimpl.showPosition(page);
+    public PageInfo<Repository> positionList(Page page,HttpServletRequest request){
+        PageInfo<Repository> listP = positionServiceimpl.showPosition(page,request);
         return listP;
     }
 
@@ -56,8 +57,8 @@ public class PositionController {
 
     @RequestMapping("/reptlist")
     @ResponseBody
-    public List<Repository> ReptList(){
-        return positionServiceimpl.ReptList();
+    public List<Repository> ReptList(HttpServletRequest request){
+        return positionServiceimpl.ReptList(request);
     }
 
     @RequestMapping("/reptname")

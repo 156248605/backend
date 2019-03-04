@@ -13,7 +13,7 @@ import java.util.List;
 public interface RepositoryService {
 
     // 显示所有
-    PageInfo<Repository> showRepository(Page page);
+    PageInfo<Repository> showRepository(Page page,HttpServletRequest request);
 
     // 查询
     PageInfo<Repository> searchRepository(Page page,HttpServletRequest request);
