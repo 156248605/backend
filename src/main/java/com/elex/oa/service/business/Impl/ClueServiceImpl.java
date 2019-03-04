@@ -40,8 +40,8 @@ public class ClueServiceImpl implements IClueService {
 
     @Override
     public PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag) {
-        String orderBy = "createtime DESC";
-        PageHelper.startPage(pageNum,pageSize);
+        String orderBy = "trackid DESC";
+        PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Clue> clueList = null;
         PageInfo<Clue> cluePageInfo = null;
         if ("ALL".equals(flag)) {//大领导可以查看全部的
@@ -225,6 +225,8 @@ public class ClueServiceImpl implements IClueService {
         c.setScheme_truename(hrUtils.getTruenameByEmployeenumber(c.getScheme_employeenumber()));
         //获得部门名称
         c.setDepname(hrUtils.getDepnameByEmployeenumber(c.getSale_employeenumber()));
+        //获得账号ID
+        c.setUsername(hrUtils.getUsernameByEmployeenumber(c.getSale_employeenumber()));
         return c;
     }
 }

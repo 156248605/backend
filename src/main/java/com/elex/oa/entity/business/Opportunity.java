@@ -38,6 +38,8 @@ public class Opportunity implements Serializable {
     @Transient
     private String username;//登录ID
     @Transient
+    private String depname;//部门名称
+    @Transient
     private String trackcontent;//跟踪描述内容（最新的）
     @Transient
     private List<TrackInfo> trackInfoList=new ArrayList<>();//跟踪日志
@@ -58,6 +60,14 @@ public class Opportunity implements Serializable {
     public Opportunity(String clueid, String state) {
         this.clueid = clueid;
         this.state = state;
+    }
+
+    public String getDepname() {
+        return depname;
+    }
+
+    public void setDepname(String depname) {
+        this.depname = depname;
     }
 
     public String getUsername() {

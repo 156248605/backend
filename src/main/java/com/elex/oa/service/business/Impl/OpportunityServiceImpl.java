@@ -66,7 +66,8 @@ public class OpportunityServiceImpl implements IOpportunityService {
 
     @Override
     public PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag) {
-        PageHelper.startPage(pageNum,pageSize);
+        String orderBy = "trackid DESC";
+        PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Opportunity> opportunityList = null;
         PageInfo<Opportunity> opportunityPageInfo = null;
         if ("ALL".equals(flag)) {
@@ -185,6 +186,10 @@ public class OpportunityServiceImpl implements IOpportunityService {
         opportunity.setSale_truename(hrUtils.getTruenameByEmployeenumber(opportunity.getSale_employeenumber()));
         //获得方案人姓名
         opportunity.setScheme_truename(hrUtils.getTruenameByEmployeenumber(opportunity.getScheme_employeenumber()));
+        //获得部门名称
+        opportunity.setDepname(hrUtils.getDepnameByEmployeenumber(opportunity.getSale_employeenumber()));
+        //获得用户的账号ID
+        opportunity.setUsername(hrUtils.getUsernameByEmployeenumber(opportunity.getSale_employeenumber()));
         return opportunity;
     }
 

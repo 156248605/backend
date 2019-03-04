@@ -588,4 +588,12 @@ public class HrUtils {
         String depname = iDeptDao.selectDepnameByUsername(sale_employeenumber);
         return depname;
     }
+
+    //根据员工号获得账号ID
+    public String getUsernameByEmployeenumber(String employeenumber) {
+        if(StringUtils.isBlank(employeenumber))return null;
+        User user = iUserDao.selectByEmployeenumber(employeenumber);
+        if(null==user)return null;
+        return user.getUsername();
+    }
 }
