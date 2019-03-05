@@ -11,6 +11,7 @@ import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.service.business.IOpportunityService;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,15 +121,14 @@ public class OpportunityServiceImpl implements IOpportunityService {
     }
 
     @Override
-    public Boolean closeOpportunityInfo(String opportunitycode) {
-        if(StringUtils.isEmpty(opportunitycode))return false;
-        Opportunity opportunity = iOpportunityDao.selectByPrimaryKey(opportunitycode);
-        if(null==opportunity)return false;
-        Boolean aBoolean = true;
+    public Object closeOpportunityInfo(String opportunitycode, String trackcontent, String username) {
+        if(StringUtils.isEmpty(opportunitycode))return RespUtil.response("500","关闭的商机编号不能为空！",null);
         try {
+            Opportunity opportunity = iOpportunityDao.selectByPrimaryKey(opportunitycode);
+            if(null==opportunity)return RespUtil.response("500","关闭的商机编号不存在！",opportunitycode);
             opportunity.setState(Commons.OPPORTUNITY_OFF);
             //添加关闭跟踪
-            opportunity.setTrackcontent("最后阶段：商机没有价值，已关闭！");
+            opportunity.setTrackcontent(username+":"+trackcontent);
             TrackInfo trackInfo = getTrackInfoByObject(opportunity);
             iTrackInfoDao.insert(trackInfo);
             //更新线索状态
@@ -137,9 +136,9 @@ public class OpportunityServiceImpl implements IOpportunityService {
             iOpportunityDao.updateByPrimaryKeySelective(opportunity);
         } catch (Exception e) {
             e.printStackTrace();
-            aBoolean = false;
+            return RespUtil.response("500","请求失败！",e.getCause());
         }
-        return aBoolean;
+        return RespUtil.response("200","关闭成功！",opportunitycode);
     }
 
     @Override

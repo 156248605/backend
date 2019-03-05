@@ -16,7 +16,7 @@ public interface IOpportunityService {
 
     Boolean modifyOpportunityInfo(Opportunity opportunity);
 
-    Boolean closeOpportunityInfo(String opportunitycode);
+    Object closeOpportunityInfo(String opportunitycode, String trackcontent, String username);
 
     Map<String,Object> getBusinessInfoByState_OFF();
 }

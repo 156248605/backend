@@ -12,5 +12,5 @@ public interface IClueService {
 
     Boolean modifyClueInfo(Clue clue);
 
-    Boolean closeClueInfo(String cluecode);
+    Object closeClueInfo(String cluecode, String trackcontent, String username);
 }

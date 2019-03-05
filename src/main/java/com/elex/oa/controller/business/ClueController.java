@@ -114,10 +114,11 @@ public class ClueController {
     @RequestMapping("/closeClueinfo")
     @ResponseBody
     public Object closeClueinfo(
-            @RequestParam("cluecode")String cluecode
+            @RequestParam("cluecode")String cluecode,
+            @RequestParam("trackcontent")String trackcontent,
+            @RequestParam("username")String username
     ){
-        Boolean aBoolean = iClueService.closeClueInfo(cluecode);
-        return aBoolean?RespUtil.response("200","关闭成功！",null):RespUtil.response("500","关闭失败！",null);
+        return iClueService.closeClueInfo(cluecode,trackcontent,username);
     }
 
     private List<BusinessAttachment> getBusinessAttachmentList(MultipartHttpServletRequest request, int i) {

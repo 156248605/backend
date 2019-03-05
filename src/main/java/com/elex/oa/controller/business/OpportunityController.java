@@ -103,10 +103,11 @@ public class OpportunityController {
     @RequestMapping("/closeOpportunityinfo")
     @ResponseBody
     public Object closeOpportunityinfo(
-            @RequestParam("opportunitycode")String opportunitycode
+            @RequestParam("opportunitycode")String opportunitycode,
+            @RequestParam("trackcontent")String trackcontent,
+            @RequestParam("username")String username
     ){
-        Boolean aBoolean = iOpportunityService.closeOpportunityInfo(opportunitycode);
-        return aBoolean?RespUtil.response("200","关闭成功！",null):RespUtil.response("500","关闭失败！",null);
+        return iOpportunityService.closeOpportunityInfo(opportunitycode,trackcontent,username);
     }
 
     @RequestMapping("/getBusinessInfoByState_OFF")

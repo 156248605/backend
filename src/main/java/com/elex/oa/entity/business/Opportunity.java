@@ -32,7 +32,7 @@ public class Opportunity implements Serializable {
     private String opportunity_budget;//商机预算
     private String sale_employeenumber;//销售人员工号
     private String scheme_employeenumber;//方案人员工号
-    private String state;//线索状态（开启、关闭、已转商机）
+    private String state;//状态（跟踪、关闭、转立项）
     private String opportunity_price;//商机价值
 
     @Transient

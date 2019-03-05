@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,15 +105,14 @@ public class ClueServiceImpl implements IClueService {
     }
 
     @Override
-    public Boolean closeClueInfo(String cluecode) {
-        if(StringUtils.isEmpty(cluecode))return false;
-        Clue clue = iClueDao.selectByPrimaryKey(cluecode);
-        if(null==clue)return false;
-        Boolean aBoolean = true;
+    public Object closeClueInfo(String cluecode, String trackcontent, String username) {
+        if(StringUtils.isBlank(cluecode))return RespUtil.response("500","线索编号不能为空！",null);
         try {
+            Clue clue = iClueDao.selectByPrimaryKey(cluecode);
+            if(null==clue)return RespUtil.response("500","线索编号不存在！",cluecode);
             clue.setState(Commons.CLUE_OFF);
             //添加关闭跟踪
-            clue.setTrackcontent("最后阶段：线索没有价值，已关闭！");
+            clue.setTrackcontent(username+":"+trackcontent);
             TrackInfo trackInfo = getTrackInfoByClue(clue);
             iTrackInfoDao.insert(trackInfo);
             //更新线索状态
@@ -122,9 +120,9 @@ public class ClueServiceImpl implements IClueService {
             iClueDao.updateByPrimaryKeySelective(clue);
         } catch (Exception e) {
             e.printStackTrace();
-            aBoolean = false;
+            return RespUtil.response("500","请求失败！",e.getCause());
         }
-        return aBoolean;
+        return RespUtil.response("200","关闭成功！",cluecode);
     }
 
     private Boolean getaBooleanByUpdateTrackInfo(Clue clue, Boolean aBoolean) {
