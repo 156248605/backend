@@ -1,9 +1,7 @@
-package com.elex.oa.service.business.Impl;
+package com.elex.oa.service.business.impl;
 
 import com.elex.oa.service.business.ITrackInfoService;
 import org.springframework.stereotype.Service;
-
-import java.io.Serializable;
 
 /**
  * @Description: DOTO

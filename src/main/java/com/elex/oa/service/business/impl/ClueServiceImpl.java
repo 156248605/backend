@@ -1,4 +1,4 @@
-package com.elex.oa.service.business.Impl;
+package com.elex.oa.service.business.impl;
 
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.business.IBusinessAttachmentDao;
@@ -13,6 +13,8 @@ import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,8 @@ public class ClueServiceImpl implements IClueService {
     HrUtils hrUtils;
     @Resource
     IBusinessAttachmentDao iBusinessAttachmentDao;
+    @Resource
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag) {
@@ -43,20 +47,17 @@ public class ClueServiceImpl implements IClueService {
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Clue> clueList = null;
         PageInfo<Clue> cluePageInfo = null;
-        if ("ALL".equals(flag)) {//大领导可以查看全部的
-            clueList = iClueDao.select(clue);
-            cluePageInfo = new PageInfo<>(clueList);
-        } else if("DEP".equals(flag)) {//部门领导只能查看本部门的
+        if("DEP".equals(flag)) {//部门领导只能查看本部门的
             clueList = iClueDao.selectByClueAndPrincipalUsername(clue);
             cluePageInfo = new PageInfo<>(clueList);
-        } else if("PRIVATE".equals(flag)) {//普通员工只能查看自己的
+        } else {//普通员工只能查看自己的
             clueList = iClueDao.select(clue);
             cluePageInfo = new PageInfo<>(clueList);
         }
         List<Clue> clueListTemp = cluePageInfo.getList();
         for (Clue c:clueListTemp
              ) {
-            c = getClueByClue(c);
+            getClueByClue(c);
         }
         cluePageInfo.setList(clueListTemp);
         return cluePageInfo;
@@ -66,9 +67,11 @@ public class ClueServiceImpl implements IClueService {
     public Object addClueInfo(Clue clue) {
         if(StringUtils.isBlank(clue.getCluename())){
             return RespUtil.response("500","内容不能为空",null);
-        }if(StringUtils.isBlank(clue.getTrackcontent())){
+        }
+        if(StringUtils.isBlank(clue.getTrackcontent())){
             return RespUtil.response("500","进展不能为空",null);
-        }if(StringUtils.isBlank(clue.getSale_employeenumber()) || "undefined".equals(clue.getSale_employeenumber())){
+        }
+        if(StringUtils.isBlank(clue.getSale_employeenumber()) || "undefined".equals(clue.getSale_employeenumber())){
             return RespUtil.response("500","跟踪人不能为空",null);
         }
         Boolean aBoolean = true;
@@ -88,7 +91,7 @@ public class ClueServiceImpl implements IClueService {
         Clue clue = iClueDao.selectByPrimaryKey(cluecode);
         if(null==clue)return null;
         //获得销售人和方案人
-        clue = getClueByClue(clue);
+        getClueByClue(clue);
         //获得跟踪日志
         List<TrackInfo> trackInfoList = iTrackInfoDao.select(new TrackInfo(cluecode));
         clue.setTrackInfoList(trackInfoList);
@@ -119,7 +122,7 @@ public class ClueServiceImpl implements IClueService {
             clue.setTrackid(trackInfo.getCode());
             iClueDao.updateByPrimaryKeySelective(clue);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return RespUtil.response("500","请求失败！",e.getCause());
         }
         return RespUtil.response("200","关闭成功！",cluecode);
@@ -134,19 +137,17 @@ public class ClueServiceImpl implements IClueService {
     }
 
     private Boolean getaBooleanByUpdateClue(Clue clue, String newTrackid, Boolean aBoolean) {
-        if(aBoolean==false)return false;
-        String oldTrackid = clue.getTrackid();//将跟踪编码旧值截留保存
+        if(!aBoolean)return false;
         try {
             clue.setTrackid(newTrackid);
             iClueDao.updateByPrimaryKeySelective(clue);//根据主键更新属性不为null的值
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             //添加线索失败需要回滚
-            //iTrackInfoDao.deleteByPrimaryKey(newTrackid);
             return false;
         }
         //添加附件信息
-        aBoolean = getaBooleanByAddAttachment(clue, aBoolean,true,oldTrackid);
+        aBoolean = getaBooleanByAddAttachment(clue, aBoolean);
         return aBoolean;
     }
 
@@ -159,24 +160,23 @@ public class ClueServiceImpl implements IClueService {
     }
 
     private Boolean getaBooleanByAddClue(Clue clue, String trackCode,Boolean aBoolean) {
-        if(aBoolean==false)return false;
+        if(!aBoolean)return false;
         try {
             clue.setTrackid(trackCode);
             clue.setState(Commons.CLUE_ON);
             if(StringUtils.isEmpty(clue.getCreatetime()) || clue.getCreatetime().length()<19)clue.setCreatetime(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
             iClueDao.insert(clue);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             //添加线索失败需要回滚
-            //iTrackInfoDao.deleteByPrimaryKey(trackCode);
             return false;
         }
         //添加附件信息
-        aBoolean = getaBooleanByAddAttachment(clue, aBoolean,false,null);
+        aBoolean = getaBooleanByAddAttachment(clue, aBoolean);
         return aBoolean;
     }
 
-    private Boolean getaBooleanByAddAttachment(Clue clue, Boolean aBoolean,Boolean isAdd,String oldTrackid) {
+    private Boolean getaBooleanByAddAttachment(Clue clue, Boolean aBoolean) {
         if(null==clue.getBusinessAttachmentList())return aBoolean;
         try {
             for (BusinessAttachment b:clue.getBusinessAttachmentList()
@@ -187,15 +187,8 @@ public class ClueServiceImpl implements IClueService {
                 iBusinessAttachmentDao.insert(b);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             //添加附件失败需要回滚
-            /*if (isAdd) {
-                iClueDao.deleteByPrimaryKey(clue.getCode());//添加回滚
-            } else {
-                clue.setTrackid(oldTrackid);
-                iClueDao.updateByPrimaryKeySelective(clue);//更新回滚
-            }
-            iTrackInfoDao.deleteByPrimaryKey(clue.getTrackid());*/
             return false;
         }
         return aBoolean;

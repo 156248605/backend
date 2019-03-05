@@ -1,6 +1,5 @@
 package com.elex.oa.controller.business;
 
-import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.service.business.IOpportunityService;
@@ -13,16 +12,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description: DOTO
@@ -41,7 +34,7 @@ public class OpportunityController {
 
     @RequestMapping("/opportunity_ADD")
     @ResponseBody
-    public Object opportunity_ADD(
+    public Object opportunityAdd(
             Opportunity opportunity,
             HttpServletRequest request,
             @RequestParam(name = "attachmentSize", required = false)Integer i,
@@ -57,8 +50,7 @@ public class OpportunityController {
         String opportunityCode = hrUtils.getOpportunityCode(username);
         opportunity.setCode(opportunityCode);
         //调用业务层方法
-        Boolean aBoolean = iOpportunityService.transforClueToOpportunity(opportunity);
-        return aBoolean? RespUtil.response("200","添加成功！",null):RespUtil.response("500","添加失败！",null);
+        return iOpportunityService.transforClueToOpportunity(opportunity);
     }
 
     @RequestMapping("/getPageInfo")
@@ -80,13 +72,12 @@ public class OpportunityController {
     public Opportunity getDetailOpportunityinfo(
             @RequestParam("opportunitycode")String opportunitycode
     ){
-        Opportunity detailOpportunityinfo = iOpportunityService.getDetailOpportunityinfo(opportunitycode);
-        return detailOpportunityinfo;
+        return iOpportunityService.getDetailOpportunityinfo(opportunitycode);
     }
 
     @RequestMapping(value = "/opportunity_UPDATE",consumes = "multipart/form-data")
     @ResponseBody
-    public Object opportunity_UPDATE(
+    public Object opportunityUpdate(
             Opportunity opportunity,
             HttpServletRequest request,
             @RequestParam(name = "attachmentSize", required = false)Integer i
@@ -112,15 +103,14 @@ public class OpportunityController {
 
     @RequestMapping("/getBusinessInfoByState_OFF")
     @ResponseBody
-    public Map<String,Object> getBusinessInfoByState_OFF(){
-        Map<String, Object> businessInfoByState_off = iOpportunityService.getBusinessInfoByState_OFF();
-        return businessInfoByState_off;
+    public Map<String,Object> getBusinessInfoByStateOff(){
+        return iOpportunityService.getBusinessInfoByState_OFF();
     }
 
     private List<BusinessAttachment> getBusinessAttachmentList(MultipartHttpServletRequest request, int i) {
         List<BusinessAttachment> businessAttachmentList = new ArrayList<>();
         List<String> multiFileAddress = hrUtils.getMultiFileAddress(request, i);
-        if(null==multiFileAddress)return null;
+        if(null==multiFileAddress)return Collections.emptyList();
         for (String attachment_address:multiFileAddress
              ) {
             BusinessAttachment businessAttachment = new BusinessAttachment();

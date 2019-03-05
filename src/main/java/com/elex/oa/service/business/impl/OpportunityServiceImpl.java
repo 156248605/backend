@@ -1,4 +1,4 @@
-package com.elex.oa.service.business.Impl;
+package com.elex.oa.service.business.impl;
 
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.business.IBusinessAttachmentDao;
@@ -15,6 +15,8 @@ import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,15 +44,19 @@ public class OpportunityServiceImpl implements IOpportunityService {
     IBusinessAttachmentDao iBusinessAttachmentDao;
     @Resource
     IClueDao iClueDao;
+    @Resource
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Boolean transforClueToOpportunity(Opportunity opportunity) {
+        //先判断必选项
+
         //添加商机（步骤：1.跟踪->2.商机->3.附件）
         //添加跟踪信息
-        TrackInfo trackInfo_opportunity = getTrackInfoByObject(opportunity);
-        iTrackInfoDao.insert(trackInfo_opportunity);
+        TrackInfo trackInfoOpportunity = getTrackInfoByObject(opportunity);
+        iTrackInfoDao.insert(trackInfoOpportunity);
         //添加商机信息
-        opportunity.setTrackid(trackInfo_opportunity.getCode());
+        opportunity.setTrackid(trackInfoOpportunity.getCode());
         opportunity.setState(Commons.OPPORTUNITY_ON);
         if (null==opportunity.getCreatetime() || StringUtils.isEmpty(opportunity.getCreatetime().trim()) || opportunity.getCreatetime().length()<19) {
             opportunity.setCreatetime(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
@@ -58,7 +64,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         iOpportunityDao.insertSelective(opportunity);
         //添加附件信息
         Boolean aBoolean = getaBooleanByAddAttachment(opportunity,true);
-        if(aBoolean==false)return false;
+        if(!aBoolean)return false;
         //设置显示状态为“已转商机状态”
         aBoolean = getaBooleanBySetClueState(opportunity.getUsername(),opportunity.getClueid());
         return aBoolean;
@@ -70,20 +76,17 @@ public class OpportunityServiceImpl implements IOpportunityService {
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Opportunity> opportunityList = null;
         PageInfo<Opportunity> opportunityPageInfo = null;
-        if ("ALL".equals(flag)) {
-            opportunityList = iOpportunityDao.select(opportunity);
-            opportunityPageInfo = new PageInfo<Opportunity>(opportunityList);
-        } else if("DEP".equals(flag)){
+        if("DEP".equals(flag)){
             opportunityList = iOpportunityDao.selectByOpportunityAndPrincipalUsername(opportunity);
-            opportunityPageInfo = new PageInfo<Opportunity>(opportunityList);
-        }else if("PRIVATE".equals(flag)){
+            opportunityPageInfo = new PageInfo<>(opportunityList);
+        }else {
             opportunityList = iOpportunityDao.select(opportunity);
-            opportunityPageInfo = new PageInfo<Opportunity>(opportunityList);
+            opportunityPageInfo = new PageInfo<>(opportunityList);
         }
         List<Opportunity> opportunityListTemp = opportunityPageInfo.getList();
         for (Opportunity o:opportunityListTemp
         ) {
-            o = getOpportunityByOpportunity(o);
+            getOpportunityByOpportunity(o);
         }
         opportunityPageInfo.setList(opportunityListTemp);
         return opportunityPageInfo;
@@ -95,7 +98,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         Opportunity opportunity = iOpportunityDao.selectByPrimaryKey(opportunitycode);
         if(null==opportunity)return null;
         //获得销售人和方案人
-        opportunity = getOpportunityByOpportunity(opportunity);
+        getOpportunityByOpportunity(opportunity);
         //获得跟踪日志
         List<TrackInfo> trackInfoList = iTrackInfoDao.select(new TrackInfo(opportunitycode));
         opportunity.setTrackInfoList(trackInfoList);
@@ -107,8 +110,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
 
         List<Opportunity> opportunityList = iOpportunityDao.select(new Opportunity(cluecode, null));
         if(null==opportunityList || opportunityList.size()>1)return null;
-        Opportunity opportunity = getDetailOpportunityinfo(opportunityList.get(0).getCode());
-        return opportunity;
+        return getDetailOpportunityinfo(opportunityList.get(0).getCode());
     }
 
     @Override
@@ -135,7 +137,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
             opportunity.setTrackid(trackInfo.getCode());
             iOpportunityDao.updateByPrimaryKeySelective(opportunity);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return RespUtil.response("500","请求失败！",e.getCause());
         }
         return RespUtil.response("200","关闭成功！",opportunitycode);
@@ -161,15 +163,14 @@ public class OpportunityServiceImpl implements IOpportunityService {
     }
 
     private Boolean getaBooleanByUpdateOpportunity(Opportunity opportunity, String newTrackid, Boolean aBoolean) {
-        if(aBoolean==false)return false;
+        if(!aBoolean)return false;
         //String oldTrackid = opportunity.getTrackid();//将跟踪编码旧值截留保存
         try {
             opportunity.setTrackid(newTrackid);
             iOpportunityDao.updateByPrimaryKeySelective(opportunity);//根据主键更新属性不为null的值
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             //添加线索失败需要回滚
-            //iTrackInfoDao.deleteByPrimaryKey(newTrackid);
             return false;
         }
         //添加附件信息
@@ -200,12 +201,12 @@ public class OpportunityServiceImpl implements IOpportunityService {
             clue.setUsername(username);
             clue.setState(Commons.CLUE_TRANSFOR_OPPORTUNITY);
             clue.setTrackcontent("最后阶段,此线索已转商机！");
-            TrackInfo trackInfo_clue = getTrackInfoByObject(clue);
-            iTrackInfoDao.insert(trackInfo_clue);
-            clue.setTrackid(trackInfo_clue.getCode());
+            TrackInfo trackInfoClue = getTrackInfoByObject(clue);
+            iTrackInfoDao.insert(trackInfoClue);
+            clue.setTrackid(trackInfoClue.getCode());
             iClueDao.updateByPrimaryKeySelective(clue);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return false;
         }
         return true;
@@ -241,7 +242,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
                 iBusinessAttachmentDao.insert(b);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return false;
         }
         return aBoolean;
