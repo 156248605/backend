@@ -207,7 +207,7 @@ public class ClueServiceImpl implements IClueService {
         long l = System.currentTimeMillis();
         trackInfo.setCode("track_"+l);
         trackInfo.setDependence_code(clue.getCode());
-        trackInfo.setTrack_content(clue.getTrackcontent());
+        trackInfo.setTrack_content(clue.getUsername()+":"+clue.getTrackcontent());
         //获得时间
         trackInfo.setTrack_date(hrUtils.getDateStringByTimeMillis(l));
         return trackInfo;

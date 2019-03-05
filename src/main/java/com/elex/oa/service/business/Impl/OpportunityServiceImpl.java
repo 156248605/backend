@@ -60,7 +60,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         Boolean aBoolean = getaBooleanByAddAttachment(opportunity,true);
         if(aBoolean==false)return false;
         //设置显示状态为“已转商机状态”
-        aBoolean = getaBooleanBySetClueState(opportunity.getClueid());
+        aBoolean = getaBooleanBySetClueState(opportunity.getUsername(),opportunity.getClueid());
         return aBoolean;
     }
 
@@ -192,13 +192,14 @@ public class OpportunityServiceImpl implements IOpportunityService {
         return opportunity;
     }
 
-    private Boolean getaBooleanBySetClueState(String clueid) {
+    private Boolean getaBooleanBySetClueState(String username,String clueid) {
         if(StringUtils.isEmpty(clueid))return false;
         try {
             Clue clue = iClueDao.selectByPrimaryKey(clueid);
             if(null==clue)return false;
+            clue.setUsername(username);
             clue.setState(Commons.CLUE_TRANSFOR_OPPORTUNITY);
-            clue.setTrackcontent("最后阶段：此线索已转商机！");
+            clue.setTrackcontent("最后阶段,此线索已转商机！");
             TrackInfo trackInfo_clue = getTrackInfoByObject(clue);
             iTrackInfoDao.insert(trackInfo_clue);
             clue.setTrackid(trackInfo_clue.getCode());
@@ -216,11 +217,13 @@ public class OpportunityServiceImpl implements IOpportunityService {
         long l = System.currentTimeMillis();
         trackInfo.setCode("track_"+l);
         if (obj instanceof Opportunity) {
-            trackInfo.setDependence_code(((Opportunity)obj).getCode());
-            trackInfo.setTrack_content(((Opportunity)obj).getTrackcontent());
+            Opportunity opportunity = (Opportunity)obj;
+            trackInfo.setDependence_code(opportunity.getCode());
+            trackInfo.setTrack_content(opportunity.getUsername()+":"+opportunity.getTrackcontent());
         } else if(obj instanceof Clue){
-            trackInfo.setDependence_code(((Clue)obj).getCode());
-            trackInfo.setTrack_content(((Clue)obj).getTrackcontent());
+            Clue clue = (Clue) obj;
+            trackInfo.setDependence_code(clue.getCode());
+            trackInfo.setTrack_content(clue.getUsername()+":"+clue.getTrackcontent());
         }
         //获得时间
         trackInfo.setTrack_date(hrUtils.getDateStringByTimeMillis(l));
