@@ -44,13 +44,18 @@ public class OpportunityServiceImpl implements IOpportunityService {
     IBusinessAttachmentDao iBusinessAttachmentDao;
     @Resource
     IClueDao iClueDao;
-    @Resource
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private static Logger logger = LoggerFactory.getLogger(OpportunityServiceImpl.class);
 
     @Override
-    public Boolean transforClueToOpportunity(Opportunity opportunity) {
+    public Object transforClueToOpportunity(Opportunity opportunity) {
         //先判断必选项
-
+        if(StringUtils.isBlank(opportunity.getOpportunityname()))return RespUtil.response("500","商机内容不能为空！",null);
+        if(StringUtils.isBlank(opportunity.getTrackcontent()))return RespUtil.response("500","商机进展不能为空！",null);
+        if(StringUtils.isBlank(opportunity.getSale_employeenumber()))return RespUtil.response("500","商机跟踪人不能为空！",null);
+        if(StringUtils.isBlank(opportunity.getCustom_budget()))return RespUtil.response("500","客户预算人不能为空！",null);
+        if(StringUtils.isBlank(opportunity.getOpportunity_budget()))return RespUtil.response("500","商机预算人不能为空！",null);
+        if(StringUtils.isBlank(opportunity.getCustom()))return RespUtil.response("500","客户不能为空！",null);
         //添加商机（步骤：1.跟踪->2.商机->3.附件）
         //添加跟踪信息
         TrackInfo trackInfoOpportunity = getTrackInfoByObject(opportunity);
@@ -64,10 +69,11 @@ public class OpportunityServiceImpl implements IOpportunityService {
         iOpportunityDao.insertSelective(opportunity);
         //添加附件信息
         Boolean aBoolean = getaBooleanByAddAttachment(opportunity,true);
-        if(!aBoolean)return false;
-        //设置显示状态为“已转商机状态”
+        if(!aBoolean)return RespUtil.response("500","添加附件出错！",null);
+        //设置显示状态为“转商机”
         aBoolean = getaBooleanBySetClueState(opportunity.getUsername(),opportunity.getClueid());
-        return aBoolean;
+        if(!aBoolean)return RespUtil.response("500","将线索更新为'转商机'时出错！",null);
+        return RespUtil.response("200","请求成功！",null);
     }
 
     @Override

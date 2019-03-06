@@ -38,9 +38,8 @@ public class ClueServiceImpl implements IClueService {
     HrUtils hrUtils;
     @Resource
     IBusinessAttachmentDao iBusinessAttachmentDao;
-    @Resource
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    static Logger logger = LoggerFactory.getLogger(ClueServiceImpl.class);
     @Override
     public PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag) {
         String orderBy = "trackid DESC";
