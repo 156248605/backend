@@ -520,12 +520,10 @@
     </select>
 
     <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT reptId FROM eqpt_position WHERE postId NOT IN (SELECT postId FROM eqpt_detail)
-        UNION
-        SELECT reptId FROM eqpt_repository WHERE postManage = '否'
-        UNION
-        SELECT reptId FROM eqpt_detail WHERE id = #{id}
-        ORDER BY reptId
+        SELECT reptId FROM eqpt_repository WHERE
+        <if test="reptName != '管理员'">
+            reptAdmin = #{reptName}
+        </if>
     </select>
 
     <select id="matInPost" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -538,7 +536,7 @@
     </select>
 
     <select id="matOutRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT reptId FROM eqpt_repository WHERE reptId IN (SELECT reptId FROM eqpt_detail WHERE id = #{id} AND num != 0)
+        SELECT reptId FROM eqpt_repository WHERE reptId IN (SELECT reptId FROM eqpt_detail WHERE id = #{id} AND num != 0) AND reptAdmin = #{reptName}
     </select>
 
     <select id="matOutPost" resultType="com.elex.oa.entity.eqpt.Repository">

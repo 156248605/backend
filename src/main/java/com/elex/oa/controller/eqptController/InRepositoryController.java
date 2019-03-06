@@ -104,6 +104,13 @@ public class InRepositoryController {
         return inRepositoryImpl.showproj(request);
     }
 
+    @RequestMapping("/showprojProduce")
+    @ResponseBody
+    public List<Repository> showprojProduce (HttpServletRequest request) {
+        return inRepositoryImpl.showprojProduce(request);
+    }
+
+
     @RequestMapping("/getInstId")
     @ResponseBody
     public String getInstId (String instid, HttpServletRequest request){
@@ -164,10 +171,6 @@ public class InRepositoryController {
     public List<Repository> postDraft (HttpServletRequest request){
         return inRepositoryImpl.postDraft(request);
     }
-
-    @RequestMapping("/getNotice")
-    @ResponseBody
-    public List<HashMap<String, Object>> getNotice(HttpServletRequest request) { return inRepositoryImpl.notice(request); }
 
     @RequestMapping("/noticeChild")
     @ResponseBody

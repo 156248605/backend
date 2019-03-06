@@ -181,6 +181,7 @@ public class RepositoryImpl implements RepositoryService {
         List<HashMap> list = JSON.parseArray(LIST, HashMap.class);
         Material material = new Material();
         material.setId(list.get(0).get("theMatId").toString());
+        material.setReptName(request.getParameter("reptAdmin"));
         String result = repositoryMapper.fixPostMatInfo(material);
         if (result != null) {
             reptList = repositoryMapper.fixRept(material);
@@ -219,6 +220,7 @@ public class RepositoryImpl implements RepositoryService {
         List<HashMap> list = JSON.parseArray(LIST, HashMap.class);
         Material material = new Material();
         material.setId(list.get(0).get("theMatId").toString());
+        material.setReptName(request.getParameter("reptAdmin"));
         reptList = repositoryMapper.matOutRept(material);
         return reptList;
     }

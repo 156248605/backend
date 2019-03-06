@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.net.HttpRetryException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -405,9 +404,9 @@ public class InRepositoryImpl implements InRepositoryService {
         List<Repository> list = inRepositoryMapper.showmat(wdbh);
         for (int i = 0; i < list.size(); i++) {
             Repository repository = new Repository();
-            repository.setMaterialId(list.get(i).getMaterialId());
-            String materialId = outRepositoryMapper.showmatSN(repository);
-            list.get(i).setSn(materialId);
+            //repository.setMaterialId(list.get(i).getMaterialId());
+            //String materialId = outRepositoryMapper.showmatSN(repository);
+            list.get(i).setSn(list.get(i).getSn());
         }
         return list;
     }
@@ -672,19 +671,14 @@ public class InRepositoryImpl implements InRepositoryService {
     @Override
     public PageInfo<Repository> showNotice(Page page, HttpServletRequest request){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Repository> list = inRepositoryMapper.allNotice();
-        return new PageInfo<>(list);
-    }
-
-    // 入库通知弹框
-    @Override
-    public List<HashMap<String,Object>> notice(HttpServletRequest request) {
+        List<Repository> list = null;
         String category = request.getParameter("category");
-        List<HashMap<String,Object>> list = null;
         if (category.equals("采购收货")){
-            list = inRepositoryMapper.getNotice();
+            list = inRepositoryMapper.allNoticePurchase();
+        }else if (category.equals("生产完工")) {
+            list = inRepositoryMapper.allNoticeProduce();
         }
-        return list;
+        return new PageInfo<>(list);
     }
 
     // 弹框子表
@@ -692,6 +686,13 @@ public class InRepositoryImpl implements InRepositoryService {
     public List<HashMap<String,Object>> noticeChild(HttpServletRequest request) {
         String wdbh = request.getParameter("wdbh");
         List<HashMap<String,Object>> list = inRepositoryMapper.noticeChild(wdbh);
+        return list;
+    }
+
+    @Override
+    public List<Repository> showprojProduce(HttpServletRequest request) {
+        String projectId = request.getParameter("projectId");
+        List<Repository> list = inRepositoryMapper.showprojProduce(projectId);
         return list;
     }
 }

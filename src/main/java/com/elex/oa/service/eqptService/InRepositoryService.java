@@ -79,9 +79,8 @@ public interface InRepositoryService {
     /*所有入库通知*/
     PageInfo<Repository> showNotice(Page page, HttpServletRequest request);
 
-    // 入库通知弹框
-    List<HashMap<String,Object>> notice(HttpServletRequest request);
-
     // 弹框子表
     List<HashMap<String,Object>> noticeChild(HttpServletRequest request);
+
+    List<Repository> showprojProduce(HttpServletRequest request);
 }

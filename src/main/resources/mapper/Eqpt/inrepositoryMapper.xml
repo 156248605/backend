@@ -84,6 +84,10 @@
         SELECT w_cgddhtpsd.F_XMBH AS projId,w_cgddhtpsd.F_XMMC AS projName FROM w_cgddhtpsd WHERE F_WDBH = #{wdbh}
     </select>
 
+    <select id="showprojProduce" resultType="com.elex.oa.entity.eqpt.Repository">
+        SELECT '' AS projId,'' AS projName FROM w_jy WHERE F_WDBH = #{wdbh}
+    </select>
+
     <select id="getInId" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT * FROM eqpt_inrepository WHERE INST_ID_ = #{instId}
     </select>
@@ -108,12 +112,6 @@
         DELETE FROM eqpt_inrepository_draft WHERE inId LIKE CONCAT(CONCAT('%',#{inId},'%'))
     </delete>
 
-    <select id="getNotice" resultType="HashMap">
-        SELECT '业务采购订单合同评审单' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, F_XMBH, F_XMMC FROM w_cgddhtpsd WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
-        UNION
-        SELECT '检验单' AS F_BDMC, F_WDBH, F_SQR_NAME, F_TXRQ, '' as F_XMBH, '' as F_XMMC FROM w_jy WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
-    </select>
-
     <select id="noticeChild" resultType="HashMap">
         SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_CGSL AS num, F_CGDJ AS price, F_CGJE AS sum FROM w_cgmx7,w_cgddhtpsd WHERE w_cgmx7.REF_ID_ = (SELECT ID_ FROM w_cgddhtpsd WHERE F_WDBH = #{wdbh}) AND w_cgddhtpsd.INST_STATUS_ = 'SUCCESS_END'
         UNION
@@ -128,9 +126,13 @@
         SELECT F_WDBH FROM w_rccgddhtpsd1 WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>-->
 
-    <select id="allNotice" resultType="com.elex.oa.entity.eqpt.Repository">
+    <select id="allNoticePurchase" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT '业务采购订单合同评审单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_cgddhtpsd WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
         UNION
+        SELECT '检验单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, '' AS bn, '' AS sn FROM w_jy WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
+    </select>
+
+    <select id="allNoticeProduce" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT '检验单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, '' AS bn, '' AS sn FROM w_jy WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 </mapper>

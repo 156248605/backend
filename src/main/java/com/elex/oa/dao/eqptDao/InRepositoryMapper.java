@@ -55,13 +55,12 @@ public interface InRepositoryMapper {
     // 删除草稿
     void deleteDraft(Repository repository);
 
-    // 入库通知细节
-    List<HashMap<String, Object>> getNotice();
-
     // 弹窗子表
     List<HashMap<String, Object>> noticeChild(String wdbh);
 
     /*所有*/
-    List<Repository> allNotice();
+    List<Repository> allNoticeProduce();
+    List<Repository> allNoticePurchase();
 
+    List<Repository> showprojProduce(String projectId);
 }
