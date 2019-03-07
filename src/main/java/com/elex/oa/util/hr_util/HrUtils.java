@@ -491,7 +491,7 @@ public class HrUtils {
     }
 
     //获得商机编号
-    //商机编号的格式暂定为：ELEX-BIZ-UN-YYYY-MMNNNN
+    //商机编号的格式暂定为：ELEX-OPP-UN-YYYY-MMNNNN
     public String getOpportunityCode(String username){
         //获得UN编号
         String strUN = getCompanyCodeByUsername(username);
@@ -499,7 +499,7 @@ public class HrUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssss");
         String format = sdf.format(date);
         String currentTime = format.substring(0,4)+"-"+format.substring(5,7);
-        String opportunityCodePrefix = "ELEX-BIZ-"+strUN+"-"+currentTime;
+        String opportunityCodePrefix = "ELEX-OPP-"+strUN+"-"+currentTime;
         String opportunityCode = opportunityCodePrefix+getSequenceCode(currentTime, Commons.OPPORTUNITY_SEQUENCE_NAME);
         return opportunityCode;
     }
