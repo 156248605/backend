@@ -140,9 +140,9 @@
 
     <select id="noticeChild" resultType="HashMap">
         SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_XQSL AS num, '' AS price, '' AS sum FROM w_cpmx WHERE REF_ID_ = (SELECT ID_ FROM w_xsfhtzd WHERE F_WDBH = #{wdbh} AND INST_STATUS_ = 'SUCCESS_END')
-        UNION
+        UNION ALL
         SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_lylymx WHERE REF_ID_ = (SELECT ID_ FROM w_liysqd WHERE F_WDBH = #{wdbh} AND INST_STATUS_ = 'SUCCESS_END')
-        UNION
+        UNION ALL
         SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_LYSL AS num, F_KCJ AS price, F_JE AS sum FROM w_zdsqlymx WHERE REF_ID_ = (SELECT ID_ FROM w_zdsqd WHERE F_WDBH = #{wdbh} AND INST_STATUS_ = 'SUCCESS_END')
     </select>
 
@@ -150,10 +150,12 @@
         SELECT DISTINCT '领用申请单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_liysqd WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
         UNION
         SELECT DISTINCT '业务招待申请单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_zdsqd WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        ORDER BY fourthOne DESC
     </select>
 
     <select id="allNoticeX" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT '销售发货通知单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, F_XMBH AS bn, F_XMMC AS sn FROM w_xsfhtzd WHERE F_WDBH NOT IN (SELECT outInfo FROM eqpt_outrepository) AND INST_STATUS_ = 'SUCCESS_END'
+        ORDER BY fourthOne DESC
     </select>
 
     <select id="priceOfId" resultType="string">
