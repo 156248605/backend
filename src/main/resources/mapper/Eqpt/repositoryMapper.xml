@@ -520,9 +520,9 @@
     </select>
 
     <select id="matInRept" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT reptId FROM eqpt_repository WHERE
+        SELECT reptId FROM eqpt_repository
         <if test="reptName != '管理员'">
-            reptAdmin = #{reptName}
+            WHERE reptAdmin = #{reptName}
         </if>
     </select>
 
