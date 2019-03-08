@@ -25,6 +25,15 @@
         <result column="note"        javaType="string" property="note"></result>
     </resultMap>
 
+    <resultMap id="mileStone" type="com.elex.oa.entity.project.MileStonePlan">
+        <result column="F_JD" javaType="string" property="phase"></result>
+        <result column="F_GJGZ" javaType="string" property="keyWork"></result>
+        <result column="F_QSSJ" javaType="string" property="startDate"></result>
+        <result column="F_JZSJ" javaType="string" property="endDate"></result>
+        <result column="F_ZT" javaType="string" property="status"></result>
+        <result column="F_BZ" javaType="string" property="note"></result>
+    </resultMap>
+
     <select id="queryCodes" resultType="string">
         SELECT project_code FROM pro_miles
     </select>
@@ -161,4 +170,8 @@
     <delete id="deleteMileStonePlans" parameterType="string">
         DELETE FROM pro_miles_plan WHERE project_code = #{projectCode}
     </delete>
+
+    <select id="queryContentByRel" parameterType="string" resultMap="mileStone">
+        SELECT F_JD, F_GJGZ, F_QSSJ, F_JZSJ, F_ZT, F_BZ FROM w_lcbjh WHERE REF_ID_ = #{relCode}
+    </select>
 </mapper>

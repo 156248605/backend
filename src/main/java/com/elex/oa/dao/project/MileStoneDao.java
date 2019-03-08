@@ -23,4 +23,6 @@ public interface MileStoneDao {
     void deleteMileStone(String projectCode);
     //删除里程碑信息详情
     void deleteMileStonePlans(String projectCode);
+    //查询关联里程碑计划
+    List<MileStonePlan> queryContentByRel(String relCode);
 }

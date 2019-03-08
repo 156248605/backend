@@ -9,16 +9,19 @@ public class ProjectInfor {
     private String deptManager; //立项部门的部门经理
     private String proposer; //申请人
     private String writeDate; //立项日期
-    private String department1;
     private String businessManager; //商务经理
     private String businessManagerId; //商务经理编号
     private String businessManagerCode; //商务经理编号，用于查询
     private String projectSource; //项目来源
-    private String department2;
     private String projectManager; //项目经理
     private String projectManagerId; //项目经理编号
     private String projectManagerCode; //项目经理编号，用于查询
     private String projectType; //项目类型
+    private String projectPhase; //项目阶段
+    private String startTime; //项目开始时间
+    private String endTime; //项目结束时间
+    private String capitalization; //资本化
+    private String classified; //涉密
     private String generalSituation;// 项目概况
     private String projectMembers; //项目成员
     private String projectMemberId; //项目成员id
@@ -26,8 +29,6 @@ public class ProjectInfor {
     private String relatedMembers; //相关人员
     private String relatedMemberId; //相关人员id
     private String relatedMemberCode; //相关人员id,用于查询
-    private String amount; //项目金额
-    private String copies; //合同份数
     private String partyName; //甲方名称
     private String partyAddress; //甲方地址
     private String partyPhone; //甲方电话
@@ -45,7 +46,7 @@ public class ProjectInfor {
     public ProjectInfor() {
     }
 
-    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String department1, String businessManager, String businessManagerId, String businessManagerCode, String projectSource, String department2, String projectManager, String projectManagerId, String projectManagerCode, String projectType, String generalSituation, String projectMembers, String projectMemberId, String projectMemberCode, String relatedMembers, String relatedMemberId, String relatedMemberCode, String amount, String copies, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
+    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String businessManager, String businessManagerId, String businessManagerCode, String projectSource, String projectManager, String projectManagerId, String projectManagerCode, String projectType, String projectPhase, String startTime, String endTime, String capitalization, String classified, String generalSituation, String projectMembers, String projectMemberId, String projectMemberCode, String relatedMembers, String relatedMemberId, String relatedMemberCode, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -54,16 +55,19 @@ public class ProjectInfor {
         this.deptManager = deptManager;
         this.proposer = proposer;
         this.writeDate = writeDate;
-        this.department1 = department1;
         this.businessManager = businessManager;
         this.businessManagerId = businessManagerId;
         this.businessManagerCode = businessManagerCode;
         this.projectSource = projectSource;
-        this.department2 = department2;
         this.projectManager = projectManager;
         this.projectManagerId = projectManagerId;
         this.projectManagerCode = projectManagerCode;
         this.projectType = projectType;
+        this.projectPhase = projectPhase;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.capitalization = capitalization;
+        this.classified = classified;
         this.generalSituation = generalSituation;
         this.projectMembers = projectMembers;
         this.projectMemberId = projectMemberId;
@@ -71,8 +75,6 @@ public class ProjectInfor {
         this.relatedMembers = relatedMembers;
         this.relatedMemberId = relatedMemberId;
         this.relatedMemberCode = relatedMemberCode;
-        this.amount = amount;
-        this.copies = copies;
         this.partyName = partyName;
         this.partyAddress = partyAddress;
         this.partyPhone = partyPhone;
@@ -152,14 +154,6 @@ public class ProjectInfor {
         this.writeDate = writeDate;
     }
 
-    public String getDepartment1() {
-        return department1;
-    }
-
-    public void setDepartment1(String department1) {
-        this.department1 = department1;
-    }
-
     public String getBusinessManager() {
         return businessManager;
     }
@@ -192,14 +186,6 @@ public class ProjectInfor {
         this.projectSource = projectSource;
     }
 
-    public String getDepartment2() {
-        return department2;
-    }
-
-    public void setDepartment2(String department2) {
-        this.department2 = department2;
-    }
-
     public String getProjectManager() {
         return projectManager;
     }
@@ -230,6 +216,46 @@ public class ProjectInfor {
 
     public void setProjectType(String projectType) {
         this.projectType = projectType;
+    }
+
+    public String getProjectPhase() {
+        return projectPhase;
+    }
+
+    public void setProjectPhase(String projectPhase) {
+        this.projectPhase = projectPhase;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getCapitalization() {
+        return capitalization;
+    }
+
+    public void setCapitalization(String capitalization) {
+        this.capitalization = capitalization;
+    }
+
+    public String getClassified() {
+        return classified;
+    }
+
+    public void setClassified(String classified) {
+        this.classified = classified;
     }
 
     public String getGeneralSituation() {
@@ -286,22 +312,6 @@ public class ProjectInfor {
 
     public void setRelatedMemberCode(String relatedMemberCode) {
         this.relatedMemberCode = relatedMemberCode;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getCopies() {
-        return copies;
-    }
-
-    public void setCopies(String copies) {
-        this.copies = copies;
     }
 
     public String getPartyName() {
@@ -419,16 +429,19 @@ public class ProjectInfor {
                 ", deptManager='" + deptManager + '\'' +
                 ", proposer='" + proposer + '\'' +
                 ", writeDate='" + writeDate + '\'' +
-                ", department1='" + department1 + '\'' +
                 ", businessManager='" + businessManager + '\'' +
                 ", businessManagerId='" + businessManagerId + '\'' +
                 ", businessManagerCode='" + businessManagerCode + '\'' +
                 ", projectSource='" + projectSource + '\'' +
-                ", department2='" + department2 + '\'' +
                 ", projectManager='" + projectManager + '\'' +
                 ", projectManagerId='" + projectManagerId + '\'' +
                 ", projectManagerCode='" + projectManagerCode + '\'' +
                 ", projectType='" + projectType + '\'' +
+                ", projectPhase='" + projectPhase + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", capitalization='" + capitalization + '\'' +
+                ", classified='" + classified + '\'' +
                 ", generalSituation='" + generalSituation + '\'' +
                 ", projectMembers='" + projectMembers + '\'' +
                 ", projectMemberId='" + projectMemberId + '\'' +
@@ -436,8 +449,6 @@ public class ProjectInfor {
                 ", relatedMembers='" + relatedMembers + '\'' +
                 ", relatedMemberId='" + relatedMemberId + '\'' +
                 ", relatedMemberCode='" + relatedMemberCode + '\'' +
-                ", amount='" + amount + '\'' +
-                ", copies='" + copies + '\'' +
                 ", partyName='" + partyName + '\'' +
                 ", partyAddress='" + partyAddress + '\'' +
                 ", partyPhone='" + partyPhone + '\'' +

@@ -2,6 +2,7 @@ package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.elex.oa.dao.hr.IUserDao;
+import com.elex.oa.dao.project.MileStoneDao;
 import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.dao.project.ProjectSetDao;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
@@ -13,6 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -37,8 +39,12 @@ public class ProjectInforImpl implements ProjectInforService {
     @Resource
     private ProjectRecordMongo projectRecordMongo;
 
+    @Resource
+    private MileStoneDao mileStoneDao;
+
     //查询已立项成功的项目，添加到项目信息中
     @Override
+    @Transactional
     public void addInfor() {
         List<String> codes = projectInforDao.queryCodes(); //查询已建立项目详情信息的编号
 
@@ -53,17 +59,25 @@ public class ProjectInforImpl implements ProjectInforService {
         if(approvalLists.size() == 0) {
             return;
         }
-        List<ProjectVarious> statusList = projectSetDao.queryStatus();
-        String code = "";
-        for(ProjectVarious status:statusList) {
-            if(status.getName().equals("进行")) {
-                code = status.getCode()+"";
-                break;
-            }
-        }
         for(ApprovalList approvalList: approvalLists) {
             approvalList.setWriteDate(approvalList.getWriteDate().substring(0,10));
-            approvalList.setProjectStatus(code);
+            if(StringUtils.isNotBlank(approvalList.getStartTime())) {
+                approvalList.setStartTime(approvalList.getStartTime().substring(0, 10));
+            }
+            if(StringUtils.isNotBlank(approvalList.getEndTime())) {
+                approvalList.setEndTime(approvalList.getEndTime().substring(0, 10));
+            }
+            List<MileStonePlan> mileStones = mileStoneDao.queryContentByRel(approvalList.getRelCode()); //查询关联里程碑计划
+            if(mileStones == null || mileStones.size() == 0) {
+
+            } else {
+                for(MileStonePlan mileStonePlan: mileStones) {
+                    mileStonePlan.setProjectCode(approvalList.getProjectCode());
+                    mileStonePlan.setStartDate(approvalList.getStartTime().substring(0, 10));
+                    mileStonePlan.setEndDate(approvalList.getEndTime().substring(0, 10));
+                }
+                mileStoneDao.addMileStonePlans(mileStones);
+            }
         }
         projectInforDao.addInfor(approvalLists); //添加项目详情信息
     }

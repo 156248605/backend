@@ -12,23 +12,24 @@ public class ApprovalList {
     private String inDepartment; //立项部门
     private String deptManager; //申请人的部门经理
     private String proposer; //申请人
-    private String department1;
+    private String startTime; //开始时间
+    private String endTime; //结束时间
     private String businessManager; //商务经理
     private String businessManagerId; //商务经理编码
-    private String department2;
-    private String projectManager; //项目经理
-    private String projectManagerId; //项目经理编码
+    private String projectPhase; //项目阶段
+    private String capitalization; //资本化
+    private String classified; //涉密
+    private String relCode; //关联编码
+    private String projectManager; //交付经理
+    private String projectManagerId; //交付经理编码
     private String generalSituation; //项目概况
     private String departmentManager; //部门经理
-    private String leaderShip; //分管领导
-    private String reviewSign; //评审会签
-    private String generalManager; //总经理
-    private String distribution; //申请人分发
+
 
     public ApprovalList() {
     }
 
-    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String projectStatus, String projectSource, String projectType, String inDepartment, String deptManager, String proposer, String department1, String businessManager, String businessManagerId, String department2, String projectManager, String projectManagerId, String generalSituation, String departmentManager, String leaderShip, String reviewSign, String generalManager, String distribution) {
+    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String projectStatus, String projectSource, String projectType, String inDepartment, String deptManager, String proposer, String startTime, String endTime, String businessManager, String businessManagerId, String projectPhase, String capitalization, String classified, String relCode, String projectManager, String projectManagerId, String generalSituation, String departmentManager) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -39,18 +40,18 @@ public class ApprovalList {
         this.inDepartment = inDepartment;
         this.deptManager = deptManager;
         this.proposer = proposer;
-        this.department1 = department1;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.businessManager = businessManager;
         this.businessManagerId = businessManagerId;
-        this.department2 = department2;
+        this.projectPhase = projectPhase;
+        this.capitalization = capitalization;
+        this.classified = classified;
+        this.relCode = relCode;
         this.projectManager = projectManager;
         this.projectManagerId = projectManagerId;
         this.generalSituation = generalSituation;
         this.departmentManager = departmentManager;
-        this.leaderShip = leaderShip;
-        this.reviewSign = reviewSign;
-        this.generalManager = generalManager;
-        this.distribution = distribution;
     }
 
     public int getId() {
@@ -133,12 +134,20 @@ public class ApprovalList {
         this.proposer = proposer;
     }
 
-    public String getDepartment1() {
-        return department1;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setDepartment1(String department1) {
-        this.department1 = department1;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getBusinessManager() {
@@ -157,12 +166,36 @@ public class ApprovalList {
         this.businessManagerId = businessManagerId;
     }
 
-    public String getDepartment2() {
-        return department2;
+    public String getProjectPhase() {
+        return projectPhase;
     }
 
-    public void setDepartment2(String department2) {
-        this.department2 = department2;
+    public void setProjectPhase(String projectPhase) {
+        this.projectPhase = projectPhase;
+    }
+
+    public String getCapitalization() {
+        return capitalization;
+    }
+
+    public void setCapitalization(String capitalization) {
+        this.capitalization = capitalization;
+    }
+
+    public String getClassified() {
+        return classified;
+    }
+
+    public void setClassified(String classified) {
+        this.classified = classified;
+    }
+
+    public String getRelCode() {
+        return relCode;
+    }
+
+    public void setRelCode(String relCode) {
+        this.relCode = relCode;
     }
 
     public String getProjectManager() {
@@ -197,38 +230,6 @@ public class ApprovalList {
         this.departmentManager = departmentManager;
     }
 
-    public String getLeaderShip() {
-        return leaderShip;
-    }
-
-    public void setLeaderShip(String leaderShip) {
-        this.leaderShip = leaderShip;
-    }
-
-    public String getReviewSign() {
-        return reviewSign;
-    }
-
-    public void setReviewSign(String reviewSign) {
-        this.reviewSign = reviewSign;
-    }
-
-    public String getGeneralManager() {
-        return generalManager;
-    }
-
-    public void setGeneralManager(String generalManager) {
-        this.generalManager = generalManager;
-    }
-
-    public String getDistribution() {
-        return distribution;
-    }
-
-    public void setDistribution(String distribution) {
-        this.distribution = distribution;
-    }
-
     @Override
     public String toString() {
         return "ApprovalList{" +
@@ -242,18 +243,18 @@ public class ApprovalList {
                 ", inDepartment='" + inDepartment + '\'' +
                 ", deptManager='" + deptManager + '\'' +
                 ", proposer='" + proposer + '\'' +
-                ", department1='" + department1 + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
                 ", businessManager='" + businessManager + '\'' +
                 ", businessManagerId='" + businessManagerId + '\'' +
-                ", department2='" + department2 + '\'' +
+                ", projectPhase='" + projectPhase + '\'' +
+                ", capitalization='" + capitalization + '\'' +
+                ", classified='" + classified + '\'' +
+                ", relCode='" + relCode + '\'' +
                 ", projectManager='" + projectManager + '\'' +
                 ", projectManagerId='" + projectManagerId + '\'' +
                 ", generalSituation='" + generalSituation + '\'' +
                 ", departmentManager='" + departmentManager + '\'' +
-                ", leaderShip='" + leaderShip + '\'' +
-                ", reviewSign='" + reviewSign + '\'' +
-                ", generalManager='" + generalManager + '\'' +
-                ", distribution='" + distribution + '\'' +
                 '}';
     }
 }
