@@ -399,6 +399,12 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="phaseList != null">
+                AND project_phase IN
+                <foreach collection="phaseList" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
             <if test="type == 2">
                 AND (project_manager = #{name} OR business_manager = #{name})
             </if>

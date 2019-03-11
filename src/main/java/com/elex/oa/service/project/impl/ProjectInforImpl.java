@@ -442,6 +442,10 @@ public class ProjectInforImpl implements ProjectInforService {
         if(statusList.size() > 0) {
             inforQuery.setStatusList(statusList);
         }
+        List<String> phaseList = JSONArray.parseArray(inforQuery.getPhaseSelect(), String.class);
+        if(phaseList.size() > 0) {
+            inforQuery.setPhaseList(phaseList);
+        }
         PageHelper.startPage(pageNum, 10);
         List<ProjectInfor> list = projectInforDao.obtainList(inforQuery); //获取项目信息列表
         return new PageInfo(list);

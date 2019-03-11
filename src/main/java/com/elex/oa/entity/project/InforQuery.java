@@ -20,14 +20,14 @@ public class InforQuery {
     private String statusSelect; //项目状态
     private List<String> statusList;
     private String phaseSelect; //项目阶段
-    private String phaseInput;
+    private List<String> phaseList;
     private String type; //查询类别
     private String name;  //查询人
 
     public InforQuery() {
     }
 
-    public InforQuery(String codeSelect, String codeInput, String nameSelect, String nameInput, String deptSelect, String deptInput, String sourceSelect, List<String> sourceList, String businessSelect, String businessInput, String typeSelect, List<String> typeList, String deliverySelect, String deliveryInput, String statusSelect, List<String> statusList, String phaseSelect, String phaseInput, String type, String name) {
+    public InforQuery(String codeSelect, String codeInput, String nameSelect, String nameInput, String deptSelect, String deptInput, String sourceSelect, List<String> sourceList, String businessSelect, String businessInput, String typeSelect, List<String> typeList, String deliverySelect, String deliveryInput, String statusSelect, List<String> statusList, String phaseSelect, List<String> phaseList, String type, String name) {
         this.codeSelect = codeSelect;
         this.codeInput = codeInput;
         this.nameSelect = nameSelect;
@@ -45,7 +45,7 @@ public class InforQuery {
         this.statusSelect = statusSelect;
         this.statusList = statusList;
         this.phaseSelect = phaseSelect;
-        this.phaseInput = phaseInput;
+        this.phaseList = phaseList;
         this.type = type;
         this.name = name;
     }
@@ -186,12 +186,12 @@ public class InforQuery {
         this.phaseSelect = phaseSelect;
     }
 
-    public String getPhaseInput() {
-        return phaseInput;
+    public List<String> getPhaseList() {
+        return phaseList;
     }
 
-    public void setPhaseInput(String phaseInput) {
-        this.phaseInput = phaseInput;
+    public void setPhaseList(List<String> phaseList) {
+        this.phaseList = phaseList;
     }
 
     public String getType() {
@@ -230,7 +230,7 @@ public class InforQuery {
                 ", statusSelect='" + statusSelect + '\'' +
                 ", statusList=" + statusList +
                 ", phaseSelect='" + phaseSelect + '\'' +
-                ", phaseInput='" + phaseInput + '\'' +
+                ", phaseList=" + phaseList +
                 ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 '}';
