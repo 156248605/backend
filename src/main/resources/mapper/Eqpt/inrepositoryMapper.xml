@@ -111,9 +111,9 @@
     </delete>
 
     <select id="noticeChild" resultType="HashMap">
-        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_CGSL AS num, F_CGDJ AS price, F_CGJE AS sum FROM w_cgmx7 WHERE REF_ID_ = (SELECT ID_ FROM w_cgddhtpsd WHERE F_WDBH = #{wdbh} AND INST_STATUS_ = 'SUCCESS_END')
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_CGSL AS num, F_CGDJ AS price, F_CGJE AS sum,'' AS sn, CREATE_TIME_ AS time FROM w_cgmx7 WHERE REF_ID_ = (SELECT ID_ FROM w_cgddhtpsd WHERE F_WDBH = #{wdbh} AND INST_STATUS_ = 'SUCCESS_END')
         UNION ALL
-        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_JYSL AS num, '' AS price, '' AS sum FROM w_jy WHERE F_WDBH = #{wdbh} AND INST_STATUS_ = 'SUCCESS_END'
+        SELECT F_WLBM AS id, F_WLMC AS name, F_GGXH AS spec, F_JYSL AS num, '' AS price, '' AS sum, F_XLH AS sn, F_TXRQ AS time FROM w_jy WHERE F_WDBH = #{wdbh} AND INST_STATUS_ = 'SUCCESS_END'
     </select>
 
     <!--<select id="allNotice" resultType="com.elex.oa.entity.eqpt.Repository">
