@@ -47,15 +47,13 @@ public class UserController {
     public User queryUserByUserId(
             @RequestParam("userid") Integer userid
     ){
-        User user = iUserService.getById(userid);
-        return user;
+        return iUserService.getById(userid);
     }
 
     @RequestMapping("/queryAllUsers")
     @ResponseBody
     public List<User> queryAllUsers(){
-        List<User> users = iUserService.selectAllOrderByDictionary();
-        return users;
+        return iUserService.selectAllOrderByDictionary();
     }
 
     @RequestMapping("/queryAllServings")
@@ -66,10 +64,10 @@ public class UserController {
 
     @RequestMapping("/user/queryEmployeenumberByUsername_ON")
     @ResponseBody
-    public Object queryEmployeenumberByUsername_ON(
+    public Object queryEmployeenumberByUsernameOn(
             @RequestParam("username")String username
     ){
-        return iUserService.queryEmployeenumberByUsername_ON(username);
+        return iUserService.queryEmployeenumberByUsernameON(username);
     }
 
 }

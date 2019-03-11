@@ -475,7 +475,7 @@
 		WHERE dep.id = #{depid}
 	</select>
 
-	<select id="queryPersonalInformationsByNull" resultType="com.elex.oa.entity.hr_entity.personalinformation.PersonalInformationExchange">
+	<select id="queryPersonalInformationsByNull" resultType="PersonalInformationExchange">
 		SELECT
 			u.employeenumber AS employeenumber,
 			u.username AS username,
@@ -642,6 +642,119 @@
 			u.employeenumber ASC
 	</select>
 
+	<select id="queryPersonalInformationByPerid" parameterType="java.lang.Integer" resultType="PersonalInformation">
+		SELECT
+			u.employeenumber AS employeenumber,
+			u.username AS username,
+			u.truename AS truename,
+			u.isactive AS isactive,
+			IFNULL(dep.depcode, "") AS depcode,
+			IFNULL(dep.depname, "") AS depname,
+			IFNULL(postinfo.postlist, "") AS postnames,
+			IFNULL(base.userphoto, "") AS userphoto,
+			IFNULL(base.idphoto1, "") AS idphoto1,
+			IFNULL(base.idphoto2, "") AS idphoto2,
+			IFNULL(base.englishname, "") AS englishname,
+			IFNULL(base.idcode, "") AS idcode,
+			IFNULL(base.sex, "") AS sex,
+			IFNULL(base.birthday, "") AS birthday,
+			IFNULL(base.constellation, "") AS constellation,
+			IFNULL(base.chinesecs, "") AS chinesecs,
+			IFNULL(race.datavalue, "") AS race,
+			IFNULL(base.marriage, "") AS marriage,
+			IFNULL(children.datavalue, "") AS children,
+			IFNULL(zzmm.datavalue, "") AS zzmm,
+			IFNULL(zgxl.datavalue, "") AS zgxl,
+			IFNULL(byyx.datavalue, "") AS byyx,
+			IFNULL(sxzy.datavalue, "") AS sxzy,
+			IFNULL(pyfs.datavalue, "") AS pyfs,
+			IFNULL(firstla.datavalue, "") AS firstla,
+			IFNULL(elsela.datavalue, "") AS elsela,
+			IFNULL(posttitle.datavalue, "") AS posttitle,
+			IFNULL(zyzstype.datavalue, "") AS zyzstype,
+			IFNULL(zyzsname.datavalue, "") AS zyzsname,
+			IFNULL(parentcompany.datavalue, "") AS parentcompany,
+			IFNULL(base.firstworkingtime, "") AS firstworkingtime,
+			IFNULL(base.household_register, "") AS household_register,
+			IFNULL(postrank.datavalue, "") AS postrank,
+			IFNULL(employeetype.datavalue, "") AS employeetype,
+			IFNULL(manage.entrydate, "") AS entrydate,
+			IFNULL(manage.zhuanzhengdate, "") AS zhuanzhengdate,
+			IFNULL(salarystandard.datavalue, "") AS salarystandard,
+			IFNULL(ssb.datavalue, "") AS ssb,
+			IFNULL(ssbgscd.datavalue, "") AS ssbgscd,
+			IFNULL(ssbgrcd.datavalue, "") AS ssbgrcd,
+			IFNULL(gjj.datavalue, "") AS gjj,
+			IFNULL(gjjgscd.datavalue, "") AS gjjgscd,
+			IFNULL(gjjgscd.datavalue, "") AS gjjgrcd,
+			IFNULL(khh.datavalue, "") AS khh,
+			IFNULL(sbjnd.datavalue, "") AS sbjnd,
+			IFNULL(cost.salaryaccount, "") AS salaryaccount,
+			IFNULL(cost.sbcode, "") AS sbcode,
+			IFNULL(cost.gjjcode, "") AS gjjcode,
+			IFNULL(other.privateemail, "") AS privateemail,
+			IFNULL(other.companyemail, "") AS companyemail,
+			IFNULL(other.emergencycontract, "") AS emergencycontract,
+			IFNULL(emergencyrp.datavalue, "") AS emergencyrp,
+			IFNULL(other.emergencyphone, "") AS emergencyphone,
+			IFNULL(other.address, "") AS address,
+			IFNULL(other.mobilephone, "") AS mobilephone,
+			IFNULL(telphone.datavalue, "") AS telphone,
+			IFNULL(other.remark, "") AS remark,
+		FROM
+			tb_id_user u
+		LEFT JOIN tb_id_personalinformation per ON per.userid = u.id
+		LEFT JOIN tb_id_department dep ON dep.id = per.depid
+		LEFT JOIN (
+			SELECT
+				rs.perid AS perid,
+				GROUP_CONCAT(
+					CONCAT_WS(
+						post.postname,
+						'-',
+						post.id
+					) SEPARATOR ';'
+				) AS postlist
+			FROM
+				tb_id_personalinformation per
+			JOIN tb_hr_per_and_post_rs rs ON rs.perid = per.id
+			JOIN tb_id_post post ON post.id = rs.postid
+			GROUP BY
+					rs.perid
+		) postinfo ON postinfo.perid = per.id
+		LEFT JOIN tb_id_baseinformation base ON base.id = per.baseinformationid
+		LEFT JOIN tb_hr_set race ON race.id = base.raceid
+		LEFT JOIN tb_hr_set children ON children.id=base.childrenid
+		LEFT JOIN tb_hr_set zzmm ON zzmm.id=base.zzmmid
+		LEFT JOIN tb_hr_set zgxl ON zgxl.id=base.zgxlid
+		LEFT JOIN tb_hr_set byyx ON byyx.id=base.byyxid
+		LEFT JOIN tb_hr_set sxzy ON sxzy.id=base.sxzyid
+		LEFT JOIN tb_hr_set pyfs ON pyfs.id=base.pyfsid
+		LEFT JOIN tb_hr_set firstla ON firstla.id=base.firstlaid
+		LEFT JOIN tb_hr_set elsela ON elsela.id=base.elselaid
+		LEFT JOIN tb_hr_set posttitle ON posttitle.id=base.posttitleid
+		LEFT JOIN tb_hr_set zyzstype ON zyzstype.id=base.zyzstypeid
+		LEFT JOIN tb_hr_set zyzsname ON zyzsname.id=base.zyzsnameid
+		LEFT JOIN tb_hr_set parentcompany ON parentcompany.id=base.parentcompanyid
+		LEFT JOIN tb_id_manageinformation manage ON manage.id=per.manageinformationid
+		LEFT JOIN tb_hr_set postrank ON postrank.id=manage.postrankid
+		LEFT JOIN tb_hr_set employeetype ON employeetype.id=manage.employeetypeid
+		LEFT JOIN tb_id_costinformation cost ON cost.id=per.costinformationid
+		LEFT JOIN tb_hr_set salarystandard ON salarystandard.id=cost.salarystandardid
+		LEFT JOIN tb_hr_set ssb ON ssb.id=cost.ssbid
+		LEFT JOIN tb_hr_set ssbgscd ON ssbgscd.id=cost.ssbgscdid
+		LEFT JOIN tb_hr_set ssbgrcd ON ssbgrcd.id=cost.ssbgrcdid
+		LEFT JOIN tb_hr_set gjj ON gjj.id=cost.gjjid
+		LEFT JOIN tb_hr_set gjjgscd ON gjjgscd.id=cost.gjjgscdid
+		LEFT JOIN tb_hr_set gjjgrcd ON gjjgrcd.id=cost.gjjgrcdid
+		LEFT JOIN tb_hr_set khh ON khh.id=cost.khhid
+		LEFT JOIN tb_hr_set sbjnd ON sbjnd.id=cost.sbjndid
+		LEFT JOIN tb_id_otherinformation other ON other.id=per.otherinformationid
+		LEFT JOIN tb_hr_set emergencyrp ON emergencyrp.id=other.emergencyrpid
+		LEFT JOIN tb_hr_set telphone ON telphone.id=other.telphoneid
+		where u.state=1 and per.id=#{personalInformationId}
+	</select>
+
 	<insert id="insertOne" parameterType="PersonalInformation" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_personalinformation (
 			id,
@@ -669,7 +782,7 @@
 			#{otherinformationid})
 	</insert>
 
-	<update id="updateOne" parameterType="PersonalInformation" >
+	<update id="updateOne" parameterType="PersonalInformation"  >
 		update tb_id_personalinformation
 		<set>
 			<if test="employeenumber!=null and employeenumber!=''">

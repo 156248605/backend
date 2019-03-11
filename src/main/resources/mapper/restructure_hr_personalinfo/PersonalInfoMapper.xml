@@ -226,7 +226,7 @@
 		</where>
 	</select>
 
-	<select id="selectUsersByEMPLOYEE_ON" resultType="java.util.Map">
+	<select id="selectUsersByEmployeeON" resultType="java.util.Map">
 		select employeenumber,truename
 		from tb_id_personal_info
 		where state='1'

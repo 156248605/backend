@@ -32,8 +32,8 @@ public interface IPostDao  {
      *@Date: 15:27 2018\8\11 0011
      */
     Post selectPostByPostcode(String postcode);
-    Post selectPostByPostcodePOST_ON(String postcode);
-    Post selectPostByPostcodePOST_OFF(String postcode);
+    Post selectPostByPostcodePostON(String postcode);
+    Post selectPostByPostcodePostOFF(String postcode);
 
     /**
      *@Author:ShiYun;
@@ -70,7 +70,9 @@ public interface IPostDao  {
      */
     void deleteOne(Integer id);
 
-    void deleteByChangeStatePOST_OFF(Integer id);
+    void deleteByChangeStatePostOFF(Integer id);
 
-    List<Map<String, Object>> getAllPostidAndPostnameByPOST_ON();
+    List<Map<String, Object>> getAllPostidAndPostnameByPostON();
+
+    String selectPostlistToStringByUserid(Integer userid);
 }

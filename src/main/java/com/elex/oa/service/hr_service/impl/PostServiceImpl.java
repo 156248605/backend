@@ -183,7 +183,7 @@ public class PostServiceImpl implements IPostService {
         //遍历删除岗位
         for (Integer postid:postList
              ) {
-            iPostDao.deleteByChangeStatePOST_OFF(postid);
+            iPostDao.deleteByChangeStatePostOFF(postid);
         }
         return RespUtil.response("200","删除成功！",true) ;
     }
@@ -319,8 +319,8 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public Object getAllPostidAndPostnameByPOST_ON() {
-        return iPostDao.getAllPostidAndPostnameByPOST_ON();
+    public Object getAllPostidAndPostnameByPostON() {
+        return iPostDao.getAllPostidAndPostnameByPostON();
     }
 
     //获得返回值DeptTree

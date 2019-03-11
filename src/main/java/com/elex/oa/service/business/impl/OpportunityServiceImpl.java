@@ -150,7 +150,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
     }
 
     @Override
-    public Map<String, Object> getBusinessInfoByState_OFF() {
+    public Map<String, Object> getBusinessInfoByStateOFF() {
         Map<String, Object> respMap = new HashMap<>();
         List<Clue> clueList = iClueDao.select(new Clue(Commons.CLUE_OFF));
         respMap.put("clueList",clueList);

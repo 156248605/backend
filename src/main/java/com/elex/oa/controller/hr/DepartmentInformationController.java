@@ -1,20 +1,15 @@
 package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
+import com.elex.oa.common.hr.Commons;
+import com.elex.oa.controller.restructure_hr.DepartmentInfoController;
 import com.elex.oa.entity.hr_entity.*;
-import com.elex.oa.entity.hr_entity.costinformation.CostInformation;
 import com.elex.oa.entity.hr_entity.department.Dept;
 import com.elex.oa.entity.hr_entity.department.DeptLog;
 import com.elex.oa.entity.hr_entity.department.DeptTree;
 import com.elex.oa.entity.hr_entity.hr_set.HRset;
-import com.elex.oa.entity.hr_entity.manageinformation.ManageInformation;
-import com.elex.oa.entity.hr_entity.personalinformation.BaseInformation;
-import com.elex.oa.entity.hr_entity.personalinformation.OtherInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
-import com.elex.oa.entity.hr_entity.post.PerAndPostRs;
 import com.elex.oa.entity.hr_entity.post.TitleAndCode;
 import com.elex.oa.entity.hr_entity.readexcel.ReadDeplogExcel;
 import com.elex.oa.service.hr_service.*;
@@ -23,12 +18,13 @@ import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import com.elex.oa.util.hr_util.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.ParseException;
 import java.util.*;
 
 @Controller
@@ -72,6 +68,8 @@ public class DepartmentInformationController {
     IPerandpostrsService iPerandpostrsService;
     @Autowired
     HrUtils hrUtils;
+
+    private static Logger logger = LoggerFactory.getLogger(DepartmentInfoController.class);
 
     @RequestMapping("/queryOneDepByDepname")
     @ResponseBody
@@ -123,7 +121,7 @@ public class DepartmentInformationController {
                 dept.setDeptype(hRsetDeptype.getDatavalue());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
         }
 
         return dept;
@@ -159,8 +157,7 @@ public class DepartmentInformationController {
     public List<Dept> queryDepartmentsRemoveChilren(
             @RequestParam("depid")Integer depid
     ){
-        List<Dept> depts = iDeptService.queryDepartmentsRemoveChilren(depid);
-        return depts;
+        return iDeptService.queryDepartmentsRemoveChilren(depid);
     }
 
     @RequestMapping("/listDepts")
@@ -173,14 +170,13 @@ public class DepartmentInformationController {
         deptTree.setName(dept.getDepname());
         deptTree.setCode(dept.getDepcode());
         deptTree.setExpand(true);
-        DeptTree deptTree1 = getDeptTree(deptTree, dept.getId());
-        return deptTree1;
+        return getDeptTree(deptTree, dept.getId());
     }
 
     public DeptTree getDeptTree(DeptTree deptTree,Integer parentid){
         List<Dept> depts = iDeptService.queryByParentId(parentid);
-        if (depts.size()!=0) {
-            List<DeptTree> children = new ArrayList<DeptTree>();
+        if (depts.isEmpty()) {
+            List<DeptTree> children = new ArrayList<>();
             for(int i=0;i<depts.size();i++){
                 DeptTree deptTree1 = new DeptTree();
                 String depname = depts.get(i).getDepname();
@@ -227,16 +223,16 @@ public class DepartmentInformationController {
     @ResponseBody
     public String deleteDeptsById(@RequestParam("id") Integer id){
         try {
-            List<Integer> depids = new ArrayList<Integer>();
+            List<Integer> depids = new ArrayList<>();
             depids.add(id);
             depids = getDeptids(id,depids);
-            if (depids.size()!=0) {
+            if (!depids.isEmpty()) {
                 for (int i=0;i<depids.size();i++){
                     iDeptService.removeOne(depids.get(i));
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return "删除失败！";
         }
         return "删除成功！";
@@ -244,7 +240,7 @@ public class DepartmentInformationController {
     // 通过递归获得需要删除的所有部门ID
     public List<Integer> getDeptids(Integer parentdepid,List<Integer> list){
         List<Dept> depts = iDeptService.queryByParentId(parentdepid);
-        if(depts.size()!=0){
+        if(!depts.isEmpty()){
             for (Integer i = 0;i< depts.size();i++){
                 list.add(depts.get(i).getId());
                 list = getDeptids(depts.get(i).getId(), list);
@@ -266,7 +262,7 @@ public class DepartmentInformationController {
         paramMap.put("entity",deptLog);
         PageInfo<DeptLog> deptLogPageInfo = iDeptLogService.queryByConditions(paramMap);
         List<DeptLog> list = deptLogPageInfo.getList();
-        if(list.size()!=0){
+        if(!list.isEmpty()){
             for (int i = 0;i< list.size();i++) {
                 if (iDeptService.queryOneDepByDepid(list.get(i).getDeptid())!=null) {
                     list.get(i).setDeptname(iDeptService.queryOneDepByDepid(list.get(i).getDeptid()).getDepname());
@@ -329,7 +325,7 @@ public class DepartmentInformationController {
                 User user = new User();
                 user.setTruename(deptLog.getTransactortruename());
                 List<User> users = iUserService.selectByCondition(user);
-                if (users.size()!=0) {
+                if (!users.isEmpty()) {
                     deptLog.setTransactoruserid(users.get(0).getId());
                 }
                 iDeptLogService.addOne(deptLog);
@@ -350,7 +346,7 @@ public class DepartmentInformationController {
         if (iDeptService.queryOneDepByDepname(title)!=null) {
             depts = iDeptService.queryByParentId(iDeptService.queryOneDepByDepname(title).get(0).getId());
         } else {
-            return null;
+            return Collections.emptyList();
         }
         for(int i = 0;i<depts.size();i++){
             TitleAndCode titleAndCode = new TitleAndCode();
@@ -368,82 +364,7 @@ public class DepartmentInformationController {
             @RequestParam("title") String title,
             @RequestParam("deptTree") String deptTree
     ){
-        List<TitleAndCode> list = null;
-        try {
-            list = JSONObject.parseArray(sortdata, TitleAndCode.class);
-        } catch (Exception e) {
-            return null;
-        }
-        //在数据库中将顺序码保存一下
-        for (TitleAndCode t:list
-             ) {
-            Dept dept = iDeptService.queryOneDepByDepname(t.getTitle()).get(0);
-            Dept dept1 = new Dept();
-            dept1.setId(dept.getId());
-            dept1.setOrdercode(t.getCode());
-            iDeptService.modifyOne(dept1);
-        }
-        //先将树形结构数据查出来
-        List<Dept> depts = iDeptService.queryByParentId(null);
-        DeptTree deptTree1 = JSONObject.parseObject(deptTree,new TypeReference<DeptTree>(){});
-        //先排序
-        if(title!=null && !"".equals(title) && list.size()>=2){
-            list.sort(new Comparator<TitleAndCode>() {
-                @Override
-                public int compare(TitleAndCode o1, TitleAndCode o2) {
-                    return o1.getCode().compareTo(o2.getCode());
-                }
-            });
-        }
-        //再换节点
-        //首先将父节点是定点的情况去除
-        if(deptTree1.getTitle().equals(title)){
-            List<DeptTree> old = deptTree1.getChildren();
-            List<DeptTree> renew = new ArrayList<>();
-            for (TitleAndCode titleAndCode:list
-                    ) {
-                for (DeptTree dtt:old
-                        ) {
-                    if(dtt.getTitle().equals(titleAndCode.getTitle())){
-                        renew.add(dtt);
-                    }
-                }
-            }
-            deptTree1.setChildren(renew);
-            return deptTree1;
-        }
-        DeptTree newDepttree = getNewDepttree(deptTree1, title, list);
-        return newDepttree;
-    }
-
-    /*同级排序*/
-    public DeptTree getNewDepttree(DeptTree deptTree,String title,List<TitleAndCode> list){
-        for(int i = 0;i<deptTree.getChildren().size();i++){
-            if(deptTree.getChildren().get(i).getTitle().equals(title)){
-                List<DeptTree> old = deptTree.getChildren().get(i).getChildren();
-                List<DeptTree> renew = new ArrayList<>();
-                for (TitleAndCode titleAndCode:list
-                     ) {
-                    for (DeptTree dtt:old
-                            ) {
-                        if(dtt.getTitle().equals(titleAndCode.getTitle())){
-                            renew.add(dtt);
-                        }
-                    }
-                }
-                deptTree.getChildren().get(i).setChildren(renew);
-                return deptTree;
-            }else {
-                if(deptTree.getChildren().get(i).getChildren().size()>0){
-                    DeptTree parentDepttree = getNewDepttree(deptTree.getChildren().get(i), title,list);
-                    if(parentDepttree!=null){
-                        deptTree.getChildren().get(i).setChildren(parentDepttree.getChildren());
-                        return deptTree;
-                    }
-                }
-            }
-        }
-        return null;
+        return iDeptService.submitSortdata(sortdata,title,deptTree);
     }
 
     //人事的管理看板
@@ -456,14 +377,13 @@ public class DepartmentInformationController {
     ){
         //为了和高晓飞统一参数名称，其实这是不科学的，后期公司名称修改或添加新公司只需要将这段代码注释掉
         switch (companyname){
-            case "全部":companyname="江苏博智软件科技股份有限公司";break;
-            case "南京总部":companyname="江苏博智软件科技南京总部";break;
-            case "上海臻相":companyname="上海臻相软件科技有限公司";break;
-            case "贵州中科":companyname="贵州中科博智科技有限公司";break;
+            case "全部":companyname= Commons.COMPANYNAME_GROUP;break;
+            case "南京总部":companyname=Commons.COMPANYNAME_HEADQUARTERS;break;
+            case "上海臻相":companyname=Commons.COMPANYNAME_SHANGHAI;break;
+            case "贵州中科":companyname=Commons.COMPANYNAME_GUIZHOU;break;
+            default:break;
         }
-
-        Object hrManageCard = iDeptService.getHRManageCard(companyname,sdate,edate);
-        return hrManageCard;
+        return iDeptService.getHRManageCard(companyname,sdate,edate);
     }
 
     //获得总人数(edate时间点的在职总人数)
@@ -475,13 +395,14 @@ public class DepartmentInformationController {
             @RequestParam("companyname")String companyname,
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
-    ) throws ParseException {
+    ){
         //为了和高晓飞统一参数名称，其实这是不科学的，后期公司名称修改或添加新公司只需要将这段代码注释掉
         switch (companyname){
-            case "全部":companyname="江苏博智软件科技股份有限公司";break;
-            case "南京总部":companyname="江苏博智软件科技南京总部";break;
-            case "上海臻相":companyname="上海臻相软件科技有限公司";break;
-            case "贵州中科":companyname="贵州中科博智科技有限公司";break;
+            case "全部":companyname= Commons.COMPANYNAME_GROUP;break;
+            case "南京总部":companyname=Commons.COMPANYNAME_HEADQUARTERS;break;
+            case "上海臻相":companyname=Commons.COMPANYNAME_SHANGHAI;break;
+            case "贵州中科":companyname=Commons.COMPANYNAME_GUIZHOU;break;
+            default:break;
         }
 
         Object hrManageCard = iDeptService.getHRManageCard2(companyname,rows,page,sdate,edate);
@@ -491,7 +412,7 @@ public class DepartmentInformationController {
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:pageHelper.getList()
                     ) {
-                per = this.getOnePersonalinformation(per.getId());
+                per = hrUtils.getPersonalinformationDetail(per.getId());
                 personalInformationList.add(per);
             }
             pageHelper.setList(personalInformationList);
@@ -511,13 +432,14 @@ public class DepartmentInformationController {
             @RequestParam("companyname")String companyname,
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
-    ) throws ParseException {
+    ){
         //为了和高晓飞统一参数名称，其实这是不科学的，后期公司名称修改或添加新公司只需要将这段代码注释掉
         switch (companyname){
-            case "全部":companyname="江苏博智软件科技股份有限公司";break;
-            case "南京总部":companyname="江苏博智软件科技南京总部";break;
-            case "上海臻相":companyname="上海臻相软件科技有限公司";break;
-            case "贵州中科":companyname="贵州中科博智科技有限公司";break;
+            case "全部":companyname= Commons.COMPANYNAME_GROUP;break;
+            case "南京总部":companyname=Commons.COMPANYNAME_HEADQUARTERS;break;
+            case "上海臻相":companyname=Commons.COMPANYNAME_SHANGHAI;break;
+            case "贵州中科":companyname=Commons.COMPANYNAME_GUIZHOU;break;
+            default:break;
         }
 
         Object hrManageCard = iDeptService.getHRManageCard3(companyname,rows,page,sdate,edate);
@@ -527,7 +449,7 @@ public class DepartmentInformationController {
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:pageHelper.getList()
                     ) {
-                per = this.getOnePersonalinformation(per.getId());
+                per = hrUtils.getPersonalinformationDetail(per.getId());
                 personalInformationList.add(per);
             }
             pageHelper.setList(personalInformationList);
@@ -547,13 +469,14 @@ public class DepartmentInformationController {
             @RequestParam("companyname")String companyname,
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page
-    ) throws ParseException {
+    ) {
         //为了和高晓飞统一参数名称，其实这是不科学的，后期公司名称修改或添加新公司只需要将这段代码注释掉
         switch (companyname){
-            case "全部":companyname="江苏博智软件科技股份有限公司";break;
-            case "南京总部":companyname="江苏博智软件科技南京总部";break;
-            case "上海臻相":companyname="上海臻相软件科技有限公司";break;
-            case "贵州中科":companyname="贵州中科博智科技有限公司";break;
+            case "全部":companyname= Commons.COMPANYNAME_GROUP;break;
+            case "南京总部":companyname=Commons.COMPANYNAME_HEADQUARTERS;break;
+            case "上海臻相":companyname=Commons.COMPANYNAME_SHANGHAI;break;
+            case "贵州中科":companyname=Commons.COMPANYNAME_GUIZHOU;break;
+            default:break;
         }
 
         Object hrManageCard = iDeptService.getHRManageCard4(companyname,rows,page,sdate,edate);
@@ -563,7 +486,7 @@ public class DepartmentInformationController {
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:pageHelper.getList()
                     ) {
-                per = this.getOnePersonalinformation(per.getId());
+                per = hrUtils.getPersonalinformationDetail(per.getId());
                 personalInformationList.add(per);
             }
             pageHelper.setList(personalInformationList);
@@ -583,7 +506,7 @@ public class DepartmentInformationController {
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page,
             @RequestParam("depid")Integer depid
-    ) throws ParseException {
+    ) {
         Object hrManageCard = iDeptService.getHRManageCard5(rows,page,depid,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){
@@ -591,7 +514,7 @@ public class DepartmentInformationController {
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:pageHelper.getList()
                     ) {
-                per = this.getOnePersonalinformation(per.getId());
+                per = hrUtils.getPersonalinformationDetail(per.getId());
                 personalInformationList.add(per);
             }
             pageHelper.setList(personalInformationList);
@@ -611,7 +534,7 @@ public class DepartmentInformationController {
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page,
             @RequestParam("depid")Integer depid
-    ) throws ParseException {
+    ) {
         Object hrManageCard = iDeptService.getHRManageCard6(rows,page,depid,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){
@@ -619,7 +542,7 @@ public class DepartmentInformationController {
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:pageHelper.getList()
                     ) {
-                per = this.getOnePersonalinformation(per.getId());
+                per = hrUtils.getPersonalinformationDetail(per.getId());
                 personalInformationList.add(per);
             }
             pageHelper.setList(personalInformationList);
@@ -639,7 +562,7 @@ public class DepartmentInformationController {
             @RequestParam("rows")Integer rows,
             @RequestParam("page")Integer page,
             @RequestParam("depid")Integer depid
-    ) throws ParseException {
+    ) {
         Object hrManageCard = iDeptService.getHRManageCard7(rows,page,depid,sdate,edate);
         Resp resp = (Resp) hrManageCard;
         if(resp.getBody()!=null){
@@ -647,7 +570,7 @@ public class DepartmentInformationController {
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:pageHelper.getList()
                     ) {
-                per = this.getOnePersonalinformation(per.getId());
+                per = hrUtils.getPersonalinformationDetail(per.getId());
                 personalInformationList.add(per);
             }
             pageHelper.setList(personalInformationList);
@@ -664,8 +587,7 @@ public class DepartmentInformationController {
     public HRManageCard queryIOSData(
             Integer deptid
     ){
-        HRManageCard paramMap1 = iDeptService.getParamMap1(deptid);
-        return paramMap1;
+        return iDeptService.getParamMap1(deptid);
     }
 
     //添加部门的时候校验部门名称
@@ -675,11 +597,7 @@ public class DepartmentInformationController {
             @RequestParam("deptname") String deptname
     ){
         Dept dept = iDeptService.queryOneDepByDepname(deptname).get(0);
-        if(dept!=null){
-            return true;
-        }else{
-            return  false;
-        }
+        return null!=dept;
     }
 
     //添加部门的时候校验部门编号
@@ -689,180 +607,7 @@ public class DepartmentInformationController {
             @RequestParam("deptcode") String deptcode
     ){
         Dept dept = iDeptService.queryOneByDepcode(deptcode);
-        if(dept!=null){
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    //根据perid查询信息
-    public  PersonalInformation getOnePersonalinformation(Integer personalInformationId) throws ParseException {
-        PersonalInformation personalInformation = iPersonalInformationService.queryOneById2(personalInformationId);
-        if(personalInformation==null){
-            return null;
-        }
-        //1.获得User信息
-        User user = iUserService.getById(personalInformation.getUserid());
-        if (user!=null) {
-            personalInformation.setIsactive(user.getIsactive());
-            personalInformation.setUsername(user.getUsername());
-            personalInformation.setTruename(user.getTruename());
-        }
-        //2.获得基本信息
-        BaseInformation baseInformation = iBaseInformationService.queryOneById(personalInformation.getBaseinformationid());
-        if (baseInformation!=null) {
-            personalInformation.setUserphoto(baseInformation.getUserphoto());
-            personalInformation.setIdphoto1(baseInformation.getIdphoto1());
-            personalInformation.setIdphoto2(baseInformation.getIdphoto2());
-            personalInformation.setEnglishname(baseInformation.getEnglishname());
-            personalInformation.setIdcode(baseInformation.getIdcode());
-            personalInformation.setBirthday(baseInformation.getBirthday());
-            try {
-                personalInformation.setAge(hrUtils.getAge(baseInformation.getBirthday()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            personalInformation.setConstellation(baseInformation.getConstellation());
-            personalInformation.setChinesecs(baseInformation.getChinesecs());
-            if (ihRsetService.queryById(baseInformation.getRaceid())!=null) {
-                personalInformation.setRace(ihRsetService.queryById(baseInformation.getRaceid()).getDatavalue());
-            }
-            personalInformation.setMarriage(baseInformation.getMarriage());
-            if (ihRsetService.queryById(baseInformation.getChildrenid())!=null) {
-                personalInformation.setChildren(ihRsetService.queryById(baseInformation.getChildrenid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getZzmmid())!=null) {
-                personalInformation.setZzmm(ihRsetService.queryById(baseInformation.getZzmmid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getZgxlid())!=null) {
-                personalInformation.setZgxl(ihRsetService.queryById(baseInformation.getZgxlid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getByyxid())!=null) {
-                personalInformation.setByyx(ihRsetService.queryById(baseInformation.getByyxid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getSxzyid())!=null) {
-                personalInformation.setSxzy(ihRsetService.queryById(baseInformation.getSxzyid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getPyfsid())!=null) {
-                personalInformation.setPyfs(ihRsetService.queryById(baseInformation.getPyfsid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getFirstlaid())!=null) {
-                personalInformation.setFirstla(ihRsetService.queryById(baseInformation.getFirstlaid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getElselaid())!=null) {
-                personalInformation.setElsela(ihRsetService.queryById(baseInformation.getElselaid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getPosttitleid())!=null) {
-                personalInformation.setPosttitle(ihRsetService.queryById(baseInformation.getPosttitleid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getZyzstypeid())!=null) {
-                personalInformation.setZyzstype(ihRsetService.queryById(baseInformation.getZyzstypeid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(baseInformation.getZyzsnameid())!=null) {
-                personalInformation.setZyzsname(ihRsetService.queryById(baseInformation.getZyzsnameid()).getDatavalue());
-            }
-            personalInformation.setFirstworkingtime(baseInformation.getFirstworkingtime());
-            if (baseInformation.getFirstworkingtime()!=null && !"".equals(baseInformation.getFirstworkingtime())) {
-                try {
-                    personalInformation.setWorkingage(hrUtils.getWorkingage(baseInformation.getFirstworkingtime()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (ihRsetService.queryById(baseInformation.getParentcompanyid())!=null) {
-                personalInformation.setParentcompany(ihRsetService.queryById(baseInformation.getParentcompanyid()).getDatavalue());
-            }
-        }
-        //3.获得管理信息
-        ManageInformation manageInformation = iManageInformationService.queryOneById(personalInformation.getManageinformationid());
-        if (manageInformation!=null) {
-            if (iDeptService.queryOneDepByDepid(personalInformation.getDepid())!=null) {
-                personalInformation.setCompany(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getCompanyname());
-                personalInformation.setDepname(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getDepname());
-                if (iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid())!=null) {
-                    personalInformation.setPrincipaltruename(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getTruename());
-                    if (iPersonalInformationService.queryOneByUserid(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getId())!=null) {
-                        personalInformation.setPrincipalemployeenumber(iPersonalInformationService.queryOneByUserid(iUserService.getById(iDeptService.queryOneDepByDepid(personalInformation.getDepid()).getPrincipaluserid()).getId()).getEmployeenumber());
-                    }
-                }
-            }
-            List<PerAndPostRs> perAndPostRs = iPerandpostrsService.queryPerAndPostRsByPerid(personalInformationId);
-            List<String> strs = new ArrayList<>();
-            List<Integer> postids = new ArrayList<>();
-            if (perAndPostRs.size()!=0) {
-                for(PerAndPostRs perAndPost:perAndPostRs){
-                    strs.add(iPostService.queryOneByPostid(perAndPost.getPostid()).getPostname());
-                    postids.add(perAndPost.getPostid());
-                }
-            }
-            personalInformation.setPostnames(hrUtils.getArrayToString(strs,";"));
-            personalInformation.setPostids(postids);
-            if (ihRsetService.queryById(manageInformation.getPostlevelid())!=null) {
-                personalInformation.setPostlevel(ihRsetService.queryById(manageInformation.getPostlevelid()).getDatavalue());
-            }
-            personalInformation.setEntrydate(manageInformation.getEntrydate());
-            try {
-                personalInformation.setSn(hrUtils.getCompanyAge(manageInformation.getEntrydate()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
-            if (ihRsetService.queryById(manageInformation.getEmployeetypeid())!=null) {
-                personalInformation.setEmployeetype(ihRsetService.queryById(manageInformation.getEmployeetypeid()).getDatavalue());
-            }
-        }
-        //获得成本信息
-        CostInformation costInformation = iCostInformationService.queryOneById(personalInformation.getCostinformationid());
-        if (costInformation!=null) {
-            if (ihRsetService.queryById(costInformation.getSalarystandardid())!=null) {
-                personalInformation.setSalary(ihRsetService.queryById(costInformation.getSalarystandardid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getSsbid())!=null) {
-                personalInformation.setSsb(ihRsetService.queryById(costInformation.getSsbid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getSsbgscdid())!=null) {
-                personalInformation.setSsbgscd(ihRsetService.queryById(costInformation.getSsbgscdid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getSsbgrcdid())!=null) {
-                personalInformation.setSsbgrcd(ihRsetService.queryById(costInformation.getSsbgrcdid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getGjjid())!=null) {
-                personalInformation.setGjj(ihRsetService.queryById(costInformation.getGjjid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getGjjgscdid())!=null) {
-                personalInformation.setGjjgscd(ihRsetService.queryById(costInformation.getGjjgscdid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getGjjgrcdid())!=null) {
-                personalInformation.setGjjgrcd(ihRsetService.queryById(costInformation.getGjjgrcdid()).getDatavalue());
-            }
-            if (ihRsetService.queryById(costInformation.getKhhid())!=null) {
-                personalInformation.setKhh(ihRsetService.queryById(costInformation.getKhhid()).getDatavalue());
-            }
-            personalInformation.setSalaryaccount(costInformation.getSalaryaccount());
-            if (ihRsetService.queryById(costInformation.getSbjndid())!=null) {
-                personalInformation.setSbjnd(ihRsetService.queryById(costInformation.getSbjndid()).getDatavalue());
-            }
-            personalInformation.setSbcode(costInformation.getSbcode());
-            personalInformation.setGjjcode(costInformation.getGjjcode());
-        }
-        //获得其他信息
-        OtherInformation otherInformation = iOtherInformationService.queryOneById(personalInformation.getOtherinformationid());
-        if (otherInformation!=null) {
-            if (ihRsetService.queryById(personalInformation.getTelphoneid())!=null) {
-                personalInformation.setTelphone(ihRsetService.queryById(personalInformation.getTelphoneid()).getDatavalue());
-            }
-            personalInformation.setPrivateemail(otherInformation.getPrivateemail());
-            personalInformation.setCompanyemail(otherInformation.getCompanyemail());
-            personalInformation.setEmergencycontract(otherInformation.getEmergencycontract());
-            if (ihRsetService.queryById(otherInformation.getEmergencyrpid())!=null) {
-                personalInformation.setEmergencyrp(ihRsetService.queryById(otherInformation.getEmergencyrpid()).getDatavalue());
-            }
-            personalInformation.setEmergencyphone(otherInformation.getEmergencyphone());
-            personalInformation.setAddress(otherInformation.getAddress());
-            personalInformation.setRemark(otherInformation.getRemark());
-        }
-        return personalInformation;
+        return dept!=null;
     }
 
     @RequestMapping("/queryPostListByDepidButIsNotNull")

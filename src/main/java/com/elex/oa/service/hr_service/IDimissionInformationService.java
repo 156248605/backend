@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -27,7 +28,7 @@ public interface IDimissionInformationService extends BaseService<DimissionInfor
      *@Description:根据条件查询离职信息(分页)
      *@Date: 18:41 2018\4\16 0016
      */
-    PageInfo<DimissionInformation> queryByCondition(HashMap<String,Object> paramMap);
+    PageInfo<DimissionInformation> queryByCondition(Map<String,Object> paramMap);
 
     List<DimissionInformation> queryByDimission(DimissionInformation dimissionInformation);
 

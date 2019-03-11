@@ -1,10 +1,9 @@
-package com.elex.oa.dao.reportObstacles;
+package com.elex.oa.dao.reportobstacles;
 
 import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.entity.reportObstacles.ObstaclesQueryInfo;
 import org.apache.ibatis.annotations.Mapper;
-import org.jsoup.Connection;
 
 import java.util.List;
 

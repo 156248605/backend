@@ -104,7 +104,7 @@ public class OpportunityController {
     @RequestMapping("/getBusinessInfoByState_OFF")
     @ResponseBody
     public Map<String,Object> getBusinessInfoByStateOff(){
-        return iOpportunityService.getBusinessInfoByState_OFF();
+        return iOpportunityService.getBusinessInfoByStateOFF();
     }
 
     private List<BusinessAttachment> getBusinessAttachmentList(MultipartHttpServletRequest request, int i) {

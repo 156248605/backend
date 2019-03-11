@@ -10,6 +10,8 @@ import com.elex.oa.util.hr_util.IDcodeUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.*;
 
@@ -37,126 +39,36 @@ public class GzrzServiceImpl implements IGzrzService {
         Map map = hrUtils.getFirstAndLastDate(date);
         Date firstDate = (Date) map.get("firstDate");
         Date lastDate = (Date) map.get("lastDate");
-        String[] strings = iGzrzDao.selectNamesByDateAndState(firstDate, lastDate);
-        List<String> list = Arrays.asList(strings);
-        List<String> truenames = new ArrayList<String>(list);
-        for (String s:truenames
+        String[] strings = iGzrzDao.selectNamesByDateAndState(firstDate, lastDate);//包括正在运行和运行结束的日志填报人（去重之后的）
+        for (String tbrName:strings
              ) {
+            Class<?> c = GzrzVO.class;//反射用于拼接方法名
             GzrzVO gzrzVO = new GzrzVO();
             //添加姓名
-            gzrzVO.setTruename(s);
+            gzrzVO.setTruename(tbrName);
             //添加部门
-            String s1 = iGzrzDao.selectDepnameByTruename(s);
-            if(s1==""||s1==null){
-                s1 = "此员工无部门";
-            }
-            gzrzVO.setDepname(s1);
+            gzrzVO.setDepname(hrUtils.getDepnameByTruename(tbrName));
             //添加工作日志数量
-            List<Gzrz> gzrzs = iGzrzDao.selectGzrzWriteByDateAndStateAndTruename(firstDate, lastDate, null, s);
+            List<Gzrz> gzrzs = iGzrzDao.selectGzrzWriteByDateAndStateAndTruename(firstDate, lastDate, null, tbrName);
             int[] arr = new int[31];
-            /*gzrzVO.setWorkday(gzrzs.size());*/
             //添加休息日
             Integer daysByDate = hrUtils.getDaysByDate(date);
-            /*gzrzVO.setWeekday(daysByDate-gzrzs.size());*/
             //判断哪天填写了日志
             for (Gzrz gzrz:gzrzs
                  ) {
                 String starttime = gzrz.getStarttime();
-                Integer month = hrUtils.getDaycodeByDate(starttime);//方法名写错，获得是哪一天
-                arr[month] = 1;
-                if(month==1){
-                    gzrzVO.setD1("√");
+                Integer datOfMoth = hrUtils.getDaycodeByDate(starttime);
+                try {
+                    Method method=c.getMethod("setD"+datOfMoth, String.class);//输入拼接方法名和参数类型
+                    method.invoke(gzrzVO,new Object[]{"√"});//执行相应的方法
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
                 }
-                if(month==2){
-                    gzrzVO.setD2("√");
-                }
-                if(month==3){
-                    gzrzVO.setD3("√");
-                }
-                if(month==4){
-                    gzrzVO.setD4("√");
-                }
-                if(month==5){
-                    gzrzVO.setD5("√");
-                }
-                if(month==6){
-                    gzrzVO.setD6("√");
-                }
-                if(month==7){
-                    gzrzVO.setD7("√");
-                }
-                if(month==8){
-                    gzrzVO.setD8("√");
-                }
-                if(month==9){
-                    gzrzVO.setD9("√");
-                }
-                if(month==10){
-                    gzrzVO.setD10("√");
-                }
-                if(month==11){
-                    gzrzVO.setD11("√");
-                }
-                if(month==12){
-                    gzrzVO.setD12("√");
-                }
-                if(month==13){
-                    gzrzVO.setD13("√");
-                }
-                if(month==14){
-                    gzrzVO.setD14("√");
-                }
-                if(month==15){
-                    gzrzVO.setD15("√");
-                }
-                if(month==16){
-                    gzrzVO.setD16("√");
-                }
-                if(month==17){
-                    gzrzVO.setD17("√");
-                }
-                if(month==18){
-                    gzrzVO.setD18("√");
-                }
-                if(month==19){
-                    gzrzVO.setD19("√");
-                }
-                if(month==20){
-                    gzrzVO.setD20("√");
-                }
-                if(month==21){
-                    gzrzVO.setD21("√");
-                }
-                if(month==22){
-                    gzrzVO.setD22("√");
-                }
-                if(month==23){
-                    gzrzVO.setD23("√");
-                }
-                if(month==24){
-                    gzrzVO.setD24("√");
-                }
-                if(month==25){
-                    gzrzVO.setD25("√");
-                }
-                if(month==26){
-                    gzrzVO.setD26("√");
-                }
-                if(month==27){
-                    gzrzVO.setD27("√");
-                }
-                if(month==28){
-                    gzrzVO.setD28("√");
-                }
-                if(month==29){
-                    gzrzVO.setD29("√");
-                }
-                if(month==30){
-                    gzrzVO.setD30("√");
-                }
-                if(month==31){
-                    gzrzVO.setD31("√");
-                }
+                arr[datOfMoth-1] = 1;
             }
             int count = 0;
             for (int i:arr
@@ -184,21 +96,19 @@ public class GzrzServiceImpl implements IGzrzService {
         Date firstDate = (Date) map.get("firstDate");
         Date lastDate = (Date) map.get("lastDate");
         String[] strings = iGzrzDao.selectNamesByDateAndState(firstDate, lastDate);
-        List<String> list = Arrays.asList(strings);
-        List<String> truenames = new ArrayList<String>(list);
-        for (String s:truenames
+        for (String tbrName:strings
                 ) {
             GzrzVO gzrzVO = new GzrzVO();
             //添加姓名
-            gzrzVO.setTruename(s);
+            gzrzVO.setTruename(tbrName);
             //添加部门
-            String s1 = iGzrzDao.selectDepnameByTruename(s);
+            String s1 = iGzrzDao.selectDepnameByTruename(tbrName);
             if(s1==""||s1==null){
                 s1 = "此员工无部门";
             }
             gzrzVO.setDepname(s1);
             //添加工作日志数量
-            List<Gzrz> gzrzs = iGzrzDao.selectGzrzWriteByDateAndStateAndTruename(firstDate, lastDate, "SUCCESS_END", s);
+            List<Gzrz> gzrzs = iGzrzDao.selectGzrzWriteByDateAndStateAndTruename(firstDate, lastDate, "SUCCESS_END", tbrName);
             gzrzVO.setWorkday(gzrzs.size());
             //添加休息日
             Integer daysByDate = hrUtils.getDaysByDate(date);

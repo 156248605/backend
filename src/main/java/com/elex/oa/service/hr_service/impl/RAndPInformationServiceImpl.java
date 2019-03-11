@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -79,7 +80,7 @@ public class RAndPInformationServiceImpl implements IRAndPInformationService {
      *@Date: 11:28 2018\4\19 0019
      */
     @Override
-    public PageInfo<RAndPInformation> queryByCondition(HashMap<String, Object> paramMap) {
+    public PageInfo<RAndPInformation> queryByCondition(Map<String, Object> paramMap) {
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         PageHelper.startPage(pageNum,pageSize);

@@ -71,7 +71,7 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
 
     @Override
     public List<Map<String,String>> queryAllUsersByEMPLOYEE_ON() {
-        return iPersonalinfoDao.selectUsersByEMPLOYEE_ON();
+        return iPersonalinfoDao.selectUsersByEmployeeON();
     }
 
     private Personalinfo getPersonalinfoByUser(User u, Personalinfo personalinfo) {

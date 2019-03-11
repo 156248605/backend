@@ -115,8 +115,7 @@ public class PostInfoController {
     public List<Map<String,Object>> sortPostinformation(
             @RequestParam("postcode")String postcode
     ){
-        List<Map<String, Object>> respMap = iPostinfoService.getSortPostinformation(postcode);
-        return respMap;
+        return iPostinfoService.getSortPostinformation(postcode);
     }
 
     @RequestMapping("/submitSortdata")

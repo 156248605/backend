@@ -43,12 +43,6 @@ public class PostInformationController {
     @Autowired
     HrUtils hrUtils;
 
-
-    /**
-     *@Author:ShiYun;
-     *@Description:根据岗位名称查询岗位信息
-     *@Date: 10:40 2018\3\20 0020
-     */
     @RequestMapping("/queryOnePostByPostname")
     @ResponseBody
     public Post queryOnePostByPostname(@RequestParam("name") String name){
@@ -71,38 +65,20 @@ public class PostInformationController {
         return post;
     }
 
-
-/**
-     *@Author:ShiYun;
-     *@Description:根据岗位名称查询岗位信息
-     *@Date: 10:40 2018\3\20 0020
-     */
     @RequestMapping("/queryOnePostByPostid")
     @ResponseBody
     public Post queryOnePostByPostid(@RequestParam("id") Integer id){
-        Post post = iPostService.queryOnePostByPostid(id);
-        return post;
+        return iPostService.queryOnePostByPostid(id);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据岗位编号查询岗位信息
-     *@Date: 19:48 2018\8\11 0011
-     */
     @RequestMapping("/queryOnePostByPostcode")
     @ResponseBody
     public Post queryOnePostByPostcode(
             @RequestParam("code")String code
     ){
-        Post post = iPostService.queryOnePostByPostcode(code);
-        return post;
+        return iPostService.queryOnePostByPostcode(code);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有岗位
-     *@Date: 11:14 2018\4\11 0011
-     */
     @RequestMapping("/queryPosts")
     @ResponseBody
     public List<Post> queryPosts(){
@@ -120,42 +96,30 @@ public class PostInformationController {
         return posts;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:选择上级岗位
-     *@Date: 13:39 2018\8\30 0030
-     */
     @RequestMapping("/queryPostsRemoveChilren")
     @ResponseBody
     public List<Post> queryPostsRemoveChilren(
             @RequestParam("postid")Integer postid
     ){
-        List<Post> posts = iPostService.queryPostsRemoveChilren(postid);
-        return posts;
+        return iPostService.queryPostsRemoveChilren(postid);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:将岗位数列出来
-     *@Date: 9:37 2018\4\23 0023
-     */
     @RequestMapping("/listPosts")
     @ResponseBody
     public DeptTree listPosts(){
         List<Post> posts = iPostService.queryByParentpostid(null);
         DeptTree deptTree = new DeptTree();
-        if(null==posts || posts.size()==0)return deptTree;
+        if(null==posts || posts.isEmpty())return deptTree;
         deptTree.setTitle(posts.get(0).getPostname());
         deptTree.setCode(posts.get(0).getPostcode());
         deptTree.setId(posts.get(0).getId());
-        DeptTree deptTree1 = getDeptTree(deptTree, posts.get(0).getId());
-        return deptTree1;
+        return getDeptTree(deptTree, posts.get(0).getId());
     }
 
     public DeptTree getDeptTree(DeptTree deptTree,Integer parentid){
-        List<Post> posts = iPostService.queryByParentpostid(parentid);;
-        if (posts.size()!=0) {
-            List<DeptTree> children = new ArrayList<DeptTree>();
+        List<Post> posts = iPostService.queryByParentpostid(parentid);
+        if (!posts.isEmpty()) {
+            List<DeptTree> children = new ArrayList<>();
             for(int i=0;i<posts.size();i++){
                 DeptTree deptTree1 = new DeptTree();
                 String depname = posts.get(i).getPostname();
@@ -172,11 +136,6 @@ public class PostInformationController {
         return deptTree;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:添加岗位信息
-     *@Date: 11:55 2018\4\23 0023
-     */
     @RequestMapping("/addOnePost")
     @ResponseBody
     public Object addOnePost(
@@ -187,11 +146,6 @@ public class PostInformationController {
         return iPostService.addOnePost(post);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据岗位ID查询岗位信息
-     *@Date: 10:44 2018\5\2 0002
-     */
     @RequestMapping("/queryByPostid")
     @ResponseBody
     public Post queryByPostid(@RequestParam("id") Integer id){
@@ -201,11 +155,6 @@ public class PostInformationController {
         return post;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:修改岗位信息
-     *@Date: 11:03 2018\5\2 0002
-     */
     @RequestMapping("/updateOnePost")
     @ResponseBody
     public Object updateOnePost(
@@ -219,22 +168,12 @@ public class PostInformationController {
         return iPostService.updateOnePost(post, transactorusername);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据岗位ID级联删除岗位信息
-     *@Date: 14:44 2018\5\2 0002
-     */
     @RequestMapping("/deletePostsById")
     @ResponseBody
     public Object deletePostsById(@RequestParam("id") Integer id){
         return iPostService.deletePostsById(id);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据条件查询岗位信息日志
-     *@Date: 10:02 2018\5\3 0003
-     */
     @RequestMapping("/queryPostLogInformations")
     @ResponseBody
     public PageInfo<PostLog> queryPostLogInformations(
@@ -248,7 +187,7 @@ public class PostInformationController {
         paramMap.put("entity",postLog);
         PageInfo<PostLog> postLogPageInfo = iPostLogService.queryByConditions(paramMap);
         List<PostLog> list = postLogPageInfo.getList();
-        if(list.size()!=0){
+        if(!list.isEmpty()){
             for (int i = 0;i< list.size();i++) {
                 if (iPostService.queryOneByPostid (list.get(i).getPostid())!=null) {
                     list.get(i).setPostname(iPostService.queryOneByPostid (list.get(i).getPostid()).getPostname());
@@ -260,11 +199,6 @@ public class PostInformationController {
         return postLogPageInfo;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询岗位日志（不分页）
-     *@Date: 9:18 2018\5\24 0024
-     */
     @RequestMapping("/queryAllPostLogInformations")
     @ResponseBody
     public List<PostLog> queryAllPostLogInformations(){
@@ -280,11 +214,6 @@ public class PostInformationController {
         return postLogs;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:删除部门日志信息
-     *@Date: 10:50 2018\5\24 0024
-     */
     @RequestMapping("/deletePostlogByIds")
     @ResponseBody
     public String deletePostlogByIds(
@@ -300,11 +229,6 @@ public class PostInformationController {
         return "删除成功！";
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:数据的导入
-     *@Date: 15:09 2018\5\7 0007
-     */
     @RequestMapping("/importPostloginformations")
     @ResponseBody
     public String importPostloginformations(
@@ -320,7 +244,7 @@ public class PostInformationController {
                 User user = new User();
                 user.setTruename(postLog.getTransactortruename());
                 List<User> users = iUserService.selectByCondition(user);
-                if (users.size()!=0) {
+                if (!users.isEmpty()) {
                     postLog.setTransactoruserid(users.get(0).getId());
                 }
                 iPostLogService.addOne(postLog);
@@ -331,11 +255,6 @@ public class PostInformationController {
         return "数据导入成功！";
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:岗位排序--》根据父节点查询所有的同级数据
-     *@Date: 11:15 2018\6\15 0015
-     */
     @RequestMapping("/sortPostinformation")
     @ResponseBody
     public List<TitleAndCode> sortPostinformation(
@@ -354,11 +273,6 @@ public class PostInformationController {
         return list;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:对数据进行排序
-     *@Date: 14:52 2018\6\15 0015
-     */
     @RequestMapping("/submitSortdata2")
     @ResponseBody
     public DeptTree submitSortdata2(
@@ -381,39 +295,5 @@ public class PostInformationController {
     @ResponseBody
     public String getRecommendedPostcode(){
         return iPostService.getRecommendedPostcode();
-    }
-
-    /**
-     *@Author:ShiYun;
-     *@Description:同级排序
-     *@Date: 18:41 2018\6\15 0015
-     */
-    public DeptTree getNewDepttree(DeptTree deptTree,String title,List<TitleAndCode> list){
-        for(int i = 0;i<deptTree.getChildren().size();i++){
-            if(deptTree.getChildren().get(i).getTitle().equals(title)){
-                List<DeptTree> old = deptTree.getChildren().get(i).getChildren();
-                List<DeptTree> renew = new ArrayList<>();
-                for (TitleAndCode titleAndCode:list
-                        ) {
-                    for (DeptTree dtt:old
-                            ) {
-                        if(dtt.getTitle().equals(titleAndCode.getTitle())){
-                            renew.add(dtt);
-                        }
-                    }
-                }
-                deptTree.getChildren().get(i).setChildren(renew);
-                return deptTree;
-            }else {
-                if(deptTree.getChildren().get(i).getChildren().size()>0){
-                    DeptTree parentDepttree = getNewDepttree(deptTree.getChildren().get(i), title,list);
-                    if(parentDepttree!=null){
-                        deptTree.getChildren().get(i).setChildren(parentDepttree.getChildren());
-                        return deptTree;
-                    }
-                }
-            }
-        }
-        return null;
     }
 }

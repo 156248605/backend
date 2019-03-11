@@ -18,5 +18,5 @@ public interface IOpportunityService {
 
     Object closeOpportunityInfo(String opportunitycode, String trackcontent, String username);
 
-    Map<String,Object> getBusinessInfoByState_OFF();
+    Map<String,Object> getBusinessInfoByStateOFF();
 }

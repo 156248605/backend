@@ -3,7 +3,6 @@ package com.elex.oa.dao.business;
 import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.business.Clue;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

@@ -3,6 +3,7 @@ package com.elex.oa.service.hr_service;
 
 import com.elex.oa.entity.hr_entity.department.Dept;
 import com.elex.oa.entity.hr_entity.HRManageCard;
+import com.elex.oa.entity.hr_entity.department.DeptTree;
 
 import java.util.List;
 import java.util.Map;
@@ -195,11 +196,13 @@ public interface IDeptService {
 
     Map<String,Object> queryPostListByDepidButIsNotNull(Integer depid);
 
-    List<Map<String,Object>> getAllDepidAndDepnameByDEP_ON();
+    List<Map<String,Object>> getAllDepidAndDepnameByDepON();
 
     String getPrincipalTruenameByDepid(Integer depid);
 
     List<String> getAllCompanyNames();
 
     Object getAllDepidAndDepnameByRemoveCompany();
+
+    DeptTree submitSortdata(String sortdata, String title, String deptTree);
 }

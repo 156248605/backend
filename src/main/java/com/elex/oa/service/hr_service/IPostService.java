@@ -103,5 +103,5 @@ public interface IPostService  {
 
     DeptTree submitSortdata2(String sortdata, String code);
 
-    Object getAllPostidAndPostnameByPOST_ON();
+    Object getAllPostidAndPostnameByPostON();
 }

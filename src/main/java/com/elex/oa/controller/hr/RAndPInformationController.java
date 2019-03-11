@@ -54,8 +54,7 @@ public class RAndPInformationController {
     @RequestMapping("/queryRAndPProjects")
     @ResponseBody
     public List<RAndPInformation> queryRAndPProjects(){
-        List<RAndPInformation> rAndPInformations = irAndPInformationService.queryAllRAndPProject();
-        return rAndPInformations;
+        return irAndPInformationService.queryAllRAndPProject();
     }
 
     /**
@@ -70,13 +69,11 @@ public class RAndPInformationController {
             @RequestParam("rows") Integer rows,
             RAndPInformation rAndPInformation
     ){
-        HashMap<String,Object> paramMap = new HashMap<String, Object>();
+        HashMap<String,Object> paramMap = new HashMap<>();
         paramMap.put("pageNum",page);
         paramMap.put("pageSize",rows);
         paramMap.put("entity",rAndPInformation);
-
-        PageInfo<RAndPInformation> rAndPInformationPageHelper = irAndPInformationService.queryByCondition(paramMap);
-        return rAndPInformationPageHelper;
+        return irAndPInformationService.queryByCondition(paramMap);
     }
 
     /**
@@ -89,8 +86,7 @@ public class RAndPInformationController {
     public RAndPInformation queryRAndPInformationById(
             @RequestParam("randpinformationid") Integer randpinformationid
     ){
-        RAndPInformation rAndPInformation = irAndPInformationService.queryOneById(randpinformationid);
-        return rAndPInformation;
+        return irAndPInformationService.queryOneById(randpinformationid);
     }
 
     /**
@@ -135,7 +131,6 @@ public class RAndPInformationController {
         PersonalInformation personalInformation = iPersonalInformationService.queryOneById(personalInformationId);
         RAndPInformation rAndPInformation = new RAndPInformation();
         rAndPInformation.setUserid(personalInformation.getUserid());
-        List<RAndPInformation> list = irAndPInformationService.queryByCondition(rAndPInformation);
-        return list;
+        return irAndPInformationService.queryByCondition(rAndPInformation);
     }
 }

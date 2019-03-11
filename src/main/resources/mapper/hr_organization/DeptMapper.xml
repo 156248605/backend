@@ -74,6 +74,13 @@
 		where deptypeid =#{deptypeid} and state=1
 	</select>
 
+	<select id="selectDeptByDeptypeValueLike" parameterType="java.lang.String" resultMap="deptMapper">
+		SELECT dep.id,
+		FROM tb_id_department dep
+		LEFT JOIN tb_hr_set deptype ON deptype.id=dep.deptypeid
+		WHERE deptype.datavalue LIKE CONCAT(CONCAT('%',#{depttypeValue},'%')) and state=1
+	</select>
+
 	<select id="selectDeptByCompanyname" parameterType="java.lang.String" resultMap="deptMapper">
 		select * from tb_id_department
 		where companyname =#{companyname} AND state=1 AND companyname &lt;=&gt; depname=0
@@ -122,7 +129,7 @@
 		ORDER BY ordercode
 	</select>
 
-	<select id="getAllDepidAndDepnameByDEP_ON" resultType="java.util.Map">
+	<select id="getAllDepidAndDepnameByDepON" resultType="java.util.Map">
 		SELECT dep.id AS deptId,dep.depname AS deptName
 		FROM tb_id_department dep
 		WHERE state=1
@@ -162,7 +169,7 @@
 			u.username = #{username}
 	</select>
 
-	<select id="getAllCompanyNamesByDEP_ON" resultType="java.lang.String">
+	<select id="getAllCompanyNamesByDepON" resultType="java.lang.String">
 		SELECT dep.depname
 		FROM tb_id_department dep
 		JOIN tb_hr_set deptype ON deptype.id=dep.deptypeid
@@ -185,12 +192,23 @@
 		WHERE u.id=#{userid}
 	</select>
 
-	<select id="selectDepnameByUsername" parameterType="java.lang.String" resultType="java.lang.String">
+	<select id="selectDepnameByEmployeenumber" parameterType="java.lang.String" resultType="java.lang.String">
 		SELECT dep.depname
 		FROM tb_id_user u
 		JOIN tb_id_personalinformation per ON per.userid=u.id
 		JOIN tb_id_department dep ON dep.id=per.depid
-		WHERE u.employeenumber=#{depname}
+		WHERE u.employeenumber=#{employeenumber}
+	</select>
+
+	<select id="selectDepnamesByTreuname" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			GROUP_CONCAT(dep.depname SEPARATOR ';') AS depnames
+		FROM
+			tb_id_user u
+		LEFT JOIN tb_id_personalinformation per ON per.userid = u.id
+		LEFT JOIN tb_id_department dep ON dep.id = per.depid
+		WHERE
+			u.truename = #{truename};
 	</select>
 
 	<insert id="insertOne" parameterType="Dept" useGeneratedKeys="true" keyProperty="id">

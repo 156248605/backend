@@ -2,7 +2,7 @@ package com.elex.oa.service.reportObstacles.impl;
 
 import com.elex.oa.common.reportObstacles.ReportObstaclesCommons;
 import com.elex.oa.dao.business.IBusinessAttachmentDao;
-import com.elex.oa.dao.reportObstacles.IObstaclesInfoDao;
+import com.elex.oa.dao.reportobstacles.IObstaclesInfoDao;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.entity.reportObstacles.ObstaclesQueryInfo;

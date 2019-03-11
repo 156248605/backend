@@ -2,8 +2,8 @@ package com.elex.oa.service.hr_service;
 
 import com.elex.oa.entity.hr_entity.department.DeptLog;
 import com.github.pagehelper.PageInfo;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -31,7 +31,7 @@ public interface IDeptLogService {
      *@Description:根据条件查询部门日志（分页）
      *@Date: 17:29 2018\5\2 0002
      */
-    public PageInfo<DeptLog> queryByConditions(HashMap<String, Object> paramMap);
+    public PageInfo<DeptLog> queryByConditions(Map<String, Object> paramMap);
 
     /**
      *@Author:ShiYun;

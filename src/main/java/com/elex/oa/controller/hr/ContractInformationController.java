@@ -13,6 +13,8 @@ import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -48,6 +49,8 @@ public class ContractInformationController {
     @Autowired
     HrUtils hrUtils;
 
+    private static Logger logger = LoggerFactory.getLogger(ContractInformationController.class);
+
     @RequestMapping("/queryContractInformationByUseridAndCurTime")
     @ResponseBody
     public Object queryContractInformationByUseridAndCurTime(
@@ -62,7 +65,7 @@ public class ContractInformationController {
             @RequestParam("page") int page,
             @RequestParam("rows") int rows,
             ContractInformation contractInformation
-    ) throws ParseException {
+    ){
         HashMap<String, Object> paraMap = new HashMap<>();
         paraMap.put("pageNum", page);
         paraMap.put("pageSize", rows);
@@ -70,7 +73,7 @@ public class ContractInformationController {
 
         PageInfo<ContractInformation> contractInformationPageInfo = iContractInformationService.queryByConditions(paraMap);
         List<ContractInformation> list = contractInformationPageInfo.getList();
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             return null;
         }
         for (int i = 0; i < list.size(); i++) {
@@ -87,7 +90,6 @@ public class ContractInformationController {
                 list.get(i).setContracttype(hRsetContracttype.getDatavalue());
             }
             // 获得合同年限
-            /*list.get(i).setContractage(IDcodeUtil.getContractage(list.get(i).getStartdate(),list.get(i).getEnddate()));*/
         }
         contractInformationPageInfo.setList(list);
 
@@ -103,7 +105,7 @@ public class ContractInformationController {
         if (iPersonalInformationService.queryOneById(personalInformationId) != null) {
             contractInformationList = iContractInformationService.queryByUserid(iPersonalInformationService.queryOneById(personalInformationId).getUserid());
         } else {
-            return null;
+            return Collections.emptyList();
         }
         return contractInformationList;
     }
@@ -126,8 +128,7 @@ public class ContractInformationController {
     public ContractInformation queryContractsById(
             @RequestParam("contractid") Integer contractid
     ) {
-        ContractInformation contractInformation = iContractInformationService.queryById(contractid);
-        return contractInformation;
+        return iContractInformationService.queryById(contractid);
     }
 
     @RequestMapping("/addContractInformation")
@@ -167,7 +168,7 @@ public class ContractInformationController {
 
     @RequestMapping("/queryAllContractInformations")
     @ResponseBody
-    public List<ContractInformation> queryAllContractInformations() throws ParseException {
+    public List<ContractInformation> queryAllContractInformations(){
         ContractInformation contractInformation = new ContractInformation();
         List<ContractInformation> contractInformationList = iContractInformationService.queryAll(contractInformation);
         for (ContractInformation contractInformation1 : contractInformationList) {
@@ -184,7 +185,8 @@ public class ContractInformationController {
             try {
                 contractInformation1.setContractage(hrUtils.getContractage(contractInformation1.getStartdate(), contractInformation1.getEnddate()));
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.info(String.valueOf(e.getCause()));
+                return Collections.emptyList();
             }
             if (iUserService.getById(contractInformation1.getTransactoruserid()) != null) {
                 contractInformation1.setTransactortruename(iUserService.getById(contractInformation1.getTransactoruserid()).getTruename());
@@ -215,19 +217,20 @@ public class ContractInformationController {
             List<ContractInformation> excelInfo = readContractExcel.getExcelInfo(multipartFile);
             for (ContractInformation contractInformation : excelInfo) {
                 //合同编号为必填项
-                if (StringUtils.isEmpty(contractInformation.getContractcode())) continue;
                 //姓名为必填项
-                if (StringUtils.isEmpty(contractInformation.getTruename())) {
-                    responseMap.put("合同编号[" + contractInformation.getContractcode() + "]", "姓名为空");
+                if (StringUtils.isBlank(contractInformation.getTruename())
+                        || null==iUserService.queryByTruename(contractInformation.getTruename())
+                        || StringUtils.isBlank(contractInformation.getContractcode())) {
+                    if (StringUtils.isBlank(contractInformation.getTruename())) {
+                        responseMap.put("合同编号[" + contractInformation.getContractcode() + "]", "姓名为空");
+                    }
+                    if (null==iUserService.queryByTruename(contractInformation.getTruename())) {
+                        responseMap.put("合同编号[" + contractInformation.getContractcode() + "]，", "所对应的姓名不存在:亲，请先在人力资源-->人事档案-->人事信息中导入人事信息！");
+                    }
                     continue;
                 }
                 //姓名为必填项
-                if (null != iUserService.queryByTruename(contractInformation.getTruename())) {
-                    contractInformation.setUserid(iUserService.queryByUsername(contractInformation.getTruename()).getId());
-                } else {
-                    responseMap.put("合同编号[" + contractInformation.getContractcode() + "]，", "所对应的姓名不存在:亲，请先在人力资源-->人事档案-->人事信息中导入人事信息！");
-                    continue;
-                }
+                contractInformation.setUserid(iUserService.queryByUsername(contractInformation.getTruename()).getId());
                 //根据合同编号查询合同，有则更新，没有则添加
                 ContractInformation contractcodeInstance = iContractInformationService.queryByContractcode(contractInformation.getContractcode());
                 if (null==contractcodeInstance) {
@@ -243,12 +246,12 @@ public class ContractInformationController {
         return responseMap.size()==0?"导入成功！":JSON.toJSONString(responseMap);
     }
 
-    private void updateContractcode(ContractInformation contractInformation) throws ParseException {
+    private void updateContractcode(ContractInformation contractInformation){
         List<HRset> hRsetContracttypeList = ihRsetService.queryByConditions(new HRset(Commons.HRSET_CONTRACTTYPE, contractInformation.getContracttype()));
         Integer contracttypeid = null;
         if (null != hRsetContracttypeList && hRsetContracttypeList.size() == 1) {
             contracttypeid = hRsetContracttypeList.get(0).getId();
-        }else if(null==hRsetContracttypeList || hRsetContracttypeList.size()==0){
+        }else if(null==hRsetContracttypeList || hRsetContracttypeList.isEmpty()){
             Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_CONTRACTTYPE, contractInformation.getContracttype()));
             String rspCode = resp.getHead().getRspCode();
             if("200".equals(rspCode)){
@@ -270,12 +273,12 @@ public class ContractInformationController {
         iContractInformationService.modifyOne(contractInformation);
     }
 
-    private void addContractcode(ContractInformation contractInformation) throws ParseException {
+    private void addContractcode(ContractInformation contractInformation){
         List<HRset> hRsetContracttypeList = ihRsetService.queryByConditions(new HRset(Commons.HRSET_CONTRACTTYPE, contractInformation.getContracttype()));
         Integer contracttypeid = null;
         if (null != hRsetContracttypeList && hRsetContracttypeList.size() == 1) {
             contracttypeid = hRsetContracttypeList.get(0).getId();
-        }else if(null==hRsetContracttypeList || hRsetContracttypeList.size()==0){
+        }else if(null==hRsetContracttypeList || hRsetContracttypeList.isEmpty()){
             Resp resp = (Resp) ihRsetService.addOne(new HRset(Commons.HRSET_CONTRACTTYPE, contractInformation.getContracttype()));
             String rspCode = resp.getHead().getRspCode();
             if("200".equals(rspCode)){

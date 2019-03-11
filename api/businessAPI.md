@@ -1909,6 +1909,6 @@
   102  
 ##    @RequestMapping("/getBusinessInfoByState_OFF")
   104      @ResponseBody
-  105      public Map<String,Object> getBusinessInfoByState_OFF(){
+  105      public Map<String,Object> getBusinessInfoByStateOFF(){
 
 14 matches across 2 files

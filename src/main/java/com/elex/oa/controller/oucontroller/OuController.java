@@ -1,4 +1,4 @@
-package com.elex.oa.controller.ouController;
+package com.elex.oa.controller.oucontroller;
 
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.entity.ou.OuDep;
@@ -31,7 +31,7 @@ public class OuController {
 
     @RequestMapping("/dep/queryAllDepByDep_ON")
     @ResponseBody
-    public Object queryAllDepByDep_ON(){
+    public Object queryAllDepByDepON(){
         return iOuDepService.queryAllDepByDep_ON();
     }
 
@@ -129,8 +129,7 @@ public class OuController {
     @RequestMapping("/post/getParamsOfOuPost")
     @ResponseBody
     public Object getParamsOfOuPost(){
-        Map<String,Object> respMap = iOuPostService.getParamsOfOuPost();
-        return respMap;
+        return iOuPostService.getParamsOfOuPost();
     }
 
     @RequestMapping("/post/validateByPostcode")
@@ -158,7 +157,7 @@ public class OuController {
 
     @RequestMapping("/post/queryAllPostcode_ON")
     @ResponseBody
-    public Object queryAllPostcode_ON(){
+    public Object queryAllPostcodeON(){
         return iOuPostService.queryAllPostcode_ON();
     }
 

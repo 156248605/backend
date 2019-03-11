@@ -3,8 +3,8 @@ package com.elex.oa.service.hr_service;
 import com.elex.oa.entity.hr_entity.post.PostLog;
 import com.github.pagehelper.PageInfo;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -32,7 +32,7 @@ public interface IPostLogService {
      *@Description:根据条件查询岗位日志（分页）
      *@Date: 17:29 2018\5\2 0002
      */
-    public PageInfo<PostLog> queryByConditions(HashMap<String, Object> paramMap);
+    public PageInfo<PostLog> queryByConditions(Map<String, Object> paramMap);
 
     /**
      *@Author:ShiYun;

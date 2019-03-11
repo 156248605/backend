@@ -1,12 +1,16 @@
 package com.elex.oa.service.hr_service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.hr_entity.department.Dept;
 import com.elex.oa.entity.hr_entity.department.DeptLog;
+import com.elex.oa.entity.hr_entity.department.DeptTree;
 import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
+import com.elex.oa.entity.hr_entity.post.TitleAndCode;
 import com.elex.oa.service.hr_service.IDeptService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.PageHelper;
@@ -14,6 +18,8 @@ import com.elex.oa.util.resp.Resp;
 import com.elex.oa.util.resp.RespUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,11 +52,8 @@ public class DeptServiceImpl implements IDeptService {
     @Resource
     IPostDao iPostDao;
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据部门名称获得部门
-     *@Date: 15:29 2018\6\1 0001
-     */
+    private static Logger logger = LoggerFactory.getLogger(DeptServiceImpl.class);
+
     @Override
     public List<Dept> queryOneDepByDepname(String depname) {
         return iDeptDao.selectDeptByDeptname(depname);
@@ -62,33 +65,17 @@ public class DeptServiceImpl implements IDeptService {
         return iDeptDao.selectDeptByLikeDeptname(depname);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据部门code查询部门信息
-     *@Date: 10:20 2018\7\16 0016
-     */
     @Override
     public Dept queryOneByDepcode(String depcode) {
         Dept dept = iDeptDao.selectDeptByDeptcode(depcode);
         return getDetailDeptByDept(dept);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据部门code模糊查询部门信息
-     *@Date: 17:08 2018\8\14 0014
-     */
     @Override
     public List<Dept> queryDeptsByDepcode(String depcode) {
-        List<Dept> depts = iDeptDao.selectDeptByDeptcode2(depcode);
-        return depts;
+        return iDeptDao.selectDeptByDeptcode2(depcode);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据部门ID获得部门
-     *@Date: 15:30 2018\6\1 0001
-     */
     @Override
     public Dept queryOneDepByDepid(Integer id) {
         return iDeptDao.selectDeptByDepid(id);
@@ -103,54 +90,26 @@ public class DeptServiceImpl implements IDeptService {
         return dept;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:获得所有部门
-     *@Date: 15:30 2018\6\1 0001
-     */
     @Override
     public List<Dept> queryAllDepts() {
-        List<Dept> depts = iDeptDao.selectAllDept();
-        return depts;
+        return iDeptDao.selectAllDept();
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据上级部门ID查询部门信息
-     *@Date: 10:52 2018\4\16 0016
-     */
     @Override
     public List<Dept> queryByParentId(Integer parentid) {
-        List<Dept> depts = iDeptDao.selectByParentId(parentid);
-        return depts;
+        return iDeptDao.selectByParentId(parentid);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:添加部门信息并返回主键
-     *@Date: 11:00 2018\4\23 0023
-     */
     @Override
     public Integer addOne(Dept dept) {
-        Integer integer = iDeptDao.insertOne(dept);
-        return dept.getId();
+        return iDeptDao.insertOne(dept);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:修改部门信息
-     *@Date: 9:58 2018\5\2 0002
-     */
     @Override
     public void modifyOne(Dept dept) {
         iDeptDao.updateOne(dept);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:先要将该部门下的所有员工的部门信息改为无部门，再根据部门ID删除部门信息
-     *@Date: 14:07 2018\5\2 0002
-     */
     @Override
     public void removeOne(Integer id) {
         List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid(id);
@@ -166,11 +125,6 @@ public class DeptServiceImpl implements IDeptService {
         iDeptDao.deleteOne(id);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:删除用户时修改部门信息
-     *@Date: 15:25 2018\5\10 0010
-     */
     @Override
     public void modifyOne(Integer userid) {
         Dept dept1 = new Dept();
@@ -182,17 +136,17 @@ public class DeptServiceImpl implements IDeptService {
         List<Dept> depts1 = iDeptDao.selectDeptsByDept(dept1);
         List<Dept> depts2 = iDeptDao.selectDeptsByDept(dept2);
         List<Dept> depts3 = iDeptDao.selectDeptsByDept(dept3);
-        if(depts1.size()>0){
+        if(!depts1.isEmpty()){
             Dept dept = new Dept();
             dept.setPrincipaluserid(userid);
             dept.setId(depts1.get(0).getId());
             iDeptDao.updateByDeleteUser(dept);
-        }else if(depts2.size()>0){
+        }else if(!depts2.isEmpty()){
             Dept dept = new Dept();
             dept.setDeputyuserid(userid);
             dept.setId(depts1.get(0).getId());
             iDeptDao.updateByDeleteUser(dept);
-        }else if(depts3.size()>0){
+        }else if(!depts3.isEmpty()){
             Dept dept = new Dept();
             dept.setSecretaryuserid(userid);
             dept.setId(depts1.get(0).getId());
@@ -200,11 +154,6 @@ public class DeptServiceImpl implements IDeptService {
         }
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:修改部门时将在其他部门的信息休息掉
-     *@Date: 10:33 2018\6\20 0020
-     */
     @Override
     public void modifyByDeptidAndOtherinformation(Dept dept){
         iDeptDao.updateByDeleteUser(dept);
@@ -223,7 +172,7 @@ public class DeptServiceImpl implements IDeptService {
         if (depid!=null) {
             dept = iDeptDao.selectDeptByDepid(depid);
         } else {
-            dept = iDeptDao.selectDeptByDeptname("江苏博智软件科技股份有限公司").get(0);
+            dept = iDeptDao.selectDeptByDeptname(Commons.COMPANYNAME_GROUP).get(0);
         }
         hrManageCard.setDepname(dept.getDepname());
         //获得部门ID
@@ -260,49 +209,33 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.response("505","时间选择错误！",null);
+                return RespUtil.response("505",Commons.RESP_FAIL_CHOOSEDATE,null);
             }
-            sdate = twoDate.get("sdate");
-            edate = twoDate.get("edate");
+            sdate = twoDate.get(Commons.PARAM_SDATE);
+            edate = twoDate.get(Commons.PARAM_EDATE);
             HashMap<String, Object> paramMap = new HashMap<>();
             List<HRManageCard> hrManageCardList = new ArrayList<>();
-            List<Dept> depts1 = iDeptDao.selectAllDept();
-            List<Dept> depts = new ArrayList<>();
-            for (Dept d:depts1
-                 ) {
-                if(companyname.equals("江苏博智软件科技股份有限公司") || d.getCompanyname().equals(companyname)){
-                    depts.add(d);
-                }
-            }
+            List<Dept> depts = iDeptDao.selectDeptByDeptypeValueLike("公司");
 
             //获得总人数(edate时间点的在职总人数)
             Integer num;
             Resp resp2 = (Resp) this.getHRManageCard2(companyname,5, 1, sdate, edate);
-            if(resp2.getBody()!=null){
-                PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp2.getBody();
-                num = pageHelper2.getTotal();
-                paramMap.put("allNum",num);
-            }else {
-                return resp2;
-            }
+            if(resp2.getBody()==null)return resp2;
+            PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp2.getBody();
+            num = pageHelper2.getTotal();
+            paramMap.put("allNum",num);
 
             //获得入职总人数(edate时间点的入职总人数)
             Resp resp3 = (Resp) this.getHRManageCard3(companyname,5, 1, sdate, edate);
-            if(resp3.getBody()!=null){
-                PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp3.getBody();
-                paramMap.put("intoNum",pageHelper2.getTotal());
-            }else {
-                return resp3;
-            }
+            if(resp3.getBody()==null)return resp3;
+            PageHelper<PersonalInformation> pageHelper3 = (PageHelper<PersonalInformation>)resp3.getBody();
+            paramMap.put("intoNum",pageHelper3.getTotal());
 
             //获得离职总人数(edate时间点的离职总人数)
             Resp resp4 = (Resp) this.getHRManageCard4(companyname,5, 1, sdate, edate);
-            if(resp4.getBody()!=null){
-                PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp4.getBody();
-                paramMap.put("outNum",pageHelper2.getTotal());
-            }else {
-                return resp4;
-            }
+            if(resp4.getBody()==null)return resp4;
+            PageHelper<PersonalInformation> pageHelper4 = (PageHelper<PersonalInformation>)resp4.getBody();
+            paramMap.put("outNum",pageHelper4.getTotal());
 
             for (Dept dept:depts
                     ) {
@@ -316,8 +249,8 @@ public class DeptServiceImpl implements IDeptService {
                 Integer ratio;
                 Resp resp5 = (Resp) this.getHRManageCard5(5, 1, dept.getId(), sdate, edate);
                 if(resp5.getBody()!=null){
-                    PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp5.getBody();
-                    ratio = pageHelper2.getTotal();
+                    PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp5.getBody();
+                    ratio = pageHelper.getTotal();
                     hrManageCard.setNum(ratio);
                 }else {
                     return resp5;
@@ -325,14 +258,14 @@ public class DeptServiceImpl implements IDeptService {
 
                 //人数占比
                 Double db = ratio.doubleValue()/num.doubleValue()*100;
-                BigDecimal bg = new BigDecimal(db).setScale(2, RoundingMode.UP);
+                BigDecimal bg = BigDecimal.valueOf(db).setScale(2, RoundingMode.UP);
                 hrManageCard.setRatio(bg.doubleValue() + "%");
 
                 //获得所在部门入职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
                 Resp resp6 = (Resp) this.getHRManageCard6(5, 1, dept.getId(), sdate, edate);
                 if(resp6.getBody()!=null){
-                    PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp6.getBody();
-                    hrManageCard.setIntoNum(pageHelper2.getTotal());
+                    PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp6.getBody();
+                    hrManageCard.setIntoNum(pageHelper.getTotal());
                 }else {
                     return resp6;
                 }
@@ -340,31 +273,20 @@ public class DeptServiceImpl implements IDeptService {
                 //获得所在部门离职人数(edate时间点的入职总人数)(注意转部门员工的影响，注：此种情况前期版本暂不考虑)
                 Resp resp7 = (Resp) this.getHRManageCard7(5, 1, dept.getId(), sdate, edate);
                 if(resp7.getBody()!=null){
-                    PageHelper<PersonalInformation> pageHelper2 = (PageHelper<PersonalInformation>)resp7.getBody();
-                    hrManageCard.setOutNum(pageHelper2.getTotal());
+                    PageHelper<PersonalInformation> pageHelper = (PageHelper<PersonalInformation>)resp7.getBody();
+                    hrManageCard.setOutNum(pageHelper.getTotal());
                 }else {
                     return resp7;
                 }
 
                 //获得部门相应的人员(edate时间点的在职人员)
-                /*List<Map> users = new ArrayList<>();
-                for (PersonalInformation per:((PageHelper<PersonalInformation>) resp2.getBody()).getAllList()
-                     ) {
-                    HashMap<String, Object> map = new HashMap<>();
-                    User user = iUserDao.selectById(per.getUserid());
-                    map.put("id",user.getId());
-                    map.put("truename",user.getTruename());
-                    map.put("deptname",iDeptDao.selectDeptByDepid(per.getDepid()).getDepname());
-                    users.add(map);
-                }
-                hrManageCard.setUsers(users);*/
                 hrManageCardList.add(hrManageCard);
             }
             paramMap.put("HRManageCards",hrManageCardList);
             return RespUtil.response("205","返回成功！",paramMap);
         } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
+            logger.info(String.valueOf(e.getCause()));
+            return RespUtil.response("405",Commons.RESP_FAIL,null);
         }
     }
 
@@ -374,8 +296,8 @@ public class DeptServiceImpl implements IDeptService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         String curDate = sdf.format(date);
-        Boolean d1 = sdate==null || sdate.equals("");
-        Boolean d2 = edate==null || edate.equals("");
+        Boolean d1 = StringUtils.isBlank(sdate);
+        Boolean d2 = StringUtils.isBlank(edate);
         //1.sdate=null,  edate=null=>作为当前时间
         if(d1 && d2){
             sdate = edate =curDate;
@@ -383,32 +305,23 @@ public class DeptServiceImpl implements IDeptService {
         //2.sdate!=null, edate=null=>限：sdate<=当前时间
         //                           结：edate=sdate
         if(!d1 && d2){
-            if(sdate.compareTo(curDate)<=0){
-                edate=sdate;
-            }else {
-                return null;
-            }
+            if(sdate.compareTo(curDate)>0)return null;
+            edate=sdate;
         }
         //3.sdate=null, edate!=null=>限：edate<=当前时间
         //                           结：sdate=edate
         if(d1 && !d2){
-            if(edate.compareTo(curDate)<=0){
-                sdate = edate;
-            }else {
-                return null;
-            }
+            if(edate.compareTo(curDate)>0)return null;
+            sdate = edate;
         }
         //4.sdate!=null,edate!=null=>限：sdate<=edate<=当前时间
         //                           结：sdate,edate
-        if(!d1 && !d2){
-            if(sdate.compareTo(edate)>0 || edate.compareTo(curDate)>0){
-                return null;
-            }
-        }
-        map.put("sdate",sdate);
-        map.put("edate",edate);
+        if(!d1 && !d2 && (sdate.compareTo(edate)>0 || edate.compareTo(curDate)>0))return null;
+        map.put(Commons.PARAM_SDATE,sdate);
+        map.put(Commons.PARAM_EDATE,edate);
         return map;
-    };
+    }
+
     /**
      *@Author:ShiYun;
      *@Description:获得总人数(edate时间点的在职总人数)
@@ -419,38 +332,34 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.response("505","时间选择错误！",null);
+                return RespUtil.response("505",Commons.RESP_FAIL_CHOOSEDATE,null);
             }
-            sdate = twoDate.get("sdate");
-            edate = twoDate.get("edate");
+            edate = twoDate.get(Commons.PARAM_EDATE);
             List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(null,edate);//时间节点edate前的入职人员
             List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectAll3(null,edate);//时间节点edate前的离职人员
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:personalInformationList1) {
+                Integer depidTemp = per.getDepid();
+                Dept deptTemp = null;
+                if (depidTemp!=null) {
+                    deptTemp = iDeptDao.selectDeptByDepid(depidTemp);
+                }
+                Boolean isExistDepId = depidTemp!=null && deptTemp!=null && deptTemp.getCompanyname().equals(companyname);
                 if(
-                    !personalInformationList2.contains(per)
-                    && (
-                        companyname.trim().equals("江苏博智软件科技股份有限公司")
+                    !personalInformationList2.contains(per) && (
+                        companyname.trim().equals(Commons.COMPANYNAME_GROUP)
                                 ||
-                        (per.getDepid()!=null?//没有部门（depid=null）
-                                (iDeptDao.selectDeptByDepid(per.getDepid())!=null?//所在部门不存在(depid!=null但相应的部门已经被删除，实际上这种情况是绝对不存在的，私自直接操作数据库时会发生)
-                                        iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)//筛选公司
-                                        :
-                                        false
-                                )
-                                :
-                                false
-                        )//没有部门的员工(或者所在部门不存在，实际上这种情况是绝对不存在的)暂时不纳入人事看板的统计
+                        isExistDepId
                     )
                 ){
                     personalInformationList.add(per);
                 }
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
-            return RespUtil.response("205","提交成功！",pageHelper);
+            return RespUtil.response("205",Commons.RESP_SUCCESS,pageHelper);
         } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
+            logger.info(String.valueOf(e.getCause()));
+            return RespUtil.response("405",Commons.RESP_FAIL,null);
         }
     }
 
@@ -464,35 +373,32 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.response("505","时间选择错误！",null);
+                return RespUtil.response("505",Commons.RESP_FAIL,null);
             }
-            sdate = twoDate.get("sdate");
-            edate = twoDate.get("edate");
+            sdate = twoDate.get(Commons.PARAM_SDATE);
+            edate = twoDate.get(Commons.PARAM_EDATE);
             List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll2(sdate, edate);
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:personalInformationList1
                  ) {
+                Integer depidTemp = per.getDepid();
+                Dept deptTemp = null;
+                if (depidTemp!=null) {
+                    deptTemp = iDeptDao.selectDeptByDepid(depidTemp);
+                }
+                Boolean isExistDepId = depidTemp!=null && deptTemp!=null && deptTemp.getCompanyname().equals(companyname);
                 if(
-                    companyname.equals("江苏博智软件科技股份有限公司")
-                            ||
-                    (per.getDepid()!=null?//没有部门（depid=null）
-                            (iDeptDao.selectDeptByDepid(per.getDepid())!=null?//所在部门不存在(depid!=null但相应的部门已经被删除，实际上这种情况是绝对不存在的，私自直接操作数据库时会发生)
-                                    iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)//筛选公司
-                                    :
-                                    false
-                            )
-                            :
-                            false
-                    )//没有部门的员工(或者所在部门不存在，实际上这种情况是绝对不存在的)暂时不纳入人事看板的统计
+                    companyname.equals(Commons.COMPANYNAME_GROUP)
+                            ||isExistDepId//没有部门的员工(或者所在部门不存在，实际上这种情况是绝对不存在的)暂时不纳入人事看板的统计
                 ){
                     personalInformationList.add(per);
                 }
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.response("205","提交成功！",pageHelper);
+            return RespUtil.response("205",Commons.RESP_SUCCESS,pageHelper);
         } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
+            logger.info(String.valueOf(e.getCause()));
+            return RespUtil.response("405",Commons.RESP_FAIL,null);
         }
     }
 
@@ -506,35 +412,33 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.response("505","时间选择错误！",null);
+                return RespUtil.response("505",Commons.RESP_FAIL_CHOOSEDATE,null);
             }
-            sdate = twoDate.get("sdate");
-            edate = twoDate.get("edate");
+            sdate = twoDate.get(Commons.PARAM_SDATE);
+            edate = twoDate.get(Commons.PARAM_EDATE);
             List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectAll3(sdate, edate);
             List<PersonalInformation> personalInformationList = new ArrayList<>();
             for (PersonalInformation per:personalInformationList1
                     ) {
+                Integer depidTemp = per.getDepid();
+                Dept deptTemp = null;
+                if (depidTemp!=null) {
+                    deptTemp = iDeptDao.selectDeptByDepid(depidTemp);
+                }
+                Boolean isExistDepId = depidTemp!=null && deptTemp!=null && deptTemp.getCompanyname().equals(companyname);
                 if(
-                    companyname.trim().equals("江苏博智软件科技股份有限公司")
+                    companyname.trim().equals(Commons.COMPANYNAME_GROUP)
                     ||
-                    (per.getDepid()!=null?//没有部门（depid=null）
-                            (iDeptDao.selectDeptByDepid(per.getDepid())!=null?//所在部门不存在(depid!=null但相应的部门已经被删除，实际上这种情况是绝对不存在的，私自直接操作数据库时会发生)
-                                    iDeptDao.selectDeptByDepid(per.getDepid()).getCompanyname().equals(companyname)//筛选公司
-                                    :
-                                    false
-                            )
-                            :
-                            false
-                    )//没有部门的员工(或者所在部门不存在，实际上这种情况是绝对不存在的)暂时不纳入人事看板的统计
+                            isExistDepId//没有部门的员工(或者所在部门不存在，实际上这种情况是绝对不存在的)暂时不纳入人事看板的统计
                 ){
                     personalInformationList.add(per);
                 }
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.response("205","提交成功！",pageHelper);
+            return RespUtil.response("205",Commons.RESP_SUCCESS,pageHelper);
         } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
+            logger.info(String.valueOf(e.getCause()));
+            return RespUtil.response("405",Commons.RESP_FAIL,null);
         }
     }
 
@@ -548,14 +452,13 @@ public class DeptServiceImpl implements IDeptService {
         try {
             Map<String, String> twoDate = this.getTwoDate(sdate, edate);
             if(twoDate==null){
-                return RespUtil.response("505","时间选择错误！",null);
+                return RespUtil.response("505",Commons.RESP_FAIL_CHOOSEDATE,null);
             }
-            sdate = twoDate.get("sdate");
-            edate = twoDate.get("edate");
+            edate = twoDate.get(Commons.PARAM_EDATE);
             List<PersonalInformation> personalInformationList1 = iPersonalInformationDao.selectByDepid2(depid,null,edate);
             List<PersonalInformation> personalInformationList2 = iPersonalInformationDao.selectByDepid3(depid,null,edate);
             List<PersonalInformation> personalInformationList = new ArrayList<>();
-            if (personalInformationList2.size()>0) {
+            if (!personalInformationList2.isEmpty()) {
                 for (PersonalInformation per:personalInformationList1
                         ) {
                     if(!personalInformationList2.contains(per)){
@@ -566,10 +469,10 @@ public class DeptServiceImpl implements IDeptService {
                 personalInformationList = personalInformationList1;
             }
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page,rows,personalInformationList);
-            return RespUtil.response("205","提交成功！",pageHelper);
+            return RespUtil.response("205",Commons.RESP_SUCCESS,pageHelper);
         } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
+            logger.info(String.valueOf(e.getCause()));
+            return RespUtil.response("405",Commons.RESP_FAIL,null);
         }
     }
 
@@ -589,10 +492,10 @@ public class DeptServiceImpl implements IDeptService {
             edate = twoDate.get("edate");
             List<PersonalInformation> personalInformationList = iPersonalInformationDao.selectByDepid2(depid, sdate, edate);
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
-            return RespUtil.response("205","提交成功！",pageHelper);
+            return RespUtil.response("205",Commons.RESP_SUCCESS,pageHelper);
         } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.response("405","系统正在忙，请稍后再试！",null);
+            logger.info(String.valueOf(e.getCause()));
+            return RespUtil.response("405",Commons.RESP_FAIL,null);
         }
     }
 
@@ -614,42 +517,28 @@ public class DeptServiceImpl implements IDeptService {
             PageHelper<PersonalInformation> pageHelper = new PageHelper<>(page, rows, personalInformationList);
             return RespUtil.response("205","提交成功！",pageHelper);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return RespUtil.response("405","系统正在忙，请稍后再试！",null);
         }
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:forGXF（根据姓名查询相应的公司名称）
-     *@Date: 17:25 2018\8\14 0014
-     */
     @Override
     public String queryByTruename(String truename) {
         User user;
-        if (truename!=null || !"".equals(truename)) {
+        if (StringUtils.isNotBlank(truename)) {
             user = iUserDao.selectByTruename(truename);
         }else {
-            /*this.logger.info("=================================");
-            this.logger.info("员工姓名不能为空或NUll！");
-            this.logger.info("=================================");*/
             return "99";
         }
         PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
         Integer depid;
         if(null==personalInformation || null == personalInformation.getDepid()){
-            /*this.logger.info("=================================");
-            this.logger.info("员工所在的人事信息不存在或员工没有设置部门信息！");
-            this.logger.info("=================================");*/
             return "99";
         }else {
             depid = personalInformation.getDepid();
         }
         Dept dept = iDeptDao.selectDeptByDepid(depid);
         if(null==dept){
-            /*this.logger.info("=================================");
-            this.logger.info("员工所在的部门不存在，请重新设置部门或添加新部门！");
-            this.logger.info("=================================");*/
             return "99";
         }
         String depcode = dept.getDepcode();
@@ -662,58 +551,16 @@ public class DeptServiceImpl implements IDeptService {
         }
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有的一级公司和二级公司
-     *@Date: 10:59 2018\8\21 0021
-     */
     @Override
     public List<Dept> queryAllCompany1and2() {
-        //先获得一级公司和二级公司的类型ID
-        Integer firstDeptypeid = null;
-        List<HRset> hRsetFirstList = ihRsetDao.selectByConditions(new HRset("deptype", "一级公司"));
-        if(hRsetFirstList!=null && hRsetFirstList.size()==1){
-            firstDeptypeid = hRsetFirstList.get(0).getId();
-        }
-        Integer secondDeptypeid = null;
-        List<HRset> hRsetSecondList = ihRsetDao.selectByConditions(new HRset("deptype", "二级公司"));
-        if(hRsetSecondList!=null && hRsetSecondList.size()==1){
-            secondDeptypeid = hRsetSecondList.get(0).getId();
-        }
-
-        //获得相应的公司
-        List<Dept> deptList = null;
-        if (firstDeptypeid!=null) {
-            deptList = iDeptDao.selectDeptByDeptypeid(firstDeptypeid);
-        }
-        List<Dept> deptList2 = null;
-        if (secondDeptypeid!=null) {
-            deptList2 = iDeptDao.selectDeptByDeptypeid(secondDeptypeid);
-        }
-        if (deptList!=null && deptList.size()>0) {
-            for (Dept d:deptList
-                 ) {
-                deptList2.add(d);
-            }
-        }
-        return deptList2;
+        return iDeptDao.selectDeptByLikeDeptname("公司");
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:根据公司名称查询公司的部门（不包括公司）
-     *@Date: 11:24 2018\8\21 0021
-     */
     @Override
     public List<Dept> queryByCompanyname(String companyname) {
         return iDeptDao.selectDeptByCompanyname(companyname);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:查询所有部门（去除下级部门和自身）
-     *@Date: 17:59 2018\8\30 0030
-     */
     @Override
     public List<Dept> queryDepartmentsRemoveChilren(Integer depid) {
         List<Dept> depts = iDeptDao.selectAllDept();
@@ -727,17 +574,8 @@ public class DeptServiceImpl implements IDeptService {
         return depts1;
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:判断是否是子节点
-     *@param parentdepid:高级节点
-     *@param childdepid:低级节点
-     *@return 如果childdepid是parentdepid的子节点则返回true,否则返回false
-     *@Date: 17:59 2018\8\30 0030
-     */
     @Override
     public Boolean isChildPoint(Integer parentdepid, Integer childdepid) {
-        Integer cid = childdepid;
         Integer pid = childdepid;
         if(childdepid==parentdepid){//自己不能作为自己的上级
             return false;
@@ -746,21 +584,12 @@ public class DeptServiceImpl implements IDeptService {
             if(pid==parentdepid){//是自己的上级返回true
                 return true;
             }else {
-                cid = pid;
                 pid = iDeptDao.selectDeptByDepid(pid).getParentdepid();
             }
         }
         return false;//上级为null时跳出循环（到顶点），说明不是自己的上级
     }
 
-    /**
-     *@Author:ShiYun;
-     *@param userid 人员ID
-     *@param truename 人员名称
-     *@return companyname 公司名称
-     *@Description:根据人名或人员ID查询所在的公司名称
-     *@Date: 14:12 2018\9\8 0008
-     */
     @Override
     public String queryCompanynameByUseridOrTruename(Integer userid, String truename){
         Dept dept = null;
@@ -800,8 +629,8 @@ public class DeptServiceImpl implements IDeptService {
         dept.setPost_list(hrUtils.getArrayToString(dept.getPostList(),","));
         //判断是否为顶点部门
         if(null==dept.getParentdepid()){
-            List<Map<String, Object>> allDepidAndDepnameByDEP_on = iDeptDao.getAllDepidAndDepnameByDEP_ON();
-            if(null!=allDepidAndDepnameByDEP_on || allDepidAndDepnameByDEP_on.size()!=0)return RespUtil.response("500","非顶级部门必须选择上级部门！",null);
+            List<Map<String, Object>> allDepidAndDepnameByDepOn = iDeptDao.getAllDepidAndDepnameByDepON();
+            if(!allDepidAndDepnameByDepOn.isEmpty())return RespUtil.response("500","非顶级部门必须选择上级部门！",null);
         }
         iDeptDao.insertOne(dept);
         return RespUtil.response("200","提交成功！",dept);
@@ -837,8 +666,8 @@ public class DeptServiceImpl implements IDeptService {
     }
 
     @Override
-    public List<Map<String,Object>> getAllDepidAndDepnameByDEP_ON() {
-        return iDeptDao.getAllDepidAndDepnameByDEP_ON();
+    public List<Map<String,Object>> getAllDepidAndDepnameByDepON() {
+        return iDeptDao.getAllDepidAndDepnameByDepON();
     }
 
     @Override
@@ -848,7 +677,7 @@ public class DeptServiceImpl implements IDeptService {
 
     @Override
     public List<String> getAllCompanyNames() {
-        return iDeptDao.getAllCompanyNamesByDEP_ON();
+        return iDeptDao.getAllCompanyNamesByDepON();
     }
 
     @Override
@@ -856,10 +685,41 @@ public class DeptServiceImpl implements IDeptService {
         return iDeptDao.getAllDepidAndDepnameByRemoveCompany();
     }
 
+    @Override
+    public DeptTree submitSortdata(String sortdata, String title, String deptTreeStr) {
+        List<TitleAndCode> titleAndCodeList = JSONObject.parseArray(sortdata, TitleAndCode.class);//获得同级数据展示
+        //更新排序码
+        for (TitleAndCode titleAndCode:titleAndCodeList
+             ) {
+            Integer depId = iDeptDao.selectDeptByDeptname(titleAndCode.getTitle()).get(0).getId();
+            iDeptDao.updateOne(new Dept(depId,titleAndCode.getCode()));
+        }
+        //返回部门树结构数据
+        Dept topDept = iDeptDao.selectByParentId(null).get(0);
+        DeptTree deptTree = new DeptTree(topDept.getDepname(),topDept.getDepname(),topDept.getDepcode(),topDept.getId(),true);
+        //获得子部门信息
+        getSubDeptListByDeptTree(deptTree);
+        return deptTree;
+    }
+
+    //根据父节点获得子节点
+    private DeptTree getSubDeptListByDeptTree(DeptTree deptTree) {
+        List<Dept> deptList = iDeptDao.selectByParentId(deptTree.getId());
+        if(deptList.isEmpty())return deptTree;
+        List<DeptTree> children = new ArrayList<>();
+        for (Dept deptTemp:deptList
+             ) {
+            DeptTree deptTreeTemp = new DeptTree(deptTemp.getDepname(), deptTemp.getDepname(), deptTemp.getDepcode(), deptTemp.getId(), true);
+            deptTreeTemp = getSubDeptListByDeptTree(deptTreeTemp);
+            children.add(deptTreeTemp);
+        }
+        deptTree.setChildren(children);
+        return deptTree;
+    }
 
     //比较新旧部门信息是否有修改并添加部门日志信息（返回布尔值）
     private Map<String, String> getRespMapByOlddeptAndNewdept(Dept oldDept, Dept newDept, String transactorusername, Map<String, String> respMap){
-        Boolean isUpdate = false;
+        Boolean isUpdate1 = false;
         Boolean respBoolean = false;
         Integer depid = oldDept.getId();
         //判断部门编号（首先判断是否相等，如果不相等还要判断是否可用）
@@ -869,48 +729,35 @@ public class DeptServiceImpl implements IDeptService {
                 respMap.put(newDept.getDepcode(),"部门编号不能为空！");
                 return respMap;
             }
-            if(isExist){
-                if (!newDept.getDepcode().equals(oldDept.getDepcode())) {
-                    respMap.put(newDept.getDepcode(),"部门编号已存在！");
-                    return respMap;
-                }
+            if(isExist && !newDept.getDepcode().equals(oldDept.getDepcode())){
+                respMap.put(newDept.getDepcode(),"部门编号已存在！");
+                return respMap;
             }
-            isUpdate = getaBooleanByTwoString(depid,oldDept.getDepcode(),newDept.getDepcode(),transactorusername,"部门编号");
-            if(isUpdate)respBoolean = true;
+            isUpdate1 = getaBooleanByTwoString(depid,oldDept.getDepcode(),newDept.getDepcode(),transactorusername,"部门编号");
         }
         //判断部门名称并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,oldDept.getDepname(),newDept.getDepname(),transactorusername,"部门名称");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate2 = getaBooleanByTwoString(depid,oldDept.getDepname(),newDept.getDepname(),transactorusername,"部门名称");
         //判断部门类型并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,oldDept.getDeptype(),newDept.getDeptype(),transactorusername,"部门类型");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate3 = getaBooleanByTwoString(depid,oldDept.getDeptype(),newDept.getDeptype(),transactorusername,"部门类型");
         //判断职能类型并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,oldDept.getFunctionaltype(),newDept.getFunctionaltype(),transactorusername,"职能类型");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate4 = getaBooleanByTwoString(depid,oldDept.getFunctionaltype(),newDept.getFunctionaltype(),transactorusername,"职能类型");
         //判断上级部门并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,getStringOfDepnameAndDepcode(oldDept.getParentdep()),getStringOfDepnameAndDepcode(newDept.getParentdep()),transactorusername,"上级部门");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate5 = getaBooleanByTwoString(depid,getStringOfDepnameAndDepcode(oldDept.getParentdep()),getStringOfDepnameAndDepcode(newDept.getParentdep()),transactorusername,"上级部门");
         //判断公司名称并部门日志
-        isUpdate = getaBooleanByTwoString(depid,oldDept.getCompanyname(),newDept.getCompanyname(),transactorusername,"公司名称");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate6 = getaBooleanByTwoString(depid,oldDept.getCompanyname(),newDept.getCompanyname(),transactorusername,"公司名称");
         //判断部门正职并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getPrincipaluser()),getStringOfTruenameAndEmployeenumber(newDept.getPrincipaluser()),transactorusername,"部门正职");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate7 = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getPrincipaluser()),getStringOfTruenameAndEmployeenumber(newDept.getPrincipaluser()),transactorusername,"部门正职");
         //判断部门副职并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getDeputyuser()),getStringOfTruenameAndEmployeenumber(newDept.getDeputyuser()),transactorusername,"部门副职");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate8 = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getDeputyuser()),getStringOfTruenameAndEmployeenumber(newDept.getDeputyuser()),transactorusername,"部门副职");
         //判断部门秘书并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getSecretaryuser()),getStringOfTruenameAndEmployeenumber(newDept.getSecretaryuser()),transactorusername,"部门秘书");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate9 = getaBooleanByTwoString(depid,getStringOfTruenameAndEmployeenumber(oldDept.getSecretaryuser()),getStringOfTruenameAndEmployeenumber(newDept.getSecretaryuser()),transactorusername,"部门秘书");
         //判断部门职责并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,oldDept.getDutydescription(),newDept.getDutydescription(),transactorusername,"部门职责");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate10 = getaBooleanByTwoString(depid,oldDept.getDutydescription(),newDept.getDutydescription(),transactorusername,"部门职责");
         //判断部门概述并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,oldDept.getDepdescription(),newDept.getDepdescription(),transactorusername,"部门概述");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate11 = getaBooleanByTwoString(depid,oldDept.getDepdescription(),newDept.getDepdescription(),transactorusername,"部门概述");
         //判断部门所含岗位并添加部门日志
-        isUpdate = getaBooleanByTwoString(depid,oldDept.getPost_list(),newDept.getPost_list(),transactorusername,"部门所含岗位");
-        if(isUpdate)respBoolean = true;
+        Boolean isUpdate12 = getaBooleanByTwoString(depid,oldDept.getPost_list(),newDept.getPost_list(),transactorusername,"部门所含岗位");
+        if(isUpdate1 || isUpdate2 || isUpdate3 || isUpdate4 || isUpdate5 || isUpdate6 || isUpdate7 || isUpdate8 || isUpdate9 || isUpdate10 || isUpdate11 || isUpdate12 )respBoolean = true;
         if(respBoolean){
             return respMap;
         }else {
@@ -933,10 +780,9 @@ public class DeptServiceImpl implements IDeptService {
 
     //判断部门编号是否存在
     private Boolean getaBooleanByDepcode(String depcode){
-        if(StringUtils.isBlank(depcode))return null;
+        if(StringUtils.isBlank(depcode))return false;
         Dept dept = iDeptDao.selectDeptByDeptcodeIgnoreState(depcode);
-        if(null==dept)return false;
-        return true;
+        return null!=dept;
     }
 
     //判断相应的两个字段是否相同并添加部门日志

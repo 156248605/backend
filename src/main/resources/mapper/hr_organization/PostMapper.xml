@@ -55,13 +55,13 @@
 		ORDER BY ordercode
 	</select>
 
-	<select id="selectPostByPostcodePOST_ON" parameterType="java.lang.String" resultMap="postMapper">
+	<select id="selectPostByPostcodePostON" parameterType="java.lang.String" resultMap="postMapper">
 		select * from tb_id_post
 		where postcode = #{postcode} and state=1
 		ORDER BY ordercode
 	</select>
 
-	<select id="selectPostByPostcodePOST_OFF" parameterType="java.lang.String" resultMap="postMapper">
+	<select id="selectPostByPostcodePostOFF" parameterType="java.lang.String" resultMap="postMapper">
 		select * from tb_id_post
 		where postcode = #{postcode} and state=0
 		ORDER BY ordercode
@@ -90,6 +90,26 @@
 		SELECT post.id AS postId,post.postname AS postName
 		FROM tb_id_post post
 		WHERE state=1
+	</select>
+
+	<select id="selectPostlistToStringByUserid" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT
+			postinfo.postlist AS postnames
+		FROM
+			tb_id_user u
+		LEFT JOIN tb_id_personalinformation per ON per.userid = u.id
+		LEFT JOIN (
+			SELECT
+				rs.perid AS perid,
+				GROUP_CONCAT(
+					post.postname SEPARATOR ';'
+				) AS postlist
+			FROM
+				tb_id_personalinformation per
+			JOIN tb_hr_per_and_post_rs rs ON rs.perid = per.id
+			JOIN tb_id_post post ON post.id = rs.postid
+		) postinfo ON postinfo.perid = per.id
+		WHERE u.id = #{userid};
 	</select>
 
 	<insert id="insertOne" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
@@ -153,7 +173,7 @@
 		WHERE id=#{_parameter,jdbcType=NUMERIC}
 	</delete>
 
-	<update id="deleteByChangeStatePOST_OFF" parameterType="java.lang.Integer">
+	<update id="deleteByChangeStatePostOFF" parameterType="java.lang.Integer">
 		UPDATE tb_id_post
 		SET state=0
 		WHERE id=#{id}

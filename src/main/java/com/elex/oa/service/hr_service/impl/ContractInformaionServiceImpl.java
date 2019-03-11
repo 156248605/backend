@@ -5,7 +5,6 @@ import com.elex.oa.dao.hr.IHRsetDao;
 import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
-import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.hr_service.IContractInformationService;
 import com.elex.oa.util.hr_util.HrUtils;
@@ -14,6 +13,8 @@ import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,17 +41,19 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     @Resource
     HrUtils hrUtils;
 
+    private static Logger logger = LoggerFactory.getLogger(ContractInformaionServiceImpl.class);
+
     @Override
     public PageInfo<ContractInformation> queryByConditions(Map<String, Object> paramMap) {
 
         ContractInformation contractInformation = (ContractInformation) paramMap.get("entity");
         List<User> users = iUserDao.selectByConditions(contractInformation);
-        if(users.size()!=0){
+        if(!users.isEmpty()){
             ArrayList<Integer> userids = new ArrayList<>();
             for(User user:users){
                 userids.add(user.getId());
             }
-            if (userids.size()!=0) {
+            if (!userids.isEmpty()) {
                 contractInformation.setUserids(userids);
             }
         }
@@ -60,7 +63,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
 
         List<ContractInformation> contractInformationList = iContractInformationDao.selectByConditions(contractInformation);
 
-        return new PageInfo<ContractInformation>(contractInformationList);
+        return new PageInfo<>(contractInformationList);
     }
 
     @Override
@@ -69,7 +72,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         ContractInformation contractInformation = iContractInformationDao.selectById(id);
         if(null == contractInformation)return null;
         /*获得合同的详细信息*/
-        contractInformation = getDetailContractByContract(contractInformation);
+        getDetailContractByContract(contractInformation);
         //获得续签合同集合
         contractInformation.setHistoryContract(getChildrenContractInformationsByUserid(contractInformation.getUserid()));
         return contractInformation;
@@ -84,28 +87,17 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
     public List<ContractInformation> queryByUserid(Integer userid) {
         List<ContractInformation> contractInformationList = iContractInformationDao.selectByUserid(userid);
         for(ContractInformation contractInformation:contractInformationList){
-            //获得姓名
-            if (contractInformation!=null && contractInformation.getUserid()!=null && iUserDao.selectById(contractInformation.getUserid())!=null) {
-                contractInformation.setTruename(iUserDao.selectById(contractInformation.getUserid()).getTruename());
-            }
-            //获得工号
-            if (iPersonalInformationDao.selectByUserid(contractInformation.getUserid())!=null) {
-                contractInformation.setEmployeenumber(iPersonalInformationDao.selectByUserid(contractInformation.getUserid()).getEmployeenumber());
-            }
-            //获得合同类型
-            List<HRset> contractList = ihRsetDao.selectByConditions(new HRset(contractInformation.getContracttypeid()));
-            if (contractList!=null && contractInformationList.size()==1) {
-                contractInformation.setContracttype(contractList.get(0).getDatavalue());
-            }
-            //获得办理人姓名
-            if (null!=contractInformation.getTransactoruserid()) {
-                contractInformation.setTransactortruename(iUserDao.selectById(contractInformation.getTransactoruserid()).getTruename());
-            }
-            //获得合同期限
-            try {
+            if (null!=contractInformation) {
+                //获得姓名
+                contractInformation.setTruename(hrUtils.getTruenameByUserid(contractInformation.getUserid()));
+                //获得工号
+                contractInformation.setEmployeenumber(hrUtils.getEmployeenumberByUserid(contractInformation.getUserid()));
+                //获得合同类型
+                contractInformation.setContracttype(hrUtils.getDatavalueByHrsetid(contractInformation.getContracttypeid()));
+                //获得办理人姓名
+                contractInformation.setTransactortruename(hrUtils.getTruenameByUserid(contractInformation.getTransactoruserid()));
+                //获得合同期限
                 contractInformation.setContractage(hrUtils.getContractage(contractInformation.getStartdate(),contractInformation.getEnddate()));
-            } catch (Exception e) {
-                System.out.println("获得合同期限失败！");
             }
         }
         return contractInformationList;
@@ -113,8 +105,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
 
     @Override
     public List<ContractInformation> queryByEntity(ContractInformation contractInformation) {
-        List<ContractInformation> contractInformations = iContractInformationDao.selectByConditions(contractInformation);
-        return contractInformations;
+        return iContractInformationDao.selectByConditions(contractInformation);
     }
 
     public List<ContractInformation> queryAll(ContractInformation contractInformation){
@@ -141,7 +132,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
             contractInformation.setContractage(hrUtils.getContractage(contractInformation.getStartdate(), contractInformation.getEnddate()));
             iContractInformationDao.insertOne(contractInformation);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return null;
         }
         return contractInformation.getId();
@@ -154,22 +145,26 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
 
     @Override
     public Object modifyOne(ContractInformation contractInformation){
-        //获得合同新对象
-        ContractInformation newContract = getDetailContractByContract(contractInformation);
-        //获得合同旧对象
-        ContractInformation oldContract = iContractInformationDao.selectById(contractInformation.getId());
-        oldContract = getDetailContractByContract(oldContract);
-        //校验合同编号是否可用
-        if(StringUtils.isBlank(contractInformation.getContractcode()))return RespUtil.response("500","合同编号不能为空！",null);
-        ContractInformation contractInformationTemp = iContractInformationDao.selectOneByContractcode(contractInformation.getContractcode());
-        if(null!=contractInformationTemp && !oldContract.getContractcode().equals(newContract.getContractcode())){
-            return RespUtil.response("500","合同编号已存在！",null);
-        }
-        //判断是否需要修改合同信息
-        Boolean isUpdate = isUpdateForContractInformation(oldContract,newContract);
-        if (isUpdate) {
-            iContractInformationDao.updateOne(contractInformation);
-            return RespUtil.response("200","提交成功！",null);
+        if (null!=contractInformation) {
+            //获得合同新对象
+            ContractInformation newContract = getDetailContractByContract(contractInformation);
+            //获得合同旧对象
+            ContractInformation oldContract = iContractInformationDao.selectById(contractInformation.getId());
+            oldContract = getDetailContractByContract(oldContract);
+            //校验合同编号是否可用
+            if(StringUtils.isBlank(contractInformation.getContractcode()))return RespUtil.response("500","合同编号不能为空！",null);
+            ContractInformation contractInformationTemp = iContractInformationDao.selectOneByContractcode(contractInformation.getContractcode());
+            if(null!=contractInformationTemp && oldContract!=null && !oldContract.getContractcode().equals(newContract.getContractcode())){
+                return RespUtil.response("500","合同编号已存在！",null);
+            }
+            //判断是否需要修改合同信息
+            Boolean isUpdate = isUpdateForContractInformation(oldContract,newContract);
+            if (isUpdate) {
+                iContractInformationDao.updateOne(contractInformation);
+                return RespUtil.response("200","提交成功！",null);
+            }
+        } else {
+            RespUtil.response("500","合同不能为空！",null);
         }
         return RespUtil.response("500","没有需要修改的信息！",null);
     }
@@ -188,7 +183,7 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
         try {
             contractInformation = iContractInformationDao.selectContractInformationByUseridAndCurTime(userid,curtime);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return RespUtil.response("500","查询失败",e.getStackTrace());
         }
         if(null==contractInformation)return RespUtil.response("500","合同信息不存在",userid);
@@ -198,13 +193,14 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
 
     //判断是否需要修改合同信息
     private Boolean isUpdateForContractInformation(ContractInformation oldContract, ContractInformation newContract) {
-        if(null==oldContract || null==newContract)return false;
-        if(!newContract.getContractcode().equals(oldContract.getContractcode()))return true;
-        if(!newContract.getStartdate().equals(oldContract.getStartdate()))return true;
-        if(!newContract.getEnddate().equals(oldContract.getEnddate()))return true;
-        if(newContract.getContracttypeid().intValue()!=oldContract.getContracttypeid().intValue())return true;
-        if(StringUtils.isNotBlank(newContract.getAttachment()))return true;
-        if(!newContract.getRemark().equals(oldContract.getRemark()))return true;
+        if(null==oldContract || null==newContract){
+            return false;
+        }else if(!newContract.getContractcode().equals(oldContract.getContractcode())
+        ||!newContract.getStartdate().equals(oldContract.getStartdate())
+        ||!newContract.getEnddate().equals(oldContract.getEnddate())
+        ||newContract.getContracttypeid().intValue()!=oldContract.getContracttypeid().intValue()
+        ||StringUtils.isNotBlank(newContract.getAttachment())
+        ||!newContract.getRemark().equals(oldContract.getRemark()))return true;
         return false;
     }
 
@@ -226,11 +222,11 @@ public class ContractInformaionServiceImpl implements IContractInformationServic
 
     //获得合同续签信息
     private List<ContractInformation> getChildrenContractInformationsByUserid(Integer userid){
-        if(null==userid)return null;
+        if(null==userid)return Collections.emptyList();
         List<ContractInformation> contractInformationList = iContractInformationDao.selectByUserid(userid);
-        if(null==contractInformationList)return null;
+        if(null==contractInformationList)return Collections.emptyList();
         for(ContractInformation contractInformation:contractInformationList){
-            contractInformation = getDetailContractByContract(contractInformation);
+            getDetailContractByContract(contractInformation);
         }
         return contractInformationList;
     }

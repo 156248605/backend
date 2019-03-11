@@ -1,15 +1,13 @@
-package com.elex.oa.controller.reportObstacles;
+package com.elex.oa.controller.reportobstacles;
 
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.entity.reportObstacles.ObstaclesQueryInfo;
 import com.elex.oa.service.reportObstacles.IObstaclesInfoService;
-import com.elex.oa.util.hr_util.AppProperties;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,15 +65,13 @@ public class ObstaclesController {
     @RequestMapping("/queryOaBackendVersion")
     @ResponseBody
     public Object queryOaBackendVersion(){
-        String oaBackendVersion = hrUtils.getOaBackendVersion();
-        return oaBackendVersion;
+        return hrUtils.getOaBackendVersion();
     }
 
     @RequestMapping("/queryAllObstaclesInfo")
     @ResponseBody
     public Object queryAllObstaclesInfo(){
-        List<ObstaclesInfo> obstaclesInfoList = iObstaclesInfoService.queryAllObstaclesInfo();
-        return obstaclesInfoList;
+        return iObstaclesInfoService.queryAllObstaclesInfo();
     }
 
     @RequestMapping("/queryObstaclesByConditions")
@@ -93,9 +89,9 @@ public class ObstaclesController {
     public Object changeObstaclesState(
             @RequestParam("id") String id,
             @RequestParam("flag") String flag,
-            @RequestParam(value = "location_description" ,required = false)String location_description,
-            @RequestParam(value = "process_description" ,required = false)String process_description
+            @RequestParam(value = "location_description" ,required = false)String locationDescription,
+            @RequestParam(value = "process_description" ,required = false)String processDescription
     ){
-        return iObstaclesInfoService.changeObstaclesState(id,flag,location_description,process_description);
+        return iObstaclesInfoService.changeObstaclesState(id,flag,locationDescription,processDescription);
     }
 }

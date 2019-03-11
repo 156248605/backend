@@ -107,4 +107,6 @@ public interface IPersonalInformationDao {
     List<Map<String, Object>> selectUseridTruenameDepnameByDepid(Integer depid);
 
     List<PersonalInformationExchange> queryPersonalInformationsByNull();
+
+    PersonalInformation queryPersonalInformationByPerid(Integer personalInformationId);
 }

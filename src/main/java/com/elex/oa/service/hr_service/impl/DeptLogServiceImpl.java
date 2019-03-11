@@ -8,8 +8,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -29,7 +29,7 @@ public class DeptLogServiceImpl implements IDeptLogService {
      */
     @Override
     public Integer addOne(DeptLog deptLog) {
-        Integer integer = iDeptLogDao.insertOne(deptLog);
+        iDeptLogDao.insertOne(deptLog);
         return deptLog.getId();
     }
 
@@ -40,8 +40,7 @@ public class DeptLogServiceImpl implements IDeptLogService {
      */
     @Override
     public List<DeptLog> queryAllDeptLogs() {
-        List<DeptLog> deptLogs = iDeptLogDao.selectAllDeptLog();
-        return deptLogs;
+        return iDeptLogDao.selectAllDeptLog();
     }
 
     /**
@@ -50,7 +49,7 @@ public class DeptLogServiceImpl implements IDeptLogService {
      *@Date: 17:31 2018\5\2 0002
      */
     @Override
-    public PageInfo<DeptLog> queryByConditions(HashMap<String, Object> paramMap) {
+    public PageInfo<DeptLog> queryByConditions(Map<String, Object> paramMap) {
         int pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         int pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         PageHelper.startPage(pageNum,pageSize);
@@ -58,8 +57,7 @@ public class DeptLogServiceImpl implements IDeptLogService {
         DeptLog deptLog = (DeptLog)paramMap.get("entity");
         List<DeptLog> deptLogs = iDeptLogDao.selectByConditions(deptLog);
 
-        PageInfo<DeptLog> deptLogPageInfo = new PageInfo<>(deptLogs);
-        return deptLogPageInfo;
+        return new PageInfo<>(deptLogs);
     }
 
     /**

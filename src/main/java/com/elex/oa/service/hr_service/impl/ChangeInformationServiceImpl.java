@@ -11,8 +11,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -34,8 +34,7 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
      */
     @Override
     public Integer addOne(ChangeInformation changeInformation) {
-        Integer changeInformationId = iChangeInformaionDao.insertOne(changeInformation);
-        return changeInformationId;
+        return iChangeInformaionDao.insertOne(changeInformation);
     }
 
     /**
@@ -44,7 +43,7 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
      *@Date: 11:52 2018\4\13 0013
      */
     @Override
-    public PageInfo<ChangeInformation> queryAll(HashMap<String, Object> paramMap) {
+    public PageInfo<ChangeInformation> queryAll(Map<String, Object> paramMap) {
         Integer pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         PageHelper.startPage(pageNum,pageSize);
@@ -62,9 +61,7 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
             User transactoruser = iUserDao.selectById(changeInformations.get(i).getTransactoruserid());
             changeInformations.get(i).setTransactortruename(transactoruser.getTruename());
         }
-        PageInfo<ChangeInformation> changeInformationPageInfo = new PageInfo<>(changeInformations);
-
-        return changeInformationPageInfo;
+        return new PageInfo<>(changeInformations);
     }
 
     /**
@@ -108,7 +105,6 @@ public class ChangeInformationServiceImpl extends BaseServiceImpl<ChangeInformat
 
     @Override
     public List<ChangeInformation> queryByUserid(Integer changeduserid) {
-        List<ChangeInformation> changeInformationList = iChangeInformaionDao.selectByUserid(changeduserid);
-        return changeInformationList;
+        return iChangeInformaionDao.selectByUserid(changeduserid);
     }
 }

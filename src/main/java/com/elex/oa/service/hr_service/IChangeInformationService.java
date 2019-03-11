@@ -4,8 +4,8 @@ import com.elex.oa.entity.hr_entity.ChangeInformation;
 import com.elex.oa.service.BaseService;
 import com.github.pagehelper.PageInfo;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -26,7 +26,7 @@ public interface IChangeInformationService extends BaseService<ChangeInformation
      *@Description:变更信息的列表(分页)
      *@Date: 11:49 2018\4\13 0013
      */
-    public PageInfo<ChangeInformation> queryAll(HashMap<String,Object> paramMap);
+    public PageInfo<ChangeInformation> queryAll(Map<String,Object> paramMap);
 
     /**
      *@Author:ShiYun;

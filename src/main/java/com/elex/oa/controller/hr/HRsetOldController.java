@@ -26,18 +26,12 @@ import java.util.Map;
 
 @CrossOrigin
 @Controller
-public class HRset_OldController {
+public class HRsetOldController {
     @Autowired
     IHRsetService ihRsetService;
     @Autowired
     IPostlevelrelationshipinfoService iPostlevelrelationshipinfoService;
 
-
-    /**
-     *@Author:ShiYun;
-     *@Description:HRset信息的添加
-     *@Date: 18:43 2018\5\11 0011
-     */
     @RequestMapping("/addOneHRset")
     @ResponseBody
     public Object addOneHRset(
@@ -46,11 +40,6 @@ public class HRset_OldController {
         return ihRsetService.addOne(hRset);
     }
 
-    /**
-     *@Author:ShiYun;
-     *@Description:HRset信息的查询（全部）
-     *@Date: 18:45 2018\5\11 0011
-     */
     @RequestMapping("/queryAllHRset")
     @ResponseBody
     public List<HRset> queryAllHRset(
@@ -59,25 +48,12 @@ public class HRset_OldController {
         return ihRsetService.queryByConditions(hRset);
     }
 
-    /**
-     * @Author: shiyun
-     * @Description:查询所有的HRset字段
-     * @Date  2018\11\14 0014 10:34
-     * @Param
-     * @return
-     **/
     @RequestMapping("/queryAllHRsetByNull")
     @ResponseBody
     public List<HRset> queryAllHRsetByNull(){
         return ihRsetService.queryAll();
     }
 
-
-    /**
-     *@Author:ShiYun;
-     *@Description:HRset信息的查询（分页）
-     *@Date: 11:32 2018\5\19 0019
-     */
     @RequestMapping("/queryHRsetPageInfo")
     @ResponseBody
     public PageInfo<HRset> queryHRPageInfo(
@@ -92,46 +68,23 @@ public class HRset_OldController {
         return ihRsetService.queryByParam(paramMap);
     }
 
-    /**
-     * @Author: shiyun
-     * @Description:HRset信息的查询（校验:存在返回true，不存在返回false）
-     * @Date  2018\11\7 0007 13:51
-     * @Param [datatype, datavalue]
-     * @return java.lang.Boolean
-     **/
     @RequestMapping("/queryValidateHRset")
     @ResponseBody
     public Boolean queryValidateHRset(
             HRset hRset
     ){
-        Boolean aBoolean = ihRsetService.queryValidateHRset(hRset);
-        return aBoolean;
+        return ihRsetService.queryValidateHRset(hRset);
     }
 
-    /**
-     * @Author: shiyun
-     * @Description:HRset信息的删除
-     * @Date  2018\11\7 0007 13:51
-     * @Param [ids]
-     * @return java.lang.String
-     **/
     @RequestMapping("/removeHRset")
     @ResponseBody
     public Object removeHRset(
             @RequestParam("ids") List<Integer> ids
     ){
         Map<Integer, String> map = ihRsetService.removeMultiple(ids);
-        Boolean aBoolean = map.size()==0?true:false;
-        return aBoolean? RespUtil.response("200","删除成功！",null):RespUtil.response("500","删除失败！", JSONObject.toJSONString(map));
+        return map.size()==0? RespUtil.response("200","删除成功！",null):RespUtil.response("500","删除失败！", JSONObject.toJSONString(map));
     }
 
-    /**
-     * @Author: shiyun
-     * @Description:HRset信息修改
-     * @Date  2018\11\7 0007 13:50
-     * @Param [datatype, datavalue, id]
-     * @return java.lang.String
-     **/
     @RequestMapping("/modifyHRset")
     @ResponseBody
     public Object modifyHRset(
@@ -140,13 +93,6 @@ public class HRset_OldController {
         return ihRsetService.modifyHRset(hRset);
     }
 
-    /**
-     * @Author: shiyun
-     * @Description:根据职系查询职等
-     * @Date  2018\11\23 0023 11:14
-     * @Param
-     * @return
-     **/
     @RequestMapping("/queryPostgradeByPostfamilyid")
     @ResponseBody
     public List<Hrdatadictionary> queryPostgradeByPostfamilyid(

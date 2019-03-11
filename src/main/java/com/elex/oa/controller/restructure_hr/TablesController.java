@@ -1,5 +1,6 @@
 package com.elex.oa.controller.restructure_hr;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.service.restructure_hrService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,58 +35,58 @@ public class TablesController {
 
     @RequestMapping("/tb_hr_data_dictionary")
     @ResponseBody
-    public String changetable_tb_hr_data_dictionary(){
+    public String changetableTbHrDataDictionary(){
         Boolean aBoolean = iHrdatadictionaryService.changeTable();
-        return aBoolean?"更新数据成功":"更新失败";
+        return aBoolean?Commons.RESP_SUCCESS:Commons.RESP_FAIL;
     }
 
     @RequestMapping("/tb_hr_contract_info")
     @ResponseBody
-    public String changetable_tb_hr_contract_info(){
+    public String changetableTbHrContractInfo(){
         Boolean aBoolean = iContractinfoService.changeTable();
-        return aBoolean?"更新数据成功":"更新失败";
+        return aBoolean?Commons.RESP_SUCCESS:Commons.RESP_FAIL;
     }
 
     @RequestMapping("/tb_id_dep_info")
     @ResponseBody
-    public String changetable_tb_id_dep_info(){
+    public String changetableTbIdDepInfo(){
         Boolean aBoolean = iDepinfoService.changeTable();
-        return aBoolean?"更新数据成功":"更新失败";
+        return aBoolean?Commons.RESP_SUCCESS:Commons.RESP_FAIL;
     }
 
     @RequestMapping("/tb_id_post_info")
     @ResponseBody
-    public String changetable_tb_id_post_info(){
+    public String changetableTbIdPostInfo(){
         Boolean aBoolean = iPostinfoService.changeTable();
-        return aBoolean?"更新数据成功":"更新失败";
+        return aBoolean?Commons.RESP_SUCCESS:Commons.RESP_FAIL;
     }
 
     @RequestMapping("/tb_id_post_info/updateNodelevel")
     @ResponseBody
-    public String changetable_tb_id_post_info_updateNodelevel(){
+    public String changetableTbIdPostInfoUpdateNodelevel(){
         Boolean aBoolean = iPostinfoService.updateNodelevel();
-        return aBoolean?"更新数据成功":"更新失败";
+        return aBoolean?Commons.RESP_SUCCESS:Commons.RESP_FAIL;
     }
 
     @RequestMapping("/tb_postlevel_relationship_info")
     @ResponseBody
-    public String changetable_tb_postlevel_relationship_info(){
+    public String changetableTbPostlevelRelationshipInfo(){
         Boolean aBoolean = iPostlevelrelationshipinfoService.changeTable();
-        return aBoolean?"更新数据成功":"更新失败";
+        return aBoolean?Commons.RESP_SUCCESS:Commons.RESP_FAIL;
     }
 
     @RequestMapping("/tb_id_personal_info")
     @ResponseBody
-    public String changetable_tb_id_personal_info(){
+    public String changetableTbIdPersonalInfo(){
         Boolean aBoolean = iPersonalinfoService.changeTable();
-        return aBoolean?"更新数据成功":"更新失败";
+        return aBoolean?Commons.RESP_SUCCESS:Commons.RESP_FAIL;
     }
 
     @RequestMapping("/tb_postandpersonal_relationship_info")
     @ResponseBody
-    public String changetable_tb_postandpersonal_relationship_info(){
+    public String changetableTbPostandpersonalRelationshipInfo(){
         Boolean aBoolean = iPostandpersonalrelationshipService.changeTable();
-        return aBoolean?"更新数据成功":"更新失败";
+        return aBoolean?Commons.RESP_SUCCESS:Commons.RESP_FAIL;
     }
 
 

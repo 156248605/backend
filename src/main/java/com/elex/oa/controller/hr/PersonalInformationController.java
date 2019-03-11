@@ -1,6 +1,7 @@
 package com.elex.oa.controller.hr;
 
 import com.alibaba.fastjson.JSON;
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.entity.hr_entity.*;
 import com.elex.oa.entity.hr_entity.costinformation.CostInformationAddInfo;
 import com.elex.oa.entity.hr_entity.department.Dept;
@@ -81,8 +82,8 @@ public class PersonalInformationController {
             @RequestParam("rows") Integer rows,
             PersonalInformation personalInformation
     ) throws ParseException {
-        Map<String, Object> resp = new HashMap<String, Object>();
-        Map<String, Object> paramMap = new HashMap<String, Object>();
+        Map<String, Object> resp = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pageNum", page);
         paramMap.put("pageSize", rows);
         paramMap.put("entity", personalInformation);
@@ -104,12 +105,11 @@ public class PersonalInformationController {
                                                                   @RequestParam("rows") Integer rows,
                                                                   PersonalInformation personalInformation
     ) throws ParseException {
-        Map<String, Object> paramMap = new HashMap<String, Object>();
+        Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pageNum", page);
         paramMap.put("pageSize", rows);
         paramMap.put("entity", personalInformation);
-        PageInfo<PersonalInformation> list = iPersonalInformationService.queryPIs(paramMap);
-        return list;
+        return iPersonalInformationService.queryPIs(paramMap);
     }
 
     /**
@@ -132,7 +132,7 @@ public class PersonalInformationController {
      */
     @RequestMapping("/queryPersonalInformationByUserid")
     @ResponseBody
-    public ArrayList<HashMap> queryPersonalInformationByUserid(
+    public List<HashMap> queryPersonalInformationByUserid(
             @RequestParam("userid") int userid
     ) {
         return iPersonalInformationService.queryByUseridForIOS(userid);
@@ -215,9 +215,9 @@ public class PersonalInformationController {
             HttpServletRequest request
     ) throws ParseException {
         //获取照片地址
-        personalInformation.setUserphoto(hrUtils.getSignalFileAddress(request,"userphoto2","/hr/image/"));
-        personalInformation.setIdphoto1(hrUtils.getSignalFileAddress(request,"idphoto11","/hr/image/"));
-        personalInformation.setIdphoto2(hrUtils.getSignalFileAddress(request,"idphoto22","/hr/image/"));
+        personalInformation.setUserphoto(hrUtils.getSignalFileAddress(request,"userphoto2",Commons.DIR_PATH_PIC));
+        personalInformation.setIdphoto1(hrUtils.getSignalFileAddress(request,"idphoto11",Commons.DIR_PATH_PIC));
+        personalInformation.setIdphoto2(hrUtils.getSignalFileAddress(request,"idphoto22",Commons.DIR_PATH_PIC));
         //判断是否需要录入并添加相应的HR设置信息
         if(StringUtils.isNotBlank(byyxvalue) && byyxvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"byyx",personalInformation.getByyx());
         if(StringUtils.isNotBlank(sxzyvalue) && byyxvalue.equals("选择录入"))hrUtils.addHrsetByDatavalue(null,"syxz",personalInformation.getByyx());
@@ -351,7 +351,7 @@ public class PersonalInformationController {
     @RequestMapping("/queryGXF002")
     @ResponseBody
     public Object queryGXF002() {
-        return iDeptService.getAllDepidAndDepnameByDEP_ON();
+        return iDeptService.getAllDepidAndDepnameByDepON();
     }
 
     /**
@@ -362,7 +362,7 @@ public class PersonalInformationController {
     @RequestMapping("/queryGXF003")
     @ResponseBody
     public Object queryGXF003() {
-       return iPostService.getAllPostidAndPostnameByPOST_ON();
+       return iPostService.getAllPostidAndPostnameByPostON();
     }
 
     /**
@@ -513,7 +513,7 @@ public class PersonalInformationController {
             Date date = simpleDateFormat.parse(year + "/" + month + "/01 00:00:00");
             o = iGzrzService.queryGzrzByTime2(date);
         } catch (ParseException e) {
-            System.out.println("格式转换出错！");
+            logger.info("格式转换出错！");
         }
         return RespUtil.response("205", "相应成功！", o);
     }

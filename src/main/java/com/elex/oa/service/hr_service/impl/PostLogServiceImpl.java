@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -48,7 +49,7 @@ public class PostLogServiceImpl implements IPostLogService {
      *@Date: 9:30 2018\5\3 0003
      */
     @Override
-    public PageInfo<PostLog> queryByConditions(HashMap<String, Object> paramMap) {
+    public PageInfo<PostLog> queryByConditions(Map<String, Object> paramMap) {
         int pageNum = Integer.parseInt(paramMap.get("pageNum").toString());
         int pageSize = Integer.parseInt(paramMap.get("pageSize").toString());
         PageHelper.startPage(pageNum,pageSize);

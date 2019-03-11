@@ -3,8 +3,8 @@ package com.elex.oa.service.hr_service;
 import com.elex.oa.entity.hr_entity.RAndPInformation;
 import com.github.pagehelper.PageInfo;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:ShiYun;
@@ -39,7 +39,7 @@ public interface IRAndPInformationService {
      *@Description:根据条件查询奖惩信息（分页）
      *@Date: 11:26 2018\4\19 0019
      */
-    public PageInfo<RAndPInformation> queryByCondition(HashMap<String,Object> paramMap);
+    public PageInfo<RAndPInformation> queryByCondition(Map<String,Object> paramMap);
 
     /**
      *@Author:ShiYun;

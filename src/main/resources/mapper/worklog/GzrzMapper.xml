@@ -61,13 +61,13 @@
 		ORDER BY ID_ DESC
 	</select>
 
-	<update id="updateOS_USERWenDeleteDimission" parameterType="java.lang.String">
+	<update id="updateOsUserWenDeleteDimission" parameterType="java.lang.String">
 		UPDATE os_user
 		SET STATUS_ ='IN_JOB'
 		WHERE USER_NO_ =#{username} AND TENANT_ID_ ='1'
 	</update>
 
-	<update id="updateOS_USERWenDeleteDimission2" parameterType="java.lang.String">
+	<update id="updateOsUserWenDeleteDimission2" parameterType="java.lang.String">
 		UPDATE sys_account
 		SET STATUS_ ='ENABLED'
 		WHERE NAME_ =#{username} AND TENANT_ID_='1'

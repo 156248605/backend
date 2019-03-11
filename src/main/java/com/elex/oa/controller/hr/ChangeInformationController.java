@@ -48,8 +48,7 @@ public class ChangeInformationController {
         paramMap.put("pageNum",page);
         paramMap.put("pageSize",rows);
         paramMap.put("entity",changeInformation);
-        PageInfo<ChangeInformation> changeInformationPageInfo = iChangeInformationService.queryAll(paramMap);
-        return changeInformationPageInfo;
+        return iChangeInformationService.queryAll(paramMap);
     }
 
     /**
@@ -60,8 +59,7 @@ public class ChangeInformationController {
     @RequestMapping("/queryAllChangeInformations")
     @ResponseBody
     public List<ChangeInformation> queryAllChangeInformations(){
-        List<ChangeInformation> changeInformations = iChangeInformationService.queryAll();
-        return changeInformations;
+        return iChangeInformationService.queryAll();
     }
 
     /**
@@ -101,14 +99,15 @@ public class ChangeInformationController {
             for(ChangeInformation changeInformation:excelInfo){
                 if (iUserService.queryByTruename(changeInformation.getChangedtruename())!=null) {
                     changeInformation.setChangeduserid(iUserService.queryByTruename(changeInformation.getChangedtruename()).getId());
-                }else {
-                    responseMap.put(changeInformation.getChangedtruename(),"该员工查不到，请重新导入");
-                    continue;
-                }
-                if (iUserService.queryByTruename(changeInformation.getTransactortruename())!=null) {
+                }else if (iUserService.queryByTruename(changeInformation.getTransactortruename())!=null) {
                     changeInformation.setTransactoruserid(iUserService.queryByTruename(changeInformation.getTransactortruename()).getId());
                 }else {
-                    responseMap.put(changeInformation.getTransactortruename(),"该办理人查不到，请重新导入");
+                    if (null==iUserService.queryByTruename(changeInformation.getChangedtruename())) {
+                        responseMap.put(changeInformation.getChangedtruename(),"该员工查不到，请重新导入");
+                    }
+                    if (null==iUserService.queryByTruename(changeInformation.getTransactortruename())) {
+                        responseMap.put(changeInformation.getTransactortruename(),"该办理人查不到，请重新导入");
+                    }
                     continue;
                 }
                 iChangeInformationService.addOne(changeInformation);

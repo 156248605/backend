@@ -1,6 +1,5 @@
 package com.elex.oa.dao.hr;
 
-import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.hr_entity.ContractInformation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

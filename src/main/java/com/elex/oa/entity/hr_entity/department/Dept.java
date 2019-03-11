@@ -38,6 +38,11 @@ public class Dept implements Serializable{
     public Dept() {
     }
 
+    public Dept(Integer id, Integer ordercode) {
+        this.id = id;
+        this.ordercode = ordercode;
+    }
+
     public List<String> getPostList() {
         return postList;
     }

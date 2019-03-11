@@ -847,7 +847,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
 
     @Override
     public Object deleteAllInformations() {
-        iUserDao.deleteAll_admin();
+        iUserDao.deleteAllAdmin();
         iBaseInformationDao.deleteAll();
         iManageInformationDao.deleteAll();
         iCostInformationDao.deleteAll();

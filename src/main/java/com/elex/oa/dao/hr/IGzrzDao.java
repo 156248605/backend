@@ -42,8 +42,8 @@ public interface IGzrzDao {
      *@Description:将OS_USER表中STATUS_字段改为“DEL_JOB”
      *@Date: 16:51 2018\8\31 0031
      */
-    void updateOS_USERWenDeleteDimission(String username);
-    void updateOS_USERWenDeleteDimission2(String username);
+    void updateOsUserWenDeleteDimission(String username);
+    void updateOsUserWenDeleteDimission2(String username);
 
     /**
      *@Author:ShiYun;

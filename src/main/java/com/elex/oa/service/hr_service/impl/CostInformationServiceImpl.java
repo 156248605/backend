@@ -26,8 +26,7 @@ public class CostInformationServiceImpl implements ICostInformationService {
      */
     @Override
     public CostInformation queryOneById(Integer id) {
-        CostInformation costInformation = iCostInformationDao.selectById(id);
-        return costInformation;
+        return iCostInformationDao.selectById(id);
     }
 
     /**
@@ -37,7 +36,7 @@ public class CostInformationServiceImpl implements ICostInformationService {
      */
     @Override
     public Integer saveOne(CostInformation costInformation) {
-        Integer costInformationId = iCostInformationDao.insertOne(dosomethingBeforeSaveone(costInformation));
+        iCostInformationDao.insertOne(dosomethingBeforeSaveone(costInformation));
         return costInformation.getId();
     }
 

@@ -5,10 +5,7 @@ import com.elex.oa.dao.business.IClueDao;
 import com.elex.oa.dao.business.IOpportunityDao;
 import com.elex.oa.dao.business.ISequenceDao;
 import com.elex.oa.dao.business.ITrackInfoDao;
-import com.elex.oa.dao.hr.IDeptDao;
-import com.elex.oa.dao.hr.IHRsetDao;
-import com.elex.oa.dao.hr.IPersonalInformationDao;
-import com.elex.oa.dao.hr.IUserDao;
+import com.elex.oa.dao.hr.*;
 import com.elex.oa.dao.restructure_hr.IDepinfoDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
 import com.elex.oa.dao.restructure_hr.IPersonalinfoDao;
@@ -69,6 +66,8 @@ public class HrUtils {
     IClueDao iClueDao;
     @Resource
     IOpportunityDao iOpportunityDao;
+    @Resource
+    IPostDao iPostDao;
     @Autowired
     AppProperties appProperties;
     @Resource
@@ -481,6 +480,9 @@ public class HrUtils {
     public String getClueCode(String username) {
         //获得UN编号
         String strUN = getCompanyCodeByUsername(username);
+        if(StringUtils.isBlank(strUN)){
+            strUN = "99";
+        }
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssss");
         String format = sdf.format(date);
@@ -495,6 +497,9 @@ public class HrUtils {
     public String getOpportunityCode(String username){
         //获得UN编号
         String strUN = getCompanyCodeByUsername(username);
+        if(StringUtils.isBlank(strUN)){
+            strUN = "99";
+        }
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssss");
         String format = sdf.format(date);
@@ -578,15 +583,20 @@ public class HrUtils {
 
     //根据登录ID获得员工号
     public String getEmployeenumberByUsername(String username) {
-        User user = iUserDao.selectUserByUsername_ON(username);
+        User user = iUserDao.selectUserByUsernameON(username);
         if(null==user)return null;
         return user.getEmployeenumber();
     }
 
     //根据员工号或所在的部门名称
-    public String getDepnameByEmployeenumber(String sale_employeenumber) {
-        String depname = iDeptDao.selectDepnameByUsername(sale_employeenumber);
+    public String getDepnameByEmployeenumber(String employeenumber) {
+        String depname = iDeptDao.selectDepnameByEmployeenumber(employeenumber);
         return depname;
+    }
+
+    //根据Userid获得部门名称
+    public String getDepnameByUserid(Integer dimissionuserid) {
+        return iDeptDao.selectDepnameByEmployeenumber(getEmployeenumberByUserid(dimissionuserid));
     }
 
     //根据员工号获得账号ID
@@ -595,5 +605,20 @@ public class HrUtils {
         User user = iUserDao.selectByEmployeenumber(employeenumber);
         if(null==user)return null;
         return user.getUsername();
+    }
+
+    //根据perid获得人事详细信息
+    public PersonalInformation getPersonalinformationDetail(Integer personalInformationId) {
+        return iPersonalInformationDao.queryPersonalInformationByPerid(personalInformationId);
+    }
+
+    //根据UserID获得岗位（之间用';'连接）
+    public String getPostnamesByUserid(Integer dimissionuserid) {
+        return iPostDao.selectPostlistToStringByUserid(dimissionuserid);
+    }
+
+    //根据姓名查询所在部门
+    public String getDepnameByTruename(String truename) {
+        return iDeptDao.selectDepnamesByTreuname(truename);
     }
 }

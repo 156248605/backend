@@ -1,6 +1,5 @@
 package com.elex.oa.controller.restructure_hr;
 
-import com.elex.oa.entity.restructure_hrentity.Personalinfo;
 import com.elex.oa.service.restructure_hrService.IPersonalinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

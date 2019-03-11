@@ -57,7 +57,7 @@ public interface IUserService extends BaseService<User> {
      */
     User queryServingUserByUserid(Integer userid);
 
-    void removeAll_admin();
+    void removeAllAdmin();
 
     Boolean modifyUser(User user);
 
@@ -65,5 +65,5 @@ public interface IUserService extends BaseService<User> {
 
     List<User> getUserListByPostname(String postname);
 
-    Object queryEmployeenumberByUsername_ON(String username);
+    Object queryEmployeenumberByUsernameON(String username);
 }

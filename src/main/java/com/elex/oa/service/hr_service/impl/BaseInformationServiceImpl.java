@@ -27,8 +27,7 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
      */
     @Override
     public BaseInformation queryOneById(Integer id) {
-        BaseInformation baseInformation = iBaseInformationDao.selectById(id);
-        return baseInformation;
+        return iBaseInformationDao.selectById(id);
     }
 
     /**
@@ -38,7 +37,7 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
      */
     @Override
     public Integer saveOne(BaseInformation baseInformation) {
-        Integer baseInformationId = iBaseInformationDao.insertOne(dosomethingBeforeSaveOne(baseInformation));
+        iBaseInformationDao.insertOne(dosomethingBeforeSaveOne(baseInformation));
         return baseInformation.getId();
     }
 
@@ -58,29 +57,29 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
 
     private Boolean getaBooleanBeforeModifyone(BaseInformation baseInformation) {
         Boolean isNull = false;
-        if(StringUtils.isNotEmpty(baseInformation.getUserphoto()))isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getIdphoto1()))isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getIdphoto2()))isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getEnglishname()))isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getIdcode()))isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getBirthday()))isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getConstellation()))isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getChinesecs()))isNull=true;
-        if(baseInformation.getRaceid()!=null)isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getMarriage()))isNull=true;
-        if(baseInformation.getChildrenid()!=null)isNull=true;
-        if(baseInformation.getZzmmid()!=null)isNull=true;
-        if(baseInformation.getZgxlid()!=null)isNull=true;
-        if(baseInformation.getByyxid()!=null)isNull=true;
-        if(baseInformation.getSxzyid()!=null)isNull=true;
-        if(baseInformation.getPyfsid()!=null)isNull=true;
-        if(baseInformation.getFirstlaid()!=null)isNull=true;
-        if(baseInformation.getElselaid()!=null)isNull=true;
-        if(baseInformation.getPosttitleid()!=null)isNull=true;
-        if(baseInformation.getZyzstypeid()!=null)isNull=true;
-        if(baseInformation.getZyzsnameid()!=null)isNull=true;
-        if(StringUtils.isNotEmpty(baseInformation.getFirstworkingtime()))isNull=true;
-        if(baseInformation.getParentcompanyid()!=null)isNull=true;
+        if(StringUtils.isNotBlank(baseInformation.getUserphoto())
+        || StringUtils.isNotBlank(baseInformation.getIdphoto1())
+        || StringUtils.isNotBlank(baseInformation.getIdphoto2())
+        || StringUtils.isNotBlank(baseInformation.getEnglishname())
+        || StringUtils.isNotBlank(baseInformation.getIdcode())
+        || StringUtils.isNotBlank(baseInformation.getBirthday())
+        || StringUtils.isNotBlank(baseInformation.getConstellation())
+        || StringUtils.isNotBlank(baseInformation.getChinesecs())
+        || baseInformation.getRaceid()!=null
+        || StringUtils.isNotBlank(baseInformation.getMarriage())
+        || baseInformation.getChildrenid()!=null
+        || baseInformation.getZzmmid()!=null
+        || baseInformation.getZgxlid()!=null
+        || baseInformation.getByyxid()!=null
+        || baseInformation.getSxzyid()!=null
+        || baseInformation.getPyfsid()!=null
+        || baseInformation.getFirstlaid()!=null
+        || baseInformation.getElselaid()!=null
+        || baseInformation.getPosttitleid()!=null
+        || baseInformation.getZyzstypeid()!=null
+        || baseInformation.getZyzsnameid()!=null
+        || StringUtils.isNotBlank(baseInformation.getFirstworkingtime())
+        || baseInformation.getParentcompanyid()!=null)isNull=true;
         return isNull;
     }
 
@@ -100,17 +99,17 @@ public class BaseInformationServiceImpl implements IBaseInformationService {
     }
 
     private BaseInformation dosomethingBeforeSaveOne(BaseInformation baseInformation) {
-        if(StringUtils.isNotEmpty(baseInformation.getUserphoto()) && "null".equals(baseInformation.getUserphoto()))baseInformation.setUserphoto(null);
-        if(StringUtils.isNotEmpty(baseInformation.getIdphoto1()) && "null".equals(baseInformation.getIdphoto1()))baseInformation.setIdphoto1(null);
-        if(StringUtils.isNotEmpty(baseInformation.getIdphoto2()) && "null".equals(baseInformation.getIdphoto2()))baseInformation.setIdphoto2(null);
-        if(StringUtils.isNotEmpty(baseInformation.getEnglishname()) && "null".equals(baseInformation.getEnglishname()))baseInformation.setEnglishname(null);
-        if(StringUtils.isNotEmpty(baseInformation.getIdcode()) && "null".equals(baseInformation.getIdcode()))baseInformation.setIdcode(null);
-        if(StringUtils.isNotEmpty(baseInformation.getBirthday()) && "null".equals(baseInformation.getBirthday()))baseInformation.setBirthday(null);
-        if(StringUtils.isNotEmpty(baseInformation.getConstellation()) && "null".equals(baseInformation.getConstellation()))baseInformation.setConstellation(null);
-        if(StringUtils.isNotEmpty(baseInformation.getChinesecs()) && "null".equals(baseInformation.getChinesecs()))baseInformation.setChinesecs(null);
-        if(StringUtils.isNotEmpty(baseInformation.getMarriage()) && "null".equals(baseInformation.getMarriage()))baseInformation.setMarriage(null);
-        if(StringUtils.isNotEmpty(baseInformation.getFirstworkingtime()) && "null".equals(baseInformation.getFirstworkingtime()))baseInformation.setFirstworkingtime(null);
-        if(StringUtils.isNotEmpty(baseInformation.getHj()) && "null".equals(baseInformation.getHj()))baseInformation.setHj(null);
+        baseInformation.setUserphoto(baseInformation.getUserphoto().replace("null",""));
+        baseInformation.setIdphoto1(baseInformation.getIdphoto1().replace("null",""));
+        baseInformation.setIdphoto2(baseInformation.getIdphoto2().replace("null",""));
+        baseInformation.setEnglishname(baseInformation.getEnglishname().replace("null",""));
+        baseInformation.setIdcode(baseInformation.getIdcode().replace("null",""));
+        baseInformation.setBirthday(baseInformation.getBirthday().replace("null",""));
+        baseInformation.setConstellation(baseInformation.getConstellation().replace("null",""));
+        baseInformation.setChinesecs(baseInformation.getChinesecs().replace("null",""));
+        baseInformation.setMarriage(baseInformation.getMarriage().replace("null",""));
+        baseInformation.setFirstworkingtime(baseInformation.getFirstworkingtime().replace("null",""));
+        baseInformation.setHj(baseInformation.getHj().replace("null",""));
         return baseInformation;
     }
 }

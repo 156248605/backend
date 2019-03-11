@@ -121,7 +121,7 @@
 		WHERE username=#{username}
 	</select>
 
-	<select id="selectUserByUsername_ON" parameterType="java.lang.String" resultMap="UserMapper">
+	<select id="selectUserByUsernameON" parameterType="java.lang.String" resultMap="UserMapper">
 		SELECT id,username,`password`,truename,employeenumber,isactive,state
 		FROM tb_id_user
 		WHERE username=#{username} and state=1
@@ -149,7 +149,7 @@
 		WHERE id=#{id}
 	</delete>
 
-	<delete id="deleteAll_admin">
+	<delete id="deleteAllAdmin">
 		DELETE FROM tb_id_user
 		WHERE id!=1
 	</delete>

@@ -104,12 +104,12 @@ public interface IDeptDao{
      */
     List<Dept> selectDeptByCompanyname(String companyname);
 
-    List<Map<String, Object>> getAllDepidAndDepnameByDEP_ON();
+    List<Map<String, Object>> getAllDepidAndDepnameByDepON();
     List<Map<String, Object>> getAllDepidAndDepnameByRemoveCompany();
 
     String getPrincipalTruenameByDepid(Integer depid);
 
-    List<String> getAllCompanyNamesByDEP_ON();
+    List<String> getAllCompanyNamesByDepON();
 
     Dept selectCompanynameAndDepnameByTruename(String truename);
 
@@ -119,5 +119,9 @@ public interface IDeptDao{
 
     User selectPrincipalUserByUsername(String username);
 
-    String selectDepnameByUsername(String employeenumber);
+    String selectDepnameByEmployeenumber(String employeenumber);
+
+    String selectDepnamesByTreuname(String truename);
+
+    List<Dept> selectDeptByDeptypeValueLike(String depttypeValue);
 }

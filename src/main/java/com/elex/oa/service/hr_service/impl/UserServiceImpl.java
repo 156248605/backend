@@ -64,8 +64,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
-    public void removeAll_admin() {
-        iUserDao.deleteAll_admin();
+    public void removeAllAdmin() {
+        iUserDao.deleteAllAdmin();
     }
 
     @Override
@@ -91,9 +91,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
-    public Object queryEmployeenumberByUsername_ON(String username) {
+    public Object queryEmployeenumberByUsernameON(String username) {
         if(StringUtils.isBlank(username))return RespUtil.response("500","登录ID不能为空",null);
-        User user = iUserDao.selectUserByUsername_ON(username);
+        User user = iUserDao.selectUserByUsernameON(username);
         if(null==user)return RespUtil.response("500","员工不存在或离职",user);
         return RespUtil.response("200","请求成功",user.getEmployeenumber());
     }
