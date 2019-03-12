@@ -1,4 +1,4 @@
-package com.elex.oa.service.ouService;
+package com.elex.oa.service.ou_service;
 
 import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.entity.ou.OuPostConditionInfo;
@@ -22,7 +22,7 @@ public interface IOuPostService {
 
     Object getRecommendedOuPostcode();
 
-    Object queryAllPostcode_ON();
+    Object queryAllPostcodeON();
 
     Object changeOuPostState(String flag, List<String> postIdList);
 }

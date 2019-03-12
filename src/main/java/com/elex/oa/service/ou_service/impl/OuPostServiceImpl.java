@@ -1,15 +1,17 @@
-package com.elex.oa.service.ouService.Impl;
+package com.elex.oa.service.ou_service.impl;
 
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.ou.OuPostDao;
 import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.entity.ou.OuPostConditionInfo;
-import com.elex.oa.service.ouService.IOuPostService;
+import com.elex.oa.service.ou_service.IOuPostService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,12 +33,14 @@ public class OuPostServiceImpl implements IOuPostService {
     @Resource
     private HrUtils hrUtils;
 
+    private static Logger logger = LoggerFactory.getLogger(OuPostServiceImpl.class);
+
     @Override
     public Object addOuPost(OuPost ouPost) {
         //先判断岗位编号
         if(StringUtils.isBlank(ouPost.getPostcode()))return RespUtil.response("500","岗位编号不能为空",null);
         List<OuPost> ouPostListTemp = ouPostDao.select(new OuPost(ouPost.getPostcode()));
-        if(ouPostListTemp.size()>0)return RespUtil.response("500","岗位编号已存在",null);
+        if(!ouPostListTemp.isEmpty())return RespUtil.response("500","岗位编号已存在",null);
         if(StringUtils.isBlank(ouPost.getPostname()))return RespUtil.response("500","岗位名称不能为空",null);
         if(null==ouPost.getPostlevelid())return RespUtil.response("500","岗级不能为空",null);
         ouPost.setId("post_"+System.currentTimeMillis());
@@ -44,7 +48,7 @@ public class OuPostServiceImpl implements IOuPostService {
         try {
             ouPostDao.insertSelective(ouPost);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return RespUtil.response("500","岗位添加失败",null);
         }
         return RespUtil.response("200","岗位添加成功",null);
@@ -56,7 +60,7 @@ public class OuPostServiceImpl implements IOuPostService {
         try {
             ouPostDao.updateByPrimaryKey(ouPost);//注：此修改为空值或NULL值也会去覆盖原有值（导入时不用此方法）
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return RespUtil.response("500","岗位不存在！",e.getStackTrace());
         }
         return RespUtil.response("200","修改成功！","");
@@ -98,7 +102,7 @@ public class OuPostServiceImpl implements IOuPostService {
     @Override
     public Object validateByPostcode(String postcode) {
         List<OuPost> ouPostList = ouPostDao.select(new OuPost(postcode));
-        if(null==ouPostList || ouPostList.size()==0)return RespUtil.response("500","根据岗位编号查询岗位失败！",null);
+        if(null==ouPostList || ouPostList.isEmpty())return RespUtil.response("500","根据岗位编号查询岗位失败！",null);
         return RespUtil.response("200","根据岗位编号查询岗位成功！",getDetailOuPostByCursoryOuPost(ouPostList.get(0)));
     }
 
@@ -114,31 +118,36 @@ public class OuPostServiceImpl implements IOuPostService {
         int i =1;
         String postcode = "";
         while (true){
-            if(i<10)postcode="00000"+i;
-            if(i>9 && i<100)postcode="0000"+i;
-            if(i>99 && i<1000)postcode="000"+i;
-            if(i>999 && i<10000)postcode= "00"+i;
-            if(i>9999 && i<100000)postcode= "0"+i;
-            if(i>99999)postcode= ""+i;
-            List<OuPost> ouPostList = null;
+            postcode = getRecommendedOuPostcodeOfCycleNumber(i, postcode);
+            List<OuPost> ouPostList;
             try {
                 ouPostList = ouPostDao.select(new OuPost(postcode));
             } catch (Exception e) {
-                e.printStackTrace();
-                return RespUtil.response("500","查询失败",e.getStackTrace());
+                logger.info(String.valueOf(e.getCause()));
+                return RespUtil.response("500",Commons.RESP_FAIL,e.getCause());
             }
-            if(null==ouPostList || ouPostList.size()==0)return RespUtil.response("200","查询成功！",postcode);
+            if(null==ouPostList || ouPostList.isEmpty())return RespUtil.response("200",Commons.RESP_SUCCESS,postcode);
             i++;
         }
     }
+    //根据循环次数获得推荐编码
+    private String getRecommendedOuPostcodeOfCycleNumber(int i, String postcode) {
+        if(i<10)postcode="00000"+i;
+        if(i>9 && i<100)postcode="0000"+i;
+        if(i>99 && i<1000)postcode="000"+i;
+        if(i>999 && i<10000)postcode= "00"+i;
+        if(i>9999 && i<100000)postcode= "0"+i;
+        if(i>99999)postcode= ""+i;
+        return postcode;
+    }
 
     @Override
-    public Object queryAllPostcode_ON() {
+    public Object queryAllPostcodeON() {
         List<OuPost> ouPostList = null;
         try {
             ouPostList = ouPostDao.select(new OuPost(null, Commons.POST_ON));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return RespUtil.response("500","查询失败",e.getStackTrace());
         }
         return RespUtil.response("200","查询成功",ouPostList);
@@ -146,36 +155,41 @@ public class OuPostServiceImpl implements IOuPostService {
 
     @Override
     public Object changeOuPostState(String flag, List<String> postIdList) {
-        if(null==postIdList || postIdList.size()==0 || (postIdList.size()==1 && "null".equals(postIdList.get(0))))return RespUtil.response("500","没有选中操作的选项",null);
+        if (changeOuPostStateOfInitPostIdList(postIdList)) return RespUtil.response("500", "没有选中操作的选项", null);
         for (String postid:postIdList
              ) {
             OuPost ouPostTemp = null;
             try {
                 ouPostTemp = ouPostDao.selectByPrimaryKey(postid);
             } catch (Exception e) {
-                e.printStackTrace();
-                return RespUtil.response("500","操作失败",e.getStackTrace());
+                logger.info(String.valueOf(e.getCause()));
+                return RespUtil.response("500",Commons.RESP_FAIL,e.getCause());
             }
             if(null==ouPostTemp)return RespUtil.response("500","所选的岗位编号不存在",postid);
-            if("POST_OFF".equals(flag)){
+            String state = "";
+            state = changeOuPostStateOfGetState(flag, state);
+            if(StringUtils.isNotBlank(state)){
                 try {
-                    ouPostDao.updateByPrimaryKeySelective(new OuPost(postid,null,Commons.POST_OFF));
+                    ouPostDao.updateByPrimaryKeySelective(new OuPost(postid,null,state));
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    return RespUtil.response("500","操作失败",e.getStackTrace());
-                }
-            }else if("POST_ON".equals(flag)){
-                try {
-                    ouPostDao.updateByPrimaryKeySelective(new OuPost(postid,null,Commons.POST_ON));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return RespUtil.response("500","操作失败",e.getStackTrace());
+                    logger.info(String.valueOf(e.getCause()));
+                    return RespUtil.response("500",Commons.RESP_FAIL,e.getCause());
                 }
             }else {
-                return RespUtil.response("500","请求参数错误",flag);
+                return RespUtil.response("500",Commons.RESP_FAIL,flag);
             }
         }
-        return RespUtil.response("200","请求成功",postIdList);
+        return RespUtil.response("200",Commons.RESP_SUCCESS,postIdList);
+    }
+    //获得岗位状态
+    private String changeOuPostStateOfGetState(String flag, String state) {
+        if("POST_OFF".equals(flag))state= Commons.POST_OFF;
+        if("POST_ON".equals(flag))state=Commons.POST_ON;
+        return state;
+    }
+    //判断初始化数据
+    private boolean changeOuPostStateOfInitPostIdList(List<String> postIdList) {
+        return null==postIdList || postIdList.isEmpty() || (postIdList.size()==1 && "null".equals(postIdList.get(0)));
     }
 
     //根据摘要信息获得详细信息

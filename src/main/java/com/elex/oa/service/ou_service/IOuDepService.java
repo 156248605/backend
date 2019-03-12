@@ -1,4 +1,4 @@
-package com.elex.oa.service.ouService;
+package com.elex.oa.service.ou_service;
 
 import com.elex.oa.entity.ou.OuDep;
 
@@ -20,7 +20,7 @@ public interface IOuDepService {
 
     Object queryAllDepinfoButSelf(String depcode);
 
-    Object queryAllDepByDep_ON();
+    Object queryAllDepByDepON();
 
     Object modifyOuDep(OuDep ouDep, String username);
 

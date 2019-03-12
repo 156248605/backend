@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.elex.oa.entity.ou.OuDep;
 import com.elex.oa.entity.ou.OuPost;
 import com.elex.oa.entity.ou.OuPostConditionInfo;
-import com.elex.oa.service.ouService.IOuDepService;
-import com.elex.oa.service.ouService.IOuPostService;
+import com.elex.oa.service.ou_service.IOuDepService;
+import com.elex.oa.service.ou_service.IOuPostService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +32,7 @@ public class OuController {
     @RequestMapping("/dep/queryAllDepByDep_ON")
     @ResponseBody
     public Object queryAllDepByDepON(){
-        return iOuDepService.queryAllDepByDep_ON();
+        return iOuDepService.queryAllDepByDepON();
     }
 
     @RequestMapping("/dep/createDep")
@@ -158,7 +158,7 @@ public class OuController {
     @RequestMapping("/post/queryAllPostcode_ON")
     @ResponseBody
     public Object queryAllPostcodeON(){
-        return iOuPostService.queryAllPostcode_ON();
+        return iOuPostService.queryAllPostcodeON();
     }
 
     @RequestMapping("/post/changeOuPostState")
