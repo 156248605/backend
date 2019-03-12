@@ -7,11 +7,10 @@ import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.hr_service.IRAndPInformationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +22,9 @@ import java.util.Map;
  */
 @Service
 public class RAndPInformationServiceImpl implements IRAndPInformationService {
-    @Autowired
+    @Resource
     IRAndPInformationDao irAndPInformationDao;
-    @Autowired
+    @Resource
     IUserDao iUserDao;
 
     /**
@@ -35,9 +34,8 @@ public class RAndPInformationServiceImpl implements IRAndPInformationService {
      */
     @Override
     public Integer addOne(RAndPInformation rAndPInformation) {
-        Integer integer = irAndPInformationDao.insertOne(rAndPInformation);
-        Integer rAndPInformationId = rAndPInformation.getId();
-        return rAndPInformationId;
+        irAndPInformationDao.insertOne(rAndPInformation);
+        return rAndPInformation.getId();
     }
 
     /**
@@ -47,8 +45,7 @@ public class RAndPInformationServiceImpl implements IRAndPInformationService {
      */
     @Override
     public List<RAndPInformation> queryAll() {
-        List<RAndPInformation> rAndPInformations = irAndPInformationDao.selectAll();
-        return rAndPInformations;
+        return irAndPInformationDao.selectAll();
     }
 
     /**
@@ -59,7 +56,7 @@ public class RAndPInformationServiceImpl implements IRAndPInformationService {
     @Override
     public List<RAndPInformation> queryAllRAndPProject() {
         List<RAndPInformation> rAndPInformations = irAndPInformationDao.selectAll();
-        List<RAndPInformation> list = new ArrayList<RAndPInformation>();
+        List<RAndPInformation> list = new ArrayList<>();
         for(Integer i = 0;i<rAndPInformations.size();i++){
             Boolean b = true;
             for(Integer j = 0;j<list.size();j++){
@@ -95,7 +92,7 @@ public class RAndPInformationServiceImpl implements IRAndPInformationService {
             User user1 = iUserDao.selectById(list.get(i).getTransactoruserid());
             list.get(i).setTransactortruename(user1.getTruename());
         }
-        return new PageInfo<RAndPInformation>(list);
+        return new PageInfo<>(list);
     }
 
     /**

@@ -6,6 +6,8 @@ import com.elex.oa.service.impl.BaseServiceImpl;
 import com.elex.oa.service.hr_service.IUserService;
 import com.elex.oa.util.resp.RespUtil;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,13 +26,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     @Resource
     IUserDao iUserDao;
 
+    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public Integer saveOne(User user) {
-        /*
-        * 人事添加 先传，后改，拿取工号、姓名、激活状态
-        * */
-
-        Integer userid = iUserDao.insertOne(user);
+        iUserDao.insertOne(user);
         return user.getId();
     }
 
@@ -41,26 +41,22 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 
     @Override
     public User queryByTruename(String truename) {
-        User user = iUserDao.selectByTruename(truename);
-        return user;
+        return iUserDao.selectByTruename(truename);
     }
 
     @Override
     public User queryByUsername(String username) {
-        User user = iUserDao.selectByUsername(username);
-        return user;
+        return iUserDao.selectByUsername(username);
     }
 
     @Override
     public List<Map> queryAllServings() {
-        List<Map> users = iUserDao.queryAllServings();
-        return users;
+        return iUserDao.queryAllServings();
     }
 
     @Override
     public User queryServingUserByUserid(Integer userid) {
-        User user = iUserDao.selectServingUserByUserid(userid);
-        return user;
+        return iUserDao.selectServingUserByUserid(userid);
     }
 
     @Override
@@ -74,7 +70,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         try {
             iUserDao.updateUser(user);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return false;
         }
         return true;

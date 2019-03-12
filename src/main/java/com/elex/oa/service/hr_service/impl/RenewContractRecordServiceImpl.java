@@ -3,9 +3,9 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.IRenewContractRecordDao;
 import com.elex.oa.entity.hr_entity.RenewContractRecord;
 import com.elex.oa.service.hr_service.IRenewContractRecordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class RenewContractRecordServiceImpl implements IRenewContractRecordService {
 
-    @Autowired
+    @Resource
     IRenewContractRecordDao iRenewContractRecordDao;
 
     /**
@@ -27,7 +27,6 @@ public class RenewContractRecordServiceImpl implements IRenewContractRecordServi
      */
     @Override
     public List<RenewContractRecord> queryRenewContractRecordsByContractId(Integer contractid) {
-        List<RenewContractRecord> renewContractRecords = iRenewContractRecordDao.selectByContractId(contractid);
-        return renewContractRecords;
+        return iRenewContractRecordDao.selectByContractId(contractid);
     }
 }
