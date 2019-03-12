@@ -7,6 +7,8 @@ package com.elex.oa.common.hr;
  * @Modify By:
  */
 public class Commons {
+
+
     private Commons(){}
 
     public static final String MANAGE_ENTRYDATE = "entrydate";
@@ -39,6 +41,7 @@ public class Commons {
     public static final String DEP_ON = "1";//部门在用状态
     public static final String DEP_OFF = "0";//部门取消状态
     public static final String DEPINFO = "depinfo";//
+    public static final String DEP_ORDER = "order";
 
     public static final String HRSET_BYYX = "byyx";
     public static final String HRSET_CHILDREN = "children";
@@ -80,4 +83,5 @@ public class Commons {
     public static final String RESP_SUCCESS = "请求成功！";
     public static final String RESP_FAIL = "请求失败！";
     public static final String RESP_FAIL_CHOOSEDATE = "时间选择错误！";
+    public static final String RESP_FAIL_DEPCODEISNOTNULL = "部门名称不能为空";
 }
