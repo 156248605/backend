@@ -8,7 +8,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class PostLogServiceImpl implements IPostLogService {
      */
     @Override
     public Integer addOne(PostLog postLog) {
-        Integer integer = iPostLogDao.insertOne(postLog);
+        iPostLogDao.insertOne(postLog);
         return postLog.getId();
     }
 
@@ -40,8 +39,7 @@ public class PostLogServiceImpl implements IPostLogService {
      */
     @Override
     public List<PostLog> queryAllPostLogs() {
-        List<PostLog> postLogs = iPostLogDao.selectAllPostLog();
-        return postLogs;
+        return iPostLogDao.selectAllPostLog();
     }
 
     /**
@@ -58,8 +56,7 @@ public class PostLogServiceImpl implements IPostLogService {
         PostLog postLog = (PostLog)paramMap.get("entity");
         List<PostLog> postLogs = iPostLogDao.selectByConditions(postLog);
 
-        PageInfo<PostLog> postLogPageInfo = new PageInfo<PostLog>(postLogs);
-        return postLogPageInfo;
+        return new PageInfo<>(postLogs);
     }
 
     /**
