@@ -56,4 +56,10 @@ public interface ProjectInforDao {
     ProjectInfor queryInforByCode(String projectCode);
     //修改项目信息
     void amendPro(ProjectInfor projectInfor);
+    //查询instStatus值
+    String queryInstStatus(String id);
+    //查询项目信息
+    ApprovalList queryInforById(String id);
+    //添加项目详情信息
+    void addProjectInfor(ApprovalList approvalList);
 }

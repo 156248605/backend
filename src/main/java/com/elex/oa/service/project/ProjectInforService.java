@@ -40,4 +40,6 @@ public interface ProjectInforService {
     PageInfo obtainList(InforQuery inforQuery, Integer pageNum);
     //修改项目信息
     String amendPro(ProjectInfor projectInfor, String updateBy);
+    //项目信息添加
+    String addPro(String id);
 }

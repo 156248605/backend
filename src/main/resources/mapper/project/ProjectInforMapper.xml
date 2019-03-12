@@ -431,4 +431,24 @@
         #{contactPosition}, contact_mobile = #{contactMobile}, contact_email = #{contactEmail}, project_member_code = #{projectMemberCode},
         related_member_code = #{relatedMemberCode} WHERE project_code = #{projectCode}
     </update>
+
+    <select id="queryInstStatus" parameterType="string" resultType="string">
+        SELECT INST_STATUS_ FROM w_lxsqb WHERE ID_ = #{id}
+    </select>
+
+    <select id="queryInforById" parameterType="string" resultMap="approvalList">
+        SELECT F_XMBH, F_XMMC, F_TXRQ, F_BMJL_NAME, F_LXBM_NAME, F_XMJL, F_XMJL_NAME, F_XMLY, F_SWJL, F_SWJL_NAME, F_XMLX,
+        F_XMGK, F_SQR_NAME, F_XMZT, F_XMJD, F_SFSM_NAME, F_XMZBH_NAME, F_XMKSSJ, F_XMJSSJ
+        FROM w_lxsqb WHERE ID_ = #{id}
+    </select>
+
+    <insert id="addProjectInfor" parameterType="com.elex.oa.entity.project.ApprovalList">
+        INSERT INTO pro_pro_infor(id, project_code, project_name, project_status, in_department, dept_manager, proposer,
+        write_date, business_manager, business_manager_code, project_source, project_manager, project_manager_code, project_type,
+        general_situation, start_time, end_time, capitalization, classified, project_phase)
+        VALUES (NULL, #{projectCode}, #{projectName}, #{projectStatus}, #{inDepartment}, #{deptManager},
+        #{proposer},  #{writeDate}, #{businessManager}, #{businessManagerId}, #{projectSource},
+        #{projectManager}, #{projectManagerId}, #{projectType}, #{generalSituation}, #{startTime},
+        #{endTime}, #{capitalization}, #{classified}, #{projectPhase})
+    </insert>
 </mapper>

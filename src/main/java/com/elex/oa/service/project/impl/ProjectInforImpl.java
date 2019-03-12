@@ -494,7 +494,6 @@ public class ProjectInforImpl implements ProjectInforService {
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> map;
         marker = columnValidate(projectInfor.getGeneralSituation(), infor.getGeneralSituation());
-        System.out.println("....");
         if(marker) {
             map = new HashMap<>();
             map.put("column", "项目概况");
@@ -625,5 +624,37 @@ public class ProjectInforImpl implements ProjectInforService {
             return false;
         }
         return true;
+    }
+
+    //项目信息添加
+    @Override
+    @Transactional
+    public String addPro(String id) {
+        String instStatus = projectInforDao.queryInstStatus(id);
+        if(instStatus.equals("SUCCESS_END")) {
+            ApprovalList approvalList = projectInforDao.queryInforById(id); //查询项目信息
+            if(StringUtils.isNotBlank(approvalList.getWriteDate())) {
+                approvalList.setWriteDate(approvalList.getWriteDate().substring(0,10));
+            }
+            if(StringUtils.isNotBlank(approvalList.getStartTime())) {
+                approvalList.setStartTime(approvalList.getStartTime().substring(0, 10));
+            }
+            if(StringUtils.isNotBlank(approvalList.getEndTime())) {
+                approvalList.setEndTime(approvalList.getEndTime().substring(0, 10));
+            }
+            List<MileStonePlan> mileStones = mileStoneDao.queryContentByRel(id); //查询关联里程碑计划
+            if(mileStones == null || mileStones.size() == 0) {
+
+            } else {
+                for(MileStonePlan mileStonePlan: mileStones) {
+                    mileStonePlan.setProjectCode(approvalList.getProjectCode());
+                    mileStonePlan.setStartDate(approvalList.getStartTime().substring(0, 10));
+                    mileStonePlan.setEndDate(approvalList.getEndTime().substring(0, 10));
+                }
+                mileStoneDao.addMileStonePlans(mileStones);
+            }
+            projectInforDao.addProjectInfor(approvalList); //添加项目详情信息
+        }
+        return "RUNNING";
     }
 }

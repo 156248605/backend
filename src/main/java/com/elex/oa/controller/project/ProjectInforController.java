@@ -123,4 +123,11 @@ public class ProjectInforController {
     public String amendPro(ProjectInfor projectInfor, String updateBy) {
         return projectInforService.amendPro(projectInfor, updateBy);
     }
+
+    //项目信息添加
+    @RequestMapping("add_pro")
+    @ResponseBody
+    public String addPro(String id) {
+        return projectInforService.addPro(id);
+    }
 }
