@@ -27,8 +27,7 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
      */
     @Override
     public OtherInformation queryOneById(Integer id) {
-        OtherInformation otherInformation = iOtherInformationDao.selectById(id);
-        return otherInformation;
+        return iOtherInformationDao.selectById(id);
     }
 
     /**
@@ -38,7 +37,7 @@ public class OtherInformationServiceImpl implements IOtherInformationService {
      */
     @Override
     public Integer saveOne(OtherInformation otherInformation) {
-        Integer otherInformationId = iOtherInformationDao.insertOne(dosomethingBeforeSaveone(otherInformation));
+        iOtherInformationDao.insertOne(dosomethingBeforeSaveone(otherInformation));
         return otherInformation.getId();
     }
 

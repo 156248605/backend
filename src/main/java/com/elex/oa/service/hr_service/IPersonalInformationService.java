@@ -46,7 +46,7 @@ public interface IPersonalInformationService{
      */
     PersonalInformation queryOneByUserid(Integer userid);
     PersonalInformation queryOneByUsername(String username);
-    ArrayList<HashMap> queryByUseridForIOS(Integer userid);
+    List<HashMap> queryByUseridForIOS(Integer userid);
     PersonalInformation queryPersonalInformationByTruename(String truename);
 
     /**

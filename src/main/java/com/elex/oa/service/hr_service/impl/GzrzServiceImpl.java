@@ -6,13 +6,12 @@ import com.elex.oa.entity.hr_entity.GzrzVO;
 import com.elex.oa.entity.hr_entity.Lysqd;
 import com.elex.oa.service.hr_service.IGzrzService;
 import com.elex.oa.util.hr_util.HrUtils;
-import com.elex.oa.util.hr_util.IDcodeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -27,6 +26,8 @@ public class GzrzServiceImpl implements IGzrzService {
     IGzrzDao iGzrzDao;
     @Resource
     HrUtils hrUtils;
+
+    private static Logger logger = LoggerFactory.getLogger(GzrzServiceImpl.class);
 
     /**
      *@Author:ShiYun;
@@ -60,13 +61,9 @@ public class GzrzServiceImpl implements IGzrzService {
                 Integer datOfMoth = hrUtils.getDaycodeByDate(starttime);
                 try {
                     Method method=c.getMethod("setD"+datOfMoth, String.class);//输入拼接方法名和参数类型
-                    method.invoke(gzrzVO,new Object[]{"√"});//执行相应的方法
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                    method.invoke(gzrzVO,"√");//执行相应的方法
+                } catch (Exception e) {
+                    logger.info(String.valueOf(e.getCause()));
                 }
                 arr[datOfMoth-1] = 1;
             }
@@ -98,6 +95,7 @@ public class GzrzServiceImpl implements IGzrzService {
         String[] strings = iGzrzDao.selectNamesByDateAndState(firstDate, lastDate);
         for (String tbrName:strings
                 ) {
+            Class<?> c = GzrzVO.class;
             GzrzVO gzrzVO = new GzrzVO();
             //添加姓名
             gzrzVO.setTruename(tbrName);
@@ -117,102 +115,15 @@ public class GzrzServiceImpl implements IGzrzService {
             for (Gzrz gzrz:gzrzs
                     ) {
                 String starttime = gzrz.getStarttime();
-                Integer month = hrUtils.getDaycodeByDate(starttime);
-                if(month==1){
-                    gzrzVO.setD1("√");
-                }
-                if(month==2){
-                    gzrzVO.setD2("√");
-                }
-                if(month==3){
-                    gzrzVO.setD3("√");
-                }
-                if(month==4){
-                    gzrzVO.setD4("√");
-                }
-                if(month==5){
-                    gzrzVO.setD5("√");
-                }
-                if(month==6){
-                    gzrzVO.setD6("√");
-                }
-                if(month==7){
-                    gzrzVO.setD7("√");
-                }
-                if(month==8){
-                    gzrzVO.setD8("√");
-                }
-                if(month==9){
-                    gzrzVO.setD9("√");
-                }
-                if(month==10){
-                    gzrzVO.setD10("√");
-                }
-                if(month==11){
-                    gzrzVO.setD11("√");
-                }
-                if(month==12){
-                    gzrzVO.setD12("√");
-                }
-                if(month==13){
-                    gzrzVO.setD13("√");
-                }
-                if(month==14){
-                    gzrzVO.setD14("√");
-                }
-                if(month==15){
-                    gzrzVO.setD15("√");
-                }
-                if(month==16){
-                    gzrzVO.setD16("√");
-                }
-                if(month==17){
-                    gzrzVO.setD17("√");
-                }
-                if(month==18){
-                    gzrzVO.setD18("√");
-                }
-                if(month==19){
-                    gzrzVO.setD19("√");
-                }
-                if(month==20){
-                    gzrzVO.setD20("√");
-                }
-                if(month==21){
-                    gzrzVO.setD21("√");
-                }
-                if(month==22){
-                    gzrzVO.setD22("√");
-                }
-                if(month==23){
-                    gzrzVO.setD23("√");
-                }
-                if(month==24){
-                    gzrzVO.setD24("√");
-                }
-                if(month==25){
-                    gzrzVO.setD25("√");
-                }
-                if(month==26){
-                    gzrzVO.setD26("√");
-                }
-                if(month==27){
-                    gzrzVO.setD27("√");
-                }
-                if(month==28){
-                    gzrzVO.setD28("√");
-                }
-                if(month==29){
-                    gzrzVO.setD29("√");
-                }
-                if(month==30){
-                    gzrzVO.setD30("√");
-                }
-                if(month==31){
-                    gzrzVO.setD31("√");
+                Integer datOfMoth = hrUtils.getDaycodeByDate(starttime);
+                try {
+                    Method method=c.getMethod("setD"+datOfMoth, String.class);//输入拼接方法名和参数类型
+                    method.invoke(gzrzVO,"√");//执行相应的方法
+                } catch (Exception e) {
+                    logger.info(String.valueOf(e.getCause()));
                 }
             }
-            if (gzrzs.size()!=0) {
+            if (!gzrzs.isEmpty()) {
                 gzrzVOList.add(gzrzVO);
             }
         }
@@ -226,8 +137,7 @@ public class GzrzServiceImpl implements IGzrzService {
      */
     @Override
     public List<Lysqd> queryLyspd() {
-        List<Lysqd> lysqds = iGzrzDao.selectLysqd();
-        return lysqds;
+        return iGzrzDao.selectLysqd();
     }
 
     /**
@@ -237,8 +147,7 @@ public class GzrzServiceImpl implements IGzrzService {
      */
     @Override
     public Lysqd queryLysqdById(String id) {
-        Lysqd lysqd = iGzrzDao.selectLysqdById(id);
-        return lysqd;
+        return iGzrzDao.selectLysqdById(id);
     }
 
     /**

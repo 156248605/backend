@@ -27,8 +27,7 @@ public class ManageInformationServiceImpl implements IManageInformationService {
      */
     @Override
     public ManageInformation queryOneById(Integer id) {
-        ManageInformation manageInformation = iManageInformationDao.selectById(id);
-        return manageInformation;
+        return iManageInformationDao.selectById(id);
     }
 
     /**
@@ -38,7 +37,7 @@ public class ManageInformationServiceImpl implements IManageInformationService {
      */
     @Override
     public Integer saveOne(ManageInformation manageInformation) {
-        Integer manageInformationId = iManageInformationDao.insertOne(dosomethingBeforeSaveone(manageInformation));
+        iManageInformationDao.insertOne(dosomethingBeforeSaveone(manageInformation));
         return manageInformation.getId();
     }
 
@@ -51,7 +50,7 @@ public class ManageInformationServiceImpl implements IManageInformationService {
      */
     @Override
     public void modifyOne(ManageInformation manageInformation) {
-        manageInformation = dosomethingBeforeSaveone(manageInformation);
+        dosomethingBeforeSaveone(manageInformation);
         Boolean valBoolean = validateEntityBeforeModifyOne(manageInformation);
         if (valBoolean) {
             iManageInformationDao.updateOne(manageInformation);

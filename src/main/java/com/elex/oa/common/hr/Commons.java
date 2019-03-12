@@ -8,6 +8,14 @@ package com.elex.oa.common.hr;
  */
 public class Commons {
     private Commons(){}
+
+    public static final String MANAGE_ENTRYDATE = "entrydate";
+    public static final String MANAGE_POSTRANK = "postrank";
+    public static final String MANAGE_ZHUANZHENGDATE = "zhuanzhengdate";
+
+    public static final String TITLE = "title";
+    public static final String VALUE = "value";
+
     public static final String PARAM_SDATE = "sdate";
     public static final String PARAM_EDATE = "edate";
 
@@ -27,8 +35,10 @@ public class Commons {
     public static final Integer EMPLOYEE_OFF = 0;//员工离职状态
     public static final String POST_ON = "1";//岗位在用状态
     public static final String POST_OFF = "0";//岗位取消状态
+    public static final String POSTINFO = "postinfo";
     public static final String DEP_ON = "1";//部门在用状态
     public static final String DEP_OFF = "0";//部门取消状态
+    public static final String DEPINFO = "depinfo";//
 
     public static final String HRSET_BYYX = "byyx";
     public static final String HRSET_CHILDREN = "children";

@@ -3,9 +3,11 @@ package com.elex.oa.service.hr_service.impl;
 import com.elex.oa.dao.hr.IPerandpostrsDao;
 import com.elex.oa.entity.hr_entity.post.PerAndPostRs;
 import com.elex.oa.service.hr_service.IPerandpostrsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,8 +18,10 @@ import java.util.List;
  */
 @Service
 public class PerandpostrsServiceImpl implements IPerandpostrsService {
-    @Autowired
+    @Resource
     IPerandpostrsDao iPerandpostrsDao;
+
+    private static Logger logger = LoggerFactory.getLogger(PerandpostrsServiceImpl.class);
 
     /**
      *@Author:ShiYun;
@@ -36,8 +40,7 @@ public class PerandpostrsServiceImpl implements IPerandpostrsService {
      */
     @Override
     public List<PerAndPostRs> queryPerAndPostRsByPerid(Integer perid) {
-        List<PerAndPostRs> perAndPostRs1 = iPerandpostrsDao.selectPostidsByPerid(perid);
-        return perAndPostRs1;
+        return iPerandpostrsDao.selectPostidsByPerid(perid);
     }
 
     /**
@@ -47,8 +50,7 @@ public class PerandpostrsServiceImpl implements IPerandpostrsService {
      */
     @Override
     public List<PerAndPostRs> queryPerAndPostRsByPostid(Integer postid) {
-        List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectPeridsByPostid(postid);
-        return perAndPostRs;
+        return iPerandpostrsDao.selectPeridsByPostid(postid);
     }
 
     /**
@@ -77,7 +79,7 @@ public class PerandpostrsServiceImpl implements IPerandpostrsService {
         try {
             iPerandpostrsDao.deleteOneByPeridAndPostid(perid,postid);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return false;
         }
         return true;
