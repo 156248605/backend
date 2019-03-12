@@ -58,7 +58,7 @@ public class PostServiceImpl implements IPostService {
         if(null==id)return null;
         Post post = iPostDao.selectPostByPostid(id);
         if(null==post)return null;
-        post = getPostdetailByPost(post);
+        getPostdetailByPost(post);
         return post;
     }
 
@@ -69,8 +69,7 @@ public class PostServiceImpl implements IPostService {
      */
     @Override
     public Post queryOneByPostname(String postname) {
-        Post post = iPostDao.selectPostByPostname(postname);
-        return post;
+        return iPostDao.selectPostByPostname(postname);
     }
 
     /**
@@ -89,7 +88,7 @@ public class PostServiceImpl implements IPostService {
         if(StringUtils.isBlank(postcode))return null;
         Post post = iPostDao.selectPostByPostcode(postcode);
         if(null==post)return null;
-        post = getPostdetailByPost(post);
+        getPostdetailByPost(post);
         return post;
     }
 
@@ -100,8 +99,7 @@ public class PostServiceImpl implements IPostService {
      */
     @Override
     public List<Post> queryAllPosts() {
-        List<Post> posts = iPostDao.selectAllPosts();
-        return posts;
+        return iPostDao.selectAllPosts();
     }
 
     /**
@@ -111,8 +109,7 @@ public class PostServiceImpl implements IPostService {
      */
     @Override
     public List<Post> queryByParentpostid(Integer parentpostid) {
-        List<Post> posts = iPostDao.selectPostsByParentpostid(parentpostid);
-        return posts;
+        return iPostDao.selectPostsByParentpostid(parentpostid);
     }
 
     /**
@@ -122,7 +119,7 @@ public class PostServiceImpl implements IPostService {
      */
     @Override
     public Integer addOne(Post post) {
-        Integer integer = iPostDao.insertOne(post);
+        iPostDao.insertOne(post);
         return post.getId();
     }
 
@@ -216,7 +213,6 @@ public class PostServiceImpl implements IPostService {
      */
     @Override
     public Boolean isChildPoint(Integer parentpostid, Integer childpostid) {
-        Integer cid = childpostid;
         Integer pid = childpostid;
         if(childpostid==parentpostid){//自己不能作为自己的上级
             return false;
@@ -225,8 +221,7 @@ public class PostServiceImpl implements IPostService {
             if(pid==parentpostid){//是自己的上级返回true
                 return true;
             }else {
-                cid = pid;
-                pid = iPostDao.selectPostByPostid(cid).getParentpostid();
+                pid = iPostDao.selectPostByPostid(pid).getParentpostid();
             }
         }
         return false;//上级为null时跳出循环（到顶点），说明不是自己的上级
@@ -245,7 +240,7 @@ public class PostServiceImpl implements IPostService {
         PersonalInformation personalInformation = iPersonalInformationDao.selectByUserid(user.getId());
         if(personalInformation==null)return RespUtil.response("500","登录名的岗位信息不存在",null);
         List<PerAndPostRs> perAndPostRs = iPerandpostrsDao.selectPostidsByPerid(personalInformation.getId());
-        if(perAndPostRs==null ||perAndPostRs.size()==0)return RespUtil.response("500","登录名的岗位信息不存在",null);
+        if(perAndPostRs==null ||perAndPostRs.isEmpty())return RespUtil.response("500","登录名的岗位信息不存在",null);
         List<String> strs = new ArrayList<>();
         for (PerAndPostRs p :perAndPostRs
                 ) {
@@ -259,18 +254,18 @@ public class PostServiceImpl implements IPostService {
     public Object updateOnePost(Post post, String transactorusername) {
         //获得就岗位信息
         Post oldPost = iPostDao.selectPostByPostid(post.getId());
-        oldPost = getPostdetailByPost(oldPost);
+        if(null==oldPost)return RespUtil.response("500","请求失败！",null);
+        getPostdetailByPost(oldPost);
         //获得新岗位信息
         Post newPost = getPostdetailByPost(post);
         //校验岗位编号
         Boolean isExist = getaBooleanByPostcode(newPost.getPostcode());
-        if(isExist){
+        if(isExist && !newPost.getPostcode().equals(oldPost.getPostcode())){
             //岗位编号存在
-            if(!newPost.getPostcode().equals(oldPost.getPostcode())){
-                //新旧岗位编号不一样则修改失败
-                return RespUtil.response("500","岗位编号已经存在！",null);
-            }
-        }else if(null == isExist){
+            //新旧岗位编号不一样则修改失败
+            return RespUtil.response("500","岗位编号已经存在！",null);
+        }
+        if(StringUtils.isBlank(newPost.getPostcode())){
             //编号为空不合规定
             return RespUtil.response("500","岗位编号不能为空！",null);
         }
@@ -286,10 +281,7 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public Boolean validateByPostcode(String postcode) {
-        if(StringUtils.isBlank(postcode))return false;
-        Post post = iPostDao.selectPostByPostcode(postcode);
-        if(null==post)return false;
-        return true;
+        return getaBooleanByPostcode(postcode);
     }
 
     @Override
@@ -326,7 +318,7 @@ public class PostServiceImpl implements IPostService {
     //获得返回值DeptTree
     public DeptTree getChildrenOfDeptTreeByDeptTree(DeptTree deptTree){
         List<Post> postList = iPostDao.selectPostsByParentpostid(deptTree.getId());
-        if(null==postList || postList.size()==0)return deptTree;
+        if(null==postList || postList.isEmpty())return deptTree;
         List<DeptTree> children = new ArrayList<>();
         for (Post p:postList
              ) {
@@ -399,10 +391,9 @@ public class PostServiceImpl implements IPostService {
 
     //判断岗位编号是否存在
     private Boolean getaBooleanByPostcode(String postcode){
-        if(StringUtils.isBlank(postcode))return null;
+        if(StringUtils.isBlank(postcode))return false;
         Post post = iPostDao.selectPostByPostcode(postcode);
-        if(null==post)return false;
-        return true;
+        return null!=post;
     }
 
     //判断新旧两个字段是否相同并添加相应的岗位日志信息
@@ -423,7 +414,7 @@ public class PostServiceImpl implements IPostService {
 
     //根据岗位对象获得详细岗位对象信息
     private Post getPostdetailByPost(Post post) {
-        if(null==post)return null;
+        if(null==post)return post;
         //获得职能类型
         post.setFunctionaltype(hrUtils.getDatavalueByHrsetid(post.getFunctionaltypeid()));
         //获得职系（已过时）
@@ -431,7 +422,6 @@ public class PostServiceImpl implements IPostService {
         //获得岗级（级别）
         post.setPostlevel(hrUtils.getDatavalueByHrsetid(post.getPostlevelid()));
         //获得职级
-        //post.setPostrank(hrUtils.getDatavalueByHrsetid(post.getPostrankid()));
         //获得上级岗位（粗略信息）
         post.setParentpost(getCursoryPostByPostid(post.getParentpostid()));
         return post;
