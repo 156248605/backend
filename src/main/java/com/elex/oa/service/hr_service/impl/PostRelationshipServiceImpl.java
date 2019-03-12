@@ -6,6 +6,8 @@ import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.hr_entity.hr_set.PostRelationship;
 import com.elex.oa.service.hr_service.IPostRelationshipService;
 import com.elex.oa.util.resp.RespUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,12 +26,14 @@ public class PostRelationshipServiceImpl implements IPostRelationshipService {
     @Resource
     IHRsetDao ihRsetDao;
 
+    private static Logger logger = LoggerFactory.getLogger(PostRelationshipServiceImpl.class);
+
     @Override
     public Integer addPostrp(PostRelationship postRelationship) {
         Boolean b = true;
         if(null == postRelationship.getPostfamilyid() || null==postRelationship.getPostgradeid() || null == postRelationship.getPostrankid() || null==postRelationship.getPostlevelid())b=false;
         List<PostRelationship> postRelationshipList = iPostRelationshipDao.selectByCondition(postRelationship);
-        if (null!=postRelationshipList && postRelationshipList.size()>0)b=false;
+        if (null!=postRelationshipList && !postRelationshipList.isEmpty())b=false;
         Integer id = null;
         if (b) {
             iPostRelationshipDao.insert(postRelationship);
@@ -42,29 +46,30 @@ public class PostRelationshipServiceImpl implements IPostRelationshipService {
     public List<PostRelationship> queryAllPostrelationship() {
         List<PostRelationship> postRelationships = iPostRelationshipDao.selectAll();
         for (PostRelationship p:postRelationships) {
-            String hRsetValue_postfamily = getHRsetValue(p.getPostfamilyid(), p);
-            if(null!=hRsetValue_postfamily){p.setPostfamily(hRsetValue_postfamily);}else {continue;}
-            String hRsetValue_postgrade = getHRsetValue(p.getPostgradeid(), p);
-            if(null!=hRsetValue_postgrade){p.setPostgrade(hRsetValue_postgrade);}else {continue;}
-            String hRsetValue_postrank = getHRsetValue(p.getPostrankid(), p);
-            if(null!=hRsetValue_postrank){p.setPostrank(hRsetValue_postrank);}else {continue;}
-            String hRsetValue_postlevel = getHRsetValue(p.getPostlevelid(), p);
-            if(null!=hRsetValue_postlevel){p.setPostlevel(hRsetValue_postlevel);}else {continue;}
+            String hRsetValuePostfamily = getHRsetValue(p.getPostfamilyid(), p);
+            String hRsetValuePostgrade = getHRsetValue(p.getPostgradeid(), p);
+            String hRsetValuePostrank = getHRsetValue(p.getPostrankid(), p);
+            String hRsetValuePostlevel = getHRsetValue(p.getPostlevelid(), p);
+            if(null==hRsetValuePostfamily||null==hRsetValuePostgrade||null==hRsetValuePostrank||null==hRsetValuePostlevel)continue;
+            p.setPostfamily(hRsetValuePostfamily);
+            p.setPostgrade(hRsetValuePostgrade);
+            p.setPostrank(hRsetValuePostrank);
+            p.setPostlevel(hRsetValuePostlevel);
         }
         return postRelationships;
     }
 
     @Override
-    public Object removeById(List<Integer> postrp_ids) {
-        if(null==postrp_ids || postrp_ids.size()==0)return RespUtil.response("400","没有要删除的选项",null);
-        for (Integer id:postrp_ids
+    public Object removeById(List<Integer> postrpIds) {
+        if(null==postrpIds || postrpIds.isEmpty())return RespUtil.response("400","没有要删除的选项",null);
+        for (Integer id:postrpIds
         ) {
             PostRelationship postRelationship = iPostRelationshipDao.selectOneById(id);
             if (null==postRelationship)return RespUtil.response("500","服务器忙，请稍后再试",id);
             try {
                 iPostRelationshipDao.deleteById(id);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.info(String.valueOf(e.getCause()));
                 return RespUtil.response("500","服务器忙，请稍后再试",null);
             }
         }
