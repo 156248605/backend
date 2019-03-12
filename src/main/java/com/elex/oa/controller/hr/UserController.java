@@ -70,4 +70,13 @@ public class UserController {
         return iUserService.queryEmployeenumberByUsernameON(username);
     }
 
+    @RequestMapping("/queryUserListOfBusiness")
+    @ResponseBody
+    public Object queryUserListOfBusiness(
+            @RequestParam("range")String range,
+            @RequestParam(name = "username",required = false)String username
+    ){
+       return iUserService.queryUserListOfBusiness(range,username);
+    }
+
 }

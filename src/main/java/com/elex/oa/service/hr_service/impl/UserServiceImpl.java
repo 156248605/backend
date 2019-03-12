@@ -1,5 +1,6 @@
 package com.elex.oa.service.hr_service.impl;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.service.impl.BaseServiceImpl;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -94,5 +96,21 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         return RespUtil.response("200","请求成功",user.getEmployeenumber());
     }
 
-
+    @Override
+    public Object queryUserListOfBusiness(String range, String username) {
+        if(StringUtils.isBlank(range))return RespUtil.response("500", "请求参数不能为空", Collections.emptyList());
+        List<User> userList;
+        if("DEP_CLU".equals(range)){
+            userList = iUserDao.selectUserListByDepClu(username);
+        }else if("DEP_OPP".equals(range)){
+            userList = iUserDao.selectUserListByDepOpp(username);
+        }else if("ALL_CLU".equals(range)){
+            userList = iUserDao.selectUserListByAllClu();
+        }else if("ALL_OPP".equals(range)){
+            userList = iUserDao.selectUserListByAllOpp();
+        }else {
+            return RespUtil.response("500", "请求参数不符合要求",range);
+        }
+        return RespUtil.response("200", Commons.RESP_SUCCESS,userList);
+    }
 }

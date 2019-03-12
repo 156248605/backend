@@ -127,6 +127,98 @@
 		WHERE username=#{username} and state=1
 	</select>
 
+	<select id="selectUserListByDepClu" parameterType="java.lang.String" resultMap="UserMapper">
+		SELECT DISTINCT
+			u.id,
+			u.employeenumber,
+			u.truename,
+			u.username,
+			u.state,
+			u.isactive
+		FROM
+			tb_business_clue clue
+		JOIN tb_id_user u ON u.employeenumber = clue.sale_employeenumber
+		WHERE
+			u.username IN (
+				SELECT
+					u2.username
+				FROM
+					tb_id_user u2
+				JOIN tb_id_personalinformation per ON per.userid = u2.id
+				JOIN tb_id_department dep ON dep.id = per.depid
+				WHERE
+					dep.id = (
+						SELECT
+							dep2.id
+						FROM
+							tb_id_department dep2
+						JOIN tb_id_personalinformation per2 ON per2.depid = dep2.id
+						JOIN tb_id_user u3 ON u3.id = per2.userid
+						WHERE
+							u3.username = #{username}
+					)
+			)
+	</select>
+
+	<select id="selectUserListByDepOpp" parameterType="java.lang.String" resultMap="UserMapper">
+		SELECT DISTINCT
+			u.id,
+			u.employeenumber,
+			u.truename,
+			u.username,
+			u.state,
+			u.isactive
+		FROM
+			tb_business_opportunity opp
+		JOIN tb_id_user u ON u.employeenumber = opp.sale_employeenumber
+		WHERE
+			u.username IN (
+				SELECT
+					u2.username
+				FROM
+					tb_id_user u2
+				JOIN tb_id_personalinformation per ON per.userid = u2.id
+				JOIN tb_id_department dep ON dep.id = per.depid
+				WHERE
+					dep.id = (
+						SELECT
+							dep2.id
+						FROM
+							tb_id_department dep2
+						JOIN tb_id_personalinformation per2 ON per2.depid = dep2.id
+						JOIN tb_id_user u3 ON u3.id = per2.userid
+						WHERE
+							u3.username = #{username}
+					)
+			)
+	</select>
+
+	<select id="selectUserListByAllClu" resultMap="UserMapper">
+		SELECT DISTINCT
+			u.id,
+			u.employeenumber,
+			u.truename,
+			u.username,
+			u.state,
+			u.isactive
+		FROM
+			tb_business_clue clue
+		JOIN tb_id_user u ON u.employeenumber = clue.sale_employeenumber
+	</select>
+
+	<select id="selectUserListByAllOpp" resultMap="UserMapper">
+		SELECT DISTINCT
+			u.id,
+			u.employeenumber,
+			u.truename,
+			u.username,
+			u.state,
+			u.isactive
+		FROM
+			tb_business_opportunity opp
+		JOIN tb_id_user u ON u.employeenumber = opp.sale_employeenumber
+	</select>
+
 	<insert id="insertOne" parameterType="User" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_id_user (
 			id,

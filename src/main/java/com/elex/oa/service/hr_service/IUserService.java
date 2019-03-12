@@ -66,4 +66,6 @@ public interface IUserService extends BaseService<User> {
     List<User> getUserListByPostname(String postname);
 
     Object queryEmployeenumberByUsernameON(String username);
+
+    Object queryUserListOfBusiness(String range, String username);
 }
