@@ -1,17 +1,20 @@
-package com.elex.oa.service.reportObstacles.impl;
+package com.elex.oa.service.reportobstacles.impl;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.common.reportObstacles.ReportObstaclesCommons;
 import com.elex.oa.dao.business.IBusinessAttachmentDao;
 import com.elex.oa.dao.reportobstacles.IObstaclesInfoDao;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.entity.reportObstacles.ObstaclesQueryInfo;
-import com.elex.oa.service.reportObstacles.IObstaclesInfoService;
+import com.elex.oa.service.reportobstacles.IObstaclesInfoService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,19 +35,21 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
     @Resource
     IBusinessAttachmentDao iBusinessAttachmentDao;
 
+    private static Logger logger = LoggerFactory.getLogger(ObstaclesInfoServiceImpl.class);
+
     @Override
     public Boolean addObstaclesInfo(ObstaclesInfo obstaclesInfo) {
         if(null==obstaclesInfo)return false;
         //先添加附件
         List<BusinessAttachment> attachmentList = obstaclesInfo.getAttachmentList();
-        if(null!=attachmentList && attachmentList.size()>0){
+        if(null!=attachmentList && !attachmentList.isEmpty()){
             for (BusinessAttachment ba:attachmentList
                  ) {
                 try {
                     ba.setCode("attachment_"+System.currentTimeMillis());
                     iBusinessAttachmentDao.insert(ba);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.info(String.valueOf(e.getCause()));
                     return false;
                 }
             }
@@ -55,7 +60,7 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
         try {
             iObstaclesInfoDao.insertSelective(obstaclesInfo);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(String.valueOf(e.getCause()));
             return false;
         }
         return true;
@@ -87,28 +92,28 @@ public class ObstaclesInfoServiceImpl implements IObstaclesInfoService {
     }
 
     @Override
-    public Object changeObstaclesState(String id, String flag, String location_description, String process_description) {
+    public Object changeObstaclesState(String id, String flag, String locationDescription, String processDescription) {
         //过滤条件
-        if(StringUtils.isBlank(id) || StringUtils.isBlank(flag))return RespUtil.response("500","修改失败！","id,flag都不能为空");
+        if(StringUtils.isBlank(id) || StringUtils.isBlank(flag))return RespUtil.response("500", Commons.RESP_FAIL,"id,flag都不能为空");
         ObstaclesInfo obstaclesInfo = iObstaclesInfoDao.selectByPrimaryKey(id);
-        if(null==obstaclesInfo)return RespUtil.response("500","修改失败！","id所在报障不存在！");
+        if(null==obstaclesInfo)return RespUtil.response("500",Commons.RESP_FAIL,"id所在报障不存在！");
         //修改状态
         if(flag.equals(ReportObstaclesCommons.OBSTACLES_FIND)){
             obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_FIND);
-            obstaclesInfo.setLocationDescription(location_description);
+            obstaclesInfo.setLocationDescription(locationDescription);
         }else if(flag.equals(ReportObstaclesCommons.OBSTACLES_OFF)){
             obstaclesInfo.setState(ReportObstaclesCommons.OBSTACLES_OFF);
-            obstaclesInfo.setProcessDescription(process_description);
+            obstaclesInfo.setProcessDescription(processDescription);
         }else {
-            return RespUtil.response("500","修改失败！","flag报障状态错误！");
+            return RespUtil.response("500",Commons.RESP_FAIL,"flag报障状态错误！");
         }
         try {
             iObstaclesInfoDao.updateByPrimaryKeySelective(obstaclesInfo);
         } catch (Exception e) {
-            e.printStackTrace();
-            return RespUtil.response("500","修改失败！","报障状态修改失败！");
+            logger.info(String.valueOf(e.getCause()));
+            return RespUtil.response("500",Commons.RESP_FAIL,"报障状态修改失败！");
         }
-        return RespUtil.response("200","修改成功！",null);
+        return RespUtil.response("200",Commons.RESP_SUCCESS,null);
     }
 
 

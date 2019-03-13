@@ -3,7 +3,7 @@ package com.elex.oa.controller.reportobstacles;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.reportObstacles.ObstaclesInfo;
 import com.elex.oa.entity.reportObstacles.ObstaclesQueryInfo;
-import com.elex.oa.service.reportObstacles.IObstaclesInfoService;
+import com.elex.oa.service.reportobstacles.IObstaclesInfoService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
