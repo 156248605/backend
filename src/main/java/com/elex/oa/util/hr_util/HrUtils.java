@@ -117,11 +117,7 @@ public class HrUtils {
     //根据员工号查询员工姓名（tb_id_personalinformatin中查询userid,然后在tb_id_user中根据userid即id查询员工姓名）（已过时）
     public String getTruenameByEmployeenumber(String employeenumber){
         if(StringUtils.isEmpty(employeenumber))return null;
-        PersonalInformation personalInformation = iPersonalInformationDao.selectByEmployeenumber(employeenumber);
-        if(null==personalInformation)return null;
-        Integer userid = personalInformation.getUserid();
-        if(null==userid)return null;
-        User user = iUserDao.selectById(userid);
+        User user = iUserDao.selectByEmployeenumber(employeenumber);
         if(null==user)return null;
         return user.getTruename();
     }
