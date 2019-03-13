@@ -3,8 +3,8 @@ package com.elex.oa.controller.restructure_hr;
 import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Deploginfo;
-import com.elex.oa.service.restructure_hrService.IDepinfoService;
-import com.elex.oa.service.restructure_hrService.IDeploginfoService;
+import com.elex.oa.service.restructure_hrservice.IDepinfoService;
+import com.elex.oa.service.restructure_hrservice.IDeploginfoService;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,4 +142,4 @@ public class DepartmentInfoController {
         Map<String, String> respMap = iDeploginfoService.importDeploginformations(multipartFile);
         return respMap.size()==0?RespUtil.response("200","导入成功！",null):RespUtil.response("500","导入失败！",respMap);
     }
-}    
+}

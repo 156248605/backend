@@ -1,4 +1,4 @@
-package com.elex.oa.service.restructure_hrService;
+package com.elex.oa.service.restructure_hrservice;
 
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Postlevelrelationshipinfo;

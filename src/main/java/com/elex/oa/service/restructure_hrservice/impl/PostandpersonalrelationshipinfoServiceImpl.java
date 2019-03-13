@@ -1,4 +1,4 @@
-package com.elex.oa.service.restructure_hrService.impl;
+package com.elex.oa.service.restructure_hrservice.impl;
 
 import com.elex.oa.dao.hr.IPerandpostrsDao;
 import com.elex.oa.dao.hr.IPersonalInformationDao;
@@ -8,7 +8,7 @@ import com.elex.oa.entity.hr_entity.post.PerAndPostRs;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.post.Post;
 import com.elex.oa.entity.restructure_hrentity.Postandpersonalrelationshipinfo;
-import com.elex.oa.service.restructure_hrService.IPostandpersonalrelationshipService;
+import com.elex.oa.service.restructure_hrservice.IPostandpersonalrelationshipService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,4 +1,4 @@
-package com.elex.oa.service.restructure_hrService.impl;
+package com.elex.oa.service.restructure_hrservice.impl;
 
 import com.elex.oa.dao.hr.*;
 import com.elex.oa.dao.restructure_hr.IPersonalinfoDao;
@@ -10,7 +10,7 @@ import com.elex.oa.entity.hr_entity.personalinformation.OtherInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.PersonalInformation;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.entity.restructure_hrentity.Personalinfo;
-import com.elex.oa.service.restructure_hrService.IPersonalinfoService;
+import com.elex.oa.service.restructure_hrservice.IPersonalinfoService;
 import com.elex.oa.util.hr_util.HrUtils;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +70,7 @@ public class PersonalinfoServiceImpl implements IPersonalinfoService {
     }
 
     @Override
-    public List<Map<String,String>> queryAllUsersByEMPLOYEE_ON() {
+    public List<Map<String,String>> queryAllUsersByEmployeeON() {
         return iPersonalinfoDao.selectUsersByEmployeeON();
     }
 

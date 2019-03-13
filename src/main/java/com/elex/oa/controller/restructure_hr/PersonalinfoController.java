@@ -1,6 +1,6 @@
 package com.elex.oa.controller.restructure_hr;
 
-import com.elex.oa.service.restructure_hrService.IPersonalinfoService;
+import com.elex.oa.service.restructure_hrservice.IPersonalinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +26,6 @@ public class PersonalinfoController {
     @RequestMapping("/queryAllUsers")
     @ResponseBody
     public List<Map<String,String>> queryAllUsers(){
-        return iPersonalinfoService.queryAllUsersByEMPLOYEE_ON();
+        return iPersonalinfoService.queryAllUsersByEmployeeON();
     }
-}    
+}

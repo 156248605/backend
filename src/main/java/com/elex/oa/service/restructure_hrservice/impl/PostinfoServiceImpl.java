@@ -1,4 +1,4 @@
-package com.elex.oa.service.restructure_hrService.impl;
+package com.elex.oa.service.restructure_hrservice.impl;
 
 import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.IPostDao;
@@ -7,7 +7,7 @@ import com.elex.oa.dao.restructure_hr.IPostloginfoDao;
 import com.elex.oa.entity.hr_entity.post.Post;
 import com.elex.oa.entity.restructure_hrentity.Postinfo;
 import com.elex.oa.entity.restructure_hrentity.Postloginfo;
-import com.elex.oa.service.restructure_hrService.IPostinfoService;
+import com.elex.oa.service.restructure_hrservice.IPostinfoService;
 import com.elex.oa.util.hr_util.HrUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

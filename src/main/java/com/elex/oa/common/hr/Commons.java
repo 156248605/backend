@@ -8,6 +8,9 @@ package com.elex.oa.common.hr;
  */
 public class Commons {
 
+    public static final String LOG_CHANGEINFORMATION = "changeinformation";
+    public static final String LOG_BEFOREINFORMATION = "beforeinformation";
+    public static final String LOG_AFTERINFORMATION = "afterinformation";
 
     private Commons(){}
 
@@ -42,6 +45,8 @@ public class Commons {
     public static final String DEP_OFF = "0";//部门取消状态
     public static final String DEPINFO = "depinfo";//
     public static final String DEP_ORDER = "order";
+    public static final String DEP_ORDERCODE = "ordercode";
+    public static final String DEP_DEPCODE = "depcode";
 
     public static final String HRSET_BYYX = "byyx";
     public static final String HRSET_CHILDREN = "children";

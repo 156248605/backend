@@ -2,7 +2,7 @@ package com.elex.oa.controller.hr;
 
 import com.elex.oa.entity.restructure_hrentity.Postlevelrelationshipinfo;
 import com.elex.oa.service.hr_service.IPostRelationshipService;
-import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
+import com.elex.oa.service.restructure_hrservice.IPostlevelrelationshipinfoService;
 import com.elex.oa.util.resp.RespUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

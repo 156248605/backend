@@ -1,5 +1,6 @@
-package com.elex.oa.service.restructure_hrService.impl;
+package com.elex.oa.service.restructure_hrservice.impl;
 
+import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.hr.IDeptDao;
 import com.elex.oa.dao.hr.IPersonalInformationDao;
 import com.elex.oa.dao.restructure_hr.IDeploginfoDao;
@@ -12,9 +13,11 @@ import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Deploginfo;
 import com.elex.oa.entity.restructure_hrentity.Personalinfo;
 import com.elex.oa.entity.restructure_hrentity.Personalloginfo;
-import com.elex.oa.service.restructure_hrService.IDepinfoService;
+import com.elex.oa.service.restructure_hrservice.IDepinfoService;
 import com.elex.oa.util.hr_util.HrUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,6 +46,8 @@ public class DepinfoServiceImpl implements IDepinfoService {
     @Resource
     IPersonalloginfoDao iPersonalloginfoDao;
 
+    private static Logger logger = LoggerFactory.getLogger(DepinfoServiceImpl.class);
+
     @Override
     public Boolean changeTable() {
         Boolean valBoolean = true;
@@ -65,17 +70,17 @@ public class DepinfoServiceImpl implements IDepinfoService {
         List<Depinfo> depinfoList = iDepinfoDao.selectByEntity(new Depinfo(null, "top"));
         respMap.put("title",depinfoList.get(0).getDepname());
         respMap.put("code",depinfoList.get(0).getDepcode());
-        respMap.put("ordercode",depinfoList.get(0).getOrdercode());
+        respMap.put(Commons.DEP_ORDERCODE,depinfoList.get(0).getOrdercode());
         respMap.put("expand",true);
         //获取children值
-        respMap = getRespMapByParentcode(depinfoList.get(0).getDepcode(),respMap);
+        getRespMapByParentcode(depinfoList.get(0).getDepcode(),respMap);
         return respMap;
     }
 
     @Override
     public Depinfo queryOneByDepcode(String depcode) {
         Depinfo depinfo = getDepinfoByDepcode(depcode);
-        depinfo = getDepinfoDetailByDepinfo(depinfo);
+        getDepinfoDetailByDepinfo(depinfo);
         return depinfo;
     }
 
@@ -86,18 +91,17 @@ public class DepinfoServiceImpl implements IDepinfoService {
 
     @Override
     public List<Map<String, String>> queryDepartmentsRemoveChilren(String depcode) {
-        if(null==depcode || StringUtils.isEmpty(depcode))return null;
+        if(null==depcode || StringUtils.isEmpty(depcode))return Collections.emptyList();
         //步骤：1.获得需要被移除的部门removeList；2.获得所有的部门numList；3.总的减去需要被移除的就是最终结果rspList=numList-rmoveList
         //获取当前部门信息
         Depinfo curDepinfo = iDepinfoDao.selectByDepcode(depcode);
-        if(null==curDepinfo)return null;
+        if(null==curDepinfo)return Collections.emptyList();
         //1.获得需要被移除的部门removeList；
         List<Map<String, String>> removeList = getRemoveList(curDepinfo);
         //2.获得所有的部门numList；
         List<Map<String, String>> numList = getNumList();
         //3.获得最终结果rspList=numList-rmoveList
-        List<Map<String, String>> respList = getRespListByNumListAndRemoveList(numList, removeList);
-        return respList;
+        return getRespListByNumListAndRemoveList(numList, removeList);
     }
 
     @Override
@@ -105,15 +109,14 @@ public class DepinfoServiceImpl implements IDepinfoService {
         //先修改，修改成功后再添加日志（前提将原有的信息保存下来）
         //获取部门的原有信息
         Depinfo oldDepinfo = iDepinfoDao.selectByDepcode(oldDepcode);
-        oldDepinfo = getDepinfoDetailByDepinfo(oldDepinfo);
+        getDepinfoDetailByDepinfo(oldDepinfo);
         //获取部门的新信息
         Depinfo newDepinfo = getDepinfoDetailByDepinfo(depinfo);
         //更新部门信息
         iDepinfoDao.updateByPrimaryKeySelective(depinfo);
         //添加部门日志信息
         //先判断该字段是否需要添加该字段的日志
-        Boolean aBoolean = addDepinfologsByOlddepinfoAndNewdepinfo(oldDepinfo, newDepinfo, transactorusername);
-        return aBoolean;
+        return addDepinfologsByOlddepinfoAndNewdepinfo(oldDepinfo, newDepinfo, transactorusername);
     }
 
     @Override
@@ -139,7 +142,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
     @Override
     public List<Map<String, Object>> getSortDepinformation(String depcode) {
         Depinfo parentDpeinfo = iDepinfoDao.selectByDepcode(depcode);
-        if(null==parentDpeinfo)return null;
+        if(null==parentDpeinfo)return Collections.emptyList();
         return getChildrenNodeByDepcode(parentDpeinfo.getParent_depcode());
     }
 
@@ -149,7 +152,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
         //更新排序编码
         for (Map<String,String> m:respMap
              ) {
-            iDepinfoDao.updateByPrimaryKeySelective(new Depinfo(m.get("depcode"),null,null,m.get("ordercode")));
+            iDepinfoDao.updateByPrimaryKeySelective(new Depinfo(m.get(Commons.DEP_DEPCODE),null,null,m.get(Commons.DEP_ORDERCODE)));
         }
         //获得部门树数据
         return getDepTree();
@@ -168,8 +171,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
             try {
                 iDepinfoDao.deleteByPrimaryKey(depcodeTemp);
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(depcodeTemp+"删除失败！");
+                logger.info(String.valueOf(e.getCause()));
                 aBoolean = false;
             }
         }
@@ -177,8 +179,8 @@ public class DepinfoServiceImpl implements IDepinfoService {
     }
 
     //获得所有将被删除的子部门编号
-    private List<String> getAllRemovedDepcodes(List<String> depcodeList,String parent_depcode){
-        List<Depinfo> depinfoList = iDepinfoDao.select(new Depinfo(null, parent_depcode));
+    private List<String> getAllRemovedDepcodes(List<String> depcodeList,String parentDepcode){
+        List<Depinfo> depinfoList = iDepinfoDao.select(new Depinfo(null, parentDepcode));
         if(null==depinfoList)return depcodeList;
         for (Depinfo d:depinfoList
              ) {
@@ -191,6 +193,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
     //根据部门对象添加部门日志
     private Boolean addDepinfologsByOlddepinfoAndNewdepinfo(Depinfo oldDepinfo,Depinfo newDepinfo,String transactorusername){
         Boolean aBoolean = false;
+        if(null==oldDepinfo || null==newDepinfo)return aBoolean;
         //部门编号
         if(getaBooleanByOldAndNewInfo(oldDepinfo.getDepcode(),newDepinfo.getDepcode())){
             Map<String, String> logMap = getDepLogInfoByOldAndNewInfo(newDepinfo.getDepcode(), oldDepinfo.getDepcode(), newDepinfo.getDepcode(), "部门编号");
@@ -265,16 +268,15 @@ public class DepinfoServiceImpl implements IDepinfoService {
         }
 
         return aBoolean;
-    };
+    }
 
     //先判断该字段是否需要添加该字段的日志
     private Boolean getaBooleanByOldAndNewInfo(String beforeInfo,String afterInfo){
         if(null==beforeInfo)return false;
         if(StringUtils.isEmpty(beforeInfo))return false;
         if(null==afterInfo)return true;
-        if(afterInfo.equals(beforeInfo))return false;
-        return true;
-    };
+        return !afterInfo.equals(beforeInfo);
+    }
 
     //总的减去需要被移除的就是最终结果rspList=numList-removeList
     private List<Map<String, String>> getRespListByNumListAndRemoveList(List<Map<String, String>> numList,List<Map<String, String>> removeList){
@@ -283,12 +285,12 @@ public class DepinfoServiceImpl implements IDepinfoService {
         for (Map<String,String> num:numList
              ) {
             aBoolean = true;
-            loop:for (Map<String,String> remove:removeList
+            for (Map<String,String> remove:removeList
                  ) {
-                boolean tempBoolean = num.get("depcode").equals(remove.get("depcode"));
+                boolean tempBoolean = num.get(Commons.DEP_DEPCODE).equals(remove.get(Commons.DEP_DEPCODE));
                 if(tempBoolean){
                     aBoolean = false;
-                    break loop;//跳出loop循环，默认值只跳出一层
+                    break;//跳出loop循环，默认值只跳出一层
                 }
             }
             if(aBoolean)respList.add(num);
@@ -333,7 +335,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
     //获得部门对象（里面只有depcode,depname）
     private Map<String, String> getMapForDepcodeAndDepname(Depinfo d) {
         Map<String, String> respMap = new HashMap<>();
-        respMap.put("depcode", d.getDepcode());
+        respMap.put(Commons.DEP_DEPCODE, d.getDepcode());
         respMap.put("depname", d.getDepname());
         return respMap;
     }
@@ -345,7 +347,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
         //获取修改前的信息=>oldDepcode "部门正职" "张三" "null"
         //获取oldDepcode
         Map<String, String> depcodeMap = iPersonalinfoDao.selectDepcodeByEmployeenumber(employeenumber);
-        String depcode = depcodeMap.get("depcode");
+        String depcode = depcodeMap.get(Commons.DEP_DEPCODE);
         if(StringUtils.isEmpty(depcode))return;
         //获取oldDepinfo
         Depinfo oldDepinfo = getDepinfoByDepcode(depcode);
@@ -369,10 +371,10 @@ public class DepinfoServiceImpl implements IDepinfoService {
         Deploginfo deploginfo = new Deploginfo();
         deploginfo.setId("dep_log_"+System.currentTimeMillis());
         //添加部门日志的四个参数
-        deploginfo.setDepcode(logMap.get("depcode"));
-        deploginfo.setChangeinformation(logMap.get("changeinformation"));
-        deploginfo.setBeforeinformation(logMap.get("beforeinformation"));
-        deploginfo.setAfterinformation(logMap.get("afterinformation"));
+        deploginfo.setDepcode(logMap.get(Commons.DEP_DEPCODE));
+        deploginfo.setChangeinformation(logMap.get(Commons.LOG_CHANGEINFORMATION));
+        deploginfo.setBeforeinformation(logMap.get(Commons.LOG_BEFOREINFORMATION));
+        deploginfo.setAfterinformation(logMap.get(Commons.LOG_AFTERINFORMATION));
         //添加其它信息
         deploginfo.setChangereason("业务需要");
         deploginfo.setChangedate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
@@ -388,9 +390,9 @@ public class DepinfoServiceImpl implements IDepinfoService {
         personalloginfo.setId("per_log_"+System.currentTimeMillis());
         //添加人事日志的四个参数
         personalloginfo.setEmployeenumber(logMap.get("employeenumber"));
-        personalloginfo.setChangeinformation(logMap.get("changeinformation"));
-        personalloginfo.setBeforeinformation(logMap.get("beforeinformation"));
-        personalloginfo.setAfterinformation(logMap.get("afterinformation"));
+        personalloginfo.setChangeinformation(logMap.get(Commons.LOG_CHANGEINFORMATION));
+        personalloginfo.setBeforeinformation(logMap.get(Commons.LOG_BEFOREINFORMATION));
+        personalloginfo.setAfterinformation(logMap.get(Commons.LOG_AFTERINFORMATION));
         //添加其它信息
         personalloginfo.setChangereason("业务需要");
         personalloginfo.setChangedate(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
@@ -406,19 +408,19 @@ public class DepinfoServiceImpl implements IDepinfoService {
         String deputyuserid = depinfo.getDeputyuserid();
         String secretaryuserid = depinfo.getSecretaryuserid();
         Map<String,String> respMap = getDepLogInfoByPositionuserid(depcode, principaluserid, employeenumber,"部门正职");
-        if(null==respMap){
+        if(respMap.isEmpty()){
             return null;
         }else {
             depinfo.setPrincipaluserid(null);
         }
         respMap = getDepLogInfoByPositionuserid(depcode, deputyuserid, employeenumber,"部门副职");
-        if(null==respMap){
+        if(respMap.isEmpty()){
             return null;
         }else {
             depinfo.setDeputyuserid(null);
         }
         respMap = getDepLogInfoByPositionuserid(depcode, secretaryuserid, employeenumber,"部门秘书");
-        if(null==respMap){
+        if(respMap.isEmpty()){
             return null;
         }else {
             depinfo.setSecretaryuserid(null);
@@ -432,20 +434,20 @@ public class DepinfoServiceImpl implements IDepinfoService {
     private Map<String,String> getPerloginfoByPerinfo(String employeenumber,String beforeinformation,String afterinformation,String changeinformationName){
         Map<String,String> respMap = new HashMap<>();
         respMap.put("employeenumber",employeenumber);
-        respMap.put("changeinformation",changeinformationName);
-        respMap.put("beforeinformation",beforeinformation);
-        respMap.put("afterinformation",afterinformation);
+        respMap.put(Commons.LOG_CHANGEINFORMATION,changeinformationName);
+        respMap.put(Commons.LOG_BEFOREINFORMATION,beforeinformation);
+        respMap.put(Commons.LOG_AFTERINFORMATION,afterinformation);
         return respMap;
     }
 
     //获得部门信息修改日志的四个参数：depcode、changeinformation、beforeinformation、afterinformation(仅仅适用职位的修改)
     private Map<String,String> getDepLogInfoByPositionuserid(String depcode,String userid,String employeenumber,String changeinformationName){
-        Map<String,String> respMap = null;
+        Map<String,String> respMap = new HashMap<>();
         if(null!=userid && userid.equals(employeenumber)){
-            respMap.put("depcode",depcode);
-            respMap.put("changeinformation",changeinformationName);
-            respMap.put("beforeinformation",iPersonalinfoDao.selectUserByEmployeenumber(employeenumber).get("truename"));
-            respMap.put("afterinformation",null);
+            respMap.put(Commons.DEP_DEPCODE,depcode);
+            respMap.put(Commons.LOG_CHANGEINFORMATION,changeinformationName);
+            respMap.put(Commons.LOG_BEFOREINFORMATION,iPersonalinfoDao.selectUserByEmployeenumber(employeenumber).get("truename"));
+            respMap.put(Commons.LOG_AFTERINFORMATION,null);
         }
         return respMap;
     }
@@ -453,10 +455,10 @@ public class DepinfoServiceImpl implements IDepinfoService {
     //获得部门信息修改日志的四个参数：depcode、changeinformation、beforeinformation、afterinformation（适用所有的）
     private Map<String,String> getDepLogInfoByOldAndNewInfo(String depcode,String beforeInfo,String afterInfo,String changeinformationName){
         Map<String,String> respMap = new HashMap<>();
-        respMap.put("depcode",depcode);
-        respMap.put("changeinformation",changeinformationName);
-        respMap.put("beforeinformation",beforeInfo);
-        respMap.put("afterinformation",afterInfo);
+        respMap.put(Commons.DEP_DEPCODE,depcode);
+        respMap.put(Commons.LOG_CHANGEINFORMATION,changeinformationName);
+        respMap.put(Commons.LOG_BEFOREINFORMATION,beforeInfo);
+        respMap.put(Commons.LOG_AFTERINFORMATION,afterInfo);
         return respMap;
     }
 
@@ -470,7 +472,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
             Map<String,Object> respMapTemp = new HashMap<>();
             respMapTemp.put("title",d.getDepname());
             respMapTemp.put("code",d.getDepcode());
-            respMapTemp.put("ordercode",d.getOrdercode());
+            respMapTemp.put(Commons.DEP_ORDERCODE,d.getOrdercode());
             respMap.put("expand",true);
             respMapTemp = getRespMapByParentcode(d.getDepcode(), respMapTemp);
             children.add(respMapTemp);
@@ -482,14 +484,14 @@ public class DepinfoServiceImpl implements IDepinfoService {
     //获得同级部门depcode、depname、ordercode三个数据
     private List<Map<String, Object>> getChildrenNodeByDepcode(String depcode){
         List<Depinfo> depinfoList = iDepinfoDao.select(new Depinfo(null, depcode));
-        if(null==depinfoList)return null;
+        if(null==depinfoList)return Collections.emptyList();
         List<Map<String, Object>> respList = new ArrayList<>();
         for (Depinfo d:depinfoList
              ) {
             Map<String,Object> respMapTemp = new HashMap<>();
-            respMapTemp.put("depcode",d.getDepcode());
+            respMapTemp.put(Commons.DEP_DEPCODE,d.getDepcode());
             respMapTemp.put("depname",d.getDepname());
-            respMapTemp.put("ordercode",d.getOrdercode());
+            respMapTemp.put(Commons.DEP_ORDERCODE,d.getOrdercode());
             respList.add(respMapTemp);
         }
         return getOrderedChildren(respList);
@@ -498,13 +500,10 @@ public class DepinfoServiceImpl implements IDepinfoService {
     //获得排序后的子节点
     private List<Map<String, Object>>  getOrderedChildren(List<Map<String, Object>> children){
         //将子节点排序
-        children.sort(new Comparator<Map<String, Object>>() {
-            @Override
-            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                Integer ordercode1 = Integer.parseInt((String)(o1.get("ordercode")));
-                Integer ordercode2 = Integer.parseInt((String)(o2.get("ordercode")));
-                return ordercode1.compareTo(ordercode2);
-            }
+        children.sort((o1, o2) -> {
+            Integer ordercode1 = Integer.parseInt((String)(o1.get(Commons.DEP_ORDERCODE)));
+            Integer ordercode2 = Integer.parseInt((String)(o2.get(Commons.DEP_ORDERCODE)));
+            return ordercode1.compareTo(ordercode2);
         });
         return children;
     }
@@ -521,11 +520,10 @@ public class DepinfoServiceImpl implements IDepinfoService {
     private Depinfo getDepinfoByDepcode(String depcode){
         if(StringUtils.isEmpty(depcode))return null;
         List<Depinfo> depinfoList = iDepinfoDao.selectByEntity(new Depinfo(depcode));
-        if(null == depinfoList || depinfoList.size()==0){
+        if(null == depinfoList || depinfoList.isEmpty()){
             return null;
         }else if(depinfoList.size()==1){
-            Depinfo depinfo = depinfoList.get(0);
-            return depinfo;
+            return depinfoList.get(0);
         }
         return null;
     }
@@ -566,7 +564,7 @@ public class DepinfoServiceImpl implements IDepinfoService {
 
     //根据部门（粗略的信息）获得详细的部门信息
     private Depinfo getDepinfoDetailByDepinfo(Depinfo depinfo){
-        if(null==depinfo)return depinfo;
+        if(null==depinfo){return depinfo;}
         //获取职能类型
           depinfo.setFunctionaltype(hrUtils.getDatavalueByDatacode(depinfo.getFunctionaltypeid()));
         //获取部门类型

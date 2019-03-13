@@ -1,4 +1,4 @@
-package com.elex.oa.service.restructure_hrService.impl;
+package com.elex.oa.service.restructure_hrservice.impl;
 
 import com.elex.oa.dao.hr.IContractInformationDao;
 import com.elex.oa.dao.hr.IHRsetDao;
@@ -9,7 +9,7 @@ import com.elex.oa.entity.hr_entity.ContractInformation;
 import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.restructure_hrentity.Contractinfo;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
-import com.elex.oa.service.restructure_hrService.IContractinfoService;
+import com.elex.oa.service.restructure_hrservice.IContractinfoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -77,10 +77,10 @@ public class ContractinfoServiceImpl implements IContractinfoService {
     }
 
     private String getContracttypeidContractinformation(ContractInformation con) {
-        HRset hRset_contracttype = ihRsetDao.selectById(con.getContracttypeid());
-        if(null!=hRset_contracttype){
-            List<Hrdatadictionary> hrdatadictionaryList = iHrdatadictionaryDao.selectByEntity(new Hrdatadictionary(hRset_contracttype.getDatatype(), hRset_contracttype.getDatavalue()));
-            if(null!=hrdatadictionaryList && hrdatadictionaryList.size()!=0){
+        HRset hRsetContracttype = ihRsetDao.selectById(con.getContracttypeid());
+        if(null!=hRsetContracttype){
+            List<Hrdatadictionary> hrdatadictionaryList = iHrdatadictionaryDao.selectByEntity(new Hrdatadictionary(hRsetContracttype.getDatatype(), hRsetContracttype.getDatavalue()));
+            if(null!=hrdatadictionaryList && !hrdatadictionaryList.isEmpty()){
                 return hrdatadictionaryList.get(0).getDatacode();
             }
         }
@@ -102,7 +102,7 @@ public class ContractinfoServiceImpl implements IContractinfoService {
     private Contractinfo getContractInfoByContractcode(String contractcode){
         if(StringUtils.isEmpty(contractcode))return null;
         List<Contractinfo> contractInfoList = iContractinfoDao.selectByEntity(new Contractinfo(contractcode));
-        if(null == contractInfoList || contractInfoList.size()==0){
+        if(null == contractInfoList || contractInfoList.isEmpty()){
             return null;
         }else if(contractInfoList.size()==1){
             return contractInfoList.get(0);

@@ -1,4 +1,4 @@
-package com.elex.oa.service.restructure_hrService.impl;
+package com.elex.oa.service.restructure_hrservice.impl;
 
 import com.elex.oa.dao.restructure_hr.IDepinfoDao;
 import com.elex.oa.dao.restructure_hr.IDeploginfoDao;
@@ -6,7 +6,7 @@ import com.elex.oa.entity.hr_entity.readexcel.ReadBaseExcel;
 import com.elex.oa.entity.restructure_hrentity.Depinfo;
 import com.elex.oa.entity.restructure_hrentity.Deploginfo;
 import com.elex.oa.entity.restructure_hrentity.ReadDeploginfoExcel;
-import com.elex.oa.service.restructure_hrService.IDeploginfoService;
+import com.elex.oa.service.restructure_hrservice.IDeploginfoService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

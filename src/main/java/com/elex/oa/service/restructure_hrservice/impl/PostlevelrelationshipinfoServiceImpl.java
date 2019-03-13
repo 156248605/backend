@@ -1,4 +1,4 @@
-package com.elex.oa.service.restructure_hrService.impl;
+package com.elex.oa.service.restructure_hrservice.impl;
 
 import com.elex.oa.dao.hr.IPostRelationshipDao;
 import com.elex.oa.dao.restructure_hr.IHrdatadictionaryDao;
@@ -6,7 +6,7 @@ import com.elex.oa.dao.restructure_hr.IPostlevelrelationshipinfoDao;
 import com.elex.oa.entity.hr_entity.hr_set.PostRelationship;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.entity.restructure_hrentity.Postlevelrelationshipinfo;
-import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
+import com.elex.oa.service.restructure_hrservice.IPostlevelrelationshipinfoService;
 import com.elex.oa.util.hr_util.HrUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;

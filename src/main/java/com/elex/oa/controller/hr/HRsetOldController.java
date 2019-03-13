@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.entity.hr_entity.hr_set.HRset;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.hr_service.IHRsetService;
-import com.elex.oa.service.restructure_hrService.IPostlevelrelationshipinfoService;
+import com.elex.oa.service.restructure_hrservice.IPostlevelrelationshipinfoService;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
