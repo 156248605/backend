@@ -239,8 +239,10 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         for (HRset h:hRsetList
              ) {
             List<String> strList = (List<String>) resp.get(h.getDatatype() + "s");
-            strList.add(h.getDatavalue());
-            resp.put(h.getDatatype() + "s",strList);
+            if(strList!=null){
+                strList.add(h.getDatavalue());
+                resp.put(h.getDatatype() + "s",strList);
+            }
         }
         resp.put("childs",resp.get("childrens"));
         List<String> mobilephones = iPersonalInformationDao.selectAllmobilephones();
