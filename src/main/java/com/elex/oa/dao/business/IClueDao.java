@@ -11,4 +11,7 @@ public interface IClueDao extends BaseDao<Clue> {
     List<Clue> selectByCondition(Clue clue);
 
     List<Clue> selectByClueAndPrincipalUsername(Clue clue);
+
+    // 查询最新更新时间
+    String getUpdateTime(String dependenceCode);
 }

@@ -89,4 +89,8 @@
 			<if	test="null!=clue_price and ''!=clue_price">AND clue.clue_price=#{clue_price}</if>
 		</where>
 	</select>
+
+	<select id="getUpdateTime" resultType="java.lang.String">
+		SELECT track_date FROM tb_business_track WHERE dependence_code = #{dependenceCode} ORDER BY track_date DESC LIMIT 1
+	</select>
 </mapper>

@@ -17,8 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.HttpRequestHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -218,5 +221,11 @@ public class ClueServiceImpl implements IClueService {
         //获得账号ID
         c.setUsername(hrUtils.getUsernameByEmployeenumber(c.getSale_employeenumber()));
         return c;
+    }
+
+    @Override
+    public String getUpdateTime(HttpServletRequest request) {
+        String dependeceCode = request.getParameter("dependenceCode");
+        return iClueDao.getUpdateTime(dependeceCode);
     }
 }

@@ -3,6 +3,8 @@ package com.elex.oa.service.business;
 import com.elex.oa.entity.business.Clue;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface IClueService {
     PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag);
 
@@ -13,4 +15,6 @@ public interface IClueService {
     Boolean modifyClueInfo(Clue clue);
 
     Object closeClueInfo(String cluecode, String trackcontent, String username);
+
+    String getUpdateTime (HttpServletRequest request);
 }
