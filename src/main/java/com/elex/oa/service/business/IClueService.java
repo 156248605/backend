@@ -4,6 +4,7 @@ import com.elex.oa.entity.business.Clue;
 import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface IClueService {
     PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag);
@@ -17,4 +18,6 @@ public interface IClueService {
     Object closeClueInfo(String cluecode, String trackcontent, String username);
 
     String getUpdateTime (HttpServletRequest request);
+
+    List getRelativeClue (HttpServletRequest request);
 }

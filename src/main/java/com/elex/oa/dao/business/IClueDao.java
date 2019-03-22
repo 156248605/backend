@@ -14,4 +14,7 @@ public interface IClueDao extends BaseDao<Clue> {
 
     // 查询最新更新时间
     String getUpdateTime(String dependenceCode);
+
+    // 查询关联商机
+    List getRelativeClue(String code);
 }

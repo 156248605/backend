@@ -228,4 +228,10 @@ public class ClueServiceImpl implements IClueService {
         String dependeceCode = request.getParameter("dependenceCode");
         return iClueDao.getUpdateTime(dependeceCode);
     }
+
+    @Override
+    public List getRelativeClue (HttpServletRequest request) {
+        String code = request.getParameter("code");
+        return iClueDao.getRelativeClue(code);
+    }
 }

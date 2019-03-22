@@ -122,4 +122,10 @@ public class ClueController {
     private String getUpdateTime (HttpServletRequest request) {
         return iClueService.getUpdateTime(request);
     }
+
+    @RequestMapping("/getRelativeClue")
+    @ResponseBody
+    private List getRelativeClue (HttpServletRequest request) {
+        return iClueService.getRelativeClue(request);
+    }
 }
