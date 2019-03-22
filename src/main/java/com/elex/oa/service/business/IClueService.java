@@ -19,5 +19,5 @@ public interface IClueService {
 
     String getUpdateTime (HttpServletRequest request);
 
-    List getRelativeClue (HttpServletRequest request);
+    List getRelativeEvent (HttpServletRequest request);
 }

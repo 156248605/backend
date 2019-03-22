@@ -6,6 +6,7 @@ import com.elex.oa.dao.business.IClueDao;
 import com.elex.oa.dao.business.ITrackInfoDao;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.business.Clue;
+import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.service.business.IClueService;
 import com.elex.oa.util.hr_util.HrUtils;
@@ -230,8 +231,12 @@ public class ClueServiceImpl implements IClueService {
     }
 
     @Override
-    public List getRelativeClue (HttpServletRequest request) {
+    public List getRelativeEvent (HttpServletRequest request) {
         String code = request.getParameter("code");
-        return iClueDao.getRelativeClue(code);
+        String clueid = request.getParameter("clueid");
+        Opportunity opportunity = new Opportunity();
+        opportunity.setCode(code);
+        opportunity.setClueid(clueid);
+        return iClueDao.getRelativeEvent(opportunity);
     }
 }

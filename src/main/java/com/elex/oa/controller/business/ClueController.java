@@ -123,9 +123,9 @@ public class ClueController {
         return iClueService.getUpdateTime(request);
     }
 
-    @RequestMapping("/getRelativeClue")
+    @RequestMapping("/getRelativeEvent")
     @ResponseBody
-    private List getRelativeClue (HttpServletRequest request) {
-        return iClueService.getRelativeClue(request);
+    private List getRelativeEvent (HttpServletRequest request) {
+        return iClueService.getRelativeEvent(request);
     }
 }

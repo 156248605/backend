@@ -94,7 +94,13 @@
 		SELECT track_date FROM tb_business_track WHERE dependence_code = #{dependenceCode} ORDER BY track_date DESC LIMIT 1
 	</select>
 
-    <select id="getRelativeClue" resultType="java.lang.String">
-		SELECT cluename FROM tb_business_clue WHERE code = (SELECT clueid FROM tb_business_opportunity WHERE code = #{code} LIMIT 1) ORDER BY createtime DESC
+    <select id="getRelativeEvent" resultType="java.lang.String">
+		SELECT * FROM tb_business_opportunity WHERE
+		<if test="code != null">
+			code = #{code}
+		</if>
+		<if test="clueid != null">
+			clueid = #{clueid}
+		</if>
 	</select>
 </mapper>

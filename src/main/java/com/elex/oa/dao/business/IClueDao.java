@@ -2,6 +2,7 @@ package com.elex.oa.dao.business;
 
 import com.elex.oa.dao.BaseDao;
 import com.elex.oa.entity.business.Clue;
+import com.elex.oa.entity.business.Opportunity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface IClueDao extends BaseDao<Clue> {
     String getUpdateTime(String dependenceCode);
 
     // 查询关联商机
-    List getRelativeClue(String code);
+    List getRelativeEvent(Opportunity opportunity);
 }
