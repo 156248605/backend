@@ -616,7 +616,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         getRespmapByEmployeenumber(personalInformation.getEmployeenumber(), respMap);
         //登录ID的校验
         getRespmapByUsername(personalInformation.getUsername(), respMap);
-        if(respMap.isEmpty())return respMap;
+        if(!respMap.isEmpty())return respMap;
         //校验身份证号码
         String birthday = hrUtils.getBirthday(personalInformation.getIdcode());
         if(StringUtils.isBlank(birthday)){
