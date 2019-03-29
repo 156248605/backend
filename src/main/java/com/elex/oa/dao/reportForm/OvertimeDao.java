@@ -6,9 +6,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface LeaveDao {
-    // 查询请假表单信息
-    List getLeaveForm(
+public interface OvertimeDao {
+    // 查询加班表单信息
+    List getOvertimeForm(
             @Param("name") String name,
             @Param("startTime") String startTime,
             @Param("endTime") String endTime,
@@ -16,5 +16,4 @@ public interface LeaveDao {
             @Param("category") String category,
             @Param("department") String department
     );
-
 }
