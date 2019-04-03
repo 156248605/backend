@@ -42,4 +42,5 @@ public interface ProjectInforService {
     String amendPro(ProjectInfor projectInfor, String updateBy);
     //项目信息添加
     String addPro(String id);
+    int proDiff(ProjectInfor projectInfor, String updateBy);
 }

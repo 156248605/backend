@@ -43,6 +43,16 @@ public class ProjectInfor {
     private String contactEmail; //联系人邮件
     private String departmentManager; //项目经理的部门经理
 
+    public Integer getAmendId() {
+        return amendId;
+    }
+
+    public void setAmendId(Integer amendId) {
+        this.amendId = amendId;
+    }
+
+    private Integer amendId;
+
     public ProjectInfor() {
     }
 

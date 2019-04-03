@@ -1,18 +1,22 @@
 package com.elex.oa.controller.project;
 
-import com.elex.oa.entity.project.InforQuery;
-import com.elex.oa.entity.project.OperationQuery;
-import com.elex.oa.entity.project.ProjectInfor;
+import com.alibaba.fastjson.JSON;
+import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
+import com.elex.oa.service.project.impl.ProjectAmendImpl;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -22,6 +26,8 @@ public class ProjectInforController {
 
     @Autowired
     private ProjectInforService projectInforService;
+    @Autowired
+    private ProjectAmendImpl projectAmendService;
 
 
     //列表查询项目详情信息
@@ -122,6 +128,30 @@ public class ProjectInforController {
     @ResponseBody
     public String amendPro(ProjectInfor projectInfor, String updateBy) {
         return projectInforService.amendPro(projectInfor, updateBy);
+    }
+
+    //项目信息修改
+    @RequestMapping("/amend_pro_json")
+    @ResponseBody
+    public String amendProJson(HttpServletRequest request) {
+        String amendId = request.getParameter("amendId");
+        ProjectAmend  projectAmend =  projectAmendService.getById(Integer.valueOf(amendId));
+        ProjectRecord projectRecord = JSON.parseObject(projectAmend.getRecord_json(),ProjectRecord.class);
+        ProjectInfor projectInfor = JSON.parseObject(projectAmend.getProject_json(),ProjectInfor.class);
+        return projectInforService.amendPro(projectInfor, projectRecord.getUpdateBy());
+    }
+
+
+    //项目信息差异
+    @RequestMapping("/pro_diff")
+    @ResponseBody
+    public Object pro_diff(ProjectInfor projectInfor, String updateBy) {
+        int primaryKey = this.projectInforService.proDiff(projectInfor,updateBy);
+        ProjectAmend projectAmend = this.projectAmendService.getById(primaryKey);
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("amendId",projectAmend.getId());
+        returnMap.put("record",projectAmend.getRecord_json());
+        return RespUtil.response("200","请求成功",returnMap);
     }
 
     //项目信息添加

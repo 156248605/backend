@@ -1,6 +1,7 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.project.MileStoneDao;
 import com.elex.oa.dao.project.ProjectInforDao;
@@ -41,6 +42,9 @@ public class ProjectInforImpl implements ProjectInforService {
 
     @Resource
     private MileStoneDao mileStoneDao;
+
+    @Resource
+    private ProjectAmendImpl projectAmendService;
 
     //查询已立项成功的项目，添加到项目信息中
     @Override
@@ -487,6 +491,51 @@ public class ProjectInforImpl implements ProjectInforService {
             projectRecordMongo.addRecord(projectRecord); //添加记录
         }
         return "success";
+    }
+
+    public int proDiff(ProjectInfor projectInforNew, String updateBy) {
+        int i=0;
+        ProjectInfor projectInfor1 = projectInforDao.queryInforByCode(projectInforNew.getProjectCode()); //根据项目编号获取项目信息
+        List<OsUser> users = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
+        StringBuilder stringBuilder1 = new StringBuilder(),
+        stringBuilder2 = new StringBuilder();
+        for(OsUser osUser:users) {
+            if(StringUtils.isNotBlank(projectInforNew.getProjectMembers())) {
+                if(projectInforNew.getProjectMembers().contains(osUser.getFullName())) {
+                    stringBuilder1.append(osUser.getUserId());
+                    stringBuilder1.append(";");
+                }
+            }
+            if(StringUtils.isNotBlank(projectInforNew.getRelatedMembers())) {
+                if(projectInforNew.getRelatedMembers().contains(osUser.getFullName())) {
+                    stringBuilder2.append(osUser.getUserId());
+                    stringBuilder2.append(";");
+                }
+            }
+        }
+        projectInforNew.setProjectMemberCode(stringBuilder1.toString());
+        projectInforNew.setRelatedMemberCode(stringBuilder2.toString());
+        List<Map<String, String>> record = generateRecord(projectInforNew, projectInfor1);
+        if(record.size() > 0) {
+            ProjectRecord projectRecord = new ProjectRecord();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = simpleDateFormat.format(new Date());
+            projectRecord.setUpdateTime(date);
+            projectRecord.setUpdateBy(updateBy);
+            projectRecord.setProjectCode(projectInforNew.getProjectCode());
+            projectRecord.setRecord(record);
+            ProjectAmend  projectAmend = new ProjectAmend();
+            //projectAmend.setProject_json(JSONObject.toJSONString(projectInforNew));
+            projectAmend.setRecord_json(JSONObject.toJSONString(projectRecord));
+            this.projectAmendService.save(projectAmend);
+            if(projectAmend.getId()!=null&&projectAmend.getId()>0){
+                     projectInforNew.setAmendId(projectAmend.getId());
+                     projectAmend.setProject_json(JSONObject.toJSONString(projectInforNew));
+                     this.projectAmendService.update(projectAmend);
+                     i=projectAmend.getId();
+                }
+        }
+           return i;
     }
 
     private List<Map<String,String>> generateRecord(ProjectInfor projectInfor, ProjectInfor infor) {
