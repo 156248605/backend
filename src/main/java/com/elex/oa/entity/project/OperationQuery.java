@@ -19,6 +19,8 @@ public class OperationQuery {
     private String input7;
     private String select8;
     private List<String> list8;
+    private String phaseSelect;
+    private List<String> phaseList;
     private String type;
     private String name;
     private List<String> codes; //项目编号
@@ -27,7 +29,7 @@ public class OperationQuery {
     public OperationQuery() {
     }
 
-    public OperationQuery(String select1, String input1, String select2, String input2, String select3, String input3, String select4, List<String> list4, String select5, String input5, String select6, List<String> list6, String select7, String input7, String select8, List<String> list8, String type, String name, List<String> codes) {
+    public OperationQuery(String select1, String input1, String select2, String input2, String select3, String input3, String select4, List<String> list4, String select5, String input5, String select6, List<String> list6, String select7, String input7, String select8, List<String> list8, String phaseSelect, List<String> phaseList, String type, String name, List<String> codes) {
         this.select1 = select1;
         this.input1 = input1;
         this.select2 = select2;
@@ -44,6 +46,8 @@ public class OperationQuery {
         this.input7 = input7;
         this.select8 = select8;
         this.list8 = list8;
+        this.phaseSelect = phaseSelect;
+        this.phaseList = phaseList;
         this.type = type;
         this.name = name;
         this.codes = codes;
@@ -201,6 +205,22 @@ public class OperationQuery {
         this.codes = codes;
     }
 
+    public List<String> getPhaseList() {
+        return phaseList;
+    }
+
+    public void setPhaseList(List<String> phaseList) {
+        this.phaseList = phaseList;
+    }
+
+    public String getPhaseSelect() {
+        return phaseSelect;
+    }
+
+    public void setPhaseSelect(String phaseSelect) {
+        this.phaseSelect = phaseSelect;
+    }
+
     @Override
     public String toString() {
         return "OperationQuery{" +
@@ -220,6 +240,8 @@ public class OperationQuery {
                 ", input7='" + input7 + '\'' +
                 ", select8='" + select8 + '\'' +
                 ", list8=" + list8 +
+                ", phaseSelect='" + phaseSelect + '\'' +
+                ", phaseList=" + phaseList +
                 ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 ", codes=" + codes +

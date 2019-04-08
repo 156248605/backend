@@ -101,6 +101,10 @@ public class ProjectInforImpl implements ProjectInforService {
         if(list8.size() > 0) {
             operationQuery.setList8(list8);
         }
+        List<String> phaseList = JSONArray.parseArray(operationQuery.getPhaseSelect(),String.class);
+        if(phaseList.size() > 0) {
+            operationQuery.setPhaseList(phaseList);
+        }
         PageHelper.startPage(pageNum,10);
         List<ProjectInfor> list = projectInforDao.queryList(operationQuery);
         return new PageInfo(list);
