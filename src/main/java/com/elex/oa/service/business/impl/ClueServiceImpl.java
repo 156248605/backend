@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -93,7 +95,7 @@ public class ClueServiceImpl implements IClueService {
         if(StringUtils.isEmpty(cluecode))return null;
         Clue clue = iClueDao.selectByPrimaryKey(cluecode);
         if(null==clue)return null;
-        //获得销售人和方案人
+        //获得销售人和方案人和参与人
         getClueByClue(clue);
         //获得跟踪日志
         List<TrackInfo> trackInfoList = iTrackInfoDao.select(new TrackInfo(cluecode));
@@ -221,6 +223,18 @@ public class ClueServiceImpl implements IClueService {
         c.setDepname(hrUtils.getDepnameByEmployeenumber(c.getSale_employeenumber()));
         //获得账号ID
         c.setUsername(hrUtils.getUsernameByEmployeenumber(c.getSale_employeenumber()));
+        //获取参与人姓名
+        String[] content = {};
+        String participate = "";
+        if (c.getParticipate() != null) {
+            content = c.getParticipate().split(",");
+            for (String name : content) {
+                participate += hrUtils.getTruenameByEmployeenumber(name) + "," ;
+            }
+            c.setParticipate(participate.substring(0,participate.length()-1));
+        } else {
+            c.setParticipate("");
+        }
         return c;
     }
 

@@ -30,6 +30,7 @@ public class Clue implements Serializable {
     private String scheme_employeenumber;//方案人员工号
     private String state;//状态（跟踪、关闭、转商机）
     private String clue_price;//线索价值
+    private String participate;//参与人
 
     @Transient
     private String username;//登录ID（分权查询用的）
@@ -213,6 +214,14 @@ public class Clue implements Serializable {
         this.clue_price = clue_price;
     }
 
+    public String getParticipate() {
+        return participate;
+    }
+
+    public void setParticipate(String participate) {
+        this.participate = participate;
+    }
+
     @Override
     public String toString() {
         return "Clue{" +
@@ -228,6 +237,10 @@ public class Clue implements Serializable {
                 ", sale_employeenumber='" + sale_employeenumber + '\'' +
                 ", scheme_employeenumber='" + scheme_employeenumber + '\'' +
                 ", state='" + state + '\'' +
+                ", clue_price='" + clue_price + '\'' +
+                ", participate='" + participate + '\'' +
+                ", username='" + username + '\'' +
+                ", depname='" + depname + '\'' +
                 ", trackcontent='" + trackcontent + '\'' +
                 ", trackInfoList=" + trackInfoList +
                 ", sale_truename='" + sale_truename + '\'' +
