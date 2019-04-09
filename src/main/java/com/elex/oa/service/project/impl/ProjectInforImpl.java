@@ -72,9 +72,7 @@ public class ProjectInforImpl implements ProjectInforService {
                 approvalList.setEndTime(approvalList.getEndTime().substring(0, 10));
             }
             List<MileStonePlan> mileStones = mileStoneDao.queryContentByRel(approvalList.getRelCode()); //查询关联里程碑计划
-            if(mileStones == null || mileStones.size() == 0) {
-
-            } else {
+            if(mileStones != null && mileStones.size() != 0) {
                 for(MileStonePlan mileStonePlan: mileStones) {
                     mileStonePlan.setProjectCode(approvalList.getProjectCode());
                     mileStonePlan.setStartDate(approvalList.getStartTime().substring(0, 10));
@@ -116,27 +114,19 @@ public class ProjectInforImpl implements ProjectInforService {
         List<OsUser> osUsers = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
         StringBuilder stringBuilder1 = new StringBuilder(), stringBuilder2 = new StringBuilder();
         for(OsUser osUser:osUsers) {
-            if(StringUtils.isNotBlank(projectInfor.getBusinessManager())) {
-                if(projectInfor.getBusinessManager().equals(osUser.getFullName())) {
-                    projectInfor.setBusinessManagerCode(osUser.getUserId());
-                }
+            if(StringUtils.isNotBlank(projectInfor.getBusinessManager()) && projectInfor.getBusinessManager().equals(osUser.getFullName())) {
+                projectInfor.setBusinessManagerCode(osUser.getUserId());
             }
-            if(StringUtils.isNotBlank(projectInfor.getProjectManager())) {
-                if(projectInfor.getProjectManager().equals(osUser.getFullName())) {
-                    projectInfor.setProjectManagerCode(osUser.getUserId());
-                }
+            if(StringUtils.isNotBlank(projectInfor.getProjectManager()) && projectInfor.getProjectManager().equals(osUser.getFullName())) {
+                projectInfor.setProjectManagerCode(osUser.getUserId());
             }
-            if(StringUtils.isNotBlank(projectInfor.getProjectMembers())) {
-                if(projectInfor.getProjectMembers().contains(osUser.getFullName())) {
-                    stringBuilder1.append(osUser.getUserId());
-                    stringBuilder1.append(";");
-                }
+            if(StringUtils.isNotBlank(projectInfor.getProjectMembers()) && projectInfor.getProjectMembers().contains(osUser.getFullName())) {
+                stringBuilder1.append(osUser.getUserId());
+                stringBuilder1.append(";");
             }
-            if(StringUtils.isNotBlank(projectInfor.getRelatedMembers())) {
-                if(projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
-                    stringBuilder2.append(osUser.getUserId());
-                    stringBuilder2.append(";");
-                }
+            if(StringUtils.isNotBlank(projectInfor.getRelatedMembers()) && projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
+                stringBuilder2.append(osUser.getUserId());
+                stringBuilder2.append(";");
             }
         }
         projectInfor.setProjectMemberCode(stringBuilder1.toString());
@@ -302,25 +292,18 @@ public class ProjectInforImpl implements ProjectInforService {
                     List<String> codeList = projectInforDao.queryCodeList(Integer.parseInt(lastId)); //查询导入的项目编号
                     List<String> unList = new ArrayList<>(); //未导入的项目编号信息
                     for(ProjectInfor infor: list) {
-                        if(codeList.contains(infor.getProjectCode())) {
-
-                        } else {
+                        if(!codeList.contains(infor.getProjectCode())) {
                             unList.add(infor.getProjectCode());
                         }
                     }
                     map.put("result", "unfinished");
                     map.put("message","总数："+list.size()+"，导入："+number+",原因：项目编号重复!");
-                    /*map.put("details",unList.toString());*/
                     File filePath = new File("/usr/local/static/infor/");
-                    if(filePath.exists()) {
-
-                    } else {
+                    if(!filePath.exists()) {
                         filePath.mkdirs();
                     }
                     File unfile = new File("/usr/local/static/infor/", "unfinished.txt");
-                    if(unfile.exists()) {
-
-                    } else {
+                    if(!unfile.exists()) {
                         unfile.createNewFile();
                     }
                     FileWriter fileWriter = new FileWriter(unfile);
@@ -466,17 +449,13 @@ public class ProjectInforImpl implements ProjectInforService {
         List<OsUser> osUsers = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
         StringBuilder stringBuilder1 = new StringBuilder(), stringBuilder2 = new StringBuilder();
         for(OsUser osUser:osUsers) {
-            if(StringUtils.isNotBlank(projectInfor.getProjectMembers())) {
-                if(projectInfor.getProjectMembers().contains(osUser.getFullName())) {
-                    stringBuilder1.append(osUser.getUserId());
-                    stringBuilder1.append(";");
-                }
+            if(StringUtils.isNotBlank(projectInfor.getProjectMembers()) && projectInfor.getProjectMembers().contains(osUser.getFullName())) {
+                stringBuilder1.append(osUser.getUserId());
+                stringBuilder1.append(";");
             }
-            if(StringUtils.isNotBlank(projectInfor.getRelatedMembers())) {
-                if(projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
-                    stringBuilder2.append(osUser.getUserId());
-                    stringBuilder2.append(";");
-                }
+            if(StringUtils.isNotBlank(projectInfor.getRelatedMembers()) && projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
+                stringBuilder2.append(osUser.getUserId());
+                stringBuilder2.append(";");
             }
         }
         projectInfor.setProjectMemberCode(stringBuilder1.toString());
@@ -504,17 +483,13 @@ public class ProjectInforImpl implements ProjectInforService {
         StringBuilder stringBuilder1 = new StringBuilder(),
         stringBuilder2 = new StringBuilder();
         for(OsUser osUser:users) {
-            if(StringUtils.isNotBlank(projectInforNew.getProjectMembers())) {
-                if(projectInforNew.getProjectMembers().contains(osUser.getFullName())) {
-                    stringBuilder1.append(osUser.getUserId());
-                    stringBuilder1.append(";");
-                }
+            if(StringUtils.isNotBlank(projectInforNew.getProjectMembers()) && projectInforNew.getProjectMembers().contains(osUser.getFullName())) {
+                stringBuilder1.append(osUser.getUserId());
+                stringBuilder1.append(";");
             }
-            if(StringUtils.isNotBlank(projectInforNew.getRelatedMembers())) {
-                if(projectInforNew.getRelatedMembers().contains(osUser.getFullName())) {
-                    stringBuilder2.append(osUser.getUserId());
-                    stringBuilder2.append(";");
-                }
+            if(StringUtils.isNotBlank(projectInforNew.getRelatedMembers()) && projectInforNew.getRelatedMembers().contains(osUser.getFullName())) {
+                stringBuilder2.append(osUser.getUserId());
+                stringBuilder2.append(";");
             }
         }
         projectInforNew.setProjectMemberCode(stringBuilder1.toString());
@@ -529,7 +504,6 @@ public class ProjectInforImpl implements ProjectInforService {
             projectRecord.setProjectCode(projectInforNew.getProjectCode());
             projectRecord.setRecord(record);
             ProjectAmend  projectAmend = new ProjectAmend();
-            //projectAmend.setProject_json(JSONObject.toJSONString(projectInforNew));
             projectAmend.setRecord_json(JSONObject.toJSONString(projectRecord));
             this.projectAmendService.save(projectAmend);
             if(projectAmend.getId()!=null&&projectAmend.getId()>0){
@@ -696,9 +670,7 @@ public class ProjectInforImpl implements ProjectInforService {
                 approvalList.setEndTime(approvalList.getEndTime().substring(0, 10));
             }
             List<MileStonePlan> mileStones = mileStoneDao.queryContentByRel(id); //查询关联里程碑计划
-            if(mileStones == null || mileStones.size() == 0) {
-
-            } else {
+            if(mileStones != null && mileStones.size() != 0) {
                 for(MileStonePlan mileStonePlan: mileStones) {
                     mileStonePlan.setProjectCode(approvalList.getProjectCode());
                     mileStonePlan.setStartDate(approvalList.getStartTime().substring(0, 10));
