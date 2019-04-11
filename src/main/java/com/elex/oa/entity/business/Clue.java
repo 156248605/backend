@@ -46,6 +46,8 @@ public class Clue implements Serializable {
     private String scheme_truename;//方案人的姓名
     @Transient
     private List<BusinessAttachment> businessAttachmentList;//附件
+    @Transient
+    private String participateName;//参与人的姓名
 
     public Clue() {
     }
@@ -222,6 +224,14 @@ public class Clue implements Serializable {
         this.participate = participate;
     }
 
+    public String getParticipateName() {
+        return participateName;
+    }
+
+    public void setParticipateName(String participateName) {
+        this.participateName = participateName;
+    }
+
     @Override
     public String toString() {
         return "Clue{" +
@@ -246,6 +256,7 @@ public class Clue implements Serializable {
                 ", sale_truename='" + sale_truename + '\'' +
                 ", scheme_truename='" + scheme_truename + '\'' +
                 ", businessAttachmentList=" + businessAttachmentList +
+                ", participateName='" + participateName + '\'' +
                 '}';
     }
 }

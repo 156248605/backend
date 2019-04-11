@@ -231,9 +231,9 @@ public class ClueServiceImpl implements IClueService {
             for (String name : content) {
                 participate += hrUtils.getTruenameByEmployeenumber(name) + "," ;
             }
-            c.setParticipate(participate.substring(0,participate.length()-1));
+            c.setParticipateName(participate.substring(0,participate.length()-1));
         } else {
-            c.setParticipate("");
+            c.setParticipateName("");
         }
         return c;
     }

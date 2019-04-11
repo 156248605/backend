@@ -34,6 +34,7 @@ public class Opportunity implements Serializable {
     private String scheme_employeenumber;//方案人员工号
     private String state;//状态（跟踪、关闭、转立项）
     private String opportunity_price;//商机价值
+    private String participate;//参与人
 
     @Transient
     private String username;//登录ID
@@ -49,6 +50,8 @@ public class Opportunity implements Serializable {
     private String scheme_truename;//方案人的姓名
     @Transient
     private List<BusinessAttachment> businessAttachmentList;//附件
+    @Transient
+    private String participateName;//参与人姓名
 
     public Opportunity() {
     }
@@ -254,31 +257,51 @@ public class Opportunity implements Serializable {
         this.opportunity_price = opportunity_price;
     }
 
+    public String getParticipate() {
+        return participate;
+    }
+
+    public void setParticipate(String participate) {
+        this.participate = participate;
+    }
+
+    public String getParticipateName() {
+        return participateName;
+    }
+
+    public void setParticipateName(String participateName) {
+        this.participateName = participateName;
+    }
+
     @Override
     public String toString() {
-        return "Opportunity{\n" +
-                "code='" + code + '\'' +'\n'+
-                ", clueid='" + clueid + '\'' +'\n'+
-                ", opportunityname='" + opportunityname + '\'' +'\n'+
-                ", trackid='" + trackid + '\'' +'\n'+
-                ", resource='" + resource + '\'' +'\n'+
-                ", createtime='" + createtime + '\'' +'\n'+
-                ", custom='" + custom + '\'' +'\n'+
-                ", contact='" + contact + '\'' +'\n'+
-                ", contactphone='" + contactphone + '\'' +'\n'+
-                ", owner='" + owner + '\'' +'\n'+
-                ", custom_decisionmaker='" + custom_decisionmaker + '\'' +'\n'+
-                ", custom_budget='" + custom_budget + '\'' +'\n'+
-                ", opportunity_budget='" + opportunity_budget + '\'' +'\n'+
-                ", sale_employeenumber='" + sale_employeenumber + '\'' +'\n'+
-                ", scheme_employeenumber='" + scheme_employeenumber + '\'' +'\n'+
-                ", state='" + state + '\'' +'\n'+
-                ", opportunity_price='" + opportunity_price + '\'' +'\n'+
-                ", trackcontent='" + trackcontent + '\'' +'\n'+
-                ", trackInfoList=" + trackInfoList +'\n'+
-                ", sale_truename='" + sale_truename + '\'' +'\n'+
-                ", scheme_truename='" + scheme_truename + '\'' +'\n'+
-                ", businessAttachmentList=" + businessAttachmentList +'\n'+
+        return "Opportunity{" +
+                "code='" + code + '\'' +
+                ", clueid='" + clueid + '\'' +
+                ", opportunityname='" + opportunityname + '\'' +
+                ", trackid='" + trackid + '\'' +
+                ", resource='" + resource + '\'' +
+                ", createtime='" + createtime + '\'' +
+                ", custom='" + custom + '\'' +
+                ", contact='" + contact + '\'' +
+                ", contactphone='" + contactphone + '\'' +
+                ", owner='" + owner + '\'' +
+                ", custom_decisionmaker='" + custom_decisionmaker + '\'' +
+                ", custom_budget='" + custom_budget + '\'' +
+                ", opportunity_budget='" + opportunity_budget + '\'' +
+                ", sale_employeenumber='" + sale_employeenumber + '\'' +
+                ", scheme_employeenumber='" + scheme_employeenumber + '\'' +
+                ", state='" + state + '\'' +
+                ", opportunity_price='" + opportunity_price + '\'' +
+                ", participate='" + participate + '\'' +
+                ", username='" + username + '\'' +
+                ", depname='" + depname + '\'' +
+                ", trackcontent='" + trackcontent + '\'' +
+                ", trackInfoList=" + trackInfoList +
+                ", sale_truename='" + sale_truename + '\'' +
+                ", scheme_truename='" + scheme_truename + '\'' +
+                ", businessAttachmentList=" + businessAttachmentList +
+                ", participateName='" + participateName + '\'' +
                 '}';
     }
 }

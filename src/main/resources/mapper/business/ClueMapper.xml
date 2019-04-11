@@ -52,7 +52,8 @@
 				clue.sale_employeenumber,
 				clue.scheme_employeenumber,
 				clue.state,
-				clue.clue_price
+				clue.clue_price,
+				clue.participate
 			FROM
 				tb_business_clue clue
 		<where>
