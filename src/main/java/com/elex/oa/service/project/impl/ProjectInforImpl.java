@@ -520,6 +520,94 @@ public class ProjectInforImpl implements ProjectInforService {
         boolean marker = false;
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> map;
+        marker = columnValidate(projectInfor.getProjectName(),infor.getProjectName());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "项目名称");
+            map.put("prefix", infor.getProjectName());
+            map.put("suffix", projectInfor.getProjectName());
+            list.add(map);
+        }
+
+        marker = columnValidate(projectInfor.getInDepartment(),infor.getInDepartment());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "立项部门");
+            map.put("prefix", infor.getInDepartment());
+            map.put("suffix", projectInfor.getInDepartment());
+            list.add(map);
+        }
+
+        marker = columnValidate(projectInfor.getDeptManager(),infor.getDeptManager());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "部门经理");
+            map.put("prefix", infor.getDeptManager());
+            map.put("suffix", projectInfor.getDeptManager());
+            list.add(map);
+        }
+
+        marker = columnValidate(projectInfor.getBusinessManager(),infor.getBusinessManager());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "商务经理");
+            map.put("prefix", infor.getBusinessManager());
+            map.put("suffix", projectInfor.getBusinessManager());
+            list.add(map);
+        }
+
+        marker = columnValidate(projectInfor.getProjectManager(),infor.getProjectManager());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "交付经理");
+            map.put("prefix", infor.getProjectManager());
+            map.put("suffix", projectInfor.getProjectManager());
+            list.add(map);
+        }
+
+        marker = columnValidate(projectInfor.getStartTime(),infor.getStartTime());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "开始时间");
+            map.put("prefix", infor.getStartTime());
+            map.put("suffix", projectInfor.getStartTime());
+            list.add(map);
+        }
+
+        marker = columnValidate(projectInfor.getEndTime(),infor.getEndTime());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "结束时间");
+            map.put("prefix", infor.getEndTime());
+            map.put("suffix", projectInfor.getEndTime());
+            list.add(map);
+        }
+        marker = columnValidate(projectInfor.getProjectPhase(),infor.getProjectPhase());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "项目阶段");
+            map.put("prefix", infor.getProjectPhase());
+            map.put("suffix", projectInfor.getProjectPhase());
+            list.add(map);
+        }
+
+        marker = columnValidate(projectInfor.getProjectStatus(),infor.getProjectStatus());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "项目状态");
+            map.put("prefix", infor.getProjectStatus());
+            map.put("suffix", projectInfor.getProjectStatus());
+            list.add(map);
+        }
+
+        marker = columnValidate(projectInfor.getProjectStatus(),infor.getProjectStatus());
+        if(marker) {
+            map = new HashMap<>();
+            map.put("column", "项目状态");
+            map.put("prefix", infor.getProjectStatus());
+            map.put("suffix", projectInfor.getProjectStatus());
+            list.add(map);
+        }
         marker = columnValidate(projectInfor.getGeneralSituation(), infor.getGeneralSituation());
         if(marker) {
             map = new HashMap<>();
