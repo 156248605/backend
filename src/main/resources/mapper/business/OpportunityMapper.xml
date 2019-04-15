@@ -40,7 +40,8 @@
 			opportunity.sale_employeenumber,
 			opportunity.scheme_employeenumber,
 			opportunity.state,
-			opportunity.opportunity_price
+			opportunity.opportunity_price,
+			opportunity.participate
 		FROM
 			tb_business_opportunity opportunity
 		<where>

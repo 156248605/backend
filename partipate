@@ -1,0 +1,187 @@
+diff --git a/src/main/java/com/elex/oa/entity/business/Clue.java b/src/main/java/com/elex/oa/entity/business/Clue.java
+index a1257f4c..0f73f02e 100644
+--- a/src/main/java/com/elex/oa/entity/business/Clue.java
++++ b/src/main/java/com/elex/oa/entity/business/Clue.java
+@@ -46,6 +46,8 @@ public class Clue implements Serializable {
+     private String scheme_truename;//方案人的姓名
+     @Transient
+     private List<BusinessAttachment> businessAttachmentList;//附件
++    @Transient
++    private String participateName;//参与人的姓名
+ 
+     public Clue() {
+     }
+@@ -222,6 +224,14 @@ public class Clue implements Serializable {
+         this.participate = participate;
+     }
+ 
++    public String getParticipateName() {
++        return participateName;
++    }
++
++    public void setParticipateName(String participateName) {
++        this.participateName = participateName;
++    }
++
+     @Override
+     public String toString() {
+         return "Clue{" +
+@@ -246,6 +256,7 @@ public class Clue implements Serializable {
+                 ", sale_truename='" + sale_truename + '\'' +
+                 ", scheme_truename='" + scheme_truename + '\'' +
+                 ", businessAttachmentList=" + businessAttachmentList +
++                ", participateName='" + participateName + '\'' +
+                 '}';
+     }
+ }
+\ No newline at end of file
+diff --git a/src/main/java/com/elex/oa/entity/business/Opportunity.java b/src/main/java/com/elex/oa/entity/business/Opportunity.java
+index a17332c2..7476aae2 100644
+--- a/src/main/java/com/elex/oa/entity/business/Opportunity.java
++++ b/src/main/java/com/elex/oa/entity/business/Opportunity.java
+@@ -34,6 +34,7 @@ public class Opportunity implements Serializable {
+     private String scheme_employeenumber;//方案人员工号
+     private String state;//状态（跟踪、关闭、转立项）
+     private String opportunity_price;//商机价值
++    private String participate;//参与人
+ 
+     @Transient
+     private String username;//登录ID
+@@ -49,6 +50,8 @@ public class Opportunity implements Serializable {
+     private String scheme_truename;//方案人的姓名
+     @Transient
+     private List<BusinessAttachment> businessAttachmentList;//附件
++    @Transient
++    private String participateName;//参与人姓名
+ 
+     public Opportunity() {
+     }
+@@ -254,31 +257,51 @@ public class Opportunity implements Serializable {
+         this.opportunity_price = opportunity_price;
+     }
+ 
++    public String getParticipate() {
++        return participate;
++    }
++
++    public void setParticipate(String participate) {
++        this.participate = participate;
++    }
++
++    public String getParticipateName() {
++        return participateName;
++    }
++
++    public void setParticipateName(String participateName) {
++        this.participateName = participateName;
++    }
++
+     @Override
+     public String toString() {
+-        return "Opportunity{\n" +
+-                "code='" + code + '\'' +'\n'+
+-                ", clueid='" + clueid + '\'' +'\n'+
+-                ", opportunityname='" + opportunityname + '\'' +'\n'+
+-                ", trackid='" + trackid + '\'' +'\n'+
+-                ", resource='" + resource + '\'' +'\n'+
+-                ", createtime='" + createtime + '\'' +'\n'+
+-                ", custom='" + custom + '\'' +'\n'+
+-                ", contact='" + contact + '\'' +'\n'+
+-                ", contactphone='" + contactphone + '\'' +'\n'+
+-                ", owner='" + owner + '\'' +'\n'+
+-                ", custom_decisionmaker='" + custom_decisionmaker + '\'' +'\n'+
+-                ", custom_budget='" + custom_budget + '\'' +'\n'+
+-                ", opportunity_budget='" + opportunity_budget + '\'' +'\n'+
+-                ", sale_employeenumber='" + sale_employeenumber + '\'' +'\n'+
+-                ", scheme_employeenumber='" + scheme_employeenumber + '\'' +'\n'+
+-                ", state='" + state + '\'' +'\n'+
+-                ", opportunity_price='" + opportunity_price + '\'' +'\n'+
+-                ", trackcontent='" + trackcontent + '\'' +'\n'+
+-                ", trackInfoList=" + trackInfoList +'\n'+
+-                ", sale_truename='" + sale_truename + '\'' +'\n'+
+-                ", scheme_truename='" + scheme_truename + '\'' +'\n'+
+-                ", businessAttachmentList=" + businessAttachmentList +'\n'+
++        return "Opportunity{" +
++                "code='" + code + '\'' +
++                ", clueid='" + clueid + '\'' +
++                ", opportunityname='" + opportunityname + '\'' +
++                ", trackid='" + trackid + '\'' +
++                ", resource='" + resource + '\'' +
++                ", createtime='" + createtime + '\'' +
++                ", custom='" + custom + '\'' +
++                ", contact='" + contact + '\'' +
++                ", contactphone='" + contactphone + '\'' +
++                ", owner='" + owner + '\'' +
++                ", custom_decisionmaker='" + custom_decisionmaker + '\'' +
++                ", custom_budget='" + custom_budget + '\'' +
++                ", opportunity_budget='" + opportunity_budget + '\'' +
++                ", sale_employeenumber='" + sale_employeenumber + '\'' +
++                ", scheme_employeenumber='" + scheme_employeenumber + '\'' +
++                ", state='" + state + '\'' +
++                ", opportunity_price='" + opportunity_price + '\'' +
++                ", participate='" + participate + '\'' +
++                ", username='" + username + '\'' +
++                ", depname='" + depname + '\'' +
++                ", trackcontent='" + trackcontent + '\'' +
++                ", trackInfoList=" + trackInfoList +
++                ", sale_truename='" + sale_truename + '\'' +
++                ", scheme_truename='" + scheme_truename + '\'' +
++                ", businessAttachmentList=" + businessAttachmentList +
++                ", participateName='" + participateName + '\'' +
+                 '}';
+     }
+ }
+\ No newline at end of file
+diff --git a/src/main/java/com/elex/oa/service/business/impl/ClueServiceImpl.java b/src/main/java/com/elex/oa/service/business/impl/ClueServiceImpl.java
+index 2395e251..df8233bd 100644
+--- a/src/main/java/com/elex/oa/service/business/impl/ClueServiceImpl.java
++++ b/src/main/java/com/elex/oa/service/business/impl/ClueServiceImpl.java
+@@ -231,9 +231,9 @@ public class ClueServiceImpl implements IClueService {
+             for (String name : content) {
+                 participate += hrUtils.getTruenameByEmployeenumber(name) + "," ;
+             }
+-            c.setParticipate(participate.substring(0,participate.length()-1));
++            c.setParticipateName(participate.substring(0,participate.length()-1));
+         } else {
+-            c.setParticipate("");
++            c.setParticipateName("");
+         }
+         return c;
+     }
+diff --git a/src/main/java/com/elex/oa/service/business/impl/OpportunityServiceImpl.java b/src/main/java/com/elex/oa/service/business/impl/OpportunityServiceImpl.java
+index 5620a9a6..3ee49f29 100644
+--- a/src/main/java/com/elex/oa/service/business/impl/OpportunityServiceImpl.java
++++ b/src/main/java/com/elex/oa/service/business/impl/OpportunityServiceImpl.java
+@@ -196,6 +196,18 @@ public class OpportunityServiceImpl implements IOpportunityService {
+         opportunity.setDepname(hrUtils.getDepnameByEmployeenumber(opportunity.getSale_employeenumber()));
+         //获得用户的账号ID
+         opportunity.setUsername(hrUtils.getUsernameByEmployeenumber(opportunity.getSale_employeenumber()));
++        //获得参与人姓名
++        String[] content = {};
++        String participate = "";
++        if (opportunity.getParticipate() != null) {
++            content = opportunity.getParticipate().split(",");
++            for (String name : content) {
++                participate += hrUtils.getTruenameByEmployeenumber(name) + "," ;
++            }
++            opportunity.setParticipateName(participate.substring(0,participate.length()-1));
++        } else {
++            opportunity.setParticipateName("");
++        }
+         return opportunity;
+     }
+ 
+diff --git a/src/main/resources/mapper/business/ClueMapper.xml b/src/main/resources/mapper/business/ClueMapper.xml
+index 643fe075..2870ea8b 100644
+--- a/src/main/resources/mapper/business/ClueMapper.xml
++++ b/src/main/resources/mapper/business/ClueMapper.xml
+@@ -52,7 +52,8 @@
+ 				clue.sale_employeenumber,
+ 				clue.scheme_employeenumber,
+ 				clue.state,
+-				clue.clue_price
++				clue.clue_price,
++				clue.participate
+ 			FROM
+ 				tb_business_clue clue
+ 		<where>
