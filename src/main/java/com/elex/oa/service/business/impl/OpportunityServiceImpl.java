@@ -197,9 +197,9 @@ public class OpportunityServiceImpl implements IOpportunityService {
         //获得用户的账号ID
         opportunity.setUsername(hrUtils.getUsernameByEmployeenumber(opportunity.getSale_employeenumber()));
         //获得参与人姓名
-        String[] content = {};
+        String[] content;
         String participate = "";
-        if (opportunity.getParticipate() != null) {
+        if (opportunity.getParticipate() != null && !opportunity.getParticipate().equals("")) {
             content = opportunity.getParticipate().split(",");
             for (String name : content) {
                 participate += hrUtils.getTruenameByEmployeenumber(name) + "," ;

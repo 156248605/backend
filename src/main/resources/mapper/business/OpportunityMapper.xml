@@ -41,7 +41,9 @@
 			opportunity.scheme_employeenumber,
 			opportunity.state,
 			opportunity.opportunity_price,
-			opportunity.participate
+			opportunity.participate,
+			opportunity.track_content,
+			opportunity.track_date
 		FROM
 			tb_business_opportunity opportunity
 		<where>

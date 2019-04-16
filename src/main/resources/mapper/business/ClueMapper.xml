@@ -53,7 +53,9 @@
 				clue.scheme_employeenumber,
 				clue.state,
 				clue.clue_price,
-				clue.participate
+				clue.participate,
+				clue.track_content,
+				clue.track_date
 			FROM
 				tb_business_clue clue
 		<where>

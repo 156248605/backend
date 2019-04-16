@@ -35,6 +35,8 @@ public class Opportunity implements Serializable {
     private String state;//状态（跟踪、关闭、转立项）
     private String opportunity_price;//商机价值
     private String participate;//参与人
+    private String track_content;//最新商机内容
+    private String track_date;//最新商机更新时间
 
     @Transient
     private String username;//登录ID
@@ -273,6 +275,22 @@ public class Opportunity implements Serializable {
         this.participateName = participateName;
     }
 
+    public String getTrack_content() {
+        return track_content;
+    }
+
+    public void setTrack_content(String track_content) {
+        this.track_content = track_content;
+    }
+
+    public String getTrack_date() {
+        return track_date;
+    }
+
+    public void setTrack_date(String track_date) {
+        this.track_date = track_date;
+    }
+
     @Override
     public String toString() {
         return "Opportunity{" +
@@ -294,6 +312,8 @@ public class Opportunity implements Serializable {
                 ", state='" + state + '\'' +
                 ", opportunity_price='" + opportunity_price + '\'' +
                 ", participate='" + participate + '\'' +
+                ", track_content='" + track_content + '\'' +
+                ", track_date='" + track_date + '\'' +
                 ", username='" + username + '\'' +
                 ", depname='" + depname + '\'' +
                 ", trackcontent='" + trackcontent + '\'' +

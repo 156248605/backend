@@ -31,6 +31,8 @@ public class Clue implements Serializable {
     private String state;//状态（跟踪、关闭、转商机）
     private String clue_price;//线索价值
     private String participate;//参与人
+    private String track_content;//最新线索内容
+    private String track_date;//最新线索更新时间
 
     @Transient
     private String username;//登录ID（分权查询用的）
@@ -232,6 +234,22 @@ public class Clue implements Serializable {
         this.participateName = participateName;
     }
 
+    public String getTrack_content() {
+        return track_content;
+    }
+
+    public void setTrack_content(String track_content) {
+        this.track_content = track_content;
+    }
+
+    public String getTrack_date() {
+        return track_date;
+    }
+
+    public void setTrack_date(String track_date) {
+        this.track_date = track_date;
+    }
+
     @Override
     public String toString() {
         return "Clue{" +
@@ -249,6 +267,8 @@ public class Clue implements Serializable {
                 ", state='" + state + '\'' +
                 ", clue_price='" + clue_price + '\'' +
                 ", participate='" + participate + '\'' +
+                ", track_content='" + track_content + '\'' +
+                ", track_date='" + track_date + '\'' +
                 ", username='" + username + '\'' +
                 ", depname='" + depname + '\'' +
                 ", trackcontent='" + trackcontent + '\'' +

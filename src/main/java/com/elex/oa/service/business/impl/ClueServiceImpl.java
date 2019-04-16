@@ -224,9 +224,9 @@ public class ClueServiceImpl implements IClueService {
         //获得账号ID
         c.setUsername(hrUtils.getUsernameByEmployeenumber(c.getSale_employeenumber()));
         //获取参与人姓名
-        String[] content = {};
+        String[] content;
         String participate = "";
-        if (c.getParticipate() != null) {
+        if (c.getParticipate() != null && !c.getParticipate().equals("")) {
             content = c.getParticipate().split(",");
             for (String name : content) {
                 participate += hrUtils.getTruenameByEmployeenumber(name) + "," ;

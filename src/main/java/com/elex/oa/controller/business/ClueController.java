@@ -117,12 +117,6 @@ public class ClueController {
         return businessAttachmentList;
     }
 
-    @RequestMapping("/getUpdateTime")
-    @ResponseBody
-    private String getUpdateTime (HttpServletRequest request) {
-        return iClueService.getUpdateTime(request);
-    }
-
     @RequestMapping("/getRelativeEvent")
     @ResponseBody
     private List getRelativeEvent (HttpServletRequest request) {
