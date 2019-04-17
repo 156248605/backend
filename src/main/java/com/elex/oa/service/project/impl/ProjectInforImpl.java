@@ -11,6 +11,7 @@ import com.elex.oa.entity.project.*;
 import com.elex.oa.mongo.project.ProjectRecordMongo;
 import com.elex.oa.service.project.ProjectInforService;
 import com.elex.oa.util.project.InforUtils;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -45,6 +46,20 @@ public class ProjectInforImpl implements ProjectInforService {
 
     @Resource
     private ProjectAmendImpl projectAmendService;
+
+
+    private static  final String COLUMN = "column";
+
+    private static  final String PREFIX= "prefix";
+
+    private static  final String SUFFIX= "suffix";
+
+    private  static  final  String MESSAGE = "message";
+
+    private  static  final  String RESULT = "result";
+
+    private  static  final  String TIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
+
 
     //查询已立项成功的项目，添加到项目信息中
     @Override
@@ -286,8 +301,8 @@ public class ProjectInforImpl implements ProjectInforService {
                 String lastId = projectInforDao.queryLastId(); //查询导入前最后一条的id
                 int number = projectInforDao.importData(list);
                 if(number == 0) {
-                    map.put("result","undone");
-                    map.put("message","因项目编号重复，无法导入！");
+                    map.put(RESULT,"undone");
+                    map.put(MESSAGE,"因项目编号重复，无法导入！");
                 } else if(number < list.size()) {
                     List<String> codeList = projectInforDao.queryCodeList(Integer.parseInt(lastId)); //查询导入的项目编号
                     List<String> unList = new ArrayList<>(); //未导入的项目编号信息
@@ -296,8 +311,8 @@ public class ProjectInforImpl implements ProjectInforService {
                             unList.add(infor.getProjectCode());
                         }
                     }
-                    map.put("result", "unfinished");
-                    map.put("message","总数："+list.size()+"，导入："+number+",原因：项目编号重复!");
+                    map.put(RESULT, "unfinished");
+                    map.put(MESSAGE,"总数："+list.size()+"，导入："+number+",原因：项目编号重复!");
                     File filePath = new File("/usr/local/static/infor/");
                     if(!filePath.exists()) {
                         filePath.mkdirs();
@@ -306,20 +321,20 @@ public class ProjectInforImpl implements ProjectInforService {
                     if(!unfile.exists()) {
                         unfile.createNewFile();
                     }
-                    FileWriter fileWriter = new FileWriter(unfile);
-                    fileWriter.flush();
-                    fileWriter.close();
-                    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(unfile));
-                    for(String str : unList) {
-                        bufferedWriter.write(str);
-                        bufferedWriter.newLine();
+                    try(FileWriter fileWriter = new FileWriter(unfile)) {
+                        fileWriter.flush();
                     }
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
+                    try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(unfile))){
+                        for(String str : unList) {
+                            bufferedWriter.write(str);
+                            bufferedWriter.newLine();
+                            bufferedWriter.flush();
+                        }
+                    }
                     amend = true;
                 } else {
-                    map.put("result","success");
-                    map.put("message","已全部导入！");
+                    map.put(RESULT,"success");
+                    map.put(MESSAGE,"已全部导入！");
                     amend = true;
                 }
                 if(amend) {
@@ -337,8 +352,8 @@ public class ProjectInforImpl implements ProjectInforService {
                 e.printStackTrace();
             }
         } else {
-            map.put("result","failure");
-            map.put("message","上传文件格式不对！");
+            map.put(RESULT,"failure");
+            map.put(MESSAGE,"上传文件格式不对！");
             return map;
         }
         return null;
@@ -378,14 +393,14 @@ public class ProjectInforImpl implements ProjectInforService {
 
     //项目导入未导入的信息下载
     @Override
-    public String importUnfinished(HttpServletResponse response) {
+    public String importUnfinished(HttpServletResponse response) throws IOException  {
         String path = "/usr/local/static/infor/unfinished.txt";
 
         File file = new File(path);
         if(file.exists()) {
-            try {
-                InputStreamReader isr = new InputStreamReader(new FileInputStream(path), "UTF-8");
+            try(InputStreamReader isr = new InputStreamReader(new FileInputStream(path), "UTF-8");
                 BufferedReader br = new BufferedReader(isr);
+            ) {
                 String val = "";
 
                 String fileName = new String("未导入项目编号".getBytes(), "iso-8859-1");
@@ -394,25 +409,13 @@ public class ProjectInforImpl implements ProjectInforService {
 
                 String enter = "\r\n";
                 ServletOutputStream outSs = response.getOutputStream();
-                BufferedOutputStream bos = new BufferedOutputStream(outSs);
-
-                while ((val = br.readLine()) != null) {
-                    bos.write(val.getBytes("UTF-8"));
-                    bos.write(enter.getBytes());
+                try( BufferedOutputStream bos = new BufferedOutputStream(outSs);) {
+                    while ((val = br.readLine()) != null) {
+                        bos.write(val.getBytes("UTF-8"));
+                        bos.write(enter.getBytes());
+                    }
+                    bos.flush();
                 }
-
-                bos.flush();
-                bos.close();
-                outSs.close();
-                br.close();
-                isr.close();
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
         return "start txt";
@@ -465,7 +468,7 @@ public class ProjectInforImpl implements ProjectInforService {
         List<Map<String, String>> record = generateRecord(projectInfor, infor);
         if(record.size() > 0) {
             ProjectRecord projectRecord = new ProjectRecord();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIMEFORMAT);
             String date = simpleDateFormat.format(new Date());
             projectRecord.setUpdateTime(date);
             projectRecord.setUpdateBy(updateBy);
@@ -476,9 +479,9 @@ public class ProjectInforImpl implements ProjectInforService {
         return "success";
     }
 
-    public int proDiff(ProjectInfor projectInforNew, String updateBy) {
-        int i=0;
-        ProjectInfor projectInfor1 = projectInforDao.queryInforByCode(projectInforNew.getProjectCode()); //根据项目编号获取项目信息
+    public Object proDiff(ProjectInfor projectInforNew, String updateBy) {
+        Map<String,Object> returnMap = new HashMap<>();
+        ProjectInfor projectInfor1 = projectInforDao.queryInforByCodeNew(projectInforNew.getProjectCode()); //根据项目编号获取项目信息
         List<OsUser> users = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
         StringBuilder stringBuilder1 = new StringBuilder(),
         stringBuilder2 = new StringBuilder();
@@ -495,26 +498,56 @@ public class ProjectInforImpl implements ProjectInforService {
         projectInforNew.setProjectMemberCode(stringBuilder1.toString());
         projectInforNew.setRelatedMemberCode(stringBuilder2.toString());
         List<Map<String, String>> record = generateRecord(projectInforNew, projectInfor1);
-        if(record.size() > 0) {
-            ProjectRecord projectRecord = new ProjectRecord();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String date = simpleDateFormat.format(new Date());
-            projectRecord.setUpdateTime(date);
-            projectRecord.setUpdateBy(updateBy);
-            projectRecord.setProjectCode(projectInforNew.getProjectCode());
-            projectRecord.setRecord(record);
-            ProjectAmend  projectAmend = new ProjectAmend();
-            projectAmend.setRecord_json(JSONObject.toJSONString(projectRecord));
-            this.projectAmendService.save(projectAmend);
-            if(projectAmend.getId()!=null&&projectAmend.getId()>0){
-                     projectInforNew.setAmendId(projectAmend.getId());
-                     projectAmend.setProject_json(JSONObject.toJSONString(projectInforNew));
-                     this.projectAmendService.update(projectAmend);
-                     i=projectAmend.getId();
+        if(record.size()==0){
+            return RespUtil.response("200","无任何变更!",returnMap);
+        }else {
+            Boolean startProcess = this.isStartProcess(record);
+            if(!startProcess){
+                //直接变更
+                projectInforDao.amendPro(projectInforNew);
+                ProjectRecord projectRecord = new ProjectRecord();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIMEFORMAT);
+                String date = simpleDateFormat.format(new Date());
+                projectRecord.setUpdateTime(date);
+                projectRecord.setUpdateBy(updateBy);
+                projectRecord.setProjectCode(projectInforNew.getProjectCode());
+                projectRecord.setRecord(record);
+                projectRecordMongo.addRecord(projectRecord); //添加记录
+                return RespUtil.response("200","变更成功!",returnMap);
+            } else {
+                ProjectRecord projectRecord = new ProjectRecord();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIMEFORMAT);
+                String date = simpleDateFormat.format(new Date());
+                projectRecord.setUpdateTime(date);
+                projectRecord.setUpdateBy(updateBy);
+                projectRecord.setProjectCode(projectInforNew.getProjectCode());
+                projectRecord.setRecord(record);
+                ProjectAmend  projectAmend = new ProjectAmend();
+                projectAmend.setRecord_json(JSONObject.toJSONString(projectRecord));
+                this.projectAmendService.save(projectAmend);
+                if(projectAmend.getId()!=null&&projectAmend.getId()>0){
+                    projectInforNew.setAmendId(projectAmend.getId());
+                    projectAmend.setProject_json(JSONObject.toJSONString(projectInforNew));
+                    this.projectAmendService.update(projectAmend);
+                    returnMap.put("amendId",projectAmend.getId());
+                    returnMap.put("record",projectAmend.getRecord_json());
                 }
+            }
         }
-           return i;
+              return RespUtil.response("200","请求成功!",returnMap);
     }
+
+    private  Boolean isStartProcess(List<Map<String, String>> records){
+         boolean startProcess = false;
+        for(Map<String,String> mapRecord:records){
+            String val = mapRecord.get(COLUMN);
+            if(val.equals("项目状态")||val.equals("项目阶段")||val.equals("项目名称")||val.equals("立项部门")||val.equals("商务经理")||val.equals("交付经理")||val.equals("部门经理")){
+                startProcess =true;
+            }
+        }
+        return  startProcess;
+    }
+
 
     private List<Map<String,String>> generateRecord(ProjectInfor projectInfor, ProjectInfor infor) {
         boolean marker = false;
@@ -523,219 +556,219 @@ public class ProjectInforImpl implements ProjectInforService {
         marker = columnValidate(projectInfor.getProjectName(),infor.getProjectName());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "项目名称");
-            map.put("prefix", infor.getProjectName());
-            map.put("suffix", projectInfor.getProjectName());
+            map.put(COLUMN, "项目名称");
+            map.put(PREFIX, infor.getProjectName());
+            map.put(SUFFIX, projectInfor.getProjectName());
             list.add(map);
         }
 
         marker = columnValidate(projectInfor.getInDepartment(),infor.getInDepartment());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "立项部门");
-            map.put("prefix", infor.getInDepartment());
-            map.put("suffix", projectInfor.getInDepartment());
+            map.put(COLUMN, "立项部门");
+            map.put(PREFIX, infor.getInDepartment());
+            map.put(SUFFIX, projectInfor.getInDepartment());
             list.add(map);
         }
 
         marker = columnValidate(projectInfor.getDeptManager(),infor.getDeptManager());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "部门经理");
-            map.put("prefix", infor.getDeptManager());
-            map.put("suffix", projectInfor.getDeptManager());
+            map.put(COLUMN, "部门经理");
+            map.put(PREFIX, infor.getDeptManager());
+            map.put(SUFFIX, projectInfor.getDeptManager());
             list.add(map);
         }
 
         marker = columnValidate(projectInfor.getBusinessManager(),infor.getBusinessManager());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "商务经理");
-            map.put("prefix", infor.getBusinessManager());
-            map.put("suffix", projectInfor.getBusinessManager());
+            map.put(COLUMN, "商务经理");
+            map.put(PREFIX, infor.getBusinessManager());
+            map.put(SUFFIX, projectInfor.getBusinessManager());
             list.add(map);
         }
 
         marker = columnValidate(projectInfor.getProjectManager(),infor.getProjectManager());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "交付经理");
-            map.put("prefix", infor.getProjectManager());
-            map.put("suffix", projectInfor.getProjectManager());
+            map.put(COLUMN, "交付经理");
+            map.put(PREFIX, infor.getProjectManager());
+            map.put(SUFFIX, projectInfor.getProjectManager());
             list.add(map);
         }
 
         marker = columnValidate(projectInfor.getStartTime(),infor.getStartTime());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "开始时间");
-            map.put("prefix", infor.getStartTime());
-            map.put("suffix", projectInfor.getStartTime());
+            map.put(COLUMN, "开始时间");
+            map.put(PREFIX, infor.getStartTime());
+            map.put(SUFFIX, projectInfor.getStartTime());
             list.add(map);
         }
 
         marker = columnValidate(projectInfor.getEndTime(),infor.getEndTime());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "结束时间");
-            map.put("prefix", infor.getEndTime());
-            map.put("suffix", projectInfor.getEndTime());
+            map.put(COLUMN, "结束时间");
+            map.put(PREFIX, infor.getEndTime());
+            map.put(SUFFIX, projectInfor.getEndTime());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getProjectPhase(),infor.getProjectPhase());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "项目阶段");
-            map.put("prefix", infor.getProjectPhase());
-            map.put("suffix", projectInfor.getProjectPhase());
+            map.put(COLUMN, "项目阶段");
+            map.put(PREFIX, infor.getProjectPhase());
+            map.put(SUFFIX, projectInfor.getProjectPhase());
             list.add(map);
         }
 
         marker = columnValidate(projectInfor.getProjectStatus(),infor.getProjectStatus());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "项目状态");
-            map.put("prefix", infor.getProjectStatus());
-            map.put("suffix", projectInfor.getProjectStatus());
+            map.put(COLUMN, "项目状态");
+            map.put(PREFIX, infor.getProjectStatus());
+            map.put(SUFFIX, projectInfor.getProjectStatus());
             list.add(map);
         }
 
         marker = columnValidate(projectInfor.getProjectStatus(),infor.getProjectStatus());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "项目状态");
-            map.put("prefix", infor.getProjectStatus());
-            map.put("suffix", projectInfor.getProjectStatus());
+            map.put(COLUMN, "项目状态");
+            map.put(PREFIX, infor.getProjectStatus());
+            map.put(SUFFIX, projectInfor.getProjectStatus());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getGeneralSituation(), infor.getGeneralSituation());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "项目概况");
-            map.put("prefix", infor.getGeneralSituation());
-            map.put("suffix", projectInfor.getGeneralSituation());
+            map.put(COLUMN, "项目概况");
+            map.put(PREFIX, infor.getGeneralSituation());
+            map.put(SUFFIX, projectInfor.getGeneralSituation());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getProjectMembers(), infor.getProjectMembers());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "项目成员");
-            map.put("prefix", infor.getProjectMembers());
-            map.put("suffix", projectInfor.getProjectMembers());
+            map.put(COLUMN, "项目成员");
+            map.put(PREFIX, infor.getProjectMembers());
+            map.put(SUFFIX, projectInfor.getProjectMembers());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getRelatedMembers(), infor.getRelatedMembers());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "相关成员");
-            map.put("prefix", infor.getRelatedMembers());
-            map.put("suffix", projectInfor.getRelatedMembers());
+            map.put(COLUMN, "相关成员");
+            map.put(PREFIX, infor.getRelatedMembers());
+            map.put(SUFFIX, projectInfor.getRelatedMembers());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getPartyName(), infor.getPartyName());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "甲方名称");
-            map.put("prefix", infor.getPartyName());
-            map.put("suffix", projectInfor.getPartyName());
+            map.put(COLUMN, "甲方名称");
+            map.put(PREFIX, infor.getPartyName());
+            map.put(SUFFIX, projectInfor.getPartyName());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getPartyAddress(), infor.getPartyAddress());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "甲方地址");
-            map.put("prefix", infor.getPartyAddress());
-            map.put("suffix", projectInfor.getPartyAddress());
+            map.put(COLUMN, "甲方地址");
+            map.put(PREFIX, infor.getPartyAddress());
+            map.put(SUFFIX, projectInfor.getPartyAddress());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getPartyPhone(), infor.getPartyPhone());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "甲方电话");
-            map.put("prefix", infor.getPartyPhone());
-            map.put("suffix", projectInfor.getPartyPhone());
+            map.put(COLUMN, "甲方电话");
+            map.put(PREFIX, infor.getPartyPhone());
+            map.put(SUFFIX, projectInfor.getPartyPhone());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getPartyFax(), infor.getPartyFax());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "甲方传真");
-            map.put("prefix", infor.getPartyFax());
-            map.put("suffix", projectInfor.getPartyFax());
+            map.put(COLUMN, "甲方传真");
+            map.put(PREFIX, infor.getPartyFax());
+            map.put(SUFFIX, projectInfor.getPartyFax());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getHeadName(), infor.getHeadName());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "负责人姓名");
-            map.put("prefix", infor.getHeadName());
-            map.put("suffix", projectInfor.getHeadName());
+            map.put(COLUMN, "负责人姓名");
+            map.put(PREFIX, infor.getHeadName());
+            map.put(SUFFIX, projectInfor.getHeadName());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getHeadPosition(), infor.getHeadPosition());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "负责人职务");
-            map.put("prefix", infor.getHeadPosition());
-            map.put("suffix", projectInfor.getHeadPosition());
+            map.put(COLUMN, "负责人职务");
+            map.put(PREFIX, infor.getHeadPosition());
+            map.put(SUFFIX, projectInfor.getHeadPosition());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getHeadMobile(), infor.getHeadMobile());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "负责人手机");
-            map.put("prefix", infor.getHeadMobile());
-            map.put("suffix", projectInfor.getHeadMobile());
+            map.put(COLUMN, "负责人手机");
+            map.put(PREFIX, infor.getHeadMobile());
+            map.put(SUFFIX, projectInfor.getHeadMobile());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getHeadEmail(), infor.getHeadEmail());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "负责人邮件");
-            map.put("prefix", infor.getHeadEmail());
-            map.put("suffix", projectInfor.getHeadEmail());
+            map.put(COLUMN, "负责人邮件");
+            map.put(PREFIX, infor.getHeadEmail());
+            map.put(SUFFIX, projectInfor.getHeadEmail());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getContactName(), infor.getContactName());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "联系人姓名");
-            map.put("prefix", infor.getContactName());
-            map.put("suffix", projectInfor.getContactName());
+            map.put(COLUMN, "联系人姓名");
+            map.put(PREFIX, infor.getContactName());
+            map.put(SUFFIX, projectInfor.getContactName());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getContactPosition(), infor.getContactPosition());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "联系人职务");
-            map.put("prefix", infor.getContactPosition());
-            map.put("suffix", projectInfor.getContactPosition());
+            map.put(COLUMN, "联系人职务");
+            map.put(PREFIX, infor.getContactPosition());
+            map.put(SUFFIX, projectInfor.getContactPosition());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getContactMobile(), infor.getContactMobile());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "联系人手机");
-            map.put("prefix", infor.getContactMobile());
-            map.put("suffix", projectInfor.getContactMobile());
+            map.put(COLUMN, "联系人手机");
+            map.put(PREFIX, infor.getContactMobile());
+            map.put(SUFFIX, projectInfor.getContactMobile());
             list.add(map);
         }
         marker = columnValidate(projectInfor.getContactEmail(), infor.getContactEmail());
         if(marker) {
             map = new HashMap<>();
-            map.put("column", "联系人邮件");
-            map.put("prefix", infor.getContactEmail());
-            map.put("suffix", projectInfor.getContactEmail());
+            map.put(COLUMN, "联系人邮件");
+            map.put(PREFIX, infor.getContactEmail());
+            map.put(SUFFIX, projectInfor.getContactEmail());
             list.add(map);
         }
         return list;
     }
 
-    private boolean columnValidate(String a, String b) {
+    private boolean columnValidate(String a, String b){
         if(StringUtils.isBlank(a) && StringUtils.isBlank(b)) {
             return false;
         }
-        if(a.equals(b)) {
+        if(a!=null&&a.equals(b)) {
             return false;
         }
         return true;

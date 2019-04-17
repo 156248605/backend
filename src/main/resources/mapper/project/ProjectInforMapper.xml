@@ -429,6 +429,11 @@
         FROM pro_pro_infor WHERE project_code = #{projectCode}
     </select>
 
+    <select id="queryInforByCodeNew" parameterType="string" resultMap="projectInfor">
+        SELECT *
+        FROM pro_pro_infor WHERE project_code = #{projectCode}
+    </select>
+
     <update id="amendPro" parameterType="com.elex.oa.entity.project.ProjectInfor">
         UPDATE pro_pro_infor SET general_situation = #{generalSituation}, project_members = #{projectMembers}, project_member_id =
         #{projectMemberId}, related_members = #{relatedMembers}, related_member_id = #{relatedMemberId}, party_name = #{partyName},

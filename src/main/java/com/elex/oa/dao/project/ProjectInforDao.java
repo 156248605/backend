@@ -54,6 +54,9 @@ public interface ProjectInforDao {
     List<ProjectInfor> obtainList(InforQuery inforQuery);
     //根据项目编号获取项目信息
     ProjectInfor queryInforByCode(String projectCode);
+
+    //根据项目编号获取项目信息
+    ProjectInfor queryInforByCodeNew(String projectCode);
     //修改项目信息
     void amendPro(ProjectInfor projectInfor);
     //查询instStatus值
