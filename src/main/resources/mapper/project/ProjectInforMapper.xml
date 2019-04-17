@@ -424,8 +424,7 @@
     </select>
 
     <select id="queryInforByCode" parameterType="string" resultMap="projectInfor">
-        SELECT general_situation, project_members, related_members, party_name, party_address, party_phone, party_fax,
-        head_name, head_position, head_mobile, head_email, contact_name, contact_position, contact_mobile, contact_email
+        SELECT *
         FROM pro_pro_infor WHERE project_code = #{projectCode}
     </select>
 
@@ -435,7 +434,8 @@
     </select>
 
     <update id="amendPro" parameterType="com.elex.oa.entity.project.ProjectInfor">
-        UPDATE pro_pro_infor SET general_situation = #{generalSituation}, project_members = #{projectMembers}, project_member_id =
+        UPDATE pro_pro_infor SET project_name=#{projectName},project_manager_id=#{projectManagerId},project_manager_code=#{projectManagerCode},business_manager=#{businessManager},business_manager_id=#{businessManagerId},business_manager_code = #{businessManagerCode},project_phase = #{projectPhase},
+        project_status = #{projectStatus},start_time = #{startTime},end_time= #{endTime},project_manager=#{projectManager },in_department = #{inDepartment},dept_manager = #{deptManager}, general_situation = #{generalSituation},project_members = #{projectMembers}, project_member_id =
         #{projectMemberId}, related_members = #{relatedMembers}, related_member_id = #{relatedMemberId}, party_name = #{partyName},
         party_address = #{partyAddress}, party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position =
         #{headPosition}, head_mobile = #{headMobile}, head_email = #{headEmail}, contact_name = #{contactName}, contact_position =
