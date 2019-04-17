@@ -125,7 +125,7 @@ public class ProjectInforImpl implements ProjectInforService {
 
     //修改项目信息
     @Override
-    public String amendInfor(ProjectInfor projectInfor) {
+    public synchronized String amendInfor(ProjectInfor projectInfor) {
         List<OsUser> osUsers = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
         StringBuilder stringBuilder1 = new StringBuilder(), stringBuilder2 = new StringBuilder();
         for(OsUser osUser:osUsers) {
