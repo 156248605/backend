@@ -65,4 +65,7 @@ public interface ProjectInforDao {
     ApprovalList queryInforById(String id);
     //添加项目详情信息
     void addProjectInfor(ApprovalList approvalList);
+    //项目周计划(新)
+    void addWeeklyPlan(ProjectInfor projectInfor);
+    void updateProjectInforWeeklyPlan(ProjectInfor projectInfor);
 }

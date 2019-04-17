@@ -1,6 +1,7 @@
 package com.elex.oa.controller.project;
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.entity.project.*;
+import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.project.ProjectInforService;
 import com.elex.oa.service.project.impl.ProjectAmendImpl;
 import com.github.pagehelper.PageInfo;
@@ -154,5 +155,12 @@ public class ProjectInforController {
     @ResponseBody
     public String addPro(String id) {
         return projectInforService.addPro(id);
+    }
+
+    //项目周计划(新)
+    @RequestMapping("/addWeeklyPlan")
+    @ResponseBody
+    public String addWeeklyPlan (HttpServletRequest request) {
+        return projectInforService.newWeeklyPlan(request);
     }
 }

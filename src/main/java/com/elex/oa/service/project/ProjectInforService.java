@@ -6,6 +6,7 @@ import com.elex.oa.entity.project.ProjectInfor;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -44,4 +45,6 @@ public interface ProjectInforService {
     //项目信息添加
     String addPro(String id);
     Object proDiff(ProjectInfor projectInfor, String updateBy);
+    //项目周计划(新)
+    String newWeeklyPlan(HttpServletRequest request);
 }

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -792,5 +793,17 @@ public class ProjectInforImpl implements ProjectInforService {
             projectInforDao.addProjectInfor(approvalList); //添加项目详情信息
         }
         return "RUNNING";
+    }
+
+    public String newWeeklyPlan (HttpServletRequest request) {
+        ProjectInfor projectInfor = new ProjectInfor();
+        projectInfor.setProjectCode(request.getParameter("project_code"));
+        projectInfor.setStartTime(request.getParameter("start_time"));
+        projectInfor.setEndTime(request.getParameter("end_time"));
+        projectInfor.setWeeklyReport(request.getParameter("weekly_report"));
+        projectInfor.setNextPlan(request.getParameter("next_plan"));
+        projectInforDao.addWeeklyPlan(projectInfor);
+        projectInforDao.updateProjectInforWeeklyPlan(projectInfor);
+        return "success";
     }
 }

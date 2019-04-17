@@ -59,6 +59,8 @@
         <result column="contact_position" javaType="string" property="contactPosition"></result>
         <result column="contact_mobile" javaType="string" property="contactMobile"></result>
         <result column="contact_email" javaType="string" property="contactEmail"></result>
+        <result column="weekly_report" javaType="string" property="weeklyReport"></result>
+        <result column="next_plan" javaType="string" property="nextPlan"></result>
     </resultMap>
 
     <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
@@ -109,7 +111,7 @@
         project_source, project_manager, project_type, project_phase, start_time, end_time, capitalization, classified,
         general_situation, project_members, project_member_id, related_members, related_member_id, party_name,
         party_address, party_phone, party_fax, head_name, head_position, head_mobile, head_email, contact_name,
-        contact_position, contact_mobile, contact_email FROM pro_pro_infor
+        contact_position, contact_mobile, contact_email, weekly_report, next_plan FROM pro_pro_infor
         <where>
             <if test="select1 == 1 and input1 != ''">
                 AND project_code LIKE CONCAT('%',#{input1},'%')
@@ -354,7 +356,7 @@
         SELECT project_code, project_name, in_department, project_status, dept_manager, proposer, write_date, business_manager,
         project_source, project_manager, project_type, general_situation, project_members, related_members, party_name, party_address,
         party_phone, party_fax, head_name, head_position, head_email, contact_name, contact_position, contact_mobile, contact_email,
-        project_phase, start_time, end_time, capitalization, classified
+        project_phase, start_time, end_time, capitalization, classified, weekly_report, next_plan
         FROM pro_pro_infor
         <where>
             <if test="codeSelect == 1 and codeInput != ''">
@@ -462,4 +464,12 @@
         #{projectManager}, #{projectManagerId}, #{projectType}, #{generalSituation}, #{startTime},
         #{endTime}, #{capitalization}, #{classified}, #{projectPhase})
     </insert>
+
+    <insert id="addWeeklyPlan" parameterType="com.elex.oa.entity.project.ProjectInfor">
+        INSERT INTO pro_week VALUES (NULL, #{projectCode}, #{startTime}, #{endTime}, NULL, NULL, NULL, NULL, #{weeklyReport}, #{nextPlan}, NULL, NULL, NULL, NULL )
+    </insert>
+
+    <update id="updateProjectInforWeeklyPlan" parameterType="com.elex.oa.entity.project.ProjectInfor">
+        UPDATE pro_pro_infor SET weekly_report = #{weeklyReport}, next_plan = #{nextPlan} WHERE project_code = #{projectCode}
+    </update>
 </mapper>
