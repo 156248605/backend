@@ -15,4 +15,7 @@ public interface ProjectSetDao {
     List<ProjectVarious> queryStatus();
     //查询所有项目阶段
     List<ProjectVarious> queryPhase();
+    //查询项目状态值
+    String queryStatusValue(String Status);
+
 }
