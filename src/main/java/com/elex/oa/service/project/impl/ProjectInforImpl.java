@@ -623,22 +623,12 @@ public class ProjectInforImpl implements ProjectInforService {
             map.put(SUFFIX, projectInfor.getProjectPhase());
             list.add(map);
         }
-
         marker = columnValidate(projectInfor.getProjectStatus(),infor.getProjectStatus());
         if(marker) {
             map = new HashMap<>();
             map.put(COLUMN, "项目状态");
-            map.put(PREFIX, infor.getProjectStatus());
-            map.put(SUFFIX, projectInfor.getProjectStatus());
-            list.add(map);
-        }
-
-        marker = columnValidate(projectInfor.getProjectStatus(),infor.getProjectStatus());
-        if(marker) {
-            map = new HashMap<>();
-            map.put(COLUMN, "项目状态");
-            map.put(PREFIX, infor.getProjectStatus());
-            map.put(SUFFIX, projectInfor.getProjectStatus());
+            map.put(PREFIX, this.projectSetDao.queryStatusValue(infor.getProjectStatus()));
+            map.put(SUFFIX,this.projectSetDao.queryStatusValue(projectInfor.getProjectStatus()));
             list.add(map);
         }
         marker = columnValidate(projectInfor.getGeneralSituation(), infor.getGeneralSituation());
