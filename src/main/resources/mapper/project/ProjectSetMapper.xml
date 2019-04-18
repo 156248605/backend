@@ -27,4 +27,8 @@
         SELECT KEY_, NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目阶段')
     </select>
 
+    <select id="queryPhaseValue"  resultType="string" parameterType="string">
+       SELECT NAME_ FROM sys_dic WHERE TYPE_ID_ = (SELECT TREE_ID_ FROM sys_tree WHERE NAME_ = '项目阶段') AND KEY_= #{key}
+    </select>
+
 </mapper>

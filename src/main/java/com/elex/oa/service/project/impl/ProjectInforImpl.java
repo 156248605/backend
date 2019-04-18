@@ -619,8 +619,8 @@ public class ProjectInforImpl implements ProjectInforService {
         if(marker) {
             map = new HashMap<>();
             map.put(COLUMN, "项目阶段");
-            map.put(PREFIX, infor.getProjectPhase());
-            map.put(SUFFIX, projectInfor.getProjectPhase());
+            map.put(PREFIX, this.projectSetDao.queryPhaseValue(infor.getProjectPhase()));
+            map.put(SUFFIX, this.projectSetDao.queryPhaseValue(projectInfor.getProjectPhase()));
             list.add(map);
         }
         marker = columnValidate(projectInfor.getProjectStatus(),infor.getProjectStatus());
