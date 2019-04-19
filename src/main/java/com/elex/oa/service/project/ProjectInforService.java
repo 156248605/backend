@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public interface ProjectInforService {
@@ -47,4 +49,6 @@ public interface ProjectInforService {
     Object proDiff(ProjectInfor projectInfor, String updateBy);
     //项目周计划(新)
     String newWeeklyPlan(HttpServletRequest request);
+    //查询项目周计划历史
+    List<HashMap<String, Object>> allWeeklyPlan(HttpServletRequest request);
 }

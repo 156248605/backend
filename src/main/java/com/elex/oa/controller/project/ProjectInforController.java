@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -162,5 +164,12 @@ public class ProjectInforController {
     @ResponseBody
     public String addWeeklyPlan (HttpServletRequest request) {
         return projectInforService.newWeeklyPlan(request);
+    }
+
+    //项目周计划(新)
+    @RequestMapping("/allWeeklyPlan")
+    @ResponseBody
+    public List<HashMap<String, Object>> allWeeklyPlan (HttpServletRequest request) {
+        return projectInforService.allWeeklyPlan(request);
     }
 }

@@ -806,4 +806,11 @@ public class ProjectInforImpl implements ProjectInforService {
         projectInforDao.updateProjectInforWeeklyPlan(projectInfor);
         return "success";
     }
+
+    @Override
+    public List<HashMap<String, Object>> allWeeklyPlan(HttpServletRequest request) {
+        return projectInforDao.allWeeklyPlan(request.getParameter("projectCode"));
+    }
+
+
 }

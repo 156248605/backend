@@ -472,4 +472,8 @@
     <update id="updateProjectInforWeeklyPlan" parameterType="com.elex.oa.entity.project.ProjectInfor">
         UPDATE pro_pro_infor SET weekly_report = #{weeklyReport}, next_plan = #{nextPlan} WHERE project_code = #{projectCode}
     </update>
+
+    <select id="allWeeklyPlan" resultType="HashMap">
+        SELECT * FROM pro_week WHERE project_code = #{projectCode}
+    </select>
 </mapper>

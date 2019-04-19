@@ -2,7 +2,9 @@ package com.elex.oa.dao.project;
 
 import com.elex.oa.entity.project.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,4 +70,6 @@ public interface ProjectInforDao {
     //项目周计划(新)
     void addWeeklyPlan(ProjectInfor projectInfor);
     void updateProjectInforWeeklyPlan(ProjectInfor projectInfor);
+    //查询项目周计划历史
+    List<HashMap<String, Object>> allWeeklyPlan(@Param("projectCode") String projectCode);
 }
