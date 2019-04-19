@@ -10,10 +10,10 @@ public class ProjectSchedule {
     @Resource
     private ProjectInforService projectInforService;
 
-    @Scheduled(cron = "0 0/3 * * * ?")
+  /*  @Scheduled(cron = "0 0/3 * * * ?")
     public void addInfor() {
         projectInforService.addInfor();
-    }
+    }*/
 
  /*   @Scheduled(cron = "0 45 23 * * ?")
     public void updateStaff() {
