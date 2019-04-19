@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.reportForm.PersonDetailDao">
+
+    <select id="getGroupRoleByUserId" resultType="HashMap">
+        SELECT NAME_ AS roleName, GROUP_ID_ AS roleId FROM os_group WHERE GROUP_ID_ IN (SELECT PARTY1_ FROM os_rel_inst WHERE REL_TYPE_KEY_ = 'GROUP-USER-BELONG' AND PARTY2_ = #{userId} AND DIM1_ = '1')
+    </select>
+
+    <select id="getGroupPositionByUserId" resultType="HashMap">
+        SELECT NAME_ AS positionName, GROUP_ID_ AS positionId FROM os_group WHERE GROUP_ID_ IN (SELECT PARTY1_ FROM os_rel_inst WHERE REL_TYPE_KEY_ = 'GROUP-USER-BELONG' AND PARTY2_ = #{userId} AND DIM1_ = '2600000003451072')
+    </select>
+
+    <select id="getGrantSubsByGroupId" resultType="HashMap">
+		SELECT sm.* FROM SYS_SUBSYS sm RIGHT JOIN OS_GROUP_SYS gs on sm.SYS_ID_=gs.SYS_ID_ WHERE gs.GROUP_ID_=#{groupId} and sm.STATUS_='ENABLED' order by SN_
+	</select>
+
+    <select id="getGrantMenusByGroupId" resultType="HashMap">
+		SELECT sm.* FROM SYS_MENU sm RIGHT JOIN OS_GROUP_MENU gm on sm.MENU_ID_=gm.MENU_ID_ WHERE gm.GROUP_ID_=#{groupId} ORDER BY sm.SN_ ASC
+	</select>
+</mapper>
