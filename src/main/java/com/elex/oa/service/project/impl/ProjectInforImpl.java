@@ -10,6 +10,7 @@ import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.mongo.project.ProjectRecordMongo;
 import com.elex.oa.service.project.ProjectInforService;
+import com.elex.oa.util.hr_util.TimeUtil;
 import com.elex.oa.util.project.InforUtils;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
@@ -802,8 +803,14 @@ public class ProjectInforImpl implements ProjectInforService {
         projectInfor.setEndTime(request.getParameter("end_time"));
         projectInfor.setWeeklyReport(request.getParameter("weekly_report"));
         projectInfor.setNextPlan(request.getParameter("next_plan"));
+        projectInfor.setWeeklyReportStart(request.getParameter("start_time"));
+        projectInfor.setWeeklyReportEnd(request.getParameter("end_time"));
         projectInforDao.addWeeklyPlan(projectInfor);
-        projectInforDao.updateProjectInforWeeklyPlan(projectInfor);
+        String weeklyReportStart = projectInforDao.isNewestWeeklyReport(request.getParameter("project_code")) == null ? "2000-01-01" : projectInforDao.isNewestWeeklyReport(request.getParameter("project_code"));
+        TimeUtil time = new TimeUtil();
+        if (time.strToDate(weeklyReportStart,"yyyy-MM-dd").compareTo(time.strToDate(request.getParameter("start_time"),"yyyy-MM-dd")) != 1) {
+            projectInforDao.updateProjectInforWeeklyPlan(projectInfor);
+        }
         return "success";
     }
 

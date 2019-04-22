@@ -44,6 +44,8 @@ public class ProjectInfor {
     private String departmentManager; //项目经理的部门经理
     private String weeklyReport;//本周日报
     private String nextPlan;//下周计划
+    private String weeklyReportStart;//周计划开始时间
+    private String weeklyReportEnd;//周计划结束时间
 
     public Integer getAmendId() {
         return amendId;
@@ -57,7 +59,7 @@ public class ProjectInfor {
     public ProjectInfor() {
     }
 
-    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String businessManager, String businessManagerId, String businessManagerCode, String projectSource, String projectManager, String projectManagerId, String projectManagerCode, String projectType, String projectPhase, String startTime, String endTime, String capitalization, String classified, String generalSituation, String projectMembers, String projectMemberId, String projectMemberCode, String relatedMembers, String relatedMemberId, String relatedMemberCode, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager, String weeklyReport, String nextPlan, Integer amendId) {
+    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String businessManager, String businessManagerId, String businessManagerCode, String projectSource, String projectManager, String projectManagerId, String projectManagerCode, String projectType, String projectPhase, String startTime, String endTime, String capitalization, String classified, String generalSituation, String projectMembers, String projectMemberId, String projectMemberCode, String relatedMembers, String relatedMemberId, String relatedMemberCode, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager, String weeklyReport, String nextPlan, String weeklyReportStart, String weeklyReportEnd, Integer amendId) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -101,6 +103,8 @@ public class ProjectInfor {
         this.departmentManager = departmentManager;
         this.weeklyReport = weeklyReport;
         this.nextPlan = nextPlan;
+        this.weeklyReportStart = weeklyReportStart;
+        this.weeklyReportEnd = weeklyReportEnd;
         this.amendId = amendId;
     }
 
@@ -448,6 +452,22 @@ public class ProjectInfor {
         this.nextPlan = nextPlan;
     }
 
+    public String getWeeklyReportStart() {
+        return weeklyReportStart;
+    }
+
+    public void setWeeklyReportStart(String weeklyReportStart) {
+        this.weeklyReportStart = weeklyReportStart;
+    }
+
+    public String getWeeklyReportEnd() {
+        return weeklyReportEnd;
+    }
+
+    public void setWeeklyReportEnd(String weeklyReportEnd) {
+        this.weeklyReportEnd = weeklyReportEnd;
+    }
+
     @Override
     public String toString() {
         return "ProjectInfor{" +
@@ -494,6 +514,8 @@ public class ProjectInfor {
                 ", departmentManager='" + departmentManager + '\'' +
                 ", weeklyReport='" + weeklyReport + '\'' +
                 ", nextPlan='" + nextPlan + '\'' +
+                ", weeklyReportStart='" + weeklyReportStart + '\'' +
+                ", weeklyReportEnd='" + weeklyReportEnd + '\'' +
                 ", amendId=" + amendId +
                 '}';
     }

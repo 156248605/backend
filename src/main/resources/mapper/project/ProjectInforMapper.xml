@@ -61,6 +61,8 @@
         <result column="contact_email" javaType="string" property="contactEmail"></result>
         <result column="weekly_report" javaType="string" property="weeklyReport"></result>
         <result column="next_plan" javaType="string" property="nextPlan"></result>
+        <result column="weekly_report_start" javaType="string" property="weeklyReportStart"></result>
+        <result column="weekly_report_end" javaType="string" property="weeklyReportEnd"></result>
     </resultMap>
 
     <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
@@ -111,7 +113,7 @@
         project_source, project_manager, project_type, project_phase, start_time, end_time, capitalization, classified,
         general_situation, project_members, project_member_id, related_members, related_member_id, party_name,
         party_address, party_phone, party_fax, head_name, head_position, head_mobile, head_email, contact_name,
-        contact_position, contact_mobile, contact_email, weekly_report, next_plan FROM pro_pro_infor
+        contact_position, contact_mobile, contact_email, weekly_report, next_plan, weekly_report_start, weekly_report_end FROM pro_pro_infor
         <where>
             <if test="select1 == 1 and input1 != ''">
                 AND project_code LIKE CONCAT('%',#{input1},'%')
@@ -356,7 +358,7 @@
         SELECT project_code, project_name, in_department, project_status, dept_manager, proposer, write_date, business_manager,
         project_source, project_manager, project_type, general_situation, project_members, related_members, party_name, party_address,
         party_phone, party_fax, head_name, head_position, head_email, contact_name, contact_position, contact_mobile, contact_email,
-        project_phase, start_time, end_time, capitalization, classified, weekly_report, next_plan
+        project_phase, start_time, end_time, capitalization, classified, weekly_report, next_plan, weekly_report_start, weekly_report_end
         FROM pro_pro_infor
         <where>
             <if test="codeSelect == 1 and codeInput != ''">
@@ -470,10 +472,14 @@
     </insert>
 
     <update id="updateProjectInforWeeklyPlan" parameterType="com.elex.oa.entity.project.ProjectInfor">
-        UPDATE pro_pro_infor SET weekly_report = #{weeklyReport}, next_plan = #{nextPlan} WHERE project_code = #{projectCode}
+        UPDATE pro_pro_infor SET weekly_report = #{weeklyReport}, next_plan = #{nextPlan}, weekly_report_start = #{weeklyReportStart}, weekly_report_end = #{weeklyReportEnd} WHERE project_code = #{projectCode}
     </update>
 
     <select id="allWeeklyPlan" resultType="HashMap">
-        SELECT * FROM pro_week WHERE project_code = #{projectCode}
+        SELECT max(id),weekly_report,next_plan,start_date,end_date FROM pro_week WHERE project_code = #{projectCode} GROUP BY start_date
+    </select>
+
+    <select id="isNewestWeeklyReport" resultType="String">
+        SELECT weekly_report_start FROM pro_pro_infor WHERE project_code = #{projectCode}
     </select>
 </mapper>

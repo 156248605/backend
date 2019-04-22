@@ -72,4 +72,6 @@ public interface ProjectInforDao {
     void updateProjectInforWeeklyPlan(ProjectInfor projectInfor);
     //查询项目周计划历史
     List<HashMap<String, Object>> allWeeklyPlan(@Param("projectCode") String projectCode);
+    //判断项目周报是否为最新
+    String isNewestWeeklyReport(@Param("projectCode") String projectCode);
 }
