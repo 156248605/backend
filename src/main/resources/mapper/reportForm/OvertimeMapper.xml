@@ -3,10 +3,9 @@
 <mapper namespace="com.elex.oa.dao.reportForm.OvertimeDao">
 
     <select id="getOvertimeForm" resultType="HashMap">
-        SELECT * FROM w_jbsqd1
-        <where>
+        SELECT * FROM w_jbsqd1 WHERE (INST_STATUS_ = 'DISCARD_END' || INST_STATUS_ = 'SUCCESS_END' || INST_STATUS_ = 'RUNNING')
             <if test="name != null and name != ''">
-                F_SQR = #{name}
+                AND F_SQR = #{name}
             </if>
             <if test="startTime != null and startTime != ''">
                 AND F_JBKSSJ >= #{startTime}
@@ -23,7 +22,6 @@
             <if test="department != null and department != ''">
                 AND F_SZBM = #{department}
             </if>
-        </where>
 
     </select>
 

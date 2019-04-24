@@ -3,10 +3,9 @@
 <mapper namespace="com.elex.oa.dao.reportForm.LeaveDao">
 
     <select id="getLeaveForm" resultType="HashMap">
-        SELECT * FROM w_qjsqd1
-        <where>
+        SELECT * FROM w_qjsqd1 WHERE (INST_STATUS_ = 'DISCARD_END' || INST_STATUS_ = 'SUCCESS_END' || INST_STATUS_ = 'RUNNING')
             <if test="name != null and name != ''">
-                F_SQR1 = #{name}
+                AND F_SQR1 = #{name}
             </if>
             <if test="startTime != null and startTime != ''">
                 AND F_KSSJ >= #{startTime}
@@ -23,7 +22,6 @@
             <if test="department != null and department != ''">
                 AND F_SZBM = #{department}
             </if>
-        </where>
 
     </select>
 

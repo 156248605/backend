@@ -476,7 +476,7 @@
     </update>
 
     <select id="allWeeklyPlan" resultType="HashMap">
-        SELECT max(id),weekly_report,next_plan,start_date,end_date FROM pro_week WHERE project_code = #{projectCode} GROUP BY start_date
+        SELECT * FROM pro_week WHERE project_code = #{projectCode} AND id in (SELECT max(id) FROM pro_week WHERE project_code = #{projectCode} GROUP BY start_date) ORDER BY start_date DESC
     </select>
 
     <select id="isNewestWeeklyReport" resultType="String">
