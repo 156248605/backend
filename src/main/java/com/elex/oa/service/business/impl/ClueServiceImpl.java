@@ -10,6 +10,7 @@ import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.service.business.IClueService;
 import com.elex.oa.util.hr_util.HrUtils;
+import com.elex.oa.util.hr_util.TimeUtil;
 import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -125,6 +128,10 @@ public class ClueServiceImpl implements IClueService {
             iTrackInfoDao.insert(trackInfo);
             //更新线索状态
             clue.setTrackid(trackInfo.getCode());
+            clue.setTrack_content(username+":"+trackcontent);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            String nowDate = df.format(new Date());
+            clue.setTrack_date(nowDate);
             iClueDao.updateByPrimaryKeySelective(clue);
         } catch (Exception e) {
             logger.info(String.valueOf(e.getCause()));

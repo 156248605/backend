@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +61,10 @@ public class OpportunityServiceImpl implements IOpportunityService {
         //添加商机（步骤：1.跟踪->2.商机->3.附件）
         //添加跟踪信息
         TrackInfo trackInfoOpportunity = getTrackInfoByObject(opportunity);
+        opportunity.setTrack_content(opportunity.getUsername() + ":转商机");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String nowDate = df.format(new Date());
+        opportunity.setTrack_date(nowDate);
         iTrackInfoDao.insert(trackInfoOpportunity);
         //添加商机信息
         opportunity.setTrackid(trackInfoOpportunity.getCode());
@@ -141,6 +147,10 @@ public class OpportunityServiceImpl implements IOpportunityService {
             iTrackInfoDao.insert(trackInfo);
             //更新线索状态
             opportunity.setTrackid(trackInfo.getCode());
+            opportunity.setTrack_content(opportunity.getUsername() + ":" + opportunity.getTrackcontent());
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            String nowDate = df.format(new Date());
+            opportunity.setTrack_date(nowDate);
             iOpportunityDao.updateByPrimaryKeySelective(opportunity);
         } catch (Exception e) {
             logger.info(String.valueOf(e.getCause()));
