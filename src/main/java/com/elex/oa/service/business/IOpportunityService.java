@@ -6,7 +6,7 @@ import com.github.pagehelper.PageInfo;
 import java.util.Map;
 
 public interface IOpportunityService {
-    Object transforClueToOpportunity(Opportunity opportunity);
+    Object transforClueToOpportunity(Opportunity opportunity, String username);
 
     PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag);
 

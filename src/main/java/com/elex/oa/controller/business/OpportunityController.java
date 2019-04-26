@@ -50,7 +50,7 @@ public class OpportunityController {
         String opportunityCode = hrUtils.getOpportunityCode(username);
         opportunity.setCode(opportunityCode);
         //调用业务层方法
-        return iOpportunityService.transforClueToOpportunity(opportunity);
+        return iOpportunityService.transforClueToOpportunity(opportunity, username);
     }
 
     @RequestMapping("/getPageInfo")

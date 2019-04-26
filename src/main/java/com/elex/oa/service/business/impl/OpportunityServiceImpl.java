@@ -50,7 +50,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
     private static Logger logger = LoggerFactory.getLogger(OpportunityServiceImpl.class);
 
     @Override
-    public Object transforClueToOpportunity(Opportunity opportunity) {
+    public Object transforClueToOpportunity(Opportunity opportunity,String username) {
         //先判断必选项
         if(StringUtils.isBlank(opportunity.getOpportunityname()))return RespUtil.response("500","商机内容不能为空！",null);
         if(StringUtils.isBlank(opportunity.getTrackcontent()))return RespUtil.response("500","商机进展不能为空！",null);
@@ -60,10 +60,16 @@ public class OpportunityServiceImpl implements IOpportunityService {
         if(StringUtils.isBlank(opportunity.getCustom()))return RespUtil.response("500","客户不能为空！",null);
         //添加商机（步骤：1.跟踪->2.商机->3.附件）
         //添加跟踪信息
-        TrackInfo trackInfoOpportunity = getTrackInfoByObject(opportunity);
-        opportunity.setTrack_content(opportunity.getUsername() + ":转商机");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String nowDate = df.format(new Date());
+        Clue clue = new Clue();
+        clue.setUsername(username);
+        clue.setTrackcontent("转商机");
+        clue.setCode(opportunity.getClueid());
+        clue.setTrack_content(username + ":转商机");
+        clue.setTrack_date(nowDate);
+        TrackInfo trackInfoOpportunity = getTrackInfoByObject(opportunity);
+        opportunity.setTrack_content(opportunity.getTrackcontent());
         opportunity.setTrack_date(nowDate);
         iTrackInfoDao.insert(trackInfoOpportunity);
         //添加商机信息
@@ -72,6 +78,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         if (null==opportunity.getCreatetime() || StringUtils.isEmpty(opportunity.getCreatetime().trim()) || opportunity.getCreatetime().length()<19) {
             opportunity.setCreatetime(hrUtils.getDateStringByTimeMillis(System.currentTimeMillis()));
         }
+        iClueDao.updateByPrimaryKeySelective(clue);
         iOpportunityDao.insertSelective(opportunity);
         //添加附件信息
         Boolean aBoolean = getaBooleanByAddAttachment(opportunity,true);
@@ -147,7 +154,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
             iTrackInfoDao.insert(trackInfo);
             //更新线索状态
             opportunity.setTrackid(trackInfo.getCode());
-            opportunity.setTrack_content(opportunity.getUsername() + ":" + opportunity.getTrackcontent());
+            opportunity.setTrack_content(username+":"+trackcontent);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
             String nowDate = df.format(new Date());
             opportunity.setTrack_date(nowDate);
