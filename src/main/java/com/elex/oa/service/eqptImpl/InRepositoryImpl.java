@@ -33,16 +33,10 @@ public class InRepositoryImpl implements InRepositoryService {
     private RepositoryMapper repositoryMapper;
 
     @Resource
-    private OutRepositoryMapper outRepositoryMapper;
-
-    @Resource
     private RepositoryMtMapper repositoryMtMapper;
 
     @Resource
     private MaterialMtMapper materialMtMapper;
-
-    @Resource
-    private InRepositoryImpl inRepositoryImpl;
 
 
     /*所有单号*/
@@ -149,94 +143,26 @@ public class InRepositoryImpl implements InRepositoryService {
 
     /*新建入库单*/
     @Override
-    public String NewRepository(HttpServletRequest request) throws ParseException {
-        String inId = request.getParameter("inId");
-        Repository repository1 = new Repository();
-        repository1.setInId(inId);
-        inRepositoryMapper.deleteDraft(repository1);
-        String a = "";
-        String INLIST = request.getParameter("inList");
-        List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
-        for (int i = 0; i < listIN.size(); i++){
-            String INREPTC = request.getParameter("inReptC");
-            String INID = request.getParameter("inId");
-            String INNUMGET = listIN.get(i).get("number").toString();
-            String INNUM = "";
-            if (INNUMGET.contains(".")) {
-                INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
-            }else {
-                INNUM = INNUMGET;
-            }
-            // 格林尼治时间转格式
-            String date = request.getParameter("inTime");
-            date = date.replace("Z", " UTC");// 注意是空格+UTC
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
-            Date d = format.parse(date);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String sDate = sdf.format(d);
-            String INTIME = sDate;
-            String ININFO = request.getParameter("inInfo");
-            String POSTID = postId;
-            if (listIN.get(i).get("postId") != null){
-                POSTID = listIN.get(i).get("postId").toString();
-            }
-            String REPTID = listIN.get(i).get("reptId").toString();
-            String MATERIALID = listIN.get(i).get("theMatId").toString();
-            String MATERIALNAME = listIN.get(i).get("theMatName").toString();
-            String UNIT = listIN.get(i).get("theMatUnit").toString();
-            String SPEC = listIN.get(i).get("theMatSpec").toString();
-            String CHECK = listIN.get(i).get("theMatCheck").toString();
-            String REMARK = listIN.get(i).get("theMatRemark").toString();
-            String PROJID = request.getParameter("projId");
-            String PROJNAME = request.getParameter("projName");
-            Material material = new Material();
-            material.setId(MATERIALID);
-            String firstOne = request.getParameter("firstOne");
-            String secondOne = "";
-            String thirdOne = "";
-            String fourthOne = "";
-            if ( materialMtMapper.needCheck(material).equals("是") && CHECK == null){
-                a = "1";
-                break;
-            } else if ( !materialMtMapper.manageBS(material).equals("否") && (listIN.get(i).get("theMatBnSn").toString().equals("") || !listIN.get(i).containsKey("theMatBnSn")) ) {
-                a = "2";
-                break;
-            } else {
-                String bn = null;
-                String sn = null;
-                String number = materialMtMapper.manageBS(material);
-                if (number.equals("否")) {
-                    sn = "无";
-                    bn = "无";
-                } else if (number.equals("序列号")) {
-                    sn = listIN.get(i).get("theMatBnSn").toString();
-                    bn = "无";
-                } else if (number.equals("批次号")) {
-                    bn = listIN.get(i).get("theMatBnSn").toString();
-                    sn = "无";
-                }
-                Repository repository = new Repository();
-                repository.setInId(INID);
-                repository.setMaterialId(MATERIALID);
-                repository.setMaterialName(MATERIALNAME);
-                repository.setUnit(UNIT);
-                repository.setSpec(SPEC);
-                repository.setReptId(REPTID);
-                repository.setPostId(POSTID);
-                repository.setBn(bn);
-                repository.setSn(sn);
-                repository.setCheck(CHECK);
-                repository.setRemark(REMARK);
-                repository.setInInfo(ININFO);
-                repository.setProjId(PROJID);
-                repository.setProjName(PROJNAME);
-                String REPTcategory = repositoryMapper.searchCategory(repository);
-                String C = "";
-                inRepositoryMapper.insertNew(REPTcategory, INID, INTIME, INNUM, ININFO, REPTID, POSTID, MATERIALID, MATERIALNAME, SPEC, UNIT, sn, bn,INREPTC, CHECK, REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
-                a = "0";
-            }
-        }
-        return a;
+    public void NewRepository(HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setInId(request.getParameter("inId"));
+        repository.setInTime(request.getParameter("inTime"));
+        repository.setInInfo(request.getParameter("inInfo"));
+        repository.setInNum(request.getParameter("inNum"));
+        repository.setReptCategory(request.getParameter("reptCategory"));
+        repository.setReptId(request.getParameter("reptId"));
+        repository.setPostId(request.getParameter("postId"));
+        repository.setMaterialId(request.getParameter("materialId"));
+        repository.setMaterialName(request.getParameter("materialName"));
+        repository.setSpec(request.getParameter("spec"));
+        repository.setUnit(request.getParameter("unit"));
+        repository.setSn(request.getParameter("sn"));
+        repository.setInReptC(request.getParameter("inReptC"));
+        repository.setCheck(request.getParameter("check"));
+        repository.setRemark(request.getParameter("remark"));
+        repository.setProjId(request.getParameter("projId"));
+        repository.setProjName(request.getParameter("projName"));
+        inRepositoryMapper.insertNew(repository);
     }
 
     /*更新物料*/

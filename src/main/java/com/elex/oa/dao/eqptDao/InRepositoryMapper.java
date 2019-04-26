@@ -5,6 +5,7 @@ package com.elex.oa.dao.eqptDao;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.regexp.RE;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface InRepositoryMapper {
     List<Repository> findAll(Repository repository);
 
-    void insertNew(String REPTcategory, String INID, String INTIME, String INNUM, String reptCategory, String inId, String inTime, String inNum, String inInfo, String reptId, String postId, String materialId, String materialName, String spec, String unit, String sn, String bn, String inReptC, String check, String remark, String projId, String projName, String c);
+    void insertNew(Repository repository);
 
     String ID (Material material);
 
