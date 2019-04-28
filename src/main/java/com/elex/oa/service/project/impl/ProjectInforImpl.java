@@ -543,7 +543,7 @@ public class ProjectInforImpl implements ProjectInforService {
          boolean startProcess = false;
         for(Map<String,String> mapRecord:records){
             String val = mapRecord.get(COLUMN);
-            if(val.equals("项目状态")||val.equals("项目阶段")||val.equals("项目名称")||val.equals("立项部门")||val.equals("商务经理")||val.equals("交付经理")||val.equals("部门经理")){
+            if(val.equals("项目状态")||val.equals("项目阶段")||val.equals("项目名称")||val.equals("立项部门")||val.equals("商务经理")||val.equals("交付经理")||val.equals("部门经理")||val.equals("开始时间")||val.equals("结束时间")){
                 startProcess =true;
             }
         }
