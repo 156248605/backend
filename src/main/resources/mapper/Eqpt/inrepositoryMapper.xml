@@ -2,10 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.eqptDao.InRepositoryMapper">
     <select id="findAll" resultType="com.elex.oa.entity.eqpt.Repository">
-        SELECT *,'' as author FROM eqpt_inrepository
-        UNION
-        SELECT * FROM eqpt_inrepository_draft WHERE author = #{author}
-        ORDER BY inId DESC
+        SELECT * FROM eqpt_inrepository ORDER BY inId DESC
     </select>
 
     <select id="findDraft" resultType="com.elex.oa.entity.eqpt.Repository">
@@ -134,5 +131,9 @@
     <select id="allNoticeProduce" resultType="com.elex.oa.entity.eqpt.Repository">
         SELECT '检验单' AS firstOne, F_WDBH AS secondOne, F_SQR_NAME AS thirdOne, F_TXRQ AS fourthOne, '' AS bn, '' AS sn FROM w_jy WHERE F_WDBH NOT IN (SELECT inInfo FROM eqpt_inrepository) AND INST_STATUS_ = 'SUCCESS_END'
         ORDER BY fourthOne DESC
+    </select>
+
+    <select id="materialLocation" resultType="HashMap">
+        SELECT reptId, postId FROM eqpt_detail WHERE id = #{materialId}
     </select>
 </mapper>

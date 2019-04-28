@@ -1,6 +1,7 @@
 package com.elex.oa.controller.eqptController;
 
 
+import afu.org.checkerframework.checker.oigj.qual.O;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptImpl.OutRepositoryImpl;
@@ -33,7 +34,7 @@ public class OutRepositoryController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public String InsertNew (HttpServletRequest request) throws ParseException {
+    public Object InsertNew (HttpServletRequest request){
         return outRepositoryImpl.InsertRepository(request);
     }
 

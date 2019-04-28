@@ -34,8 +34,8 @@ public class InRepositoryController {
 
     @RequestMapping("/new")
     @ResponseBody
-    public void InsertRepository (HttpServletRequest request) {
-        inRepositoryImpl.NewRepository(request);
+    public Object InsertRepository (HttpServletRequest request) {
+        return inRepositoryImpl.NewRepository(request);
     }
 
     @RequestMapping("/search")

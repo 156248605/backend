@@ -13,7 +13,7 @@ import java.util.List;
 
 @Mapper
 public interface InRepositoryMapper {
-    List<Repository> findAll(Repository repository);
+    List<Repository> findAll();
 
     void insertNew(Repository repository);
 
@@ -64,4 +64,7 @@ public interface InRepositoryMapper {
     List<Repository> allNoticePurchase();
 
     List<Repository> showprojProduce(String projectId);
+
+    // 确认物料位置
+    List<HashMap<String, Object>> materialLocation(String materialId);
 }

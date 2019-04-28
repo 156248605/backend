@@ -279,6 +279,6 @@
     </update>
 
     <update id="changeNumMat" parameterType="com.elex.oa.entity.eqpt.Repository">
-        UPDATE eqpt_material SET num = num + #{unit} WHERE id = #{materialId}
+        UPDATE eqpt_material SET num = num + #{inNum} WHERE id = #{materialId}
     </update>
 </mapper>

@@ -11,6 +11,7 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.OutRepositoryService;
 import com.elex.oa.service.project.OperationService;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -108,8 +109,27 @@ public class OutRepositoryImpl implements OutRepositoryService {
 
     /*新建出库单*/
     @Override
-    public String InsertRepository (HttpServletRequest request)throws ParseException{
-        String outId = request.getParameter("outId");
+    public Object InsertRepository (HttpServletRequest request){
+        Repository repository = new Repository();
+        repository.setOutId(request.getParameter("outId"));
+        repository.setOutTime(request.getParameter("outTime"));
+        repository.setOutInfo(request.getParameter("outInfo"));
+        repository.setOutNum(request.getParameter("outNum"));
+        repository.setReptCategory(request.getParameter("reptCategory"));
+        repository.setReptId(request.getParameter("reptId"));
+        repository.setPostId(request.getParameter("postId"));
+        repository.setMaterialId(request.getParameter("materialId"));
+        repository.setMaterialName(request.getParameter("materialName"));
+        repository.setSpec(request.getParameter("spec"));
+        repository.setUnit(request.getParameter("unit"));
+        repository.setSn(request.getParameter("sn"));
+        repository.setOutReptC(request.getParameter("outReptC"));
+        repository.setRemark(request.getParameter("remark"));
+        repository.setProjId(request.getParameter("projId"));
+        repository.setProjName(request.getParameter("projName"));
+        outRepositoryMapper.insertNew(repository);
+        return RespUtil.response("200","请求成功",null);
+        /*String outId = request.getParameter("outId");
         Repository repository1 = new Repository();
         repository1.setOutId(outId);
         outRepositoryMapper.deleteDraft(repository1);
@@ -184,7 +204,7 @@ public class OutRepositoryImpl implements OutRepositoryService {
                 a = "0";
             }
         }
-        return a;
+        return a;*/
     }
 
     /*更新仓库*/

@@ -6,12 +6,14 @@ import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import com.elex.oa.service.eqptService.InRepositoryService;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.RequestWrapper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,14 +40,15 @@ public class InRepositoryImpl implements InRepositoryService {
     @Resource
     private MaterialMtMapper materialMtMapper;
 
+    @Resource
+    InventoryMapper inventoryMapper;
+
 
     /*所有单号*/
     @Override
     public PageInfo<Repository> ShowRepository (Page page, HttpServletRequest request){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        Repository repository = new Repository();
-        repository.setAuthor(request.getParameter("author"));
-        List<Repository> list = inRepositoryMapper.findAll(repository);
+        List<Repository> list = inRepositoryMapper.findAll();
         return new PageInfo<>(list);
     }
 
@@ -77,9 +80,7 @@ public class InRepositoryImpl implements InRepositoryService {
         // 查询判断
         if (projId == null && projName == null && reptId == null && reptCategory == null && postId == null && inId == null && sn == null && bn == null && inTime == null && inNum == null && materialId == null){
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
-            Repository repository = new Repository();
-            repository.setAuthor(request.getParameter("author"));
-            List<Repository> listR = inRepositoryMapper.findAll(repository);
+            List<Repository> listR = inRepositoryMapper.findAll();
             return new PageInfo<>(listR);
         } else {
             PageHelper.startPage(page.getCurrentPage(),page.getRows());
@@ -121,29 +122,9 @@ public class InRepositoryImpl implements InRepositoryService {
         return showInId;
     }
 
-    /*入库申请*/
-    @Override
-    public String checkInRepository (HttpServletRequest request){
-        String theMaterial = "";
-        String INLIST = request.getParameter("inList");
-        List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
-        for (int i = 0; i < listIN.size(); i++){
-            String MATERIALID = listIN.get(i).get("theMatId").toString();
-            Material material = new Material();
-            material.setId(MATERIALID);
-            if ( inRepositoryMapper.ID(material) == null) {
-                theMaterial = listIN.get(i).get("theMatId").toString();
-            } else {
-                theMaterial = "1";
-                break;
-            }
-        }
-        return theMaterial;
-    }
-
     /*新建入库单*/
     @Override
-    public void NewRepository(HttpServletRequest request) {
+    public Object NewRepository(HttpServletRequest request) {
         Repository repository = new Repository();
         repository.setInId(request.getParameter("inId"));
         repository.setInTime(request.getParameter("inTime"));
@@ -163,47 +144,40 @@ public class InRepositoryImpl implements InRepositoryService {
         repository.setProjId(request.getParameter("projId"));
         repository.setProjName(request.getParameter("projName"));
         inRepositoryMapper.insertNew(repository);
+        return RespUtil.response("200","请求成功",null);
     }
 
     /*更新物料*/
     @Override
-    public void InsertMaterial(HttpServletRequest request) throws ParseException {
-        String INLIST = request.getParameter("inList");
-        List<HashMap> listIN =JSON.parseArray(INLIST, HashMap.class);
-        for (int i = 0; i < listIN.size(); i++) {
-            String INNUMGET = listIN.get(i).get("number").toString();
-            String INNUM = "";
-            if (INNUMGET.contains(".")) {
-                INNUM = INNUMGET.substring(0,INNUMGET.indexOf("."));
-            }else {
-                INNUM = INNUMGET;
-            }
-            Material material = new Material();
-            material.setId(listIN.get(i).get("theMatId").toString());
-            material.setNum(INNUM);
-            String postId = "";
-            if (listIN.get(i).get("postId") != null) {
-                postId = listIN.get(i).get("postId").toString();
-            }
-            material.setPostId(postId);
-            material.setReptId(listIN.get(i).get("reptId").toString());
-            material.setName(listIN.get(i).get("theMatName").toString());
-            material.setSpec(listIN.get(i).get("theMatSpec").toString());
-            Material material1 = materialMtMapper.MaterialDetail(material);
-            //Material material1 = materialMapper.MaterialId(material);
-            material.setCategory(material1.getCategory());
-            material.setBrand(material1.getBrand());
-            material.setPrice(material1.getPrice());
-            materialMapper.updMat(material);
-            // 查询是否库存记录
-            String result = materialMapper.matInDetail(material);
-            if(result == null){
-                materialMapper.insertDetail(material);
-                materialMapper.deleteNull(material);
-            }else {
+    public Object InsertMaterial(HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setInNum(request.getParameter("inNum"));
+        repository.setMaterialId(request.getParameter("materialId"));
+        repository.setReptId(request.getParameter("reptId"));
+        repository.setPostId(request.getParameter("postId"));
+        Material material = new Material();
+        material.setId(request.getParameter("materialId"));
+        material.setReptId(request.getParameter("reptId"));
+        material.setPostId(request.getParameter("postId"));
+        material.setNum(request.getParameter("inNum"));
+        material.setReptName(repositoryMapper.searchReptName(material));
+        material.setCategory(materialMapper.MaterialId(material).getCategory());
+        material.setName(materialMapper.MaterialId(material).getName());
+        material.setSpec(materialMapper.MaterialId(material).getSpec());
+        material.setBrand(materialMapper.MaterialId(material).getBrand());
+        material.setPrice(materialMapper.MaterialId(material).getPrice());
+        // 增加物料数量
+        inventoryMapper.changeNumMat(repository);
+        List<HashMap<String, Object>> materialDetail = inRepositoryMapper.materialLocation(repository.getMaterialId());
+        for (int i = 0; i < materialDetail.size(); i++) {
+            if (materialDetail.get(i).get("reptId").equals(repository.getReptId()) && materialDetail.get(i).get("postId").equals(repository.getPostId())) {
                 materialMapper.updDetail(material);
+                break;
+            } else if (i == materialDetail.size() - 1) {
+                materialMapper.insertDetail(material);
             }
         }
+        return RespUtil.response("200","请求成功",null);
     }
 
     /*更新仓库*/

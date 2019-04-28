@@ -17,7 +17,7 @@ public interface OutRepositoryService {
     PageInfo<Repository> searchRepository(Page page, HttpServletRequest request);
 
     /*新建出库单*/
-    String InsertRepository(HttpServletRequest request) throws ParseException;
+    Object InsertRepository(HttpServletRequest request);
 
     /*更新仓库*/
     void OutRepository(HttpServletRequest request);

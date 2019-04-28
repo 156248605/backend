@@ -20,13 +20,10 @@ public interface InRepositoryService {
     List showInId(HttpServletRequest request);
 
     /*新建入库单*/
-    void NewRepository(HttpServletRequest request);
-
-    /*入库申请*/
-    String checkInRepository(HttpServletRequest request);
+    Object NewRepository(HttpServletRequest request);
 
     /*更新物料*/
-    void InsertMaterial(HttpServletRequest request) throws ParseException;
+    Object InsertMaterial(HttpServletRequest request) throws ParseException;
 
     /*同步仓库*/
     void InsertRepository(HttpServletRequest request);
