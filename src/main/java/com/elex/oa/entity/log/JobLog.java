@@ -9,10 +9,20 @@ public class JobLog {
     private String dateLine; //填报日期
     private String projectCode; //项目编号
     private String projectName; //项目名称
+
+    public String getInstId() {
+        return instId;
+    }
+
+    public void setInstId(String instId) {
+        this.instId = instId;
+    }
+
     private String projectManager; //项目经理
     private String startDate; //开始时间
     private String endDate; //结束时间
     private String content; //工作内容
+    private String instId;//流程实例id
 
     public JobLog() {
     }

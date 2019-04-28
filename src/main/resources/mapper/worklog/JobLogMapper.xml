@@ -12,9 +12,10 @@
         <result column="F_SBSJ" javaType="string" property="startDate"></result>
         <result column="F_XBSJ" javaType="string" property="endDate"></result>
         <result column="F_GZNR" javaType="string" property="content"></result>
+        <result column="INST_ID_" javaType="string" property="instId"></result>
     </resultMap>
     <select id="queryList" parameterType="com.elex.oa.entity.log.JobLogQuery" resultType="com.elex.oa.entity.log.JobLog">
-        SELECT gz.ID_ AS id, rz.ID_ AS code, gz.F_TBBM_NAME AS department, gz.F_TBRQ AS dateLine, rz.F_XMBH AS projectCode,
+        SELECT gz.ID_ AS id, rz.ID_ AS code, gz.F_TBBM_NAME AS department,gz.INST_ID_ AS instId ,gz.F_TBRQ AS dateLine, rz.F_XMBH AS projectCode,
         rz.F_XMMC AS projectName, rz.F_XMJL AS projectManager, rz.F_SBSJ AS startDate, rz.F_XBSJ AS endDate, rz.F_GZNR AS content
         FROM w_gzrz1 gz left JOIN w_rzmx13 rz ON gz.ID_ = rz.REF_ID_
         WHERE gz.F_TBR_NAME = #{userName} AND rz.TRASH_MARKER IS  NULL
