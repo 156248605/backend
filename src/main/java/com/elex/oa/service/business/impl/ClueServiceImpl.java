@@ -125,6 +125,7 @@ public class ClueServiceImpl implements IClueService {
             //添加关闭跟踪
             clue.setTrackcontent(username+":"+trackcontent);
             TrackInfo trackInfo = getTrackInfoByClue(clue);
+            trackInfo.setTrack_content(username+":"+trackcontent);
             iTrackInfoDao.insert(trackInfo);
             //更新线索状态
             clue.setTrackid(trackInfo.getCode());

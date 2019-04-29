@@ -151,6 +151,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
             //添加关闭跟踪
             opportunity.setTrackcontent(username+":"+trackcontent);
             TrackInfo trackInfo = getTrackInfoByObject(opportunity);
+            trackInfo.setTrack_content(username+":"+trackcontent);
             iTrackInfoDao.insert(trackInfo);
             //更新线索状态
             opportunity.setTrackid(trackInfo.getCode());
