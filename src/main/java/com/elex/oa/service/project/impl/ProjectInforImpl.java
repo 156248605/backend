@@ -452,19 +452,29 @@ public class ProjectInforImpl implements ProjectInforService {
     public String amendPro(ProjectInfor projectInfor, String updateBy) {
         ProjectInfor infor = projectInforDao.queryInforByCode(projectInfor.getProjectCode()); //根据项目编号获取项目信息
         List<OsUser> osUsers = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
-        StringBuilder stringBuilder1 = new StringBuilder(), stringBuilder2 = new StringBuilder();
+        StringBuilder projectMembers = new StringBuilder(), relateMembers = new StringBuilder();
+        String businessManager="";
+        String projectManager="";
         for(OsUser osUser:osUsers) {
             if(StringUtils.isNotBlank(projectInfor.getProjectMembers()) && projectInfor.getProjectMembers().contains(osUser.getFullName())) {
-                stringBuilder1.append(osUser.getUserId());
-                stringBuilder1.append(";");
+                projectMembers.append(osUser.getUserId());
+                projectMembers.append(";");
             }
             if(StringUtils.isNotBlank(projectInfor.getRelatedMembers()) && projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
-                stringBuilder2.append(osUser.getUserId());
-                stringBuilder2.append(";");
+                relateMembers.append(osUser.getUserId());
+                relateMembers.append(";");
+            }
+            if(StringUtils.isNotBlank(projectInfor.getBusinessManager()) && projectInfor.getBusinessManager().equals(osUser.getFullName()) ){
+                businessManager=osUser.getUserId();
+            }
+            if(StringUtils.isNotBlank(projectInfor.getProjectManager()) && projectInfor.getProjectManager().equals(osUser.getFullName()) ){
+                projectManager=osUser.getUserId();
             }
         }
-        projectInfor.setProjectMemberCode(stringBuilder1.toString());
-        projectInfor.setRelatedMemberCode(stringBuilder2.toString());
+        projectInfor.setProjectMemberCode(projectMembers.toString());
+        projectInfor.setRelatedMemberCode(relateMembers.toString());
+        projectInfor.setBusinessManagerCode(businessManager);
+        projectInfor.setProjectManagerCode(projectManager);
         projectInforDao.amendPro(projectInfor); //修改项目信息
 
         List<Map<String, String>> record = generateRecord(projectInfor, infor);
@@ -770,8 +780,7 @@ public class ProjectInforImpl implements ProjectInforService {
     @Override
     @Transactional
     public String addPro(String id) {
-        String instStatus = projectInforDao.queryInstStatus(id);
-        if(instStatus.equals("SUCCESS_END")) {
+            String instStatus = projectInforDao.queryInstStatus(id);
             ApprovalList approvalList = projectInforDao.queryInforById(id); //查询项目信息
             if(StringUtils.isNotBlank(approvalList.getWriteDate())) {
                 approvalList.setWriteDate(approvalList.getWriteDate().substring(0,10));
@@ -791,8 +800,7 @@ public class ProjectInforImpl implements ProjectInforService {
                 }
                 mileStoneDao.addMileStonePlans(mileStones);
             }
-            projectInforDao.addProjectInfor(approvalList); //添加项目详情信息
-        }
+            projectInforDao.addProjectInfor(approvalList); //添加项目详情信
         return "RUNNING";
     }
 
