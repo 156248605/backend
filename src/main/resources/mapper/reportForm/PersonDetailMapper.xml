@@ -3,7 +3,15 @@
 <mapper namespace="com.elex.oa.dao.reportForm.PersonDetailDao">
 
     <select id="getUserIdByName" resultType="HashMap">
-        SELECT * FROM os_user WHERE FULLNAME_ = #{name}
+        SELECT * FROM os_user
+        <where>
+            <if test="name != null and name != ''">
+                FULLNAME_ LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="employeeNumber != null and employeeNumber != ''">
+                EMPLOYEE_NUMBER_ = #{employeeNumber}
+            </if>
+        </where>
     </select>
 
     <select id="getGroupRoleByUserId" resultType="HashMap">

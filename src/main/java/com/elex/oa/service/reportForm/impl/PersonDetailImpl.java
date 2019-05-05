@@ -16,7 +16,13 @@ public class PersonDetailImpl implements PersonDetailService {
 
     @Override
     public List userForm(HttpServletRequest request) {
-        List<HashMap<String, Object>> nameList = personDetailDao.getUserIdByName(request.getParameter("name"));
+        List<HashMap<String, Object>> nameList = null;
+        if ( request.getParameter("employeeNumber") != null && !request.getParameter("employeeNumber").equals("") ) {
+            nameList = personDetailDao.getUserIdByName("", request.getParameter("employeeNumber"));
+        }else {
+            nameList = personDetailDao.getUserIdByName(request.getParameter("name"),"");
+        }
+
         return nameList;
     }
 

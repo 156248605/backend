@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface PersonDetailDao {
     // 根据NAME_获取USER_ID_
-    List<HashMap<String, Object>> getUserIdByName(@Param("name") String name);
+    List<HashMap<String, Object>> getUserIdByName(@Param("name") String name, @Param("employeeNumber") String employeeNumber);
 
     // 根据USER_ID_查询流程角色
     List<HashMap<String, Object>> getGroupRoleByUserId(@Param("userId") String userId);
