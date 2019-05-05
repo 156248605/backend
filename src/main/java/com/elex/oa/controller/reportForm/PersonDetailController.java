@@ -18,6 +18,12 @@ public class PersonDetailController {
     @Resource
     private PersonDetailService personDetailService;
 
+    @RequestMapping("/userForm")
+    @ResponseBody
+    public List userForm (HttpServletRequest request) {
+        return personDetailService.userForm(request);
+    }
+
     @RequestMapping("/menuAndRoleForm")
     @ResponseBody
     public List menuAndRoleForm (HttpServletRequest request) {

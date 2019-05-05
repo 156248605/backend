@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.elex.oa.dao.reportForm.PersonDetailDao">
 
+    <select id="getUserIdByName" resultType="HashMap">
+        SELECT * FROM os_user WHERE FULLNAME_ = #{name}
+    </select>
+
     <select id="getGroupRoleByUserId" resultType="HashMap">
         SELECT NAME_ AS roleName, GROUP_ID_ AS roleId FROM os_group WHERE GROUP_ID_ IN (SELECT PARTY1_ FROM os_rel_inst WHERE REL_TYPE_KEY_ = 'GROUP-USER-BELONG' AND PARTY2_ = #{userId} AND DIM1_ = '1')
     </select>

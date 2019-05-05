@@ -15,6 +15,12 @@ public class PersonDetailImpl implements PersonDetailService {
     private PersonDetailDao personDetailDao;
 
     @Override
+    public List userForm(HttpServletRequest request) {
+        List<HashMap<String, Object>> nameList = personDetailDao.getUserIdByName(request.getParameter("name"));
+        return nameList;
+    }
+
+    @Override
     public List menuAndRole(HttpServletRequest request) {
         List<HashMap<String, Object>> roleList = personDetailDao.getGroupRoleByUserId(request.getParameter("userId"));
         List<HashMap<String, Object>> positionList = personDetailDao.getGroupPositionByUserId(request.getParameter("userId"));
