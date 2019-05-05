@@ -809,9 +809,9 @@ public class ProjectInforImpl implements ProjectInforService {
         projectInfor.setProjectCode(request.getParameter("project_code"));
         projectInfor.setStartTime(request.getParameter("start_time"));
         projectInfor.setEndTime(request.getParameter("end_time"));
-        projectInfor.setWeeklyReport(request.getParameter("weekly_report"));
+        projectInfor.setWeeklyReport(request.getParameter("weekly_report").replace("\n","\r\n"));
         projectInfor.setNextPlan(request.getParameter("next_plan"));
-        projectInfor.setWeeklyReportStart(request.getParameter("start_time"));
+        projectInfor.setWeeklyReportStart(request.getParameter("start_time").replace("\n","\r\n"));
         projectInfor.setWeeklyReportEnd(request.getParameter("end_time"));
         projectInforDao.addWeeklyPlan(projectInfor);
         String weeklyReportStart = projectInforDao.isNewestWeeklyReport(request.getParameter("project_code")) == null ? "2000-01-01" : projectInforDao.isNewestWeeklyReport(request.getParameter("project_code"));
