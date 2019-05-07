@@ -5,6 +5,8 @@ import com.elex.oa.entity.hr_entity.department.Dept;
 import com.elex.oa.entity.hr_entity.HRManageCard;
 import com.elex.oa.entity.hr_entity.department.DeptTree;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -205,4 +207,7 @@ public interface IDeptService {
     Object getAllDepidAndDepnameByRemoveCompany();
 
     DeptTree submitSortdata(String sortdata, String title, String deptTree);
+
+    //查询部门下的组
+    List<HashMap<String, Object>> getGroupByPost(HttpServletRequest request);
 }

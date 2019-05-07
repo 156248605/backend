@@ -4,6 +4,8 @@ import com.elex.oa.entity.hr_entity.post.Post;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,4 +77,7 @@ public interface IPostDao  {
     List<Map<String, Object>> getAllPostidAndPostnameByPostON();
 
     String selectPostlistToStringByUserid(Integer userid);
+
+    //查询部门下的组
+    List<HashMap<String, Object>> getGroupByPost(@Param("id") String id);
 }

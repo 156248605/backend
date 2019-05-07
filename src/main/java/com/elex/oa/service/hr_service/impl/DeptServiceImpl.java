@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
@@ -840,5 +841,11 @@ public class DeptServiceImpl implements IDeptService {
         HRset hRset = ihRsetDao.selectById(id);
         if(null==hRset)return null;
         return hRset.getDatavalue();
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getGroupByPost (HttpServletRequest request) {
+        List<HashMap<String,Object>> groupList = iPostDao.getGroupByPost(request.getParameter("id"));
+        return groupList;
     }
 }

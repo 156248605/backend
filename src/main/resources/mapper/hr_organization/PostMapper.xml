@@ -179,4 +179,8 @@
 		WHERE id=#{id}
 	</update>
 
+	<select id="getGroupByPost" resultType="HashMap">
+		SELECT * FROM os_group WHERE PARENT_ID_ IN (SELECT GROUP_ID_ FROM os_group WHERE NAME_ = (SELECT depname FROM tb_id_department WHERE id = #{id}) AND PARENT_ID_ != 0)
+	</select>
+
 </mapper>

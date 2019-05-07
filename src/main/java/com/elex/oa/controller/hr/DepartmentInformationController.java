@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
@@ -616,5 +617,11 @@ public class DepartmentInformationController {
             @RequestParam("depid")Integer depid
     ){
         return iDeptService.queryPostListByDepidButIsNotNull(depid);
+    }
+
+    @RequestMapping("/queryGroupListByPost")
+    @ResponseBody
+    public List<HashMap<String, Object>> getGroupByPost (HttpServletRequest request) {
+        return iDeptService.getGroupByPost(request);
     }
 }
