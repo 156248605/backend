@@ -122,8 +122,8 @@ public class ProjectInforController {
     //获取项目信息列表
     @RequestMapping("/obtain_list")
     @ResponseBody
-    public PageInfo obtainList(InforQuery inforQuery, Integer pageNum) {
-        return projectInforService.obtainList(inforQuery, pageNum);
+    public PageInfo obtainList(InforQuery inforQuery, Integer pageNum, HttpServletRequest request) {
+        return projectInforService.obtainList(inforQuery, pageNum, request);
     }
 
     //项目信息修改

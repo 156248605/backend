@@ -425,7 +425,7 @@ public class ProjectInforImpl implements ProjectInforService {
 
     //获取项目信息列表
     @Override
-    public PageInfo obtainList(InforQuery inforQuery, Integer pageNum) {
+    public PageInfo obtainList(InforQuery inforQuery, Integer pageNum, HttpServletRequest request) {
         List<String> sourceList = JSONArray.parseArray(inforQuery.getSourceSelect(), String.class);
         if(sourceList.size() > 0) {
             inforQuery.setSourceList(sourceList);
@@ -442,7 +442,7 @@ public class ProjectInforImpl implements ProjectInforService {
         if(phaseList.size() > 0) {
             inforQuery.setPhaseList(phaseList);
         }
-        PageHelper.startPage(pageNum, 10);
+        PageHelper.startPage(pageNum, Integer.parseInt(request.getParameter("rows")));
         List<ProjectInfor> list = projectInforDao.obtainList(inforQuery); //获取项目信息列表
         return new PageInfo(list);
     }

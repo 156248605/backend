@@ -41,7 +41,7 @@ public interface ProjectInforService {
     //项目导入未导入的信息下载
     String importUnfinished(HttpServletResponse response) throws IOException;
     //获取项目信息列表
-    PageInfo obtainList(InforQuery inforQuery, Integer pageNum);
+    PageInfo obtainList(InforQuery inforQuery, Integer pageNum, HttpServletRequest request);
     //修改项目信息
     String amendPro(ProjectInfor projectInfor, String updateBy);
     //项目信息添加
