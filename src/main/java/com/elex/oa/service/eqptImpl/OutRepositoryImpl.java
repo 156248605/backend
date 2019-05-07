@@ -2,10 +2,7 @@ package com.elex.oa.service.eqptImpl;
 
 
 import com.alibaba.fastjson.JSON;
-import com.elex.oa.dao.eqptDao.MaterialMapper;
-import com.elex.oa.dao.eqptDao.MaterialMtMapper;
-import com.elex.oa.dao.eqptDao.OutRepositoryMapper;
-import com.elex.oa.dao.eqptDao.RepositoryMapper;
+import com.elex.oa.dao.eqptDao.*;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
@@ -43,6 +40,12 @@ public class OutRepositoryImpl implements OutRepositoryService {
 
     @Resource
     private OperationService operationService;
+
+    @Resource
+    InventoryMapper inventoryMapper;
+
+    @Resource
+    InRepositoryMapper inRepositoryMapper;
 
     /*所有单号*/
     @Override
@@ -129,107 +132,38 @@ public class OutRepositoryImpl implements OutRepositoryService {
         repository.setProjName(request.getParameter("projName"));
         outRepositoryMapper.insertNew(repository);
         return RespUtil.response("200","请求成功",null);
-        /*String outId = request.getParameter("outId");
-        Repository repository1 = new Repository();
-        repository1.setOutId(outId);
-        outRepositoryMapper.deleteDraft(repository1);
-        String a = "";
-        String OUTLIST = request.getParameter("outList");
-        List<HashMap> listOUT =JSON.parseArray(OUTLIST, HashMap.class);
-        for (int i = 0; i < listOUT.size(); i++) {
-            String OUTREPTC = request.getParameter("outReptC");
-            String OUTID = request.getParameter("outId");
-            String OUTNUMGET = listOUT.get(i).get("number").toString();
-            String OUTNUM = "";
-            if (OUTNUMGET.contains(".")) {
-                OUTNUM = OUTNUMGET.substring(0,OUTNUMGET.indexOf("."));
-            }else {
-                OUTNUM = OUTNUMGET;
-            }
-            String date = request.getParameter("outTime");
-            date = date.replace("Z", " UTC");//注意是空格+UTC
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-            Date d = format.parse(date);
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-            String sDate = sdf.format(d);
-            String OUTTIME = sDate;
-            String OUTINFO = request.getParameter("outInfo");
-            Material material = new Material();
-            material.setId(listOUT.get(i).get("theMatId").toString());
-            String number = materialMtMapper.manageBS(material);
-            String POSTID = "";
-            if (listOUT.get(i).get("postId") != null){
-                POSTID = listOUT.get(i).get("postId").toString();
-            }
-            String REPTID = listOUT.get(i).get("reptId").toString();
-            String MATERIALID = listOUT.get(i).get("theMatId").toString();
-            String MATERIALNAME = listOUT.get(i).get("theMatName").toString();
-            String UNIT = listOUT.get(i).get("theMatUnit").toString();
-            String SPEC = listOUT.get(i).get("theMatSpec").toString();
-            String REMARK = listOUT.get(i).get("theMatRemark").toString();
-            String PROJID = request.getParameter("projId");
-            String PROJNAME = request.getParameter("projName");
-            String firstOne = request.getParameter("firstOne");
-            String secondOne = "";
-            String thirdOne = "";
-            String fourthOne = "";
-            if ( !materialMtMapper.manageBS(material).equals("否") && (listOUT.get(i).get("theMatBnSn").toString().equals("") || !listOUT.get(i).containsKey("theMatBnSn")) ) {
-                a = "2";
-                break;
-            } else{
-                String bn = null;
-                String sn = null;
-                if (number.equals("否")) {
-                    sn = "无";
-                    bn = "无";
-                } else if (number.equals("序列号")) {
-                    sn = listOUT.get(i).get("theMatBnSn").toString();
-                    bn = "无";
-                } else if (number.equals("批次号")) {
-                    bn = listOUT.get(i).get("theMatBnSn").toString();
-                    sn = "";
-                }
-                Repository repository = new Repository();
-                repository.setMaterialId(MATERIALID);
-                repository.setPostId(POSTID);
-                repository.setReptId(REPTID);
-                repository.setOutId(OUTID);
-                repository.setBn(bn);
-                repository.setSn(sn);
-                repository.setProjId(PROJID);
-                repository.setProjName(PROJNAME);
-                String REPTcategory = repositoryMapper.searchCategory(repository);
-                String C = "";
-                outRepositoryMapper.insertNew(REPTcategory,OUTID,OUTTIME,OUTNUM,OUTINFO,REPTID,POSTID,MATERIALID,MATERIALNAME,SPEC,UNIT,sn,bn,OUTREPTC,REMARK,PROJID,PROJNAME,C,firstOne,secondOne,thirdOne,fourthOne);
-                a = "0";
-            }
-        }
-        return a;*/
     }
 
     /*更新仓库*/
     @Override
-    public void OutRepository(HttpServletRequest request) {
-        String OUTLIST = request.getParameter("outList");
-        List<HashMap> listOUT =JSON.parseArray(OUTLIST, HashMap.class);
-        for (int i = 0; i < listOUT.size(); i++) {
-            Repository repository = new Repository();
-            repository.setMaterialId(listOUT.get(i).get("theMatId").toString());
-            repository.setReptId(listOUT.get(i).get("reptId").toString());
-            repository.setPostId(listOUT.get(i).get("postId").toString());
-            String REPTcategory = repositoryMapper.searchCategory(repository);
-            repository.setReptCategory(REPTcategory);
-            /*更新数量*/
-            String number = repositoryMapper.getNumber(repository);
-            String numAfterOut = String.valueOf(parseInt(number) - parseInt(listOUT.get(i).get("number").toString()));
-            repository.setNum(numAfterOut);
-            /*int onlyIdR = repositoryMapper.lockOnlyIdR(repository);
-            repository.setOnlyIdR(onlyIdR);
-            repositoryMapper.updRepository(repository);*/
-            int onlyIdP = repositoryMapper.lockOnlyIdP(repository);
-            repository.setOnlyIdP(onlyIdP);
-            repositoryMapper.updPosition(repository);
+    public Object OutRepository(HttpServletRequest request) {
+        Repository repository = new Repository();
+        repository.setOutNum(request.getParameter("outNum"));
+        repository.setMaterialId(request.getParameter("materialId"));
+        repository.setReptId(request.getParameter("reptId"));
+        repository.setPostId(request.getParameter("postId"));
+        Material material = new Material();
+        material.setId(request.getParameter("materialId"));
+        material.setReptId(request.getParameter("reptId"));
+        material.setPostId(request.getParameter("postId"));
+        material.setNum(request.getParameter("outNum"));
+        material.setReptName(repositoryMapper.searchReptName(material));
+        material.setCategory(materialMapper.MaterialId(material).getCategory());
+        material.setName(materialMapper.MaterialId(material).getName());
+        material.setSpec(materialMapper.MaterialId(material).getSpec());
+        material.setBrand(materialMapper.MaterialId(material).getBrand());
+        material.setPrice(materialMapper.MaterialId(material).getPrice());
+        // 减少物料数量
+        inventoryMapper.changeNumMatOut(repository);
+        List<HashMap<String, Object>> materialDetail = inRepositoryMapper.materialLocation(repository.getMaterialId());
+        for (int i = 0; i < materialDetail.size(); i++) {
+            if ( Integer.parseInt(request.getParameter("outNum")) == Integer.parseInt(materialMapper.getNumD(material)) ) {
+                materialMapper.deleteDetail(material);
+            }else{
+                materialMapper.updDetailM(material);
+            }
         }
+        return RespUtil.response("200","请求成功",null);
     }
 
     /*更新物料*/

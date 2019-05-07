@@ -322,7 +322,7 @@
 
     <select id="getNumD" resultType="string">
         SELECT num FROM eqpt_detail WHERE id = #{id} AND reptId = #{reptId}
-        <if test="postId != null and postId != ''">
+        <if test="postId != null">
             AND postId = #{postId}
         </if>
     </select>
@@ -366,12 +366,11 @@
             <if test="num != null">
                 num = num - #{num}
             </if>
+            <if test="reptName != null">
+                reptName = #{reptName}
+            </if>
         </set>
-        WHERE id = #{id}
-        <if test="postId != null and postId != ''">
-            AND postId = #{postId}
-        </if>
-        AND reptId = #{reptId}
+        WHERE id = #{id} AND postId = #{postId} AND reptId = #{reptId}
     </update>
 
     <select id="MinLimit" resultType="string">

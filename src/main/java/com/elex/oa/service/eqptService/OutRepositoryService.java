@@ -20,7 +20,7 @@ public interface OutRepositoryService {
     Object InsertRepository(HttpServletRequest request);
 
     /*更新仓库*/
-    void OutRepository(HttpServletRequest request);
+    Object OutRepository(HttpServletRequest request);
 
     /*更新物料*/
     void OutMaterial(HttpServletRequest request) throws ParseException;

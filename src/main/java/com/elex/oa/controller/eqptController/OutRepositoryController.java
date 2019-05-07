@@ -47,8 +47,8 @@ public class OutRepositoryController {
 
     @RequestMapping("/repository")
     @ResponseBody
-    public void OutRepository (HttpServletRequest request) {
-        outRepositoryImpl.OutRepository(request);
+    public Object OutRepository (HttpServletRequest request) {
+        return outRepositoryImpl.OutRepository(request);
     }
 
     @RequestMapping("/material")

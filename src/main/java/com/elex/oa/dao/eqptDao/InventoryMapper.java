@@ -62,4 +62,6 @@ public interface InventoryMapper {
 
     void changeNumMat (Repository repository);
 
+    void changeNumMatOut (Repository repository);
+
 }
