@@ -67,4 +67,8 @@
 	<delete id="deleteAll">
 		DELETE FROM tb_id_manageinformation
 	</delete>
+	
+	<select id="getGroupIdByUserId" resultType="String">
+		SELECT PARTY1_ FROM os_rel_inst WHERE PARTY2_ = (SELECT USER_ID_ FROM os_user WHERE EMPLOYEE_NUMBER_ = #{userId}) AND DIM1_ = '1' LIMIT 1
+	</select>
 </mapper>

@@ -18,6 +18,7 @@ public class ManageInformation {
     private String entrydate;//入职日期
     private String zhuanzhengdate;//转正日期
     private Integer employeetypeid;//员工类型ID
+    private String groupId;//组ID
 
     public ManageInformation() {
     }
@@ -70,14 +71,24 @@ public class ManageInformation {
         this.employeetypeid = employeetypeid;
     }
 
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
     @Override
     public String toString() {
         return "ManageInformation{" +
                 "id=" + id +
                 ", postlevelid=" + postlevelid +
+                ", postrankid=" + postrankid +
                 ", entrydate='" + entrydate + '\'' +
                 ", zhuanzhengdate='" + zhuanzhengdate + '\'' +
                 ", employeetypeid=" + employeetypeid +
+                ", groupId='" + groupId + '\'' +
                 '}';
     }
 }

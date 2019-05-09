@@ -3,6 +3,8 @@ package com.elex.oa.dao.hr;
 import com.elex.oa.entity.hr_entity.manageinformation.ManageInformation;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @Author:ShiYun;
  * @Description:人事信息的管理信息
@@ -40,4 +42,6 @@ public interface IManageInformationDao {
     void deleteById(Integer id);
 
     void deleteAll();
+
+    String getGroupIdByUserId(String userId);
 }

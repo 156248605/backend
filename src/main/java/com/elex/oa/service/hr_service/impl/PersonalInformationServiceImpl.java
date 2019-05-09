@@ -1611,6 +1611,9 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         //判断转正时间并添加相应的日志
         isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid, oldManageinformation.get(Commons.MANAGE_ZHUANZHENGDATE), newManageinformation.get(Commons.MANAGE_ZHUANZHENGDATE), transactorusername, "转正时间");
         if(isEqual)isUpdate=true;
+        //判断组信息并添加相应的日志
+        isEqual = getIsEqualByBeforeinfoAndAfterinfo(changeduserid, oldManageinformation.get(Commons.GROUPID), newManageinformation.get(Commons.GROUPID), transactorusername, "组信息");
+        if(isEqual)isUpdate=true;
         return isUpdate;
     }
 
@@ -1638,6 +1641,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         respMap.put("employeetype",personalInformation.getEmployeetype());
         respMap.put("entrydate",personalInformation.getEntrydate());
         respMap.put("zhuanzhengdate",personalInformation.getZhuanzhengdate());
+        respMap.put("groupId",personalInformation.getGroupId());
         return respMap;
     }
 
@@ -1687,6 +1691,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
         respMap.put("employeetype",hrUtils.getDatavalueByHrsetid(manageInformation.getEmployeetypeid()));
         respMap.put("entrydate",manageInformation.getEntrydate());
         respMap.put("zhuanzhengdate",manageInformation.getZhuanzhengdate());
+        respMap.put("groupId",manageInformation.getGroupId());
         return respMap;
     }
 
@@ -1758,6 +1763,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             OtherInformation otherInformation = iOtherInformationDao.selectById(personalInformation.getOtherinformationid());
             setOtherinformationByPersonalinformation(personalInformation,otherInformation);
         }
+        personalInformation.setGroupId(iManageInformationDao.getGroupIdByUserId(String.valueOf(personalInformation.getEmployeenumber())));
         return personalInformation;
     }
 
@@ -1838,6 +1844,7 @@ public class PersonalInformationServiceImpl implements IPersonalInformationServi
             personalInformation.setEntrydate(manageInformation.getEntrydate());
             personalInformation.setZhuanzhengdate(manageInformation.getZhuanzhengdate());
             personalInformation.setSn(hrUtils.getWorkingage(personalInformation.getEntrydate()));
+            personalInformation.setGroupId(manageInformation.getGroupId());
         } catch (Exception e) {
             logger.info(String.valueOf(e.getCause()));
         }

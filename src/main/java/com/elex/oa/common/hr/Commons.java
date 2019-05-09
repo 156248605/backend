@@ -47,6 +47,7 @@ public class Commons {
     public static final String DEP_ORDER = "order";
     public static final String DEP_ORDERCODE = "ordercode";
     public static final String DEP_DEPCODE = "depcode";
+    public static final String GROUPID = "groupId";
 
     public static final String HRSET_BYYX = "byyx";
     public static final String HRSET_CHILDREN = "children";
