@@ -29,4 +29,52 @@
     <select id="getGrantMenusByGroupId" resultType="HashMap">
 		SELECT sm.* FROM SYS_MENU sm RIGHT JOIN OS_GROUP_MENU gm on sm.MENU_ID_=gm.MENU_ID_ WHERE gm.GROUP_ID_=#{groupId} ORDER BY sm.SN_ ASC
 	</select>
+
+    <select id="getCopInfo" resultType="HashMap">
+        SELECT
+            project_code,
+            project_name,
+            in_department,
+            project_manager,
+            business_manager,
+            dept_manager
+        FROM
+            pro_pro_infor
+        WHERE
+            project_status IN (1)
+        AND
+            (project_manager_code = #{userId} OR business_manager_code = #{userId}  OR project_member_code LIKE CONCAT('%',#{userId} ,'%') OR related_member_code LIKE CONCAT('%',#{userId} ,'%') or  in_department_code = #{userId}) AND project_name LIKE CONCAT('%','' ,'%')
+        UNION
+        SELECT
+            clue.CODE,
+            clue.cluename,
+            clue.in_department,
+            user.username,
+            user.username,
+            clue.dept_manager
+        FROM
+            tb_business_clue clue
+        LEFT JOIN
+            tb_id_user user on clue.sale_employeenumber=user.employeenumber
+        where
+            1=1
+        AND
+            (clue.sale_employeenumber=#{employeeNumber} or clue.scheme_employeenumber=#{employeeNumber} or  clue.participate LIKE CONCAT('%',#{employeeNumber} ,'%')) and clue.state="跟踪" AND clue.cluename LIKE CONCAT('%','' ,'%')
+        UNION
+        SELECT
+            opportunity.CODE,
+            opportunity.opportunityname,
+            opportunity.in_department,
+            user.username,
+            user.username,
+            opportunity.dept_manager
+        FROM
+            tb_business_opportunity opportunity
+        LEFT JOIN tb_id_user user on opportunity.sale_employeenumber=user.employeenumber
+        where
+            1=1
+        AND
+            (opportunity.sale_employeenumber=#{employeeNumber} or opportunity.scheme_employeenumber=#{employeeNumber} or  opportunity.participate LIKE CONCAT('%',#{employeeNumber} ,'%') ) and opportunity.state="跟踪" AND opportunity.opportunityname LIKE CONCAT('%','' ,'%')
+    </select>
+
 </mapper>

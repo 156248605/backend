@@ -54,4 +54,11 @@ public class PersonDetailImpl implements PersonDetailService {
         return allRights;
     }
 
+    @Override
+    public Map allInfoByCOP(HttpServletRequest request) {
+        Map allInfo = new HashMap();
+        List<HashMap<String, Object>> info = personDetailDao.getCopInfo(request.getParameter("userId"),request.getParameter("employeeNumber"));
+        allInfo.put("info",info);
+        return allInfo;
+    }
 }

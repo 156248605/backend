@@ -20,4 +20,7 @@ public interface PersonDetailDao {
     // 获取所有菜单权限
     List<HashMap<String, Object>> getGrantSubsByGroupId (@Param("groupId") String groupId);
     List<HashMap<String, Object>> getGrantMenusByGroupId (@Param("groupId") String groupId);
+
+    // 获取用户相关线索商机项目
+    List<HashMap<String, Object>> getCopInfo(@Param("userId") String userId,@Param("employeeNumber") String employeeNumber);
 }

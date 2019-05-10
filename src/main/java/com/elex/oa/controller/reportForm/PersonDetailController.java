@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/personDetail")
 @Controller
@@ -28,5 +29,11 @@ public class PersonDetailController {
     @ResponseBody
     public List menuAndRoleForm (HttpServletRequest request) {
         return personDetailService.menuAndRole(request);
+    }
+
+    @RequestMapping("/clueAndOpporitunityAndProjectInfo")
+    @ResponseBody
+    public Map allInfoByCOP (HttpServletRequest request) {
+        return personDetailService.allInfoByCOP(request);
     }
 }
