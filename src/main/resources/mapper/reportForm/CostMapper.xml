@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.reportForm.CostDao">
+
+    <select id="getServeByProject" resultType="HashMap">
+        SELECT
+        <if test="formName == 'serve'">
+            * FROM w_zdsqd
+        </if>
+        <!--<if test="formName == 'purchase'">
+            w_cgsqd.*,w_cgmx3.* FROM w_cgsqd,w_cgmx3
+        </if>-->
+        <if test="formName == 'expense'">
+            * FROM w_fybxd
+        </if>
+        <if test="formName == 'travel'">
+            * FROM w_clbxd
+        </if>
+        WHERE
+        <if test="projectId != null and projectId != '' and formName != 'purchase'">
+            (INST_STATUS_ = 'SUCCESS_END' || INST_STATUS_ = 'RUNNING') AND F_XMBH = #{projectId}
+        </if>
+        <!--<if test="projectId != null and projectId != '' and formName == 'purchase'">
+            (w_cgsqd.INST_STATUS_ = 'SUCCESS_END' || w_cgsqd.INST_STATUS_ = 'RUNNING') AND w_cgsqd.F_XMBH = #{projectId} AND w_cgsqd.ID_ = w_cgmx3.REF_ID_
+        </if>-->
+    </select>
+</mapper>
