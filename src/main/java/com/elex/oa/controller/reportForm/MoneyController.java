@@ -1,6 +1,6 @@
 package com.elex.oa.controller.reportForm;
 
-import com.elex.oa.service.reportForm.CostService;
+import com.elex.oa.service.reportForm.MoneyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,15 +12,15 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/cost")
-public class CostController {
+@RequestMapping("/money")
+public class MoneyController {
 
     @Resource
-    private CostService costService;
+    private MoneyService moneyService;
 
     @ResponseBody
-    @RequestMapping("/costForm")
-    public List serveForm (HttpServletRequest request) {
-        return costService.serveForm(request);
+    @RequestMapping("/moneyForm")
+    public List moneyForm (HttpServletRequest request) {
+        return moneyService.moneyForm(request);
     }
 }

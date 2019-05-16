@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.elex.oa.dao.reportForm.CostDao">
+<mapper namespace="com.elex.oa.dao.reportForm.MoneyDao">
 
-    <select id="getServeByProject" resultType="HashMap">
+    <select id="getFormByProject" resultType="HashMap">
         SELECT
         <if test="formName == 'serve'">
             * FROM w_zdsqd
@@ -15,6 +15,15 @@
         </if>
         <if test="formName == 'travel'">
             * FROM w_clbxd
+        </if>
+        <if test="formName == 'invoice'">
+            * FROM w_kpsqd
+        </if>
+        <if test="formName == 'send'">
+            * FROM w_xsfhtzd
+        </if>
+        <if test="formName == 'sale'">
+            * FROM w_xsddhtpsd
         </if>
         WHERE
         <if test="projectId != null and projectId != '' and formName != 'purchase'">

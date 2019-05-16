@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Mapper
-public interface CostDao {
+public interface MoneyDao {
     // 获取申请单及费用
-    List<HashMap<String, Object>> getServeByProject(@Param("projectId") String projectId, @Param("formName") String formName);
+    List<HashMap<String, Object>> getFormByProject(@Param("projectId") String projectId, @Param("formName") String formName);
 }
