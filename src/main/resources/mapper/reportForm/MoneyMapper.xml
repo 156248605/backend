@@ -7,9 +7,9 @@
         <if test="formName == 'serve'">
             * FROM w_zdsqd
         </if>
-        <!--<if test="formName == 'purchase'">
-            w_cgsqd.*,w_cgmx3.* FROM w_cgsqd,w_cgmx3
-        </if>-->
+        <if test="formName == 'purchase'">
+            * FROM w_cgsqd
+        </if>
         <if test="formName == 'expense'">
             * FROM w_fybxd
         </if>
@@ -26,7 +26,7 @@
             * FROM w_xsddhtpsd
         </if>
         WHERE
-        <if test="projectId != null and projectId != '' and formName != 'purchase'">
+        <if test="projectId != null and projectId != ''">
             (INST_STATUS_ = 'SUCCESS_END' || INST_STATUS_ = 'RUNNING') AND F_XMBH = #{projectId}
         </if>
         <!--<if test="projectId != null and projectId != '' and formName == 'purchase'">
