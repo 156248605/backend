@@ -20,6 +20,7 @@
 		<result column="scheme_employeenumber" property="scheme_employeenumber" />
 		<result column="state" property="state" />
 		<result column="opportunity_price" property="opportunity_price" />
+		<result column="inst_id" property="inst_id" />
 	</resultMap>
 
 	<select id="selectByOpportunityAndPrincipalUsername" parameterType="Opportunity" resultMap="OpportunityMapper">
@@ -43,7 +44,8 @@
 			opportunity.opportunity_price,
 			opportunity.participate,
 			opportunity.track_content,
-			opportunity.track_date
+			opportunity.track_date,
+			opportunity.inst_id
 		FROM
 			tb_business_opportunity opportunity
 		<where>

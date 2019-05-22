@@ -87,6 +87,10 @@ public class OpportunityController {
             List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
             opportunity.setBusinessAttachmentList(businessAttachmentList);
         }
+        if (request.getParameter("instId") != null) {
+            opportunity.setInst_id(request.getParameter("instId"));
+            System.out.println(request.getParameter("instId"));
+        }
         Boolean aBoolean = iOpportunityService.modifyOpportunityInfo(opportunity);
         return aBoolean?RespUtil.response("200","更新成功！",opportunity.getCode()):RespUtil.response("500","更新失败！",null);
     }
