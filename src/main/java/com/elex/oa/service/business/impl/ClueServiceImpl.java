@@ -25,10 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: DOTO
@@ -50,16 +47,45 @@ public class ClueServiceImpl implements IClueService {
 
     static Logger logger = LoggerFactory.getLogger(ClueServiceImpl.class);
     @Override
-    public PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag) {
+    public PageInfo<Clue> getPageInfoByCondition(Integer pageNum, Integer pageSize, Clue clue, String flag, String queryStr) {
+        List column = iClueDao.clueColumn();
+        String columnStr = "";
+        for ( int i = 0; i < column.size(); i++){
+            if (i == column.size() - 1) {
+                columnStr += "IFNULL(" + column.get(i) + ",'')";
+            }else {
+                columnStr += "IFNULL(" + column.get(i) + ",''),";
+            }
+        }
         String orderBy = "trackid DESC";
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Clue> clueList = null;
         PageInfo<Clue> cluePageInfo = null;
+        Map<String,Object> clueMap = new HashMap<>();
+        clueMap.put("code",clue.getCode());
+        clueMap.put("cluename",clue.getCluename());
+        clueMap.put("trackid",clue.getTrackid());
+        clueMap.put("resource",clue.getResource());
+        clueMap.put("createtime",clue.getCreatetime());
+        clueMap.put("custom",clue.getCustom());
+        clueMap.put("contact",clue.getContact());
+        clueMap.put("contactphone",clue.getContact());
+        clueMap.put("owner",clue.getOwner());
+        clueMap.put("sale_employeenumber",clue.getSale_employeenumber());
+        clueMap.put("scheme_employeenumber",clue.getScheme_employeenumber());
+        clueMap.put("state",clue.getState());
+        clueMap.put("clue_price",clue.getClue_price());
+        clueMap.put("in_department",clue.getIn_department());
+        clueMap.put("participate",clue.getParticipate());
+        clueMap.put("track_content",clue.getTrack_content());
+        clueMap.put("track_date",clue.getTrack_date());
+        clueMap.put("queryStr",queryStr);
+        clueMap.put("queryColumn",columnStr);
         if("DEP".equals(flag)) {//部门领导只能查看本部门的
-            clueList = iClueDao.selectByClueAndPrincipalUsername(clue);
+            clueList = iClueDao.selectByClueAndPrincipalUsername(clueMap);
             cluePageInfo = new PageInfo<>(clueList);
         } else {//普通员工只能查看自己的
-            clueList = iClueDao.select(clue);
+            clueList = iClueDao.selectByUsername(clueMap);
             cluePageInfo = new PageInfo<>(clueList);
         }
         List<Clue> clueListTemp = cluePageInfo.getList();

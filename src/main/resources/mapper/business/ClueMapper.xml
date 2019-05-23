@@ -38,7 +38,52 @@
 		</where>
 	</select>
 
-	<select id="selectByClueAndPrincipalUsername" parameterType="Clue" resultMap="ClueMapper">
+	<select id="selectByUsername" parameterType="Map" resultMap="ClueMapper">
+		SELECT
+		clue.`code`,
+		clue.cluename,
+		clue.trackid,
+		clue.resource,
+		clue.createtime,
+		clue.custom,
+		clue.contact,
+		clue.contactphone,
+		clue.`owner`,
+		clue.sale_employeenumber,
+		clue.scheme_employeenumber,
+		clue.state,
+		clue.clue_price,
+		clue.participate,
+		clue.track_content,
+		clue.track_date,
+		clue.in_department
+		FROM
+		tb_business_clue clue
+		<where>
+			clue.state = #{state}
+			<if test="null!=sale_employeenumber and ''!=sale_employeenumber">
+				AND clue.sale_employeenumber = #{sale_employeenumber}
+			</if>
+			<if test="null!=queryStr and ''!=queryStr">
+				AND CONCAT(${queryColumn}) LIKE CONCAT(CONCAT('%',#{queryStr}),'%')
+			</if>
+            <if	test="null!=code and ''!=code">AND clue.code=#{code}</if>
+            <if	test="null!=cluename and ''!=cluename">AND clue.cluename=#{cluename}</if>
+            <if	test="null!=trackid and ''!=trackid">AND clue.trackid=#{trackid}</if>
+            <if	test="null!=resource and ''!=resource">AND clue.resource=#{resource}</if>
+            <if	test="null!=createtime and ''!=createtime">AND clue.createtime=#{createtime}</if>
+            <if	test="null!=custom and ''!=custom">AND clue.custom=#{custom}</if>
+            <if	test="null!=contact and ''!=contact">AND clue.contact=#{contact}</if>
+            <if	test="null!=contactphone and ''!=contactphone">AND clue.contactphone=#{contactphone}</if>
+            <if	test="null!=owner and ''!=owner">AND clue.owner=#{owner}</if>
+            <if	test="null!=sale_employeenumber and ''!=sale_employeenumber">AND clue.sale_employeenumber=#{sale_employeenumber}</if>
+            <if	test="null!=scheme_employeenumber and ''!=scheme_employeenumber">AND clue.scheme_employeenumber=#{scheme_employeenumber}</if>
+            <if	test="null!=state and ''!=state">AND clue.state=#{state}</if>
+            <if	test="null!=clue_price and ''!=clue_price">AND clue.clue_price=#{clue_price}</if>
+		</where>
+	</select>
+
+	<select id="selectByClueAndPrincipalUsername" parameterType="Map" resultMap="ClueMapper">
 			SELECT
 				clue.`code`,
 				clue.cluename,
@@ -55,7 +100,8 @@
 				clue.clue_price,
 				clue.participate,
 				clue.track_content,
-				clue.track_date
+				clue.track_date,
+				clue.in_department
 			FROM
 				tb_business_clue clue
 		<where>
@@ -90,6 +136,9 @@
 			<if	test="null!=scheme_employeenumber and ''!=scheme_employeenumber">AND clue.scheme_employeenumber=#{scheme_employeenumber}</if>
 			<if	test="null!=state and ''!=state">AND clue.state=#{state}</if>
 			<if	test="null!=clue_price and ''!=clue_price">AND clue.clue_price=#{clue_price}</if>
+			<if test="null!=queryStr and ''!=queryStr">
+				AND CONCAT(${queryColumn}) LIKE CONCAT(CONCAT('%',#{queryStr}),'%')
+			</if>
 		</where>
 	</select>
 
@@ -105,5 +154,21 @@
 		<if test="clueid != null">
 			clueid = #{clueid}
 		</if>
+	</select>
+
+	<select id="clueColumn" resultType="java.lang.String">
+		select COLUMN_NAME from information_schema.COLUMNS where table_name = 'tb_business_clue'
+	</select>
+
+	<select id="opportunityColumn" resultType="java.lang.String">
+		select COLUMN_NAME from information_schema.COLUMNS where table_name = 'tb_business_opportunity'
+	</select>
+
+	<select id="fuzzyQueryClue" resultType="HashMap">
+		SELECT * FROM tb_business_clue WHERE CONCAT(${queryColumn}) LIKE CONCAT(CONCAT('%',#{queryStr}),'%')
+	</select>
+
+	<select id="fuzzyQueryOpportunity" resultType="HashMap">
+		SELECT * FROM tb_business_opportunity WHERE CONCAT(${queryColumn}) LIKE CONCAT(CONCAT('%',#{queryStr}),'%')
 	</select>
 </mapper>

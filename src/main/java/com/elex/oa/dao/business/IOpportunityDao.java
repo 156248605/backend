@@ -9,4 +9,6 @@ import java.util.List;
 @Mapper
 public interface IOpportunityDao extends BaseDao<Opportunity> {
     List<Opportunity> selectByOpportunityAndPrincipalUsername(Opportunity opportunity);
+
+    List<Opportunity> selectByUsername(Opportunity opportunity);
 }

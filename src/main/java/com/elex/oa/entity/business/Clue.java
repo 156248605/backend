@@ -33,6 +33,7 @@ public class Clue implements Serializable {
     private String participate;//参与人
     private String track_content;//最新线索内容
     private String track_date;//最新线索更新时间
+    private String in_department;//立项部门
 
     @Transient
     private String username;//登录ID（分权查询用的）
@@ -250,6 +251,15 @@ public class Clue implements Serializable {
         this.track_date = track_date;
     }
 
+    public String getIn_department() {
+        return in_department;
+    }
+
+    public void setIn_department(String in_department) {
+        this.in_department = in_department;
+    }
+
+
     @Override
     public String toString() {
         return "Clue{" +
@@ -269,6 +279,7 @@ public class Clue implements Serializable {
                 ", participate='" + participate + '\'' +
                 ", track_content='" + track_content + '\'' +
                 ", track_date='" + track_date + '\'' +
+                ", in_department='" + in_department + '\'' +
                 ", username='" + username + '\'' +
                 ", depname='" + depname + '\'' +
                 ", trackcontent='" + trackcontent + '\'' +

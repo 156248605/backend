@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -27,21 +28,24 @@ public class ClueController {
     @Autowired
     HrUtils hrUtils;
 
-    @RequestMapping("/getPageInfo")
+    @RequestMapping(value = "/getPageInfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public PageInfo<Clue> getPageInfo(
             @RequestParam("page") int page,
             @RequestParam("rows") int rows,
             Clue clue,
-            @RequestParam("flag") String flag
+            @RequestParam("flag") String flag,
+            @RequestParam("state") String state,
+            @RequestParam("queryStr") String queryStr
     ){
+        clue.setState(state);
         if("PRIVATE".equals(flag)){
             clue.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(clue.getUsername()));
         }
-        return iClueService.getPageInfoByCondition(page,rows,clue,flag);
+        return iClueService.getPageInfoByCondition(page,rows,clue,flag,queryStr);
     }
 
-    @RequestMapping(value = "/clue_ADD",consumes = "multipart/form-data")
+    @RequestMapping(value = "/clue_ADD",consumes = "multipart/form-data",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object clueAdd(
             Clue clue,
@@ -58,11 +62,12 @@ public class ClueController {
         //线索编号的格式暂定为：ELEX-CLU-UN-YYYY-MMNNNN
         String clueCode = hrUtils.getClueCode(username);
         clue.setCode(clueCode);
+        clue.setIn_department(request.getParameter("depName"));
         //调用业务层方法
         return iClueService.addClueInfo(clue);
     }
 
-    @RequestMapping("/getDetailClueinfo")
+    @RequestMapping(value = "/getDetailClueinfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Clue getDetailClueinfo(
             @RequestParam("cluecode")String cluecode
@@ -70,7 +75,7 @@ public class ClueController {
         return iClueService.getDetailClueinfo(cluecode);
     }
 
-    @RequestMapping("/getDetailOpportunityinfo")
+    @RequestMapping(value = "/getDetailOpportunityinfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Opportunity getDetailOpportunityinfo(
             @RequestParam("cluecode")String cluecode
@@ -78,7 +83,7 @@ public class ClueController {
         return iOpportunityService.getDetailOpportunityinfoByCluecode(cluecode);
     }
 
-    @RequestMapping(value = "/clue_UPDATE",consumes = "multipart/form-data")
+    @RequestMapping(value = "/clue_UPDATE",consumes = "multipart/form-data",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object clueUpdate(
             Clue clue,
@@ -90,11 +95,12 @@ public class ClueController {
             List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
             clue.setBusinessAttachmentList(businessAttachmentList);
         }
+        clue.setIn_department(request.getParameter("depName"));
         Boolean aBoolean = iClueService.modifyClueInfo(clue);
         return aBoolean?RespUtil.response("200","更新成功！",clue.getCode()):RespUtil.response("500","更新失败！",null);
     }
 
-    @RequestMapping("/closeClueinfo")
+    @RequestMapping(value = "/closeClueinfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object closeClueinfo(
             @RequestParam("cluecode")String cluecode,
@@ -117,9 +123,9 @@ public class ClueController {
         return businessAttachmentList;
     }
 
-    @RequestMapping("/getRelativeEvent")
+    @RequestMapping(value = "/getRelativeEvent",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    private List getRelativeEvent (HttpServletRequest request) {
+    public List getRelativeEvent (HttpServletRequest request) {
         return iClueService.getRelativeEvent(request);
     }
 }

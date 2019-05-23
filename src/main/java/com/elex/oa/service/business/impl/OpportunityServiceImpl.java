@@ -91,6 +91,16 @@ public class OpportunityServiceImpl implements IOpportunityService {
 
     @Override
     public PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag) {
+        List column = iClueDao.opportunityColumn();
+        String columnStr = "";
+        for ( int i = 0; i < column.size(); i++){
+            if (i == column.size() - 1) {
+                columnStr += "IFNULL(" + column.get(i) + ",'')";
+            }else {
+                columnStr += "IFNULL(" + column.get(i) + ",''),";
+            }
+        }
+        opportunity.setQueryColumn(columnStr);
         String orderBy = "trackid DESC";
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Opportunity> opportunityList = null;
@@ -99,7 +109,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
             opportunityList = iOpportunityDao.selectByOpportunityAndPrincipalUsername(opportunity);
             opportunityPageInfo = new PageInfo<>(opportunityList);
         }else {
-            opportunityList = iOpportunityDao.select(opportunity);
+            opportunityList = iOpportunityDao.selectByUsername(opportunity);
             opportunityPageInfo = new PageInfo<>(opportunityList);
         }
         List<Opportunity> opportunityListTemp = opportunityPageInfo.getList();

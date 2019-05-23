@@ -8,10 +8,7 @@ import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +29,7 @@ public class OpportunityController {
     @Autowired
     HrUtils hrUtils;
 
-    @RequestMapping("/opportunity_ADD")
+    @RequestMapping(value = "/opportunity_ADD",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object opportunityAdd(
             Opportunity opportunity,
@@ -49,25 +46,32 @@ public class OpportunityController {
         //商机编号的格式暂定为：ELEX-BIZ-UN-YYYY-MMNNNN
         String opportunityCode = hrUtils.getOpportunityCode(username);
         opportunity.setCode(opportunityCode);
+        opportunity.setIn_department(request.getParameter("depName"));
         //调用业务层方法
         return iOpportunityService.transforClueToOpportunity(opportunity, username);
     }
 
-    @RequestMapping("/getPageInfo")
+    @RequestMapping(value = "/getPageInfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public PageInfo<Opportunity> getPageInfo(
             @RequestParam("page") int page,
             @RequestParam("rows") int rows,
             Opportunity opportunity,
-            @RequestParam("flag") String flag
+            @RequestParam("flag") String flag,
+            @RequestParam("state") String state,
+            @RequestParam("queryStr") String queryStr
     ){
+        opportunity.setState(state);
         if("PRIVATE".equals(flag)){
             opportunity.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(opportunity.getUsername()));
+        }
+        if (null != queryStr && !"".equals(queryStr)) {
+            opportunity.setQueryStr(queryStr);
         }
         return iOpportunityService.getPageInfoByCondition(page,rows,opportunity,flag);
     }
 
-    @RequestMapping("/getDetailOpportunityinfo")
+    @RequestMapping(value = "/getDetailOpportunityinfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Opportunity getDetailOpportunityinfo(
             @RequestParam("opportunitycode")String opportunitycode
@@ -75,7 +79,7 @@ public class OpportunityController {
         return iOpportunityService.getDetailOpportunityinfo(opportunitycode);
     }
 
-    @RequestMapping(value = "/opportunity_UPDATE",consumes = "multipart/form-data")
+    @RequestMapping(value = "/opportunity_UPDATE",consumes = "multipart/form-data",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object opportunityUpdate(
             Opportunity opportunity,
@@ -93,11 +97,12 @@ public class OpportunityController {
         if (request.getParameter("projectNumber") != null) {
             opportunity.setProject_number(request.getParameter("projectNumber"));
         }
+        opportunity.setIn_department(request.getParameter("depName"));
         Boolean aBoolean = iOpportunityService.modifyOpportunityInfo(opportunity);
         return aBoolean?RespUtil.response("200","更新成功！",opportunity.getCode()):RespUtil.response("500","更新失败！",null);
     }
 
-    @RequestMapping("/closeOpportunityinfo")
+    @RequestMapping(value = "/closeOpportunityinfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object closeOpportunityinfo(
             @RequestParam("opportunitycode")String opportunitycode,
@@ -107,7 +112,7 @@ public class OpportunityController {
         return iOpportunityService.closeOpportunityInfo(opportunitycode,trackcontent,username);
     }
 
-    @RequestMapping("/getBusinessInfoByState_OFF")
+    @RequestMapping(value = "/getBusinessInfoByState_OFF",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Map<String,Object> getBusinessInfoByStateOff(){
         return iOpportunityService.getBusinessInfoByStateOFF();
