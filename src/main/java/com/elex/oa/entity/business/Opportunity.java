@@ -38,7 +38,7 @@ public class Opportunity implements Serializable {
     private String track_content;//最新商机内容
     private String track_date;//最新商机更新时间
     private String inst_id;//商机转立项存储流程表单instId
-
+    private String project_number;//商机转立项存储流程表单项目编号
     @Transient
     private String username;//登录ID
     @Transient
@@ -78,6 +78,14 @@ public class Opportunity implements Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getProject_number() {
+        return project_number;
+    }
+
+    public void setProject_number(String project_number) {
+        this.project_number = project_number;
     }
 
     public void setUsername(String username) {
@@ -324,6 +332,7 @@ public class Opportunity implements Serializable {
                 ", track_content='" + track_content + '\'' +
                 ", track_date='" + track_date + '\'' +
                 ", inst_id='" + inst_id + '\'' +
+                ", project_number='" + project_number + '\'' +
                 ", username='" + username + '\'' +
                 ", depname='" + depname + '\'' +
                 ", trackcontent='" + trackcontent + '\'' +

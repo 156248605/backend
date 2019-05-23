@@ -89,7 +89,9 @@ public class OpportunityController {
         }
         if (request.getParameter("instId") != null) {
             opportunity.setInst_id(request.getParameter("instId"));
-            System.out.println(request.getParameter("instId"));
+        }
+        if (request.getParameter("projectNumber") != null) {
+            opportunity.setProject_number(request.getParameter("projectNumber"));
         }
         Boolean aBoolean = iOpportunityService.modifyOpportunityInfo(opportunity);
         return aBoolean?RespUtil.response("200","更新成功！",opportunity.getCode()):RespUtil.response("500","更新失败！",null);
