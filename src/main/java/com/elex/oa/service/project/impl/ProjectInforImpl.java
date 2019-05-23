@@ -487,6 +487,8 @@ public class ProjectInforImpl implements ProjectInforService {
             projectRecord.setProjectCode(projectInfor.getProjectCode());
             projectRecord.setRecord(record);
             projectRecordMongo.addRecord(projectRecord); //添加记录
+        }else {
+           return "";
         }
         return "success";
     }

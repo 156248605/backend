@@ -4,6 +4,7 @@ import com.elex.oa.entity.project.*;
 import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.project.ProjectInforService;
 import com.elex.oa.service.project.impl.ProjectAmendImpl;
+import com.elex.oa.util.resp.RespUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -129,8 +130,10 @@ public class ProjectInforController {
     //项目信息修改
     @RequestMapping("/amend_pro")
     @ResponseBody
-    public String amendPro(ProjectInfor projectInfor, String updateBy) {
-        return projectInforService.amendPro(projectInfor, updateBy);
+    public Object amendPro(ProjectInfor projectInfor, String updateBy) {
+        String result = projectInforService.amendPro(projectInfor, updateBy);
+        return  RespUtil.response(result.isEmpty()?"201":"200",result.isEmpty()?"无任何变更":"修改成功",null);
+
     }
 
     //项目信息修改
