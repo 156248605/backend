@@ -58,17 +58,16 @@ public class OpportunityController {
             @RequestParam("rows") int rows,
             Opportunity opportunity,
             @RequestParam("flag") String flag,
-            @RequestParam("state") String state,
+            HttpServletRequest request,
             @RequestParam("queryStr") String queryStr
     ){
-        opportunity.setState(state);
+        if (null != request.getParameter("state")) {
+            opportunity.setState(request.getParameter("state"));
+        }
         if("PRIVATE".equals(flag)){
             opportunity.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(opportunity.getUsername()));
         }
-        if (null != queryStr && !"".equals(queryStr)) {
-            opportunity.setQueryStr(queryStr);
-        }
-        return iOpportunityService.getPageInfoByCondition(page,rows,opportunity,flag);
+        return iOpportunityService.getPageInfoByCondition(page,rows,opportunity,flag,queryStr);
     }
 
     @RequestMapping(value = "/getDetailOpportunityinfo",method = {RequestMethod.GET,RequestMethod.POST})

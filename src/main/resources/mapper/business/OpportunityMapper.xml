@@ -24,7 +24,7 @@
 		<result column="project_number" property="project_number" />
 	</resultMap>
 
-	<select id="selectByOpportunityAndPrincipalUsername" parameterType="Opportunity" resultMap="OpportunityMapper">
+	<select id="selectByOpportunityAndPrincipalUsername" parameterType="HashMap" resultMap="OpportunityMapper">
 		SELECT
 			opportunity.`code`,
 			opportunity.clueid,
@@ -93,7 +93,7 @@
 		</where>
 	</select>
 
-	<select id="selectByUsername" parameterType="Opportunity" resultMap="OpportunityMapper">
+	<select id="selectByUsername" parameterType="HashMap" resultMap="OpportunityMapper">
 		SELECT
 		opportunity.`code`,
 		opportunity.clueid,
@@ -119,10 +119,6 @@
 		FROM
 		tb_business_opportunity opportunity
 		<where>
-			opportunity.state = #{state}
-			<if test="null!=sale_employeenumber and ''!=sale_employeenumber">
-				AND opportunity.sale_employeenumber = #{sale_employeenumber}
-			</if>
 			<if	test="null!=code and ''!=code">AND opportunity.code=#{code}</if>
 			<if	test="null!=clueid and ''!=clueid">AND opportunity.clueid=#{clueid}</if>
 			<if	test="null!=opportunityname and ''!=opportunityname">AND opportunity.opportunityname=#{opportunityname}</if>

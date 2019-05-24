@@ -35,10 +35,12 @@ public class ClueController {
             @RequestParam("rows") int rows,
             Clue clue,
             @RequestParam("flag") String flag,
-            @RequestParam("state") String state,
+            HttpServletRequest request,
             @RequestParam("queryStr") String queryStr
     ){
-        clue.setState(state);
+        if (null != request.getParameter("state")) {
+            clue.setState(request.getParameter("state"));
+        }
         if("PRIVATE".equals(flag)){
             clue.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(clue.getUsername()));
         }

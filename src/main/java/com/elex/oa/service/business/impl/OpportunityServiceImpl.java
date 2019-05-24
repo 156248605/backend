@@ -90,7 +90,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
     }
 
     @Override
-    public PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag) {
+    public PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag, String queryStr) {
         List column = iClueDao.opportunityColumn();
         String columnStr = "";
         for ( int i = 0; i < column.size(); i++){
@@ -100,16 +100,38 @@ public class OpportunityServiceImpl implements IOpportunityService {
                 columnStr += "IFNULL(" + column.get(i) + ",''),";
             }
         }
-        opportunity.setQueryColumn(columnStr);
         String orderBy = "trackid DESC";
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Opportunity> opportunityList = null;
         PageInfo<Opportunity> opportunityPageInfo = null;
+        Map<String,Object> opportunityMap = new HashMap<>();
+        opportunityMap.put("code",opportunity.getCode());
+        opportunityMap.put("clueid",opportunity.getCode());
+        opportunityMap.put("opportunityname",opportunity.getClueid());
+        opportunityMap.put("trackid",opportunity.getTrackid());
+        opportunityMap.put("resource",opportunity.getResource());
+        opportunityMap.put("createtime",opportunity.getCreatetime());
+        opportunityMap.put("custom",opportunity.getCustom());
+        opportunityMap.put("contact",opportunity.getContact());
+        opportunityMap.put("contactphone",opportunity.getContact());
+        opportunityMap.put("owner",opportunity.getOwner());
+        opportunityMap.put("sale_employeenumber",opportunity.getSale_employeenumber());
+        opportunityMap.put("scheme_employeenumber",opportunity.getScheme_employeenumber());
+        opportunityMap.put("state",opportunity.getState());
+        opportunityMap.put("opportunity_price",opportunity.getOpportunity_price());
+        opportunityMap.put("opportunity_budget",opportunity.getOpportunity_budget());
+        opportunityMap.put("in_department",opportunity.getIn_department());
+        opportunityMap.put("participate",opportunity.getParticipate());
+        opportunityMap.put("track_content",opportunity.getTrack_content());
+        opportunityMap.put("track_date",opportunity.getTrack_date());
+        opportunityMap.put("queryStr",queryStr);
+        opportunityMap.put("queryColumn",columnStr);
+        opportunityMap.put("username",opportunity.getUsername());
         if("DEP".equals(flag)){
-            opportunityList = iOpportunityDao.selectByOpportunityAndPrincipalUsername(opportunity);
+            opportunityList = iOpportunityDao.selectByOpportunityAndPrincipalUsername(opportunityMap);
             opportunityPageInfo = new PageInfo<>(opportunityList);
         }else {
-            opportunityList = iOpportunityDao.selectByUsername(opportunity);
+            opportunityList = iOpportunityDao.selectByUsername(opportunityMap);
             opportunityPageInfo = new PageInfo<>(opportunityList);
         }
         List<Opportunity> opportunityListTemp = opportunityPageInfo.getList();

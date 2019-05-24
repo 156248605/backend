@@ -81,6 +81,7 @@ public class ClueServiceImpl implements IClueService {
         clueMap.put("track_date",clue.getTrack_date());
         clueMap.put("queryStr",queryStr);
         clueMap.put("queryColumn",columnStr);
+        clueMap.put("username",clue.getUsername());
         if("DEP".equals(flag)) {//部门领导只能查看本部门的
             clueList = iClueDao.selectByClueAndPrincipalUsername(clueMap);
             cluePageInfo = new PageInfo<>(clueList);

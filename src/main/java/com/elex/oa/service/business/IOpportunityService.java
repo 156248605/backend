@@ -8,7 +8,7 @@ import java.util.Map;
 public interface IOpportunityService {
     Object transforClueToOpportunity(Opportunity opportunity, String username);
 
-    PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag);
+    PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag, String queryStr);
 
     Opportunity getDetailOpportunityinfo(String opportunitycode);
 

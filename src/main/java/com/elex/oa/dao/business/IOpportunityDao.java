@@ -5,10 +5,11 @@ import com.elex.oa.entity.business.Opportunity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface IOpportunityDao extends BaseDao<Opportunity> {
-    List<Opportunity> selectByOpportunityAndPrincipalUsername(Opportunity opportunity);
+    List<Opportunity> selectByOpportunityAndPrincipalUsername(Map<String, Object> map);
 
-    List<Opportunity> selectByUsername(Opportunity opportunity);
+    List<Opportunity> selectByUsername(Map<String, Object> map);
 }

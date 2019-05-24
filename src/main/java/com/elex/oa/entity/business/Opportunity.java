@@ -40,8 +40,6 @@ public class Opportunity implements Serializable {
     private String inst_id;//商机转立项存储流程表单instId
     private String project_number;//商机转立项存储流程表单项目编号
     private String in_department;//立项部门
-    private String queryStr;//模糊查询条件
-    private String queryColumn;//数据库所有字段
 
     @Transient
     private String username;//登录ID
@@ -320,22 +318,6 @@ public class Opportunity implements Serializable {
         this.in_department = in_department;
     }
 
-    public String getQueryStr() {
-        return queryStr;
-    }
-
-    public void setQueryStr(String queryStr) {
-        this.queryStr = queryStr;
-    }
-
-    public String getQueryColumn() {
-        return queryColumn;
-    }
-
-    public void setQueryColumn(String queryColumn) {
-        this.queryColumn = queryColumn;
-    }
-
     @Override
     public String toString() {
         return "Opportunity{" +
@@ -362,8 +344,6 @@ public class Opportunity implements Serializable {
                 ", inst_id='" + inst_id + '\'' +
                 ", project_number='" + project_number + '\'' +
                 ", in_department='" + in_department + '\'' +
-                ", queryStr='" + queryStr + '\'' +
-                ", queryColumn='" + queryColumn + '\'' +
                 ", username='" + username + '\'' +
                 ", depname='" + depname + '\'' +
                 ", trackcontent='" + trackcontent + '\'' +
