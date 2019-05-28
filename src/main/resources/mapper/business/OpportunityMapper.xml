@@ -113,6 +113,8 @@
 		opportunity.state,
 		opportunity.opportunity_price,
 		opportunity.participate,
+		opportunity.inst_id,
+		opportunity.project_number,
 		opportunity.track_content,
 		opportunity.track_date,
 		opportunity.in_department
