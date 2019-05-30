@@ -100,6 +100,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
                 columnStr += "IFNULL(" + column.get(i) + ",''),";
             }
         }
+        String str1 = queryStr.replace("\\","\\\\");
         String orderBy = "trackid DESC";
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Opportunity> opportunityList = null;
@@ -124,7 +125,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         opportunityMap.put("participate",opportunity.getParticipate());
         opportunityMap.put("track_content",opportunity.getTrack_content());
         opportunityMap.put("track_date",opportunity.getTrack_date());
-        opportunityMap.put("queryStr",queryStr);
+        opportunityMap.put("queryStr",str1);
         opportunityMap.put("queryColumn",columnStr);
         opportunityMap.put("username",opportunity.getUsername());
         if("DEP".equals(flag)){

@@ -58,6 +58,7 @@ public class ClueServiceImpl implements IClueService {
             }
         }
         String orderBy = "trackid DESC";
+        String str1 = queryStr.replace("\\","\\\\");
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Clue> clueList = null;
         PageInfo<Clue> cluePageInfo = null;
@@ -79,7 +80,7 @@ public class ClueServiceImpl implements IClueService {
         clueMap.put("participate",clue.getParticipate());
         clueMap.put("track_content",clue.getTrack_content());
         clueMap.put("track_date",clue.getTrack_date());
-        clueMap.put("queryStr",queryStr);
+        clueMap.put("queryStr",str1);
         clueMap.put("queryColumn",columnStr);
         clueMap.put("username",clue.getUsername());
         if("DEP".equals(flag)) {//部门领导只能查看本部门的
