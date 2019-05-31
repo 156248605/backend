@@ -100,7 +100,10 @@ public class OpportunityServiceImpl implements IOpportunityService {
                 columnStr += "IFNULL(" + column.get(i) + ",''),";
             }
         }
-        String str1 = queryStr.replace("\\","\\\\");
+        String str1 = "";
+        if (queryStr != null && !queryStr.equals("") ) {
+            str1 = queryStr.replace("\\","\\\\");
+        }
         String orderBy = "trackid DESC";
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Opportunity> opportunityList = null;

@@ -58,7 +58,10 @@ public class ClueServiceImpl implements IClueService {
             }
         }
         String orderBy = "trackid DESC";
-        String str1 = queryStr.replace("\\","\\\\");
+        String str1 = "";
+        if (queryStr != null && !queryStr.equals("") ) {
+            str1 = queryStr.replace("\\","\\\\");
+        }else
         PageHelper.startPage(pageNum,pageSize,orderBy);
         List<Clue> clueList = null;
         PageInfo<Clue> cluePageInfo = null;
