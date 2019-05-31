@@ -58,9 +58,9 @@ public class OpportunityController {
             @RequestParam("rows") int rows,
             Opportunity opportunity,
             @RequestParam("flag") String flag,
-            HttpServletRequest request,
-            @RequestParam("queryStr") String queryStr
+            HttpServletRequest request
     ){
+        String queryStr = request.getParameter("queryStr");
         if (null != request.getParameter("state")) {
             opportunity.setState(request.getParameter("state"));
         }

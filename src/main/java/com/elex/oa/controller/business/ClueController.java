@@ -35,9 +35,9 @@ public class ClueController {
             @RequestParam("rows") int rows,
             Clue clue,
             @RequestParam("flag") String flag,
-            HttpServletRequest request,
-            @RequestParam("queryStr") String queryStr
+            HttpServletRequest request
     ){
+        String queryStr = request.getParameter("queryStr");
         if (null != request.getParameter("state")) {
             clue.setState(request.getParameter("state"));
         }
