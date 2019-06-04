@@ -51,23 +51,9 @@ public class ClueServiceImpl implements IClueService {
         List column = new ArrayList();
         column.add(0,"code");
         column.add(1,"cluename");
-        column.add(2,"in_department_code");
-        column.add(3,"resource");
-        column.add(4,"createtime");
-        column.add(5,"custom");
-        column.add(6,"contact");
-        column.add(7,"contactphone");
-        column.add(8,"owner");
-        column.add(9,"sale_employeenumber");
-        column.add(10,"scheme_employeenumber");
-        column.add(11,"state");
-        column.add(12,"clue_price");
-        column.add(13,"business_manager");
-        column.add(14,"dept_manager");
-        column.add(15,"in_department");
-        column.add(16,"participate");
-        column.add(17,"track_content");
-        column.add(18,"track_date");
+        column.add(2,"in_department");
+        column.add(3,"track_date");
+        column.add(4,"track_content");
         String columnStr = "";
         for ( int i = 0; i < column.size(); i++){
             if (i == column.size() - 1) {

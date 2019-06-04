@@ -24,8 +24,8 @@ public class MaterialMtController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public PageInfo<Material> materialList(Page page){
-        PageInfo<Material> list = materialMtImpl.showDetail(page);
+    public PageInfo<Material> materialList(Page page,HttpServletRequest request){
+        PageInfo<Material> list = materialMtImpl.showDetail(page,request);
         return list;
     }
 

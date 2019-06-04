@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.eqptDao.MaterialMtMapper">
     <select id="detailList" resultType="com.elex.oa.entity.eqpt.Material">
-        SELECT * FROM eqpt_detail WHERE materialState = '启用' ORDER BY id
+        SELECT * FROM eqpt_detail WHERE materialState = '启用' AND reptId in (SELECT reptId FROM eqpt_repository WHERE reptAdmin = #{username}) ORDER BY id
     </select>
 
     <select id="detailInRept" resultType="com.elex.oa.entity.eqpt.Material">
@@ -101,6 +101,9 @@
             </if>
             <if test="postId != null and postId != '' and postIdC == 2">
                 AND postId NOT LIKE CONCAT(CONCAT('%', #{postId}), '%')
+            </if>
+            <if test="remark != '管理员'">
+                AND reptId in (SELECT reptId FROM eqpt_repository WHERE reptAdmin = #{username})
             </if>
         </where>
     </select>

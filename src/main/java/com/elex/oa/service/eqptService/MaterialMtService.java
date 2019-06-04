@@ -3,12 +3,13 @@ package com.elex.oa.service.eqptService;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.eqpt.Material;
 import com.github.pagehelper.PageInfo;
+import org.apache.http.client.HttpRequestRetryHandler;
 
 import javax.servlet.http.HttpServletRequest;
 
 
 public interface MaterialMtService {
-    PageInfo<Material> showDetail(Page page);
+    PageInfo<Material> showDetail(Page page, HttpServletRequest request);
 
     PageInfo<Material> materialInRept(Page page, HttpServletRequest request);
 

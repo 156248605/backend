@@ -19,9 +19,9 @@ public class MaterialMtImpl implements MaterialMtService {
     private MaterialMtMapper materialMtMapper;
 
     @Override
-    public PageInfo<Material> showDetail(Page page) {
+    public PageInfo<Material> showDetail(Page page, HttpServletRequest request) {
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Material> listM = materialMtMapper.detailList();
+        List<Material> listM = materialMtMapper.detailList(request.getParameter("username"));
         return new PageInfo<>(listM);
     }
 
@@ -56,7 +56,7 @@ public class MaterialMtImpl implements MaterialMtService {
         String NUMC = request.getParameter("numC");
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
         if (ID.equals("") && NAME.equals("") && CATEGORY.equals("") && REPTID.equals("") && SPEC.equals("") && BRAND.equals("") && POSTID.equals("") && NUM.equals("") && REPTNAME.equals("")){
-            List<Material> listM = materialMtMapper.detailList();
+            List<Material> listM = materialMtMapper.detailList(request.getParameter("username"));
             return new PageInfo<>(listM);
         }else {
             Material material = new Material();
@@ -79,6 +79,7 @@ public class MaterialMtImpl implements MaterialMtService {
             material.setPostIdC(POSTIDC);
             material.setNum(NUM);
             material.setNumC(NUMC);
+            material.setRemark(request.getParameter("username"));
             List<Material> listM = materialMtMapper.searchDetail(material);
             return new PageInfo<>(listM);
         }

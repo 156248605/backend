@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface MaterialMtMapper {
-    List<Material> detailList();
+    List<Material> detailList(String username);
 
     List<Material> searchDetail(Material material);
 
