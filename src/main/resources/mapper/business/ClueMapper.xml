@@ -152,14 +152,6 @@
 		</if>
 	</select>
 
-	<select id="clueColumn" resultType="java.lang.String">
-		select COLUMN_NAME from information_schema.COLUMNS where table_name = 'tb_business_clue' AND table_schema = 'testoa'
-	</select>
-
-	<select id="opportunityColumn" resultType="java.lang.String">
-		select COLUMN_NAME from information_schema.COLUMNS where table_name = 'tb_business_opportunity' AND table_schema = 'testoa'
-	</select>
-
 	<select id="fuzzyQueryClue" resultType="HashMap">
 		SELECT * FROM tb_business_clue WHERE CONCAT(${queryColumn}) LIKE CONCAT(CONCAT('%',#{queryStr}),'%')
 	</select>

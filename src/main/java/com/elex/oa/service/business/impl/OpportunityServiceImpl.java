@@ -22,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description: DOTO
@@ -91,9 +88,34 @@ public class OpportunityServiceImpl implements IOpportunityService {
 
     @Override
     public PageInfo<Opportunity> getPageInfoByCondition(Integer pageNum, Integer pageSize, Opportunity opportunity, String flag, String queryStr) {
-        List column = iClueDao.opportunityColumn();
+        List column = new ArrayList();
+        column.add(0,"code");
+        column.add(1,"clueid");
+        column.add(2,"opportunityname");
+        column.add(3,"project_number");
+        column.add(4,"resource");
+        column.add(5,"createtime");
+        column.add(6,"custom");
+        column.add(7,"contact");
+        column.add(8,"contactphone");
+        column.add(9,"owner");
+        column.add(10,"custom_decisionmaker");
+        column.add(11,"custom_budget");
+        column.add(12,"opportunity_budget");
+        column.add(13,"sale_employeenumber");
+        column.add(14,"scheme_employeenumber");
+        column.add(15,"state");
+        column.add(16,"opportunity_price");
+        column.add(17,"business_manager");
+        column.add(18,"dept_manager");
+        column.add(19,"in_department");
+        column.add(20,"participate");
+        column.add(21,"track_content");
+        column.add(22,"track_date");
+        column.add(23,"in_department_code");
+        column.add(24,"inst_id");
         String columnStr = "";
-        for ( int i = 0; i < column.size(); i++){
+        for ( int i = 0; i < column.size(); i++ ){
             if (i == column.size() - 1) {
                 columnStr += "IFNULL(" + column.get(i) + ",'')";
             }else {

@@ -24,9 +24,5 @@ public interface IClueDao extends BaseDao<Clue> {
     // 查询关联商机
     List getRelativeEvent(Opportunity opportunity);
 
-    // 模糊查询线索和商机
-    List clueColumn();
-    List opportunityColumn();
-
 
 }
