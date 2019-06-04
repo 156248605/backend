@@ -63,6 +63,7 @@
         <result column="next_plan" javaType="string" property="nextPlan"></result>
         <result column="weekly_report_start" javaType="string" property="weeklyReportStart"></result>
         <result column="weekly_report_end" javaType="string" property="weeklyReportEnd"></result>
+        <result column="opportunity_code" javaType="string" property="opportunityCode"></result>
     </resultMap>
 
     <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
@@ -359,6 +360,7 @@
         project_source, project_manager, project_type, general_situation, project_members, related_members, party_name, party_address,
         party_phone, party_fax, head_name, head_position, head_email, contact_name, contact_position, contact_mobile, contact_email,
         project_phase, start_time, end_time, capitalization, classified, weekly_report, next_plan, weekly_report_start, weekly_report_end
+        , opportunity_code
         FROM pro_pro_infor
         <where>
             <if test="codeSelect == 1 and codeInput != ''">
