@@ -1,7 +1,6 @@
 package com.elex.oa.controller.project;
 import com.alibaba.fastjson.JSON;
 import com.elex.oa.entity.project.*;
-import com.elex.oa.entity.restructure_hrentity.Hrdatadictionary;
 import com.elex.oa.service.project.ProjectInforService;
 import com.elex.oa.service.project.impl.ProjectAmendImpl;
 import com.elex.oa.util.resp.RespUtil;

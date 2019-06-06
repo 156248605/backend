@@ -497,6 +497,12 @@ public class ProjectInforImpl implements ProjectInforService {
         Map<String,Object> returnMap = new HashMap<>();
         ProjectInfor projectInfor1 = projectInforDao.queryInforByCodeNew(projectInforNew.getProjectCode()); //根据项目编号获取项目信息
         List<OsUser> users = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
+        if(StringUtils.isNotBlank(projectInfor1.getProjectManager())&&projectInfor1.getProjectManager().equals(projectInforNew.getProjectManager())){
+            projectInforNew.setProjectManagerCode(projectInfor1.getProjectManagerCode());
+        }
+        if(StringUtils.isNotBlank(projectInfor1.getBusinessManager())&&projectInfor1.getBusinessManager().equals(projectInforNew.getBusinessManager())){
+            projectInforNew.setBusinessManagerCode(projectInfor1.getBusinessManagerCode());
+        }
         StringBuilder stringBuilder1 = new StringBuilder(),
         stringBuilder2 = new StringBuilder();
         for(OsUser osUser:users) {
