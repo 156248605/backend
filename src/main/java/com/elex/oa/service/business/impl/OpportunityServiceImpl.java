@@ -258,7 +258,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         if (opportunity.getParticipate() != null && !opportunity.getParticipate().equals("")) {
             content = opportunity.getParticipate().split(",");
             for (String name : content) {
-                participate += hrUtils.getTruenameByEmployeenumber(name) + "," ;
+                participate += iClueDao.queryUserIdByEmployeeNumber(name).get(0).get("FULLNAME_") + "," ;
             }
             opportunity.setParticipateName(participate.substring(0,participate.length()-1));
         } else {

@@ -24,5 +24,6 @@ public interface IClueDao extends BaseDao<Clue> {
     // 查询关联商机
     List getRelativeEvent(Opportunity opportunity);
 
-
+    // 根据工号查询userId
+    List<HashMap<String,Object>> queryUserIdByEmployeeNumber(String employeeNumber);
 }

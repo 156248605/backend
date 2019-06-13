@@ -159,4 +159,8 @@
 	<select id="fuzzyQueryOpportunity" resultType="HashMap">
 		SELECT * FROM tb_business_opportunity WHERE CONCAT(${queryColumn}) LIKE CONCAT(CONCAT('%',#{queryStr}),'%')
 	</select>
+
+	<select id="queryUserIdByEmployeeNumber" resultType="HashMap">
+		SELECT FULLNAME_ FROM os_user WHERE EMPLOYEE_NUMBER_ = #{employeeNumber}
+	</select>
 </mapper>

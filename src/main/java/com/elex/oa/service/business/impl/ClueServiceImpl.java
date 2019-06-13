@@ -273,7 +273,7 @@ public class ClueServiceImpl implements IClueService {
         if (c.getParticipate() != null && !c.getParticipate().equals("")) {
             content = c.getParticipate().split(",");
             for (String name : content) {
-                participate += hrUtils.getTruenameByEmployeenumber(name) + "," ;
+                participate += iClueDao.queryUserIdByEmployeeNumber(name).get(0).get("FULLNAME_") + "," ;
             }
             c.setParticipateName(participate.substring(0,participate.length()-1));
         } else {
