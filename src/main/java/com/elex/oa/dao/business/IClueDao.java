@@ -26,4 +26,10 @@ public interface IClueDao extends BaseDao<Clue> {
 
     // 根据工号查询userId
     List<HashMap<String,Object>> queryUserIdByEmployeeNumber(String employeeNumber);
+
+    // 根据userId查询部门
+    List<HashMap<String,Object>> queryDeptByUserId(String userId);
+
+    // 根据部门ID查询部门名称
+    String queryDeptNameByDeptId (String deptId);
 }

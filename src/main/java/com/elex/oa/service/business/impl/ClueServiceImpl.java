@@ -264,7 +264,19 @@ public class ClueServiceImpl implements IClueService {
         //获得方案人姓名
         c.setScheme_truename(hrUtils.getTruenameByEmployeenumber(c.getScheme_employeenumber()));
         //获得部门名称
-        c.setDepname(hrUtils.getDepnameByEmployeenumber(c.getSale_employeenumber()));
+        String depName = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(c.getSale_employeenumber()).get(0).get("USER_ID_").toString()).get(0).get("PATH_").toString();
+        if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
+            for (int i = 0; i < depName.length() - depName.replaceAll("\\.","").length(); i++) {
+                depName = depName.substring(depName.indexOf(".") + 1);
+            }
+            depName = depName.substring(0,depName.indexOf("."));
+        } else {
+            for (int i = 0; i < 2; i++) {
+                depName = depName.substring(depName.indexOf(".") + 1);
+            }
+            depName = depName.substring(0,depName.indexOf("."));
+        }
+        c.setDepname(iClueDao.queryDeptNameByDeptId(depName));
         //获得账号ID
         c.setUsername(hrUtils.getUsernameByEmployeenumber(c.getSale_employeenumber()));
         //获取参与人姓名

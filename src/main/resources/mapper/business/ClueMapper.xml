@@ -161,6 +161,14 @@
 	</select>
 
 	<select id="queryUserIdByEmployeeNumber" resultType="HashMap">
-		SELECT FULLNAME_ FROM os_user WHERE EMPLOYEE_NUMBER_ = #{employeeNumber}
+		SELECT FULLNAME_,USER_ID_ FROM os_user WHERE EMPLOYEE_NUMBER_ = #{employeeNumber}
+	</select>
+
+	<select id="queryDeptByUserId" resultType="HashMap">
+		SELECT PATH_ FROM os_group WHERE GROUP_ID_ = (SELECT distinct PARTY1_ FROM os_rel_inst WHERE PARTY2_ = #{userId} AND REL_TYPE_KEY_ = 'GROUP-USER-BELONG' AND IS_MAIN_ = 'YES' AND DIM1_ = '1')
+	</select>
+
+	<select id="queryDeptNameByDeptId" resultType="String">
+		SELECT NAME_ FROM os_group WHERE GROUP_ID_ = #{deptId}
 	</select>
 </mapper>

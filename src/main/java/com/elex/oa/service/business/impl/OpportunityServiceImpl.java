@@ -249,7 +249,19 @@ public class OpportunityServiceImpl implements IOpportunityService {
         //获得方案人姓名
         opportunity.setScheme_truename(hrUtils.getTruenameByEmployeenumber(opportunity.getScheme_employeenumber()));
         //获得部门名称
-        opportunity.setDepname(hrUtils.getDepnameByEmployeenumber(opportunity.getSale_employeenumber()));
+        String depName = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(opportunity.getSale_employeenumber()).get(0).get("USER_ID_").toString()).get(0).get("PATH_").toString();
+        if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
+            for (int i = 0; i < depName.length() - depName.replaceAll("\\.","").length(); i++) {
+                depName = depName.substring(depName.indexOf(".") + 1);
+            }
+            depName = depName.substring(0,depName.indexOf("."));
+        } else {
+            for (int i = 0; i < 2; i++) {
+                depName = depName.substring(depName.indexOf(".") + 1);
+            }
+            depName = depName.substring(0,depName.indexOf("."));
+        }
+        opportunity.setDepname(iClueDao.queryDeptNameByDeptId(depName));
         //获得用户的账号ID
         opportunity.setUsername(hrUtils.getUsernameByEmployeenumber(opportunity.getSale_employeenumber()));
         //获得参与人姓名
