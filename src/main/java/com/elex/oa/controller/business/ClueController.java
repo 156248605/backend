@@ -7,6 +7,7 @@ import com.elex.oa.service.business.IClueService;
 import com.elex.oa.service.business.IOpportunityService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
+import com.elex.oa.util.user.UserUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ public class ClueController {
     IOpportunityService iOpportunityService;
     @Autowired
     HrUtils hrUtils;
+    @Resource
+    UserUtil userUtil;
 
     @RequestMapping(value = "/getPageInfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
@@ -41,8 +44,13 @@ public class ClueController {
         if (null != request.getParameter("state")) {
             clue.setState(request.getParameter("state"));
         }
-        if("PRIVATE".equals(flag)){
-            clue.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(clue.getUsername()));
+        if("PRIVATE".equals(flag)) {
+            clue.setSale_employeenumber(userUtil.queryEmployeenumberByUserId(request.getParameter("userId")));
+            clue.setUsername(request.getParameter("userId"));
+        }else if ("DEP".equals(flag)) {
+            clue.setUsername(request.getParameter("userId"));
+        }else {
+            clue.setUsername("");
         }
         return iClueService.getPageInfoByCondition(page,rows,clue,flag,queryStr);
     }

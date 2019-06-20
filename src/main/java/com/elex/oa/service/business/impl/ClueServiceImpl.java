@@ -4,6 +4,7 @@ import com.elex.oa.common.hr.Commons;
 import com.elex.oa.dao.business.IBusinessAttachmentDao;
 import com.elex.oa.dao.business.IClueDao;
 import com.elex.oa.dao.business.ITrackInfoDao;
+import com.elex.oa.dao.user.UserDao;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.business.Clue;
 import com.elex.oa.entity.business.Opportunity;
@@ -12,6 +13,7 @@ import com.elex.oa.service.business.IClueService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.hr_util.TimeUtil;
 import com.elex.oa.util.resp.RespUtil;
+import com.elex.oa.util.user.UserUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -44,6 +46,8 @@ public class ClueServiceImpl implements IClueService {
     HrUtils hrUtils;
     @Resource
     IBusinessAttachmentDao iBusinessAttachmentDao;
+    @Resource
+    UserUtil userUtil;
 
     static Logger logger = LoggerFactory.getLogger(ClueServiceImpl.class);
     @Override
@@ -260,9 +264,9 @@ public class ClueServiceImpl implements IClueService {
         //获得最新的跟踪描述
         c.setTrackcontent(hrUtils.getTrackcontentByTrackid(c.getTrackid()));
         //获得销售人姓名
-        c.setSale_truename(hrUtils.getTruenameByEmployeenumber(c.getSale_employeenumber()));
+        c.setSale_truename(userUtil.queryUserNameByEmployeeNumber(c.getSale_employeenumber()));
         //获得方案人姓名
-        c.setScheme_truename(hrUtils.getTruenameByEmployeenumber(c.getScheme_employeenumber()));
+        c.setScheme_truename(userUtil.queryUserNameByEmployeeNumber(c.getScheme_employeenumber()));
         //获得部门名称
         String depName = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(c.getSale_employeenumber()).get(0).get("USER_ID_").toString()).get(0).get("PATH_").toString();
         if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
@@ -278,7 +282,7 @@ public class ClueServiceImpl implements IClueService {
         }
         c.setDepname(iClueDao.queryDeptNameByDeptId(depName));
         //获得账号ID
-        c.setUsername(hrUtils.getUsernameByEmployeenumber(c.getSale_employeenumber()));
+        c.setUsername(userUtil.queryUserIdByEmployeeNumber(c.getSale_employeenumber()));
         //获取参与人姓名
         String[] content;
         String participate = "";

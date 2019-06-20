@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elex.oa.dao.user.UserDao">
+
+    <select id="queryEmployeenumberByUserId" resultType="string">
+        SELECT EMPLOYEE_NUMBER_ FROM os_user WHERE USER_ID_ = #{userId}
+    </select>
+
+    <select id="queryUserIdByEmployeeNumber" resultType="string">
+        SELECT USER_ID_ FROM os_user WHERE EMPLOYEE_NUMBER_ = #{employeeNumber}
+    </select>
+
+    <select id="queryUserNameByEmployeeNumber" resultType="string">
+        SELECT FULLNAME_ FROM os_user WHERE EMPLOYEE_NUMBER_ = #{employeeNumber}
+    </select>
+
+</mapper>

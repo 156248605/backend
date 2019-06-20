@@ -101,24 +101,9 @@
 			FROM
 				tb_business_clue clue
 		<where>
-			clue.sale_employeenumber IN (
-				SELECT
-					u.employeenumber
-				FROM
-					tb_id_user u
-				JOIN tb_id_personalinformation per ON per.userid = u.id
-				JOIN tb_id_department dep ON dep.id = per.depid
-				WHERE
-					dep.id IN (
-						SELECT
-							per2.depid
-						FROM
-							tb_id_personalinformation per2
-						JOIN tb_id_user u2 ON u2.id = per2.userid
-						WHERE
-							u2.username = #{username}
-					)
-			)
+			<if	test="null!=username and ''!=username">
+				clue.sale_employeenumber in (SELECT EMPLOYEE_NUMBER_ FROM os_user WHERE USER_ID_ IN (SELECT PARTY2_ FROM os_rel_inst WHERE PARTY1_ in (SELECT GROUP_ID_ FROM os_group WHERE PATH_ LIKE CONCAT('%',(CONCAT((SELECT PARTY1_ FROM os_rel_inst WHERE PARTY2_ = #{username} AND DIM1_ = '1' AND REL_TYPE_KEY_ = 'GROUP-USER-BELONG' AND IS_MAIN_ = 'YES'),'%'))))))
+			</if>
 			<if	test="null!=code and ''!=code">AND clue.code=#{code}</if>
 			<if	test="null!=cluename and ''!=cluename">AND clue.cluename=#{cluename}</if>
 			<if	test="null!=trackid and ''!=trackid">AND clue.trackid=#{trackid}</if>

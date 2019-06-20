@@ -12,6 +12,7 @@ import com.elex.oa.entity.business.TrackInfo;
 import com.elex.oa.service.business.IOpportunityService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
+import com.elex.oa.util.user.UserUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +44,8 @@ public class OpportunityServiceImpl implements IOpportunityService {
     IBusinessAttachmentDao iBusinessAttachmentDao;
     @Resource
     IClueDao iClueDao;
+    @Resource
+    UserUtil userUtil;
 
     private static Logger logger = LoggerFactory.getLogger(OpportunityServiceImpl.class);
 
@@ -245,9 +248,9 @@ public class OpportunityServiceImpl implements IOpportunityService {
         //获得最新的跟踪描述
         opportunity.setTrackcontent(hrUtils.getTrackcontentByTrackid(opportunity.getTrackid()));
         //获得销售人姓名
-        opportunity.setSale_truename(hrUtils.getTruenameByEmployeenumber(opportunity.getSale_employeenumber()));
+        opportunity.setSale_truename(userUtil.queryUserNameByEmployeeNumber(opportunity.getSale_employeenumber()));
         //获得方案人姓名
-        opportunity.setScheme_truename(hrUtils.getTruenameByEmployeenumber(opportunity.getScheme_employeenumber()));
+        opportunity.setScheme_truename(userUtil.queryUserNameByEmployeeNumber(opportunity.getScheme_employeenumber()));
         //获得部门名称
         String depName = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(opportunity.getSale_employeenumber()).get(0).get("USER_ID_").toString()).get(0).get("PATH_").toString();
         if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
@@ -263,7 +266,7 @@ public class OpportunityServiceImpl implements IOpportunityService {
         }
         opportunity.setDepname(iClueDao.queryDeptNameByDeptId(depName));
         //获得用户的账号ID
-        opportunity.setUsername(hrUtils.getUsernameByEmployeenumber(opportunity.getSale_employeenumber()));
+        opportunity.setUsername(userUtil.queryUserIdByEmployeeNumber(opportunity.getSale_employeenumber()));
         //获得参与人姓名
         String[] content;
         String participate = "";

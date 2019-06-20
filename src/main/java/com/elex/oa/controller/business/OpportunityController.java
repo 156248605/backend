@@ -5,12 +5,14 @@ import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.service.business.IOpportunityService;
 import com.elex.oa.util.hr_util.HrUtils;
 import com.elex.oa.util.resp.RespUtil;
+import com.elex.oa.util.user.UserUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -28,6 +30,8 @@ public class OpportunityController {
     IOpportunityService iOpportunityService;
     @Autowired
     HrUtils hrUtils;
+    @Resource
+    UserUtil userUtil;
 
     @RequestMapping(value = "/opportunity_ADD",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
@@ -65,7 +69,12 @@ public class OpportunityController {
             opportunity.setState(request.getParameter("state"));
         }
         if("PRIVATE".equals(flag)){
-            opportunity.setSale_employeenumber(hrUtils.getEmployeenumberByUsername(opportunity.getUsername()));
+            opportunity.setSale_employeenumber(userUtil.queryEmployeenumberByUserId(request.getParameter("userId")));
+            opportunity.setUsername(request.getParameter("userId"));
+        }else if ("DEP".equals(flag)) {
+            opportunity.setUsername(request.getParameter("userId"));
+        }else {
+            opportunity.setUsername("");
         }
         return iOpportunityService.getPageInfoByCondition(page,rows,opportunity,flag,queryStr);
     }
