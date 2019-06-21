@@ -268,18 +268,23 @@ public class ClueServiceImpl implements IClueService {
         //获得方案人姓名
         c.setScheme_truename(userUtil.queryUserNameByEmployeeNumber(c.getScheme_employeenumber()));
         //获得部门名称
-        String depName = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(c.getSale_employeenumber()).get(0).get("USER_ID_").toString()).get(0).get("PATH_").toString();
-        if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
-            for (int i = 0; i < depName.length() - depName.replaceAll("\\.","").length(); i++) {
-                depName = depName.substring(depName.indexOf(".") + 1);
+        List<HashMap<String, Object>> depList = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(c.getSale_employeenumber()).get(0).get("USER_ID_").toString());
+        String depName = "";
+        if (depList.size() != 0){
+            depName = depList.get(0).get("PATH_").toString();
+            if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
+                for (int i = 0; i < depName.length() - depName.replaceAll("\\.","").length(); i++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            } else {
+                for (int i = 0; i < 2; i++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
             }
-            depName = depName.substring(0,depName.indexOf("."));
-        } else {
-            for (int i = 0; i < 2; i++) {
-                depName = depName.substring(depName.indexOf(".") + 1);
-            }
-            depName = depName.substring(0,depName.indexOf("."));
         }
+
         c.setDepname(iClueDao.queryDeptNameByDeptId(depName));
         //获得账号ID
         c.setUsername(userUtil.queryUserIdByEmployeeNumber(c.getSale_employeenumber()));
