@@ -95,6 +95,15 @@ public class ClueServiceImpl implements IClueService {
         clueMap.put("queryStr",str1);
         clueMap.put("queryColumn",columnStr);
         clueMap.put("username",clue.getUsername());
+
+        if(!"ALL".equals(flag) &&
+                (clue.getUsername() == null
+                        || clue.getUsername().equals(""))){
+            clueList = new ArrayList<>();
+            cluePageInfo = new PageInfo<>(clueList);
+            return cluePageInfo;
+        }
+
         if("DEP".equals(flag)) {//部门领导只能查看本部门的
             clueList = iClueDao.selectByClueAndPrincipalUsername(clueMap);
             cluePageInfo = new PageInfo<>(clueList);

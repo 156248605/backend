@@ -136,6 +136,15 @@ public class OpportunityServiceImpl implements IOpportunityService {
         opportunityMap.put("queryStr",str1);
         opportunityMap.put("queryColumn",columnStr);
         opportunityMap.put("username",opportunity.getUsername());
+
+        if(!"ALL".equals(flag) &&
+                (opportunity.getUsername() == null
+                        || opportunity.getUsername().equals(""))){
+            opportunityList = new ArrayList<>();
+            opportunityPageInfo = new PageInfo<>(opportunityList);
+            return opportunityPageInfo;
+        }
+
         if("DEP".equals(flag)){
             opportunityList = iOpportunityDao.selectByOpportunityAndPrincipalUsername(opportunityMap);
             opportunityPageInfo = new PageInfo<>(opportunityList);
