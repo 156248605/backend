@@ -120,6 +120,8 @@ public class Repository {
     private String fixPostMat;
     // 库位容量
     private String postCap;
+    // 绑定类别
+    private String bindCategory;
     // 备注
     private String remark;
     // 项目相关
@@ -177,11 +179,12 @@ public class Repository {
     private String outPostC;
     private String projIdC;
     private String projNameC;
+    private String bindCategoryC;
 
     public Repository() {
     }
 
-    public Repository(String reptCategory, String outReptC, String inReptC, String shiftReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime, String shiftTime, String inNum, String outNum, String shiftNum, String inInfo, String outInfo, String shiftInfo, String num, String numInv, String price, String spec, String unit, String category, String check, String palPer, String pal, String palCal, String purchaseIn, String productIn, String depositIn, String purchaseOut, String productOut, String depositOut, String bn, String sn, String materialId, String materialName, String reptState, String postManage, String reptAddr, String reptName, String reptAdmin, String postId, String postName, String postCate, String fixPostMat, String postCap, String remark, String projId, String projName, String instid, String firstOne, String secondOne, String thirdOne, String fourthOne, String author, int onlyIdR, int onlyIdP, int onlyIdIn, int onlyIdOut, int onlyIdInv, String bnC, String snC, String matIdC, String matNameC, String reptIdC, String reptCateC, String positionC, String inNumC, String inIdC, String inTimeC, String outNumC, String outIdC, String outTimeC, String numC, String numInvC, String invIdC, String invTimeC, String palC, String priceC, String reptNameC, String reptAdminC, String reptStateC, String postManageC, String postIdC, String postNameC, String postCateC, String fixPostMatC, String postCapC, String reptAddrC, String shiftIdC, String shiftTimeC, String shiftNumC, String inPostC, String outPostC, String projIdC, String projNameC) {
+    public Repository(String reptCategory, String outReptC, String inReptC, String shiftReptC, String invId, String invTime, String position, String outPosition, String inPosition, String reptId, String outRept, String inRept, String outPost, String inPost, String in, String out, String shift, String inId, String outId, String shiftId, String inTime, String outTime) {
         this.reptCategory = reptCategory;
         this.outReptC = outReptC;
         this.inReptC = inReptC;
@@ -204,93 +207,6 @@ public class Repository {
         this.shiftId = shiftId;
         this.inTime = inTime;
         this.outTime = outTime;
-        this.shiftTime = shiftTime;
-        this.inNum = inNum;
-        this.outNum = outNum;
-        this.shiftNum = shiftNum;
-        this.inInfo = inInfo;
-        this.outInfo = outInfo;
-        this.shiftInfo = shiftInfo;
-        this.num = num;
-        this.numInv = numInv;
-        this.price = price;
-        this.spec = spec;
-        this.unit = unit;
-        this.category = category;
-        this.check = check;
-        this.palPer = palPer;
-        this.pal = pal;
-        this.palCal = palCal;
-        this.purchaseIn = purchaseIn;
-        this.productIn = productIn;
-        this.depositIn = depositIn;
-        this.purchaseOut = purchaseOut;
-        this.productOut = productOut;
-        this.depositOut = depositOut;
-        this.bn = bn;
-        this.sn = sn;
-        this.materialId = materialId;
-        this.materialName = materialName;
-        this.reptState = reptState;
-        this.postManage = postManage;
-        this.reptAddr = reptAddr;
-        this.reptName = reptName;
-        this.reptAdmin = reptAdmin;
-        this.postId = postId;
-        this.postName = postName;
-        this.postCate = postCate;
-        this.fixPostMat = fixPostMat;
-        this.postCap = postCap;
-        this.remark = remark;
-        this.projId = projId;
-        this.projName = projName;
-        this.instid = instid;
-        this.firstOne = firstOne;
-        this.secondOne = secondOne;
-        this.thirdOne = thirdOne;
-        this.fourthOne = fourthOne;
-        this.author = author;
-        this.onlyIdR = onlyIdR;
-        this.onlyIdP = onlyIdP;
-        this.onlyIdIn = onlyIdIn;
-        this.onlyIdOut = onlyIdOut;
-        this.onlyIdInv = onlyIdInv;
-        this.bnC = bnC;
-        this.snC = snC;
-        this.matIdC = matIdC;
-        this.matNameC = matNameC;
-        this.reptIdC = reptIdC;
-        this.reptCateC = reptCateC;
-        this.positionC = positionC;
-        this.inNumC = inNumC;
-        this.inIdC = inIdC;
-        this.inTimeC = inTimeC;
-        this.outNumC = outNumC;
-        this.outIdC = outIdC;
-        this.outTimeC = outTimeC;
-        this.numC = numC;
-        this.numInvC = numInvC;
-        this.invIdC = invIdC;
-        this.invTimeC = invTimeC;
-        this.palC = palC;
-        this.priceC = priceC;
-        this.reptNameC = reptNameC;
-        this.reptAdminC = reptAdminC;
-        this.reptStateC = reptStateC;
-        this.postManageC = postManageC;
-        this.postIdC = postIdC;
-        this.postNameC = postNameC;
-        this.postCateC = postCateC;
-        this.fixPostMatC = fixPostMatC;
-        this.postCapC = postCapC;
-        this.reptAddrC = reptAddrC;
-        this.shiftIdC = shiftIdC;
-        this.shiftTimeC = shiftTimeC;
-        this.shiftNumC = shiftNumC;
-        this.inPostC = inPostC;
-        this.outPostC = outPostC;
-        this.projIdC = projIdC;
-        this.projNameC = projNameC;
     }
 
     public String getAuthor() {
@@ -1165,6 +1081,22 @@ public class Repository {
         this.palPer = palPer;
     }
 
+    public String getBindCategory() {
+        return bindCategory;
+    }
+
+    public void setBindCategory(String bindCategory) {
+        this.bindCategory = bindCategory;
+    }
+
+    public String getBindCategoryC() {
+        return bindCategoryC;
+    }
+
+    public void setBindCategoryC(String bindCategoryC) {
+        this.bindCategoryC = bindCategoryC;
+    }
+
     @Override
     public String toString() {
         return "Repository{" +
@@ -1227,6 +1159,7 @@ public class Repository {
                 ", postCate='" + postCate + '\'' +
                 ", fixPostMat='" + fixPostMat + '\'' +
                 ", postCap='" + postCap + '\'' +
+                ", bindCategory='" + bindCategory + '\'' +
                 ", remark='" + remark + '\'' +
                 ", projId='" + projId + '\'' +
                 ", projName='" + projName + '\'' +
@@ -1277,6 +1210,7 @@ public class Repository {
                 ", outPostC='" + outPostC + '\'' +
                 ", projIdC='" + projIdC + '\'' +
                 ", projNameC='" + projNameC + '\'' +
+                ", bindCategoryC='" + bindCategoryC + '\'' +
                 '}';
     }
 }

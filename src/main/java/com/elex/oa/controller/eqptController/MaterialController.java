@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
 
 @CrossOrigin
 @Controller
@@ -23,8 +25,8 @@ public class MaterialController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public PageInfo<Material> materialList(Page page){
-        PageInfo<Material> list = materialImpl.showMaterial(page);
+    public PageInfo<Material> materialList(Page page,HttpServletRequest request){
+        PageInfo<Material> list = materialImpl.showMaterial(page,request);
         return list;
     }
 
@@ -69,5 +71,11 @@ public class MaterialController {
     @ResponseBody
     public String record (HttpServletRequest request) {
         return materialImpl.record(request);
+    }
+
+    @RequestMapping("/getCategory")
+    @ResponseBody
+    public List<HashMap<String, Object>> getCategory () {
+        return materialImpl.getCategory();
     }
 }

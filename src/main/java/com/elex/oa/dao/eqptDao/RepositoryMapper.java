@@ -113,4 +113,7 @@ public interface RepositoryMapper {
 
     // 查询仓库是否有物料
     List reptCanChangeState(Repository repository);
+
+    // 获取物料所有大类
+    List<HashMap<String, Object>> getBindCategory();
 }

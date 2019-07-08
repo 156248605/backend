@@ -361,7 +361,7 @@
     </select>
 
     <insert id="insertRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
-        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{reptName},#{reptAdmin},#{reptState},#{reptAddr},#{postManage},#{price},#{spec},#{category},#{remark},NULL,#{num},#{materialId})
+        INSERT INTO eqpt_repository VALUES (#{reptCategory},#{reptId},#{reptName},#{reptAdmin},#{reptState},#{reptAddr},#{postManage},#{price},#{spec},#{category},#{remark},NULL,#{num},#{materialId},#{bindCategory})
     </insert>
 
     <update id="changeRepository" parameterType="com.elex.oa.entity.eqpt.Repository">
@@ -428,7 +428,10 @@
                 postCap = #{postCap},
             </if>-->
             <if test="remark != null">
-                remark = #{remark}
+                remark = #{remark},
+            </if>
+            <if test="bindCategory != null">
+                bindCategory = #{bindCategory}
             </if>
         </set>
         WHERE onlyIdR = #{onlyIdR}
@@ -696,5 +699,9 @@
 
     <select id="reptCanChangeState" resultType="java.lang.String">
         SELECT id FROM eqpt_detail WHERE reptId = #{reptId}
+    </select>
+
+    <select id="getBindCategory" resultType="HashMap">
+        SELECT distinct category FROM eqpt_material
     </select>
 </mapper>

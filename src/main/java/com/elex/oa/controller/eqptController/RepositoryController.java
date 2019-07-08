@@ -176,6 +176,12 @@ public class RepositoryController {
         return repositoryImpl.reptCanChangeState(request);
     }
 
+    @RequestMapping("/getBindCategory")
+    @ResponseBody
+    public List<HashMap<String, Object>> getBindCategory () {
+        return repositoryImpl.getBindCategory();
+    }
+
     /*@RequestMapping("/matInRept")
     @ResponseBody
     public List<Repository> matInRept(HttpServletRequest request){

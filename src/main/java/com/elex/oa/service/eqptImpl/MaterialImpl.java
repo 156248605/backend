@@ -25,9 +25,9 @@ public class MaterialImpl implements MaterialService {
 
     // 物料信息
     @Override
-    public PageInfo<Material> showMaterial(Page page){
+    public PageInfo<Material> showMaterial(Page page,HttpServletRequest request){
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Material> listM = materialMapper.MaterialList();
+        List<Material> listM = materialMapper.MaterialList(request.getParameter("userName"));
         return new PageInfo<>(listM);
     }
 
@@ -78,7 +78,7 @@ public class MaterialImpl implements MaterialService {
         String NOTSINGLEC = request.getParameter("notSingleC");
         if (ID == null && NAME == null && MAT == null && BRAND == null && CATEGORY == null && MAXLIMIT == null && MINLIMIT == null && UNIT == null && NUM == null && PRICE == null && REMARK == null && SPEC == null && NOTSINGLE == null && SINGLEMANAGE == null && BSMANAGE == null && FIXPOSITION == null && NEEDCHECK == null && MATERIALSTATE == null) {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
-            List<Material> listM = materialMapper.MaterialList();
+            List<Material> listM = materialMapper.MaterialList(request.getParameter("userName"));
             return new PageInfo<>(listM);
         }else {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
@@ -234,4 +234,8 @@ public class MaterialImpl implements MaterialService {
         }
     }
 
+    @Override
+    public List<HashMap<String, Object>> getCategory() {
+        return materialMapper.getCategory();
+    }
 }

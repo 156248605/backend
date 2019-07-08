@@ -6,6 +6,7 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface MaterialMapper {
 
     // 遍历所有启用物料
-    List<Material> MaterialList();
+    List<Material> MaterialList(String userName);
     // 条件查询物料
     List<Material> SearchMaterial(Material material);
     // 根据id定位物料
@@ -69,4 +70,7 @@ public interface MaterialMapper {
     void updateDetail(String reptId, String postId, String position);
 
     void deleteNull(Material material);
+
+    // 获取物料类别
+    List<HashMap<String,Object>> getCategory();
 }

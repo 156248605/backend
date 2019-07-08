@@ -62,4 +62,7 @@ public interface RepositoryService {
     void deleteCate(HttpServletRequest request);
 
     String reptCanChangeState(HttpServletRequest request);
+
+    // 获取可绑定的物料种类
+    List<HashMap<String, Object>> getBindCategory();
 }

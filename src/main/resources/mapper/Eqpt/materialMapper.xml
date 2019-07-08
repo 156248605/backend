@@ -4,6 +4,9 @@
 
     <select id="MaterialList" resultType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_material
+        <if test="userName != '管理员'">
+            where category in (select bindCategory from eqpt_repository WHERE reptAdmin = #{userName})
+        </if>
     </select>
 
     <select id="searchList" resultType="com.elex.oa.entity.eqpt.Material">
@@ -458,4 +461,8 @@
     <update id="updateDetail" parameterType="com.elex.oa.entity.eqpt.Material">
         UPDATE eqpt_detail SET postId = #{arg2} WHERE reptId = #{arg0} AND postId = #{arg1}
     </update>
+
+    <select id="getCategory" resultType="HashMap">
+        SELECT distinct category FROM eqpt_material WHERE category not in (SELECT bindCategory FROM eqpt_repository WHERE bindCategory not in (''))
+    </select>
 </mapper>

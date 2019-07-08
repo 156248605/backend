@@ -16,8 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RepositoryImpl implements RepositoryService {
@@ -100,6 +102,7 @@ public class RepositoryImpl implements RepositoryService {
         repository.setReptAdmin(request.getParameter("reptAdmin"));
         repository.setReptState(request.getParameter("reptState"));
         repository.setPostManage(request.getParameter("postManage"));
+        repository.setBindCategory(request.getParameter("bindCategory"));
         /*repository.setPostId(request.getParameter("postId"));
         repository.setPostName(request.getParameter("postName"));
         repository.setPostCate(request.getParameter("postCate"));
@@ -138,6 +141,7 @@ public class RepositoryImpl implements RepositoryService {
         repository.setPostManage(request.getParameter("postManage"));
         repository.setReptAddr(request.getParameter("reptAddr"));
         repository.setOnlyIdR( Integer.parseInt(request.getParameter("onlyIdR")) );
+        repository.setBindCategory(request.getParameter("bindCategory"));
         repositoryMapper.changeRepository(repository);
         Repository repository1 = new Repository();
         repository1.setReptState(request.getParameter("reptState"));
@@ -337,6 +341,20 @@ public class RepositoryImpl implements RepositoryService {
         }else {
             return "1";
         }
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getBindCategory() {
+        List<HashMap<String, Object>> categoryList = repositoryMapper.getBindCategory();
+        HashMap<String, Object> map = new HashMap<>();
+        for (int i = 0; i < categoryList.size(); i++) {
+            if (categoryList.get(i).get("category").toString().contains("-")) {
+                map.clear();
+                map.put("category",categoryList.get(i).get("category").toString().substring(0,categoryList.get(i).get("category").toString().indexOf("-")));
+                categoryList.set(i,map);
+            }
+        }
+        return categoryList;
     }
    /* @Override
     public List<Repository> matInPost(HttpServletRequest request) {
