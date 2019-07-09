@@ -6,6 +6,7 @@ import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -72,5 +73,5 @@ public interface MaterialMapper {
     void deleteNull(Material material);
 
     // 获取物料类别
-    List<HashMap<String,Object>> getCategory();
+    List<HashMap<String,Object>> getCategory(String reptId);
 }

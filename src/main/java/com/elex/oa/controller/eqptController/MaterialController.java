@@ -75,7 +75,7 @@ public class MaterialController {
 
     @RequestMapping("/getCategory")
     @ResponseBody
-    public List<HashMap<String, Object>> getCategory () {
-        return materialImpl.getCategory();
+    public List<HashMap<String, Object>> getCategory (HttpServletRequest request) {
+        return materialImpl.getCategory(request);
     }
 }

@@ -31,6 +31,6 @@ public interface MaterialService {
     String checkId(HttpServletRequest request);
 
     // 获取物料种类
-    List<HashMap<String,Object>> getCategory();
+    List<HashMap<String,Object>> getCategory(HttpServletRequest request);
 
 }

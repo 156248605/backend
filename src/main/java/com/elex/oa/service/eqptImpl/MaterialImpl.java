@@ -235,7 +235,7 @@ public class MaterialImpl implements MaterialService {
     }
 
     @Override
-    public List<HashMap<String, Object>> getCategory() {
-        return materialMapper.getCategory();
+    public List<HashMap<String, Object>> getCategory(HttpServletRequest request) {
+        return materialMapper.getCategory(request.getParameter("reptId"));
     }
 }
