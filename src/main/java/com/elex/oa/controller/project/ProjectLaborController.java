@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.util.List;
 
 @CrossOrigin
 @Controller
@@ -21,7 +23,12 @@ public class ProjectLaborController {
     @RequestMapping("/employee/{employeeNumber}/update")
     @ResponseBody
     public String updateLaborHourInfo (HttpServletRequest request,@PathVariable("employeeNumber") String employeeNumber) {
-        employeeNumber = request.getParameter("employeeNumber");
-        return projectLaborService.updateLaborHourInfo(request);
+        return projectLaborService.updateLaborHourInfo(request,employeeNumber);
+    }
+
+    @RequestMapping("/employee/{employeeNumber}/query")
+    @ResponseBody
+    public List queryLaborHourInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) throws ParseException {
+        return projectLaborService.queryLaborHourInfo(request,employeeNumber);
     }
 }

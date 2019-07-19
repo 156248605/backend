@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.project.ProjectLaborDao">
 
-    <!--<resultMap id="approvalList" type="com.elex.oa.entity.project.ProjectLabor">
+    <resultMap id="projectLabor" type="com.elex.oa.entity.project.ProjectLabor">
+        <result column="id" javaType="string" property="id"></result>
         <result column="employee_number" javaType="string" property="employeeNumber"></result>
         <result column="employee_name" javaType="string" property="employeeName"></result>
         <result column="project_code" javaType="string" property="projectCode"></result>
         <result column="project_name" javaType="string" property="projectName"></result>
         <result column="filling_date" javaType="date" property="fillingDate"></result>
         <result column="labor_hour" javaType="decimal" property="laborHour"></result>
-    </resultMap>-->
+    </resultMap>
 
     <insert id="updateLaborHourInfo" parameterType="com.elex.oa.entity.project.ProjectLabor">
         INSERT INTO
@@ -25,4 +26,24 @@
             filling_date = #{fillingDate},
             labor_hour = #{laborHour}
     </insert>
+
+    <select id="queryLaborHourInfo" parameterType="string" resultMap="projectLabor">
+        SELECT * FROM pro_labor WHERE employee_number = #{employeeNumber}
+        <if test="projectCode != '' and projectCode != null">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="startDate != '' and startDate != null and endDate != '' and endDate != null">
+            AND filling_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+    </select>
+
+    <select id="queryDateLabor" parameterType="string" resultType="string">
+        SELECT labor_hour FROM pro_labor WHERE employee_number = #{employeeNumber}
+        <if test="projectCode != '' and projectCode != null">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="fillingDate != '' and fillingDate != null">
+            AND filling_date = #{fillingDate}
+        </if>
+    </select>
 </mapper>
