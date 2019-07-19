@@ -704,4 +704,9 @@
     <select id="getBindCategory" resultType="HashMap">
         SELECT distinct category FROM eqpt_material
     </select>
+
+    <select id="queryId" resultType="java.lang.String">
+        SELECT reptId FROM eqpt_repository WHERE reptId = #{reptId} LIMIT 1
+    </select>
+
 </mapper>

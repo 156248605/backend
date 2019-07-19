@@ -116,4 +116,7 @@ public interface RepositoryMapper {
 
     // 获取物料所有大类
     List<HashMap<String, Object>> getBindCategory();
+
+    // 查询是否有重复ID
+    String queryId(String reptId);
 }

@@ -109,12 +109,6 @@ public class RepositoryImpl implements RepositoryService {
         repository.setFixPostMat(request.getParameter("fixPostMat"));
         repository.setPostCap(request.getParameter("postCap"));*/
         repository.setReptAddr(request.getParameter("reptAddr"));
-        String A;
-        if (repositoryMapper.theCategory(repository).isEmpty()){
-            A = request.getParameter("reptCategory");
-        }else {
-            A = repositoryMapper.theCategory(repository).get(0).toString();
-        }
         repository.setPrice("0");
         repository.setNum("0");
         repository.setMaterialName("无");
@@ -122,11 +116,11 @@ public class RepositoryImpl implements RepositoryService {
         repository.setCategory("无");
         repository.setRemark("无");
         repository.setMaterialId("无");
-        if (request.getParameter("reptCategory").equals(A)) {
+        if (request.getParameter("reptId").equals(repositoryMapper.queryId(request.getParameter("reptId")))) {
+            return "0";
+        }else {
             repositoryMapper.insertRepository(repository);
             return "1";
-        }else{
-            return "2";
         }
     }
 
