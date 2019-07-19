@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elex.oa.dao.project.ProjectLaborDao">
+
+    <!--<resultMap id="approvalList" type="com.elex.oa.entity.project.ProjectLabor">
+        <result column="employee_number" javaType="string" property="employeeNumber"></result>
+        <result column="employee_name" javaType="string" property="employeeName"></result>
+        <result column="project_code" javaType="string" property="projectCode"></result>
+        <result column="project_name" javaType="string" property="projectName"></result>
+        <result column="filling_date" javaType="date" property="fillingDate"></result>
+        <result column="labor_hour" javaType="decimal" property="laborHour"></result>
+    </resultMap>-->
+
+    <insert id="updateLaborHourInfo" parameterType="com.elex.oa.entity.project.ProjectLabor">
+        INSERT INTO
+            pro_labor(id,employee_number,employee_name,project_code,project_name,filling_date,labor_hour)
+        VALUES
+            (#{id},#{employeeNumber},#{employeeName},#{projectCode},#{projectName},#{fillingDate},#{laborHour})
+        ON DUPLICATE KEY UPDATE
+            id = #{id},
+            employee_number = #{employeeNumber},
+            employee_name = #{employeeName},
+            project_code = #{projectCode},
+            project_name = #{projectName},
+            filling_date = #{fillingDate},
+            labor_hour = #{laborHour}
+    </insert>
+</mapper>
