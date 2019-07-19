@@ -54,8 +54,8 @@ public class ProjectLaborImpl implements ProjectLaborService {
             projectLaborList = projectLaborDao.queryLaborHourInfo(employeeNumber,projectArray.get(j).toString(),startDate,endDate);
             if (startDate != null && endDate != null && employeeNumber != null && projectCode != null && projectLaborList.size() > 0) {
                 Map<String,Object> map = new HashMap<>();
-                map.put("projectCode",projectLaborList.get(j).getProjectCode());
-                map.put("projectName",projectLaborList.get(j).getProjectName());
+                map.put("projectCode",projectLaborList.get(0).getProjectCode());
+                map.put("projectName",projectLaborList.get(0).getProjectName());
                 List laborHour = new ArrayList();
                 List list = new ArrayList();
                 for (int i = 0;i < projectLaborList.size();i++) {
@@ -66,7 +66,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
                     if (!list.contains(dateList.get(k))) {
                         laborHour.add("0");
                     }else{
-                        laborHour.add(projectLaborDao.queryDateLabor(employeeNumber,projectLaborList.get(j).getProjectCode(),list.get(list.indexOf(dateList.get(k))).toString()));
+                        laborHour.add(projectLaborDao.queryDateLabor(employeeNumber,projectLaborList.get(0).getProjectCode(),list.get(list.indexOf(dateList.get(k))).toString()));
                     }
                 }
                 map.put("laborHour",laborHour);
