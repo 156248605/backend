@@ -33,6 +33,9 @@
     <select id="SearchMaterial" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_material
         <where>
+            <if test="reptAdmin != '管理员'">
+                AND category in (select bindCategory from eqpt_repository WHERE reptAdmin = #{reptAdmin})
+            </if>
             <if test="id != null and id != '' and idC == ''">
                 AND id LIKE CONCAT(CONCAT('%', #{id}), '%')
             </if>

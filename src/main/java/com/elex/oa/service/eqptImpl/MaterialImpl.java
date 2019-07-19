@@ -76,6 +76,7 @@ public class MaterialImpl implements MaterialService {
         String SINGLEMANAGEC = request.getParameter("singleManageC");
         String NOTSINGLE = request.getParameter("notSingle");
         String NOTSINGLEC = request.getParameter("notSingleC");
+        String REPTADMIN = request.getParameter("reptAdmin");
         if (ID == null && NAME == null && MAT == null && BRAND == null && CATEGORY == null && MAXLIMIT == null && MINLIMIT == null && UNIT == null && NUM == null && PRICE == null && REMARK == null && SPEC == null && NOTSINGLE == null && SINGLEMANAGE == null && BSMANAGE == null && FIXPOSITION == null && NEEDCHECK == null && MATERIALSTATE == null) {
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
             List<Material> listM = materialMapper.MaterialList(request.getParameter("userName"));
@@ -119,6 +120,7 @@ public class MaterialImpl implements MaterialService {
             material.setSingleManageC(SINGLEMANAGEC);
             material.setNotSingle(NOTSINGLE);
             material.setNotSingleC(NOTSINGLEC);
+            material.setReptAdmin(REPTADMIN);
             List<Material> listM = materialMapper.SearchMaterial(material);
             return new PageInfo<>(listM);
         }

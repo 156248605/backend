@@ -73,6 +73,7 @@ public class Material {
     private String reptId;
     private String reptName;
     private String postId;
+    private String reptAdmin;
     // 项目相关
     private String projId;
     private String projName;
@@ -114,7 +115,7 @@ public class Material {
     public Material() {
     }
 
-    public Material(int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String reptName, String postId, String projId, String projName, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC, String reptNameC, String postIdC, String projIdC, String projNameC) {
+    public Material(int onlyId, String bn, String sn, String position, String category, String name, String id, String date, String price, String unit, String num, String brand, String spec, String material, String maxlimit, String minlimit, String remark, String partner, String materialState, String singleManage, String notSingle, String BSManage, String fixPosition, String needCheck, String reptId, String reptName, String postId, String reptAdmin, String projId, String projName, String bnC, String snC, String positionC, String categoryC, String nameC, String idC, String numC, String unitC, String dateC, String priceC, String brandC, String specC, String materialC, String maxlimitC, String minlimitC, String remarkC, String partnerC, String needCheckC, String materialStateC, String singleManageC, String notSingleC, String BSManageC, String fixPositionC, String sDate, String eDate, String numInvC, String palC, String reptIdC, String reptNameC, String postIdC, String projIdC, String projNameC) {
         this.onlyId = onlyId;
         this.bn = bn;
         this.sn = sn;
@@ -142,6 +143,7 @@ public class Material {
         this.reptId = reptId;
         this.reptName = reptName;
         this.postId = postId;
+        this.reptAdmin = reptAdmin;
         this.projId = projId;
         this.projName = projName;
         this.bnC = bnC;
@@ -184,6 +186,14 @@ public class Material {
 
     public void setReptName(String reptName) {
         this.reptName = reptName;
+    }
+
+    public String getReptAdmin() {
+        return reptAdmin;
+    }
+
+    public void setReptAdmin(String reptAdmin) {
+        this.reptAdmin = reptAdmin;
     }
 
     public String getReptNameC() {
@@ -696,6 +706,7 @@ public class Material {
                 ", reptId='" + reptId + '\'' +
                 ", reptName='" + reptName + '\'' +
                 ", postId='" + postId + '\'' +
+                ", reptAdmin='" + reptAdmin + '\'' +
                 ", projId='" + projId + '\'' +
                 ", projName='" + projName + '\'' +
                 ", bnC='" + bnC + '\'' +
