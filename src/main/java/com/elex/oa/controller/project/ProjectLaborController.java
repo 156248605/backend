@@ -31,4 +31,16 @@ public class ProjectLaborController {
     public List queryLaborHourInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) throws ParseException {
         return projectLaborService.queryLaborHourInfo(request,employeeNumber);
     }
+
+    @RequestMapping("/common/{employeeNumber}/update")
+    @ResponseBody
+    public String updateCommonProjectInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) throws ParseException {
+        return projectLaborService.updateCommonProjectInfo(request,employeeNumber);
+    }
+
+    @RequestMapping("/common/{employeeNumber}/query")
+    @ResponseBody
+    public String[] queryCommonProjectInfo (@PathVariable("employeeNumber") String employeeNumber) throws ParseException {
+        return projectLaborService.queryCommonProjectInfo(employeeNumber);
+    }
 }

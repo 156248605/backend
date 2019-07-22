@@ -46,4 +46,18 @@
             AND filling_date = #{fillingDate}
         </if>
     </select>
+
+    <insert id="updateCommonProjectInfo" parameterType="com.elex.oa.entity.project.ProjectLabor">
+        INSERT INTO
+            pro_common(employee_number,project_code)
+        VALUES
+            (#{employeeNumber},#{projectCode})
+        ON DUPLICATE KEY UPDATE
+            employee_number = #{employeeNumber},
+            project_code = #{projectCode}
+    </insert>
+
+    <select id="queryCommonProjectInfo" parameterType="string" resultType="string">
+        SELECT project_code FROM pro_common WHERE employee_number = #{employeeNumber}
+    </select>
 </mapper>

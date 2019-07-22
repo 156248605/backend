@@ -103,4 +103,40 @@ public class ProjectLaborImpl implements ProjectLaborService {
         }
         return result;
     }
+
+    @Override
+    public String[] queryCommonProjectInfo(String employeeNumber) {
+        ProjectLabor projectLabor = new ProjectLabor();
+        projectLabor.setEmployeeNumber(employeeNumber);
+        String projectCode = projectLaborDao.queryCommonProjectInfo(projectLabor);
+        String[] projectList = new String[0];
+        if (projectCode != null) {
+            projectList = projectCode.split(",");
+        }
+        return projectList;
+    }
+
+    @Override
+    public String updateCommonProjectInfo(HttpServletRequest request,String employeeNumber) {
+        String projectList = request.getParameter("projectCode");
+        String projectCode = "";
+        JSONArray projectArray =JSONArray.parseArray(projectList);
+        String result = "success";
+        ProjectLabor projectLabor = new ProjectLabor();
+        projectLabor.setEmployeeNumber(employeeNumber);
+        for (int i = 0;i < projectArray.size();i++) {
+            if (i == projectArray.size() -1) {
+                projectCode += projectArray.get(i).toString();
+            }else {
+                projectCode += projectArray.get(i).toString() + ",";
+            }
+        }
+        projectLabor.setProjectCode(projectCode);
+        try {
+            projectLaborDao.updateCommonProjectInfo(projectLabor);
+        } catch (Exception e){
+            result = "fail";
+        }
+        return result;
+    }
 }

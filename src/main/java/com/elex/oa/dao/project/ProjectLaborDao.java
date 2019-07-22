@@ -19,4 +19,8 @@ public interface ProjectLaborDao {
     String queryDateLabor (@Param("employeeNumber") String employeeNumber,
                            @Param("projectCode") String projectCode,
                            @Param("fillingDate") String fillingDate);
+
+    void updateCommonProjectInfo(ProjectLabor projectLabor);
+
+    String queryCommonProjectInfo(ProjectLabor projectLabor);
 }
