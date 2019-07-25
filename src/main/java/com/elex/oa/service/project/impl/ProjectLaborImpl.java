@@ -46,7 +46,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         List<String> dateList = findDates(startDate,endDate);
-        List lockingList = projectLaborDao.queryLaborStatus();
+        String lockStatus = projectLaborDao.queryLaborStatus();
         String projectCode = request.getParameter("projectCode");
         JSONArray projectArray =JSONArray.parseArray(projectCode);
         List<ProjectLabor> projectLaborList;
@@ -78,7 +78,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
         }
         projectlist.put("message",message);
         for (int k = 0;k < dateList.size();k++) {
-            if (!lockingList.contains(dateList.get(k).substring(0,7))) {
+            if (lockStatus.compareTo(dateList.get(k).substring(0,7)) < 0) {
                 status.add("unlocking");
             }else {
                 status.add("locking");
@@ -118,10 +118,10 @@ public class ProjectLaborImpl implements ProjectLaborService {
     }
 
     @Override
-    public String[] queryCommonProjectInfo(String employeeNumber) {
+    public String[] queryFrequentProjectInfo(String employeeNumber) {
         ProjectLabor projectLabor = new ProjectLabor();
         projectLabor.setEmployeeNumber(employeeNumber);
-        String projectCode = projectLaborDao.queryCommonProjectInfo(projectLabor);
+        String projectCode = projectLaborDao.queryFrequentProjectInfo(projectLabor);
         String[] projectList = new String[0];
         if (projectCode != null) {
             projectList = projectCode.split(",");
@@ -130,7 +130,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
     }
 
     @Override
-    public String updateCommonProjectInfo(HttpServletRequest request,String employeeNumber) {
+    public String updateFrequentProjectInfo(HttpServletRequest request,String employeeNumber) {
         String projectList = request.getParameter("projectCode");
         String projectCode = "";
         JSONArray projectArray =JSONArray.parseArray(projectList);
@@ -146,7 +146,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
         }
         projectLabor.setProjectCode(projectCode);
         try {
-            projectLaborDao.updateCommonProjectInfo(projectLabor);
+            projectLaborDao.updateFrequentProjectInfo(projectLabor);
         } catch (Exception e){
             result = "fail";
         }
@@ -158,5 +158,78 @@ public class ProjectLaborImpl implements ProjectLaborService {
         String result = "success";
         projectLaborDao.updateLockingInfo(date);
         return result;
+    }
+
+    @Override
+    public Map<String, Object> queryLaborHourInfoByDepartment(HttpServletRequest request, String deptId) {
+        Map<String, Object> map = new HashMap<>();
+        String employeeNumber = request.getParameter("employeeNumber");
+        JSONArray employeeArray =JSONArray.parseArray(employeeNumber);
+        String employeeName = request.getParameter("employeeName");
+        JSONArray employeeNameArray =JSONArray.parseArray(employeeName);
+        String fillingDate = request.getParameter("fillingDate");
+        int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
+        int month = Integer.parseInt(fillingDate.split("-")[1]); //月
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        int lastDay = cal.getActualMaximum(Calendar.DATE);
+        cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = fillingDate + "-01";
+        String endDate = sdf.format(cal.getTime());
+        List<ProjectLabor> projectList;
+        List message = new ArrayList();
+        for (int i = 0;i < employeeArray.size();i++) {
+            Map<String,Object> projectMap = new HashMap<>();
+            projectMap.put("employeeNumber",employeeArray.get(i).toString());
+            projectMap.put("employeeName",employeeNameArray.get(i).toString());
+            projectList = projectLaborDao.queryProject(employeeArray.get(i).toString());
+            Map<String,Object> laborMap = new HashMap<>();
+            List projectCodeList = new ArrayList();
+            List projectNameList = new ArrayList();
+            for (int j = 0;j < projectList.size();j++) {
+                laborMap.put(projectList.get(j).getProjectCode(),projectLaborDao.queryLaborHourInfoByDepartment(employeeArray.get(i).toString(),projectList.get(j).getProjectCode(),startDate,endDate));
+                projectCodeList.add(projectList.get(j).getProjectCode());
+                projectNameList.add(projectList.get(j).getProjectName());
+            }
+            projectMap.put("projectCode",projectCodeList);
+            projectMap.put("projectName",projectNameList);
+            projectMap.put("laborHour",laborMap);
+            message.add(projectMap);
+        }
+        map.put("message",message);
+        String lockStatus = projectLaborDao.queryLaborStatus();
+        if (lockStatus.compareTo(fillingDate) >= 0) {
+            map.put("status","locking");
+        }else {
+            map.put("status","unlocking");
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> queryDeptEmployee(HttpServletRequest request) {
+        String deptId = request.getParameter("deptId");
+        List deptList = projectLaborDao.queryDepartment(deptId + '.');
+        List employeeList = new ArrayList();
+        List employeeNameList = new ArrayList();
+        if (deptList.contains(deptId)) {
+            for (int i = 0;i < deptList.size();i++) {
+                for (int j = 0;j < projectLaborDao.queryEmployee(deptList.get(i).toString()).size();j++) {
+                    employeeList.add(projectLaborDao.queryEmployee(deptList.get(i).toString()).get(j).get("EMPLOYEE_NUMBER_"));
+                    employeeNameList.add(projectLaborDao.queryEmployee(deptList.get(i).toString()).get(j).get("FULLNAME_"));
+                }
+            }
+        }else {
+            for (int k = 0;k < projectLaborDao.queryEmployee(deptId).size();k++) {
+                employeeList.add(projectLaborDao.queryEmployee(deptId).get(k).get("EMPLOYEE_NUMBER_"));
+                employeeNameList.add(projectLaborDao.queryEmployee(deptId).get(k).get("FULLNAME_"));
+            }
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("employeeNumber",employeeList);
+        map.put("employeeName",employeeNameList);
+        return map;
     }
 }

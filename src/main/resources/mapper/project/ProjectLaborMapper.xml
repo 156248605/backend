@@ -47,11 +47,11 @@
         </if>
     </select>
 
-    <select id="queryLaborStatus" resultType="java.lang.String">
-        SELECT locking_time FROM pro_labor_month
+    <select id="queryLaborStatus" resultType="string">
+        SELECT MAX(locking_time) FROM pro_labor_month
     </select>
 
-    <insert id="updateCommonProjectInfo" parameterType="com.elex.oa.entity.project.ProjectLabor">
+    <insert id="updateFrequentProjectInfo" parameterType="com.elex.oa.entity.project.ProjectLabor">
         INSERT INTO
             pro_common(employee_number,project_code)
         VALUES
@@ -61,14 +61,28 @@
             project_code = #{projectCode}
     </insert>
 
-    <select id="queryCommonProjectInfo" parameterType="string" resultType="string">
+    <select id="queryFrequentProjectInfo" parameterType="string" resultType="string">
         SELECT project_code FROM pro_common WHERE employee_number = #{employeeNumber}
     </select>
 
     <update id="updateLockingInfo" parameterType="string">
-        INSERT INTO
-        pro_labor_month (locking_time)
-        VALUES
-        (#{date})
+        UPDATE pro_labor_month SET locking_time = #{date}
     </update>
+
+    <select id="queryLaborHourInfoByDepartment" parameterType="string" resultType="string">
+        SELECT SUM(labor_hour) FROM pro_labor WHERE employee_number = #{employeeNumber} AND filling_date BETWEEN #{startDate} AND #{endDate} AND project_code = #{projectCode}
+    </select>
+
+    <select id="queryProject" parameterType="string" resultMap="projectLabor">
+        SELECT DISTINCT project_code,project_name FROM pro_labor WHERE employee_number = #{employeeNumber}
+    </select>
+
+    <select id="queryDepartment" parameterType="string" resultType="java.lang.String">
+        SELECT GROUP_ID_ FROM os_group WHERE PATH_ LIKE CONCAT(CONCAT('%', #{deptId}), '%') AND PARENT_ID_ != '0'
+    </select>
+
+    <select id="queryEmployee" parameterType="string" resultType="HashMap">
+        SELECT EMPLOYEE_NUMBER_,FULLNAME_ FROM os_user WHERE USER_ID_ IN (SELECT PARTY2_ FROM os_rel_inst WHERE PARTY1_ IN (#{deptId}) AND REL_TYPE_KEY_ = 'GROUP-USER-BELONG')
+    </select>
+
 </mapper>

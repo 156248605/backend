@@ -4,6 +4,7 @@ import com.elex.oa.entity.project.ProjectLabor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -20,11 +21,22 @@ public interface ProjectLaborDao {
                            @Param("projectCode") String projectCode,
                            @Param("fillingDate") String fillingDate);
 
-    List queryLaborStatus ();
+    String queryLaborStatus ();
 
-    void updateCommonProjectInfo(ProjectLabor projectLabor);
+    void updateFrequentProjectInfo(ProjectLabor projectLabor);
 
-    String queryCommonProjectInfo(ProjectLabor projectLabor);
+    String queryFrequentProjectInfo(ProjectLabor projectLabor);
 
     void updateLockingInfo(@Param("date") String date);
+
+    String queryLaborHourInfoByDepartment(@Param("employeeNumber") String employeeNumber,
+                                          @Param("projectCode") String projectCode,
+                                          @Param("startDate") String startDate,
+                                          @Param("endDate") String endDate);
+
+    List<ProjectLabor> queryProject(@Param("employeeNumber") String employeeNumber);
+
+    List queryDepartment(@Param("deptId") String deptId);
+
+    List<HashMap<String,Object>> queryEmployee(@Param("deptId") String deptId);
 }

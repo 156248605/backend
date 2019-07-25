@@ -11,9 +11,13 @@ public interface ProjectLaborService {
     // 添加工时信息
     String updateLaborHourInfo(HttpServletRequest request,String employeeNumber);
     // 添加员工常用项目
-    String[] queryCommonProjectInfo(String employeeNumber);
+    String[] queryFrequentProjectInfo(String employeeNumber);
     // 查询员工常用项目
-    String updateCommonProjectInfo(HttpServletRequest request,String employeeNumber);
+    String updateFrequentProjectInfo(HttpServletRequest request,String employeeNumber);
     // 锁定工时数据
     String insertLockingInfo(String date);
+    // 查询部门下每人每月工时
+    Map<String,Object> queryLaborHourInfoByDepartment (HttpServletRequest request,String deptId);
+    // 获取部门下所有人
+    Map<String, Object> queryDeptEmployee (HttpServletRequest request);
 }

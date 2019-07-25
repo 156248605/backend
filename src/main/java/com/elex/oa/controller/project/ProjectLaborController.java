@@ -33,21 +33,33 @@ public class ProjectLaborController {
         return projectLaborService.queryLaborHourInfo(request,employeeNumber);
     }
 
-    @RequestMapping("/common/{employeeNumber}/update")
+    @RequestMapping("/frequent/{employeeNumber}/update")
     @ResponseBody
-    public String updateCommonProjectInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) {
-        return projectLaborService.updateCommonProjectInfo(request,employeeNumber);
+    public String updateFrequentProjectInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) {
+        return projectLaborService.updateFrequentProjectInfo(request,employeeNumber);
     }
 
-    @RequestMapping("/common/{employeeNumber}/query")
+    @RequestMapping("/frequent/{employeeNumber}/query")
     @ResponseBody
-    public String[] queryCommonProjectInfo (@PathVariable("employeeNumber") String employeeNumber) {
-        return projectLaborService.queryCommonProjectInfo(employeeNumber);
+    public String[] queryFrequentProjectInfo (@PathVariable("employeeNumber") String employeeNumber) {
+        return projectLaborService.queryFrequentProjectInfo(employeeNumber);
     }
 
     @RequestMapping("/lock/{date}/insert")
     @ResponseBody
     public String insertLockingInfo (@PathVariable("date") String date) {
         return projectLaborService.insertLockingInfo(date);
+    }
+
+    @RequestMapping("/department/{deptId}/query")
+    @ResponseBody
+    public Map<String, Object> queryLaborHourInfoByDepartment (HttpServletRequest request, @PathVariable("deptId") String deptId) {
+        return projectLaborService.queryLaborHourInfoByDepartment(request, deptId);
+    }
+
+    @RequestMapping("/department/queryEmployee")
+    @ResponseBody
+    public Map<String, Object> queryDeptEmployee (HttpServletRequest request) {
+        return projectLaborService.queryDeptEmployee(request);
     }
 }
