@@ -42,18 +42,21 @@ public class ProjectLaborImpl implements ProjectLaborService {
     }
 
     @Override
-    public List queryLaborHourInfo(HttpServletRequest request,String employeeNumber) throws ParseException {
+    public Map<String, Object> queryLaborHourInfo(HttpServletRequest request, String employeeNumber) throws ParseException {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         List<String> dateList = findDates(startDate,endDate);
+        List lockingList = projectLaborDao.queryLaborStatus();
         String projectCode = request.getParameter("projectCode");
         JSONArray projectArray =JSONArray.parseArray(projectCode);
         List<ProjectLabor> projectLaborList;
-        List projectlist = new ArrayList();
+        List status = new ArrayList();
+        Map<String, Object> projectlist = new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
+        List message = new ArrayList();
         for (int j = 0;j < projectArray.size();j++) {
             projectLaborList = projectLaborDao.queryLaborHourInfo(employeeNumber,projectArray.get(j).toString(),startDate,endDate);
             if (startDate != null && endDate != null && employeeNumber != null && projectCode != null && projectLaborList.size() > 0) {
-                Map<String,Object> map = new HashMap<>();
                 map.put("projectCode",projectLaborList.get(0).getProjectCode());
                 map.put("projectName",projectLaborList.get(0).getProjectName());
                 List laborHour = new ArrayList();
@@ -70,9 +73,18 @@ public class ProjectLaborImpl implements ProjectLaborService {
                     }
                 }
                 map.put("laborHour",laborHour);
-                projectlist.add(map);
+                message.add(map);
             }
         }
+        projectlist.put("message",message);
+        for (int k = 0;k < dateList.size();k++) {
+            if (!lockingList.contains(dateList.get(k).substring(0,7))) {
+                status.add("unlocking");
+            }else {
+                status.add("locking");
+            }
+        }
+        projectlist.put("status",status);
         return projectlist;
     }
 
@@ -93,6 +105,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
             for (int j = 0;j < dateList.size();j++) {
                 projectLabor.setFillingDate( time.strToDate(dateList.get(j).toString(),"yyyy-MM-dd") );
                 projectLabor.setLaborHour( BigDecimal.valueOf(Double.parseDouble(hourList.get(j).toString())) );
+                projectLabor.setStatus( "unlocking" );
                 projectLabor.setId(employeeNumber + projectLabor.getProjectCode() + dateList.get(j).toString());
                 try {
                     projectLaborDao.updateLaborHourInfo(projectLabor);
@@ -137,6 +150,13 @@ public class ProjectLaborImpl implements ProjectLaborService {
         } catch (Exception e){
             result = "fail";
         }
+        return result;
+    }
+
+    @Override
+    public String insertLockingInfo(String date) {
+        String result = "success";
+        projectLaborDao.updateLockingInfo(date);
         return result;
     }
 }

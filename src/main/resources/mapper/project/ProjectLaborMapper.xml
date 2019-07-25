@@ -47,6 +47,10 @@
         </if>
     </select>
 
+    <select id="queryLaborStatus" resultType="java.lang.String">
+        SELECT locking_time FROM pro_labor_month
+    </select>
+
     <insert id="updateCommonProjectInfo" parameterType="com.elex.oa.entity.project.ProjectLabor">
         INSERT INTO
             pro_common(employee_number,project_code)
@@ -60,4 +64,11 @@
     <select id="queryCommonProjectInfo" parameterType="string" resultType="string">
         SELECT project_code FROM pro_common WHERE employee_number = #{employeeNumber}
     </select>
+
+    <update id="updateLockingInfo" parameterType="string">
+        INSERT INTO
+        pro_labor_month (locking_time)
+        VALUES
+        (#{date})
+    </update>
 </mapper>

@@ -20,7 +20,11 @@ public interface ProjectLaborDao {
                            @Param("projectCode") String projectCode,
                            @Param("fillingDate") String fillingDate);
 
+    List queryLaborStatus ();
+
     void updateCommonProjectInfo(ProjectLabor projectLabor);
 
     String queryCommonProjectInfo(ProjectLabor projectLabor);
+
+    void updateLockingInfo(@Param("date") String date);
 }

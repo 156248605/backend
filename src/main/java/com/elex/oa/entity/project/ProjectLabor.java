@@ -18,8 +18,10 @@ public class ProjectLabor {
     Date fillingDate;
     // 工时
     BigDecimal laborHour;
+    // 状态
+    String status;
 
-    public ProjectLabor(String id, String employeeNumber, String employeeName, String projectCode, String projectName, Date fillingDate, BigDecimal laborHour) {
+    public ProjectLabor(String id, String employeeNumber, String employeeName, String projectCode, String projectName, Date fillingDate, BigDecimal laborHour, String status) {
         this.id = id;
         this.employeeNumber = employeeNumber;
         this.employeeName = employeeName;
@@ -27,6 +29,7 @@ public class ProjectLabor {
         this.projectName = projectName;
         this.fillingDate = fillingDate;
         this.laborHour = laborHour;
+        this.status = status;
     }
 
     public ProjectLabor() {
@@ -88,6 +91,14 @@ public class ProjectLabor {
         this.laborHour = labor_hour;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "ProjectLabor{" +
@@ -98,6 +109,7 @@ public class ProjectLabor {
                 ", projectName='" + projectName + '\'' +
                 ", fillingDate=" + fillingDate +
                 ", laborHour=" + laborHour +
+                ", status=" + status +
                 '}';
     }
 }

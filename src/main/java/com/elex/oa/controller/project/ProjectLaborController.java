@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @Controller
@@ -28,19 +29,25 @@ public class ProjectLaborController {
 
     @RequestMapping("/employee/{employeeNumber}/query")
     @ResponseBody
-    public List queryLaborHourInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) throws ParseException {
+    public Map<String, Object> queryLaborHourInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) throws ParseException {
         return projectLaborService.queryLaborHourInfo(request,employeeNumber);
     }
 
     @RequestMapping("/common/{employeeNumber}/update")
     @ResponseBody
-    public String updateCommonProjectInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) throws ParseException {
+    public String updateCommonProjectInfo (HttpServletRequest request, @PathVariable("employeeNumber") String employeeNumber) {
         return projectLaborService.updateCommonProjectInfo(request,employeeNumber);
     }
 
     @RequestMapping("/common/{employeeNumber}/query")
     @ResponseBody
-    public String[] queryCommonProjectInfo (@PathVariable("employeeNumber") String employeeNumber) throws ParseException {
+    public String[] queryCommonProjectInfo (@PathVariable("employeeNumber") String employeeNumber) {
         return projectLaborService.queryCommonProjectInfo(employeeNumber);
+    }
+
+    @RequestMapping("/lock/{date}/insert")
+    @ResponseBody
+    public String insertLockingInfo (@PathVariable("date") String date) {
+        return projectLaborService.insertLockingInfo(date);
     }
 }
