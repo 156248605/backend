@@ -189,9 +189,11 @@ public class ProjectLaborImpl implements ProjectLaborService {
             List projectCodeList = new ArrayList();
             List projectNameList = new ArrayList();
             for (int j = 0;j < projectList.size();j++) {
-                laborMap.put(projectList.get(j).getProjectCode(),projectLaborDao.queryLaborHourInfoByDepartment(employeeArray.get(i).toString(),projectList.get(j).getProjectCode(),startDate,endDate));
-                projectCodeList.add(projectList.get(j).getProjectCode());
-                projectNameList.add(projectList.get(j).getProjectName());
+                if (!"0.0".equals(projectLaborDao.queryLaborHourInfoByDepartment(employeeArray.get(i).toString(),projectList.get(j).getProjectCode(),startDate,endDate))) {
+                    laborMap.put(projectList.get(j).getProjectCode(),projectLaborDao.queryLaborHourInfoByDepartment(employeeArray.get(i).toString(),projectList.get(j).getProjectCode(),startDate,endDate));
+                    projectCodeList.add(projectList.get(j).getProjectCode());
+                    projectNameList.add(projectList.get(j).getProjectName());
+                }
             }
             projectMap.put("projectCode",projectCodeList);
             projectMap.put("projectName",projectNameList);
@@ -230,6 +232,31 @@ public class ProjectLaborImpl implements ProjectLaborService {
         Map<String, Object> map = new HashMap<>();
         map.put("employeeNumber",employeeList);
         map.put("employeeName",employeeNameList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> queryLaborHourInfoByMonth(HttpServletRequest request) {
+        String fillingDate = request.getParameter("fillingDate");
+        int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
+        int month = Integer.parseInt(fillingDate.split("-")[1]); //月
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        int lastDay = cal.getActualMaximum(Calendar.DATE);
+        cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = fillingDate + "-01";
+        String endDate = sdf.format(cal.getTime());
+        List employeeNumber = new ArrayList();
+        List employeeName = new ArrayList();
+        for (int i =0;i < projectLaborDao.queryLaborHourInfoByMonth(startDate,endDate).size();i++){
+            employeeNumber.add(projectLaborDao.queryLaborHourInfoByMonth(startDate,endDate).get(i).get("employee_number"));
+            employeeName.add(projectLaborDao.queryLaborHourInfoByMonth(startDate,endDate).get(i).get("employee_name"));
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("employeeNumber",employeeNumber);
+        map.put("employeeName",employeeName);
         return map;
     }
 }

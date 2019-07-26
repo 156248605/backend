@@ -62,4 +62,10 @@ public class ProjectLaborController {
     public Map<String, Object> queryDeptEmployee (HttpServletRequest request) {
         return projectLaborService.queryDeptEmployee(request);
     }
+
+    @RequestMapping("/month/queryEmployee")
+    @ResponseBody
+    public Map<String, Object> queryLaborHourInfoByMonth (HttpServletRequest request) {
+        return projectLaborService.queryLaborHourInfoByMonth(request);
+    }
 }

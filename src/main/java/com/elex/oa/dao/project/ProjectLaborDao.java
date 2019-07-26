@@ -39,4 +39,7 @@ public interface ProjectLaborDao {
     List queryDepartment(@Param("deptId") String deptId);
 
     List<HashMap<String,Object>> queryEmployee(@Param("deptId") String deptId);
+
+    List<HashMap<String,Object>> queryLaborHourInfoByMonth (@Param("startDate") String startDate,
+                                    @Param("endDate") String endDate);
 }
