@@ -52,11 +52,11 @@ public class ProjectLaborImpl implements ProjectLaborService {
         List<ProjectLabor> projectLaborList;
         List status = new ArrayList();
         Map<String, Object> projectlist = new HashMap<>();
-        Map<String,Object> map = new HashMap<>();
         List message = new ArrayList();
         for (int j = 0;j < projectArray.size();j++) {
             projectLaborList = projectLaborDao.queryLaborHourInfo(employeeNumber,projectArray.get(j).toString(),startDate,endDate);
             if (startDate != null && endDate != null && employeeNumber != null && projectCode != null && projectLaborList.size() > 0) {
+                Map<String,Object> map = new HashMap<>();
                 map.put("projectCode",projectLaborList.get(0).getProjectCode());
                 map.put("projectName",projectLaborList.get(0).getProjectName());
                 List laborHour = new ArrayList();
