@@ -259,4 +259,55 @@ public class ProjectLaborImpl implements ProjectLaborService {
         map.put("employeeName",employeeName);
         return map;
     }
+
+    @Override
+    public List queryLaborHourInfoByProject(HttpServletRequest request) {
+        String projectCode = request.getParameter("projectCode");
+        List infoList = new ArrayList();
+        String fillingDate = request.getParameter("fillingDate");
+        String startDate = fillingDate + "-01-01";
+        String endDate = fillingDate + "-12-31";
+        for (int i = 0;i < projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).size();i++) {
+            Map<String, Object> projectMap = new HashMap<>();
+            projectMap.put("employeeNumber", projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).get(i).get("employee_number").toString());
+            projectMap.put("employeeName", projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).get(i).get("employee_name").toString());
+            List laborHour = new ArrayList();
+            for (int j = 1;j < 13;j++) {
+                fillingDate = request.getParameter("fillingDate") + "-" + (j < 10 ? "0" + j : j);
+                int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
+                int month = Integer.parseInt(fillingDate.split("-")[1]); //月
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, month - 1);
+                int lastDay = cal.getActualMaximum(Calendar.DATE);
+                cal.set(Calendar.DAY_OF_MONTH, lastDay);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String start = fillingDate + "-01";
+                String end = sdf.format(cal.getTime());
+                laborHour.add(projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).get(i).get("employee_number").toString(),projectCode,start,end) == null ? "0" : projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).get(i).get("employee_number").toString(),projectCode,start,end));
+            }
+            projectMap.put("laborHour",laborHour);
+            infoList.add(projectMap);
+        }
+        /*for (int i = 1;i < 13;i++) {
+            String fillingDate = request.getParameter("fillingDate") + "-" + (i < 10 ? "0" + i : i);
+            int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
+            int month = Integer.parseInt(fillingDate.split("-")[1]); //月
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, month - 1);
+            int lastDay = cal.getActualMaximum(Calendar.DATE);
+            cal.set(Calendar.DAY_OF_MONTH, lastDay);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String startDate = fillingDate + "-01";
+            String endDate = sdf.format(cal.getTime());
+            for (int j = 0;j < projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).size();j++) {
+                String employeeNumber = projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).get(j).toString();
+                Map<String, Object> projectLabor = new HashMap<>();
+                List laborHour = new ArrayList();
+
+            }
+        }*/
+        return infoList;
+    }
 }

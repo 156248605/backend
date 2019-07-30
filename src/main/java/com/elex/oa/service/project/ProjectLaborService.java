@@ -2,6 +2,7 @@ package com.elex.oa.service.project;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 public interface ProjectLaborService {
@@ -21,4 +22,6 @@ public interface ProjectLaborService {
     Map<String, Object> queryDeptEmployee (HttpServletRequest request);
     // 查询某月内所有工时
     Map<String, Object> queryLaborHourInfoByMonth (HttpServletRequest request);
+    // 查询某项目某年所有工时
+    List queryLaborHourInfoByProject (HttpServletRequest request);
 }

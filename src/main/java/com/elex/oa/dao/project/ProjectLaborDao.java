@@ -42,4 +42,8 @@ public interface ProjectLaborDao {
 
     List<HashMap<String,Object>> queryLaborHourInfoByMonth (@Param("startDate") String startDate,
                                     @Param("endDate") String endDate);
+
+    List<HashMap<String,Object>> queryEmployeeByMonth(@Param("projectCode") String projectCode,
+                              @Param("startDate") String startDate,
+                              @Param("endDate") String endDate);
 }
