@@ -53,7 +53,7 @@ public class ProjectLaborController {
 
     @RequestMapping("/department/{deptId}/query")
     @ResponseBody
-    public Map<String, Object> queryLaborHourInfoByDepartment (HttpServletRequest request, @PathVariable("deptId") String deptId) {
+    public Map<String, Object> queryLaborHourInfoByDepartment (HttpServletRequest request, @PathVariable("deptId") String deptId) throws ParseException {
         return projectLaborService.queryLaborHourInfoByDepartment(request, deptId);
     }
 
@@ -65,19 +65,19 @@ public class ProjectLaborController {
 
     @RequestMapping("/month/queryEmployee")
     @ResponseBody
-    public Map<String, Object> queryLaborHourInfoByMonth (HttpServletRequest request) {
+    public Map<String, Object> queryLaborHourInfoByMonth (HttpServletRequest request) throws ParseException {
         return projectLaborService.queryLaborHourInfoByMonth(request);
     }
 
     @RequestMapping("/project/queryLaborHour")
     @ResponseBody
-    public List queryLaborHourInfoByProject (HttpServletRequest request) {
+    public List queryLaborHourInfoByProject (HttpServletRequest request) throws ParseException {
         return projectLaborService.queryLaborHourInfoByProject(request);
     }
 
     @RequestMapping("/project/queryLaborHour/year")
     @ResponseBody
-    public List queryLaborHourInfoByYear (HttpServletRequest request) {
+    public List queryLaborHourInfoByYear (HttpServletRequest request) throws ParseException  {
         return projectLaborService.queryLaborHourInfoByYear(request);
     }
 }

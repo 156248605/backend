@@ -17,13 +17,13 @@ public interface ProjectLaborService {
     // 锁定工时数据
     String insertLockingInfo(String date);
     // 查询部门下每人每月工时
-    Map<String,Object> queryLaborHourInfoByDepartment (HttpServletRequest request,String deptId);
+    Map<String,Object> queryLaborHourInfoByDepartment (HttpServletRequest request,String deptId) throws ParseException;
     // 获取部门下所有人
     Map<String, Object> queryDeptEmployee (HttpServletRequest request);
     // 查询某月内所有工时
-    Map<String, Object> queryLaborHourInfoByMonth (HttpServletRequest request);
+    Map<String, Object> queryLaborHourInfoByMonth (HttpServletRequest request) throws ParseException;
     // 查询某项目某年所有工时
-    List queryLaborHourInfoByProject (HttpServletRequest request);
+    List queryLaborHourInfoByProject (HttpServletRequest request) throws ParseException;
     // 查询某年所有项目工时
-    List queryLaborHourInfoByYear (HttpServletRequest request);
+    List queryLaborHourInfoByYear (HttpServletRequest request) throws ParseException;
 }

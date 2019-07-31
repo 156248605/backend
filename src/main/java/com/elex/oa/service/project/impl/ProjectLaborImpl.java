@@ -162,23 +162,19 @@ public class ProjectLaborImpl implements ProjectLaborService {
     }
 
     @Override
-    public Map<String, Object> queryLaborHourInfoByDepartment(HttpServletRequest request, String deptId) {
+    public Map<String, Object> queryLaborHourInfoByDepartment(HttpServletRequest request, String deptId) throws ParseException {
         Map<String, Object> map = new HashMap<>();
         String employeeNumber = request.getParameter("employeeNumber");
         JSONArray employeeArray =JSONArray.parseArray(employeeNumber);
         String employeeName = request.getParameter("employeeName");
         JSONArray employeeNameArray =JSONArray.parseArray(employeeName);
         String fillingDate = request.getParameter("fillingDate");
-        int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
-        int month = Integer.parseInt(fillingDate.split("-")[1]); //月
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month - 1);
-        int lastDay = cal.getActualMaximum(Calendar.DATE);
-        cal.set(Calendar.DAY_OF_MONTH, lastDay);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(sdf.parse(fillingDate));
+        calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         String startDate = fillingDate + "-01";
-        String endDate = sdf.format(cal.getTime());
+        String endDate = fillingDate + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         List<ProjectLabor> projectList;
         List message = new ArrayList();
         for (int i = 0;i < employeeArray.size();i++) {
@@ -237,18 +233,14 @@ public class ProjectLaborImpl implements ProjectLaborService {
     }
 
     @Override
-    public Map<String, Object> queryLaborHourInfoByMonth(HttpServletRequest request) {
+    public Map<String, Object> queryLaborHourInfoByMonth(HttpServletRequest request) throws ParseException {
         String fillingDate = request.getParameter("fillingDate");
-        int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
-        int month = Integer.parseInt(fillingDate.split("-")[1]); //月
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month - 1);
-        int lastDay = cal.getActualMaximum(Calendar.DATE);
-        cal.set(Calendar.DAY_OF_MONTH, lastDay);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(sdf.parse(fillingDate));
+        calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         String startDate = fillingDate + "-01";
-        String endDate = sdf.format(cal.getTime());
+        String endDate = fillingDate + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         List employeeNumber = new ArrayList();
         List employeeName = new ArrayList();
         for (int i =0;i < projectLaborDao.queryLaborHourInfoByMonth(startDate,endDate).size();i++){
@@ -262,7 +254,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
     }
 
     @Override
-    public List queryLaborHourInfoByProject(HttpServletRequest request) {
+    public List queryLaborHourInfoByProject(HttpServletRequest request) throws ParseException {
         String projectCode = request.getParameter("projectCode");
         List infoList = new ArrayList();
         String fillingDate = request.getParameter("fillingDate");
@@ -275,16 +267,12 @@ public class ProjectLaborImpl implements ProjectLaborService {
             List laborHour = new ArrayList();
             for (int j = 1;j < 13;j++) {
                 fillingDate = request.getParameter("fillingDate") + "-" + (j < 10 ? "0" + j : j);
-                int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
-                int month = Integer.parseInt(fillingDate.split("-")[1]); //月
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.YEAR, year);
-                cal.set(Calendar.MONTH, month - 1);
-                int lastDay = cal.getActualMaximum(Calendar.DATE);
-                cal.set(Calendar.DAY_OF_MONTH, lastDay);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(sdf.parse(fillingDate));
+                calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                 String start = fillingDate + "-01";
-                String end = sdf.format(cal.getTime());
+                String end = fillingDate + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                 laborHour.add(projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).get(i).get("employee_number").toString(),projectCode,start,end) == null ? "0" : projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).get(i).get("employee_number").toString(),projectCode,start,end));
             }
             projectMap.put("laborHour",laborHour);
@@ -294,7 +282,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
     }
 
     @Override
-    public List queryLaborHourInfoByYear(HttpServletRequest request) {
+    public List queryLaborHourInfoByYear(HttpServletRequest request) throws ParseException {
         List infoList = new ArrayList();
         String fillingDate = request.getParameter("fillingDate");
         String startDate = fillingDate + "-01-01";
@@ -307,22 +295,18 @@ public class ProjectLaborImpl implements ProjectLaborService {
             List laborHour = new ArrayList();
             for (int j = 1;j < 13;j++) {
                 fillingDate = request.getParameter("fillingDate") + "-" + (j < 10 ? "0" + j : j);
-                int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
-                int month = Integer.parseInt(fillingDate.split("-")[1]); //月
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.YEAR, year);
-                cal.set(Calendar.MONTH, month - 1);
-                int lastDay = cal.getActualMaximum(Calendar.DATE);
-                cal.set(Calendar.DAY_OF_MONTH, lastDay);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(sdf.parse(fillingDate));
+                calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                 String start = fillingDate + "-01";
-                String end = sdf.format(cal.getTime());
-                String hour = "";
+                String end = fillingDate + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                double hour = 0;
                 for (int k = 0;k < projectLaborDao.queryEmployeeByMonth(projectCode,start,end).size();k++) {
-                    hour += projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,start,end).get(k).get("employee_number").toString(),projectCode,start,end).length() == 1 ? "0" :
-                            projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,start,end).get(k).get("employee_number").toString(),projectCode,start,end);
+                    hour += projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,start,end).get(k).get("employee_number").toString(),projectCode,start,end).length() == 1 ? 0 :
+                            Double.parseDouble(projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,start,end).get(k).get("employee_number").toString(),projectCode,start,end));
                 }
-                laborHour.add(hour.length() == 0 ? "0.0" : hour);
+                laborHour.add(hour == 0 ? "0.0" : String.valueOf(hour));
             }
             projectMap.put("laborHour",laborHour);
             double total = 0;
@@ -333,7 +317,6 @@ public class ProjectLaborImpl implements ProjectLaborService {
             if (total != 0) {
                 infoList.add(projectMap);
             }
-
         }
         return infoList;
     }
