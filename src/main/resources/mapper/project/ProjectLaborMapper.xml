@@ -92,4 +92,8 @@
     <select id="queryEmployeeByMonth" parameterType="string" resultType="HashMap">
         SELECT DISTINCT employee_number,employee_name FROM pro_labor WHERE project_code = #{projectCode} AND filling_date BETWEEN #{startDate} AND #{endDate}
     </select>
+
+    <select id="queryProjectByYear" parameterType="string" resultType="HashMap">
+        SELECT DISTINCT project_code,project_name FROM pro_labor WHERE filling_date BETWEEN #{startDate} AND #{endDate}
+    </select>
 </mapper>

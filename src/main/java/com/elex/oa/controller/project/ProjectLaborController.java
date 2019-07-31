@@ -74,4 +74,10 @@ public class ProjectLaborController {
     public List queryLaborHourInfoByProject (HttpServletRequest request) {
         return projectLaborService.queryLaborHourInfoByProject(request);
     }
+
+    @RequestMapping("/project/queryLaborHour/year")
+    @ResponseBody
+    public List queryLaborHourInfoByYear (HttpServletRequest request) {
+        return projectLaborService.queryLaborHourInfoByYear(request);
+    }
 }

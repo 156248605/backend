@@ -24,4 +24,6 @@ public interface ProjectLaborService {
     Map<String, Object> queryLaborHourInfoByMonth (HttpServletRequest request);
     // 查询某项目某年所有工时
     List queryLaborHourInfoByProject (HttpServletRequest request);
+    // 查询某年所有项目工时
+    List queryLaborHourInfoByYear (HttpServletRequest request);
 }

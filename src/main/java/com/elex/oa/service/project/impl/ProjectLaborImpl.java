@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -289,25 +290,51 @@ public class ProjectLaborImpl implements ProjectLaborService {
             projectMap.put("laborHour",laborHour);
             infoList.add(projectMap);
         }
-        /*for (int i = 1;i < 13;i++) {
-            String fillingDate = request.getParameter("fillingDate") + "-" + (i < 10 ? "0" + i : i);
-            int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
-            int month = Integer.parseInt(fillingDate.split("-")[1]); //月
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.MONTH, month - 1);
-            int lastDay = cal.getActualMaximum(Calendar.DATE);
-            cal.set(Calendar.DAY_OF_MONTH, lastDay);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String startDate = fillingDate + "-01";
-            String endDate = sdf.format(cal.getTime());
-            for (int j = 0;j < projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).size();j++) {
-                String employeeNumber = projectLaborDao.queryEmployeeByMonth(projectCode,startDate,endDate).get(j).toString();
-                Map<String, Object> projectLabor = new HashMap<>();
-                List laborHour = new ArrayList();
+        return infoList;
+    }
 
+    @Override
+    public List queryLaborHourInfoByYear(HttpServletRequest request) {
+        List infoList = new ArrayList();
+        String fillingDate = request.getParameter("fillingDate");
+        String startDate = fillingDate + "-01-01";
+        String endDate = fillingDate + "-12-31";
+        for (int i = 0;i < projectLaborDao.queryProjectByYear(startDate,endDate).size();i++) {
+            Map<String, Object> projectMap = new HashMap<>();
+            String projectCode = projectLaborDao.queryProjectByYear(startDate,endDate).get(i).get("project_code").toString();
+            projectMap.put("projectCode", projectCode);
+            projectMap.put("projectName", projectLaborDao.queryProjectByYear(startDate,endDate).get(i).get("project_name").toString());
+            List laborHour = new ArrayList();
+            for (int j = 1;j < 13;j++) {
+                fillingDate = request.getParameter("fillingDate") + "-" + (j < 10 ? "0" + j : j);
+                int year = Integer.parseInt(fillingDate.split("-")[0]);  //年
+                int month = Integer.parseInt(fillingDate.split("-")[1]); //月
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, month - 1);
+                int lastDay = cal.getActualMaximum(Calendar.DATE);
+                cal.set(Calendar.DAY_OF_MONTH, lastDay);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String start = fillingDate + "-01";
+                String end = sdf.format(cal.getTime());
+                String hour = "";
+                for (int k = 0;k < projectLaborDao.queryEmployeeByMonth(projectCode,start,end).size();k++) {
+                    hour += projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,start,end).get(k).get("employee_number").toString(),projectCode,start,end).length() == 1 ? "0" :
+                            projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,start,end).get(k).get("employee_number").toString(),projectCode,start,end);
+                }
+                laborHour.add(hour.length() == 0 ? "0.0" : hour);
             }
-        }*/
+            projectMap.put("laborHour",laborHour);
+            double total = 0;
+            for (int k = 0;k < laborHour.size();k++) {
+                total += Double.parseDouble(laborHour.get(k).toString());
+            }
+            projectMap.put("total",String.valueOf(total));
+            if (total != 0) {
+                infoList.add(projectMap);
+            }
+
+        }
         return infoList;
     }
 }
