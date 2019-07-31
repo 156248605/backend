@@ -1,5 +1,6 @@
 package com.elex.oa.controller.business;
 
+import com.elex.oa.dao.business.IClueDao;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.business.Clue;
 import com.elex.oa.entity.business.Opportunity;
@@ -30,6 +31,8 @@ public class ClueController {
     HrUtils hrUtils;
     @Resource
     UserUtil userUtil;
+    @Resource
+    IClueDao iClueDao;
 
     @RequestMapping(value = "/getPageInfo",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
@@ -72,7 +75,27 @@ public class ClueController {
         //线索编号的格式暂定为：ELEX-CLU-UN-YYYY-MMNNNN
         String clueCode = hrUtils.getClueCode(username);
         clue.setCode(clueCode);
-        clue.setIn_department(request.getParameter("depName"));
+        List<HashMap<String, Object>> depList = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(request.getParameter("sale_employeenumber")).get(0).get("USER_ID_").toString());
+        String depName = "";
+        if (depList.size() != 0){
+            depName = depList.get(0).get("PATH_").toString();
+            if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
+                for (int j = 0; j < depName.length() - depName.replaceAll("\\.","").length(); j++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            } else {
+                for (int j = 0; j < 2; j++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            }
+        }
+        if (request.getParameter("depName") == null || request.getParameter("depName").length() == 0 || request.getParameter("depName").equals("未选择")) {
+            clue.setIn_department(iClueDao.queryDeptNameByDeptId(depName));
+        } else {
+            clue.setIn_department(request.getParameter("depName"));
+        }
         //调用业务层方法
         return iClueService.addClueInfo(clue);
     }
@@ -105,7 +128,27 @@ public class ClueController {
             List<BusinessAttachment> businessAttachmentList = getBusinessAttachmentList((MultipartHttpServletRequest) request, i);
             clue.setBusinessAttachmentList(businessAttachmentList);
         }
-        clue.setIn_department(request.getParameter("depName"));
+        List<HashMap<String, Object>> depList = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(request.getParameter("sale_employeenumber")).get(0).get("USER_ID_").toString());
+        String depName = "";
+        if (depList.size() != 0){
+            depName = depList.get(0).get("PATH_").toString();
+            if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
+                for (int j = 0; j < depName.length() - depName.replaceAll("\\.","").length(); j++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            } else {
+                for (int j = 0; j < 2; j++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            }
+        }
+        if (request.getParameter("depName") == null || request.getParameter("depName").length() == 0 || request.getParameter("depName").equals("未选择")) {
+            clue.setIn_department(iClueDao.queryDeptNameByDeptId(depName));
+        } else {
+            clue.setIn_department(request.getParameter("depName"));
+        }
         Boolean aBoolean = iClueService.modifyClueInfo(clue);
         return aBoolean?RespUtil.response("200","更新成功！",clue.getCode()):RespUtil.response("500","更新失败！",null);
     }

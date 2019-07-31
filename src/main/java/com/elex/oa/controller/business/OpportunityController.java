@@ -1,5 +1,6 @@
 package com.elex.oa.controller.business;
 
+import com.elex.oa.dao.business.IClueDao;
 import com.elex.oa.entity.business.BusinessAttachment;
 import com.elex.oa.entity.business.Opportunity;
 import com.elex.oa.service.business.IOpportunityService;
@@ -32,6 +33,8 @@ public class OpportunityController {
     HrUtils hrUtils;
     @Resource
     UserUtil userUtil;
+    @Resource
+    IClueDao iClueDao;
 
     @RequestMapping(value = "/opportunity_ADD",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
@@ -50,7 +53,27 @@ public class OpportunityController {
         //商机编号的格式暂定为：ELEX-BIZ-UN-YYYY-MMNNNN
         String opportunityCode = hrUtils.getOpportunityCode(username);
         opportunity.setCode(opportunityCode);
-        opportunity.setIn_department(request.getParameter("depName"));
+        List<HashMap<String, Object>> depList = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(request.getParameter("sale_employeenumber")).get(0).get("USER_ID_").toString());
+        String depName = "";
+        if (depList.size() != 0){
+            depName = depList.get(0).get("PATH_").toString();
+            if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
+                for (int j = 0; j < depName.length() - depName.replaceAll("\\.","").length(); j++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            } else {
+                for (int j = 0; j < 2; j++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            }
+        }
+        if (request.getParameter("depName") == null || request.getParameter("depName").length() == 0 || request.getParameter("depName").equals("未选择")) {
+            opportunity.setIn_department(iClueDao.queryDeptNameByDeptId(depName));
+        } else {
+            opportunity.setIn_department(request.getParameter("depName"));
+        }
         //调用业务层方法
         return iOpportunityService.transforClueToOpportunity(opportunity, username);
     }
@@ -105,7 +128,27 @@ public class OpportunityController {
         if (request.getParameter("projectNumber") != null) {
             opportunity.setProject_number(request.getParameter("projectNumber"));
         }
-        opportunity.setIn_department(request.getParameter("depName"));
+        List<HashMap<String, Object>> depList = iClueDao.queryDeptByUserId(iClueDao.queryUserIdByEmployeeNumber(request.getParameter("sale_employeenumber")).get(0).get("USER_ID_").toString());
+        String depName = "";
+        if (depList.size() != 0){
+            depName = depList.get(0).get("PATH_").toString();
+            if (depName.length() - depName.replaceAll("\\.","").length() == 2 || depName.length() - depName.replaceAll("\\.","").length() == 3) {
+                for (int j = 0; j < depName.length() - depName.replaceAll("\\.","").length(); j++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            } else {
+                for (int j = 0; j < 2; j++) {
+                    depName = depName.substring(depName.indexOf(".") + 1);
+                }
+                depName = depName.substring(0,depName.indexOf("."));
+            }
+        }
+        if (request.getParameter("depName") == null || request.getParameter("depName").length() == 0 || request.getParameter("depName").equals("未选择")) {
+            opportunity.setIn_department(iClueDao.queryDeptNameByDeptId(depName));
+        } else {
+            opportunity.setIn_department(request.getParameter("depName"));
+        }
         Boolean aBoolean = iOpportunityService.modifyOpportunityInfo(opportunity);
         return aBoolean?RespUtil.response("200","更新成功！",opportunity.getCode()):RespUtil.response("500","更新失败！",null);
     }
