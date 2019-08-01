@@ -32,6 +32,8 @@ public interface ProjectLaborDao {
 
     String queryFrequentProjectInfo(ProjectLabor projectLabor);
 
+    String checkLockingInfo();
+
     void updateLockingInfo(@Param("date") String date);
 
     String queryLaborHourInfoByDepartment(

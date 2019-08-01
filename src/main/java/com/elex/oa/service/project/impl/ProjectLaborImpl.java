@@ -157,7 +157,11 @@ public class ProjectLaborImpl implements ProjectLaborService {
     @Override
     public String insertLockingInfo(String date) {
         String result = "success";
-        projectLaborDao.updateLockingInfo(date);
+        if (projectLaborDao.checkLockingInfo().compareTo(date) < 0) {
+            projectLaborDao.updateLockingInfo(date);
+        }else {
+            result = "fail";
+        }
         return result;
     }
 

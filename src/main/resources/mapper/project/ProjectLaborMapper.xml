@@ -65,6 +65,10 @@
         SELECT project_code FROM pro_common WHERE employee_number = #{employeeNumber}
     </select>
 
+    <select id="checkLockingInfo" resultType="string">
+        SELECT * FROM pro_labor_month
+    </select>
+
     <update id="updateLockingInfo" parameterType="string">
         UPDATE pro_labor_month SET locking_time = #{date}
     </update>
