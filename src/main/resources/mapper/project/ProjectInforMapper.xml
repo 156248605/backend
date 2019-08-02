@@ -68,8 +68,7 @@
         <result column="business_manager_code" javaType="string" property="businessManagerCode"/>
         <result column="related_member_code" javaType="string" property="relatedMemberCode"/>
         <result column="project_member_code" javaType="string" property="projectMemberCode"/>
-
-
+        <result column="project_money" javaType="string" property="money"/>
     </resultMap>
 
     <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
@@ -366,7 +365,7 @@
         project_source, project_manager, project_type, general_situation, project_members, related_members, party_name, party_address,
         party_phone, party_fax, head_name, head_position, head_email, contact_name, contact_position, contact_mobile, contact_email,
         project_phase, start_time, end_time, capitalization, classified, weekly_report, next_plan, weekly_report_start,business_manager_code,project_manager_code,project_member_code,related_member_code,weekly_report_end
-        , opportunity_code
+        , opportunity_code, project_money
         FROM pro_pro_infor
         <where>
             <if test="codeSelect == 1 and codeInput != ''">
@@ -452,7 +451,7 @@
         party_address = #{partyAddress}, party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position =
         #{headPosition}, head_mobile = #{headMobile}, head_email = #{headEmail}, contact_name = #{contactName}, contact_position =
         #{contactPosition}, contact_mobile = #{contactMobile}, contact_email = #{contactEmail}, project_member_code = #{projectMemberCode},
-        related_member_code = #{relatedMemberCode} WHERE project_code = #{projectCode}
+        related_member_code = #{relatedMemberCode}, project_money = #{money} WHERE project_code = #{projectCode}
     </update>
 
     <select id="queryInstStatus" parameterType="string" resultType="string">

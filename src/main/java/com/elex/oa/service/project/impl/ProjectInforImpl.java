@@ -771,6 +771,15 @@ public class ProjectInforImpl implements ProjectInforService {
             map.put(SUFFIX, projectInfor.getContactEmail());
             list.add(map);
         }
+
+        marker = columnValidate(projectInfor.getMoney(), infor.getMoney());
+        if(marker) {
+            map = new HashMap<>();
+            map.put(COLUMN, "项目金额");
+            map.put(PREFIX, infor.getMoney());
+            map.put(SUFFIX, projectInfor.getMoney());
+            list.add(map);
+        }
         return list;
     }
 
