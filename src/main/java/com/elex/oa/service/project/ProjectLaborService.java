@@ -15,7 +15,7 @@ public interface ProjectLaborService {
     // 查询员工常用项目
     String updateFrequentProjectInfo(HttpServletRequest request,String employeeNumber);
     // 锁定工时数据
-    String insertLockingInfo(String date);
+    String insertLockingInfo(String date) throws ParseException;
     // 查询部门下每人每月工时
     Map<String,Object> queryLaborHourInfoByDepartment (HttpServletRequest request,String deptId) throws ParseException;
     // 获取部门下所有人

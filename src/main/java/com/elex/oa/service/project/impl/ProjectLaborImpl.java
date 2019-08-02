@@ -5,6 +5,7 @@ import com.elex.oa.dao.project.ProjectLaborDao;
 import com.elex.oa.entity.project.ProjectLabor;
 import com.elex.oa.service.project.ProjectLaborService;
 import com.elex.oa.util.hr_util.TimeUtil;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -155,10 +156,34 @@ public class ProjectLaborImpl implements ProjectLaborService {
     }
 
     @Override
-    public String insertLockingInfo(String date) {
+    public String insertLockingInfo(String date) throws ParseException {
+        int month = (Integer.parseInt(date.substring(0,4)) - Integer.parseInt(projectLaborDao.queryLaborStatus().substring(0,4))) * 12 + Integer.parseInt(date.substring(5)) - Integer.parseInt(projectLaborDao.queryLaborStatus().substring(5));
         String result = "success";
         if (projectLaborDao.checkLockingInfo().compareTo(date) < 0) {
-            projectLaborDao.updateLockingInfo(date);
+            for (int k = 0;k < month;k++) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(sdf.parse(date));
+                calendar.add(Calendar.MONTH, -k);
+                calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                String dateStr = sdf.format(calendar.getTime());
+                String start = dateStr + "-01";
+                String end = dateStr + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                List<HashMap<String, Object>> employeeList = projectLaborDao.queryLaborHourInfoByMonth(start,end);
+                for (int i = 0;i < employeeList.size();i++) {
+                    String employeeNumber = employeeList.get(i).get("employee_number").toString();
+                    String employeeName = employeeList.get(i).get("employee_name").toString();
+                    List<ProjectLabor> projectList = projectLaborDao.queryProject(employeeNumber);
+                    for (int j = 0;j < projectList.size();j++) {
+                        String projectCode = projectList.get(j).getProjectCode();
+                        String projectName = projectList.get(j).getProjectName();
+                        String id = employeeNumber + dateStr + projectCode;
+                        String idYear = employeeNumber + dateStr.substring(0,4) + projectCode;
+                        projectLaborDao.saveLockingInfo(id,employeeNumber,employeeName,dateStr,projectCode,projectName,projectLaborDao.queryLaborHourInfoByDepartment(employeeNumber,projectCode,start,end) == null ? "0" : projectLaborDao.queryLaborHourInfoByDepartment(employeeNumber,projectCode,start,end));
+                        projectLaborDao.plusLockingInfoByYear(idYear,employeeNumber,employeeName,dateStr.substring(0,4),projectCode,projectName,projectLaborDao.queryLaborHourInfoByDepartment(employeeNumber,projectCode,start,end) == null ? "0" : projectLaborDao.queryLaborHourInfoByDepartment(employeeNumber,projectCode,start,end));
+                    }
+                }
+            }
         }else {
             result = "fail";
         }
@@ -185,12 +210,13 @@ public class ProjectLaborImpl implements ProjectLaborService {
             Map<String,Object> projectMap = new HashMap<>();
             projectMap.put("employeeNumber",employeeArray.get(i).toString());
             projectMap.put("employeeName",employeeNameArray.get(i).toString());
+            System.out.println(employeeArray.get(i).toString());
             projectList = projectLaborDao.queryProject(employeeArray.get(i).toString());
             Map<String,Object> laborMap = new HashMap<>();
             List projectCodeList = new ArrayList();
             List projectNameList = new ArrayList();
             for (int j = 0;j < projectList.size();j++) {
-                if (!"0.0".equals(projectLaborDao.queryLaborHourInfoByDepartment(employeeArray.get(i).toString(),projectList.get(j).getProjectCode(),startDate,endDate))) {
+                if (!"0.0".equals(projectLaborDao.queryLaborHourInfoByDepartment(employeeArray.get(i).toString(),projectList.get(j).getProjectCode(),startDate,endDate)) && projectLaborDao.queryLaborHourInfoByDepartment(employeeArray.get(i).toString(),projectList.get(j).getProjectCode(),startDate,endDate) != null) {
                     laborMap.put(projectList.get(j).getProjectCode(),projectLaborDao.queryLaborHourInfoByDepartment(employeeArray.get(i).toString(),projectList.get(j).getProjectCode(),startDate,endDate));
                     projectCodeList.add(projectList.get(j).getProjectCode());
                     projectNameList.add(projectList.get(j).getProjectName());
@@ -291,11 +317,13 @@ public class ProjectLaborImpl implements ProjectLaborService {
         String fillingDate = request.getParameter("fillingDate");
         String startDate = fillingDate + "-01-01";
         String endDate = fillingDate + "-12-31";
-        for (int i = 0;i < projectLaborDao.queryProjectByYear(startDate,endDate).size();i++) {
+        List<HashMap<String, Object>> projectList = projectLaborDao.queryProjectByYear(startDate,endDate);
+        for (int i = 0;i < projectList.size();i++) {
             Map<String, Object> projectMap = new HashMap<>();
-            String projectCode = projectLaborDao.queryProjectByYear(startDate,endDate).get(i).get("project_code").toString();
+            String projectCode = projectList.get(i).get("project_code").toString();
+            String projectName = projectList.get(i).get("project_name").toString();
             projectMap.put("projectCode", projectCode);
-            projectMap.put("projectName", projectLaborDao.queryProjectByYear(startDate,endDate).get(i).get("project_name").toString());
+            projectMap.put("projectName", projectName);
             List laborHour = new ArrayList();
             for (int j = 1;j < 13;j++) {
                 fillingDate = request.getParameter("fillingDate") + "-" + (j < 10 ? "0" + j : j);
@@ -306,10 +334,20 @@ public class ProjectLaborImpl implements ProjectLaborService {
                 String start = fillingDate + "-01";
                 String end = fillingDate + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                 double hour = 0;
-                for (int k = 0;k < projectLaborDao.queryEmployeeByMonth(projectCode,start,end).size();k++) {
-                    hour += projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,start,end).get(k).get("employee_number").toString(),projectCode,start,end).length() == 1 ? 0 :
-                            Double.parseDouble(projectLaborDao.queryLaborHourInfoByDepartment(projectLaborDao.queryEmployeeByMonth(projectCode,start,end).get(k).get("employee_number").toString(),projectCode,start,end));
+                if (fillingDate.compareTo(projectLaborDao.checkLockingInfo()) <= 0) {
+                    if (projectLaborDao.queryLaborHourInRecord(fillingDate,projectCode) == null) {
+                        hour = 0;
+                    }else {
+                        hour = Double.parseDouble(projectLaborDao.queryLaborHourInRecord(fillingDate, projectCode));
+                    }
+                }else {
+                    if (projectLaborDao.queryLaborHourInLabor(start,end,projectCode) == null) {
+                        hour = 0;
+                    }else {
+                        hour = Double.parseDouble(projectLaborDao.queryLaborHourInLabor(start,end,projectCode));
+                    }
                 }
+
                 laborHour.add(hour == 0 ? "0.0" : String.valueOf(hour));
             }
             projectMap.put("laborHour",laborHour);

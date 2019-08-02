@@ -47,7 +47,7 @@ public class ProjectLaborController {
 
     @RequestMapping("/lock/{date}/insert")
     @ResponseBody
-    public String insertLockingInfo (@PathVariable("date") String date) {
+    public String insertLockingInfo (@PathVariable("date") String date) throws ParseException {
         return projectLaborService.insertLockingInfo(date);
     }
 

@@ -4,7 +4,6 @@ import com.elex.oa.entity.project.ProjectLabor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,8 +33,6 @@ public interface ProjectLaborDao {
 
     String checkLockingInfo();
 
-    void updateLockingInfo(@Param("date") String date);
-
     String queryLaborHourInfoByDepartment(
             @Param("employeeNumber") String employeeNumber,
             @Param("projectCode") String projectCode,
@@ -63,5 +60,36 @@ public interface ProjectLaborDao {
     List<HashMap<String,Object>> queryProjectByYear(
             @Param("startDate") String startDate,
             @Param("endDate") String endDate
+    );
+
+    void saveLockingInfo(
+            @Param("id") String id,
+            @Param("employeeNumber") String employeeNumber,
+            @Param("employeeName") String employeeName,
+            @Param("fillingDate") String date,
+            @Param("projectCode") String projectCode,
+            @Param("projectName") String projectName,
+            @Param("laborHour") String laborHour
+    );
+
+    void plusLockingInfoByYear(
+            @Param("id") String id,
+            @Param("employeeNumber") String employeeNumber,
+            @Param("employeeName") String employeeName,
+            @Param("fillingDate") String date,
+            @Param("projectCode") String projectCode,
+            @Param("projectName") String projectName,
+            @Param("laborHour") String laborHour
+    );
+
+    String queryLaborHourInRecord(
+            @Param("fillingDate") String date,
+            @Param("projectCode") String projectCode
+    );
+
+    String queryLaborHourInLabor(
+            @Param("startDate") String startDate,
+            @Param("endDate") String endDate,
+            @Param("projectCode") String projectCode
     );
 }

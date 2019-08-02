@@ -69,16 +69,12 @@
         SELECT * FROM pro_labor_month
     </select>
 
-    <update id="updateLockingInfo" parameterType="string">
-        UPDATE pro_labor_month SET locking_time = #{date}
-    </update>
-
     <select id="queryLaborHourInfoByDepartment" parameterType="string" resultType="string">
         SELECT SUM(labor_hour) FROM pro_labor WHERE employee_number = #{employeeNumber} AND filling_date BETWEEN #{startDate} AND #{endDate} AND project_code = #{projectCode}
     </select>
 
     <select id="queryProject" parameterType="string" resultMap="projectLabor">
-        SELECT DISTINCT project_code,project_name FROM pro_labor WHERE employee_number = #{employeeNumber}
+        SELECT MIN(project_code) AS project_code,project_name FROM pro_labor WHERE employee_number = #{employeeNumber} GROUP BY project_code
     </select>
 
     <select id="queryDepartment" parameterType="string" resultType="java.lang.String">
@@ -98,6 +94,51 @@
     </select>
 
     <select id="queryProjectByYear" parameterType="string" resultType="HashMap">
-        SELECT DISTINCT project_code,project_name FROM pro_labor WHERE filling_date BETWEEN #{startDate} AND #{endDate}
+        SELECT MIN(project_code) AS project_code,project_name FROM pro_labor WHERE filling_date BETWEEN #{startDate} AND #{endDate} GROUP BY project_code
+    </select>
+    
+    <insert id="saveLockingInfo" parameterType="string">
+        INSERT INTO
+            pro_labor_record(id,employee_number,employee_name,filling_date,project_code,project_name,labor_hour)
+        VALUES
+            (#{id},#{employeeNumber},#{employeeName},#{fillingDate},#{projectCode},#{projectName},#{laborHour})
+    </insert>
+
+    <insert id="updateLockingInfoByYear" parameterType="string">
+        INSERT INTO
+            pro_labor_record(id,employee_number,employee_name,filling_date,project_code,project_name,labor_hour)
+        VALUES
+            (#{id},#{employeeNumber},#{employeeName},#{fillingDate},#{projectCode},#{projectName},#{laborHour})
+        ON DUPLICATE KEY UPDATE
+            id = #{id},
+            employee_number = #{employeeNumber},
+            employee_name = #{employeeName},
+            filling_date = #{fillingDate},
+            project_code = #{projectCode},
+            project_name = #{projectName},
+            labor_hour = #{laborHour}
+    </insert>
+
+    <insert id="plusLockingInfoByYear" parameterType="string">
+        INSERT INTO
+            pro_labor_record(id,employee_number,employee_name,filling_date,project_code,project_name,labor_hour)
+        VALUES
+            (#{id},#{employeeNumber},#{employeeName},#{fillingDate},#{projectCode},#{projectName},#{laborHour})
+        ON DUPLICATE KEY UPDATE
+            id = #{id},
+            employee_number = #{employeeNumber},
+            employee_name = #{employeeName},
+            filling_date = #{fillingDate},
+            project_code = #{projectCode},
+            project_name = #{projectName},
+            labor_hour = labor_hour + #{laborHour}
+    </insert>
+
+    <select id="queryLaborHourInRecord" parameterType="string" resultType="string">
+        SELECT SUM(labor_hour) FROM pro_labor_record WHERE filling_date = #{fillingDate} AND project_code = #{projectCode}
+    </select>
+
+    <select id="queryLaborHourInLabor" parameterType="string" resultType="string">
+        SELECT SUM(labor_hour) FROM pro_labor WHERE filling_date BETWEEN #{startDate} AND #{endDate} AND project_code = #{projectCode}
     </select>
 </mapper>
