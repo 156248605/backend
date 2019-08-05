@@ -69,6 +69,8 @@
         <result column="related_member_code" javaType="string" property="relatedMemberCode"/>
         <result column="project_member_code" javaType="string" property="projectMemberCode"/>
         <result column="project_money" javaType="string" property="money"/>
+        <result column="related_member_code" javaType="string" property="relatedMmemberCode"/>
+        <result column=" project_member_code" javaType="string" property="projectMemberCode"/>
     </resultMap>
 
     <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
@@ -366,6 +368,7 @@
         party_phone, party_fax, head_name, head_position, head_email, contact_name, contact_position, contact_mobile, contact_email,
         project_phase, start_time, end_time, capitalization, classified, weekly_report, next_plan, weekly_report_start,business_manager_code,project_manager_code,project_member_code,related_member_code,weekly_report_end
         , opportunity_code, project_money
+        , opportunity_code
         FROM pro_pro_infor
         <where>
             <if test="codeSelect == 1 and codeInput != ''">
