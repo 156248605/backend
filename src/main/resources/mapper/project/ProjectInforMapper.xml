@@ -71,6 +71,8 @@
         <result column="project_money" javaType="string" property="money"/>
         <result column="related_member_code" javaType="string" property="relatedMmemberCode"/>
         <result column=" project_member_code" javaType="string" property="projectMemberCode"/>
+        <result column="related_member_code" javaType="string" property="relatedMmemberCode"/>
+        <result column=" project_member_code" javaType="string" property="projectMemberCode"/>
     </resultMap>
 
     <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
