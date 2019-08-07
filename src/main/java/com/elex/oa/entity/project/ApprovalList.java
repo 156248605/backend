@@ -19,17 +19,20 @@ public class ApprovalList {
     private String projectPhase; //项目阶段
     private String capitalization; //资本化
     private String classified; //涉密
+
+
+
     private String relCode; //关联编码
     private String projectManager; //交付经理
     private String projectManagerId; //交付经理编码
     private String generalSituation; //项目概况
     private String departmentManager; //部门经理
-
+    private String money;//项目金额
 
     public ApprovalList() {
     }
 
-    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String projectStatus, String projectSource, String projectType, String inDepartment, String deptManager, String proposer, String startTime, String endTime, String businessManager, String businessManagerId, String projectPhase, String capitalization, String classified, String relCode, String projectManager, String projectManagerId, String generalSituation, String departmentManager) {
+    public ApprovalList(int id, String projectCode, String projectName, String writeDate, String projectStatus, String projectSource, String projectType, String inDepartment, String deptManager, String proposer, String startTime, String endTime, String businessManager, String businessManagerId, String projectPhase, String capitalization, String classified, String relCode, String projectManager, String projectManagerId, String generalSituation, String departmentManager,String money) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -52,6 +55,7 @@ public class ApprovalList {
         this.projectManagerId = projectManagerId;
         this.generalSituation = generalSituation;
         this.departmentManager = departmentManager;
+        this.money = money;
     }
 
     public int getId() {
@@ -229,7 +233,13 @@ public class ApprovalList {
     public void setDepartmentManager(String departmentManager) {
         this.departmentManager = departmentManager;
     }
+    public String getMoney() {
+        return money;
+    }
 
+    public void setMoney(String money) {
+        this.money = money;
+    }
     @Override
     public String toString() {
         return "ApprovalList{" +
@@ -255,6 +265,7 @@ public class ApprovalList {
                 ", projectManagerId='" + projectManagerId + '\'' +
                 ", generalSituation='" + generalSituation + '\'' +
                 ", departmentManager='" + departmentManager + '\'' +
+                ", money='" + money + '\'' +
                 '}';
     }
 }
