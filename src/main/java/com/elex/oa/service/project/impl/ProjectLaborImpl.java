@@ -317,6 +317,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
         String fillingDate = request.getParameter("fillingDate");
         String startDate = fillingDate + "-01-01";
         String endDate = fillingDate + "-12-31";
+        String lockDate = projectLaborDao.checkLockingInfo();
         List<HashMap<String, Object>> projectList = projectLaborDao.queryProjectByYear(startDate,endDate);
         for (int i = 0;i < projectList.size();i++) {
             Map<String, Object> projectMap = new HashMap<>();
@@ -333,19 +334,11 @@ public class ProjectLaborImpl implements ProjectLaborService {
                 calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                 String start = fillingDate + "-01";
                 String end = fillingDate + "-" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-                double hour = 0;
-                if (fillingDate.compareTo(projectLaborDao.checkLockingInfo()) <= 0) {
-                    if (projectLaborDao.queryLaborHourInRecord(fillingDate,projectCode) == null) {
-                        hour = 0;
-                    }else {
-                        hour = Double.parseDouble(projectLaborDao.queryLaborHourInRecord(fillingDate, projectCode));
-                    }
+                double hour;
+                if (fillingDate.compareTo(lockDate) <= 0) {
+                    hour = Double.parseDouble(projectLaborDao.queryLaborHourInRecord(fillingDate, projectCode));
                 }else {
-                    if (projectLaborDao.queryLaborHourInLabor(start,end,projectCode) == null) {
-                        hour = 0;
-                    }else {
-                        hour = Double.parseDouble(projectLaborDao.queryLaborHourInLabor(start,end,projectCode));
-                    }
+                    hour = Double.parseDouble(projectLaborDao.queryLaborHourInLabor(start,end,projectCode));
                 }
 
                 laborHour.add(hour == 0 ? "0.0" : String.valueOf(hour));
@@ -355,7 +348,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
             for (int k = 0;k < laborHour.size();k++) {
                 total += Double.parseDouble(laborHour.get(k).toString());
             }
-            projectMap.put("total",String.valueOf(total));
+            projectMap.put("total",String.valueOf(total).substring(0,String.valueOf(total).indexOf(".") + 2));
             if (total != 0) {
                 infoList.add(projectMap);
             }

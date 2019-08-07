@@ -135,10 +135,10 @@
     </insert>
 
     <select id="queryLaborHourInRecord" parameterType="string" resultType="string">
-        SELECT SUM(labor_hour) FROM pro_labor_record WHERE filling_date = #{fillingDate} AND project_code = #{projectCode}
+        SELECT ifnull(SUM(labor_hour),0) FROM pro_labor_record WHERE filling_date = #{fillingDate} AND project_code = #{projectCode}
     </select>
 
     <select id="queryLaborHourInLabor" parameterType="string" resultType="string">
-        SELECT SUM(labor_hour) FROM pro_labor WHERE filling_date BETWEEN #{startDate} AND #{endDate} AND project_code = #{projectCode}
+        SELECT ifnull(SUM(labor_hour),0) FROM pro_labor WHERE filling_date BETWEEN #{startDate} AND #{endDate} AND project_code = #{projectCode}
     </select>
 </mapper>
