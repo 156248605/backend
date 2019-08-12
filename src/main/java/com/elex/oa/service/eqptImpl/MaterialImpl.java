@@ -26,8 +26,23 @@ public class MaterialImpl implements MaterialService {
     // 物料信息
     @Override
     public PageInfo<Material> showMaterial(Page page,HttpServletRequest request){
+        String cateStr = "";
+        if (request.getParameter("userName").equals("管理员")) {
+            cateStr = "admin";
+        }else {
+            String[] strArr = materialMapper.getUserCategoty(request.getParameter("userName")).split(";");
+            for (int i = 0;i < strArr.length;i++) {
+                if (i == strArr.length - 1) {
+                    cateStr += "'" + strArr[i] + "'";
+                }else {
+                    cateStr += "'" + strArr[i] + "'" + ",";
+                }
+            }
+        }
+        Material material = new Material();
+        material.setReptAdmin(cateStr);
         PageHelper.startPage(page.getCurrentPage(),page.getRows());
-        List<Material> listM = materialMapper.MaterialList(request.getParameter("userName"));
+        List<Material> listM = materialMapper.MaterialList(material);
         return new PageInfo<>(listM);
     }
 
@@ -44,12 +59,6 @@ public class MaterialImpl implements MaterialService {
         String SPECC = request.getParameter("specC");
         String BRAND = request.getParameter("brand");
         String BRANDC = request.getParameter("brandC");
-        /*String SDATE = "";
-        String EDATE = "";
-        if (request.getParameter("date").length() > 10) {
-            SDATE = request.getParameter("date").substring(2,12);
-            EDATE = request.getParameter("date").substring(15,25);
-        }*/
         String CATEGORY = request.getParameter("category");
         String CATEGORYC = request.getParameter("categoryC");
         String PRICE = request.getParameter("price");
@@ -78,10 +87,40 @@ public class MaterialImpl implements MaterialService {
         String NOTSINGLEC = request.getParameter("notSingleC");
         String REPTADMIN = request.getParameter("reptAdmin");
         if (ID == null && NAME == null && MAT == null && BRAND == null && CATEGORY == null && MAXLIMIT == null && MINLIMIT == null && UNIT == null && NUM == null && PRICE == null && REMARK == null && SPEC == null && NOTSINGLE == null && SINGLEMANAGE == null && BSMANAGE == null && FIXPOSITION == null && NEEDCHECK == null && MATERIALSTATE == null) {
+            String cateStr = "";
+            if (REPTADMIN.equals("管理员")) {
+                cateStr = "admin";
+            }else {
+                List cateList = new ArrayList();
+                cateList.add(materialMapper.getUserCategoty(request.getParameter("userName")).split(";"));
+                for (int i = 0;i < cateList.size();i++) {
+                    if (i == cateList.size() - 1) {
+                        cateStr += cateList.get(i).toString();
+                    }else {
+                        cateStr += cateList.get(i).toString() + ",";
+                    }
+                }
+            }
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
-            List<Material> listM = materialMapper.MaterialList(request.getParameter("userName"));
+            Material material = new Material();
+            material.setReptAdmin(cateStr);
+            List<Material> listM = materialMapper.MaterialList(material);
             return new PageInfo<>(listM);
         }else {
+            String cateStr = "";
+            if (REPTADMIN.equals("管理员")) {
+                cateStr = "admin";
+            }else {
+                List cateList = new ArrayList();
+                cateList.add(materialMapper.getUserCategoty(request.getParameter("userName")).split(";"));
+                for (int i = 0;i < cateList.size();i++) {
+                    if (i == cateList.size() - 1) {
+                        cateStr += cateList.get(i).toString();
+                    }else {
+                        cateStr += cateList.get(i).toString() + ",";
+                    }
+                }
+            }
             PageHelper.startPage(page.getCurrentPage(), page.getRows());
             Material material = new Material();
             material.setId(ID);
@@ -120,7 +159,7 @@ public class MaterialImpl implements MaterialService {
             material.setSingleManageC(SINGLEMANAGEC);
             material.setNotSingle(NOTSINGLE);
             material.setNotSingleC(NOTSINGLEC);
-            material.setReptAdmin(REPTADMIN);
+            material.setReptAdmin(cateStr);
             List<Material> listM = materialMapper.SearchMaterial(material);
             return new PageInfo<>(listM);
         }

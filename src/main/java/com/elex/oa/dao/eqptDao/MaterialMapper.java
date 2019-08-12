@@ -15,7 +15,7 @@ import java.util.List;
 public interface MaterialMapper {
 
     // 遍历所有启用物料
-    List<Material> MaterialList(String userName);
+    List<Material> MaterialList(Material material);
     // 条件查询物料
     List<Material> SearchMaterial(Material material);
     // 根据id定位物料
@@ -74,4 +74,8 @@ public interface MaterialMapper {
 
     // 获取物料类别
     List<HashMap<String,Object>> getCategory(String reptId);
+
+    // 获取登录人绑定物料
+    String getUserCategoty(String userId);
+
 }

@@ -2,11 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.elex.oa.dao.eqptDao.MaterialMapper">
 
-    <select id="MaterialList" resultType="com.elex.oa.entity.eqpt.Material" parameterType="string">
-        SELECT * FROM eqpt_material
-        <if test="_parameter != '管理员'">
-            where category in (select bindCategory from eqpt_repository WHERE reptAdmin = #{_parameter})
-        </if>
+    <select id="getUserCategoty" resultType="string" parameterType="string">
+        select GROUP_CONCAT(bindCategory SEPARATOR ';') AS bindCategory from eqpt_repository WHERE reptAdmin = #{_parameter}
+    </select>
+
+    <select id="MaterialList" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
+        SELECT * FROM eqpt_material WHERE category in ( ${reptAdmin} )
     </select>
 
     <select id="searchList" resultType="com.elex.oa.entity.eqpt.Material">
@@ -34,7 +35,7 @@
         SELECT * FROM eqpt_material
         <where>
             <if test="reptAdmin != '管理员'">
-                AND category in (select bindCategory from eqpt_repository WHERE reptAdmin = #{reptAdmin})
+                AND category in (${reptAdmin})
             </if>
             <if test="id != null and id != '' and idC == ''">
                 AND id LIKE CONCAT(CONCAT('%', #{id}), '%')
