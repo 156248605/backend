@@ -82,7 +82,7 @@
     </select>
 
     <select id="queryEmployee" parameterType="string" resultType="HashMap">
-        SELECT EMPLOYEE_NUMBER_,FULLNAME_ FROM os_user WHERE USER_ID_ IN (SELECT PARTY2_ FROM os_rel_inst WHERE PARTY1_ IN (#{deptId}) AND REL_TYPE_KEY_ = 'GROUP-USER-BELONG')
+        SELECT EMPLOYEE_NUMBER_,FULLNAME_ FROM os_user WHERE USER_ID_ IN (SELECT PARTY2_ FROM os_rel_inst WHERE PARTY1_ IN (#{deptId}) AND REL_TYPE_KEY_ = 'GROUP-USER-BELONG') AND STATUS_ = 'IN_JOB'
     </select>
 
     <select id="queryLaborHourInfoByMonth" parameterType="string" resultType="HashMap">
