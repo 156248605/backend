@@ -26,15 +26,6 @@ public class ProjectInfor {
     private String projectMembers; //项目成员
     private String projectMemberId; //项目成员id
     private String projectMemberCode; //项目成语id,用于查询
-
-    public String getRelatedMmemberCode() {
-        return relatedMmemberCode;
-    }
-
-    public void setRelatedMmemberCode(String relatedMmemberCode) {
-        this.relatedMmemberCode = relatedMmemberCode;
-    }
-
     private String relatedMembers; //相关人员
     private String relatedMemberId; //相关人员id
     private String relatedMemberCode; //相关人员id,用于查询
@@ -57,7 +48,6 @@ public class ProjectInfor {
     private String weeklyReportEnd;//周计划结束时间
     private String opportunityCode;//商机转项目编号
     private String money;   // 项目金额
-    private String relatedMmemberCode;
     public Integer getAmendId() {
         return amendId;
     }

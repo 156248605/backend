@@ -70,9 +70,7 @@
         <result column="related_member_code" javaType="string" property="relatedMemberCode"/>
         <result column="project_member_code" javaType="string" property="projectMemberCode"/>
         <result column="project_money" javaType="string" property="money"/>
-        <result column="related_member_code" javaType="string" property="relatedMmemberCode"/>
         <result column=" project_member_code" javaType="string" property="projectMemberCode"/>
-        <result column="related_member_code" javaType="string" property="relatedMmemberCode"/>
         <result column=" project_member_code" javaType="string" property="projectMemberCode"/>
     </resultMap>
 
@@ -205,6 +203,10 @@
 
     <select id="queryOsUser" resultMap="osUser">
         SELECT USER_ID_ , FULLNAME_ FROM os_user
+    </select>
+
+    <select id="queryOsUserByUserId" resultMap="osUser" parameterType="string">
+        SELECT USER_ID_ , FULLNAME_ FROM os_user WHERE USER_ID_ = #{userId}
     </select>
 
     <select id="queryBusiness" resultMap="memberInfor">

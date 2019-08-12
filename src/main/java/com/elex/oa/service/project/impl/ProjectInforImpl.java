@@ -451,30 +451,45 @@ public class ProjectInforImpl implements ProjectInforService {
     @Override
     public String amendPro(ProjectInfor projectInfor, String updateBy) {
         ProjectInfor infor = projectInforDao.queryInforByCode(projectInfor.getProjectCode()); //根据项目编号获取项目信息
-        List<OsUser> osUsers = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
         StringBuilder projectMembers = new StringBuilder(), relateMembers = new StringBuilder();
-        String businessManager="";
-        String projectManager="";
-        for(OsUser osUser:osUsers) {
-            if(StringUtils.isNotBlank(projectInfor.getProjectMembers()) && projectInfor.getProjectMembers().contains(osUser.getFullName())) {
-                projectMembers.append(osUser.getUserId());
-                projectMembers.append(";");
-            }
-            if(StringUtils.isNotBlank(projectInfor.getRelatedMembers()) && projectInfor.getRelatedMembers().contains(osUser.getFullName())) {
-                relateMembers.append(osUser.getUserId());
-                relateMembers.append(";");
-            }
-            if(StringUtils.isNotBlank(projectInfor.getBusinessManager()) && projectInfor.getBusinessManager().equals(osUser.getFullName()) ){
-                businessManager=osUser.getUserId();
-            }
-            if(StringUtils.isNotBlank(projectInfor.getProjectManager()) && projectInfor.getProjectManager().equals(osUser.getFullName()) ){
-                projectManager=osUser.getUserId();
-            }
+        //商务经理工号
+        String businessManagerId = projectInfor.getBusinessManagerId();
+        //交付经理工号
+        String projectManagerId = projectInfor.getProjectManagerId();
+        //项目成员工号
+        String [] projectMemberIdArr = projectInfor.getProjectMemberId().split(";");
+        //相关成员工号
+        String [] RrelatedMemberArr = projectInfor.getRelatedMemberId().split(";");
+        OsUser osUser;
+        if(StringUtils.isNotBlank(businessManagerId)){
+            osUser = this.projectInforDao.queryOsUserByUserId(businessManagerId);
+            projectInfor.setBusinessManagerCode(osUser.getUserId());
         }
-        projectInfor.setProjectMemberCode(projectMembers.toString());
-        projectInfor.setRelatedMemberCode(relateMembers.toString());
-        projectInfor.setBusinessManagerCode(businessManager);
-        projectInfor.setProjectManagerCode(projectManager);
+        if(StringUtils.isNotBlank(projectManagerId)){
+             osUser = this.projectInforDao.queryOsUserByUserId(projectManagerId);
+            projectInfor.setProjectManagerCode(osUser.getUserId());
+        }
+        if(projectMemberIdArr.length>0){
+            for(String projectMemberId:projectMemberIdArr){
+                if(StringUtils.isNotBlank(projectMemberId)){
+                    osUser = this.projectInforDao.queryOsUserByUserId(projectMemberId);
+                    projectMembers.append(osUser.getUserId());
+                    projectMembers.append(";");
+                }
+            }
+            projectInfor.setProjectMemberCode(projectMembers.toString());
+
+        }
+        if(RrelatedMemberArr.length>0){
+            for(String releatedId:RrelatedMemberArr){
+                if(StringUtils.isNotBlank(releatedId)){
+                    osUser = this.projectInforDao.queryOsUserByUserId(releatedId);
+                    relateMembers.append(osUser.getUserId());
+                    relateMembers.append(";");
+                }
+            }
+            projectInfor.setRelatedMemberCode(relateMembers.toString());
+        }
         projectInforDao.amendPro(projectInfor); //修改项目信息
 
         List<Map<String, String>> record = generateRecord(projectInfor, infor);
@@ -495,29 +510,59 @@ public class ProjectInforImpl implements ProjectInforService {
 
     public Object proDiff(ProjectInfor projectInforNew, String updateBy) {
         Map<String,Object> returnMap = new HashMap<>();
-        ProjectInfor projectInfor1 = projectInforDao.queryInforByCodeNew(projectInforNew.getProjectCode()); //根据项目编号获取项目信息
-        List<OsUser> users = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
-        if(StringUtils.isNotBlank(projectInfor1.getProjectManager())&&projectInfor1.getProjectManager().equals(projectInforNew.getProjectManager())){
-            projectInforNew.setProjectManagerCode(projectInfor1.getProjectManagerCode());
+        ProjectInfor projectInforOld = projectInforDao.queryInforByCodeNew(projectInforNew.getProjectCode()); //根据项目编号获取项目信息
+/*        List<OsUser> users = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
+        if(StringUtils.isNotBlank(projectInforOld.getProjectManager())&&projectInforOld.getProjectManager().equals(projectInforNew.getProjectManager())){
+            projectInforNew.setProjectManagerCode(projectInforOld.getProjectManagerCode());
         }
-        if(StringUtils.isNotBlank(projectInfor1.getBusinessManager())&&projectInfor1.getBusinessManager().equals(projectInforNew.getBusinessManager())){
-            projectInforNew.setBusinessManagerCode(projectInfor1.getBusinessManagerCode());
+        if(StringUtils.isNotBlank(projectInforOld.getBusinessManager())&&projectInforOld.getBusinessManager().equals(projectInforNew.getBusinessManager())){
+            projectInforNew.setBusinessManagerCode(projectInforOld.getBusinessManagerCode());
+        }*/
+        StringBuilder projectMembers = new StringBuilder(),
+        relateMembers = new StringBuilder();
+        //商务经理工号
+        String businessManagerId = projectInforNew.getBusinessManagerId();
+        //交付经理工号
+        String projectManagerId = projectInforNew.getProjectManagerId();
+        //项目成员工号
+        String [] projectMemberIdArr = projectInforNew.getProjectMemberId().split(";");
+        //相关成员工号
+        String [] RrelatedMemberArr = projectInforNew.getRelatedMemberId().split(";");
+        OsUser osUser;
+        if(StringUtils.isNotBlank(businessManagerId)){
+            osUser = this.projectInforDao.queryOsUserByUserId(businessManagerId);
+            projectInforNew.setBusinessManagerCode(osUser.getUserId());
         }
-        StringBuilder stringBuilder1 = new StringBuilder(),
-        stringBuilder2 = new StringBuilder();
-        for(OsUser osUser:users) {
-            if(StringUtils.isNotBlank(projectInforNew.getProjectMembers()) && projectInforNew.getProjectMembers().contains(osUser.getFullName())) {
-                stringBuilder1.append(osUser.getUserId());
-                stringBuilder1.append(";");
+        if(StringUtils.isNotBlank(projectManagerId)){
+            osUser = this.projectInforDao.queryOsUserByUserId(projectManagerId);
+            projectInforNew.setProjectManagerCode(osUser.getUserId());
+        }
+
+
+        if(projectMemberIdArr.length>0){
+            for(String projectMemberId:projectMemberIdArr){
+                if(StringUtils.isNotBlank(projectMemberId)){
+                    osUser = this.projectInforDao.queryOsUserByUserId(projectMemberId);
+                    projectMembers.append(osUser.getUserId());
+                    projectMembers.append(";");
+                }
             }
-            if(StringUtils.isNotBlank(projectInforNew.getRelatedMembers()) && projectInforNew.getRelatedMembers().contains(osUser.getFullName())) {
-                stringBuilder2.append(osUser.getUserId());
-                stringBuilder2.append(";");
-            }
+            projectInforNew.setProjectMemberCode(projectMembers.toString());
+
         }
-        projectInforNew.setProjectMemberCode(stringBuilder1.toString());
-        projectInforNew.setRelatedMemberCode(stringBuilder2.toString());
-        List<Map<String, String>> record = generateRecord(projectInforNew, projectInfor1);
+        if(RrelatedMemberArr.length>0) {
+            for (String releatedId:RrelatedMemberArr) {
+                if (StringUtils.isNotBlank(releatedId)) {
+                    osUser = this.projectInforDao.queryOsUserByUserId(releatedId);
+                    relateMembers.append(osUser.getUserId());
+                    relateMembers.append(";");
+                }
+            }
+            projectInforNew.setRelatedMemberCode(relateMembers.toString());
+        }
+   /*     projectInforNew.setProjectMemberCode(projectMembers.toString());
+        projectInforNew.setRelatedMemberCode(relateMembers.toString());*/
+        List<Map<String, String>> record = generateRecord(projectInforNew, projectInforOld);
         if(record.size()==0){
             return RespUtil.response("200","无任何变更!",returnMap);
         }else {
@@ -570,7 +615,7 @@ public class ProjectInforImpl implements ProjectInforService {
 
 
     private List<Map<String,String>> generateRecord(ProjectInfor projectInfor, ProjectInfor infor) {
-        boolean marker = false;
+        boolean marker;
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> map;
         marker = columnValidate(projectInfor.getProjectName(),infor.getProjectName());

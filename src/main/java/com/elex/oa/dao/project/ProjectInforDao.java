@@ -23,6 +23,8 @@ public interface ProjectInforDao {
     //查询os_user表所有用户信息
     List<OsUser> queryOsUser();
 
+    OsUser queryOsUserByUserId(String userId);
+
     List<ProjectInfor> queryBusiness();
 
     void updateBusinessId(List<ProjectInfor> infors);
