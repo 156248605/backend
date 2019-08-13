@@ -179,13 +179,13 @@
                 </foreach>
             </if>
             <if test="type == 2">
-                AND (project_manager = #{name} OR business_manager = #{name})
+                AND (project_manager_code= #{name} OR business_manager_code = #{name})
             </if>
             <if test="type == 3">
-                AND project_members LIKE CONCAT('%',#{name},'%')
+                AND project_member_code LIKE CONCAT('%',#{name},'%')
             </if>
             <if test="type == 4">
-                AND related_members LIKE CONCAT('%',#{name},'%')
+                AND related_member_code LIKE CONCAT('%',#{name},'%')
             </if>
         </where>
         ORDER BY project_code DESC
