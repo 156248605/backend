@@ -645,21 +645,21 @@ public class ProjectInforImpl implements ProjectInforService {
             list.add(map);
         }
 
-        marker = columnValidate(projectInfor.getBusinessManager(),infor.getBusinessManager());
+        marker = columnValidate(projectInfor.getBusinessManagerCode(),infor.getBusinessManagerCode());
         if(marker) {
             map = new HashMap<>();
             map.put(COLUMN, "商务经理");
-            map.put(PREFIX, infor.getBusinessManager());
-            map.put(SUFFIX, projectInfor.getBusinessManager());
+            map.put(PREFIX, infor.getBusinessManager()+"("+infor.getBusinessManagerCode()+")");
+            map.put(SUFFIX, projectInfor.getBusinessManager()+"("+projectInfor.getBusinessManagerCode()+")");
             list.add(map);
         }
 
-        marker = columnValidate(projectInfor.getProjectManager(),infor.getProjectManager());
+        marker = columnValidate(projectInfor.getProjectManagerCode(),infor.getProjectManagerCode());
         if(marker) {
             map = new HashMap<>();
             map.put(COLUMN, "交付经理");
-            map.put(PREFIX, infor.getProjectManager());
-            map.put(SUFFIX, projectInfor.getProjectManager());
+            map.put(PREFIX, infor.getProjectManager()+"("+infor.getProjectManagerCode()+")");
+            map.put(SUFFIX, projectInfor.getProjectManager()+"("+projectInfor.getProjectManagerCode()+")");
             list.add(map);
         }
 
