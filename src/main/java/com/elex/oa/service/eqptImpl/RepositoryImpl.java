@@ -5,10 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.elex.oa.dao.hr.IUserDao;
 import com.elex.oa.dao.eqptDao.PositionMapper;
 import com.elex.oa.dao.eqptDao.RepositoryMapper;
+import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.entity.Page;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
+import com.elex.oa.entity.project.OsUser;
 import com.elex.oa.service.eqptService.RepositoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,6 +34,9 @@ public class RepositoryImpl implements RepositoryService {
 
     @Resource
     private IUserDao iUserDao;
+
+    @Resource
+    private ProjectInforDao projectInforDao;
     // 显示所有仓库
     @Override
     public PageInfo<Repository> showRepository(Page page,HttpServletRequest request){
@@ -254,8 +259,8 @@ public class RepositoryImpl implements RepositoryService {
         return matList;
     }
 
-    public List<User> username() {
-        List<User> selectUser = iUserDao.selectAll();
+    public List<OsUser> username() {
+        List<OsUser> selectUser = projectInforDao.queryOsUserInJob();
         return selectUser;
     }
 

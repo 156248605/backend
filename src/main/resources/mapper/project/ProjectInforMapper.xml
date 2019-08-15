@@ -205,6 +205,10 @@
         SELECT USER_ID_ , FULLNAME_ FROM os_user
     </select>
 
+    <select id="queryOsUserInJob" resultMap="osUser">
+        SELECT USER_ID_ , FULLNAME_ FROM os_user WHERE STATUS_ = 'IN_JOB'
+    </select>
+
     <select id="queryOsUserByUserId" resultMap="osUser" parameterType="string">
         SELECT USER_ID_ , FULLNAME_ FROM os_user WHERE USER_ID_ = #{userId}
     </select>

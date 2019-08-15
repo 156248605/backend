@@ -22,6 +22,8 @@ public interface ProjectInforDao {
     void amendInfor(ProjectInfor projectInfor);
     //查询os_user表所有用户信息
     List<OsUser> queryOsUser();
+    //查询在职人员
+    List<OsUser> queryOsUserInJob();
 
     OsUser queryOsUserByUserId(String userId);
 

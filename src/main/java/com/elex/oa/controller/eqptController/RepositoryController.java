@@ -5,6 +5,7 @@ import com.elex.oa.entity.Page;
 import com.elex.oa.entity.hr_entity.personalinformation.User;
 import com.elex.oa.entity.eqpt.Material;
 import com.elex.oa.entity.eqpt.Repository;
+import com.elex.oa.entity.project.OsUser;
 import com.elex.oa.service.eqptImpl.RepositoryImpl;
 import com.elex.oa.service.hr_service.IDeptService;
 import com.github.pagehelper.PageInfo;
@@ -95,9 +96,8 @@ public class RepositoryController {
 
     @RequestMapping("/getUser")
     @ResponseBody
-    public List<User> getUser() {
-        List<User> getUser = repositoryImpl.username();
-        return getUser;
+    public List<OsUser> getUser() {
+        return repositoryImpl.username();
     }
 
     @RequestMapping("/matOutRept")
