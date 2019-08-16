@@ -37,7 +37,7 @@
     <select id="SearchMaterial" resultType="com.elex.oa.entity.eqpt.Material" parameterType="com.elex.oa.entity.eqpt.Material">
         SELECT * FROM eqpt_material
         <where>
-            <if test="reptAdmin != '管理员'">
+            <if test="reptAdmin != 'admin'">
                 AND category in (${reptAdmin})
             </if>
             <if test="id != null and id != '' and idC == ''">

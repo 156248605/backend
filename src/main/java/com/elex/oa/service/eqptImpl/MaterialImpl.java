@@ -91,13 +91,12 @@ public class MaterialImpl implements MaterialService {
             if (REPTADMIN.equals("管理员")) {
                 cateStr = "admin";
             }else {
-                List cateList = new ArrayList();
-                cateList.add(materialMapper.getUserCategoty(request.getParameter("userName")).split(";"));
-                for (int i = 0;i < cateList.size();i++) {
-                    if (i == cateList.size() - 1) {
-                        cateStr += cateList.get(i).toString();
+                String[] strArr = materialMapper.getUserCategoty(REPTADMIN).split(";");
+                for (int i = 0;i < strArr.length;i++) {
+                    if (i == strArr.length - 1) {
+                        cateStr += "'" + strArr[i] + "'";
                     }else {
-                        cateStr += cateList.get(i).toString() + ",";
+                        cateStr += "'" + strArr[i] + "'" + ",";
                     }
                 }
             }
@@ -111,13 +110,12 @@ public class MaterialImpl implements MaterialService {
             if (REPTADMIN.equals("管理员")) {
                 cateStr = "admin";
             }else {
-                List cateList = new ArrayList();
-                cateList.add(materialMapper.getUserCategoty(request.getParameter("userName")).split(";"));
-                for (int i = 0;i < cateList.size();i++) {
-                    if (i == cateList.size() - 1) {
-                        cateStr += cateList.get(i).toString();
+                String[] strArr = materialMapper.getUserCategoty(REPTADMIN).split(";");
+                for (int i = 0;i < strArr.length;i++) {
+                    if (i == strArr.length - 1) {
+                        cateStr += "'" + strArr[i] + "'";
                     }else {
-                        cateStr += cateList.get(i).toString() + ",";
+                        cateStr += "'" + strArr[i] + "'" + ",";
                     }
                 }
             }
