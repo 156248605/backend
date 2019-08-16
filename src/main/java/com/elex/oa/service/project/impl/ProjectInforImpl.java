@@ -510,14 +510,11 @@ public class ProjectInforImpl implements ProjectInforService {
 
     public Object proDiff(ProjectInfor projectInforNew, String updateBy) {
         Map<String,Object> returnMap = new HashMap<>();
-        ProjectInfor projectInforOld = projectInforDao.queryInforByCodeNew(projectInforNew.getProjectCode()); //根据项目编号获取项目信息
-/*        List<OsUser> users = projectInforDao.queryOsUser(); //查询os_user表所有用户信息
-        if(StringUtils.isNotBlank(projectInforOld.getProjectManager())&&projectInforOld.getProjectManager().equals(projectInforNew.getProjectManager())){
-            projectInforNew.setProjectManagerCode(projectInforOld.getProjectManagerCode());
+        String ID_= this.projectInforDao.getProConcludeByCode(projectInforNew.getProjectCode());
+        if(StringUtils.isNotBlank(ID_)){
+            return RespUtil.response("200","变更失败,此项目有结项流程在申请中!",returnMap);
         }
-        if(StringUtils.isNotBlank(projectInforOld.getBusinessManager())&&projectInforOld.getBusinessManager().equals(projectInforNew.getBusinessManager())){
-            projectInforNew.setBusinessManagerCode(projectInforOld.getBusinessManagerCode());
-        }*/
+        ProjectInfor projectInforOld = projectInforDao.queryInforByCodeNew(projectInforNew.getProjectCode()); //根据项目编号获取项目信息
         StringBuilder projectMembers = new StringBuilder(),
         relateMembers = new StringBuilder();
         //商务经理工号
@@ -560,8 +557,6 @@ public class ProjectInforImpl implements ProjectInforService {
             }
             projectInforNew.setRelatedMemberCode(relateMembers.toString());
         }
-   /*     projectInforNew.setProjectMemberCode(projectMembers.toString());
-        projectInforNew.setRelatedMemberCode(relateMembers.toString());*/
         List<Map<String, String>> record = generateRecord(projectInforNew, projectInforOld);
         if(record.size()==0){
             return RespUtil.response("200","无任何变更!",returnMap);
@@ -887,6 +882,11 @@ public class ProjectInforImpl implements ProjectInforService {
     @Override
     public List<HashMap<String, Object>> allWeeklyPlan(HttpServletRequest request) {
         return projectInforDao.allWeeklyPlan(request.getParameter("projectCode"));
+    }
+
+    @Override
+    public String getProConcludeByCode(String projectCode) {
+        return projectInforDao.getProConcludeByCode(projectCode);
     }
 
 

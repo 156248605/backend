@@ -51,4 +51,5 @@ public interface ProjectInforService {
     String newWeeklyPlan(HttpServletRequest request);
     //查询项目周计划历史
     List<HashMap<String, Object>> allWeeklyPlan(HttpServletRequest request);
+    String getProConcludeByCode(String projectCode);
 }

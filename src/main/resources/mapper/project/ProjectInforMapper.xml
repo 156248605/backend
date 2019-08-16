@@ -88,6 +88,10 @@
         <result column="project_manager" javaType="string" property="projectManager"></result>
     </resultMap>
 
+    <select id="getProConcludeByCode" resultType="String" parameterType="string">
+        select ID_  from w_xmjxsqb where INST_STATUS_='RUNNING' AND F_XMBH=#{xmbh}
+    </select>
+
     <select id="queryCodes" resultType="string">
         SELECT project_code FROM pro_pro_infor
     </select>
