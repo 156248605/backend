@@ -23,6 +23,7 @@ public class InforQuery {
     private List<String> phaseList;
     private String type; //查询类别
     private String name;  //查询人
+    private String inDepartment; //立项部门
 
     public InforQuery() {
     }
@@ -209,7 +210,6 @@ public class InforQuery {
     public void setName(String name) {
         this.name = name;
     }
-
     @Override
     public String toString() {
         return "InforQuery{" +
@@ -234,5 +234,13 @@ public class InforQuery {
                 ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public String getInDepartment() {
+        return inDepartment;
+    }
+
+    public void setInDepartment(String inDepartment) {
+        this.inDepartment = inDepartment;
     }
 }

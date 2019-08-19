@@ -447,6 +447,9 @@
             <if test="type == 4">
                 AND related_member_code LIKE CONCAT('%',#{name},'%')
             </if>
+            <if test="type == 5">
+                AND in_department = #{inDepartment}
+            </if>
         </where>
     </select>
 
