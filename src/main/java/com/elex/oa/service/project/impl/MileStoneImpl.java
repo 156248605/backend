@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class MileStoneImpl implements MileStoneService {
 
     //列表查询里程碑计划
     @Override
-    public PageInfo queryList(AListQuery aListQuery, Page page) {
+    public PageInfo queryList(AListQuery aListQuery, Page page, HttpServletRequest request) {
         List<String> date3 = JSONArray.parseArray(aListQuery.getDate3(),String.class);
         if(date3.get(0).equals("") || date3.get(0) == null) {
 
@@ -40,6 +41,7 @@ public class MileStoneImpl implements MileStoneService {
         }
         List<ProjectInfor> list = new ArrayList<>();
         List<String> codes = mileStoneDao.queryCodes(); //查询已建立的里程碑计划的项目编号
+        aListQuery.setUserId(request.getParameter("userId"));
         if(codes.size() > 0) {
             aListQuery.setCodes(codes);
             PageHelper.startPage(page.getCurrentPage(),10);

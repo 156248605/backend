@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.security.jgss.HttpCaller;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -26,8 +28,8 @@ public class MileStoneController {
     //列表查询里程碑计划
     @RequestMapping("/query_list")
     @ResponseBody
-    public PageInfo queryList(AListQuery aListQuery, Page page) {
-        return mileStoneService.queryList(aListQuery, page);
+    public PageInfo queryList(AListQuery aListQuery, Page page, HttpServletRequest request) {
+        return mileStoneService.queryList(aListQuery, page, request);
     }
 
     //查询可新建里程碑计划的项目信息

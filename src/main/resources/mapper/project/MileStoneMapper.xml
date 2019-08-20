@@ -14,6 +14,7 @@
         <result column="project_type"        javaType="string"  property="projectType"></result>
         <result column="write_date"          javaType="string"  property="writeDate"></result>
         <result column="general_situation"  javaType="string"  property="generalSituation"></result>
+        <result column="project_manager_code"  javaType="string"  property="projectManagerCode"></result>
     </resultMap>
 
     <resultMap id="mileStonePlan" type="com.elex.oa.entity.project.MileStonePlan">
@@ -88,7 +89,7 @@
                 AND project_manager NOT LIKE CONCAT('%',#{input8},'%')
             </if>
             <if test="type == 2">
-                AND project_manager = #{input8}
+                AND project_manager = #{input8} AND project_manager_code = #{userId}
             </if>
             AND project_code IN
             <foreach collection="codes" item="item" index="index" separator="," open="(" close=")">

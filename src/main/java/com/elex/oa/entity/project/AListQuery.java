@@ -23,11 +23,12 @@ public class AListQuery {
     private String select8;
     private String input8;
     private List<String> codes;
+    private String userId;
 
     public AListQuery() {
     }
 
-    public AListQuery(String type, String select1, String input1, String select2, String input2, String date3, String date31, String date32, String select4, List<String> list4, String select5, List<String> list5, String select6, String input6, String select7, String input7, String select8, String input8, List<String> codes) {
+    public AListQuery(String type, String select1, String input1, String select2, String input2, String date3, String date31, String date32, String select4, List<String> list4, String select5, List<String> list5, String select6, String input6, String select7, String input7, String select8, String input8, List<String> codes, String userId) {
         this.type = type;
         this.select1 = select1;
         this.input1 = input1;
@@ -47,6 +48,7 @@ public class AListQuery {
         this.select8 = select8;
         this.input8 = input8;
         this.codes = codes;
+        this.userId = userId;
     }
 
     public String getType() {
@@ -201,6 +203,14 @@ public class AListQuery {
         this.codes = codes;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "AListQuery{" +
@@ -223,6 +233,7 @@ public class AListQuery {
                 ", select8='" + select8 + '\'' +
                 ", input8='" + input8 + '\'' +
                 ", codes=" + codes +
+                ", userId='" + userId + '\'' +
                 '}';
     }
 }
