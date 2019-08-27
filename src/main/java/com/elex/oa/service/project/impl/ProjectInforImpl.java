@@ -508,6 +508,27 @@ public class ProjectInforImpl implements ProjectInforService {
         return "success";
     }
 
+    public String changeProjectStatus(ProjectInfor projectInfor, String updateBy,String projectOldStatus){
+        ProjectInfor infor = projectInforDao.queryInforByCode(projectInfor.getProjectCode()); //根据项目编号获取项目信息
+        infor.setProjectStatus(projectOldStatus);
+        projectInforDao.amendPro(projectInfor);
+        List<Map<String, String>> record = generateRecord(projectInfor, infor);
+        if(record.size() > 0) {
+            ProjectRecord projectRecord = new ProjectRecord();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIMEFORMAT);
+            String date = simpleDateFormat.format(new Date());
+            projectRecord.setUpdateTime(date);
+            projectRecord.setUpdateBy(updateBy);
+            projectRecord.setProjectCode(projectInfor.getProjectCode());
+            projectRecord.setRecord(record);
+            projectRecordMongo.addRecord(projectRecord); //添加记录
+        }else {
+            return "";
+        }
+        return "success";
+    }
+
+
     public Object proDiff(ProjectInfor projectInforNew, String updateBy) {
         Map<String,Object> returnMap = new HashMap<>();
         String ID_= this.projectInforDao.getProConcludeByCode(projectInforNew.getProjectCode());

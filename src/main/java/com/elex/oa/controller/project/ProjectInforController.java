@@ -1,5 +1,6 @@
 package com.elex.oa.controller.project;
 import com.alibaba.fastjson.JSON;
+import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.entity.project.*;
 import com.elex.oa.service.project.ProjectInforService;
 import com.elex.oa.service.project.impl.ProjectAmendImpl;
@@ -26,6 +27,8 @@ public class ProjectInforController {
     private ProjectInforService projectInforService;
     @Resource
     private ProjectAmendImpl projectAmendService;
+    @Resource
+    private ProjectInforDao projectInforDao;
 
 
     //列表查询项目详情信息
@@ -146,7 +149,19 @@ public class ProjectInforController {
         return projectInforService.amendPro(projectInfor, projectRecord.getUpdateBy());
     }
 
-
+    //结项流程走完,更改项目信息
+    @RequestMapping("/change_Project_Status")
+    @ResponseBody
+    public String changeProjectStatus(HttpServletRequest request) {
+        String projectCode = request.getParameter("projectCode");
+        String updateBy = request.getParameter("updateBy");
+        String projectOldStatus = request.getParameter("projectOldStatus");
+        String projectNewStatus = request.getParameter("projectNewStatus");
+        ProjectInfor projectInfor = this.projectInforDao.queryInforByCode(projectCode);
+        OsUser osUser = this.projectInforDao.queryOsUserByUserId(updateBy);
+        projectInfor.setProjectStatus(projectNewStatus);
+        return projectInforService.changeProjectStatus(projectInfor, osUser.getFullName(),projectOldStatus);
+    }
     //项目信息差异
     @RequestMapping("/pro_diff")
     @ResponseBody
