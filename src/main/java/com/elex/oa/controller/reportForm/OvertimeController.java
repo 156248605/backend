@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 
 @CrossOrigin
 @Controller
@@ -21,7 +22,7 @@ public class OvertimeController {
 
     @RequestMapping("/overtimeForm")
     @ResponseBody
-    public PageInfo overtimeForm (HttpServletRequest request, Page page) {
+    public PageInfo overtimeForm (HttpServletRequest request, Page page) throws ParseException {
         return overtimeService.overtimeForm(request, page);
     }
 }
