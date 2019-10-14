@@ -34,6 +34,7 @@ public class Clue implements Serializable {
     private String track_content;//最新线索内容
     private String track_date;//最新线索更新时间
     private String in_department;//立项部门
+    private String close_time;// 线索关闭时间
 
     @Transient
     private String username;//登录ID（分权查询用的）
@@ -259,6 +260,13 @@ public class Clue implements Serializable {
         this.in_department = in_department;
     }
 
+    public String getClose_time() {
+        return close_time;
+    }
+
+    public void setClose_time(String close_time) {
+        this.close_time = close_time;
+    }
 
     @Override
     public String toString() {
@@ -288,6 +296,7 @@ public class Clue implements Serializable {
                 ", scheme_truename='" + scheme_truename + '\'' +
                 ", businessAttachmentList=" + businessAttachmentList +
                 ", participateName='" + participateName + '\'' +
+                ", close_time='" + close_time + '\'' +
                 '}';
     }
 }

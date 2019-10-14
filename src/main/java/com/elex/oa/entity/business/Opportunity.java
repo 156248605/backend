@@ -40,6 +40,7 @@ public class Opportunity implements Serializable {
     private String inst_id;//商机转立项存储流程表单instId
     private String project_number;//商机转立项存储流程表单项目编号
     private String in_department;//立项部门
+    private String close_time; // 商机关闭时间
 
     @Transient
     private String username;//登录ID
@@ -318,6 +319,14 @@ public class Opportunity implements Serializable {
         this.in_department = in_department;
     }
 
+    public String getClose_time() {
+        return close_time;
+    }
+
+    public void setClose_time(String close_time) {
+        this.close_time = close_time;
+    }
+
     @Override
     public String toString() {
         return "Opportunity{" +
@@ -352,6 +361,7 @@ public class Opportunity implements Serializable {
                 ", scheme_truename='" + scheme_truename + '\'' +
                 ", businessAttachmentList=" + businessAttachmentList +
                 ", participateName='" + participateName + '\'' +
+                ", close_time='" + close_time + '\'' +
                 '}';
     }
 }

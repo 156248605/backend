@@ -182,6 +182,10 @@ public class ClueServiceImpl implements IClueService {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
             String nowDate = df.format(new Date());
             clue.setTrack_date(nowDate);
+            // 存储"yyyy-MM-dd"格式作为关闭线索时间
+            SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+            String closeTimeStr = df2.format(new Date());
+            clue.setClose_time(closeTimeStr);
             iClueDao.updateByPrimaryKeySelective(clue);
         } catch (Exception e) {
             logger.info(String.valueOf(e.getCause()));

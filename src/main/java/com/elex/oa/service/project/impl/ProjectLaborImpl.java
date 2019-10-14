@@ -1,6 +1,8 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.elex.oa.dao.business.IClueDao;
+import com.elex.oa.dao.business.IOpportunityDao;
 import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.dao.project.ProjectLaborDao;
 import com.elex.oa.entity.project.ProjectLabor;
@@ -24,6 +26,10 @@ public class ProjectLaborImpl implements ProjectLaborService {
     ProjectLaborDao projectLaborDao;
     @Resource
     ProjectInforDao projectInfoDao;
+    @Resource
+    IOpportunityDao iOpportunityDao;
+    @Resource
+    IClueDao iClueDao;
 
     public static List<String> findDates(String stime, String etime) throws ParseException {
         List<String> allDate = new ArrayList();
@@ -60,17 +66,44 @@ public class ProjectLaborImpl implements ProjectLaborService {
         List message = new ArrayList();
         for (int j = 0;j < projectArray.size();j++) {
             projectLaborList = projectLaborDao.queryLaborHourInfo(employeeNumber,projectArray.get(j).toString(),startDate,endDate);
-            if (startDate != null && endDate != null && employeeNumber != null && projectCode != null && projectLaborList.size() > 0) {
+
+            if (startDate != null && endDate != null && employeeNumber != null && projectCode != null) {
+
                 Map<String,Object> map = new HashMap<>();
-                map.put("projectCode",projectLaborList.get(0).getProjectCode());
-                map.put("projectName",projectLaborList.get(0).getProjectName());
+                String projectCodeString = "";
+                String projectNameString = "";
+                String startTime = "null";
+                String closeTime = "null";
                 // 项目编号
-                String projectCodeStr = projectLaborList.get(0).getProjectCode();
-                String startTime = projectInfoDao.queryInforByCodeNew(projectCodeStr).getStartTime();
-                String endTime = projectInfoDao.queryInforByCodeNew(projectCodeStr).getEndTime();
-                String closeTime = projectInfoDao.queryInforByCodeNew(projectCodeStr).getCloseTime();
+                String projectCodeStr = projectArray.get(j).toString();
+                if (projectCodeStr.contains("PRJ")) {
+                    projectCodeString = projectInfoDao.queryInforByCodeNew(projectCodeStr).getProjectCode();
+                    projectNameString = projectInfoDao.queryInforByCodeNew(projectCodeStr).getProjectName();
+                    startTime = projectInfoDao.queryInforByCodeNew(projectCodeStr).getStartTime();
+                    closeTime = projectInfoDao.queryInforByCodeNew(projectCodeStr).getCloseTime();
+                } else if (projectCodeStr.contains("OPP")) {
+                    projectCodeString = iOpportunityDao.selectByPrimaryKey(projectCodeStr).getCode();
+                    projectNameString = iOpportunityDao.selectByPrimaryKey(projectCodeStr).getOpportunityname();
+                    String opprtunityStartTime = iOpportunityDao.selectByPrimaryKey(projectCodeStr).getCreatetime();
+                    startTime = resolveDateTimeString(opprtunityStartTime);
+                    closeTime = iOpportunityDao.selectByPrimaryKey(projectCodeStr).getClose_time();
+                } else if (projectCodeStr.contains("CLU")) {
+                    projectCodeString = iClueDao.selectByPrimaryKey(projectCodeStr).getCode();
+                    projectNameString = iClueDao.selectByPrimaryKey(projectCodeStr).getCluename();
+                    String clueStartTime = iClueDao.selectByPrimaryKey(projectCodeStr).getCreatetime();
+                    startTime = resolveDateTimeString(clueStartTime);
+                    String clueCloseTime = iClueDao.selectByPrimaryKey(projectCodeStr).getClose_time();
+                }
+//                map.put("projectCode",projectCodeString);
+//                map.put("projectName",projectNameString);
+                if (projectLaborList.size() > 0) {
+                    map.put("projectCode",projectLaborList.get(0).getProjectCode());
+                    map.put("projectName",projectLaborList.get(0).getProjectName());
+                } else {
+                    map.put("projectCode",projectCodeString);
+                    map.put("projectName",projectNameString);
+                }
                 map.put("startTime", startTime);
-                map.put("endTime", endTime);
                 map.put("closeTime", closeTime);
                 List laborHour = new ArrayList();
                 List list = new ArrayList();
@@ -99,6 +132,15 @@ public class ProjectLaborImpl implements ProjectLaborService {
         }
         projectlist.put("status",status);
         return projectlist;
+    }
+
+    private String resolveDateTimeString(String dateTimeStr) {
+
+        String resultStr = "null";
+        if (dateTimeStr.indexOf(" ") != -1) {
+            resultStr = dateTimeStr.substring(0, dateTimeStr.indexOf(" "));
+        }
+        return resultStr;
     }
 
     @Override
