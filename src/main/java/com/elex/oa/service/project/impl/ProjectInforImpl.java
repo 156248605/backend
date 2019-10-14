@@ -1,5 +1,4 @@
 package com.elex.oa.service.project.impl;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.dao.hr.IUserDao;
@@ -19,7 +18,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -490,6 +488,14 @@ public class ProjectInforImpl implements ProjectInforService {
             }
             projectInfor.setRelatedMemberCode(relateMembers.toString());
         }
+
+        if ("4".equals(projectInfor.getProjectStatus())) {
+            Date currentDate = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String currentTimeStr = formatter.format(currentDate);
+            projectInfor.setCloseTime(currentTimeStr);
+        }
+
         projectInforDao.amendPro(projectInfor); //修改项目信息
 
         List<Map<String, String>> record = generateRecord(projectInfor, infor);

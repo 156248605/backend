@@ -1,6 +1,7 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.elex.oa.dao.project.ProjectInforDao;
 import com.elex.oa.dao.project.ProjectLaborDao;
 import com.elex.oa.entity.project.ProjectLabor;
 import com.elex.oa.service.project.ProjectLaborService;
@@ -21,6 +22,8 @@ public class ProjectLaborImpl implements ProjectLaborService {
 
     @Resource
     ProjectLaborDao projectLaborDao;
+    @Resource
+    ProjectInforDao projectInfoDao;
 
     public static List<String> findDates(String stime, String etime) throws ParseException {
         List<String> allDate = new ArrayList();
@@ -61,6 +64,14 @@ public class ProjectLaborImpl implements ProjectLaborService {
                 Map<String,Object> map = new HashMap<>();
                 map.put("projectCode",projectLaborList.get(0).getProjectCode());
                 map.put("projectName",projectLaborList.get(0).getProjectName());
+                // 项目编号
+                String projectCodeStr = projectLaborList.get(0).getProjectCode();
+                String startTime = projectInfoDao.queryInforByCodeNew(projectCodeStr).getStartTime();
+                String endTime = projectInfoDao.queryInforByCodeNew(projectCodeStr).getEndTime();
+                String closeTime = projectInfoDao.queryInforByCodeNew(projectCodeStr).getCloseTime();
+                map.put("startTime", startTime);
+                map.put("endTime", endTime);
+                map.put("closeTime", closeTime);
                 List laborHour = new ArrayList();
                 List list = new ArrayList();
                 for (int i = 0;i < projectLaborList.size();i++) {

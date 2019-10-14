@@ -70,8 +70,9 @@
         <result column="related_member_code" javaType="string" property="relatedMemberCode"/>
         <result column="project_member_code" javaType="string" property="projectMemberCode"/>
         <result column="project_money" javaType="string" property="money"/>
-        <result column=" project_member_code" javaType="string" property="projectMemberCode"/>
-        <result column=" project_member_code" javaType="string" property="projectMemberCode"/>
+        <result column="project_member_code" javaType="string" property="projectMemberCode"/>
+        <result column="close_time" javaType="string" property="closeTime"/>
+        <result column="project_member_code" javaType="string" property="projectMemberCode"/>
     </resultMap>
 
     <resultMap id="osUser" type="com.elex.oa.entity.project.OsUser">
@@ -111,13 +112,13 @@
     <select id="addInfor" parameterType="java.util.List">
         INSERT INTO pro_pro_infor(id, project_code, project_name, project_status, in_department, dept_manager, proposer, write_date, business_manager,
         business_manager_code, project_source, project_manager, project_manager_code, project_type,
-        general_situation, start_time, end_time, capitalization, classified, project_phase)
+        general_situation, start_time, end_time, capitalization, classified, project_phase, close_time)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (NULL, #{item.projectCode}, #{item.projectName}, #{item.projectStatus}, #{item.inDepartment}, #{item.deptManager}, #{item.proposer},
             #{item.writeDate}, #{item.businessManager}, #{item.businessManagerId}, #{item.projectSource},
             #{item.projectManager}, #{item.projectManagerId}, #{item.projectType}, #{item.generalSituation},
-            #{item.startTime}, #{item.endTime}, #{item.capitalization}, #{item.classified}, #{item.projectPhase})
+            #{item.startTime}, #{item.endTime}, #{item.capitalization}, #{item.classified}, #{item.projectPhase}, #{closeTime})
         </foreach>
     </select>
 
@@ -454,13 +455,11 @@
     </select>
 
     <select id="queryInforByCode" parameterType="string" resultMap="projectInfor">
-        SELECT *
-        FROM pro_pro_infor WHERE project_code = #{projectCode}
+        SELECT * FROM pro_pro_infor WHERE project_code = #{projectCode}
     </select>
 
     <select id="queryInforByCodeNew" parameterType="string" resultMap="projectInfor">
-        SELECT *
-        FROM pro_pro_infor WHERE project_code = #{projectCode}
+        SELECT * FROM pro_pro_infor WHERE project_code = #{projectCode}
     </select>
 
     <update id="amendPro" parameterType="com.elex.oa.entity.project.ProjectInfor">
@@ -470,7 +469,7 @@
         party_address = #{partyAddress}, party_phone = #{partyPhone}, party_fax = #{partyFax}, head_name = #{headName}, head_position =
         #{headPosition}, head_mobile = #{headMobile}, head_email = #{headEmail}, contact_name = #{contactName}, contact_position =
         #{contactPosition}, contact_mobile = #{contactMobile}, contact_email = #{contactEmail}, project_member_code = #{projectMemberCode},
-        related_member_code = #{relatedMemberCode}, project_money = #{money} WHERE project_code = #{projectCode}
+        related_member_code = #{relatedMemberCode}, project_money = #{money}, close_time = #{closeTime} WHERE project_code = #{projectCode}
     </update>
 
     <select id="queryInstStatus" parameterType="string" resultType="string">

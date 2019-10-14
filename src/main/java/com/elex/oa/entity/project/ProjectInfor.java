@@ -48,6 +48,7 @@ public class ProjectInfor {
     private String weeklyReportEnd;//周计划结束时间
     private String opportunityCode;//商机转项目编号
     private String money;   // 项目金额
+    private String closeTime;   // 项目关闭时间
     public Integer getAmendId() {
         return amendId;
     }
@@ -60,58 +61,7 @@ public class ProjectInfor {
     public ProjectInfor() {
     }
 
-
-//    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String businessManager, String businessManagerId, String businessManagerCode, String projectSource, String projectManager, String projectManagerId, String projectManagerCode, String projectType, String projectPhase, String startTime, String endTime, String capitalization, String classified, String generalSituation, String projectMembers, String projectMemberId, String projectMemberCode, String relatedMembers, String relatedMemberId, String relatedMemberCode, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager, String weeklyReport, String nextPlan, String weeklyReportStart, String weeklyReportEnd, String opportunityCode, Integer amendId) {
-//        this.id = id;
-//        this.projectCode = projectCode;
-//        this.projectName = projectName;
-//        this.inDepartment = inDepartment;
-//        this.projectStatus = projectStatus;
-//        this.deptManager = deptManager;
-//        this.proposer = proposer;
-//        this.writeDate = writeDate;
-//        this.businessManager = businessManager;
-//        this.businessManagerId = businessManagerId;
-//        this.businessManagerCode = businessManagerCode;
-//        this.projectSource = projectSource;
-//        this.projectManager = projectManager;
-//        this.projectManagerId = projectManagerId;
-//        this.projectManagerCode = projectManagerCode;
-//        this.projectType = projectType;
-//        this.projectPhase = projectPhase;
-//        this.startTime = startTime;
-//        this.endTime = endTime;
-//        this.capitalization = capitalization;
-//        this.classified = classified;
-//        this.generalSituation = generalSituation;
-//        this.projectMembers = projectMembers;
-//        this.projectMemberId = projectMemberId;
-//        this.projectMemberCode = projectMemberCode;
-//        this.relatedMembers = relatedMembers;
-//        this.relatedMemberId = relatedMemberId;
-//        this.relatedMemberCode = relatedMemberCode;
-//        this.partyName = partyName;
-//        this.partyAddress = partyAddress;
-//        this.partyPhone = partyPhone;
-//        this.partyFax = partyFax;
-//        this.headName = headName;
-//        this.headPosition = headPosition;
-//        this.headMobile = headMobile;
-//        this.headEmail = headEmail;
-//        this.contactName = contactName;
-//        this.contactPosition = contactPosition;
-//        this.contactMobile = contactMobile;
-//        this.contactEmail = contactEmail;
-//        this.departmentManager = departmentManager;
-//        this.weeklyReport = weeklyReport;
-//        this.nextPlan = nextPlan;
-//        this.weeklyReportStart = weeklyReportStart;
-//        this.weeklyReportEnd = weeklyReportEnd;
-//        this.opportunityCode = opportunityCode;
-//        this.amendId = amendId;
-//    }
-
-    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String businessManager, String businessManagerId, String businessManagerCode, String projectSource, String projectManager, String projectManagerId, String projectManagerCode, String projectType, String projectPhase, String startTime, String endTime, String capitalization, String classified, String generalSituation, String projectMembers, String projectMemberId, String projectMemberCode, String relatedMembers, String relatedMemberId, String relatedMemberCode, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager, String weeklyReport, String nextPlan, String weeklyReportStart, String weeklyReportEnd, String opportunityCode, Integer amendId, String money) {
+    public ProjectInfor(int id, String projectCode, String projectName, String inDepartment, String projectStatus, String deptManager, String proposer, String writeDate, String businessManager, String businessManagerId, String businessManagerCode, String projectSource, String projectManager, String projectManagerId, String projectManagerCode, String projectType, String projectPhase, String startTime, String endTime, String capitalization, String classified, String generalSituation, String projectMembers, String projectMemberId, String projectMemberCode, String relatedMembers, String relatedMemberId, String relatedMemberCode, String partyName, String partyAddress, String partyPhone, String partyFax, String headName, String headPosition, String headMobile, String headEmail, String contactName, String contactPosition, String contactMobile, String contactEmail, String departmentManager, String weeklyReport, String nextPlan, String weeklyReportStart, String weeklyReportEnd, String opportunityCode, Integer amendId, String money, String closeTime) {
         this.id = id;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -161,6 +111,7 @@ public class ProjectInfor {
         this.amendId = amendId;
 
         this.money = money;
+        this.closeTime = closeTime;
     }
 
 
@@ -536,6 +487,12 @@ public class ProjectInfor {
 
     public void setMoney(String money) { this.money = money; }
 
+    public String getCloseTime() { return closeTime; }
+
+    public void setCloseTime(String closeTime) {
+        this.closeTime = closeTime;
+    }
+
     @Override
     public String toString() {
         return "ProjectInfor{" +
@@ -587,6 +544,7 @@ public class ProjectInfor {
                 ", weeklyReportEnd='" + weeklyReportEnd + '\'' +
                 ", opportunityCode='" + opportunityCode + '\'' +
                 ", amendId=" + amendId +
+                ", closeTime=" + closeTime +
                 '}';
     }
 }

@@ -41,8 +41,6 @@
         FROM
             pro_pro_infor
         WHERE
-            project_status IN (1)
-        AND
             (project_manager_code = #{userId} OR business_manager_code = #{userId}  OR project_member_code LIKE CONCAT('%',#{userId} ,'%') OR related_member_code LIKE CONCAT('%',#{userId} ,'%') or  in_department_code = #{userId}) AND project_name LIKE CONCAT('%','' ,'%')
         UNION
         SELECT
