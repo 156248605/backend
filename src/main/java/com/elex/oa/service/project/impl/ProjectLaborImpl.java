@@ -92,7 +92,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
                     projectNameString = iClueDao.selectByPrimaryKey(projectCodeStr).getCluename();
                     String clueStartTime = iClueDao.selectByPrimaryKey(projectCodeStr).getCreatetime();
                     startTime = resolveDateTimeString(clueStartTime);
-                    String clueCloseTime = iClueDao.selectByPrimaryKey(projectCodeStr).getClose_time();
+                    closeTime = iClueDao.selectByPrimaryKey(projectCodeStr).getClose_time();
                 }
 //                map.put("projectCode",projectCodeString);
 //                map.put("projectName",projectNameString);
@@ -139,6 +139,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
         String resultStr = "null";
         if (dateTimeStr.indexOf(" ") != -1) {
             resultStr = dateTimeStr.substring(0, dateTimeStr.indexOf(" "));
+            resultStr = resultStr.replace("/","-");
         }
         return resultStr;
     }

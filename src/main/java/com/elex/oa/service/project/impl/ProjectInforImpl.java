@@ -489,7 +489,7 @@ public class ProjectInforImpl implements ProjectInforService {
             projectInfor.setRelatedMemberCode(relateMembers.toString());
         }
 
-        if ("4".equals(projectInfor.getProjectStatus())) {
+        if ("4".equals(projectInfor.getProjectStatus()) || "3".equals(projectInfor.getProjectStatus())) {
             Date currentDate = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String currentTimeStr = formatter.format(currentDate);
