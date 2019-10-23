@@ -147,4 +147,9 @@
     <select id="queryLaborHourInLabor" parameterType="string" resultType="string">
         SELECT ifnull(SUM(labor_hour),0) FROM pro_labor WHERE filling_date BETWEEN #{startDate} AND #{endDate} AND project_code = #{projectCode}
     </select>
+
+    <select id="queryLaborRecordProjectCodeByDateInterval" parameterType="string" resultType="java.lang.String">
+        SELECT DISTINCT project_code FROM pro_labor WHERE filling_date BETWEEN #{startDate} AND #{endDate} AND employee_number = #{employeeNumber};
+    </select>
+
 </mapper>

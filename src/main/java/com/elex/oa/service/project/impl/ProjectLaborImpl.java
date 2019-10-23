@@ -1,6 +1,7 @@
 package com.elex.oa.service.project.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.elex.oa.dao.business.IClueDao;
 import com.elex.oa.dao.business.IOpportunityDao;
 import com.elex.oa.dao.project.ProjectInforDao;
@@ -8,13 +9,10 @@ import com.elex.oa.dao.project.ProjectLaborDao;
 import com.elex.oa.entity.project.ProjectLabor;
 import com.elex.oa.service.project.ProjectLaborService;
 import com.elex.oa.util.hr_util.TimeUtil;
-import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -59,8 +57,16 @@ public class ProjectLaborImpl implements ProjectLaborService {
         List<String> dateList = findDates(startDate,endDate);
         String lockStatus = projectLaborDao.queryLaborStatus();
         String projectCode = request.getParameter("projectCode");
-        JSONArray projectArray =JSONArray.parseArray(projectCode);
-        projectArray.remove("");
+        JSONArray originProjectArray =JSONArray.parseArray(projectCode);
+        originProjectArray.remove("");
+        List<String> recordProjects = projectLaborDao.queryLaborRecordProjectCodeByDateInterval(startDate,endDate, employeeNumber);
+        List<String> paramProjects = JSONObject.parseArray(originProjectArray.toJSONString(), String.class);
+        paramProjects.addAll(recordProjects);
+        Set<String> dealProjectCodes = new HashSet<>();
+        dealProjectCodes.addAll(recordProjects);
+        dealProjectCodes.addAll(paramProjects);
+        JSONArray projectArray = new JSONArray();
+        projectArray.addAll(dealProjectCodes);
         List<ProjectLabor> projectLaborList;
         List status = new ArrayList();
         Map<String, Object> projectlist = new HashMap<>();
@@ -95,8 +101,6 @@ public class ProjectLaborImpl implements ProjectLaborService {
                     startTime = resolveDateTimeString(clueStartTime);
                     closeTime = iClueDao.selectByPrimaryKey(projectCodeStr).getClose_time();
                 }
-//                map.put("projectCode",projectCodeString);
-//                map.put("projectName",projectNameString);
                 if (projectLaborList.size() > 0) {
                     map.put("projectCode",projectLaborList.get(0).getProjectCode());
                     map.put("projectName",projectLaborList.get(0).getProjectName());

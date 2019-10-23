@@ -96,4 +96,12 @@ public interface ProjectLaborDao {
             @Param("endDate") String endDate,
             @Param("projectCode") String projectCode
     );
+
+    // 查询时间段内填写记录 项目编号列表
+    List<String> queryLaborRecordProjectCodeByDateInterval(
+      @Param("startDate") String startDate,
+      @Param("endDate") String endDate,
+      @Param("employeeNumber") String employeeNumber
+    );
+
 }
