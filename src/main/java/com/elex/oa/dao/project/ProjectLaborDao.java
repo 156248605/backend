@@ -72,6 +72,10 @@ public interface ProjectLaborDao {
             @Param("laborHour") String laborHour
     );
 
+    void updateIntoproLaborMonth(
+            @Param("locking_time") String locking_time
+    );
+
     void plusLockingInfoByYear(
             @Param("id") String id,
             @Param("employeeNumber") String employeeNumber,

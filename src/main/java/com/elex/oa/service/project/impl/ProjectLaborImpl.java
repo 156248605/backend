@@ -60,6 +60,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
         String lockStatus = projectLaborDao.queryLaborStatus();
         String projectCode = request.getParameter("projectCode");
         JSONArray projectArray =JSONArray.parseArray(projectCode);
+        projectArray.remove("");
         List<ProjectLabor> projectLaborList;
         List status = new ArrayList();
         Map<String, Object> projectlist = new HashMap<>();
@@ -233,6 +234,7 @@ public class ProjectLaborImpl implements ProjectLaborService {
                         String projectName = projectList.get(j).getProjectName();
                         String id = employeeNumber + dateStr + projectCode;
                         String idYear = employeeNumber + dateStr.substring(0,4) + projectCode;
+                        projectLaborDao.updateIntoproLaborMonth(date);
                         projectLaborDao.saveLockingInfo(id,employeeNumber,employeeName,dateStr,projectCode,projectName,projectLaborDao.queryLaborHourInfoByDepartment(employeeNumber,projectCode,start,end) == null ? "0" : projectLaborDao.queryLaborHourInfoByDepartment(employeeNumber,projectCode,start,end));
                         projectLaborDao.plusLockingInfoByYear(idYear,employeeNumber,employeeName,dateStr.substring(0,4),projectCode,projectName,projectLaborDao.queryLaborHourInfoByDepartment(employeeNumber,projectCode,start,end) == null ? "0" : projectLaborDao.queryLaborHourInfoByDepartment(employeeNumber,projectCode,start,end));
                     }

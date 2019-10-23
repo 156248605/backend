@@ -104,6 +104,12 @@
             (#{id},#{employeeNumber},#{employeeName},#{fillingDate},#{projectCode},#{projectName},#{laborHour})
     </insert>
 
+    <update id="updateIntoproLaborMonth" parameterType="string">
+        UPDATE pro_labor_month
+        SET locking_time = #{locking_time}
+    </update>
+
+
     <insert id="updateLockingInfoByYear" parameterType="string">
         INSERT INTO
             pro_labor_record(id,employee_number,employee_name,filling_date,project_code,project_name,labor_hour)
