@@ -102,6 +102,14 @@
             pro_labor_record(id,employee_number,employee_name,filling_date,project_code,project_name,labor_hour)
         VALUES
             (#{id},#{employeeNumber},#{employeeName},#{fillingDate},#{projectCode},#{projectName},#{laborHour})
+        ON DUPLICATE KEY UPDATE
+            id = #{id},
+            employee_number = #{employeeNumber},
+            employee_name = #{employeeName},
+            filling_date = #{fillingDate},
+            project_code = #{projectCode},
+            project_name = #{projectName},
+            labor_hour = #{laborHour}
     </insert>
 
     <update id="updateIntoproLaborMonth" parameterType="string">
